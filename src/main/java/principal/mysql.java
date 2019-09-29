@@ -7,31 +7,36 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.UUID;
 
 public class mysql implements Listener {
-    main plugin = main.getPlugin(main.class);
+    private main plugin = main.getPlugin(main.class);
     @EventHandler
     public void OnJoin (PlayerJoinEvent event){
         Player player = event.getPlayer();
         CreatePlayer(player.getUniqueId(),player);
     }
     public boolean playerExist(UUID uuid){
-        try {
-            Statement statement = plugin.getConnection().createStatement();
-            ResultSet results = statement.executeQuery("SELECT * FROM " + plugin.table + " WHERE UUID = '"+uuid.toString()+"'");
+        PreparedStatement statement;
+        ResultSet results;
+        try
+        {
+            statement = plugin.getConnection().prepareStatement("SELECT * FROM " + plugin.table + " WHERE UUID = '?'");
+            statement.setString(1, uuid.toString());
+            results = statement.executeQuery();
+
             while(results.next())
             {
-                if (results.getObject("UUID") != null) {
+                if (results.getObject("UUID") != null)
+                {
                     statement.close();
                     return true;
-                } else {
-                    statement.close();
-                    return false;
                 }
             }
+
+            statement.close();
             return false;
+
         } catch(SQLException e) {
             e.printStackTrace();
             return false;
