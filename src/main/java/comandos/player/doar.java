@@ -13,7 +13,7 @@ public class doar implements CommandExecutor {
             Player player = (Player) sender;
             player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                     "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Olá, você pode fazer uma doação via transferência" +
-                    " bancária, basta falar com yurinogueira no comandos.player.discord, ou " + ChatColor.DARK_AQUA +
+                    " bancária, basta falar com yurinogueira no Discord, ou " + ChatColor.DARK_AQUA +
                     " https://pag.ae/7V9tW9fur" + ChatColor.DARK_GRAY + ".");
             return true;
         }
