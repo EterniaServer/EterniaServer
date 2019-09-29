@@ -2,11 +2,11 @@ principal/main.class
 comandos/player/hat.class
 comandos/player/doar.class
 comandos/player/discord.class
-comandos/staff/aviso.class
 comandos/player/retirarxp.class
+comandos/staff/advice.class
 comandos/player/pa.class
 principal/mysql.class
-comandos/player/suicidio.class
+comandos/player/suicide.class
 comandos/staff/fly.class
 comandos/staff/feed.class
 comandos/player/guardaxp.class
