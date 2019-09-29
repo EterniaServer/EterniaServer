@@ -7,14 +7,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class suicidio implements CommandExecutor {
+public class suicide implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(args.length >= 1){
             if (sender instanceof Player) {
                 StringBuilder sb = new StringBuilder();
-                for(int i = 0; i < args.length; i++) {
-                    sb.append(args[i]).append(" ");
+                for (String arg : args) {
+                    sb.append(arg).append(" ");
                 }
                 String s = sb.toString();
                 Player player = (Player) sender;

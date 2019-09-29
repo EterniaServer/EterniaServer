@@ -16,7 +16,7 @@ public class fly implements CommandExecutor {
             if(player.hasPermission("eternia.comandos.staff.fly")) {
                 if (args.length == 0) {
                     if (command.getName().equalsIgnoreCase("comandos.staff.fly")) {
-                        if(player.getAllowFlight() == true) {
+                        if(player.getAllowFlight()) {
                             player.setAllowFlight(false);
                             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
                             player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
@@ -33,12 +33,13 @@ public class fly implements CommandExecutor {
                         }
                     }
                 }
-                else if (args.length >= 1) {
+                else if (args.length == 1) {
                     if (player.hasPermission("eternia.comandos.staff.fly.other")) {
                         String targetS = args[0];
                         Player target = Bukkit.getPlayer(targetS);
-                        if(target.isOnline() == true) {
-                            if (target.getAllowFlight() == true) {
+                        assert target != null;
+                        if(target.isOnline()) {
+                            if (target.getAllowFlight()) {
                                 target.setAllowFlight(false);
                                 target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
                                 target.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +

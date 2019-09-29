@@ -12,8 +12,8 @@ import java.sql.Statement;
 import java.util.UUID;
 
 public class guardaxp implements CommandExecutor {
-    main plugin = main.getPlugin(main.class);
-    int xp1 = 0;
+    private final main plugin = main.getPlugin(main.class);
+    private int xp1 = 0;
     @EventHandler
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -53,7 +53,7 @@ public class guardaxp implements CommandExecutor {
         }
         return false;
     }
-    public void GuardaEXP(UUID uuid, Player player){
+    private void GuardaEXP(UUID uuid, Player player){
         try {
             Statement statement = plugin.getConnection().createStatement();
             ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '"+uuid.toString()+"'");

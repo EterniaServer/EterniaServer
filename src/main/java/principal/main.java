@@ -6,61 +6,57 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class main extends JavaPlugin {
     private Connection connection;
-    public String host, database, username, password, table;
-    public int port;
     @Override
     public void onEnable() {
         mysqlSetup();
         this.getServer().getPluginManager().registerEvents(new principal.mysql(), this);
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Até aqui ta okay!");
-        this.getCommand("suicidio").setExecutor(new comandos.player.suicidio());
-        this.getCommand("aviso").setExecutor(new comandos.staff.aviso());
-        this.getCommand("discord").setExecutor(new comandos.player.discord());
-        this.getCommand("doar").setExecutor(new comandos.player.doar());
-        this.getCommand("regras").setExecutor(new comandos.player.regras());
-        this.getCommand("feed").setExecutor(new comandos.staff.feed());
-        this.getCommand("hat").setExecutor(new comandos.player.hat());
-        this.getCommand("nome").setExecutor(new comandos.staff.nome());
-        this.getCommand("fly").setExecutor(new comandos.staff.fly());
-        this.getCommand("pa").setExecutor(new comandos.player.pa());
-        this.getCommand("guardaxp").setExecutor(new comandos.player.guardaxp());
-        this.getCommand("retirarxp").setExecutor(new comandos.player.retirarxp());
+        Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new comandos.player.suicide());
+        Objects.requireNonNull(this.getCommand("advice")).setExecutor(new comandos.staff.advice());
+        Objects.requireNonNull(this.getCommand("discord")).setExecutor(new comandos.player.discord());
+        Objects.requireNonNull(this.getCommand("doar")).setExecutor(new comandos.player.doar());
+        Objects.requireNonNull(this.getCommand("regras")).setExecutor(new comandos.player.regras());
+        Objects.requireNonNull(this.getCommand("feed")).setExecutor(new comandos.staff.feed());
+        Objects.requireNonNull(this.getCommand("hat")).setExecutor(new comandos.player.hat());
+        Objects.requireNonNull(this.getCommand("nome")).setExecutor(new comandos.staff.nome());
+        Objects.requireNonNull(this.getCommand("fly")).setExecutor(new comandos.staff.fly());
+        Objects.requireNonNull(this.getCommand("pa")).setExecutor(new comandos.player.pa());
+        Objects.requireNonNull(this.getCommand("guardaxp")).setExecutor(new comandos.player.guardaxp());
+        Objects.requireNonNull(this.getCommand("retirarxp")).setExecutor(new comandos.player.retirarxp());
     }
 
     @Override
     public void onDisable() {
     }
 
-    public void mysqlSetup(){
-        host = "167.114.85.28";
-        port = 3306;
-        username = "hm_5763";
-        database = "hm_5763";
-        password = "8f949c48dc";
-        table = "eternia";
+    public final String table = "eternia";
+    private void mysqlSetup(){
         try {
             synchronized (this){
                 if(getConnection() != null && !getConnection().isClosed()){
                     return;
                 }
                 Class.forName("java.sql.Driver");
-                setConnection(DriverManager.getConnection("jdbc:mysql://" + this.host + ":" + this.port + "/"
-                        + this.database, this.username, this.password));
+                String host = "167.114.85.28";
+                int port = 3306;
+                String password = "8f949c48dc";
+                String database = "hm_5763";
+                String username = "hm_5763";
+                setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/"
+                        + database, username, password));
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
             }
-        } catch(SQLException e) {
-            e.printStackTrace();
-        } catch(ClassNotFoundException e) {
+        } catch(SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
     public Connection getConnection() {
         return connection;
     }
-    public void setConnection(Connection connection){
+    private void setConnection(Connection connection){
         this.connection = connection;
     }
 }

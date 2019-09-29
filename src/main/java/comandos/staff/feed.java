@@ -22,11 +22,12 @@ public class feed implements CommandExecutor {
                         return true;
                     }
                 }
-                else if (args.length >= 1) {
+                else if (args.length == 1) {
                     if (player.hasPermission("eternia.comandos.staff.feed.other")) {
                         String targetS = args[0];
                         Player target = Bukkit.getPlayer(targetS);
-                        if (target.isOnline() == true) {
+                        assert target != null;
+                        if (target.isOnline()) {
                             target.setFoodLevel(20);
                             player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                                     "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você saciou o jogador " + ChatColor.DARK_AQUA +

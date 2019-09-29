@@ -9,19 +9,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class mysql implements Listener {
-    private main plugin = main.getPlugin(main.class);
+class mysql implements Listener {
     @EventHandler
     public void OnJoin (PlayerJoinEvent event){
         Player player = event.getPlayer();
         CreatePlayer(player.getUniqueId(),player);
     }
-    public boolean playerExist(UUID uuid){
+    private final main plugin = main.getPlugin(main.class);
+    private boolean playerExist(UUID uuid){
         PreparedStatement statement;
         ResultSet results;
         try
         {
-            statement = plugin.getConnection().prepareStatement("SELECT * FROM " + plugin.table + " WHERE UUID = '?'");
+            statement = plugin.getConnection().prepareStatement("SELECT * FROM " + plugin.table + " WHERE UUID = ?");
             statement.setString(1, uuid.toString());
             results = statement.executeQuery();
 
@@ -42,9 +42,9 @@ public class mysql implements Listener {
             return false;
         }
     }
-    public void CreatePlayer(final UUID uuid, Player player){
+    private void CreatePlayer(final UUID uuid, Player player){
         try {
-            if(playerExist(uuid) != true){
+            if(!playerExist(uuid)){
                 PreparedStatement insert = plugin.getConnection().prepareStatement("INSERT INTO " + plugin.table + " (UUID,NAME,XP) VALUE (?,?,?)");
                 insert.setString(1, uuid.toString());
                 insert.setString(2, player.getName());
