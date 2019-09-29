@@ -1,0 +1,56 @@
+main: principal.main
+
+name: EterniaServer
+version: 1.3
+author: Yuri Nogueira
+description: Blablabla
+api-version: 1.14
+commands:
+  suicidio:
+    description: Se mate.
+    aliases: [suicide, killme]
+    usage:
+  aviso:
+    description: Avise.
+    aliases: [broadcast, anuncio]
+    usage:
+  doar:
+    description: Doe.
+    aliases: [doacao, comprarvip]
+    usage:
+  discord:
+    description: Discord.
+    aliases: [contato]
+    usage:
+  regras:
+    description: Regras.
+    aliases: [rules]
+    usage:
+  feed:
+    description: Alimenta.
+    aliases: [heal, fome]
+    usage:
+  hat:
+    description: Capacete.
+    aliases: [capacete]
+    usage:
+  nome:
+    description: Nome.
+    aliases: [nickname, mudarnome, changenickname]
+    usage:
+  fly:
+    description: Voe.
+    aliases: [voar, ativarvoar, ativarfly]
+    usage:
+  guardaxp:
+    description: Guarde xp.
+    aliases: [armazenarxp, guardalvl, armazenarlvl]
+    usage:
+  retirarxp:
+    description: Tira o xp.
+    aliases: [tirarxp, retirarlvl, tirarlvl, pegarlvl]
+    usage:
+  pa:
+    description: Pega uma comandos.player.pa.
+    aliases: [padeouro]
+    usage:
