@@ -27,9 +27,9 @@ commands:
   hat:
     description: Capacete.
     aliases: [capacete]
-  nome:
+  name:
     description: Nome.
-    aliases: [nickname, mudarnome, changenickname]
+    aliases: [nickname, mudarnome, nome, changenickname]
   fly:
     description: Voe.
     aliases: [voar, ativarvoar, ativarfly]
@@ -42,3 +42,6 @@ commands:
   pa:
     description: Pega uma comandos.player.pa.
     aliases: [padeouro]
+  blocks:
+    description: Transforma em bloco.
+    aliases: [condenser, transformarembloco]

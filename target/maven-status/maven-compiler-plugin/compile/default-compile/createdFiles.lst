@@ -1,4 +1,5 @@
 principal/main.class
+comandos/staff/name.class
 comandos/player/hat.class
 comandos/player/doar.class
 comandos/player/discord.class
@@ -11,4 +12,3 @@ comandos/staff/fly.class
 comandos/staff/feed.class
 comandos/player/guardaxp.class
 comandos/player/regras.class
-comandos/staff/nome.class

@@ -21,11 +21,12 @@ public class main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("regras")).setExecutor(new comandos.player.regras());
         Objects.requireNonNull(this.getCommand("feed")).setExecutor(new comandos.staff.feed());
         Objects.requireNonNull(this.getCommand("hat")).setExecutor(new comandos.player.hat());
-        Objects.requireNonNull(this.getCommand("nome")).setExecutor(new comandos.staff.nome());
+        Objects.requireNonNull(this.getCommand("nome")).setExecutor(new comandos.staff.name());
         Objects.requireNonNull(this.getCommand("fly")).setExecutor(new comandos.staff.fly());
         Objects.requireNonNull(this.getCommand("pa")).setExecutor(new comandos.player.pa());
         Objects.requireNonNull(this.getCommand("guardaxp")).setExecutor(new comandos.player.guardaxp());
         Objects.requireNonNull(this.getCommand("retirarxp")).setExecutor(new comandos.player.retirarxp());
+        Objects.requireNonNull(this.getCommand("blocks")).setExecutor(new comandos.player.blocks());
     }
 
     @Override

@@ -27,9 +27,9 @@ commands:
   hat:
     description: Capacete.
     aliases: [capacete]
-  nome:
+  name:
     description: Nome.
-    aliases: [nickname, mudarnome, changenickname]
+    aliases: [nickname, mudarnome, nome, changenickname]
   fly:
     description: Voe.
     aliases: [voar, ativarvoar, ativarfly]
