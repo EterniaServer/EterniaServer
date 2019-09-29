@@ -25,7 +25,7 @@ public class advice implements CommandExecutor {
                     return true;
                 } else {
                     player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                            "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Use: " + ChatColor.GOLD + "/comandos.staff.aviso " +
+                            "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Use: " + ChatColor.GOLD + "/aviso " +
                             ChatColor.DARK_AQUA + "<mensagem>" + ChatColor.DARK_GRAY + ".");
                     return true;
                 }

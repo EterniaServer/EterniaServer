@@ -42,3 +42,6 @@ commands:
   pa:
     description: Pega uma comandos.player.pa.
     aliases: [padeouro]
+  blocks:
+    description: Transforma em bloco.
+    aliases: [condenser, transformarembloco]

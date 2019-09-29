@@ -1,4 +1,5 @@
 principal/main.class
+comandos/player/blocks.class
 comandos/staff/name.class
 comandos/player/hat.class
 comandos/player/doar.class
