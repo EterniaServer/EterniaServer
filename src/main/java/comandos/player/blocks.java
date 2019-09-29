@@ -1,5 +1,6 @@
 package comandos.player;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -96,6 +97,8 @@ public class blocks implements CommandExecutor {
                 player.getInventory().removeItem(new ItemStack(Material.EMERALD, blocos_de_esmeralda * 9));
                 player.getInventory().addItem(new ItemStack(Material.EMERALD_BLOCK, blocos_de_esmeralda));
             }
+            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
+                    "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + ":)" + ChatColor.DARK_GRAY + ".");
         }
         return true;
     }
