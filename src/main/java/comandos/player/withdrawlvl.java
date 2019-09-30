@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
-public class retirarxp implements CommandExecutor {
+public class withdrawlvl implements CommandExecutor {
     private final main plugin = main.getPlugin(main.class);
     private int xp1 = 0;
     @EventHandler

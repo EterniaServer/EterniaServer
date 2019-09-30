@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import java.util.HashMap;
 
-public class pa implements CommandExecutor {
+public class goldenshovel implements CommandExecutor {
     private final HashMap<String, Long> cooldowns = new HashMap<>();
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
