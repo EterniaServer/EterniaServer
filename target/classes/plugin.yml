@@ -49,3 +49,9 @@ commands:
   back:
     description: Volta aonde morreu.
     aliases: [dback, voltarmorte]
+  spectator:
+    description: Se esconde
+    aliases: [inv, spect]
+  survival:
+    description: Se mostra
+    aliases: [jogar, aparecer]

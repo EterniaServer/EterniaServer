@@ -38,6 +38,8 @@ public class main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("withdrawlvl")).setExecutor(new withdrawlvl());
         Objects.requireNonNull(this.getCommand("blocks")).setExecutor(new comandos.player.blocks());
         Objects.requireNonNull(this.getCommand("back")).setExecutor(new comandos.player.back());
+        Objects.requireNonNull(this.getCommand("spectator")).setExecutor(new comandos.staff.spectator());
+        Objects.requireNonNull(this.getCommand("survival")).setExecutor(new comandos.staff.survival());
     }
 
     @Override
