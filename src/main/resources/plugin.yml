@@ -1,7 +1,7 @@
 main: principal.main
 
 name: EterniaServer
-version: '1.4'
+version: '1.5'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.14'
