@@ -7,13 +7,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class advice implements CommandExecutor {
+public class advice implements CommandExecutor
+{
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender != null) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (sender instanceof Player)
+        {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.comandos.staff.aviso")) {
-                if (args.length >= 1) {
+            if (player.hasPermission("eternia.comandos.staff.aviso"))
+            {
+                if (args.length >= 1)
+                {
                     StringBuilder sb = new StringBuilder();
                     for (String arg : args) {
                         sb.append(arg).append(" ");

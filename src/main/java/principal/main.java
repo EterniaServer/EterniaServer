@@ -11,12 +11,15 @@ import java.sql.SQLException;
 import java.util.Objects;
 import net.milkbowl.vault.economy.Economy;
 
-public class main extends JavaPlugin {
+public class main extends JavaPlugin
+{
     private static Economy econ;
     private Connection connection;
     @Override
-    public void onEnable() {
-        if (!setupEconomy()) {
+    public void onEnable()
+    {
+        if (!setupEconomy())
+        {
             this.getLogger().severe("Opa, vault não encontrado :/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -42,30 +45,34 @@ public class main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("survival")).setExecutor(new comandos.staff.survival());
         Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new comandos.player.facebook());
     }
-
     @Override
-    public void onDisable() {
+    public void onDisable()
+    {
     }
-
-    private boolean setupEconomy() {
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+    private boolean setupEconomy()
+    {
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null)
+        {
             return false;
         }
-
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
+        if (rsp == null)
+        {
             return false;
         }
         econ = rsp.getProvider();
         //noinspection ConstantConditions
         return econ != null;
     }
-
     public final String table = "eternia";
-    private void mysqlSetup(){
-        try {
-            synchronized (this){
-                if(getConnection() != null && !getConnection().isClosed()){
+    private void mysqlSetup()
+    {
+        try
+        {
+            synchronized (this)
+            {
+                if(getConnection() != null && !getConnection().isClosed())
+                {
                     return;
                 }
                 Class.forName("java.sql.Driver");
@@ -78,17 +85,22 @@ public class main extends JavaPlugin {
                         + database, username, password));
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
             }
-        } catch(SQLException | ClassNotFoundException e) {
+        }
+        catch(SQLException | ClassNotFoundException e)
+        {
             e.printStackTrace();
         }
     }
-    public Connection getConnection() {
+    public Connection getConnection()
+    {
         return connection;
     }
-    private void setConnection(Connection connection){
+    private void setConnection(Connection connection)
+    {
         this.connection = connection;
     }
-    public static Economy getEconomy() {
+    public static Economy getEconomy()
+    {
         return econ;
     }
 }

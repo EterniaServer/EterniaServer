@@ -11,30 +11,38 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
-public class withdrawlvl implements CommandExecutor {
+public class withdrawlvl implements CommandExecutor
+{
     private final main plugin = main.getPlugin(main.class);
     private int xp1 = 0;
     @EventHandler
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (sender instanceof Player)
+        {
             Player player = (Player) sender;
             UUID uuid = player.getUniqueId();
-            try {
+            try
+            {
                 xp1 = player.getLevel();
                 RetirarXP(uuid, player);
                 player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                         "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Pronto seu level agora é " + ChatColor.DARK_AQUA
                         + xp1 + ChatColor.DARK_GRAY + ".");
                 return true;
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 return true;
             }
         }
         return false;
     }
-    private void RetirarXP(UUID uuid, Player player){
-        try {
+    private void RetirarXP(UUID uuid, Player player)
+    {
+        try
+        {
             Statement statement = plugin.getConnection().createStatement();
             ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '"+uuid.toString()+"'");
             String Vu = "";
@@ -49,7 +57,9 @@ public class withdrawlvl implements CommandExecutor {
             statement.executeUpdate("UPDATE " + plugin.table + " SET XP='"+v+"' WHERE UUID='"+uuid.toString()+"'");
             player.setLevel(xp1);
             statement.close();
-        } catch(SQLException e) {
+        }
+        catch(SQLException e)
+        {
             e.printStackTrace();
         }
     }

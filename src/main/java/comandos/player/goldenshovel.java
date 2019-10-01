@@ -10,16 +10,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import java.util.HashMap;
 
-public class goldenshovel implements CommandExecutor {
+public class goldenshovel implements CommandExecutor
+{
     private final HashMap<String, Long> cooldowns = new HashMap<>();
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (sender instanceof Player)
+        {
             Player player = (Player) sender;
             int cooldownTime = 300;
-            if(cooldowns.containsKey(sender.getName())) {
+            if(cooldowns.containsKey(sender.getName()))
+            {
                 long secondsLeft = ((cooldowns.get(sender.getName())/1000)+cooldownTime) - (System.currentTimeMillis()/1000);
-                if(secondsLeft>0) {
+                if(secondsLeft>0)
+                {
                     player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                             "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você deve esperar " + ChatColor.DARK_AQUA
                             + secondsLeft + ChatColor.GRAY + " segundos, para poder usar esse comando novamente" + ChatColor.DARK_GRAY + ".");

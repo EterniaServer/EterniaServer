@@ -7,14 +7,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class feed implements CommandExecutor {
+public class feed implements CommandExecutor
+{
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (sender instanceof Player)
+        {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.staff.feed")) {
-                if (args.length == 0) {
-                    if (command.getName().equalsIgnoreCase("comandos.staff.feed")) {
+            if(player.hasPermission("eternia.comandos.staff.feed"))
+            {
+                if (args.length == 0)
+                {
+                    if (command.getName().equalsIgnoreCase("comandos.staff.feed"))
+                    {
                         player.setFoodLevel(20);
                         player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                                 "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você se saciou" +
@@ -22,12 +28,15 @@ public class feed implements CommandExecutor {
                         return true;
                     }
                 }
-                else if (args.length == 1) {
-                    if (player.hasPermission("eternia.comandos.staff.feed.other")) {
+                else if (args.length == 1)
+                {
+                    if (player.hasPermission("eternia.comandos.staff.feed.other"))
+                    {
                         String targetS = args[0];
                         Player target = Bukkit.getPlayer(targetS);
                         assert target != null;
-                        if (target.isOnline()) {
+                        if (target.isOnline())
+                        {
                             target.setFoodLevel(20);
                             player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                                     "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você saciou o jogador " + ChatColor.DARK_AQUA +

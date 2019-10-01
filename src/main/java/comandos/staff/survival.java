@@ -7,12 +7,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class survival implements CommandExecutor {
+public class survival implements CommandExecutor
+{
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (sender instanceof Player)
+        {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.staff.survival")) {
+            if(player.hasPermission("eternia.comandos.staff.survival"))
+            {
                 player.setGameMode(GameMode.SURVIVAL);
                 player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                         "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Pronto, você não ta mais escondido" +

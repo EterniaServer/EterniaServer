@@ -7,12 +7,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class spectator implements CommandExecutor {
+public class spectator implements CommandExecutor
+{
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    {
+        if (sender instanceof Player)
+        {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.staff.spectator")) {
+            if(player.hasPermission("eternia.comandos.staff.spectator"))
+            {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                         "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Shiii, você está escondido" +

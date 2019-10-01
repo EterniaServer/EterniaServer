@@ -17,3 +17,4 @@ comandos/staff/fly.class
 comandos/player/rules.class
 comandos/staff/feed.class
 comandos/player/depositlvl.class
+comandos/player/facebook.class
