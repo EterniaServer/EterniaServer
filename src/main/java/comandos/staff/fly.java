@@ -15,22 +15,20 @@ public class fly implements CommandExecutor {
             Player player = (Player) sender;
             if(player.hasPermission("eternia.comandos.staff.fly")) {
                 if (args.length == 0) {
-                    if (command.getName().equalsIgnoreCase("comandos.staff.fly")) {
-                        if(player.getAllowFlight()) {
-                            player.setAllowFlight(false);
-                            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                    "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Voar desativado" +
-                                    ChatColor.DARK_GRAY + ".");
-                            return true;
-                        } else {
-                            player.setAllowFlight(true);
-                            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                    "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Voar ativado" +
-                                    ChatColor.DARK_GRAY + ".");
-                            return true;
-                        }
+                    if(player.getAllowFlight()) {
+                        player.setAllowFlight(false);
+                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
+                        player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
+                                "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Voar desativado" +
+                                ChatColor.DARK_GRAY + ".");
+                        return true;
+                    } else {
+                        player.setAllowFlight(true);
+                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
+                        player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
+                                "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Voar ativado" +
+                                ChatColor.DARK_GRAY + ".");
+                        return true;
                     }
                 }
                 else if (args.length == 1) {
