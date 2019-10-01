@@ -55,3 +55,6 @@ commands:
   survival:
     description: Se mostra
     aliases: [jogar, aparecer]
+  facebook:
+    description: Pagina do server.
+    aliases: [paginadoface]

@@ -13,7 +13,7 @@ public class survival implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if(player.hasPermission("eternia.comandos.staff.survival")) {
-                player.setGameMode(GameMode.SPECTATOR);
+                player.setGameMode(GameMode.SURVIVAL);
                 player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                         "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Pronto, você não ta mais escondido" +
                         ChatColor.DARK_GRAY + ".");
