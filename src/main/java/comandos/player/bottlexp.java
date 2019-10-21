@@ -35,6 +35,7 @@ public class bottlexp implements CommandExecutor
                 player.getWorld().dropItem(player.getLocation().add(0, 1, 0), new ItemStack(Material.EXPERIENCE_BOTTLE, XP_real));
                 player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
                         "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Toma ai suas garrafas" + ChatColor.DARK_GRAY + "!");
+                player.setLevel(0);
                 return true;
             }
             else
