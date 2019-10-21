@@ -58,3 +58,6 @@ commands:
   facebook:
     description: Pagina do server.
     aliases: [paginadoface]
+  bottlexp:
+    description: Garrafinhas de xp.
+    aliases: [garrafinhas]

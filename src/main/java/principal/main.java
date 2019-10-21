@@ -44,6 +44,7 @@ public class main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("spectator")).setExecutor(new comandos.staff.spectator());
         Objects.requireNonNull(this.getCommand("survival")).setExecutor(new comandos.staff.survival());
         Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new comandos.player.facebook());
+        Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new comandos.player.bottlexp());
     }
     @Override
     public void onDisable()
