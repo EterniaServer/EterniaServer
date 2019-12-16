@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,25 +39,7 @@ public class withdrawlvl implements CommandExecutor
                         Vu = results.getString("XP");
                     }
                     results.close();
-                    int XP = Integer.parseInt(Vu);
-                    if (XP >= 1 && XP <= 352)
-                    {
-                        XP = XP / 10;
-                    }
-                    else if (XP >= 353 && XP <= 910)
-                    {
-                        XP = XP / (18);
-                    }
-                    else if (XP >= 911 && XP <= 1395)
-                    {
-                        XP = XP / (26);
-                    }
-                    else
-                    {
-                        XP = XP / (60);
-                    }
-                    XP = Math.max(XP + player.getLevel(), 0);
-                    player.setLevel(XP);
+                    player.giveExp(Integer.parseInt(Vu));
                     int v = 0;
                     statement.executeUpdate("UPDATE " + plugin.table + " SET XP='"+v+"' WHERE UUID='"+uuid.toString()+"'");
                     statement.close();

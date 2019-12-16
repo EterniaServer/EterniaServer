@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,21 +37,17 @@ public class depositlvl implements CommandExecutor
                         try
                         {
                             int xp = xp_atual;
-                            if (xp >= 1 && xp <= 16)
+                            if (xp >= 1 && xp <= 15)
                             {
-                                xp = xp * (6 + xp);
+                                xp = (xp * xp) + (6 * xp);
                             }
-                            else if (xp >= 17 && xp <= 25)
+                            else if (xp >= 16 && xp <= 30)
                             {
-                                xp = xp * (8 + xp);
-                            }
-                            else if (xp >= 26 && xp <= 30)
-                            {
-                                xp = xp * (16 + xp);
+                                xp = (int) ((2.5 * (xp * xp)) - (40.5 * xp) + 360);
                             }
                             else
                             {
-                                xp = xp * (33 + xp);
+                                xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
                             }
                             Statement statement = plugin.getConnection().createStatement();
                             ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '"+uuid.toString()+"'");
