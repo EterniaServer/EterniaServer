@@ -50,10 +50,10 @@ commands:
     description: Volta aonde morreu.
     aliases: [dback, voltarmorte]
   spectator:
-    description: Se esconde
+    description: Va para o modo spectator.
     aliases: [inv, spect]
   survival:
-    description: Se mostra
+    description: Volta ao modo survival.
     aliases: [jogar, aparecer]
   facebook:
     description: Pagina do server.
