@@ -1,10 +1,10 @@
 main: center.main
 
 name: EterniaServer
-version: '1.6'
+version: '1.8'
 author: Yuri Nogueira
 description: Blablabla
-api-version: '1.14'
+api-version: '1.15'
 depend: [Vault]
 commands:
   suicide:

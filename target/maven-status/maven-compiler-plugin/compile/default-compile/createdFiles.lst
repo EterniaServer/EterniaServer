@@ -10,7 +10,6 @@ center/main.class
 commands/player/rules.class
 commands/staff/advice.class
 commands/player/hat.class
-center/sql/xpmanager.class
 commands/player/back.class
 center/playerlistener.class
 commands/player/facebook.class
