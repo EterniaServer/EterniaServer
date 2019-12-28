@@ -25,10 +25,6 @@ public class withdrawlvl implements CommandExecutor
             UUID uuid = player.getUniqueId();
             try
             {
-                int xp1 = player.getLevel();
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Pronto seu level agora é " + ChatColor.DARK_AQUA
-                        + xp1 + ChatColor.DARK_GRAY + ".");
                 try
                 {
                     Statement statement = plugin.getConnection().createStatement();
@@ -48,6 +44,9 @@ public class withdrawlvl implements CommandExecutor
                 {
                     e.printStackTrace();
                 }
+                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
+                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Pronto seu level agora é " + ChatColor.DARK_AQUA
+                        + player.getLevel() + ChatColor.DARK_GRAY + ".");
                 return true;
             }
             catch (Exception e)

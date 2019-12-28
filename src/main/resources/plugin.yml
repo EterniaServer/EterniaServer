@@ -1,7 +1,7 @@
 main: center.main
 
 name: EterniaServer
-version: '1.8'
+version: '2.0'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
@@ -61,3 +61,6 @@ commands:
   bottlexp:
     description: Garrafinhas de xp.
     aliases: [garrafinhas]
+  colors:
+    description: Descubra as cores.
+    aliases: [cores]

@@ -46,6 +46,7 @@ public class main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("survival")).setExecutor(new commands.staff.survival());
         Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new commands.player.facebook());
         Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new commands.player.bottlexp());
+        Objects.requireNonNull(this.getCommand("colors")).setExecutor(new commands.player.colors());
     }
 
     private boolean setupEconomy()

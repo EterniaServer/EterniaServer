@@ -1,7 +1,7 @@
 main: center.main
 
 name: EterniaServer
-version: '1.8'
+version: '1.9'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
@@ -50,10 +50,10 @@ commands:
     description: Volta aonde morreu.
     aliases: [dback, voltarmorte]
   spectator:
-    description: Se esconde
+    description: Va para o modo spectator.
     aliases: [inv, spect]
   survival:
-    description: Se mostra
+    description: Volta ao modo survival.
     aliases: [jogar, aparecer]
   facebook:
     description: Pagina do server.
@@ -61,3 +61,12 @@ commands:
   bottlexp:
     description: Garrafinhas de xp.
     aliases: [garrafinhas]
+  home:
+    description: Va até uma home.
+    aliases: [casa]
+  sethome:
+    description: Define uma home.
+    aliases: [setcasa]
+  delhome:
+    description: Deleta uma home.
+    aliases: [delcasa]
