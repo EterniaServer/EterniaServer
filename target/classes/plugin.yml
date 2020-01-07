@@ -1,7 +1,7 @@
 main: center.main
 
 name: EterniaServer
-version: '1.9'
+version: '2.2'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
@@ -61,12 +61,6 @@ commands:
   bottlexp:
     description: Garrafinhas de xp.
     aliases: [garrafinhas]
-  home:
-    description: Va até uma home.
-    aliases: [casa]
-  sethome:
-    description: Define uma home.
-    aliases: [setcasa]
-  delhome:
-    description: Deleta uma home.
-    aliases: [delcasa]
+  colors:
+    description: Descubra as cores.
+    aliases: [cores]

@@ -16,6 +16,7 @@
 /home/yuri/eterniaserver/src/main/java/center/playerlistener.java
 /home/yuri/eterniaserver/src/main/java/center/sql/sql.java
 /home/yuri/eterniaserver/src/main/java/center/main.java
+/home/yuri/eterniaserver/src/main/java/commands/player/colors.java
 /home/yuri/eterniaserver/src/main/java/commands/player/withdrawlvl.java
 /home/yuri/eterniaserver/src/main/java/commands/staff/name.java
 /home/yuri/eterniaserver/src/main/java/commands/player/rules.java

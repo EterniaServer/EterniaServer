@@ -2,24 +2,41 @@
   <dictionary name="yuri">
     <words>
       <w>alguma</w>
+      <w>armadilha</w>
+      <w>ativar</w>
       <w>atual</w>
       <w>bottlexp</w>
       <w>conectar</w>
       <w>configfile</w>
       <w>connectsql</w>
       <w>delhome</w>
+      <w>desativando</w>
+      <w>desativar</w>
+      <w>dinheiro</w>
+      <w>encontrada</w>
       <w>encontrado</w>
       <w>eterniaserver</w>
       <w>existe</w>
       <w>garrafas</w>
       <w>homename</w>
+      <w>intervalo</w>
+      <w>membros</w>
+      <w>mensagens</w>
       <w>miníma</w>
+      <w>msgfinal</w>
       <w>muitas</w>
+      <w>método</w>
+      <w>possui</w>
+      <w>precisa</w>
+      <w>preso</w>
       <w>quantidade</w>
+      <w>removida</w>
       <w>retirar</w>
       <w>sethome</w>
       <w>setspawn</w>
       <w>suas</w>
+      <w>suficiêntes</w>
+      <w>verificar</w>
       <w>você</w>
       <w>xpmanager</w>
     </words>

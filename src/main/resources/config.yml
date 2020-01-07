@@ -1,0 +1,13 @@
+# Intervalo para verificar se o jogador está preso em uma trap com portal do nether
+intervalo: 1
+# Ativar ou desativar o método async do intervalo para verificar trap
+async: true
+# Valor do comando /back para membros que não tem a permissão eternia.backfree
+valor-do-back: 5000
+# Mensagens
+trap-mensagem: '&8[&aE&9S&8] &7Portal desativado&8.'
+trap-mensagem-tempo: '&8[&aE&9S&8] &7Armadilha encontrada&8, &7desativando portal em&3 %s&7segundos&8.'
+back-gratis: '&8[&aE&9S&8] &7Você voltou aonde morreu de graça&8.'
+back-nao-pode: '&8[&aE&9S&8] &7Você ainda não morreu&8.'
+back-sem-dinheiro: '&8[&aE&9S&8] &7Você não possui eternias suficiêntes&8,&7 você precisa de &3%s&8.'
+back-sucesso: '&8[&aE&9S&8] &7Você voltou aonde morreu e isso custou &3%s &7eternias&8.'

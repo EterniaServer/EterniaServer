@@ -4,8 +4,11 @@ import center.sql.*;
 import commands.player.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,6 +22,16 @@ public class main extends JavaPlugin
     @Override
     public void onEnable()
     {
+        if (!new File(getDataFolder(), "config.yml").exists()) {
+            saveDefaultConfig();
+        }
+        FileConfiguration c = getConfig();
+        long delay = (c.getInt("intervalo") * 20);
+        if (c.getBoolean("async")){
+            new looper(c).runTaskTimerAsynchronously(this, 20L, delay);
+        }else{
+            new looper(c).runTaskTimer(this, 20L, delay);
+        }
         if (!setupEconomy())
         {
             this.getLogger().severe("Opa, vault não encontrado :/");
