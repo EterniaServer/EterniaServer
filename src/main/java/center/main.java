@@ -27,11 +27,7 @@ public class main extends JavaPlugin
         }
         FileConfiguration c = getConfig();
         long delay = (c.getInt("intervalo") * 20);
-        if (c.getBoolean("async")){
-            new looper(c).runTaskTimerAsynchronously(this, 20L, delay);
-        }else{
-            new looper(c).runTaskTimer(this, 20L, delay);
-        }
+        new looper(c).runTaskTimer(this, 20L, delay);
         if (!setupEconomy())
         {
             this.getLogger().severe("Opa, vault não encontrado :/");
@@ -61,7 +57,6 @@ public class main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new commands.player.bottlexp());
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new commands.player.colors());
     }
-
     private boolean setupEconomy()
     {
         if (Bukkit.getPluginManager().getPlugin("Vault") == null)
@@ -76,7 +71,6 @@ public class main extends JavaPlugin
         econ = rsp.getProvider();
         return true;
     }
-
     public final String table = "eternia";
     private void mysqlSetup()
     {

@@ -1,7 +1,5 @@
-# Intervalo para verificar se o jogador está preso em uma trap com portal do nether
+# Intervalo para verificar se o jogador está preso em uma trap com portal do nether em segundos
 intervalo: 1
-# Ativar ou desativar o método async do intervalo para verificar trap
-async: true
 # Valor do comando /back para membros que não tem a permissão eternia.backfree
 valor-do-back: 5000
 host: '127.0.0.1'
@@ -9,10 +7,17 @@ porta: 3306
 database: 'admin'
 usuario: 'admin'
 senha: 'admin'
+# Spawn
+world: 'world'
+x: '0'
+y: '70'
+z: '0'
+yaw: '0'
+pitch: '0'
 # Mensagens
 sem-permissao: '&8[&aE&9S&8] &7Você não tem permissão para isso&8.'
-trap-mensagem: '&8[&aE&9S&8] &7Portal desativado&8.'
-trap-mensagem-tempo: '&8[&aE&9S&8] &7Armadilha encontrada&8, &7desativando portal em&3 %s&7segundos&8.'
+spawn: '&8[&aE&9S&8] &7Bem-vindo ao spawn&8.'
+trap-mensagem-tempo: '&8[&aE&9S&8] &7Armadilha encontrada&8, &7se teleportando para o spawn em&3 %s &7segundos&8.'
 back-gratis: '&8[&aE&9S&8] &7Você voltou aonde morreu de graça&8.'
 back-nao-pode: '&8[&aE&9S&8] &7Você ainda não morreu&8.'
 back-sem-dinheiro: '&8[&aE&9S&8] &7Você não possui eternias suficiêntes&8,&7 você precisa de &3%s&8.'
@@ -39,7 +44,7 @@ recebeu-barra: '&8[&aE&9S&8] &7Você foi saciado por &3%s&8.'
 me-enchi: '&8[&aE&9S&8] &7Você se saciou&8.'
 ativar-voar: '&8[&aE&9S&8] &7Voar ativado&8.'
 desativar-voar: '&8[&aE&9S&8] &7Voar desativado&8.'
-ativar-voar-de: '&8[&aE&9S&8] &7Você ativou o voar de &3%S&8.'
+ativar-voar-de: '&8[&aE&9S&8] &7Você ativou o voar de &3%s&8.'
 desativar-voar-de: '&8[&aE&9S&8] &7Você desativou o voar de &3%s&8.'
 ativaram-voar: '&8[&aE&9S&8] &3%s &7ativou seu voar&8.'
 desativaram-voar: '&8[&aE&9S&8] &3%s &7desativou seu voar&8.'
