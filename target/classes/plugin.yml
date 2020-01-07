@@ -1,7 +1,7 @@
 main: center.main
 
 name: EterniaServer
-version: '2.2'
+version: '1.0.0'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'

@@ -21,7 +21,7 @@ public class back implements CommandExecutor
             if (center.playerlistener.back.containsKey(player))
             {
                 double money = economy.getBalance(player);
-                double valor = (center.looper.c.getInt("valor-do-back"));
+                double valor = center.looper.c.getInt("valor-do-back");
                 if(player.hasPermission("eternia.backfree"))
                 {
                     player.teleport(center.playerlistener.back.get(player));

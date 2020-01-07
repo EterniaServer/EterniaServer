@@ -1,6 +1,6 @@
 package commands.staff;
 
-import org.bukkit.ChatColor;
+import center.vars;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,13 +18,11 @@ public class survival implements CommandExecutor
             if(player.hasPermission("eternia.comandos.staff.survival"))
             {
                 player.setGameMode(GameMode.SURVIVAL);
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Pronto, você não ta mais escondido" +
-                        ChatColor.DARK_GRAY + ".");
-            } else {
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você não tem permissão para isso" +
-                        ChatColor.DARK_GRAY + ".");
+                player.sendMessage(vars.c(center.looper.c.getString("jogando")));
+            }
+            else
+            {
+                player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
                 return true;
             }
         }

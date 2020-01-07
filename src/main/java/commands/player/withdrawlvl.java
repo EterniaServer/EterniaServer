@@ -1,15 +1,16 @@
 package commands.player;
+
 import center.main;
-import org.bukkit.ChatColor;
+import center.vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 import java.util.UUID;
 
 public class withdrawlvl implements CommandExecutor
@@ -44,9 +45,7 @@ public class withdrawlvl implements CommandExecutor
                 {
                     e.printStackTrace();
                 }
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Pronto seu level agora é " + ChatColor.DARK_AQUA
-                        + player.getLevel() + ChatColor.DARK_GRAY + ".");
+                player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("xp-tirar")), player.getLevel())));
                 return true;
             }
             catch (Exception e)
@@ -55,5 +54,9 @@ public class withdrawlvl implements CommandExecutor
             }
         }
         return false;
+    }
+    private String replaced(String args, double valor)
+    {
+        return args.replace("%s", String.valueOf(valor));
     }
 }

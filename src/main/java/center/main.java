@@ -89,11 +89,11 @@ public class main extends JavaPlugin
                     return;
                 }
                 Class.forName("java.sql.Driver");
-                String host = "167.114.85.28";
-                int port = 3306;
-                String password = "8f949c48dc";
-                String database = "hm_5763";
-                String username = "hm_5763";
+                String host = center.looper.c.getString("host");
+                int port = center.looper.c.getInt("porta");
+                String password = center.looper.c.getString("senha");
+                String database = center.looper.c.getString("database");
+                String username = center.looper.c.getString("usuario");
                 setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
             }
@@ -103,17 +103,14 @@ public class main extends JavaPlugin
             e.printStackTrace();
         }
     }
-
     public Connection getConnection()
     {
         return connection;
     }
-
     private void setConnection(Connection connection)
     {
         this.connection = connection;
     }
-
     public static Economy getEconomy()
     {
         return econ;

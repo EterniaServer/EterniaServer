@@ -1,6 +1,6 @@
 package commands.player;
 import center.main;
-import org.bukkit.ChatColor;
+import center.vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 import java.util.UUID;
 
 public class depositlvl implements CommandExecutor
@@ -31,9 +32,7 @@ public class depositlvl implements CommandExecutor
                     if (xp_atual >= Integer.parseInt(args[0]))
                     {
                         xp_atual = Integer.parseInt(args[0]);
-                        player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Pronto, você tem " + ChatColor.DARK_AQUA
-                                + xp_atual + ChatColor.GRAY + " leveis guardados" + ChatColor.DARK_GRAY + ".");
+                        player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("xp-guardado")), xp_atual)));
                         try
                         {
                             int xp = xp_atual;
@@ -68,29 +67,27 @@ public class depositlvl implements CommandExecutor
                             e.printStackTrace();
                         }
                         return true;
-                    } else {
-                        player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você não tem todos esses leveis"
-                                + ChatColor.DARK_GRAY + ".");
+                    }
+                    else
+                    {
+                        player.sendMessage(vars.c(center.looper.c.getString("xp-insuficiente")));
                         return true;
                     }
                 }
                 catch (Exception e)
                 {
-                    player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                            "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Use" + ChatColor.DARK_GRAY + ": " +
-                            ChatColor.GOLD + "/guardalvl " + ChatColor.DARK_AQUA + "<quantia>" + ChatColor.GRAY +
-                            " não é difícil, é só digitar um número" + ChatColor.DARK_GRAY + ".");
+                    player.sendMessage(vars.c(center.looper.c.getString("guarda-level-errou")));
                     return true;
                 }
             } else {
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Use" +
-                        ChatColor.DARK_GRAY + ": " + ChatColor.GOLD + "/guardalvl " + ChatColor.DARK_AQUA + "<quantia>" +
-                        ChatColor.DARK_GRAY + ".");
+                player.sendMessage(vars.c(center.looper.c.getString("guarda-level")));
                 return true;
             }
         }
         return false;
+    }
+    private String replaced(String args, double valor)
+    {
+        return args.replace("%s", String.valueOf(valor));
     }
 }

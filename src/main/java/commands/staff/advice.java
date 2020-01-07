@@ -1,11 +1,13 @@
 package commands.staff;
 
+import center.vars;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class advice implements CommandExecutor
 {
@@ -25,22 +27,25 @@ public class advice implements CommandExecutor
                     }
                     sb.substring(0, sb.length() - 1);
                     String s = sb.toString();
-                    Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                            "S" + ChatColor.DARK_GRAY + "] " + ChatColor.RED + s + ChatColor.DARK_GRAY + "!");
-                    return true;
-                } else {
-                    player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                            "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Use: " + ChatColor.GOLD + "/aviso " +
-                            ChatColor.DARK_AQUA + "<mensagem>" + ChatColor.DARK_GRAY + ".");
+                    Bukkit.broadcastMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("aviso-global")), s)));
                     return true;
                 }
-            } else {
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você não tem permissão para isso" +
-                        ChatColor.DARK_GRAY + ".");
+                else
+                {
+                    player.sendMessage(vars.c(center.looper.c.getString("aviso")));
+                    return true;
+                }
+            }
+            else
+            {
+                player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
                 return true;
             }
         }
         return false;
+    }
+    private String replaced(String args, String valor)
+    {
+        return args.replace("%s", valor);
     }
 }

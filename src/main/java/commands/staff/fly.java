@@ -1,12 +1,14 @@
 package commands.staff;
 
+import center.vars;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class fly implements CommandExecutor
 {
@@ -24,16 +26,14 @@ public class fly implements CommandExecutor
                     {
                         player.setAllowFlight(false);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                        player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Voar desativado" +
-                                ChatColor.DARK_GRAY + ".");
+                        player.sendMessage(vars.c(center.looper.c.getString("desativar-voar")));
                         return true;
-                    } else {
+                    }
+                    else
+                    {
                         player.setAllowFlight(true);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                        player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Voar ativado" +
-                                ChatColor.DARK_GRAY + ".");
+                        player.sendMessage(vars.c(center.looper.c.getString("ativar-voar")));
                         return true;
                     }
                 }
@@ -50,44 +50,42 @@ public class fly implements CommandExecutor
                             {
                                 target.setAllowFlight(false);
                                 target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                                target.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Voar desativado por " +
-                                        player.getName() + ChatColor.DARK_GRAY + ".");
-                                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você desativou o voar de " +
-                                        ChatColor.DARK_AQUA + target.getName() + ChatColor.DARK_GRAY + ".");
-                                return true;
-                            } else {
-                                target.setAllowFlight(true);
-                                target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                                target.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Voar ativado por " +
-                                        player.getName() + ChatColor.DARK_GRAY + ".");
-                                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você ativou o voar de " +
-                                        ChatColor.DARK_AQUA + target.getName() + ChatColor.DARK_GRAY + ".");
+                                target.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("desativaram-voar")), player.getName())));
+                                player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("desativar-voar-de")), target.getName())));
                                 return true;
                             }
-                        } else {
-                            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                    "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "O jogador não está online" +
-                                    ChatColor.DARK_GRAY + ".");
+                            else
+                            {
+                                target.setAllowFlight(true);
+                                target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
+                                target.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("ativaram-voar")), player.getName())));
+                                player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("ativar-voar-de")), target.getName())));
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            player.sendMessage(vars.c(center.looper.c.getString("jogador-offline")));
                             return true;
                         }
-                    } else {
-                        player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                                "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você não tem permissão para isso" +
-                                ChatColor.DARK_GRAY + ".");
+                    }
+                    else
+                    {
+                        player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
                         return true;
                     }
                 }
-            } else {
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                        "S" + ChatColor.DARK_GRAY + "] " + ChatColor.GRAY + "Você não tem permissão para isso" +
-                        ChatColor.DARK_GRAY + ".");
+            }
+            else
+            {
+                player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
                 return true;
             }
         }
         return false;
+    }
+    private String replaced(String args, String valor)
+    {
+        return args.replace("%s", valor);
     }
 }

@@ -1,6 +1,6 @@
 package commands.player;
 
-import org.bukkit.ChatColor;
+import center.vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,9 +14,7 @@ public class discord implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "E" + ChatColor.BLUE +
-                    "S" + ChatColor.DARK_GRAY + "] " + ChatColor.DARK_AQUA + "https://discord.gg/Qs3RxMq" +
-                    ChatColor.DARK_GRAY + ".");
+            player.sendMessage(vars.c(center.looper.c.getString("discord")));
             return true;
         }
         return false;
