@@ -7,11 +7,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Objects;
 import net.milkbowl.vault.economy.Economy;
 
@@ -22,11 +23,12 @@ public class main extends JavaPlugin
     @Override
     public void onEnable()
     {
-        if (!new File(getDataFolder(), "config.yml").exists()) {
+        if (!new File(getDataFolder(), "config.yml").exists())
+        {
             saveDefaultConfig();
         }
         FileConfiguration c = getConfig();
-        long delay = (c.getInt("intervalo") * 20);
+        long delay = c.getInt("intervalo") * 20;
         new looper(c).runTaskTimer(this, 20L, delay);
         if (!setupEconomy())
         {
@@ -34,7 +36,15 @@ public class main extends JavaPlugin
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        mysqlSetup();
+        boolean mysql = c.getBoolean("mysql");
+        if (mysql)
+        {
+            mysqlSetup();
+        }
+        else
+        {
+            sqlitesetup();
+        }
         this.getServer().getPluginManager().registerEvents(new sql(), this);
         this.getServer().getPluginManager().registerEvents(new playerlistener(), this);
         Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new commands.player.suicide());
@@ -56,6 +66,7 @@ public class main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new commands.player.facebook());
         Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new commands.player.bottlexp());
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new commands.player.colors());
+        Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new commands.player.spawn());
     }
     private boolean setupEconomy()
     {
@@ -90,6 +101,61 @@ public class main extends JavaPlugin
                 String username = center.looper.c.getString("usuario");
                 setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
+                String MySQLCreate = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(32) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
+                try
+                {
+                    Statement s = getConnection().createStatement();
+                    s.executeUpdate(MySQLCreate);
+                    s.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch(SQLException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    private void sqlitesetup()
+    {
+        try
+        {
+            synchronized (this)
+            {
+                if(getConnection() != null && !getConnection().isClosed())
+                {
+                    return;
+                }
+                String dbname = getConfig().getString("SQLite.Filename", "eternia");
+                File dataFolder = new File(getDataFolder(), dbname+".db");
+                if (!dataFolder.exists())
+                {
+                    try
+                    {
+                        dataFolder.createNewFile();
+                    }
+                    catch (IOException e)
+                    {
+                        getLogger().severe( "Erro ao escrever arquivo: "+dbname+".db");
+                    }
+                }
+                Class.forName("org.sqlite.JDBC");
+                setConnection(DriverManager.getConnection("jdbc:sqlite:" + dataFolder));
+                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
+                String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(255) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
+                try
+                {
+                    Statement s = getConnection().createStatement();
+                    s.executeUpdate(SQLiteCreateTokensTable);
+                    s.close();
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
         catch(SQLException | ClassNotFoundException e)

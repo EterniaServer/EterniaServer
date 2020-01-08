@@ -64,3 +64,6 @@ commands:
   colors:
     description: Descubra as cores.
     aliases: [cores]
+  spawn:
+    description: Se teleporta para o spawn.
+    aliases: [inicio]

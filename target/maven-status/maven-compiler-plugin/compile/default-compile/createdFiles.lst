@@ -20,5 +20,7 @@ commands/staff/spectator.class
 commands/staff/name.class
 commands/staff/advice.class
 center/playerlistener.class
+commands/player/spawn.class
 commands/player/suicide.class
+commands/player/spawn$1.class
 commands/player/withdrawlvl.class

@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="yuri">
     <words>
+      <w>aguarde</w>
       <w>alguma</w>
       <w>armadilha</w>
       <w>ativar</w>
@@ -8,6 +9,7 @@
       <w>atual</w>
       <w>barra</w>
       <w>bottlexp</w>
+      <w>cancelado</w>
       <w>cartão</w>
       <w>conectar</w>
       <w>configfile</w>
@@ -34,10 +36,13 @@
       <w>insuficiente</w>
       <w>intervalo</w>
       <w>jogando</w>
+      <w>mainclasse</w>
       <w>membros</w>
       <w>mensagens</w>
       <w>mesma</w>
       <w>miníma</w>
+      <w>mova</w>
+      <w>moveu</w>
       <w>msgfinal</w>
       <w>muitas</w>
       <w>método</w>
@@ -57,11 +62,14 @@
       <w>senha</w>
       <w>sethome</w>
       <w>setspawn</w>
+      <w>sqlitesetup</w>
       <w>suas</w>
       <w>suficiênte</w>
       <w>suficiêntes</w>
       <w>suicidio</w>
+      <w>teleportado</w>
       <w>teleportando</w>
+      <w>teleporte</w>
       <w>usuario</w>
       <w>vamos</w>
       <w>verificar</w>

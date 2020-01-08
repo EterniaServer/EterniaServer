@@ -2,6 +2,8 @@
 intervalo: 1
 # Valor do comando /back para membros que não tem a permissão eternia.backfree
 valor-do-back: 5000
+# Se ativado será usada database MySQL
+mysql: false
 host: '127.0.0.1'
 porta: 3306
 database: 'admin'
@@ -52,22 +54,24 @@ nick-novo: '&8[&aE&9S&8] &7Seu apelido alternativo é &3%s&8.'
 nick-removido: '&8[&aE&9S&8] &7Apelido alternativo removido&8.'
 escondido: '&8[&aE&9S&8] &7Shiii&8, &7agora você está escondido&8.'
 jogando: '&8[&aE&9S&8] &7Agora você está jogando novamente&8.'
-regras: '&8[&aE&9S&8] &7Regras
-&91.0 &8- &7Proibido ofensas&8.
-&91.1 &8- &7Qualquer forma de preconceito é proibida&8.
-&91.2 &8- &7Proibido apologia a coisas ofensiva e&8/&7ou que trouxeram uma grande perda para a sociedade&8.
-&92.0 &8- &7Proibido o uso de apelido impropriado&8.
-&92.1 &8- &7A mesma regra se aplica a pets e etc&8.
-&93.0 &8- &7Proibido o uso de qualquer hack&8,&7 exploit e etc&8.
-&93.1 &8- &7Aproveitar-se ou esconder um bug também é proibido&8.
-&93.2 &8- &7O ato de má fé também é proibido&8.
-&94.0 &8- &7Proibido enganações&8.
-&94.1 &8- &7Certas traps são enganações sendo também proibido&8.
-&94.2 &8- &7Certas promessas também são consideradas enganação&8.
-&95.0 &8- &7Proibido se intrometer em assuntos pessoais e assuntos da Staff&8.
-&96.0 &8- &7Proibido pedir itens&8,&7 permissões e etc&8.
-&96.1 &8- &7O mesmo se aplica para cargos&8.
-&97.0 &8- &7Evitar falar vulgamente e&8/&7ou explicitamente sobre sexo no chat global&8.
-&98.0 &8- &7Proibido apologia a coisas ilícitas&8,&7 inclusive programas&8.
-&99.0 &8- &7Proibido flood&8/&7spam&8.
+teleporte-falta: '&8[&aE&9S&8] &7Aguarde &3%s &7segundos para ser teleportado&8.'
+nao-se-mova: '&8[&aE&9S&8] &7Você se moveu e por isso o teleporte foi cancelado&8.'
+regras: '&8[&aE&9S&8] &7Regras\n
+&91.0 &8- &7Proibido ofensas&8.\n
+&91.1 &8- &7Qualquer forma de preconceito é proibida&8.\n
+&91.2 &8- &7Proibido apologia a coisas ofensiva e&8/&7ou que trouxeram uma grande perda para a sociedade&8.\n
+&92.0 &8- &7Proibido o uso de apelido impropriado&8.\n
+&92.1 &8- &7A mesma regra se aplica a pets e etc&8.\n
+&93.0 &8- &7Proibido o uso de qualquer hack&8,&7 exploit e etc&8.\n
+&93.1 &8- &7Aproveitar-se ou esconder um bug também é proibido&8.\n
+&93.2 &8- &7O ato de má fé também é proibido&8.\n
+&94.0 &8- &7Proibido enganações&8.\n
+&94.1 &8- &7Certas traps são enganações sendo também proibido&8.\n
+&94.2 &8- &7Certas promessas também são consideradas enganação&8.\n
+&95.0 &8- &7Proibido se intrometer em assuntos pessoais e assuntos da Staff&8.\n
+&96.0 &8- &7Proibido pedir itens&8,&7 permissões e etc&8.\n
+&96.1 &8- &7O mesmo se aplica para cargos&8.\n
+&97.0 &8- &7Evitar falar vulgamente e&8/&7ou explicitamente sobre sexo no chat global&8.\n
+&98.0 &8- &7Proibido apologia a coisas ilícitas&8,&7 inclusive programas&8.\n
+&99.0 &8- &7Proibido flood&8/&7spam&8.\n
 &99.1 &8- &7Proibido discutir sobre a punição dada ou não dada por um staff&8.'

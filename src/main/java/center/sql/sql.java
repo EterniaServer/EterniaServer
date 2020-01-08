@@ -20,7 +20,8 @@ public class sql implements Listener
     }
 
     private final main plugin = main.getPlugin(main.class);
-    private boolean playerExist(UUID uuid){
+    private boolean playerExist(UUID uuid)
+    {
         PreparedStatement statement;
         ResultSet results;
         try
@@ -53,7 +54,7 @@ public class sql implements Listener
         {
             if(!playerExist(uuid))
             {
-                PreparedStatement insert = plugin.getConnection().prepareStatement(String.format("INSERT INTO %s (UUID,NAME,XP) VALUE (?,?,?)", plugin.table));
+                PreparedStatement insert = plugin.getConnection().prepareStatement("INSERT INTO eternia (UUID,NAME,XP) VALUES (?,?,?)");
                 insert.setString(1, uuid.toString());
                 insert.setString(2, player.getName());
                 insert.setInt(3, 0);
