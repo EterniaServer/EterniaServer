@@ -22,12 +22,16 @@ public class name implements CommandExecutor
                     player.setDisplayName(player.getName());
                     player.sendMessage(vars.getString("nick-removido"));
                     return true;
-                } else {
+                }
+                else
+                {
                     player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
                     player.sendMessage(vars.replaceString("nick-novo", player.getDisplayName()));
                     return true;
                 }
-            } else {
+            }
+            else
+            {
                 player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
