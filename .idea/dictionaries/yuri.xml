@@ -14,6 +14,7 @@
       <w>conectar</w>
       <w>configfile</w>
       <w>connectsql</w>
+      <w>contador</w>
       <w>delhome</w>
       <w>desativando</w>
       <w>desativar</w>
@@ -33,8 +34,10 @@
       <w>guardado</w>
       <w>guardou</w>
       <w>homename</w>
+      <w>inicial</w>
       <w>insuficiente</w>
       <w>intervalo</w>
+      <w>jogadortempo</w>
       <w>jogando</w>
       <w>mainclasse</w>
       <w>membros</w>
@@ -67,9 +70,11 @@
       <w>suficiênte</w>
       <w>suficiêntes</w>
       <w>suicidio</w>
+      <w>teleport</w>
       <w>teleportado</w>
       <w>teleportando</w>
       <w>teleporte</w>
+      <w>teleportevents</w>
       <w>usuario</w>
       <w>vamos</w>
       <w>verificar</w>

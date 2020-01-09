@@ -1,12 +1,12 @@
 package center;
 
+import commands.player.spawn;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
 import java.util.Objects;
 
 public class looper extends org.bukkit.scheduler.BukkitRunnable
@@ -16,7 +16,6 @@ public class looper extends org.bukkit.scheduler.BukkitRunnable
     {
         looper.c = c;
     }
-
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     public void run()
     {

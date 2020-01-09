@@ -17,7 +17,7 @@ public class advice implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.comandos.staff.aviso"))
+            if (player.hasPermission("eternia.advice"))
             {
                 if (args.length >= 1)
                 {

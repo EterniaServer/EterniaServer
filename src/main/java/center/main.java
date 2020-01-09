@@ -20,9 +20,11 @@ public class main extends JavaPlugin
 {
     private static Economy econ;
     private Connection connection;
+    private static main mainclasse;
     @Override
     public void onEnable()
     {
+        mainclasse = this;
         if (!new File(getDataFolder(), "config.yml").exists())
         {
             saveDefaultConfig();
@@ -67,6 +69,10 @@ public class main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new commands.player.bottlexp());
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new commands.player.colors());
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new commands.player.spawn());
+        Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new commands.staff.setspawn());
+    }
+    public static main getMain(){
+        return mainclasse;
     }
     private boolean setupEconomy()
     {
@@ -135,6 +141,7 @@ public class main extends JavaPlugin
                 {
                     try
                     {
+                        //noinspection ResultOfMethodCallIgnored
                         dataFolder.createNewFile();
                     }
                     catch (IOException e)

@@ -17,7 +17,7 @@ public class feed implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.staff.feed"))
+            if(player.hasPermission("eternia.feed"))
             {
                 if (args.length == 0)
                 {
@@ -30,7 +30,7 @@ public class feed implements CommandExecutor
                 }
                 else if (args.length == 1)
                 {
-                    if (player.hasPermission("eternia.comandos.staff.feed.other"))
+                    if (player.hasPermission("eternia.feed.other"))
                     {
                         String targetS = args[0];
                         Player target = Bukkit.getPlayer(targetS);
