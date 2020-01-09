@@ -22,34 +22,40 @@ public class withdrawlvl implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            UUID uuid = player.getUniqueId();
-            try
+            if(player.hasPermission("eternia.withdrawlvl"))
             {
+                UUID uuid = player.getUniqueId();
                 try
                 {
-                    Statement statement = plugin.getConnection().createStatement();
-                    ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '"+uuid.toString()+"'");
-                    String Vu = "";
-                    while (results.next())
+                    try
                     {
-                        Vu = results.getString("XP");
+                        Statement statement = plugin.getConnection().createStatement();
+                        ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '" + uuid.toString() + "'");
+                        String Vu = "";
+                        while (results.next())
+                        {
+                            Vu = results.getString("XP");
+                        }
+                        results.close();
+                        player.giveExp(Integer.parseInt(Vu));
+                        int v = 0;
+                        statement.executeUpdate("UPDATE " + plugin.table + " SET XP='" + v + "' WHERE UUID='" + uuid.toString() + "'");
+                        statement.close();
                     }
-                    results.close();
-                    player.giveExp(Integer.parseInt(Vu));
-                    int v = 0;
-                    statement.executeUpdate("UPDATE " + plugin.table + " SET XP='"+v+"' WHERE UUID='"+uuid.toString()+"'");
-                    statement.close();
-                }
-                catch(SQLException e)
+                    catch (SQLException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    player.sendMessage(vars.replaceObject("xp-tirar", player.getLevel()));
+                    return true;
+                } catch (Exception e)
                 {
-                    e.printStackTrace();
+                    return true;
                 }
-                player.sendMessage(vars.replaceObject("xp-tirar", player.getLevel()));
-                return true;
             }
-            catch (Exception e)
+            else
             {
-                return true;
+                player.sendMessage(vars.getString("sem-permissao"));
             }
         }
         return false;

@@ -15,7 +15,7 @@ public class spectator implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.staff.spectator"))
+            if(player.hasPermission("eternia.spectator"))
             {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.sendMessage(vars.getString("escondido"));

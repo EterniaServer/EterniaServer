@@ -16,37 +16,45 @@ public class back implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if (center.playerlistener.back.containsKey(player))
+            if (player.hasPermission("eternia.back"))
             {
-                double money = economy.getBalance(player);
-                double valor = vars.getInteiro("valor-do-back");
-                if(player.hasPermission("eternia.backfree"))
+                if (center.playerlistener.back.containsKey(player))
                 {
-                    player.teleport(center.playerlistener.back.get(player));
-                    center.playerlistener.back.remove(player);
-                    player.sendMessage(vars.getString("back-gratis"));
-                    return true;
-                }
-                else
-                {
-                    if (money >= valor)
+                    double money = economy.getBalance(player);
+                    double valor = vars.getInteiro("valor-do-back");
+                    if (player.hasPermission("eternia.backfree"))
                     {
                         player.teleport(center.playerlistener.back.get(player));
                         center.playerlistener.back.remove(player);
-                        player.sendMessage(vars.replaceObject("back-sucesso", valor));
-                        economy.withdrawPlayer(player, valor);
+                        player.sendMessage(vars.getString("back-gratis"));
                         return true;
                     }
                     else
                     {
-                        player.sendMessage(vars.replaceObject("back-sem-dinheiro", valor));
-                        return false;
+                        if (money >= valor)
+                        {
+                            player.teleport(center.playerlistener.back.get(player));
+                            center.playerlistener.back.remove(player);
+                            player.sendMessage(vars.replaceObject("back-sucesso", valor));
+                            economy.withdrawPlayer(player, valor);
+                            return true;
+                        }
+                        else
+                        {
+                            player.sendMessage(vars.replaceObject("back-sem-dinheiro", valor));
+                            return false;
+                        }
                     }
+                }
+                else
+                {
+                    player.sendMessage(vars.getString("back-nao-pode"));
+                    return true;
                 }
             }
             else
             {
-                player.sendMessage(vars.getString("back-nao-pode"));
+                player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
         }

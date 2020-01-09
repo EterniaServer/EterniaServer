@@ -26,13 +26,17 @@ public class hat implements CommandExecutor
                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                     player.sendMessage(vars.getString("capacete"));
                     return true;
-                } else {
+                }
+                else
+                {
                     set_capacete(player);
                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                     player.sendMessage(vars.getString("capacete"));
                     return true;
                 }
-            } else {
+            }
+            else
+            {
                 player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }

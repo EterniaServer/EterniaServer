@@ -16,7 +16,7 @@ public class fly implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.staff.fly"))
+            if(player.hasPermission("eternia.fly"))
             {
                 if (args.length == 0)
                 {

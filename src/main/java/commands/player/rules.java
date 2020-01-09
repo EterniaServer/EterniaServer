@@ -13,9 +13,15 @@ public class rules implements CommandExecutor
     {
         if (sender instanceof Player)
         {
-            Player player = (Player) sender;
-            player.sendMessage(vars.getString("regras"));
-            return true;
+            if (sender.hasPermission("eternia.rules"))
+            {
+                sender.sendMessage(vars.getString("regras"));
+                return true;
+            }
+            else
+            {
+                sender.sendMessage(vars.getString("sem-permissao"));
+            }
         }
         return false;
     }

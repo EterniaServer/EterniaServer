@@ -13,9 +13,16 @@ public class donation implements CommandExecutor
     {
         if (sender instanceof Player)
         {
-            Player player = (Player) sender;
-            player.sendMessage(vars.getString("doacao"));
-            return true;
+            if (sender.hasPermission("eternia.donation"))
+            {
+                sender.sendMessage(vars.getString("doacao"));
+                return true;
+            }
+            else
+            {
+                sender.sendMessage(vars.getString("sem-permissao"));
+                return true;
+            }
         }
         return false;
     }

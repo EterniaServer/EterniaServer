@@ -21,64 +21,74 @@ public class depositlvl implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            UUID uuid = player.getUniqueId();
-            if(args.length == 1)
+            if (player.hasPermission("eternia.depositlvl"))
             {
-                try
+                UUID uuid = player.getUniqueId();
+                if (args.length == 1)
                 {
-                    int xp_atual = player.getLevel();
-                    if (xp_atual >= Integer.parseInt(args[0]))
+                    try
                     {
-                        xp_atual = Integer.parseInt(args[0]);
-                        player.sendMessage(vars.replaceObject("xp-guardado", xp_atual));
-                        try
+                        int xp_atual = player.getLevel();
+                        if (xp_atual >= Integer.parseInt(args[0]))
                         {
-                            int xp = xp_atual;
-                            if (xp >= 1 && xp <= 15)
+                            xp_atual = Integer.parseInt(args[0]);
+                            player.sendMessage(vars.replaceObject("xp-guardado", xp_atual));
+                            try
                             {
-                                xp = (xp * xp) + (6 * xp);
+                                int xp = xp_atual;
+                                if (xp >= 1 && xp <= 15)
+                                {
+                                    xp = (xp * xp) + (6 * xp);
+                                }
+                                else if (xp >= 16 && xp <= 30)
+                                {
+                                    xp = (int) ((2.5 * (xp * xp)) - (40.5 * xp) + 360);
+                                }
+                                else
+                                {
+                                    xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
+                                }
+                                Statement statement = plugin.getConnection().createStatement();
+                                ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '" + uuid.toString() + "'");
+                                String Vu = "";
+                                while (results.next())
+                                {
+                                    Vu = results.getString("XP");
+                                }
+                                int XP = Integer.parseInt(Vu);
+                                xp = Math.max(xp + XP, 0);
+                                results.close();
+                                statement.executeUpdate("UPDATE " + plugin.table + " SET XP='" + xp + "' WHERE UUID='" + uuid.toString() + "'");
+                                player.setLevel(Math.max(player.getLevel() - xp_atual, 0));
+                                statement.close();
                             }
-                            else if (xp >= 16 && xp <= 30)
+                            catch (SQLException e)
                             {
-                                xp = (int) ((2.5 * (xp * xp)) - (40.5 * xp) + 360);
+                                e.printStackTrace();
                             }
-                            else
-                            {
-                                xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
-                            }
-                            Statement statement = plugin.getConnection().createStatement();
-                            ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '"+uuid.toString()+"'");
-                            String Vu = "";
-                            while (results.next())
-                            {
-                                Vu = results.getString("XP");
-                            }
-                            int XP = Integer.parseInt(Vu);
-                            xp = Math.max(xp + XP, 0);
-                            results.close();
-                            statement.executeUpdate("UPDATE " + plugin.table + " SET XP='"+xp+"' WHERE UUID='"+uuid.toString()+"'");
-                            player.setLevel(Math.max(player.getLevel() - xp_atual, 0));
-                            statement.close();
+                            return true;
                         }
-                        catch(SQLException e)
+                        else
                         {
-                            e.printStackTrace();
+                            player.sendMessage(vars.getString("xp-insuficiente"));
+                            return true;
                         }
-                        return true;
                     }
-                    else
+                    catch (Exception e)
                     {
-                        player.sendMessage(vars.getString("xp-insuficiente"));
+                        player.sendMessage(vars.getString("guarda-level-errou"));
                         return true;
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    player.sendMessage(vars.getString("guarda-level-errou"));
+                    player.sendMessage(vars.getString("guarda-level"));
                     return true;
                 }
-            } else {
-                player.sendMessage(vars.getString("guarda-level"));
+            }
+            else
+            {
+                player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
         }

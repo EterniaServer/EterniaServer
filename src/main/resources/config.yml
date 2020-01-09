@@ -58,6 +58,7 @@ jogando: '&8[&aE&9S&8] &7Agora você está jogando novamente&8.'
 teleportando-em: '&8[&aE&9S&8] &7Você será teleportado em &3%s &7segundos&8.'
 spawn-definido: '&8[&aE&9S&8] &7Spawn definido&8.'
 teleportou-ele: '&8[&aE&9S&8] &7Você teleportou &3%s&8.'
+feito: '&8[&aE&9S&8] &7:)&8.'
 regras: '&8[&aE&9S&8] &7Regras\n
 &91.0 &8- &7Proibido ofensas&8.\n
 &91.1 &8- &7Qualquer forma de preconceito é proibida&8.\n

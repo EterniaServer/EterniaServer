@@ -15,7 +15,7 @@ public class name implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.staff.nome"))
+            if(player.hasPermission("eternia.name"))
             {
                 if (args.length == 0)
                 {

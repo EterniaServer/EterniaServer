@@ -12,27 +12,33 @@ public class suicide implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        if(args.length >= 1)
+        if (sender instanceof Player)
         {
-            if (sender instanceof Player)
+            Player player = (Player) sender;
+            if (player.hasPermission("eternia.suicide"))
             {
-                Player player = (Player) sender;
-                StringBuilder sb = new StringBuilder();
-                for (String arg : args)
+                if (args.length >= 1)
                 {
-                    sb.append(arg).append(" ");
+                    StringBuilder sb = new StringBuilder();
+                    for (String arg : args)
+                    {
+                        sb.append(arg).append(" ");
+                    }
+                    sb.append("- ").append(player.getName()).append(" ");
+                    String s = sb.toString();
+                    player.setHealth(0);
+                    Bukkit.broadcastMessage(vars.replaceString("suicidio", s));
+                    return true;
                 }
-                sb.append("- ").append(player.getName()).append(" ");
-                String s = sb.toString();
-                player.setHealth(0);
-                Bukkit.broadcastMessage(vars.replaceString("suicidio", s));
-                return true;
+                else
+                {
+                    player.setHealth(0);
+                    return true;
+                }
             }
-        } else {
-            if (sender instanceof Player)
+            else
             {
-                Player player = (Player) sender;
-                player.setHealth(0);
+                player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
         }

@@ -15,7 +15,7 @@ public class survival implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.staff.survival"))
+            if(player.hasPermission("eternia.survival"))
             {
                 player.setGameMode(GameMode.SURVIVAL);
                 player.sendMessage(vars.getString("jogando"));
