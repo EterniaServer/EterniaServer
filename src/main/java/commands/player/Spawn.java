@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class spawn implements CommandExecutor
+public class Spawn implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -28,7 +28,7 @@ public class spawn implements CommandExecutor
                     }
                     else
                     {
-                        int tempo = Vars.getInteiro("cooldown");
+                        int tempo = Vars.getInt("cooldown");
                         player.sendMessage(Vars.replaceObject("teleportando-em", tempo));
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getMain(), () ->
                         {

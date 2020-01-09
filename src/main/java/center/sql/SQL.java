@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class sql implements Listener
+public class SQL implements Listener
 {
     @EventHandler
     public void OnJoin (PlayerJoinEvent event)

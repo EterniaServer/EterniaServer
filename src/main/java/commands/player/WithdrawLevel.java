@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
-public class withdrawlvl implements CommandExecutor
+public class WithdrawLevel implements CommandExecutor
 {
     private final Main plugin = Main.getPlugin(Main.class);
     @EventHandler

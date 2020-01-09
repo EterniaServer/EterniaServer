@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.util.Objects;
 
-public class setspawn implements CommandExecutor
+public class SetSpawn implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -19,9 +19,9 @@ public class setspawn implements CommandExecutor
             if(player.hasPermission("eternia.setspawn"))
             {
                 NetherTrapCheck.file.set("world", (Objects.requireNonNull(player.getLocation().getWorld())).toString());
-                NetherTrapCheck.file.set("x", String.valueOf(player.getLocation().getX()));
-                NetherTrapCheck.file.set("y", String.valueOf(player.getLocation().getY()));
-                NetherTrapCheck.file.set("z", String.valueOf(player.getLocation().getZ()));
+                NetherTrapCheck.file.set("x", player.getLocation().getX());
+                NetherTrapCheck.file.set("y", player.getLocation().getY());
+                NetherTrapCheck.file.set("z", player.getLocation().getZ());
                 NetherTrapCheck.file.set("yaw", String.valueOf(player.getLocation().getYaw()));
                 NetherTrapCheck.file.set("pitch", String.valueOf(player.getLocation().getPitch()));
                 player.sendMessage(Vars.getString("spawn-definido"));

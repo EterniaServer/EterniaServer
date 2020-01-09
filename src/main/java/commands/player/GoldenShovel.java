@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import java.util.HashMap;
 
-public class goldenshovel implements CommandExecutor
+public class GoldenShovel implements CommandExecutor
 {
     private final HashMap<String, Long> cooldowns = new HashMap<>();
     @Override

@@ -7,13 +7,6 @@ import java.util.HashMap;
 @SuppressWarnings("ConstantConditions")
 public class Vars
 {
-    public static final Location spawn = new Location(Bukkit.getWorld(NetherTrapCheck.file.getString("world")),
-            Double.parseDouble(NetherTrapCheck.file.getString("x")),
-            Double.parseDouble(NetherTrapCheck.file.getString("y")),
-            Double.parseDouble(NetherTrapCheck.file.getString("z")),
-            Float.parseFloat(NetherTrapCheck.file.getString("yaw")),
-            Float.parseFloat(NetherTrapCheck.file.getString("pitch")));
-
     public static String replaceObject(String message, Object valor)
     {
         String mensagem = NetherTrapCheck.file.getString(message);
@@ -30,9 +23,17 @@ public class Vars
     {
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', (NetherTrapCheck.file.getString(message)));
     }
-    public static int getInteiro(String valor)
+    public static int getInt(String valor)
     {
         return NetherTrapCheck.file.getInt(valor);
     }
+    private static double getDouble(String valor)
+    {
+        return NetherTrapCheck.file.getDouble(valor);
+    }
+    public static final Location spawn = new Location(Bukkit.getWorld(NetherTrapCheck.file.getString("world")),
+            getDouble("x"), getDouble("y"), getDouble("z"),
+            Float.parseFloat(NetherTrapCheck.file.getString("yaw")),
+            Float.parseFloat(NetherTrapCheck.file.getString("pitch")));
     static final HashMap playersInPortal = new HashMap();
 }

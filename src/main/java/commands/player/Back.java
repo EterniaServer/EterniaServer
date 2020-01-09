@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import net.milkbowl.vault.economy.Economy;
 
-public class back implements CommandExecutor
+public class Back implements CommandExecutor
 {
     private final Economy economy = Main.getEconomy();
     @Override
@@ -23,7 +23,7 @@ public class back implements CommandExecutor
                 if (PlayerListener.back.containsKey(player))
                 {
                     double money = economy.getBalance(player);
-                    double valor = Vars.getInteiro("valor-do-back");
+                    double valor = Vars.getInt("valor-do-back");
                     if (player.hasPermission("eternia.backfree"))
                     {
                         player.teleport(PlayerListener.back.get(player));

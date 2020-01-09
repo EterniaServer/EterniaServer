@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class hat implements CommandExecutor
+public class Hat implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -16,7 +16,7 @@ public class hat implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.comandos.player.hat"))
+            if(player.hasPermission("eternia.hat"))
             {
                 ItemStack capacete = player.getInventory().getHelmet();
                 if (capacete != null)

@@ -6,16 +6,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class donation implements CommandExecutor
+public class Facebook implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
         if (sender instanceof Player)
         {
-            if (sender.hasPermission("eternia.donation"))
+            if (sender.hasPermission("eternia.facebook"))
             {
-                sender.sendMessage(Vars.getString("doacao"));
+                sender.sendMessage(Vars.getString("facebook"));
                 return true;
             }
             else

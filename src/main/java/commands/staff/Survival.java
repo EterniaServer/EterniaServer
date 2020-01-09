@@ -1,26 +1,28 @@
-package commands.player;
+package commands.staff;
 
 import center.Vars;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class discord implements CommandExecutor
+public class Survival implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
         if (sender instanceof Player)
         {
-            if (sender.hasPermission("eternia.discord"))
+            Player player = (Player) sender;
+            if(player.hasPermission("eternia.survival"))
             {
-                sender.sendMessage(Vars.getString("discord"));
-                return true;
+                player.setGameMode(GameMode.SURVIVAL);
+                player.sendMessage(Vars.getString("jogando"));
             }
             else
             {
-                sender.sendMessage(Vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

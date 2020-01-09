@@ -1,13 +1,13 @@
 package commands.staff;
 
 import center.Vars;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class name implements CommandExecutor
+public class Advice implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -15,18 +15,22 @@ public class name implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.name"))
+            if (player.hasPermission("eternia.advice"))
             {
-                if (args.length == 0)
+                if (args.length >= 1)
                 {
-                    player.setDisplayName(player.getName());
-                    player.sendMessage(Vars.getString("nick-removido"));
+                    StringBuilder sb = new StringBuilder();
+                    for (String arg : args) {
+                        sb.append(arg).append(" ");
+                    }
+                    sb.substring(0, sb.length() - 1);
+                    String s = sb.toString();
+                    Bukkit.broadcastMessage(Vars.replaceString("aviso-global", s));
                     return true;
                 }
                 else
                 {
-                    player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
-                    player.sendMessage(Vars.replaceString("nick-novo", player.getDisplayName()));
+                    player.sendMessage(Vars.getString("aviso"));
                     return true;
                 }
             }

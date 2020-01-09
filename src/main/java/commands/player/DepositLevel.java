@@ -1,4 +1,5 @@
 package commands.player;
+
 import center.Main;
 import center.Vars;
 import org.bukkit.command.Command;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
-public class depositlvl implements CommandExecutor
+public class DepositLevel implements CommandExecutor
 {
     private final Main plugin = Main.getPlugin(Main.class);
     @EventHandler

@@ -1,4 +1,5 @@
 package commands.player;
+
 import center.Vars;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -7,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class bottlexp implements CommandExecutor
+public class Bottlexp implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)

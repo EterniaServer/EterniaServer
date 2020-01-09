@@ -1,4 +1,4 @@
-package commands.staff;
+package commands.player;
 
 import center.Vars;
 import org.bukkit.Bukkit;
@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class advice implements CommandExecutor
+public class Suicide implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -15,22 +15,24 @@ public class advice implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.advice"))
+            if (player.hasPermission("eternia.suicide"))
             {
                 if (args.length >= 1)
                 {
                     StringBuilder sb = new StringBuilder();
-                    for (String arg : args) {
+                    for (String arg : args)
+                    {
                         sb.append(arg).append(" ");
                     }
-                    sb.substring(0, sb.length() - 1);
+                    sb.append("- ").append(player.getName()).append(" ");
                     String s = sb.toString();
-                    Bukkit.broadcastMessage(Vars.replaceString("aviso-global", s));
+                    player.setHealth(0);
+                    Bukkit.broadcastMessage(Vars.replaceString("suicidio", s));
                     return true;
                 }
                 else
                 {
-                    player.sendMessage(Vars.getString("aviso"));
+                    player.setHealth(0);
                     return true;
                 }
             }

@@ -1,13 +1,13 @@
-package commands.player;
+package commands.staff;
 
 import center.Vars;
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class suicide implements CommandExecutor
+public class Name implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -15,24 +15,18 @@ public class suicide implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.suicide"))
+            if(player.hasPermission("eternia.name"))
             {
-                if (args.length >= 1)
+                if (args.length == 0)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    for (String arg : args)
-                    {
-                        sb.append(arg).append(" ");
-                    }
-                    sb.append("- ").append(player.getName()).append(" ");
-                    String s = sb.toString();
-                    player.setHealth(0);
-                    Bukkit.broadcastMessage(Vars.replaceString("suicidio", s));
+                    player.setDisplayName(player.getName());
+                    player.sendMessage(Vars.getString("nick-removido"));
                     return true;
                 }
                 else
                 {
-                    player.setHealth(0);
+                    player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
+                    player.sendMessage(Vars.replaceString("nick-novo", player.getDisplayName()));
                     return true;
                 }
             }

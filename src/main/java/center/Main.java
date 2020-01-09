@@ -2,6 +2,7 @@ package center;
 
 import center.sql.*;
 import commands.player.*;
+import commands.staff.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -47,29 +48,29 @@ public class Main extends JavaPlugin
         {
             sqlitesetup();
         }
-        this.getServer().getPluginManager().registerEvents(new sql(), this);
+        this.getServer().getPluginManager().registerEvents(new SQL(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new commands.player.suicide());
-        Objects.requireNonNull(this.getCommand("advice")).setExecutor(new commands.staff.advice());
-        Objects.requireNonNull(this.getCommand("discord")).setExecutor(new commands.player.discord());
-        Objects.requireNonNull(this.getCommand("donation")).setExecutor(new donation());
-        Objects.requireNonNull(this.getCommand("rules")).setExecutor(new rules());
-        Objects.requireNonNull(this.getCommand("feed")).setExecutor(new commands.staff.feed());
-        Objects.requireNonNull(this.getCommand("hat")).setExecutor(new commands.player.hat());
-        Objects.requireNonNull(this.getCommand("nome")).setExecutor(new commands.staff.name());
-        Objects.requireNonNull(this.getCommand("fly")).setExecutor(new commands.staff.fly());
-        Objects.requireNonNull(this.getCommand("goldenshovel")).setExecutor(new goldenshovel());
-        Objects.requireNonNull(this.getCommand("depositlvl")).setExecutor(new depositlvl());
-        Objects.requireNonNull(this.getCommand("withdrawlvl")).setExecutor(new withdrawlvl());
-        Objects.requireNonNull(this.getCommand("blocks")).setExecutor(new commands.player.blocks());
-        Objects.requireNonNull(this.getCommand("back")).setExecutor(new commands.player.back());
-        Objects.requireNonNull(this.getCommand("spectator")).setExecutor(new commands.staff.spectator());
-        Objects.requireNonNull(this.getCommand("survival")).setExecutor(new commands.staff.survival());
-        Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new commands.player.facebook());
-        Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new commands.player.bottlexp());
-        Objects.requireNonNull(this.getCommand("colors")).setExecutor(new commands.player.colors());
-        Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new commands.player.spawn());
-        Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new commands.staff.setspawn());
+        Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new Suicide());
+        Objects.requireNonNull(this.getCommand("advice")).setExecutor(new Advice());
+        Objects.requireNonNull(this.getCommand("discord")).setExecutor(new Discord());
+        Objects.requireNonNull(this.getCommand("donation")).setExecutor(new Donation());
+        Objects.requireNonNull(this.getCommand("rules")).setExecutor(new Rules());
+        Objects.requireNonNull(this.getCommand("feed")).setExecutor(new Feed());
+        Objects.requireNonNull(this.getCommand("hat")).setExecutor(new Hat());
+        Objects.requireNonNull(this.getCommand("nome")).setExecutor(new Name());
+        Objects.requireNonNull(this.getCommand("fly")).setExecutor(new Fly());
+        Objects.requireNonNull(this.getCommand("goldenshovel")).setExecutor(new GoldenShovel());
+        Objects.requireNonNull(this.getCommand("depositlvl")).setExecutor(new DepositLevel());
+        Objects.requireNonNull(this.getCommand("withdrawlvl")).setExecutor(new WithdrawLevel());
+        Objects.requireNonNull(this.getCommand("blocks")).setExecutor(new Blocks());
+        Objects.requireNonNull(this.getCommand("back")).setExecutor(new Back());
+        Objects.requireNonNull(this.getCommand("spectator")).setExecutor(new Spectator());
+        Objects.requireNonNull(this.getCommand("survival")).setExecutor(new Survival());
+        Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new Facebook());
+        Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new Bottlexp());
+        Objects.requireNonNull(this.getCommand("colors")).setExecutor(new Colors());
+        Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new Spawn());
+        Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new SetSpawn());
     }
     public static Main getMain()
     {
