@@ -15,7 +15,11 @@ public class rules implements CommandExecutor
         {
             if (sender.hasPermission("eternia.rules"))
             {
-                sender.sendMessage(vars.getString("regras"));
+                String[] regras = (vars.getString("regras")).split("SPLIAG");
+                for (int i = 0; i <= regras.length; i++)
+                {
+                    sender.sendMessage(regras[i]);
+                }
                 return true;
             }
             else
