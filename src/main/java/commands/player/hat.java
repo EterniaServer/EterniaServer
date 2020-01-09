@@ -1,6 +1,6 @@
 package commands.player;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,20 +24,20 @@ public class hat implements CommandExecutor
                     player.getWorld().dropItem(player.getLocation().add(0, 1, 0), capacete);
                     set_capacete(player);
                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                    player.sendMessage(vars.getString("capacete"));
+                    player.sendMessage(Vars.getString("capacete"));
                     return true;
                 }
                 else
                 {
                     set_capacete(player);
                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                    player.sendMessage(vars.getString("capacete"));
+                    player.sendMessage(Vars.getString("capacete"));
                     return true;
                 }
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

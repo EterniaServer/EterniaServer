@@ -16,11 +16,11 @@ import java.sql.Statement;
 import java.util.Objects;
 import net.milkbowl.vault.economy.Economy;
 
-public class main extends JavaPlugin
+public class Main extends JavaPlugin
 {
     private static Economy econ;
     private Connection connection;
-    private static main mainclasse;
+    private static Main mainclasse;
     @Override
     public void onEnable()
     {
@@ -31,14 +31,14 @@ public class main extends JavaPlugin
         }
         FileConfiguration file = getConfig();
         long delay = file.getInt("intervalo") * 20;
-        new nethertrapcheck(file).runTaskTimer(this, 20L, delay);
+        new NetherTrapCheck(file).runTaskTimer(this, 20L, delay);
         if (!setupEconomy())
         {
             this.getLogger().severe("Opa, vault não encontrado :/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        boolean mysql = nethertrapcheck.file.getBoolean("mysql");
+        boolean mysql = NetherTrapCheck.file.getBoolean("mysql");
         if (mysql)
         {
             mysqlSetup();
@@ -48,7 +48,7 @@ public class main extends JavaPlugin
             sqlitesetup();
         }
         this.getServer().getPluginManager().registerEvents(new sql(), this);
-        this.getServer().getPluginManager().registerEvents(new playerlistener(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new commands.player.suicide());
         Objects.requireNonNull(this.getCommand("advice")).setExecutor(new commands.staff.advice());
         Objects.requireNonNull(this.getCommand("discord")).setExecutor(new commands.player.discord());
@@ -71,7 +71,7 @@ public class main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new commands.player.spawn());
         Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new commands.staff.setspawn());
     }
-    public static main getMain()
+    public static Main getMain()
     {
         return mainclasse;
     }
@@ -101,11 +101,11 @@ public class main extends JavaPlugin
                     return;
                 }
                 Class.forName("java.sql.Driver");
-                String host = nethertrapcheck.file.getString("host");
-                int port = nethertrapcheck.file.getInt("porta");
-                String password = nethertrapcheck.file.getString("senha");
-                String database = nethertrapcheck.file.getString("database");
-                String username = nethertrapcheck.file.getString("usuario");
+                String host = NetherTrapCheck.file.getString("host");
+                int port = NetherTrapCheck.file.getInt("porta");
+                String password = NetherTrapCheck.file.getString("senha");
+                String database = NetherTrapCheck.file.getString("database");
+                String username = NetherTrapCheck.file.getString("usuario");
                 setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
                 String MySQLCreate = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(32) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";

@@ -1,6 +1,6 @@
 package commands.staff;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -24,14 +24,14 @@ public class fly implements CommandExecutor
                     {
                         player.setAllowFlight(false);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                        player.sendMessage(vars.getString("desativar-voar"));
+                        player.sendMessage(Vars.getString("desativar-voar"));
                         return true;
                     }
                     else
                     {
                         player.setAllowFlight(true);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                        player.sendMessage(vars.getString("ativar-voar"));
+                        player.sendMessage(Vars.getString("ativar-voar"));
                         return true;
                     }
                 }
@@ -48,35 +48,35 @@ public class fly implements CommandExecutor
                             {
                                 target.setAllowFlight(false);
                                 target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                                target.sendMessage(vars.replaceString("desativaram-voar", player.getName()));
-                                player.sendMessage(vars.replaceString("desativar-voar-de", target.getName()));
+                                target.sendMessage(Vars.replaceString("desativaram-voar", player.getName()));
+                                player.sendMessage(Vars.replaceString("desativar-voar-de", target.getName()));
                                 return true;
                             }
                             else
                             {
                                 target.setAllowFlight(true);
                                 target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                                target.sendMessage(vars.replaceString("ativaram-voar", player.getName()));
-                                player.sendMessage(vars.replaceString("ativar-voar-de", target.getName()));
+                                target.sendMessage(Vars.replaceString("ativaram-voar", player.getName()));
+                                player.sendMessage(Vars.replaceString("ativar-voar-de", target.getName()));
                                 return true;
                             }
                         }
                         else
                         {
-                            player.sendMessage(vars.getString("jogador-offline"));
+                            player.sendMessage(Vars.getString("jogador-offline"));
                             return true;
                         }
                     }
                     else
                     {
-                        player.sendMessage(vars.getString("sem-permissao"));
+                        player.sendMessage(Vars.getString("sem-permissao"));
                         return true;
                     }
                 }
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

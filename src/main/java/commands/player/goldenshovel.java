@@ -1,6 +1,6 @@
 package commands.player;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,19 +27,19 @@ public class goldenshovel implements CommandExecutor
                     long secondsLeft = ((cooldowns.get(sender.getName()) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
                     if (secondsLeft > 0)
                     {
-                        player.sendMessage(vars.replaceObject("pa-falta-tempo", secondsLeft));
+                        player.sendMessage(Vars.replaceObject("pa-falta-tempo", secondsLeft));
                         return true;
                     }
                 }
                 cooldowns.put(sender.getName(), System.currentTimeMillis());
                 PlayerInventory inventory = player.getInventory();
                 inventory.addItem(new ItemStack(Material.GOLDEN_SHOVEL));
-                player.sendMessage(vars.getString("pa-sucesso"));
+                player.sendMessage(Vars.getString("pa-sucesso"));
                 return true;
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

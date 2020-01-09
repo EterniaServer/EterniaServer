@@ -1,6 +1,6 @@
 package commands.staff;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,11 +18,11 @@ public class survival implements CommandExecutor
             if(player.hasPermission("eternia.survival"))
             {
                 player.setGameMode(GameMode.SURVIVAL);
-                player.sendMessage(vars.getString("jogando"));
+                player.sendMessage(Vars.getString("jogando"));
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

@@ -1,6 +1,6 @@
 package commands.staff;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,19 +20,19 @@ public class name implements CommandExecutor
                 if (args.length == 0)
                 {
                     player.setDisplayName(player.getName());
-                    player.sendMessage(vars.getString("nick-removido"));
+                    player.sendMessage(Vars.getString("nick-removido"));
                     return true;
                 }
                 else
                 {
                     player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
-                    player.sendMessage(vars.replaceString("nick-novo", player.getDisplayName()));
+                    player.sendMessage(Vars.replaceString("nick-novo", player.getDisplayName()));
                     return true;
                 }
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

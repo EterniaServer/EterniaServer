@@ -1,6 +1,6 @@
 package commands.staff;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,18 +25,18 @@ public class advice implements CommandExecutor
                     }
                     sb.substring(0, sb.length() - 1);
                     String s = sb.toString();
-                    Bukkit.broadcastMessage(vars.replaceString("aviso-global", s));
+                    Bukkit.broadcastMessage(Vars.replaceString("aviso-global", s));
                     return true;
                 }
                 else
                 {
-                    player.sendMessage(vars.getString("aviso"));
+                    player.sendMessage(Vars.getString("aviso"));
                     return true;
                 }
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

@@ -1,6 +1,6 @@
 package commands.player;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -123,12 +123,12 @@ public class blocks implements CommandExecutor
                     player.getInventory().removeItem(new ItemStack(Material.EMERALD, emerald_block * 9));
                     player.getInventory().addItem(new ItemStack(Material.EMERALD_BLOCK, emerald_block));
                 }
-                player.sendMessage(vars.getString("feito"));
+                player.sendMessage(Vars.getString("feito"));
                 return true;
             }
             else
             {
-                sender.sendMessage(vars.getString("sem-permissao"));
+                sender.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

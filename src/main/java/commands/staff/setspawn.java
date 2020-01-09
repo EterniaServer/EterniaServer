@@ -1,7 +1,7 @@
 package commands.staff;
 
-import center.nethertrapcheck;
-import center.vars;
+import center.NetherTrapCheck;
+import center.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,18 +18,18 @@ public class setspawn implements CommandExecutor
             Player player = (Player) sender;
             if(player.hasPermission("eternia.setspawn"))
             {
-                nethertrapcheck.file.set("world", (Objects.requireNonNull(player.getLocation().getWorld())).toString());
-                nethertrapcheck.file.set("x", String.valueOf(player.getLocation().getX()));
-                nethertrapcheck.file.set("y", String.valueOf(player.getLocation().getY()));
-                nethertrapcheck.file.set("z", String.valueOf(player.getLocation().getZ()));
-                nethertrapcheck.file.set("yaw", String.valueOf(player.getLocation().getYaw()));
-                nethertrapcheck.file.set("pitch", String.valueOf(player.getLocation().getPitch()));
-                player.sendMessage(vars.getString("spawn-definido"));
+                NetherTrapCheck.file.set("world", (Objects.requireNonNull(player.getLocation().getWorld())).toString());
+                NetherTrapCheck.file.set("x", String.valueOf(player.getLocation().getX()));
+                NetherTrapCheck.file.set("y", String.valueOf(player.getLocation().getY()));
+                NetherTrapCheck.file.set("z", String.valueOf(player.getLocation().getZ()));
+                NetherTrapCheck.file.set("yaw", String.valueOf(player.getLocation().getYaw()));
+                NetherTrapCheck.file.set("pitch", String.valueOf(player.getLocation().getPitch()));
+                player.sendMessage(Vars.getString("spawn-definido"));
                 return true;
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

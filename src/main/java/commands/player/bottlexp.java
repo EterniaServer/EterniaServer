@@ -1,5 +1,5 @@
 package commands.player;
-import center.vars;
+import center.Vars;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.command.Command;
@@ -35,19 +35,19 @@ public class bottlexp implements CommandExecutor
                 {
                     xp_real = (xp_real / 10);
                     player.getWorld().dropItem(player.getLocation().add(0, 1, 0), new ItemStack(Material.EXPERIENCE_BOTTLE, xp_real));
-                    player.sendMessage(vars.getString("xp-sucesso"));
+                    player.sendMessage(Vars.getString("xp-sucesso"));
                     player.setLevel(0);
                     return true;
                 }
                 else
                 {
-                    player.sendMessage(vars.getString("xp-insuficiente"));
+                    player.sendMessage(Vars.getString("xp-insuficiente"));
                     return true;
                 }
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

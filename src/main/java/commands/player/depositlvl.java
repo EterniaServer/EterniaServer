@@ -1,6 +1,6 @@
 package commands.player;
-import center.main;
-import center.vars;
+import center.Main;
+import center.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class depositlvl implements CommandExecutor
 {
-    private final main plugin = main.getPlugin(main.class);
+    private final Main plugin = Main.getPlugin(Main.class);
     @EventHandler
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -32,7 +32,7 @@ public class depositlvl implements CommandExecutor
                         if (xp_atual >= Integer.parseInt(args[0]))
                         {
                             xp_atual = Integer.parseInt(args[0]);
-                            player.sendMessage(vars.replaceObject("xp-guardado", xp_atual));
+                            player.sendMessage(Vars.replaceObject("xp-guardado", xp_atual));
                             try
                             {
                                 int xp = xp_atual;
@@ -70,25 +70,25 @@ public class depositlvl implements CommandExecutor
                         }
                         else
                         {
-                            player.sendMessage(vars.getString("xp-insuficiente"));
+                            player.sendMessage(Vars.getString("xp-insuficiente"));
                             return true;
                         }
                     }
                     catch (Exception e)
                     {
-                        player.sendMessage(vars.getString("guarda-level-errou"));
+                        player.sendMessage(Vars.getString("guarda-level-errou"));
                         return true;
                     }
                 }
                 else
                 {
-                    player.sendMessage(vars.getString("guarda-level"));
+                    player.sendMessage(Vars.getString("guarda-level"));
                     return true;
                 }
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

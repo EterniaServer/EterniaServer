@@ -1,7 +1,7 @@
 package commands.player;
 
-import center.main;
-import center.vars;
+import center.Main;
+import center.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class withdrawlvl implements CommandExecutor
 {
-    private final main plugin = main.getPlugin(main.class);
+    private final Main plugin = Main.getPlugin(Main.class);
     @EventHandler
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -46,7 +46,7 @@ public class withdrawlvl implements CommandExecutor
                     {
                         e.printStackTrace();
                     }
-                    player.sendMessage(vars.replaceObject("xp-tirar", player.getLevel()));
+                    player.sendMessage(Vars.replaceObject("xp-tirar", player.getLevel()));
                     return true;
                 } catch (Exception e)
                 {
@@ -55,7 +55,7 @@ public class withdrawlvl implements CommandExecutor
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
             }
         }
         return false;

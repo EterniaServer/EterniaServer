@@ -1,6 +1,6 @@
 package commands.player;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,12 +15,12 @@ public class colors implements CommandExecutor
         {
             if (sender.hasPermission("eternia.colors"))
             {
-                sender.sendMessage(vars.getString("cores"));
+                sender.sendMessage(Vars.getString("cores"));
                 return true;
             }
             else
             {
-                sender.sendMessage(vars.getString("sem-permissao"));
+                sender.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

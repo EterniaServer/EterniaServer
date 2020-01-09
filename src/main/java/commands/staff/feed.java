@@ -1,6 +1,6 @@
 package commands.staff;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +22,7 @@ public class feed implements CommandExecutor
                     if (command.getName().equalsIgnoreCase("comandos.staff.feed"))
                     {
                         player.setFoodLevel(20);
-                        player.sendMessage(vars.getString("me-enchi"));
+                        player.sendMessage(Vars.getString("me-enchi"));
                         return true;
                     }
                 }
@@ -36,26 +36,26 @@ public class feed implements CommandExecutor
                         if (target.isOnline())
                         {
                             target.setFoodLevel(20);
-                            player.sendMessage(vars.replaceString("encheu-barra", target.getName()));
-                            target.sendMessage(vars.replaceString("recebeu-barra", player.getName()));
+                            player.sendMessage(Vars.replaceString("encheu-barra", target.getName()));
+                            target.sendMessage(Vars.replaceString("recebeu-barra", player.getName()));
                             return true;
                         }
                         else
                         {
-                            player.sendMessage(vars.getString("jogador-offline"));
+                            player.sendMessage(Vars.getString("jogador-offline"));
                             return true;
                         }
                     }
                     else
                     {
-                        player.sendMessage(vars.getString("sem-permissao"));
+                        player.sendMessage(Vars.getString("sem-permissao"));
                         return true;
                     }
                 }
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }

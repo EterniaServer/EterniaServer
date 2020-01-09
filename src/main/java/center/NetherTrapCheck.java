@@ -6,12 +6,12 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class nethertrapcheck extends org.bukkit.scheduler.BukkitRunnable
+public class NetherTrapCheck extends org.bukkit.scheduler.BukkitRunnable
 {
     public static FileConfiguration file;
-    nethertrapcheck(FileConfiguration file)
+    NetherTrapCheck(FileConfiguration file)
     {
-        nethertrapcheck.file = file;
+        NetherTrapCheck.file = file;
     }
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     public void run()
@@ -22,31 +22,31 @@ public class nethertrapcheck extends org.bukkit.scheduler.BukkitRunnable
             {
                 if (player.getLocation().getBlock().getType() == Material.NETHER_PORTAL)
                 {
-                    if (!vars.playersInPortal.containsKey(player))
+                    if (!Vars.playersInPortal.containsKey(player))
                     {
                         //noinspection unchecked
-                        vars.playersInPortal.put(player, 7);
+                        Vars.playersInPortal.put(player, 7);
                     }
-                    else if ((Integer) vars.playersInPortal.get(player) <= 1)
+                    else if ((Integer) Vars.playersInPortal.get(player) <= 1)
                     {
                         Location l = player.getLocation();
                         if (l.getBlock().getType() == Material.NETHER_PORTAL)
                         {
-                            player.teleport(vars.spawn);
-                            player.sendMessage(vars.getString("spawn"));
+                            player.teleport(Vars.spawn);
+                            player.sendMessage(Vars.getString("spawn"));
                         }
                     }
                     else
                     {
                         //noinspection unchecked
-                        vars.playersInPortal.put(player, (Integer) vars.playersInPortal.get(player) - 1);
-                        if ((Integer) vars.playersInPortal.get(player) < 5)
+                        Vars.playersInPortal.put(player, (Integer) Vars.playersInPortal.get(player) - 1);
+                        if ((Integer) Vars.playersInPortal.get(player) < 5)
                         {
-                            player.sendMessage(vars.replaceObject("trap-mensagem-tempo", vars.playersInPortal.get(player)));
+                            player.sendMessage(Vars.replaceObject("trap-mensagem-tempo", Vars.playersInPortal.get(player)));
                         }
                     }
                 }
-                else vars.playersInPortal.remove(player);
+                else Vars.playersInPortal.remove(player);
             }
         }
     }

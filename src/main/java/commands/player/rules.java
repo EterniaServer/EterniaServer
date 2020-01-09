@@ -1,6 +1,6 @@
 package commands.player;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,7 @@ public class rules implements CommandExecutor
         {
             if (sender.hasPermission("eternia.rules"))
             {
-                String regras = vars.getString("regras");
+                String regras = Vars.getString("regras");
                 String[] regralista = regras.split("SPLIAG");
                 for (int i = 0; i <= regralista.length; i++)
                 {
@@ -25,7 +25,7 @@ public class rules implements CommandExecutor
             }
             else
             {
-                sender.sendMessage(vars.getString("sem-permissao"));
+                sender.sendMessage(Vars.getString("sem-permissao"));
             }
         }
         return false;

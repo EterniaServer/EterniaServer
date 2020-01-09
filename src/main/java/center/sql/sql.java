@@ -1,6 +1,6 @@
 package center.sql;
 
-import center.main;
+import center.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +19,7 @@ public class sql implements Listener
         CreatePlayer(player.getUniqueId(),player);
     }
 
-    private final main plugin = main.getPlugin(main.class);
+    private final Main plugin = Main.getPlugin(Main.class);
     private boolean playerExist(UUID uuid)
     {
         PreparedStatement statement;

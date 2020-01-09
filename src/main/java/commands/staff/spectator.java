@@ -1,6 +1,6 @@
 package commands.staff;
 
-import center.vars;
+import center.Vars;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,11 +18,11 @@ public class spectator implements CommandExecutor
             if(player.hasPermission("eternia.spectator"))
             {
                 player.setGameMode(GameMode.SPECTATOR);
-                player.sendMessage(vars.getString("escondido"));
+                player.sendMessage(Vars.getString("escondido"));
             }
             else
             {
-                player.sendMessage(vars.getString("sem-permissao"));
+                player.sendMessage(Vars.getString("sem-permissao"));
                 return true;
             }
         }
