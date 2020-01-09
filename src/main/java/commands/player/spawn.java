@@ -17,41 +17,71 @@ public class spawn implements CommandExecutor
     {
         if (sender instanceof Player)
         {
+            World world = Bukkit.getWorld(vars.c(center.looper.c.getString("world")));
+            double x = Double.parseDouble(vars.c(center.looper.c.getString("x")));
+            double y = Double.parseDouble(vars.c(center.looper.c.getString("y")));
+            double z = Double.parseDouble(vars.c(center.looper.c.getString("z")));
+            float yaw = Float.parseFloat(vars.c(center.looper.c.getString("yaw")));
+            float pitch = Float.parseFloat(vars.c(center.looper.c.getString("pitch")));
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.timing.bypass"))
+            if (args.length == 0)
             {
-                World world = Bukkit.getWorld(vars.c(center.looper.c.getString("world")));
-                double x = Double.parseDouble(vars.c(center.looper.c.getString("x")));
-                double y = Double.parseDouble(vars.c(center.looper.c.getString("y")));
-                double z = Double.parseDouble(vars.c(center.looper.c.getString("z")));
-                float yaw = Float.parseFloat(vars.c(center.looper.c.getString("yaw")));
-                float pitch = Float.parseFloat(vars.c(center.looper.c.getString("pitch")));
-                player.teleport(new Location(world, x, y, z, yaw, pitch));
-                player.sendMessage(vars.c(center.looper.c.getString("spawn")));
-                return true;
-            }
-            else
-            {
-                int tempo = center.looper.c.getInt("cooldown");
-                player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("teleportando-em")), tempo)));
-                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(center.main.getMain(), () ->
+                if (player.hasPermission("eternia.spawn"))
                 {
-                    World world = Bukkit.getWorld(vars.c(center.looper.c.getString("world")));
-                    double x = Double.parseDouble(vars.c(center.looper.c.getString("x")));
-                    double y = Double.parseDouble(vars.c(center.looper.c.getString("y")));
-                    double z = Double.parseDouble(vars.c(center.looper.c.getString("z")));
-                    float yaw = Float.parseFloat(vars.c(center.looper.c.getString("yaw")));
-                    float pitch = Float.parseFloat(vars.c(center.looper.c.getString("pitch")));
-                    player.teleport(new Location(world, x, y, z, yaw, pitch));
-                    player.sendMessage(vars.c(center.looper.c.getString("spawn")));
-                }, 20 * tempo);
-                return true;
+                    if (player.hasPermission("eternia.timing.bypass"))
+                    {
+                        player.teleport(new Location(world, x, y, z, yaw, pitch));
+                        player.sendMessage(vars.c(center.looper.c.getString("spawn")));
+                        return true;
+                    }
+                    else
+                    {
+                        int tempo = center.looper.c.getInt("cooldown");
+                        player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("teleportando-em")), String.valueOf(tempo))));
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(center.main.getMain(), () ->
+                        {
+                            player.teleport(new Location(world, x, y, z, yaw, pitch));
+                            player.sendMessage(vars.c(center.looper.c.getString("spawn")));
+                        }, 20 * tempo);
+                        return true;
+                    }
+                }
+                else
+                {
+                    player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                    return true;
+                }
+            }
+            else if (args.length == 1)
+            {
+                if (player.hasPermission("eternia.spawn.other"))
+                {
+                    String targetS = args[0];
+                    Player target = Bukkit.getPlayer(targetS);
+                    assert target != null;
+                    if(target.isOnline())
+                    {
+                        target.teleport(new Location(world, x, y, z, yaw, pitch));
+                        target.sendMessage(vars.c(center.looper.c.getString("spawn")));
+                        player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("teleportou-ele")), target.getName())));
+                    }
+                    else
+                    {
+                        player.sendMessage(vars.c(center.looper.c.getString("jogador-offline")));
+                        return true;
+                    }
+                }
+                else
+                {
+                    player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                    return true;
+                }
             }
         }
         return false;
     }
-    private String replaced(String args, double valor)
+    private String replaced(String args, String valor)
     {
-        return args.replace("%s", String.valueOf(valor));
+        return args.replace("%s", valor);
     }
 }
