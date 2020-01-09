@@ -18,11 +18,11 @@ public class survival implements CommandExecutor
             if(player.hasPermission("eternia.comandos.staff.survival"))
             {
                 player.setGameMode(GameMode.SURVIVAL);
-                player.sendMessage(vars.c(center.looper.c.getString("jogando")));
+                player.sendMessage(vars.getString("jogando"));
             }
             else
             {
-                player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
         }

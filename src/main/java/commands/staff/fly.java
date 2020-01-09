@@ -8,8 +8,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class fly implements CommandExecutor
 {
     @Override
@@ -26,14 +24,14 @@ public class fly implements CommandExecutor
                     {
                         player.setAllowFlight(false);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                        player.sendMessage(vars.c(center.looper.c.getString("desativar-voar")));
+                        player.sendMessage(vars.getString("desativar-voar"));
                         return true;
                     }
                     else
                     {
                         player.setAllowFlight(true);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                        player.sendMessage(vars.c(center.looper.c.getString("ativar-voar")));
+                        player.sendMessage(vars.getString("ativar-voar"));
                         return true;
                     }
                 }
@@ -50,42 +48,38 @@ public class fly implements CommandExecutor
                             {
                                 target.setAllowFlight(false);
                                 target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                                target.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("desativaram-voar")), player.getName())));
-                                player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("desativar-voar-de")), target.getName())));
+                                target.sendMessage(vars.replaceString("desativaram-voar", player.getName()));
+                                player.sendMessage(vars.replaceString("desativar-voar-de", target.getName()));
                                 return true;
                             }
                             else
                             {
                                 target.setAllowFlight(true);
                                 target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-                                target.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("ativaram-voar")), player.getName())));
-                                player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("ativar-voar-de")), target.getName())));
+                                target.sendMessage(vars.replaceString("ativaram-voar", player.getName()));
+                                player.sendMessage(vars.replaceString("ativar-voar-de", target.getName()));
                                 return true;
                             }
                         }
                         else
                         {
-                            player.sendMessage(vars.c(center.looper.c.getString("jogador-offline")));
+                            player.sendMessage(vars.getString("jogador-offline"));
                             return true;
                         }
                     }
                     else
                     {
-                        player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                        player.sendMessage(vars.getString("sem-permissao"));
                         return true;
                     }
                 }
             }
             else
             {
-                player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
         }
         return false;
-    }
-    private String replaced(String args, String valor)
-    {
-        return args.replace("%s", valor);
     }
 }

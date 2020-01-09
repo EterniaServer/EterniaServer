@@ -6,11 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Objects;
 import java.util.UUID;
 
 public class depositlvl implements CommandExecutor
@@ -32,7 +30,7 @@ public class depositlvl implements CommandExecutor
                     if (xp_atual >= Integer.parseInt(args[0]))
                     {
                         xp_atual = Integer.parseInt(args[0]);
-                        player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("xp-guardado")), xp_atual)));
+                        player.sendMessage(vars.replaceObject("xp-guardado", xp_atual));
                         try
                         {
                             int xp = xp_atual;
@@ -70,24 +68,20 @@ public class depositlvl implements CommandExecutor
                     }
                     else
                     {
-                        player.sendMessage(vars.c(center.looper.c.getString("xp-insuficiente")));
+                        player.sendMessage(vars.getString("xp-insuficiente"));
                         return true;
                     }
                 }
                 catch (Exception e)
                 {
-                    player.sendMessage(vars.c(center.looper.c.getString("guarda-level-errou")));
+                    player.sendMessage(vars.getString("guarda-level-errou"));
                     return true;
                 }
             } else {
-                player.sendMessage(vars.c(center.looper.c.getString("guarda-level")));
+                player.sendMessage(vars.getString("guarda-level"));
                 return true;
             }
         }
         return false;
-    }
-    private String replaced(String args, double valor)
-    {
-        return args.replace("%s", String.valueOf(valor));
     }
 }

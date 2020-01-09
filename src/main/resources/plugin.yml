@@ -67,3 +67,6 @@ commands:
   spawn:
     description: Se teleporta para o spawn.
     aliases: [inicio]
+  setspawn:
+    description: Define o spawn.
+    aliases: [definirinicio]

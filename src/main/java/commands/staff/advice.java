@@ -7,8 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class advice implements CommandExecutor
 {
     @Override
@@ -27,25 +25,21 @@ public class advice implements CommandExecutor
                     }
                     sb.substring(0, sb.length() - 1);
                     String s = sb.toString();
-                    Bukkit.broadcastMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("aviso-global")), s)));
+                    Bukkit.broadcastMessage(vars.replaceString("aviso-global", s));
                     return true;
                 }
                 else
                 {
-                    player.sendMessage(vars.c(center.looper.c.getString("aviso")));
+                    player.sendMessage(vars.getString("aviso"));
                     return true;
                 }
             }
             else
             {
-                player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
         }
         return false;
-    }
-    private String replaced(String args, String valor)
-    {
-        return args.replace("%s", valor);
     }
 }

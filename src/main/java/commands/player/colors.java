@@ -14,7 +14,7 @@ public class colors implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            player.sendMessage(vars.c(center.looper.c.getString("cores")));
+            player.sendMessage(vars.getString("cores"));
             return true;
         }
         return false;

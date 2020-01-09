@@ -14,7 +14,7 @@ public class discord implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            player.sendMessage(vars.c(center.looper.c.getString("discord")));
+            player.sendMessage(vars.getString("discord"));
             return true;
         }
         return false;

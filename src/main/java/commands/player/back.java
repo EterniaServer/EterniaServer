@@ -7,8 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import net.milkbowl.vault.economy.Economy;
 
-import java.util.Objects;
-
 public class back implements CommandExecutor
 {
     private final Economy economy = center.main.getEconomy();
@@ -21,12 +19,12 @@ public class back implements CommandExecutor
             if (center.playerlistener.back.containsKey(player))
             {
                 double money = economy.getBalance(player);
-                double valor = center.looper.c.getInt("valor-do-back");
+                double valor = vars.getInteiro("valor-do-back");
                 if(player.hasPermission("eternia.backfree"))
                 {
                     player.teleport(center.playerlistener.back.get(player));
                     center.playerlistener.back.remove(player);
-                    player.sendMessage(vars.c(center.looper.c.getString("back-gratis")));
+                    player.sendMessage(vars.getString("back-gratis"));
                     return true;
                 }
                 else
@@ -35,27 +33,23 @@ public class back implements CommandExecutor
                     {
                         player.teleport(center.playerlistener.back.get(player));
                         center.playerlistener.back.remove(player);
-                        player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("back-sucesso")), valor)));
+                        player.sendMessage(vars.replaceObject("back-sucesso", valor));
                         economy.withdrawPlayer(player, valor);
                         return true;
                     }
                     else
                     {
-                        player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("back-sem-dinheiro")), valor)));
+                        player.sendMessage(vars.replaceObject("back-sem-dinheiro", valor));
                         return false;
                     }
                 }
             }
             else
             {
-                player.sendMessage(vars.c(center.looper.c.getString("back-nao-pode")));
+                player.sendMessage(vars.getString("back-nao-pode"));
                 return true;
             }
         }
         return false;
-    }
-    private String replaced(String args, double valor)
-    {
-        return args.replace("%s", String.valueOf(valor));
     }
 }

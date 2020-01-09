@@ -7,8 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class feed implements CommandExecutor
 {
     @Override
@@ -24,7 +22,7 @@ public class feed implements CommandExecutor
                     if (command.getName().equalsIgnoreCase("comandos.staff.feed"))
                     {
                         player.setFoodLevel(20);
-                        player.sendMessage(vars.c(center.looper.c.getString("me-enchi")));
+                        player.sendMessage(vars.getString("me-enchi"));
                         return true;
                     }
                 }
@@ -38,33 +36,29 @@ public class feed implements CommandExecutor
                         if (target.isOnline())
                         {
                             target.setFoodLevel(20);
-                            player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("encheu-barra")), target.getName())));
-                            target.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("recebeu-barra")), player.getName())));
+                            player.sendMessage(vars.replaceString("encheu-barra", target.getName()));
+                            target.sendMessage(vars.replaceString("recebeu-barra", player.getName()));
                             return true;
                         }
                         else
                         {
-                            player.sendMessage(vars.c(center.looper.c.getString("jogador-offline")));
+                            player.sendMessage(vars.getString("jogador-offline"));
                             return true;
                         }
                     }
                     else
                     {
-                        player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                        player.sendMessage(vars.getString("sem-permissao"));
                         return true;
                     }
                 }
             }
             else
             {
-                player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
         }
         return false;
-    }
-    private String replaced(String args, String valor)
-    {
-        return args.replace("%s", valor);
     }
 }

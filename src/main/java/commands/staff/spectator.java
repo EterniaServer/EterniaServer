@@ -18,11 +18,11 @@ public class spectator implements CommandExecutor
             if(player.hasPermission("eternia.comandos.staff.spectator"))
             {
                 player.setGameMode(GameMode.SPECTATOR);
-                player.sendMessage(vars.c(center.looper.c.getString("escondido")));
+                player.sendMessage(vars.getString("escondido"));
             }
             else
             {
-                player.sendMessage(vars.c(center.looper.c.getString("sem-permissao")));
+                player.sendMessage(vars.getString("sem-permissao"));
                 return true;
             }
         }

@@ -1,7 +1,7 @@
 main: center.main
 
 name: EterniaServer
-version: '1.1.2'
+version: '1.1.5'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
@@ -67,3 +67,6 @@ commands:
   spawn:
     description: Se teleporta para o spawn.
     aliases: [inicio]
+  setspawn:
+    description: Define o spawn.
+    aliases: [definirinicio]

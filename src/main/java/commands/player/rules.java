@@ -14,7 +14,7 @@ public class rules implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            player.sendMessage(vars.c(center.looper.c.getString("regras")));
+            player.sendMessage(vars.getString("regras"));
             return true;
         }
         return false;

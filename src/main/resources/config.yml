@@ -55,7 +55,7 @@ nick-novo: '&8[&aE&9S&8] &7Seu apelido alternativo é &3%s&8.'
 nick-removido: '&8[&aE&9S&8] &7Apelido alternativo removido&8.'
 escondido: '&8[&aE&9S&8] &7Shiii&8, &7agora você está escondido&8.'
 jogando: '&8[&aE&9S&8] &7Agora você está jogando novamente&8.'
-teleportando-em: '&8[&aE&9S&8] &7Você será teleportado em &3%s&8.'
+teleportando-em: '&8[&aE&9S&8] &7Você será teleportado em &3%s &7segundos&8.'
 spawn-definido: '&8[&aE&9S&8] &7Spawn definido&8.'
 teleportou-ele: '&8[&aE&9S&8] &7Você teleportou &3%s&8.'
 regras: '&8[&aE&9S&8] &7Regras\n

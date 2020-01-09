@@ -29,16 +29,16 @@ public class main extends JavaPlugin
         {
             saveDefaultConfig();
         }
-        FileConfiguration c = getConfig();
-        long delay = c.getInt("intervalo") * 20;
-        new looper(c).runTaskTimer(this, 20L, delay);
+        FileConfiguration file = getConfig();
+        long delay = file.getInt("intervalo") * 20;
+        new nethertrapcheck(file).runTaskTimer(this, 20L, delay);
         if (!setupEconomy())
         {
             this.getLogger().severe("Opa, vault não encontrado :/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        boolean mysql = c.getBoolean("mysql");
+        boolean mysql = nethertrapcheck.file.getBoolean("mysql");
         if (mysql)
         {
             mysqlSetup();
@@ -71,7 +71,8 @@ public class main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new commands.player.spawn());
         Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new commands.staff.setspawn());
     }
-    public static main getMain(){
+    public static main getMain()
+    {
         return mainclasse;
     }
     private boolean setupEconomy()
@@ -100,11 +101,11 @@ public class main extends JavaPlugin
                     return;
                 }
                 Class.forName("java.sql.Driver");
-                String host = center.looper.c.getString("host");
-                int port = center.looper.c.getInt("porta");
-                String password = center.looper.c.getString("senha");
-                String database = center.looper.c.getString("database");
-                String username = center.looper.c.getString("usuario");
+                String host = nethertrapcheck.file.getString("host");
+                int port = nethertrapcheck.file.getInt("porta");
+                String password = nethertrapcheck.file.getString("senha");
+                String database = nethertrapcheck.file.getString("database");
+                String username = nethertrapcheck.file.getString("usuario");
                 setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
                 String MySQLCreate = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(32) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";

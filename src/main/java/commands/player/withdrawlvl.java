@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Objects;
 import java.util.UUID;
 
 public class withdrawlvl implements CommandExecutor
@@ -45,7 +44,7 @@ public class withdrawlvl implements CommandExecutor
                 {
                     e.printStackTrace();
                 }
-                player.sendMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("xp-tirar")), player.getLevel())));
+                player.sendMessage(vars.replaceObject("xp-tirar", player.getLevel()));
                 return true;
             }
             catch (Exception e)
@@ -54,9 +53,5 @@ public class withdrawlvl implements CommandExecutor
             }
         }
         return false;
-    }
-    private String replaced(String args, double valor)
-    {
-        return args.replace("%s", String.valueOf(valor));
     }
 }

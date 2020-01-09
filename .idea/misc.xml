@@ -5,6 +5,7 @@
       <item index="0" class="java.lang.String" itemvalue="org.bukkit.event.EventHandler" />
     </list>
     <pattern value="principal.mysql" method="OnJoin" />
+    <pattern value="center.vars" method="vars" />
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">

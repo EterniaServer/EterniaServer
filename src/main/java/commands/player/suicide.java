@@ -7,8 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class suicide implements CommandExecutor
 {
     @Override
@@ -27,7 +25,7 @@ public class suicide implements CommandExecutor
                 sb.append("- ").append(player.getName()).append(" ");
                 String s = sb.toString();
                 player.setHealth(0);
-                Bukkit.broadcastMessage(vars.c(replaced(Objects.requireNonNull(center.looper.c.getString("suicidio")), s)));
+                Bukkit.broadcastMessage(vars.replaceString("suicidio", s));
                 return true;
             }
         } else {
@@ -39,9 +37,5 @@ public class suicide implements CommandExecutor
             }
         }
         return false;
-    }
-    private String replaced(String args, String valor)
-    {
-        return args.replace("%s", valor);
     }
 }

@@ -27,19 +27,19 @@ public class bottlexp implements CommandExecutor
             }
             else if(xp_atual >= 31)
             {
-                xp_real = (int) (3.5 * Math.pow(xp_atual, 2) - 151.5 * xp_atual + 2220);
+                xp_real = (int) (3.5 * Math.pow(xp_atual, 2) - (151.5 * xp_atual) + 2220);
             }
             if (xp_real >= 10)
             {
                 xp_real = (xp_real / 10);
                 player.getWorld().dropItem(player.getLocation().add(0, 1, 0), new ItemStack(Material.EXPERIENCE_BOTTLE, xp_real));
-                player.sendMessage(vars.c(center.looper.c.getString("xp-sucesso")));
+                player.sendMessage(vars.getString("xp-sucesso"));
                 player.setLevel(0);
                 return true;
             }
             else
             {
-                player.sendMessage(vars.c(center.looper.c.getString("xp-insuficiente")));
+                player.sendMessage(vars.getString("xp-insuficiente"));
                 return true;
             }
         }
