@@ -27,6 +27,7 @@
       <w>entre</w>
       <w>errou</w>
       <w>eterniaserver</w>
+      <w>evento</w>
       <w>existe</w>
       <w>fale</w>
       <w>feito</w>
@@ -35,7 +36,9 @@
       <w>guardado</w>
       <w>guardou</w>
       <w>homename</w>
+      <w>indo</w>
       <w>inicial</w>
+      <w>inicio</w>
       <w>insuficiente</w>
       <w>inteiro</w>
       <w>intervalo</w>
@@ -47,19 +50,26 @@
       <w>mesage</w>
       <w>mesma</w>
       <w>miníma</w>
+      <w>momento</w>
       <w>mova</w>
       <w>moveu</w>
       <w>msgfinal</w>
       <w>muitas</w>
       <w>método</w>
+      <w>negativa</w>
+      <w>nenhum</w>
       <w>nosso</w>
+      <w>numero</w>
       <w>nível</w>
+      <w>pagina</w>
       <w>permissao</w>
       <w>pessoais</w>
       <w>porta</w>
       <w>possui</w>
       <w>precisa</w>
       <w>preso</w>
+      <w>proxima</w>
+      <w>página</w>
       <w>quantidade</w>
       <w>recebeu</w>
       <w>regra</w>
@@ -67,6 +77,7 @@
       <w>removida</w>
       <w>retirar</w>
       <w>senha</w>
+      <w>setevent</w>
       <w>sethome</w>
       <w>setspawn</w>
       <w>sqlitesetup</w>

@@ -1,5 +1,6 @@
 package commands.player;
 
+import center.NetherTrapCheck;
 import center.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,13 +16,45 @@ public class Rules implements CommandExecutor
         {
             if (sender.hasPermission("eternia.rules"))
             {
-                String regras = Vars.getString("regras");
-                String[] regralista = regras.split("SPLIAG");
-                for (int i = 0; i <= regralista.length; i++)
+                int valor = 1;
+                try
                 {
-                    sender.sendMessage(regralista[i]);
+                    valor = Integer.parseInt(args[0]);
                 }
-                return true;
+                catch (Exception e)
+                {
+                    sender.sendMessage(Vars.getString("precisa-numero"));
+                }
+                if (valor > 0)
+                {
+                    int inicio = 5 * (valor - 1);
+                    int fim = 5 * (valor);
+                    int cont = 0;
+                    String regras = NetherTrapCheck.file.getString("regras");
+                    assert regras != null;
+                    String[] regralista = regras.split("/split/");
+                    for (int i = inicio; i < fim; i++)
+                    {
+                        try
+                        {
+                            sender.sendMessage(Vars.ChatColor(regralista[i]));
+                            cont += 1;
+                        }
+                        catch (Exception e)
+                        {
+                            break;
+                        }
+                    }
+                    if (cont == fim)
+                    {
+                        sender.sendMessage(Vars.replaceObject("proxima-pagina", args[0] + 1));
+                    }
+                    return true;
+                }
+                else
+                {
+                    sender.sendMessage(Vars.getString("pagina-negativa"));
+                }
             }
             else
             {

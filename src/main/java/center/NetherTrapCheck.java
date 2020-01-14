@@ -3,8 +3,11 @@ package center;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class NetherTrapCheck extends org.bukkit.scheduler.BukkitRunnable
 {
@@ -32,7 +35,12 @@ public class NetherTrapCheck extends org.bukkit.scheduler.BukkitRunnable
                         Location l = player.getLocation();
                         if (l.getBlock().getType() == Material.NETHER_PORTAL)
                         {
-                            player.teleport(Vars.spawn);
+                            World world = Bukkit.getWorld((String) Objects.requireNonNull(NetherTrapCheck.file.get("world")));
+                            Location spawn = new Location(world, NetherTrapCheck.file.getDouble("x"),
+                                    NetherTrapCheck.file.getDouble("y"), NetherTrapCheck.file.getDouble("z"),
+                                    Float.parseFloat(Objects.requireNonNull(NetherTrapCheck.file.getString("yaw"))),
+                                    Float.parseFloat(Objects.requireNonNull(NetherTrapCheck.file.getString("pitch"))));
+                            player.teleport(spawn);
                             player.sendMessage(Vars.getString("spawn"));
                         }
                     }

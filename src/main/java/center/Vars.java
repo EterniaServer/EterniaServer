@@ -1,7 +1,5 @@
 package center;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import java.util.HashMap;
 
 @SuppressWarnings("ConstantConditions")
@@ -23,17 +21,13 @@ public class Vars
     {
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', (NetherTrapCheck.file.getString(message)));
     }
+    public static String ChatColor(String message)
+    {
+        return org.bukkit.ChatColor.translateAlternateColorCodes('&', message);
+    }
     public static int getInt(String valor)
     {
         return NetherTrapCheck.file.getInt(valor);
     }
-    private static double getDouble(String valor)
-    {
-        return NetherTrapCheck.file.getDouble(valor);
-    }
-    public static final Location spawn = new Location(Bukkit.getWorld(NetherTrapCheck.file.getString("world")),
-            getDouble("x"), getDouble("y"), getDouble("z"),
-            Float.parseFloat(NetherTrapCheck.file.getString("yaw")),
-            Float.parseFloat(NetherTrapCheck.file.getString("pitch")));
     static final HashMap playersInPortal = new HashMap();
 }

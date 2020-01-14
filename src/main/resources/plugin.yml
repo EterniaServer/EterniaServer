@@ -1,4 +1,4 @@
-main: center.main
+main: center.Main
 
 name: EterniaServer
 version: '${project.version}'
@@ -70,3 +70,9 @@ commands:
   setspawn:
     description: Define o spawn.
     aliases: [definirinicio]
+  event:
+    description: Vai para o evento.
+    aliases: [evento]
+  setevent:
+    description: Define o local do evento.
+    aliases: [definirevento]

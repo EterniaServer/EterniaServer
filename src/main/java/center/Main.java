@@ -71,6 +71,8 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new Colors());
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new Spawn());
         Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new SetSpawn());
+        Objects.requireNonNull(this.getCommand("event")).setExecutor(new Event());
+        Objects.requireNonNull(this.getCommand("setevent")).setExecutor(new SetEvent());
     }
     public static Main getMain()
     {

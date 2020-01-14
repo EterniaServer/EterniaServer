@@ -15,8 +15,15 @@ world: 'world'
 x: 0
 y: 70
 z: 0
-yaw: '0'
-pitch: '0'
+yaw: 0
+pitch: 0
+# Evento
+world-e: 'world'
+x-e: 0
+y-e: 70
+z-e: 0
+yaw-e: 0
+pitch-e: 0
 # Mensagens
 sem-permissao: '&8[&aE&9S&8] &7Você não tem permissão para isso&8.'
 spawn: '&8[&aE&9S&8] &7Bem-vindo ao spawn&8.'
@@ -59,22 +66,28 @@ teleportando-em: '&8[&aE&9S&8] &7Você será teleportado em &3%s &7segundos&8.'
 spawn-definido: '&8[&aE&9S&8] &7Spawn definido&8.'
 teleportou-ele: '&8[&aE&9S&8] &7Você teleportou &3%s&8.'
 feito: '&8[&aE&9S&8] &7:)&8.'
-regras: '&8[&aE&9S&8] &7Regras
-&91.0 &8- &7Proibido ofensas&8.
-&91.1 &8- &7Qualquer forma de preconceito é proibida&8.
-&91.2 &8- &7Proibido apologia a coisas ofensiva e&8/&7ou que trouxeram uma grande perda para a sociedade&8.
-&92.0 &8- &7Proibido o uso de apelido impropriado&8.
-&92.1 &8- &7A mesma regra se aplica a pets e etc&8.
-&93.0 &8- &7Proibido o uso de qualquer hack&8,&7 exploit e etc&8.
-&93.1 &8- &7Aproveitar-se ou esconder um bug também é proibido&8.
-&93.2 &8- &7O ato de má fé também é proibido&8.
-&94.0 &8- &7Proibido enganações&8.
-&94.1 &8- &7Certas traps são enganações sendo também proibido&8.
-&94.2 &8- &7Certas promessas também são consideradas enganação&8.
-&95.0 &8- &7Proibido se intrometer em assuntos pessoais e assuntos da Staff&8.
-&96.0 &8- &7Proibido pedir itens&8,&7 permissões e etc&8.
-&96.1 &8- &7O mesmo se aplica para cargos&8.
-&97.0 &8- &7Evitar falar vulgamente e&8/&7ou explicitamente sobre sexo no chat global&8.
-&98.0 &8- &7Proibido apologia a coisas ilícitas&8,&7 inclusive programas&8.
-&99.0 &8- &7Proibido flood&8/&7spam&8.
+sem-evento: '&8[&aE&9S&8] &7Não há nenhum evento no momento&8.'
+evento: '&8[&aE&9S&8] &7Indo para o evento :)&8!'
+evento-definido: '&8[&aE&9S&8] &7Evento definido&8.'
+precisa-numero: '&8[&aE&9S&8] &7Bem... o número da página precisa ser um número&8.'
+proxima-pagina: '&8[&aE&9S&8] &7Use &6/regras &3%s &7para ir para a proxima página&8.'
+pagina-negativa: '&8[&aE&9S&8] &7Página negativa não existe né amigo&8, &7nem &30&8.'
+regras: '&8[&aE&9S&8] &7Regras/split/
+&91.0 &8- &7Proibido ofensas&8./split/
+&91.1 &8- &7Qualquer forma de preconceito é proibida&8./split/
+&91.2 &8- &7Proibido apologia a coisas ofensiva e&8/&7ou que trouxeram uma grande perda para a sociedade&8./split/
+&92.0 &8- &7Proibido o uso de apelido impropriado&8./split/
+&92.1 &8- &7A mesma regra se aplica a pets e etc&8./split/
+&93.0 &8- &7Proibido o uso de qualquer hack&8,&7 exploit e etc&8./split/
+&93.1 &8- &7Aproveitar-se ou esconder um bug também é proibido&8./split/
+&93.2 &8- &7O ato de má fé também é proibido&8./split/
+&94.0 &8- &7Proibido enganações&8./split/
+&94.1 &8- &7Certas traps são enganações sendo também proibido&8./split/
+&94.2 &8- &7Certas promessas também são consideradas enganação&8./split/
+&95.0 &8- &7Proibido se intrometer em assuntos pessoais e assuntos da Staff&8./split/
+&96.0 &8- &7Proibido pedir itens&8,&7 permissões e etc&8./split/
+&96.1 &8- &7O mesmo se aplica para cargos&8./split/
+&97.0 &8- &7Evitar falar vulgamente e&8/&7ou explicitamente sobre sexo no chat global&8./split/
+&98.0 &8- &7Proibido apologia a coisas ilícitas&8,&7 inclusive programas&8./split/
+&99.0 &8- &7Proibido flood&8/&7spam&8./split/
 &99.1 &8- &7Proibido discutir sobre a punição dada ou não dada por um staff&8.'

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
-public class SetSpawn implements CommandExecutor
+public class SetEvent implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -19,16 +19,16 @@ public class SetSpawn implements CommandExecutor
         {
             Main main = Main.getPlugin(Main.class);
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.setspawn"))
+            if(player.hasPermission("eternia.setevent"))
             {
-                NetherTrapCheck.file.set("world", Objects.requireNonNull(player.getLocation().getWorld()).getName());
-                NetherTrapCheck.file.set("x", player.getLocation().getX());
-                NetherTrapCheck.file.set("y", player.getLocation().getY());
-                NetherTrapCheck.file.set("z", player.getLocation().getZ());
-                NetherTrapCheck.file.set("yaw", player.getLocation().getYaw());
-                NetherTrapCheck.file.set("pitch", player.getLocation().getPitch());
+                NetherTrapCheck.file.set("world-e", Objects.requireNonNull(player.getLocation().getWorld()).getName());
+                NetherTrapCheck.file.set("x-e", player.getLocation().getX());
+                NetherTrapCheck.file.set("y-e", player.getLocation().getY());
+                NetherTrapCheck.file.set("z-e", player.getLocation().getZ());
+                NetherTrapCheck.file.set("yaw-e", player.getLocation().getYaw());
+                NetherTrapCheck.file.set("pitch-e", player.getLocation().getPitch());
                 main.saveConfig();
-                player.sendMessage(Vars.getString("spawn-definido"));
+                player.sendMessage(Vars.getString("evento-definido"));
                 return true;
             }
             else
