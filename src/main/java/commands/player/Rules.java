@@ -16,44 +16,43 @@ public class Rules implements CommandExecutor
         {
             if (sender.hasPermission("eternia.rules"))
             {
-                int valor = 1;
-                try
+                if (args.length == 1)
                 {
-                    valor = Integer.parseInt(args[0]);
-                }
-                catch (Exception e)
-                {
-                    sender.sendMessage(Vars.getString("precisa-numero"));
-                }
-                if (valor > 0)
-                {
-                    int inicio = 5 * (valor - 1);
-                    int fim = 6 * (valor);
-                    int cont = 0;
-                    String regras = NetherTrapCheck.file.getString("regras");
-                    assert regras != null;
-                    String[] regralista = regras.split("/split/");
-                    for (int i = inicio; i < fim; i++)
+                    int valor = Integer.parseInt(args[0]);
+                    if (valor > 0)
                     {
-                        try
+                        int inicio = 5 * (valor - 1);
+                        int fim = 6 * (valor);
+                        int cont = 0;
+                        String regras = NetherTrapCheck.file.getString("regras");
+                        assert regras != null;
+                        String[] regralista = regras.split("/split/");
+                        for (int i = inicio; i < fim; i++)
                         {
-                            sender.sendMessage(Vars.ChatColor(regralista[i]));
-                            cont += 1;
+                            try
+                            {
+                                sender.sendMessage(Vars.ChatColor(regralista[i]));
+                                cont += 1;
+                            }
+                            catch (Exception e)
+                            {
+                                break;
+                            }
                         }
-                        catch (Exception e)
+                        if (cont == fim - inicio)
                         {
-                            break;
+                            sender.sendMessage(Vars.replaceObject("proxima-pagina", args[0] + 1));
                         }
+                        return true;
                     }
-                    if (cont == fim - inicio)
+                    else
                     {
-                        sender.sendMessage(Vars.replaceObject("proxima-pagina", args[0] + 1));
+                        sender.sendMessage(Vars.getString("pagina-negativa"));
                     }
-                    return true;
                 }
                 else
                 {
-                    sender.sendMessage(Vars.getString("pagina-negativa"));
+                    sender.sendMessage(Vars.getString("precisa-numero"));
                 }
             }
             else
