@@ -28,7 +28,7 @@ public class Rules implements CommandExecutor
                 if (valor > 0)
                 {
                     int inicio = 5 * (valor - 1);
-                    int fim = 5 * (valor);
+                    int fim = 6 * (valor);
                     int cont = 0;
                     String regras = NetherTrapCheck.file.getString("regras");
                     assert regras != null;
@@ -45,7 +45,7 @@ public class Rules implements CommandExecutor
                             break;
                         }
                     }
-                    if (cont == fim)
+                    if (cont == fim - inicio)
                     {
                         sender.sendMessage(Vars.replaceObject("proxima-pagina", args[0] + 1));
                     }
