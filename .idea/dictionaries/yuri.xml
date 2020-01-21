@@ -33,6 +33,7 @@
       <w>feito</w>
       <w>garrafas</w>
       <w>garrafinhas</w>
+      <w>geral</w>
       <w>guardado</w>
       <w>guardou</w>
       <w>homename</w>
@@ -87,6 +88,7 @@
       <w>suicidio</w>
       <w>teleport</w>
       <w>teleportado</w>
+      <w>teleportall</w>
       <w>teleportando</w>
       <w>teleporte</w>
       <w>teleportevents</w>

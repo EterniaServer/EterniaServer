@@ -24,7 +24,7 @@ public class Suicide implements CommandExecutor
                     {
                         sb.append(arg).append(" ");
                     }
-                    sb.append("- ").append(player.getName()).append(" ");
+                    sb.append("&8- &3").append(player.getName());
                     String s = sb.toString();
                     player.setHealth(0);
                     Bukkit.broadcastMessage(Vars.replaceString("suicidio", s));

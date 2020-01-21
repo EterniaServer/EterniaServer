@@ -72,6 +72,7 @@ evento-definido: '&8[&aE&9S&8] &7Evento definido&8.'
 precisa-numero: '&8[&aE&9S&8] &7Bem... o número da página precisa ser um número&8.'
 proxima-pagina: '&8[&aE&9S&8] &7Use &6/regras &3%s &7para ir para a proxima página&8.'
 pagina-negativa: '&8[&aE&9S&8] &7Página negativa não existe né amigo&8, &7nem &30&8.'
+teleportou-geral: '&8[&aE&9S&8] &3%s &7teleportou a todos até si&8.'
 regras: '&8[&aE&9S&8] &7Regras/split/
 &91.0 &8- &7Proibido ofensas&8./split/
 &91.1 &8- &7Qualquer forma de preconceito é proibida&8./split/

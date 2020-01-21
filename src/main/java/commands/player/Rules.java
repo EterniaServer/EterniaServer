@@ -41,7 +41,7 @@ public class Rules implements CommandExecutor
                         }
                         if (cont == fim - inicio)
                         {
-                            sender.sendMessage(Vars.replaceObject("proxima-pagina", args[0] + 1));
+                            sender.sendMessage(Vars.replaceObject("proxima-pagina", Integer.parseInt(args[0]) + 1 ));
                         }
                         return true;
                     }

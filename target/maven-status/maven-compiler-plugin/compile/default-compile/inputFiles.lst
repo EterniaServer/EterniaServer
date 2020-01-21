@@ -5,6 +5,7 @@
 /home/yuri/eterniaserver/src/main/java/center/Main.java
 /home/yuri/eterniaserver/src/main/java/commands/staff/Survival.java
 /home/yuri/eterniaserver/src/main/java/commands/staff/SetSpawn.java
+/home/yuri/eterniaserver/src/main/java/commands/staff/SetEvent.java
 /home/yuri/eterniaserver/src/main/java/center/Vars.java
 /home/yuri/eterniaserver/src/main/java/commands/player/Colors.java
 /home/yuri/eterniaserver/src/main/java/commands/player/Discord.java
@@ -24,3 +25,4 @@
 /home/yuri/eterniaserver/src/main/java/commands/staff/Feed.java
 /home/yuri/eterniaserver/src/main/java/commands/player/GoldenShovel.java
 /home/yuri/eterniaserver/src/main/java/commands/player/Spawn.java
+/home/yuri/eterniaserver/src/main/java/commands/player/Event.java

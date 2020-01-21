@@ -12,21 +12,22 @@ import java.util.UUID;
 
 public class SQL implements Listener
 {
+    private final Main plugin = Main.getPlugin(Main.class);
     @EventHandler
     public void OnJoin (PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
-        CreatePlayer(player.getUniqueId(),player);
+        CreatePlayer(player.getUniqueId(), player);
     }
 
-    private final Main plugin = Main.getPlugin(Main.class);
     private boolean playerExist(UUID uuid)
     {
         PreparedStatement statement;
         ResultSet results;
         try
         {
-            statement = plugin.getConnection().prepareStatement(String.format("SELECT * FROM %s WHERE UUID = ?", plugin.table));
+            String select_player = String.format("SELECT * FROM %s WHERE UUID = ?", plugin.table);
+            statement = plugin.getConnection().prepareStatement(select_player);
             statement.setString(1, uuid.toString());
             results = statement.executeQuery();
             while(results.next())
@@ -54,7 +55,8 @@ public class SQL implements Listener
         {
             if(!playerExist(uuid))
             {
-                PreparedStatement insert = plugin.getConnection().prepareStatement("INSERT INTO eternia (UUID,NAME,XP) VALUES (?,?,?)");
+                String create_player = "INSERT INTO eternia (UUID,NAME,XP) VALUES (?,?,?)";
+                PreparedStatement insert = plugin.getConnection().prepareStatement(create_player);
                 insert.setString(1, uuid.toString());
                 insert.setString(2, player.getName());
                 insert.setInt(3, 0);

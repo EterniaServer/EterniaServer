@@ -76,3 +76,6 @@ commands:
   setevent:
     description: Define o local do evento.
     aliases: [definirevento]
+  teleportall:
+    description: Teleporta todos para tu.
+    aliases: [tpall, teleportageral]

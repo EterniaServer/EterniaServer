@@ -73,6 +73,7 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new SetSpawn());
         Objects.requireNonNull(this.getCommand("event")).setExecutor(new Event());
         Objects.requireNonNull(this.getCommand("setevent")).setExecutor(new SetEvent());
+        Objects.requireNonNull(this.getCommand("teleportall")).setExecutor(new TeleportAll());
     }
     public static Main getMain()
     {
