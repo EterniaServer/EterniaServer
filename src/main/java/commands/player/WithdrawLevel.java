@@ -30,7 +30,8 @@ public class WithdrawLevel implements CommandExecutor
                     try
                     {
                         Statement statement = plugin.getConnection().createStatement();
-                        ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '" + uuid.toString() + "'");
+                        String get_xp = String.format("SELECT XP FROM eternia WHERE UUID=%s", uuid.toString());
+                        ResultSet results = statement.executeQuery(get_xp);
                         String Vu = "";
                         while (results.next())
                         {
@@ -38,8 +39,8 @@ public class WithdrawLevel implements CommandExecutor
                         }
                         results.close();
                         player.giveExp(Integer.parseInt(Vu));
-                        int v = 0;
-                        statement.executeUpdate("UPDATE " + plugin.table + " SET XP='" + v + "' WHERE UUID='" + uuid.toString() + "'");
+                        String att_xp = String.format("UPDATE eternia SET XP=0 WHERE UUID=%s", uuid.toString());
+                        statement.executeUpdate(att_xp);
                         statement.close();
                     }
                     catch (SQLException e)
@@ -48,7 +49,8 @@ public class WithdrawLevel implements CommandExecutor
                     }
                     player.sendMessage(Vars.replaceObject("xp-tirar", player.getLevel()));
                     return true;
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     return true;
                 }

@@ -4,7 +4,6 @@ import center.sql.*;
 import commands.player.*;
 import commands.staff.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,31 +24,45 @@ public class Main extends JavaPlugin
     @Override
     public void onEnable()
     {
+        // Faz com que a classe principal não seja alterada.
         mainclasse = this;
+        // Carrega todas as configurações do plugin e após isso
+        // ativa a classe NetherTrapCheck com o intervalo definido
+        // nas configurações.
         if (!new File(getDataFolder(), "config.yml").exists())
         {
             saveDefaultConfig();
         }
-        FileConfiguration file = getConfig();
-        long delay = file.getInt("intervalo") * 20;
-        new NetherTrapCheck(file).runTaskTimer(this, 20L, delay);
-        if (!setupEconomy())
+        FileConfiguration config = getConfig();
+        long delay = config.getInt("intervalo") * 20;
+        new NetherTrapCheck(config).runTaskTimer(this, 20L, delay);
+        // Chama a função VaultCheck para verificar a dependencia do
+        // plugin Vault, caso o Vault não seja encontrado esse plugin
+        // é desativado.
+        if (!VaultCheck())
         {
-            this.getLogger().severe("Opa, vault não encontrado :/");
+            Bukkit.getConsoleSender().sendMessage(Vars.getString("vault-off"));
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+        // Procura nas configurações para verificar qual método de
+        // salvamento o usuário escolheu.
         boolean mysql = NetherTrapCheck.file.getBoolean("mysql");
         if (mysql)
         {
-            mysqlSetup();
+            MySQLSetup();
         }
         else
         {
-            sqlitesetup();
+            SQLiteSetup();
         }
+        // Define as classes SQL e PlayerListener como classes de eventos
+        // que ficaram ativas esperando para caso algum evento do jogo
+        // as chame.
         this.getServer().getPluginManager().registerEvents(new SQL(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        // Irá carregar cada classe que é um comando e ativar um executor
+        // para elas dentro do jogo.
         Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new Suicide());
         Objects.requireNonNull(this.getCommand("advice")).setExecutor(new Advice());
         Objects.requireNonNull(this.getCommand("discord")).setExecutor(new Discord());
@@ -74,12 +87,21 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("event")).setExecutor(new Event());
         Objects.requireNonNull(this.getCommand("setevent")).setExecutor(new SetEvent());
         Objects.requireNonNull(this.getCommand("teleportall")).setExecutor(new TeleportAll());
+        Objects.requireNonNull(this.getCommand("setarena")).setExecutor(new SetArena());
+        Objects.requireNonNull(this.getCommand("arena")).setExecutor(new Arena());
+        Objects.requireNonNull(this.getCommand("setcrates")).setExecutor(new SetCrates());
+        Objects.requireNonNull(this.getCommand("crates")).setExecutor(new Crates());
+        Objects.requireNonNull(this.getCommand("vote")).setExecutor(new Vote());
     }
+    // Confirma que essa classe só será carregada uma vez e os valores
+    // fiquem fixos.
     public static Main getMain()
     {
         return mainclasse;
     }
-    private boolean setupEconomy()
+    // Verifica se existe o plugin Vault na pasta de plugins, caso não
+    // encontre ele retorna falso e caso encontre retorna true.
+    private boolean VaultCheck()
     {
         if (Bukkit.getPluginManager().getPlugin("Vault") == null)
         {
@@ -93,8 +115,10 @@ public class Main extends JavaPlugin
         econ = rsp.getProvider();
         return true;
     }
-    public final String table = "eternia";
-    private void mysqlSetup()
+    // Caso o método de salvamento escolhido seja MySQL ele irá carregar
+    // as configurações, tentar se conectar a database, verificar se a
+    // tabela existe e caso não exista ele irá criar uma tabela.
+    private void MySQLSetup()
     {
         try
         {
@@ -108,16 +132,16 @@ public class Main extends JavaPlugin
                 String host = NetherTrapCheck.file.getString("host");
                 int port = NetherTrapCheck.file.getInt("porta");
                 String password = NetherTrapCheck.file.getString("senha");
-                String database = NetherTrapCheck.file.getString("database");
                 String username = NetherTrapCheck.file.getString("usuario");
+                String database = NetherTrapCheck.file.getString("database");
                 setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
+                Bukkit.getConsoleSender().sendMessage(Vars.getString("conectado-sucesso-mysql"));
                 String MySQLCreate = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(32) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
                 try
                 {
-                    Statement s = getConnection().createStatement();
-                    s.executeUpdate(MySQLCreate);
-                    s.close();
+                    Statement mysql_conect = getConnection().createStatement();
+                    mysql_conect.executeUpdate(MySQLCreate);
+                    mysql_conect.close();
                 }
                 catch (SQLException e)
                 {
@@ -130,7 +154,10 @@ public class Main extends JavaPlugin
             e.printStackTrace();
         }
     }
-    private void sqlitesetup()
+    // Caso o método de salvamento escolhido seja SQLite ele irá procurar
+    // na pasta principal desse plugin se o arquivo da tabela existe e caso
+    // não exista ele irá criar.
+    private void SQLiteSetup()
     {
         try
         {
@@ -151,18 +178,18 @@ public class Main extends JavaPlugin
                     }
                     catch (IOException e)
                     {
-                        getLogger().severe( "Erro ao escrever arquivo: "+dbname+".db");
+                        Bukkit.getConsoleSender().sendMessage(Vars.replaceString("erro-sqlite", dbname));
                     }
                 }
                 Class.forName("org.sqlite.JDBC");
                 setConnection(DriverManager.getConnection("jdbc:sqlite:" + dataFolder));
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Conectado com sucesso a database");
+                Bukkit.getConsoleSender().sendMessage(Vars.getString("conectado-sucesso-sqlite"));
                 String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(255) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
                 try
                 {
-                    Statement s = getConnection().createStatement();
-                    s.executeUpdate(SQLiteCreateTokensTable);
-                    s.close();
+                    Statement sqlite_conect = getConnection().createStatement();
+                    sqlite_conect.executeUpdate(SQLiteCreateTokensTable);
+                    sqlite_conect.close();
                 }
                 catch (SQLException e)
                 {
@@ -175,6 +202,9 @@ public class Main extends JavaPlugin
             e.printStackTrace();
         }
     }
+    // Sempre que for necessário se conectar a database para salvar ou
+    // pegar dados ele irá pegar a conexão já existe sem precisar criar
+    // uma nova.
     public Connection getConnection()
     {
         return connection;
@@ -183,6 +213,7 @@ public class Main extends JavaPlugin
     {
         this.connection = connection;
     }
+    // Sempre que está função ser chamada ela vai retornar o plugin Vault.
     public static Economy getEconomy()
     {
         return econ;

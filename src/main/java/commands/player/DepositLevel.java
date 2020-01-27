@@ -50,7 +50,8 @@ public class DepositLevel implements CommandExecutor
                                     xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
                                 }
                                 Statement statement = plugin.getConnection().createStatement();
-                                ResultSet results = statement.executeQuery("SELECT XP FROM " + plugin.table + " WHERE UUID = '" + uuid.toString() + "'");
+                                String get_xp = String.format("SELECT XP FROM eternia WHERE UUID=%s", uuid.toString());
+                                ResultSet results = statement.executeQuery(get_xp);
                                 String Vu = "";
                                 while (results.next())
                                 {
@@ -59,7 +60,8 @@ public class DepositLevel implements CommandExecutor
                                 int XP = Integer.parseInt(Vu);
                                 xp = Math.max(xp + XP, 0);
                                 results.close();
-                                statement.executeUpdate("UPDATE " + plugin.table + " SET XP='" + xp + "' WHERE UUID='" + uuid.toString() + "'");
+                                String att_xp = String.format("UPDATE eternia SET XP=%s WHERE UUID=%s", String.valueOf(xp), uuid.toString());
+                                statement.executeUpdate(att_xp);
                                 player.setLevel(Math.max(player.getLevel() - xp_atual, 0));
                                 statement.close();
                             }

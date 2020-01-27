@@ -28,10 +28,12 @@ public class Event implements CommandExecutor {
                 Player player = (Player) sender;
                 player.teleport(spawn);
                 sender.sendMessage(Vars.getString("evento"));
+                return true;
             }
             else
             {
                 sender.sendMessage(Vars.getString("sem-evento"));
+                return true;
             }
         }
         return false;

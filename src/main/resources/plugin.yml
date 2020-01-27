@@ -79,3 +79,18 @@ commands:
   teleportall:
     description: Teleporta todos para tu.
     aliases: [tpall, teleportageral]
+  arena:
+    description: Vai pra arena.
+    aliases: [pvp]
+  setarena:
+    description: Define a arena.
+    aliases: [definirarena]
+  crates:
+    description: Vai pra caixas.
+    aliases: [caixas]
+  setcrates:
+    description: Define a caixa.
+    aliases: [setcaixas]
+  vote:
+    description: Vota.
+    aliases: [votar, voto]

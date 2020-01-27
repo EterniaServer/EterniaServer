@@ -13,32 +13,33 @@ import java.util.UUID;
 public class SQL implements Listener
 {
     private final Main plugin = Main.getPlugin(Main.class);
+    // Toda vez que um jogador entrar no servidor irá chamar
+    // a função CreatePlayer para criar um registro do usuário.
     @EventHandler
-    public void OnJoin (PlayerJoinEvent event)
+    public void OnJoin(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
         CreatePlayer(player.getUniqueId(), player);
     }
-
-    private boolean playerExist(UUID uuid)
+    // Procura na database pelo ID do usuário se encontrar,
+    // retorna verdadeiro, caso contrário retorna falso.
+    private boolean PlayerExist(UUID uuid)
     {
-        PreparedStatement statement;
-        ResultSet results;
         try
         {
-            String select_player = String.format("SELECT * FROM %s WHERE UUID = ?", plugin.table);
-            statement = plugin.getConnection().prepareStatement(select_player);
-            statement.setString(1, uuid.toString());
-            results = statement.executeQuery();
-            while(results.next())
+            String select_player = "SELECT * FROM eternia WHERE UUID = ?";
+            PreparedStatement find_player = plugin.getConnection().prepareStatement(select_player);
+            find_player.setString(1, uuid.toString());
+            ResultSet player_list = find_player.executeQuery();
+            while(player_list.next())
             {
-                if (results.getObject("UUID") != null)
+                if (player_list.getObject("UUID") != null)
                 {
-                    statement.close();
+                    find_player.close();
                     return true;
                 }
             }
-            statement.close();
+            find_player.close();
             return false;
 
         }
@@ -48,20 +49,21 @@ public class SQL implements Listener
             return false;
         }
     }
-
+    // Então irá chamar a função playerExist para verificar se
+    // o jogador já existe no banco de dados.
     private void CreatePlayer(final UUID uuid, Player player)
     {
         try
         {
-            if(!playerExist(uuid))
+            if(!PlayerExist(uuid))
             {
                 String create_player = "INSERT INTO eternia (UUID,NAME,XP) VALUES (?,?,?)";
-                PreparedStatement insert = plugin.getConnection().prepareStatement(create_player);
-                insert.setString(1, uuid.toString());
-                insert.setString(2, player.getName());
-                insert.setInt(3, 0);
-                insert.executeUpdate();
-                insert.close();
+                PreparedStatement save_player = plugin.getConnection().prepareStatement(create_player);
+                save_player.setString(1, uuid.toString());
+                save_player.setString(2, player.getName());
+                save_player.setInt(3, 0);
+                save_player.executeUpdate();
+                save_player.close();
             }
         }
         catch (SQLException e)

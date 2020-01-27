@@ -2,54 +2,135 @@
   <dictionary name="yuri">
     <words>
       <w>aguarde</w>
+      <w>algum</w>
       <w>alguma</w>
+      <w>alterada</w>
+      <w>antiga</w>
+      <w>aplicar</w>
+      <w>após</w>
+      <w>argumento</w>
       <w>armadilha</w>
+      <w>ativa</w>
       <w>ativar</w>
       <w>ativaram</w>
+      <w>ativas</w>
       <w>atual</w>
+      <w>atualizada</w>
+      <w>banco</w>
       <w>barra</w>
+      <w>biblioteca</w>
+      <w>bloco</w>
+      <w>blocos</w>
       <w>bottlexp</w>
+      <w>caixa</w>
+      <w>caixas</w>
       <w>cancelado</w>
+      <w>carrega</w>
+      <w>carregada</w>
+      <w>carregar</w>
       <w>cartão</w>
+      <w>caso</w>
+      <w>chama</w>
+      <w>chamada</w>
+      <w>chamar</w>
+      <w>chame</w>
+      <w>classe</w>
+      <w>começar</w>
+      <w>conect</w>
       <w>conectar</w>
+      <w>conexão</w>
       <w>configfile</w>
+      <w>configuração</w>
+      <w>configurações</w>
+      <w>confirma</w>
       <w>connectsql</w>
+      <w>conta</w>
       <w>contador</w>
+      <w>contagem</w>
+      <w>contrário</w>
+      <w>criar</w>
+      <w>cuidado</w>
+      <w>dados</w>
+      <w>definida</w>
+      <w>dele</w>
       <w>delhome</w>
+      <w>dentro</w>
+      <w>dependencia</w>
+      <w>depois</w>
       <w>desativando</w>
       <w>desativar</w>
       <w>desativaram</w>
+      <w>desse</w>
       <w>dinheiro</w>
       <w>doacao</w>
+      <w>elas</w>
+      <w>eles</w>
       <w>encheu</w>
       <w>encontrada</w>
       <w>encontrado</w>
+      <w>encontrar</w>
+      <w>encontre</w>
+      <w>entrar</w>
       <w>entre</w>
+      <w>então</w>
+      <w>enviado</w>
       <w>errou</w>
+      <w>escolheu</w>
+      <w>escolhido</w>
+      <w>esperando</w>
+      <w>estava</w>
+      <w>estejam</w>
+      <w>estiver</w>
+      <w>estão</w>
       <w>eterniaserver</w>
       <w>evento</w>
+      <w>eventos</w>
+      <w>executado</w>
+      <w>executando</w>
+      <w>executar</w>
+      <w>exista</w>
       <w>existe</w>
+      <w>existir</w>
       <w>fale</w>
+      <w>falso</w>
       <w>feito</w>
+      <w>ficaram</w>
+      <w>fiquem</w>
+      <w>fixos</w>
+      <w>funciona</w>
+      <w>função</w>
       <w>garrafas</w>
       <w>garrafinhas</w>
       <w>geral</w>
       <w>guardado</w>
       <w>guardou</w>
       <w>homename</w>
+      <w>inalterável</w>
+      <w>indicada</w>
+      <w>indicado</w>
       <w>indo</w>
+      <w>informada</w>
+      <w>informado</w>
       <w>inicial</w>
       <w>inicio</w>
       <w>insuficiente</w>
       <w>inteiro</w>
       <w>intervalo</w>
+      <w>inventário</w>
+      <w>jogadores</w>
       <w>jogadortempo</w>
       <w>jogando</w>
+      <w>jogo</w>
+      <w>lista</w>
+      <w>localização</w>
       <w>mainclasse</w>
       <w>membros</w>
       <w>mensagens</w>
       <w>mesage</w>
       <w>mesma</w>
+      <w>minecraft</w>
+      <w>minecraftservers</w>
+      <w>minérios</w>
       <w>miníma</w>
       <w>momento</w>
       <w>mova</w>
@@ -57,47 +138,93 @@
       <w>msgfinal</w>
       <w>muitas</w>
       <w>método</w>
+      <w>necessário</w>
       <w>negativa</w>
       <w>nenhum</w>
       <w>nosso</w>
       <w>numero</w>
       <w>nível</w>
+      <w>objeto</w>
       <w>pagina</w>
+      <w>pegar</w>
+      <w>pela</w>
+      <w>pelo</w>
+      <w>permanecer</w>
       <w>permissao</w>
       <w>pessoais</w>
+      <w>podem</w>
       <w>porta</w>
+      <w>posição</w>
       <w>possui</w>
       <w>precisa</w>
+      <w>precisar</w>
       <w>preso</w>
+      <w>presos</w>
+      <w>procura</w>
+      <w>procurar</w>
       <w>proxima</w>
       <w>página</w>
+      <w>qual</w>
       <w>quantidade</w>
+      <w>quem</w>
+      <w>recebe</w>
       <w>recebeu</w>
+      <w>registro</w>
       <w>regra</w>
       <w>regralista</w>
       <w>removida</w>
       <w>retirar</w>
+      <w>retorna</w>
+      <w>retornar</w>
+      <w>rodada</w>
+      <w>salva</w>
+      <w>salvamento</w>
+      <w>salvar</w>
+      <w>seja</w>
+      <w>sempre</w>
       <w>senha</w>
+      <w>servidor</w>
+      <w>setarena</w>
+      <w>setcaixas</w>
+      <w>setcrates</w>
       <w>setevent</w>
       <w>sethome</w>
       <w>setspawn</w>
+      <w>somente</w>
       <w>sqlitesetup</w>
       <w>suas</w>
+      <w>substituindo</w>
       <w>suficiênte</w>
       <w>suficiêntes</w>
       <w>suicidio</w>
+      <w>tabela</w>
       <w>teleport</w>
       <w>teleportado</w>
       <w>teleportall</w>
       <w>teleportando</w>
+      <w>teleportar</w>
       <w>teleporte</w>
       <w>teleportevents</w>
       <w>teleportou</w>
+      <w>tenha</w>
+      <w>tentar</w>
+      <w>tiver</w>
+      <w>toda</w>
+      <w>todas</w>
+      <w>topg</w>
       <w>usuario</w>
+      <w>usuário</w>
+      <w>valores</w>
       <w>vamos</w>
+      <w>verdadeiro</w>
+      <w>verifica</w>
       <w>verificar</w>
       <w>vindo</w>
       <w>você</w>
+      <w>votar</w>
+      <w>voto</w>
+      <w>votos</w>
+      <w>váriavel</w>
       <w>xpmanager</w>
     </words>
   </dictionary>

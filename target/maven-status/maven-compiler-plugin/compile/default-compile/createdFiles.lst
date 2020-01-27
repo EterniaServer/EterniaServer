@@ -1,10 +1,14 @@
 commands/player/Hat.class
 commands/player/GoldenShovel.class
+commands/staff/SetCrates.class
+commands/player/Arena.class
 commands/player/Rules.class
 commands/player/Event.class
 commands/staff/Advice.class
 commands/player/Donation.class
+commands/player/Vote.class
 center/NetherTrapCheck.class
+commands/staff/TeleportAll.class
 commands/player/Colors.class
 commands/player/WithdrawLevel.class
 commands/player/DepositLevel.class
@@ -13,6 +17,7 @@ center/Main.class
 commands/staff/Feed.class
 commands/staff/Spectator.class
 commands/staff/SetEvent.class
+commands/player/Crates.class
 commands/player/Blocks.class
 commands/player/Facebook.class
 commands/staff/Name.class
@@ -24,5 +29,6 @@ commands/player/Spawn.class
 commands/staff/Survival.class
 center/PlayerListener.class
 commands/player/Bottlexp.class
+commands/staff/SetArena.class
 commands/staff/SetSpawn.class
 commands/player/Suicide.class

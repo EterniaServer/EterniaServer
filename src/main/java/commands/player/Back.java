@@ -3,6 +3,7 @@ package commands.player;
 import center.Main;
 import center.PlayerListener;
 import center.Vars;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,15 +16,24 @@ public class Back implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
+        // Verifica se quem está executando o comando é um jogador
+        // caso seja o comando é executado, caso não seja é enviado
+        // uma mensagem ao console.
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
+            // Verifica se o jogador tem a permissão para usar o /back, caso tenha
+            // verifica se ele tem permissão para usar de graça o comando e depois
+            // irá executar o comando.
             if (player.hasPermission("eternia.back"))
             {
                 if (PlayerListener.back.containsKey(player))
                 {
                     double money = economy.getBalance(player);
                     double valor = Vars.getInt("valor-do-back");
+                    // Se ele tiver a permissão de executar de graça irá teleportar ele até
+                    // a posição antiga dele, que está salva na váriavel back, caso contrário
+                    // irá ser removido da conta dele o valor informado na configuração.
                     if (player.hasPermission("eternia.backfree"))
                     {
                         player.teleport(PlayerListener.back.get(player));
@@ -44,7 +54,7 @@ public class Back implements CommandExecutor
                         else
                         {
                             player.sendMessage(Vars.replaceObject("back-sem-dinheiro", valor));
-                            return false;
+                            return true;
                         }
                     }
                 }
@@ -60,6 +70,10 @@ public class Back implements CommandExecutor
                 return true;
             }
         }
-        return false;
+        else
+        {
+            Bukkit.getConsoleSender().sendMessage(Vars.getString("somente-jogador"));
+            return true;
+        }
     }
 }

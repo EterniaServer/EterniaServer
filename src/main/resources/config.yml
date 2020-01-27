@@ -24,14 +24,28 @@ y-e: 70
 z-e: 0
 yaw-e: 0
 pitch-e: 0
+# Arena
+world-a: 'world'
+x-a: 0
+y-a: 70
+z-a: 0
+yaw-a: 0
+pitch-a: 0
+# Caixa
+world-c: 'world'
+x-c: 0
+y-c: 70
+z-c: 0
+yaw-c: 0
+pitch-c: 0
 # Mensagens
 sem-permissao: '&8[&aE&9S&8] &7Você não tem permissão para isso&8.'
 spawn: '&8[&aE&9S&8] &7Bem-vindo ao spawn&8.'
 trap-mensagem-tempo: '&8[&aE&9S&8] &7Armadilha encontrada&8, &7se teleportando para o spawn em&3 %s &7segundos&8.'
-back-gratis: '&8[&aE&9S&8] &7Você voltou aonde morreu de graça&8.'
-back-nao-pode: '&8[&aE&9S&8] &7Você ainda não morreu&8.'
+back-gratis: '&8[&aE&9S&8] &7Você voltou aonde estava de graça&8.'
+back-nao-pode: '&8[&aE&9S&8] &7Você ainda não se teleportou&8.'
 back-sem-dinheiro: '&8[&aE&9S&8] &7Você não possui eternias suficiêntes&8,&7 você precisa de &3%s&8.'
-back-sucesso: '&8[&aE&9S&8] &7Você voltou aonde morreu e isso custou &3%s &7eternias&8.'
+back-sucesso: '&8[&aE&9S&8] &7Você voltou aonde estava e isso custou &3%s &7eternias&8.'
 xp-sucesso: '&8[&aE&9S&8] &7Toma ai suas garrafinhas&8!'
 xp-insuficiente: '&8[&aE&9S&8] &7Você não tem EXP suficiênte&8.'
 xp-guardado: '&8[&aE&9S&8] &7Pronto você guardou &3%s &7de EXP&8.'
@@ -68,11 +82,20 @@ teleportou-ele: '&8[&aE&9S&8] &7Você teleportou &3%s&8.'
 feito: '&8[&aE&9S&8] &7:)&8.'
 sem-evento: '&8[&aE&9S&8] &7Não há nenhum evento no momento&8.'
 evento: '&8[&aE&9S&8] &7Indo para o evento :)&8!'
+arena: '&8[&aE&9S&8] &7Indo para a arena&8, &7cuidado&8.'
+caixa: '&8[&aE&9S&8] &7Indo para as caixas&8.'
 evento-definido: '&8[&aE&9S&8] &7Evento definido&8.'
+arena-definida: '&8[&aE&9S&8] &7Arena definida&8.'
+caixa-definida: '&8[&aE&9S&8] &7Caixa definida&8.'
 precisa-numero: '&8[&aE&9S&8] &7Bem... o número da página precisa ser um número&8.'
 proxima-pagina: '&8[&aE&9S&8] &7Use &6/regras &3%s &7para ir para a proxima página&8.'
 pagina-negativa: '&8[&aE&9S&8] &7Página negativa não existe né amigo&8, &7nem &30&8.'
 teleportou-geral: '&8[&aE&9S&8] &3%s &7teleportou a todos até si&8.'
+somente-jogador: '&8[&aE&9S&8] &7Somente jogadores podem usar isso&8.'
+vault-off: '&8[&aE&9S&8] &7Vault não encontrado&8, &7desativando EterniaServer&8.'
+conectado-sucesso-mysql: '&8[&aE&9S&8] &7Conectado com sucesso a database &3MySQL&8.'
+conectado-sucesso-sql: '&8[&aE&9S&8] &7Conectado com sucesso a database &3SQLite&8.'
+erro-sqlite: "&8[&aE&9S&8] &7Erro ao criar arquivo &3%s&8."
 regras: '&8[&aE&9S&8] &7Regras/split/
 &91.0 &8- &7Proibido ofensas&8./split/
 &91.1 &8- &7Qualquer forma de preconceito é proibida&8./split/
@@ -92,3 +115,8 @@ regras: '&8[&aE&9S&8] &7Regras/split/
 &98.0 &8- &7Proibido apologia a coisas ilícitas&8,&7 inclusive programas&8./split/
 &99.0 &8- &7Proibido flood&8/&7spam&8./split/
 &99.1 &8- &7Proibido discutir sobre a punição dada ou não dada por um staff&8.'
+votar: '&8[&aE&9S&8] &7Sites&8:/split/
+&9https://minecraft-mp.com/server-s229257&8./split/
+&9https://topg.org/server-eterniaserver-id484008&8./split/
+&9https://www.planetminecraft.com/server/eterniaserver/&8./split/
+&9https://minecraftservers.biz/servers/144674/&8.'
