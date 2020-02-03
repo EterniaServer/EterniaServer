@@ -1,14 +1,11 @@
 package teleports;
 
 import center.Vars;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import java.util.Objects;
 
 public class Arena implements CommandExecutor
 {
@@ -24,11 +21,9 @@ public class Arena implements CommandExecutor
             // Caso o jogador tenha permissão ele será enviado até a localização da arena.
             if (player.hasPermission("eternia.arena"))
             {
-                World world = Bukkit.getWorld(Objects.requireNonNull(Vars.getString("world-a")));
-                player.teleport(new Location(world, Vars.getDouble("x-a"),
+                player.teleport(new Location(Vars.getWorld("world-a"), Vars.getDouble("x-a"),
                         Vars.getDouble("y-a"), Vars.getDouble("z-a"),
-                        Float.parseFloat(Objects.requireNonNull(Vars.getString("yaw-a"))),
-                        Float.parseFloat(Objects.requireNonNull(Vars.getString("pitch-a")))));
+                        Vars.getFloat("yaw-a"), Vars.getFloat("pitch-a")));
                 Vars.playerMessage("arena", player);
             }
             else

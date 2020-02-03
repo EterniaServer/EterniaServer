@@ -2,6 +2,7 @@ package teleports;
 
 import center.Main;
 import center.Vars;
+import events.NetherPortal;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,12 +21,12 @@ public class SetCrates implements CommandExecutor
             Player player = (Player) sender;
             if(player.hasPermission("eternia.setcaixas"))
             {
-                Vars.file.set("world-c", Objects.requireNonNull(player.getLocation().getWorld()).getName());
-                Vars.file.set("x-c", player.getLocation().getX());
-                Vars.file.set("y-c", player.getLocation().getY());
-                Vars.file.set("z-c", player.getLocation().getZ());
-                Vars.file.set("yaw-c", player.getLocation().getYaw());
-                Vars.file.set("pitch-c", player.getLocation().getPitch());
+                NetherPortal.file.set("world-c", Objects.requireNonNull(player.getLocation().getWorld()).getName());
+                NetherPortal.file.set("x-c", player.getLocation().getX());
+                NetherPortal.file.set("y-c", player.getLocation().getY());
+                NetherPortal.file.set("z-c", player.getLocation().getZ());
+                NetherPortal.file.set("yaw-c", player.getLocation().getYaw());
+                NetherPortal.file.set("pitch-c", player.getLocation().getPitch());
                 main.saveConfig();
                 Vars.playerMessage("caixa-definida", player);
             }

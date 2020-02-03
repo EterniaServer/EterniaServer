@@ -2,6 +2,7 @@ package teleports;
 
 import center.Main;
 import center.Vars;
+import events.NetherPortal;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,12 +21,12 @@ public class SetArena implements CommandExecutor
             Player player = (Player) sender;
             if(player.hasPermission("eternia.setarena"))
             {
-                Vars.file.set("world-a", Objects.requireNonNull(player.getLocation().getWorld()).getName());
-                Vars.file.set("x-a", player.getLocation().getX());
-                Vars.file.set("y-a", player.getLocation().getY());
-                Vars.file.set("z-a", player.getLocation().getZ());
-                Vars.file.set("yaw-a", player.getLocation().getYaw());
-                Vars.file.set("pitch-a", player.getLocation().getPitch());
+                NetherPortal.file.set("world-a", Objects.requireNonNull(player.getLocation().getWorld()).getName());
+                NetherPortal.file.set("x-a", player.getLocation().getX());
+                NetherPortal.file.set("y-a", player.getLocation().getY());
+                NetherPortal.file.set("z-a", player.getLocation().getZ());
+                NetherPortal.file.set("yaw-a", player.getLocation().getYaw());
+                NetherPortal.file.set("pitch-a", player.getLocation().getPitch());
                 main.saveConfig();
                 Vars.playerMessage("arena-definida", player);
                 return true;

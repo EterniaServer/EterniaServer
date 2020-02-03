@@ -1,12 +1,10 @@
 package center;
 
-import events.NetherPortal;
-import events.PlayerJoin;
-import events.PlayerTeleport;
-import experience.Bottlexp;
-import experience.DepositLevel;
-import experience.WithdrawLevel;
+import events.*;
+import experience.*;
 import messages.*;
+import others.*;
+import teleports.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -19,8 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
 import net.milkbowl.vault.economy.Economy;
-import others.*;
-import teleports.*;
 
 public class Main extends JavaPlugin
 {
@@ -40,8 +36,8 @@ public class Main extends JavaPlugin
             saveDefaultConfig();
         }
         FileConfiguration config = getConfig();
-        new Vars(config);
         long delay = config.getInt("intervalo") * 20;
+        new NetherPortal(config).runTaskTimer(this, 20L, delay);
         boolean mysql = Vars.getBool("mysql");
         // Chama a função VaultCheck para verificar a dependencia do
         // plugin Vault, caso o Vault não seja encontrado esse plugin
@@ -63,7 +59,6 @@ public class Main extends JavaPlugin
             SQLiteSetup();
         }
         // Eventos
-        new NetherPortal().runTaskTimer(this, 20L, delay);
         this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
         // Comandos

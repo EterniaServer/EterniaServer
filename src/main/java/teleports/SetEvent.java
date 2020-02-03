@@ -2,6 +2,7 @@ package teleports;
 
 import center.Main;
 import center.Vars;
+import events.NetherPortal;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,12 +21,12 @@ public class SetEvent implements CommandExecutor
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setevent"))
             {
-                Vars.file.set("world-e", Objects.requireNonNull(player.getLocation().getWorld()).getName());
-                Vars.file.set("x-e", player.getLocation().getX());
-                Vars.file.set("y-e", player.getLocation().getY());
-                Vars.file.set("z-e", player.getLocation().getZ());
-                Vars.file.set("yaw-e", player.getLocation().getYaw());
-                Vars.file.set("pitch-e", player.getLocation().getPitch());
+                NetherPortal.file.set("world-e", Objects.requireNonNull(player.getLocation().getWorld()).getName());
+                NetherPortal.file.set("x-e", player.getLocation().getX());
+                NetherPortal.file.set("y-e", player.getLocation().getY());
+                NetherPortal.file.set("z-e", player.getLocation().getZ());
+                NetherPortal.file.set("yaw-e", player.getLocation().getYaw());
+                NetherPortal.file.set("pitch-e", player.getLocation().getPitch());
                 main.saveConfig();
                 Vars.playerMessage("evento-definido", player);
             }

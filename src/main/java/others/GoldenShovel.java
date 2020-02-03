@@ -20,15 +20,15 @@ public class GoldenShovel implements CommandExecutor
             if (player.hasPermission("eternia.goldenshovel"))
             {
                 int cooldownTime = 300;
-                if (Vars.cooldowns.containsKey(player))
+                if (Vars.shovel_cooldown.containsKey(player))
                 {
-                    long secondsLeft = ((Vars.cooldowns.get(player) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
+                    long secondsLeft = ((Vars.shovel_cooldown.get(player) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
                     if (secondsLeft > 0)
                     {
                         Vars.playerReplaceMessage("pa-falta-tempo", secondsLeft, player);
                     }
                 }
-                Vars.cooldowns.put(player, System.currentTimeMillis());
+                Vars.shovel_cooldown.put(player, System.currentTimeMillis());
                 PlayerInventory inventory = player.getInventory();
                 inventory.addItem(new ItemStack(Material.GOLDEN_SHOVEL));
                 Vars.playerMessage("pa-sucesso", player);
