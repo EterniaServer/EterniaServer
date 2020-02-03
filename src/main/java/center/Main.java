@@ -48,7 +48,7 @@ public class Main extends JavaPlugin
         // é desativado.
         if (!VaultCheck())
         {
-            Bukkit.getConsoleSender().sendMessage(Vars.getMessage("vault-off"));
+            Vars.consoleMessage("vault-off");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -136,7 +136,7 @@ public class Main extends JavaPlugin
                 String username = Vars.getString("usuario");
                 String database = Vars.getString("database");
                 setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
-                Bukkit.getConsoleSender().sendMessage(Vars.getMessage("conectado-sucesso-mysql"));
+                Vars.consoleMessage("conectado-sucesso-mysql");
                 String MySQLCreate = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(32) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
                 try
                 {
@@ -179,12 +179,12 @@ public class Main extends JavaPlugin
                     }
                     catch (IOException e)
                     {
-                        Bukkit.getConsoleSender().sendMessage(Vars.replaceMessage("erro-sqlite", dbname));
+                        Vars.consoleReplaceMessage("erro-sqlite", dbname);
                     }
                 }
                 Class.forName("org.sqlite.JDBC");
                 setConnection(DriverManager.getConnection("jdbc:sqlite:" + dataFolder));
-                Bukkit.getConsoleSender().sendMessage(Vars.getMessage("conectado-sucesso-sqlite"));
+                Vars.consoleMessage("conectado-sucesso-sqlite");
                 String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(255) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
                 try
                 {
