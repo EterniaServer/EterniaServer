@@ -1,42 +1,53 @@
 package center;
 
-import java.util.HashMap;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
-@SuppressWarnings("ConstantConditions")
+import java.util.HashMap;
+import java.util.Objects;
+
 public class Vars
 {
+    public static FileConfiguration file;
+    Vars (FileConfiguration file) { Vars.file = file; }
     // Irá retornar uma mensagem já com cores e substituindo na
     // mensagem o argumento "%s" pelo nome do objeto indicado.
     public static String replaceObject(String message, Object valor)
     {
-        String mensagem = NetherTrapCheck.file.getString(message);
+        String mensagem = getString(message);
         assert mensagem != null;
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', (mensagem.replace("%s", String.valueOf(valor))));
     }
     // Irá retornar uma mensagem já com cores e substituindo na
     // mensagem o argumento "%s" por uma string indicada.
-    public static String replaceString(String message, String valor)
+    public static String replaceMessage(String message, String valor)
     {
-        String mensagem = NetherTrapCheck.file.getString(message);
+        String mensagem = getString(message);
         assert mensagem != null;
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', (mensagem.replace("%s", valor)));
     }
     // Irá retornar uma mensagem já com cores.
-    public static String getString(String message)
+    public static String getMessage(String message)
     {
-        return org.bukkit.ChatColor.translateAlternateColorCodes('&', (NetherTrapCheck.file.getString(message)));
+        return org.bukkit.ChatColor.translateAlternateColorCodes('&', (getString(message)));
     }
     // Serve para aplicar cores a uma string.
-    public static String ChatColor(String message)
+    public static String getColor(String message)
     {
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', message);
     }
-    // Retorna um inteiro.
-    public static int getInt(String valor)
-    {
-        return NetherTrapCheck.file.getInt(valor);
-    }
-    // Salva a localização de todos os jogadores que estão em um portal
-    // do Nether para caso eles estejam presos.
-    static final HashMap playersInPortal = new HashMap();
+    // Métodos
+    public static boolean getBool(String valor) { return file.getBoolean(valor); }
+    public static String getString(String valor) { return file.getString(valor); }
+    public static double getDouble(String valor) { return file.getDouble(valor); }
+    public static int getInt(String valor) { return file.getInt(valor); }
+    // Variáveis
+    public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();
+    public static final HashMap<Player, Location> back = new HashMap<>();
+    public static Location spawn = new Location(Bukkit.getWorld(Objects.requireNonNull(Vars.getString("world"))),
+            Vars.getDouble("x"), Vars.getDouble("y"), Vars.getDouble("z"),
+            Float.parseFloat(Objects.requireNonNull(Vars.getString("yaw"))),
+            Float.parseFloat(Objects.requireNonNull(Vars.getString("pitch"))));
 }

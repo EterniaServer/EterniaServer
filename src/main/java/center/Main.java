@@ -1,8 +1,12 @@
 package center;
 
-import center.sql.*;
-import commands.player.*;
-import commands.staff.*;
+import events.NetherPortal;
+import events.PlayerJoin;
+import events.PlayerTeleport;
+import experience.Bottlexp;
+import experience.DepositLevel;
+import experience.WithdrawLevel;
+import messages.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -15,6 +19,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
 import net.milkbowl.vault.economy.Economy;
+import others.*;
+import teleports.*;
 
 public class Main extends JavaPlugin
 {
@@ -34,20 +40,20 @@ public class Main extends JavaPlugin
             saveDefaultConfig();
         }
         FileConfiguration config = getConfig();
+        new Vars(config);
         long delay = config.getInt("intervalo") * 20;
-        new NetherTrapCheck(config).runTaskTimer(this, 20L, delay);
+        boolean mysql = Vars.getBool("mysql");
         // Chama a função VaultCheck para verificar a dependencia do
         // plugin Vault, caso o Vault não seja encontrado esse plugin
         // é desativado.
         if (!VaultCheck())
         {
-            Bukkit.getConsoleSender().sendMessage(Vars.getString("vault-off"));
+            Bukkit.getConsoleSender().sendMessage(Vars.getMessage("vault-off"));
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
         // Procura nas configurações para verificar qual método de
         // salvamento o usuário escolheu.
-        boolean mysql = NetherTrapCheck.file.getBoolean("mysql");
         if (mysql)
         {
             MySQLSetup();
@@ -56,13 +62,11 @@ public class Main extends JavaPlugin
         {
             SQLiteSetup();
         }
-        // Define as classes SQL e PlayerListener como classes de eventos
-        // que ficaram ativas esperando para caso algum evento do jogo
-        // as chame.
-        this.getServer().getPluginManager().registerEvents(new SQL(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        // Irá carregar cada classe que é um comando e ativar um executor
-        // para elas dentro do jogo.
+        // Eventos
+        new NetherPortal().runTaskTimer(this, 20L, delay);
+        this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
+        // Comandos
         Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new Suicide());
         Objects.requireNonNull(this.getCommand("advice")).setExecutor(new Advice());
         Objects.requireNonNull(this.getCommand("discord")).setExecutor(new Discord());
@@ -95,10 +99,7 @@ public class Main extends JavaPlugin
     }
     // Confirma que essa classe só será carregada uma vez e os valores
     // fiquem fixos.
-    public static Main getMain()
-    {
-        return mainclasse;
-    }
+    public static Main getMain() { return mainclasse; }
     // Verifica se existe o plugin Vault na pasta de plugins, caso não
     // encontre ele retorna falso e caso encontre retorna true.
     private boolean VaultCheck()
@@ -129,13 +130,13 @@ public class Main extends JavaPlugin
                     return;
                 }
                 Class.forName("java.sql.Driver");
-                String host = NetherTrapCheck.file.getString("host");
-                int port = NetherTrapCheck.file.getInt("porta");
-                String password = NetherTrapCheck.file.getString("senha");
-                String username = NetherTrapCheck.file.getString("usuario");
-                String database = NetherTrapCheck.file.getString("database");
+                String host = Vars.getString("host");
+                int port = Vars.getInt("porta");
+                String password = Vars.getString("senha");
+                String username = Vars.getString("usuario");
+                String database = Vars.getString("database");
                 setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
-                Bukkit.getConsoleSender().sendMessage(Vars.getString("conectado-sucesso-mysql"));
+                Bukkit.getConsoleSender().sendMessage(Vars.getMessage("conectado-sucesso-mysql"));
                 String MySQLCreate = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(32) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
                 try
                 {
@@ -163,7 +164,7 @@ public class Main extends JavaPlugin
         {
             synchronized (this)
             {
-                if(getConnection() != null && !getConnection().isClosed())
+                if (getConnection() != null && !getConnection().isClosed())
                 {
                     return;
                 }
@@ -178,12 +179,12 @@ public class Main extends JavaPlugin
                     }
                     catch (IOException e)
                     {
-                        Bukkit.getConsoleSender().sendMessage(Vars.replaceString("erro-sqlite", dbname));
+                        Bukkit.getConsoleSender().sendMessage(Vars.replaceMessage("erro-sqlite", dbname));
                     }
                 }
                 Class.forName("org.sqlite.JDBC");
                 setConnection(DriverManager.getConnection("jdbc:sqlite:" + dataFolder));
-                Bukkit.getConsoleSender().sendMessage(Vars.getString("conectado-sucesso-sqlite"));
+                Bukkit.getConsoleSender().sendMessage(Vars.getMessage("conectado-sucesso-sqlite"));
                 String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(255) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
                 try
                 {
@@ -205,17 +206,8 @@ public class Main extends JavaPlugin
     // Sempre que for necessário se conectar a database para salvar ou
     // pegar dados ele irá pegar a conexão já existe sem precisar criar
     // uma nova.
-    public Connection getConnection()
-    {
-        return connection;
-    }
-    private void setConnection(Connection connection)
-    {
-        this.connection = connection;
-    }
+    public Connection getConnection() { return connection; }
+    private void setConnection(Connection connection) { this.connection = connection; }
     // Sempre que está função ser chamada ela vai retornar o plugin Vault.
-    public static Economy getEconomy()
-    {
-        return econ;
-    }
+    public static Economy getEconomy() { return econ; }
 }
