@@ -10,6 +10,8 @@ import java.util.Objects;
 
 public class Vars
 {
+    // MÉTODOS
+    // Send
     public static void broadcastReplaceMessage(String message, Object valor)
     {
         String mensagem = getString(message);
@@ -28,8 +30,6 @@ public class Vars
         assert mensagem != null;
         Bukkit.getConsoleSender().sendMessage(getColor(mensagem.replace("%s", String.valueOf(valor))));
     }
-    // MÉTODOS
-    // Send
     public static void playerMessage(String message, Player target) { target.sendMessage(getMessage(message)); }
     public static void consoleMessage(String message) { Bukkit.getConsoleSender().sendMessage(getMessage(message)); }
     // Get
@@ -41,7 +41,10 @@ public class Vars
     public static double getDouble(String valor) { return NetherPortal.file.getDouble(valor); }
     public static Float getFloat(String valor) { return Float.parseFloat(Objects.requireNonNull(Vars.getString(valor))); }
     public static int getInt(String valor) { return NetherPortal.file.getInt(valor); }
-    // Variáveis
+    // Set
+    public static void setWorld(String path, Player player) { NetherPortal.file.set(path, Objects.requireNonNull(player.getLocation().getWorld()).getName()); }
+    public static void setConfig(String path, Object valor) { NetherPortal.file.set(path, valor); }
+    // VARIÁVEIS
     public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();
     public static final HashMap<Player, Location> back = new HashMap<>();
     public static final HashMap<Player, Long> shovel_cooldown = new HashMap<>();
