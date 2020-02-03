@@ -33,7 +33,7 @@ public class DepositLevel implements CommandExecutor
                         if (xp_atual >= Integer.parseInt(args[0]))
                         {
                             xp_atual = Integer.parseInt(args[0]);
-                            player.sendMessage(Vars.replaceObject("xp-guardado", xp_atual));
+                            Vars.playerReplaceMessage("xp-guardado", xp_atual, player);
                             try
                             {
                                 int xp = xp_atual;

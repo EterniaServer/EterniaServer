@@ -1,7 +1,6 @@
 package messages;
 
 import center.Vars;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +26,7 @@ public class Suicide implements CommandExecutor
                     sb.append("&8- &3").append(player.getName());
                     String s = sb.toString();
                     player.setHealth(0);
-                    Bukkit.broadcastMessage(Vars.replaceMessage("suicidio", s));
+                    Vars.broadcastReplaceMessage("suicidio", s);
                 }
                 else
                 {

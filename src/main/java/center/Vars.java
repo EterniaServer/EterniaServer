@@ -12,6 +12,12 @@ public class Vars
 {
     public static FileConfiguration file;
     Vars (FileConfiguration file) { Vars.file = file; }
+    public static void broadcastReplaceMessage(String message, Object valor)
+    {
+        String mensagem = getString(message);
+        assert mensagem != null;
+        Bukkit.broadcastMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', (mensagem.replace("%s", String.valueOf(valor)))));
+    }
     public static void playerReplaceMessage(String message, Object valor, Player target)
     {
         String mensagem = getString(message);

@@ -1,7 +1,6 @@
 package messages;
 
 import center.Vars;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,7 +25,7 @@ public class Advice implements CommandExecutor
                     }
                     sb.substring(0, sb.length() - 1);
                     String s = sb.toString();
-                    Bukkit.broadcastMessage(Vars.replaceMessage("aviso-global", s));
+                    Vars.broadcastReplaceMessage("aviso-global", s);
                 }
                 else
                 {
@@ -49,7 +48,7 @@ public class Advice implements CommandExecutor
                 }
                 sb.substring(0, sb.length() - 1);
                 String s = sb.toString();
-                Bukkit.broadcastMessage(Vars.replaceMessage("aviso-global", s));
+                Vars.broadcastReplaceMessage("aviso-global", s);
             }
             else
             {
