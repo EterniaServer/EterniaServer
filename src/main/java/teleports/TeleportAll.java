@@ -24,14 +24,18 @@ public class TeleportAll implements CommandExecutor
                         other.teleport(player);
                     }
                 }
-                player.sendMessage(Vars.getMessage("teleportou-geral"));
+                Vars.playerMessage("teleportou-geral", player);
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
+                Vars.playerMessage("sem-permissao", player);
             }
             return true;
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

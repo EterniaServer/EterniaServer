@@ -25,16 +25,18 @@ public class Hat implements CommandExecutor
                 }
                 set_capacete(player);
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                player.sendMessage(Vars.getMessage("capacete"));
-                return true;
+                Vars.playerMessage("capacete", player);
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
     private void set_capacete(Player player)
     {

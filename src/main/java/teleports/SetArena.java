@@ -27,15 +27,18 @@ public class SetArena implements CommandExecutor
                 Vars.file.set("yaw-a", player.getLocation().getYaw());
                 Vars.file.set("pitch-a", player.getLocation().getPitch());
                 main.saveConfig();
-                player.sendMessage(Vars.getMessage("arena-definida"));
+                Vars.playerMessage("arena-definida", player);
                 return true;
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

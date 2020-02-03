@@ -13,16 +13,20 @@ public class Discord implements CommandExecutor
     {
         if (sender instanceof Player)
         {
-            if (sender.hasPermission("eternia.discord"))
+            Player player = (Player) sender;
+            if (player.hasPermission("eternia.discord"))
             {
-                sender.sendMessage(Vars.getMessage("discord"));
+                Vars.playerMessage("discord", player);
             }
             else
             {
-                sender.sendMessage(Vars.getMessage("sem-permissao"));
+                Vars.playerMessage("sem-permissao", player);
             }
-            return true;
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("discord");
+        }
+        return true;
     }
 }

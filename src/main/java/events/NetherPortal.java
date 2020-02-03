@@ -35,7 +35,7 @@ public class NetherPortal extends org.bukkit.scheduler.BukkitRunnable
                         if (player_location.getBlock().getType() == Material.NETHER_PORTAL)
                         {
                             player.teleport(Vars.spawn);
-                            player.sendMessage(Vars.getMessage("spawn"));
+                            Vars.playerMessage("spawn", player);
                         }
                     }
                     else
@@ -43,7 +43,7 @@ public class NetherPortal extends org.bukkit.scheduler.BukkitRunnable
                         Vars.playersInPortal.put(player, Vars.playersInPortal.get(player) - 1);
                         if (Vars.playersInPortal.get(player) < 5)
                         {
-                            player.sendMessage(Vars.replaceObject("trap-mensagem-tempo", Vars.playersInPortal.get(player)));
+                            Vars.playerReplaceMessage("trap-mensagem-tempo", Vars.playersInPortal.get(player), player);
                         }
                     }
                 }

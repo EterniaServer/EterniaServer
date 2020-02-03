@@ -69,32 +69,31 @@ public class DepositLevel implements CommandExecutor
                             {
                                 e.printStackTrace();
                             }
-                            return true;
                         }
                         else
                         {
-                            player.sendMessage(Vars.getMessage("xp-insuficiente"));
-                            return true;
+                            Vars.playerMessage("xp-insuficiente", player);
                         }
                     }
                     catch (Exception e)
                     {
-                        player.sendMessage(Vars.getMessage("guarda-level-errou"));
-                        return true;
+                        Vars.playerMessage("guarda-level-errou", player);
                     }
                 }
                 else
                 {
-                    player.sendMessage(Vars.getMessage("guarda-level"));
-                    return true;
+                    Vars.playerMessage("guarda-level", player);
                 }
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissão", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

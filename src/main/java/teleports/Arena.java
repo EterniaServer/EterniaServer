@@ -29,19 +29,17 @@ public class Arena implements CommandExecutor
                         Vars.getDouble("y-a"), Vars.getDouble("z-a"),
                         Float.parseFloat(Objects.requireNonNull(Vars.getString("yaw-a"))),
                         Float.parseFloat(Objects.requireNonNull(Vars.getString("pitch-a")))));
-                player.sendMessage(Vars.getMessage("arena"));
-                return true;
+                Vars.playerMessage("arena", player);
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
         else
         {
-            Bukkit.getConsoleSender().sendMessage(Vars.getMessage("somente-jogador"));
-            return true;
+            Vars.consoleMessage("somente-jogador");
         }
+        return true;
     }
 }

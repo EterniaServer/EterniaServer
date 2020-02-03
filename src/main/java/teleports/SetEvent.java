@@ -18,7 +18,7 @@ public class SetEvent implements CommandExecutor
         {
             Main main = Main.getPlugin(Main.class);
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.setevent"))
+            if (player.hasPermission("eternia.setevent"))
             {
                 Vars.file.set("world-e", Objects.requireNonNull(player.getLocation().getWorld()).getName());
                 Vars.file.set("x-e", player.getLocation().getX());
@@ -27,15 +27,17 @@ public class SetEvent implements CommandExecutor
                 Vars.file.set("yaw-e", player.getLocation().getYaw());
                 Vars.file.set("pitch-e", player.getLocation().getPitch());
                 main.saveConfig();
-                player.sendMessage(Vars.getMessage("evento-definido"));
-                return true;
+                Vars.playerMessage("evento-definido", player);
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

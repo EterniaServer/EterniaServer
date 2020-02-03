@@ -1,7 +1,6 @@
 package others;
 
 import center.Vars;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -130,19 +129,17 @@ public class Blocks implements CommandExecutor
                     player.getInventory().removeItem(new ItemStack(Material.EMERALD, emerald_block * 9));
                     player.getInventory().addItem(new ItemStack(Material.EMERALD_BLOCK, emerald_block));
                 }
-                player.sendMessage(Vars.getMessage("feito"));
-                return true;
+                Vars.playerMessage("feito", player);
             }
             else
             {
-                sender.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
         else
         {
-            Bukkit.getConsoleSender().sendMessage(Vars.getMessage("somente-jogador"));
-            return true;
+            Vars.consoleMessage("somente-jogador");
         }
+        return true;
     }
 }

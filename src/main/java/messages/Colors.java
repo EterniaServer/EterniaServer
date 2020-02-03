@@ -13,16 +13,20 @@ public class Colors implements CommandExecutor
     {
         if (sender instanceof Player)
         {
-            if (sender.hasPermission("eternia.colors"))
+            Player player = (Player) sender;
+            if (player.hasPermission("eternia.colors"))
             {
-                sender.sendMessage(Vars.getMessage("cores"));
+                Vars.playerMessage("cores", player);
             }
             else
             {
-                sender.sendMessage(Vars.getMessage("sem-permissao"));
+                Vars.playerMessage("sem-permissao", player);
             }
-            return true;
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("cores");
+        }
+        return true;
     }
 }

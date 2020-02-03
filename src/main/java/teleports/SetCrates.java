@@ -27,15 +27,17 @@ public class SetCrates implements CommandExecutor
                 Vars.file.set("yaw-c", player.getLocation().getYaw());
                 Vars.file.set("pitch-c", player.getLocation().getPitch());
                 main.saveConfig();
-                player.sendMessage(Vars.getMessage("caixa-definida"));
-                return true;
+                Vars.playerMessage("caixa-definida", player);
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

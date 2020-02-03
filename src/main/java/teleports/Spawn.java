@@ -3,14 +3,10 @@ package teleports;
 import center.Main;
 import center.Vars;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Objects;
 
 public class Spawn implements CommandExecutor
 {
@@ -18,7 +14,7 @@ public class Spawn implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
         if (sender instanceof Player)
-        { ;
+        {
             Player player = (Player) sender;
             if (args.length == 0)
             {
@@ -27,25 +23,22 @@ public class Spawn implements CommandExecutor
                     if (player.hasPermission("eternia.timing.bypass"))
                     {
                         player.teleport(Vars.spawn);
-                        player.sendMessage(Vars.getMessage("spawn"));
-                        return true;
+                        Vars.playerMessage("spawn", player);
                     }
                     else
                     {
                         int tempo = Vars.getInt("cooldown");
-                        player.sendMessage(Vars.replaceObject("teleportando-em", tempo));
+                        Vars.playerReplaceMessage("teleportando-em", tempo, player);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getMain(), () ->
                         {
                             player.teleport(Vars.spawn);
-                            player.sendMessage(Vars.getMessage("spawn"));
+                            Vars.playerMessage("spawn", player);
                         }, 20 * tempo);
-                        return true;
                     }
                 }
                 else
                 {
-                    player.sendMessage(Vars.getMessage("sem-permissao"));
-                    return true;
+                    Vars.playerMessage("sem-permissao", player);
                 }
             }
             else if (args.length == 1)
@@ -58,22 +51,24 @@ public class Spawn implements CommandExecutor
                     if(target.isOnline())
                     {
                         player.teleport(Vars.spawn);
-                        target.sendMessage(Vars.getMessage("spawn"));
-                        player.sendMessage(Vars.replaceMessage("teleportou-ele", target.getName()));
+                        Vars.playerMessage("spawn", target);
+                        Vars.playerReplaceMessage("teleportou-ele", target.getName(), player);
                     }
                     else
                     {
-                        player.sendMessage(Vars.getMessage("jogador-offline"));
-                        return true;
+                        Vars.playerMessage("jogador-offline", player);
                     }
                 }
                 else
                 {
-                    player.sendMessage(Vars.getMessage("sem-permissao"));
-                    return true;
+                    Vars.playerMessage("sem-permissao", player);
                 }
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

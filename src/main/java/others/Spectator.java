@@ -18,14 +18,17 @@ public class Spectator implements CommandExecutor
             if(player.hasPermission("eternia.spectator"))
             {
                 player.setGameMode(GameMode.SPECTATOR);
-                player.sendMessage(Vars.getMessage("escondido"));
+                Vars.playerMessage("escondido", player);
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

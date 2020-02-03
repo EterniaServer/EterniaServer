@@ -8,11 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import java.util.HashMap;
 
 public class GoldenShovel implements CommandExecutor
 {
-    private final HashMap<String, Long> cooldowns = new HashMap<>();
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
@@ -22,27 +20,28 @@ public class GoldenShovel implements CommandExecutor
             if (player.hasPermission("eternia.goldenshovel"))
             {
                 int cooldownTime = 300;
-                if (cooldowns.containsKey(sender.getName()))
+                if (Vars.cooldowns.containsKey(player))
                 {
-                    long secondsLeft = ((cooldowns.get(sender.getName()) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
+                    long secondsLeft = ((Vars.cooldowns.get(player) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
                     if (secondsLeft > 0)
                     {
-                        player.sendMessage(Vars.replaceObject("pa-falta-tempo", secondsLeft));
-                        return true;
+                        Vars.playerReplaceMessage("pa-falta-tempo", secondsLeft, player);
                     }
                 }
-                cooldowns.put(sender.getName(), System.currentTimeMillis());
+                Vars.cooldowns.put(player, System.currentTimeMillis());
                 PlayerInventory inventory = player.getInventory();
                 inventory.addItem(new ItemStack(Material.GOLDEN_SHOVEL));
-                player.sendMessage(Vars.getMessage("pa-sucesso"));
-                return true;
+                Vars.playerMessage("pa-sucesso", player);
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

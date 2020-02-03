@@ -47,19 +47,23 @@ public class WithdrawLevel implements CommandExecutor
                     {
                         e.printStackTrace();
                     }
-                    player.sendMessage(Vars.replaceObject("xp-tirar", player.getLevel()));
-                    return true;
+                    Vars.playerReplaceMessage("xp-tirar", player.getLevel(), player);
+
                 }
                 catch (Exception e)
                 {
-                    return true;
+                    Vars.playerMessage("tirar-xp-errou", player);
                 }
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
+                Vars.playerMessage("sem-permissão", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

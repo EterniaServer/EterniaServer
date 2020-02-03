@@ -17,23 +17,26 @@ public class Event implements CommandExecutor {
     {
         if (sender instanceof Player)
         {
+            Player player = (Player) sender;
             if (sender.hasPermission("eternia.event"))
             {
                 World world = Bukkit.getWorld(Objects.requireNonNull(Vars.getString("world-e")));
-                Player player = (Player) sender;
                 player.teleport(new Location(world, Vars.getDouble("x-e"),
                         Vars.getDouble("y-e"), Vars.getDouble("z-e"),
                         Float.parseFloat(Objects.requireNonNull(Vars.getString("yaw-e"))),
                         Float.parseFloat(Objects.requireNonNull(Vars.getString("pitch-e")))));
-                sender.sendMessage(Vars.getMessage("evento"));
+                Vars.playerMessage("evento", player);
                 return true;
             }
             else
             {
-                sender.sendMessage(Vars.getMessage("sem-evento"));
-                return true;
+                Vars.playerMessage("sem-evento", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

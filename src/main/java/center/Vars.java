@@ -12,33 +12,29 @@ public class Vars
 {
     public static FileConfiguration file;
     Vars (FileConfiguration file) { Vars.file = file; }
-    // Irá retornar uma mensagem já com cores e substituindo na
-    // mensagem o argumento "%s" pelo nome do objeto indicado.
-    public static String replaceObject(String message, Object valor)
+    public static void playerReplaceMessage(String message, Object valor, Player target)
     {
         String mensagem = getString(message);
         assert mensagem != null;
-        return org.bukkit.ChatColor.translateAlternateColorCodes('&', (mensagem.replace("%s", String.valueOf(valor))));
+        target.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', (mensagem.replace("%s", String.valueOf(valor)))));
     }
-    // Irá retornar uma mensagem já com cores e substituindo na
-    // mensagem o argumento "%s" por uma string indicada.
-    public static String replaceMessage(String message, String valor)
+    public static void consoleReplaceMessage(String message, Object valor)
     {
         String mensagem = getString(message);
         assert mensagem != null;
-        return org.bukkit.ChatColor.translateAlternateColorCodes('&', (mensagem.replace("%s", valor)));
+        Bukkit.getConsoleSender().sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', (mensagem.replace("%s", String.valueOf(valor)))));
     }
-    // Irá retornar uma mensagem já com cores.
-    public static String getMessage(String message)
+    public static void playerMessage(String message, Player target)
     {
-        return org.bukkit.ChatColor.translateAlternateColorCodes('&', (getString(message)));
+        target.sendMessage(getMessage(message));
     }
-    // Serve para aplicar cores a uma string.
-    public static String getColor(String message)
+    public static void consoleMessage(String message)
     {
-        return org.bukkit.ChatColor.translateAlternateColorCodes('&', message);
+        Bukkit.getConsoleSender().sendMessage(getMessage(message));
     }
     // Métodos
+    public static String getMessage(String message) { return getColor(getString(message)); }
+    public static String getColor(String message) { return org.bukkit.ChatColor.translateAlternateColorCodes('&', message); }
     public static boolean getBool(String valor) { return file.getBoolean(valor); }
     public static String getString(String valor) { return file.getString(valor); }
     public static double getDouble(String valor) { return file.getDouble(valor); }
@@ -46,7 +42,8 @@ public class Vars
     // Variáveis
     public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();
     public static final HashMap<Player, Location> back = new HashMap<>();
-    public static Location spawn = new Location(Bukkit.getWorld(Objects.requireNonNull(Vars.getString("world"))),
+    public static final HashMap<Player, Long> cooldowns = new HashMap<>();
+    public static final Location spawn = new Location(Bukkit.getWorld(Objects.requireNonNull(Vars.getString("world"))),
             Vars.getDouble("x"), Vars.getDouble("y"), Vars.getDouble("z"),
             Float.parseFloat(Objects.requireNonNull(Vars.getString("yaw"))),
             Float.parseFloat(Objects.requireNonNull(Vars.getString("pitch"))));

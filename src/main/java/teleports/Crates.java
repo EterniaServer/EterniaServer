@@ -17,23 +17,26 @@ public class Crates implements CommandExecutor {
     {
         if (sender instanceof Player)
         {
+            Player player = (Player) sender;
             if (sender.hasPermission("eternia.arena"))
             {
                 World world = Bukkit.getWorld(Objects.requireNonNull(Vars.getString("world-c")));
-                Player player = (Player) sender;
                 player.teleport(new Location(world, Vars.getDouble("x-c"),
                         Vars.getDouble("y-c"), Vars.getDouble("z-c"),
                         Float.parseFloat(Objects.requireNonNull(Vars.getString("yaw-c"))),
                         Float.parseFloat(Objects.requireNonNull(Vars.getString("pitch-c")))));
-                sender.sendMessage(Vars.getMessage("caixa"));
+                Vars.playerMessage("caixa", player);
                 return true;
             }
             else
             {
-                sender.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

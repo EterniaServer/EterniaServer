@@ -22,8 +22,7 @@ public class Feed implements CommandExecutor
                     if (command.getName().equalsIgnoreCase("comandos.staff.feed"))
                     {
                         player.setFoodLevel(20);
-                        player.sendMessage(Vars.getMessage("me-enchi"));
-                        return true;
+                        Vars.playerMessage("me-enchi", player);
                     }
                 }
                 else if (args.length == 1)
@@ -36,29 +35,41 @@ public class Feed implements CommandExecutor
                         if (target.isOnline())
                         {
                             target.setFoodLevel(20);
-                            player.sendMessage(Vars.replaceMessage("encheu-barra", target.getName()));
-                            target.sendMessage(Vars.replaceMessage("recebeu-barra", player.getName()));
-                            return true;
+                            Vars.playerReplaceMessage("encheu-barra", target.getName(), player);
+                            Vars.playerReplaceMessage("recebeu-barra", player.getName(), target);
                         }
                         else
                         {
-                            player.sendMessage(Vars.getMessage("jogador-offline"));
-                            return true;
+                            Vars.playerMessage("jogador-offline", player);
                         }
                     }
                     else
                     {
-                        player.sendMessage(Vars.getMessage("sem-permissao"));
-                        return true;
+                        Vars.playerMessage("sem-permissao", player);
                     }
                 }
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else if (args.length == 1)
+        {
+            String targetS = args[0];
+            Player target = Bukkit.getPlayer(targetS);
+            assert target != null;
+            if (target.isOnline())
+            {
+                target.setFoodLevel(20);
+                Vars.consoleReplaceMessage("encheu-barra", target.getName());
+                Vars.playerReplaceMessage("recebeu-barra", "console", target);
+            }
+            else
+            {
+                Vars.consoleMessage("jogador-offline");
+            }
+        }
+        return true;
     }
 }

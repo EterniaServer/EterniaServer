@@ -1,6 +1,7 @@
 package messages;
 
 import center.Vars;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +14,8 @@ public class Rules implements CommandExecutor
     {
         if (sender instanceof Player)
         {
-            if (sender.hasPermission("eternia.rules"))
+            Player player = (Player) sender;
+            if (player.hasPermission("eternia.rules"))
             {
                 if (args.length == 1)
                 {
@@ -30,7 +32,7 @@ public class Rules implements CommandExecutor
                         {
                             try
                             {
-                                sender.sendMessage(Vars.getColor(regralista[i]));
+                                player.sendMessage(Vars.getColor(regralista[i]));
                                 cont += 1;
                             }
                             catch (Exception e)
@@ -40,25 +42,64 @@ public class Rules implements CommandExecutor
                         }
                         if (cont == fim - inicio)
                         {
-                            sender.sendMessage(Vars.replaceObject("proxima-pagina", Integer.parseInt(args[0]) + 1 ));
+                            Vars.playerReplaceMessage("proxima-pagina", Integer.parseInt(args[0]) + 1, player);
                         }
-                        return true;
                     }
                     else
                     {
-                        sender.sendMessage(Vars.getMessage("pagina-negativa"));
+                        Vars.playerMessage("pagina-negativa", player);
                     }
                 }
                 else
                 {
-                    sender.sendMessage(Vars.getMessage("precisa-numero"));
+                    Vars.playerMessage("precisa-numero", player);
                 }
             }
             else
             {
-                sender.sendMessage(Vars.getMessage("sem-permissao"));
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            if (args.length == 1)
+            {
+                int valor = Integer.parseInt(args[0]);
+                if (valor > 0)
+                {
+                    int inicio = 5 * (valor - 1);
+                    int fim = 6 * (valor);
+                    int cont = 0;
+                    String regras = Vars.getString("regras");
+                    assert regras != null;
+                    String[] regralista = regras.split("/split/");
+                    for (int i = inicio; i < fim; i++)
+                    {
+                        try
+                        {
+                            Bukkit.getConsoleSender().sendMessage(Vars.getColor(regralista[i]));
+                            cont += 1;
+                        }
+                        catch (Exception e)
+                        {
+                            break;
+                        }
+                    }
+                    if (cont == fim - inicio)
+                    {
+                        Vars.consoleReplaceMessage("proxima-pagina", Integer.parseInt(args[0]) + 1);
+                    }
+                }
+                else
+                {
+                    sender.sendMessage(Vars.getMessage("pagina-negativa"));
+                }
+            }
+            else
+            {
+                sender.sendMessage(Vars.getMessage("precisa-numero"));
+            }
+        }
+        return true;
     }
 }

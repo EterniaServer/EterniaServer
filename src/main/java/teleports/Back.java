@@ -2,7 +2,6 @@ package teleports;
 
 import center.Main;
 import center.Vars;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,8 +36,7 @@ public class Back implements CommandExecutor
                     {
                         player.teleport(Vars.back.get(player));
                         Vars.back.remove(player);
-                        player.sendMessage(Vars.getMessage("back-gratis"));
-                        return true;
+                        Vars.playerMessage("back-gratis", player);
                     }
                     else
                     {
@@ -46,32 +44,29 @@ public class Back implements CommandExecutor
                         {
                             player.teleport(Vars.back.get(player));
                             Vars.back.remove(player);
-                            player.sendMessage(Vars.replaceObject("back-sucesso", valor));
                             economy.withdrawPlayer(player, valor);
+                            Vars.playerReplaceMessage("back-sucesso", valor, player);
                         }
                         else
                         {
-                            player.sendMessage(Vars.replaceObject("back-sem-dinheiro", valor));
+                            Vars.playerReplaceMessage("back-sem-dinheiro", valor, player);
                         }
-                        return true;
                     }
                 }
                 else
                 {
-                    player.sendMessage(Vars.getMessage("back-nao-pode"));
-                    return true;
+                    Vars.playerMessage("back-nao-pode", player);
                 }
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
         else
         {
-            Bukkit.getConsoleSender().sendMessage(Vars.getMessage("somente-jogador"));
-            return true;
+            Vars.consoleMessage("somente-jogador");
         }
+        return true;
     }
 }

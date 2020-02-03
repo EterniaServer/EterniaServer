@@ -20,21 +20,23 @@ public class Name implements CommandExecutor
                 if (args.length == 0)
                 {
                     player.setDisplayName(player.getName());
-                    player.sendMessage(Vars.getMessage("nick-removido"));
+                    Vars.playerMessage("nick-removido", player);
                 }
                 else
                 {
                     player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
-                    player.sendMessage(Vars.replaceMessage("nick-novo", player.getDisplayName()));
+                    Vars.playerReplaceMessage("nick-novo", player.getDisplayName(), player);
                 }
-                return true;
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

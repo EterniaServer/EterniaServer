@@ -18,7 +18,7 @@ public class SetSpawn implements CommandExecutor
         {
             Main main = Main.getPlugin(Main.class);
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.setspawn"))
+            if (player.hasPermission("eternia.setspawn"))
             {
                 Vars.file.set("world", Objects.requireNonNull(player.getLocation().getWorld()).getName());
                 Vars.file.set("x", player.getLocation().getX());
@@ -27,15 +27,17 @@ public class SetSpawn implements CommandExecutor
                 Vars.file.set("yaw", player.getLocation().getYaw());
                 Vars.file.set("pitch", player.getLocation().getPitch());
                 main.saveConfig();
-                player.sendMessage(Vars.getMessage("spawn-definido"));
-                return true;
+                Vars.playerMessage("spawn-definido", player);
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }

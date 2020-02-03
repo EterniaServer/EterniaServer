@@ -33,14 +33,16 @@ public class Suicide implements CommandExecutor
                 {
                     player.setHealth(0);
                 }
-                return true;
             }
             else
             {
-                player.sendMessage(Vars.getMessage("sem-permissao"));
-                return true;
+                Vars.playerMessage("sem-permissao", player);
             }
         }
-        return false;
+        else
+        {
+            Vars.consoleMessage("somente-jogador");
+        }
+        return true;
     }
 }
