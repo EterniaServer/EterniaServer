@@ -37,19 +37,12 @@ public class Main extends JavaPlugin
         }
         FileConfiguration config = getConfig();
         long delay = config.getInt("intervalo") * 20;
+        // Eventos
         new NetherPortal(config).runTaskTimer(this, 20L, delay);
+        this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
+        // Salvamento
         boolean mysql = Vars.getBool("mysql");
-        // Chama a função VaultCheck para verificar a dependencia do
-        // plugin Vault, caso o Vault não seja encontrado esse plugin
-        // é desativado.
-        if (!VaultCheck())
-        {
-            Vars.consoleMessage("vault-off");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-        // Procura nas configurações para verificar qual método de
-        // salvamento o usuário escolheu.
         if (mysql)
         {
             MySQLSetup();
@@ -58,9 +51,13 @@ public class Main extends JavaPlugin
         {
             SQLiteSetup();
         }
-        // Eventos
-        this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
+        // Money.
+        if (!VaultCheck())
+        {
+            Vars.consoleMessage("vault-off");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         // Comandos
         Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new Suicide());
         Objects.requireNonNull(this.getCommand("advice")).setExecutor(new Advice());
@@ -91,6 +88,9 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("setcrates")).setExecutor(new SetCrates());
         Objects.requireNonNull(this.getCommand("crates")).setExecutor(new Crates());
         Objects.requireNonNull(this.getCommand("vote")).setExecutor(new Vote());
+        Objects.requireNonNull(this.getCommand("teleportaccept")).setExecutor(new TeleportAccept());
+        Objects.requireNonNull(this.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
+        Objects.requireNonNull(this.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer());
     }
     // Confirma que essa classe só será carregada uma vez e os valores
     // fiquem fixos.

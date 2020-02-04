@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="yuri">
     <words>
+      <w>aceitou</w>
       <w>aguarde</w>
       <w>algum</w>
       <w>alguma</w>
@@ -76,6 +77,8 @@
       <w>entre</w>
       <w>então</w>
       <w>enviado</w>
+      <w>enviou</w>
+      <w>errado</w>
       <w>errou</w>
       <w>escolheu</w>
       <w>escolhido</w>
@@ -145,13 +148,17 @@
       <w>método</w>
       <w>métodos</w>
       <w>necessário</w>
+      <w>negado</w>
       <w>negativa</w>
+      <w>negou</w>
       <w>nenhum</w>
       <w>nosso</w>
       <w>numero</w>
       <w>nível</w>
       <w>objeto</w>
       <w>pagina</w>
+      <w>pedido</w>
+      <w>pediu</w>
       <w>pegar</w>
       <w>pela</w>
       <w>pelo</w>
@@ -187,6 +194,7 @@
       <w>salvamento</w>
       <w>salvar</w>
       <w>seja</w>
+      <w>sempedido</w>
       <w>sempre</w>
       <w>senha</w>
       <w>servidor</w>
@@ -205,19 +213,24 @@
       <w>suicidio</w>
       <w>tabela</w>
       <w>teleport</w>
+      <w>teleportaccept</w>
       <w>teleportado</w>
       <w>teleportall</w>
       <w>teleportando</w>
       <w>teleportar</w>
+      <w>teleportdeny</w>
       <w>teleporte</w>
       <w>teleportevents</w>
       <w>teleportou</w>
+      <w>teleporttoplayer</w>
       <w>tenha</w>
       <w>tentar</w>
       <w>tiver</w>
       <w>toda</w>
       <w>todas</w>
       <w>topg</w>
+      <w>tpaccept</w>
+      <w>tpdeny</w>
       <w>usuario</w>
       <w>usuário</w>
       <w>valores</w>
@@ -228,6 +241,7 @@
       <w>verifica</w>
       <w>verificar</w>
       <w>vindo</w>
+      <w>voce</w>
       <w>você</w>
       <w>votar</w>
       <w>voto</w>

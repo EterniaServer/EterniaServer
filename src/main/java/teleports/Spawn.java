@@ -50,7 +50,7 @@ public class Spawn implements CommandExecutor
                     assert target != null;
                     if(target.isOnline())
                     {
-                        player.teleport(Vars.spawn);
+                        target.teleport(Vars.spawn);
                         Vars.playerMessage("spawn", target);
                         Vars.playerReplaceMessage("teleportou-ele", target.getName(), player);
                     }

@@ -1,10 +1,12 @@
 messages/Advice.class
 teleports/SetArena.class
 experience/Bottlexp.class
+teleports/TeleportToPlayer.class
 others/Fly.class
 others/Spectator.class
 messages/Rules.class
 others/Hat.class
+teleports/TeleportDeny.class
 others/Name.class
 teleports/Crates.class
 messages/Suicide.class
@@ -20,6 +22,7 @@ experience/WithdrawLevel.class
 events/NetherPortal.class
 others/Blocks.class
 teleports/SetSpawn.class
+teleports/TeleportAccept.class
 events/PlayerJoin.class
 center/Vars.class
 others/Feed.class

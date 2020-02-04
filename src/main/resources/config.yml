@@ -97,6 +97,15 @@ vault-off: '&8[&aE&9S&8] &7Vault não encontrado&8, &7desativando EterniaServer&
 conectado-sucesso-mysql: '&8[&aE&9S&8] &7Conectado com sucesso a database &3MySQL&8.'
 conectado-sucesso-sql: '&8[&aE&9S&8] &7Conectado com sucesso a database &3SQLite&8.'
 erro-sqlite: "&8[&aE&9S&8] &7Erro ao criar arquivo &3%s&8."
+pediu-tpa: "&8[&aE&9S&8] &3%s &7lhe enviou um pedido de tpa&8, &7use &6/tpaccept &7ou &6/tpdeny &7para aceitar ou negar o tpa&8."
+enviou-tpa: "&8[&aE&9S&8] &7Você enviou um pedido de tpa ao &3%s&8."
+teleportado-ate: "&8[&aE&9S&8] &7Você foi até &3%s&8."
+sem-pedido: "&8[&aE&9S&8] &7Você não tem nenhum pedido de tpa&8."
+aceitou-tpa: "&8[&aE&9S&8] &3%s &7aceitou seu pedido de tpa&8."
+tpa-negado: "&8[&aE&9S&8] &7Seu pedido de tpa foi negado&8."
+negou-tpa: "&8[&aE&9S&8] &7Você negou o tpa de &3%s&8."
+tpa-errado: "&8[&aE&9S&8] &7Use &6/tpa &3<nome>&8."
+tpa-voce: "&8[&aE&9S&8] &7Você não pode dar tpa em você mesmo&8."
 regras: '&8[&aE&9S&8] &7Regras/split/
 &91.0 &8- &7Proibido ofensas&8./split/
 &91.1 &8- &7Qualquer forma de preconceito é proibida&8./split/

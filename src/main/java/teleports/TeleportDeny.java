@@ -1,13 +1,12 @@
 package teleports;
 
 import center.Vars;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TeleportAll implements CommandExecutor
+public class TeleportDeny implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -15,16 +14,19 @@ public class TeleportAll implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.spectator"))
+            if (player.hasPermission("eternia.tpa"))
             {
-                for (Player other : Bukkit.getOnlinePlayers())
+                if (Vars.tpa_requests.containsKey(player))
                 {
-                    if (other != player)
-                    {
-                        other.teleport(player);
-                    }
+                    Player target = Vars.tpa_requests.get(player);
+                    Vars.playerReplaceMessage("negou-tpa", target.getName(), player);
+                    Vars.playerMessage("tpa-negado", target);
+                    Vars.tpa_requests.remove(player);
                 }
-                Vars.playerMessage("teleportou-geral", player);
+                else
+                {
+                    Vars.playerMessage("sem-pedido", player);
+                }
             }
             else
             {

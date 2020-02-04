@@ -94,3 +94,12 @@ commands:
   vote:
     description: Vota.
     aliases: [votar, voto]
+  teleportaccept:
+    description: Aceita o tpa.
+    aliases: [tpaccept, aceitartpa]
+  teleportdeny:
+    description: Nega o tpa.
+    aliases: [tpdeny, negartpa]
+  teleporttoplayer:
+    description: Envia pedido de tpa.
+    aliases: [tpa]
