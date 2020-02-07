@@ -7,12 +7,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
-public class WithdrawLevel implements CommandExecutor
+public class CheckLevel implements CommandExecutor
 {
     private final Main plugin = Main.getPlugin(Main.class);
     @EventHandler
@@ -22,7 +23,7 @@ public class WithdrawLevel implements CommandExecutor
         if (sender instanceof Player)
         {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.withdrawlvl"))
+            if(player.hasPermission("eternia.checklevel"))
             {
                 UUID uuid = player.getUniqueId();
                 try
@@ -35,18 +36,14 @@ public class WithdrawLevel implements CommandExecutor
                     {
                         Vu = results.getString("XP");
                     }
+                    Vars.playerReplaceMessage("tem-xp", Vu, player);
                     results.close();
-                    player.giveExp(Integer.parseInt(Vu));
-                    String att_xp = String.format("UPDATE eternia SET XP=0 WHERE UUID=%s", uuid.toString());
-                    statement.executeUpdate(att_xp);
                     statement.close();
                 }
                 catch (SQLException e)
                 {
                     e.printStackTrace();
-                    Vars.playerMessage("tirar-xp-errou", player);
                 }
-                Vars.playerReplaceMessage("xp-tirar", player.getLevel(), player);
             }
             else
             {

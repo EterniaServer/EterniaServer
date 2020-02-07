@@ -59,6 +59,34 @@ public class Main extends JavaPlugin
             return;
         }
         // Comandos
+        boolean xp_module = Vars.getBool("xp-module");
+        boolean warp_module = Vars.getBool("warp-module");
+        boolean tpa_module = Vars.getBool("tpa-module");
+        if (xp_module)
+        {
+            Objects.requireNonNull(this.getCommand("depositlvl")).setExecutor(new DepositLevel());
+            Objects.requireNonNull(this.getCommand("withdrawlvl")).setExecutor(new WithdrawLevel());
+            Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new Bottlexp());
+            Objects.requireNonNull(this.getCommand("checklevel")).setExecutor(new CheckLevel());
+        }
+        if (warp_module)
+        {
+            Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new Spawn());
+            Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new SetSpawn());
+            Objects.requireNonNull(this.getCommand("arena")).setExecutor(new Arena());
+            Objects.requireNonNull(this.getCommand("setarena")).setExecutor(new SetArena());
+            Objects.requireNonNull(this.getCommand("crates")).setExecutor(new Crates());
+            Objects.requireNonNull(this.getCommand("setcrates")).setExecutor(new SetCrates());
+            Objects.requireNonNull(this.getCommand("event")).setExecutor(new Event());
+            Objects.requireNonNull(this.getCommand("setevent")).setExecutor(new SetEvent());
+        }
+        if (tpa_module)
+        {
+            Objects.requireNonNull(this.getCommand("teleportaccept")).setExecutor(new TeleportAccept());
+            Objects.requireNonNull(this.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
+            Objects.requireNonNull(this.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer());
+            Objects.requireNonNull(this.getCommand("teleportall")).setExecutor(new TeleportAll());
+        }
         Objects.requireNonNull(this.getCommand("suicide")).setExecutor(new Suicide());
         Objects.requireNonNull(this.getCommand("advice")).setExecutor(new Advice());
         Objects.requireNonNull(this.getCommand("discord")).setExecutor(new Discord());
@@ -69,28 +97,13 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("nome")).setExecutor(new Name());
         Objects.requireNonNull(this.getCommand("fly")).setExecutor(new Fly());
         Objects.requireNonNull(this.getCommand("goldenshovel")).setExecutor(new GoldenShovel());
-        Objects.requireNonNull(this.getCommand("depositlvl")).setExecutor(new DepositLevel());
-        Objects.requireNonNull(this.getCommand("withdrawlvl")).setExecutor(new WithdrawLevel());
         Objects.requireNonNull(this.getCommand("blocks")).setExecutor(new Blocks());
         Objects.requireNonNull(this.getCommand("back")).setExecutor(new Back());
         Objects.requireNonNull(this.getCommand("spectator")).setExecutor(new Spectator());
         Objects.requireNonNull(this.getCommand("survival")).setExecutor(new Survival());
         Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new Facebook());
-        Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new Bottlexp());
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new Colors());
-        Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new Spawn());
-        Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new SetSpawn());
-        Objects.requireNonNull(this.getCommand("event")).setExecutor(new Event());
-        Objects.requireNonNull(this.getCommand("setevent")).setExecutor(new SetEvent());
-        Objects.requireNonNull(this.getCommand("teleportall")).setExecutor(new TeleportAll());
-        Objects.requireNonNull(this.getCommand("setarena")).setExecutor(new SetArena());
-        Objects.requireNonNull(this.getCommand("arena")).setExecutor(new Arena());
-        Objects.requireNonNull(this.getCommand("setcrates")).setExecutor(new SetCrates());
-        Objects.requireNonNull(this.getCommand("crates")).setExecutor(new Crates());
         Objects.requireNonNull(this.getCommand("vote")).setExecutor(new Vote());
-        Objects.requireNonNull(this.getCommand("teleportaccept")).setExecutor(new TeleportAccept());
-        Objects.requireNonNull(this.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
-        Objects.requireNonNull(this.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer());
     }
     // Confirma que essa classe só será carregada uma vez e os valores
     // fiquem fixos.
