@@ -3,6 +3,8 @@ package center;
 import events.*;
 import experience.*;
 import messages.*;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import others.*;
 import teleports.*;
 import org.bukkit.Bukkit;
@@ -23,6 +25,7 @@ public class Main extends JavaPlugin
     private static Economy econ;
     private Connection connection;
     private static Main mainclasse;
+    private FileConfiguration messagesConfig;
     @Override
     public void onEnable()
     {
@@ -31,14 +34,11 @@ public class Main extends JavaPlugin
         // Carrega todas as configurações do plugin e após isso
         // ativa a classe NetherTrapCheck com o intervalo definido
         // nas configurações.
-        if (!new File(getDataFolder(), "config.yml").exists())
-        {
-            saveDefaultConfig();
-        }
-        FileConfiguration config = getConfig();
-        long delay = config.getInt("intervalo") * 20;
+        saveDefaultConfig();
+        createMessageConfig();
+        long delay = getConfig().getInt("intervalo") * 20;
         // Eventos
-        new NetherPortal(config).runTaskTimer(this, 20L, delay);
+        new NetherPortal().runTaskTimer(this, 20L, delay);
         this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
         // Salvamento
@@ -105,6 +105,29 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new Colors());
         Objects.requireNonNull(this.getCommand("vote")).setExecutor(new Vote());
     }
+    public FileConfiguration getMessages()
+    {
+        return this.messagesConfig;
+    }
+    private void createMessageConfig()
+    {
+        File messagesConfigFile = new File(getDataFolder(), "messages.yml");
+        if (!messagesConfigFile.exists())
+        {
+            //noinspection ResultOfMethodCallIgnored
+            messagesConfigFile.getParentFile().mkdirs();
+            saveResource("messages.yml", false);
+        }
+        messagesConfig = new YamlConfiguration();
+        try
+        {
+            messagesConfig.load(messagesConfigFile);
+        }
+        catch (IOException | InvalidConfigurationException e)
+        {
+            e.printStackTrace();
+        }
+    }
     // Confirma que essa classe só será carregada uma vez e os valores
     // fiquem fixos.
     public static Main getMain() { return mainclasse; }
@@ -138,11 +161,11 @@ public class Main extends JavaPlugin
                     return;
                 }
                 Class.forName("java.sql.Driver");
-                String host = Vars.getString("host");
-                int port = Vars.getInt("porta");
-                String password = Vars.getString("senha");
-                String username = Vars.getString("usuario");
-                String database = Vars.getString("database");
+                String host = getConfig().getString("host");
+                int port = getConfig().getInt("porta");
+                String password = getConfig().getString("senha");
+                String username = getConfig().getString("usuario");
+                String database = getConfig().getString("database");
                 setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
                 Vars.consoleMessage("conectado-sucesso-mysql");
                 String MySQLCreate = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(32) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
@@ -176,8 +199,7 @@ public class Main extends JavaPlugin
                 {
                     return;
                 }
-                String dbname = getConfig().getString("SQLite.Filename", "eternia");
-                File dataFolder = new File(getDataFolder(), dbname+".db");
+                File dataFolder = new File(getDataFolder(), "eternia.db");
                 if (!dataFolder.exists())
                 {
                     try
@@ -187,12 +209,12 @@ public class Main extends JavaPlugin
                     }
                     catch (IOException e)
                     {
-                        Vars.consoleReplaceMessage("erro-sqlite", dbname);
+                        Vars.consoleReplaceMessage("erro-sqlite", "eternia");
                     }
                 }
                 Class.forName("org.sqlite.JDBC");
                 setConnection(DriverManager.getConnection("jdbc:sqlite:" + dataFolder));
-                Vars.consoleMessage("conectado-sucesso-sqlite");
+                Vars.consoleMessage("conectado-sucesso-sql");
                 String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(255) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
                 try
                 {

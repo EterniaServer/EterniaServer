@@ -14,6 +14,7 @@ teleports/SetEvent.class
 teleports/Event.class
 messages/Vote.class
 teleports/Back.class
+experience/CheckLevel.class
 teleports/TeleportAll.class
 messages/Discord.class
 center/Main.class

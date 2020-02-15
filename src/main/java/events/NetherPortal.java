@@ -4,7 +4,6 @@ import center.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class NetherPortal extends org.bukkit.scheduler.BukkitRunnable
@@ -13,8 +12,6 @@ public class NetherPortal extends org.bukkit.scheduler.BukkitRunnable
     // sendo rodada com o intervalo escolhido nas configurações
     // para verificar se existe algum jogador preso em uma Trap
     // do Nether.
-    public static FileConfiguration file;
-    public NetherPortal(FileConfiguration file) { NetherPortal.file = file; }
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     public void run()
     {
