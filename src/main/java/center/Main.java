@@ -41,6 +41,7 @@ public class Main extends JavaPlugin
         new NetherPortal().runTaskTimer(this, 20L, delay);
         this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
+        this.getServer().getPluginManager().registerEvents(new ExpDrop(), this);
         // Salvamento
         boolean mysql = Vars.getBool("mysql");
         if (mysql)

@@ -7,7 +7,7 @@ cooldown: 4
 valor-do-back: 5000
 mysql: false
 host: '127.0.0.1'
-porta: 3306
+porta: 33
 database: 'admin'
 usuario: 'admin'
 senha: 'admin'

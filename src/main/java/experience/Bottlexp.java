@@ -22,15 +22,15 @@ public class Bottlexp implements CommandExecutor
                 int xp_atual = player.getLevel();
                 if (xp_atual >= 1 && xp_atual < 16)
                 {
-                    xp_real = xp_atual * 17;
+                    xp_real = (xp_atual * xp_atual) + 6 * xp_atual;
                 }
                 else if (xp_atual >= 16 && xp_atual < 31)
                 {
-                    xp_real = (int) (1.5 * Math.pow(xp_atual, 2) - 29.5 * xp_atual + 360);
+                    xp_real = (int) (2.5 * (xp_atual * xp_atual) - 40.5 * xp_atual + 360);
                 }
                 else if (xp_atual >= 31)
                 {
-                    xp_real = (int) (3.5 * Math.pow(xp_atual, 2) - (151.5 * xp_atual) + 2220);
+                    xp_real = (int) (4.5 * (xp_atual * xp_atual) - 162.5 * xp_atual + 2220);
                 }
                 if (xp_real >= 10)
                 {

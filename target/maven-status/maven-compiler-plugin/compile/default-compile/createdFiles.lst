@@ -12,6 +12,7 @@ teleports/Crates.class
 messages/Suicide.class
 teleports/SetEvent.class
 teleports/Event.class
+events/ExpDrop.class
 messages/Vote.class
 teleports/Back.class
 experience/CheckLevel.class
