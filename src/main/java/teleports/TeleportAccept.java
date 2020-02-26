@@ -24,19 +24,19 @@ public class TeleportAccept implements CommandExecutor
                     if (player.hasPermission( "eternia.timing.bypass"))
                     {
                         target.teleport(player.getLocation());
-                        Vars.playerReplaceMessage("teleportado-ate", target.getName(), player);
+                        Vars.playerReplaceMessage("teleportado-ate", player.getName(), target);
                         Vars.playerReplaceMessage("aceitou-tpa", player.getName(), target);
                         Vars.tpa_requests.remove(player);
                     }
                     else
                     {
                         int tempo = Vars.getInt("cooldown");
-                        Vars.playerReplaceMessage("teleportando-em", tempo, player);
+                        Vars.playerReplaceMessage("teleportando-em", tempo, target);
                         Vars.playerReplaceMessage("aceitou-tpa", player.getName(), target);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getMain(), () ->
                         {
                             target.teleport(player.getLocation());
-                            Vars.playerReplaceMessage("teleportado-ate", target.getName(), player);
+                            Vars.playerReplaceMessage("teleportado-ate", player.getName(), target);
                             Vars.tpa_requests.remove(player);
                         }, 20 * tempo);
                     }
