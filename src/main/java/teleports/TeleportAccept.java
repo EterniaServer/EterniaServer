@@ -21,7 +21,7 @@ public class TeleportAccept implements CommandExecutor
                 if (Vars.tpa_requests.containsKey(player))
                 {
                     Player target = Vars.tpa_requests.get(player);
-                    if (player.hasPermission( "eternia.timing.bypass"))
+                    if (target.hasPermission( "eternia.timing.bypass"))
                     {
                         target.teleport(player.getLocation());
                         Vars.playerReplaceMessage("teleportado-ate", player.getName(), target);

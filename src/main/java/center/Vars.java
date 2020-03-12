@@ -48,6 +48,7 @@ public class Vars
     public static final HashMap<Player, Location> back = new HashMap<>();
     public static final HashMap<Player, Long> shovel_cooldown = new HashMap<>();
     public static final HashMap<Player, Player> tpa_requests = new HashMap<>();
+    public static final HashMap<Player, Double> playerBank = new HashMap<>();
     public static final Location spawn = new Location(getWorld("world"), Vars.getDouble("x"),
             Vars.getDouble("y"), Vars.getDouble("z"),
             Vars.getFloat("yaw"), Vars.getFloat("pitch"));

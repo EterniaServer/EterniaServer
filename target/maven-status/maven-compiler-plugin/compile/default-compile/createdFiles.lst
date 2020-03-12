@@ -17,6 +17,7 @@ messages/Vote.class
 teleports/Back.class
 experience/CheckLevel.class
 teleports/TeleportAll.class
+events/MentionerYuri.class
 messages/Discord.class
 center/Main.class
 others/Survival.class

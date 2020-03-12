@@ -1,5 +1,7 @@
 package center;
 
+import vault.EconomyImplementer;
+import vault.VaultHook;
 import events.*;
 import experience.*;
 import messages.*;
@@ -9,7 +11,6 @@ import others.*;
 import teleports.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
@@ -18,19 +19,22 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
-import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin
 {
-    private static Economy econ;
-    private Connection connection;
     private static Main mainclasse;
+    public EconomyImplementer economyImplementer;
+    private Connection connection;
+    private VaultHook vaultHook;
     private FileConfiguration messagesConfig;
     @Override
     public void onEnable()
     {
-        // Faz com que a classe principal não seja alterada.
+        // Hook.
         mainclasse = this;
+        economyImplementer = new EconomyImplementer();
+        vaultHook = new VaultHook();
+        vaultHook.hook();
         // Carrega todas as configurações do plugin e após isso
         // ativa a classe NetherTrapCheck com o intervalo definido
         // nas configurações.
@@ -39,19 +43,13 @@ public class Main extends JavaPlugin
         long delay = getConfig().getInt("intervalo") * 20;
         // Eventos
         new NetherPortal().runTaskTimer(this, 20L, delay);
+        this.getServer().getPluginManager().registerEvents(new OnChat(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
         this.getServer().getPluginManager().registerEvents(new ExpDrop(), this);
         // Salvamento
         boolean mysql = Vars.getBool("mysql");
-        if (mysql)
-        {
-            MySQLSetup();
-        }
-        else
-        {
-            SQLiteSetup();
-        }
+        if (mysql) { MySQLSetup(); } else { SQLiteSetup(); }
         // Money.
         if (!VaultCheck())
         {
@@ -106,17 +104,12 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new Colors());
         Objects.requireNonNull(this.getCommand("vote")).setExecutor(new Vote());
     }
-    public FileConfiguration getMessages()
-    {
-        return this.messagesConfig;
-    }
+    public FileConfiguration getMessages() { return this.messagesConfig; }
     private void createMessageConfig()
     {
         File messagesConfigFile = new File(getDataFolder(), "messages.yml");
         if (!messagesConfigFile.exists())
         {
-            //noinspection ResultOfMethodCallIgnored
-            messagesConfigFile.getParentFile().mkdirs();
             saveResource("messages.yml", false);
         }
         messagesConfig = new YamlConfiguration();
@@ -136,17 +129,7 @@ public class Main extends JavaPlugin
     // encontre ele retorna falso e caso encontre retorna true.
     private boolean VaultCheck()
     {
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null)
-        {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null)
-        {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return true;
+        return Bukkit.getPluginManager().getPlugin("Vault") != null;
     }
     // Caso o método de salvamento escolhido seja MySQL ele irá carregar
     // as configurações, tentar se conectar a database, verificar se a
@@ -240,5 +223,5 @@ public class Main extends JavaPlugin
     public Connection getConnection() { return connection; }
     private void setConnection(Connection connection) { this.connection = connection; }
     // Sempre que está função ser chamada ela vai retornar o plugin Vault.
-    public static Economy getEconomy() { return econ; }
+    public void onDisable() { vaultHook.unhook(); }
 }

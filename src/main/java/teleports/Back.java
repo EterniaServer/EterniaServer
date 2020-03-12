@@ -6,11 +6,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import net.milkbowl.vault.economy.Economy;
 
 public class Back implements CommandExecutor
 {
-    private final Economy economy = Main.getEconomy();
+    private Main plugin = Main.getMain();
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
@@ -27,7 +26,7 @@ public class Back implements CommandExecutor
             {
                 if (Vars.back.containsKey(player))
                 {
-                    double money = economy.getBalance(player);
+                    double money = plugin.economyImplementer.getBalance(player);
                     double valor = Vars.getInt("valor-do-back");
                     // Se ele tiver a permissão de executar de graça irá teleportar ele até
                     // a posição antiga dele, que está salva na váriavel back, caso contrário
@@ -44,7 +43,7 @@ public class Back implements CommandExecutor
                         {
                             player.teleport(Vars.back.get(player));
                             Vars.back.remove(player);
-                            economy.withdrawPlayer(player, valor);
+                            plugin.economyImplementer.withdrawPlayer(player, valor);
                             Vars.playerReplaceMessage("back-sucesso", valor, player);
                         }
                         else
