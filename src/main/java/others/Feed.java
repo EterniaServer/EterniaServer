@@ -56,8 +56,7 @@ public class Feed implements CommandExecutor
         }
         else if (args.length == 1)
         {
-            String targetS = args[0];
-            Player target = Bukkit.getPlayer(targetS);
+            Player target = Bukkit.getPlayer(args[0]);
             assert target != null;
             if (target.isOnline())
             {

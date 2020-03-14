@@ -4,12 +4,64 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Vars
 {
+    private static final Main plugin = Main.getMain();
     // MÉTODOS
+    private static boolean PlayerExist(UUID uuid)
+    {
+        try
+        {
+            String select_player = "SELECT * FROM eternia WHERE UUID = ?";
+            PreparedStatement find_player = plugin.getConnection().prepareStatement(select_player);
+            find_player.setString(1, uuid.toString());
+            ResultSet player_list = find_player.executeQuery();
+            while(player_list.next())
+            {
+                if (player_list.getObject("UUID") != null)
+                {
+                    find_player.close();
+                    return true;
+                }
+            }
+            find_player.close();
+            player_list.close();
+            return false;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static void CreatePlayer(final UUID uuid, Player player)
+    {
+        try
+        {
+            if(!PlayerExist(uuid))
+            {
+                String create_player = "INSERT INTO eternia (UUID,NAME,XP,BALANCE) VALUES (?,?,?,?)";
+                PreparedStatement save_player = plugin.getConnection().prepareStatement(create_player);
+                save_player.setString(1, uuid.toString());
+                save_player.setString(2, player.getName());
+                save_player.setInt(3, 0);
+                save_player.setDouble(4, 0.0);
+                save_player.executeUpdate();
+                save_player.close();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
     // Send
     public static void broadcastReplaceMessage(String message, Object valor)
     {
@@ -44,11 +96,11 @@ public class Vars
     public static void setWorld(String path, Player player) { Main.getMain().getConfig().set(path, Objects.requireNonNull(player.getLocation().getWorld()).getName()); }
     public static void setConfig(String path, Object valor) { Main.getMain().getConfig().set(path, valor); }
     // VARIÁVEIS
+    public static final HashMap<String, Double> money = new HashMap<>();
     public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();
     public static final HashMap<Player, Location> back = new HashMap<>();
     public static final HashMap<Player, Long> shovel_cooldown = new HashMap<>();
     public static final HashMap<Player, Player> tpa_requests = new HashMap<>();
-    public static final HashMap<Player, Double> playerBank = new HashMap<>();
     public static final Location spawn = new Location(getWorld("world"), Vars.getDouble("x"),
             Vars.getDouble("y"), Vars.getDouble("z"),
             Vars.getFloat("yaw"), Vars.getFloat("pitch"));

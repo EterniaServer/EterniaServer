@@ -106,3 +106,12 @@ commands:
   checklevel:
     description: Verifica o saldo guardado.
     aliases: [verxp, checkxp, xpguardado]
+  balance:
+    description: Verifica seu dinheiro.
+    aliases: [money, dinheiro, bal]
+  pay:
+    description: Paga dinheiro.
+    aliases: [pagar]
+  eco:
+    description: Mexe no money.
+    aliases: [economia]

@@ -2,18 +2,24 @@ package vault;
 
 import center.Main;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.ServicesManager;
 
 public class VaultHook
 {
-    private Main plugin = Main.getMain();
-    private Economy provider;
-    public void hook()
+    private final Main plugin;
+    public VaultHook(Main plugin)
     {
-        provider = plugin.economyImplementer;
-        Bukkit.getServicesManager().register(Economy.class, this.provider, this.plugin, ServicePriority.Normal);
-        Bukkit.getConsoleSender().sendMessage("Vault conectado ao ETERNIA");
+        this.plugin = plugin;
+        plugin.economyImplementer = new EconomyImplementer(plugin);
     }
-    public void unhook() { Bukkit.getServicesManager().unregister(Economy.class, this.provider); }
+    public void SetEconomyLink()
+    {
+        if(!plugin.getServer().getPluginManager().isPluginEnabled("Vault"))
+        {
+            return;
+        }
+        ServicesManager servicesManager = plugin.getServer().getServicesManager();
+        servicesManager.register(Economy.class, new EconomyImplementer(plugin), plugin, ServicePriority.High);
+    }
 }

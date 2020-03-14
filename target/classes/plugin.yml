@@ -1,7 +1,7 @@
 main: center.Main
 
 name: EterniaServer
-version: '1.3.4'
+version: '1.4.5'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
@@ -106,3 +106,12 @@ commands:
   checklevel:
     description: Verifica o saldo guardado.
     aliases: [verxp, checkxp, xpguardado]
+  balance:
+    description: Verifica seu dinheiro.
+    aliases: [money, dinheiro, bal]
+  pay:
+    description: Paga dinheiro.
+    aliases: [pagar]
+  eco:
+    description: Mexe no money.
+    aliases: [economia]

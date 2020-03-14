@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public class Back implements CommandExecutor
 {
-    private Main plugin = Main.getMain();
+    private final Main plugin = Main.getMain();
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
@@ -27,7 +27,7 @@ public class Back implements CommandExecutor
                 if (Vars.back.containsKey(player))
                 {
                     double money = plugin.economyImplementer.getBalance(player);
-                    double valor = Vars.getInt("valor-do-back");
+                    double valor = Vars.getInt("money.valor-do-back");
                     // Se ele tiver a permissão de executar de graça irá teleportar ele até
                     // a posição antiga dele, que está salva na váriavel back, caso contrário
                     // irá ser removido da conta dele o valor informado na configuração.

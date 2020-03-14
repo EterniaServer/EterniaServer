@@ -1,24 +1,28 @@
 package vault;
 
-import center.Vars;
+import center.Main;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
+import java.text.DecimalFormat;
 import java.util.List;
 
-public class EconomyImplementer implements Economy
-{
+public class EconomyImplementer implements Economy {
+
+    private final Main plugin;
+    DecimalFormat format = new DecimalFormat(".##");
+    public EconomyImplementer(Main plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean isEnabled() {
-        return false;
+        return plugin.isEnabled();
     }
 
     @Override
     public String getName() {
-        return null;
+        return plugin.getName();
     }
 
     @Override
@@ -28,26 +32,27 @@ public class EconomyImplementer implements Economy
 
     @Override
     public int fractionalDigits() {
-        return 0;
+        return 2;
     }
 
     @Override
-    public String format(double v) {
-        return null;
+    public String format(double amount) {
+        return format.format(amount);
     }
 
     @Override
     public String currencyNamePlural() {
-        return null;
+        return plugin.getConfig().getString("money.plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return null;
+        return plugin.getConfig().getString("money.singular");
     }
 
     @Override
-    public boolean hasAccount(String s) {
+    public boolean hasAccount(String player) {
+
         return false;
     }
 
@@ -57,175 +62,149 @@ public class EconomyImplementer implements Economy
     }
 
     @Override
-    public boolean hasAccount(String s, String s1) {
+    public boolean hasAccount(String player, String moeda) {
         return false;
     }
 
     @Override
-    public boolean hasAccount(OfflinePlayer offlinePlayer, String s) {
+    public boolean hasAccount(OfflinePlayer offlinePlayer, String moeda) {
         return false;
     }
 
     @Override
-    public double getBalance(String s)
-    {
-        Player player = Bukkit.getPlayer(s);
-        return Vars.playerBank.get(player);
+    public double getBalance(String player) {
+        return 0;
     }
 
     @Override
-    public double getBalance(OfflinePlayer offlinePlayer)
-    {
-        Player player = offlinePlayer.getPlayer();
-        return Vars.playerBank.get(player);
+    public double getBalance(OfflinePlayer offlinePlayer) {
+        return 0;
     }
 
     @Override
-    public double getBalance(String s, String s1)
-    {
-        Player player = Bukkit.getPlayer(s);
-        return Vars.playerBank.get(player);
+    public double getBalance(String player, String moeda) {
+        return 0;
     }
 
     @Override
-    public double getBalance(OfflinePlayer offlinePlayer, String s)
-    {
-        Player player = offlinePlayer.getPlayer();
-        return Vars.playerBank.get(player);
+    public double getBalance(OfflinePlayer offlinePlayer, String moeda) {
+        return 0;
     }
 
     @Override
-    public boolean has(String s, double v) {
+    public boolean has(String player, double amount) {
         return false;
     }
 
     @Override
-    public boolean has(OfflinePlayer offlinePlayer, double v) {
+    public boolean has(OfflinePlayer offlinePlayer, double amount) {
         return false;
     }
 
     @Override
-    public boolean has(String s, String s1, double v) {
+    public boolean has(String player, String moeda, double amount) {
         return false;
     }
 
     @Override
-    public boolean has(OfflinePlayer offlinePlayer, String s, double v) {
+    public boolean has(OfflinePlayer offlinePlayer, String moeda, double amount) {
         return false;
     }
 
     @Override
-    public EconomyResponse withdrawPlayer(String s, double v)
+    public EconomyResponse withdrawPlayer(String player, double amount) {
+        return null;
+    }
+
+    @Override
+    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double amount)
     {
         return null;
     }
 
     @Override
-    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double v)
+    public EconomyResponse withdrawPlayer(String player, String moeda, double amount)
     {
         return null;
     }
 
     @Override
-    public EconomyResponse withdrawPlayer(String s, String s1, double v)
-    {
+    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String moeda, double amount) {
         return null;
     }
 
     @Override
-    public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, String s, double v)
-    {
+    public EconomyResponse depositPlayer(String player, double amount) {
         return null;
     }
 
     @Override
-    public EconomyResponse depositPlayer(String s, double v)
-    {
-        Player player = Bukkit.getPlayer(s);
-        double oldBalance = Vars.playerBank.get(player);
-        Vars.playerBank.put(player, oldBalance + v);
+    public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double amount) {
         return null;
     }
 
     @Override
-    public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v)
-    {
-        Player player = offlinePlayer.getPlayer();
-        double oldBalance = Vars.playerBank.get(player);
-        Vars.playerBank.put(player, oldBalance + v);
+    public EconomyResponse depositPlayer(String player, String moeda, double amount) {
         return null;
     }
 
     @Override
-    public EconomyResponse depositPlayer(String s, String s1, double v)
-    {
-        Player player = Bukkit.getPlayer(s);
-        double oldBalance = Vars.playerBank.get(player);
-        Vars.playerBank.put(player, oldBalance + v);
+    public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String moeda, double amount) {
         return null;
     }
 
     @Override
-    public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, String s, double v)
-    {
-        Player player = offlinePlayer.getPlayer();
-        double oldBalance = Vars.playerBank.get(player);
-        Vars.playerBank.put(player, oldBalance + v);
+    public EconomyResponse createBank(String bank, String player) {
         return null;
     }
 
     @Override
-    public EconomyResponse createBank(String s, String s1) {
+    public EconomyResponse createBank(String bank, OfflinePlayer offlinePlayer) {
         return null;
     }
 
     @Override
-    public EconomyResponse createBank(String s, OfflinePlayer offlinePlayer) {
+    public EconomyResponse deleteBank(String bank) {
         return null;
     }
 
     @Override
-    public EconomyResponse deleteBank(String s) {
+    public EconomyResponse bankBalance(String bank) {
         return null;
     }
 
     @Override
-    public EconomyResponse bankBalance(String s) {
+    public EconomyResponse bankHas(String bank, double amount) {
         return null;
     }
 
     @Override
-    public EconomyResponse bankHas(String s, double v) {
+    public EconomyResponse bankWithdraw(String bank, double amount) {
         return null;
     }
 
     @Override
-    public EconomyResponse bankWithdraw(String s, double v) {
+    public EconomyResponse bankDeposit(String bank, double amount) {
         return null;
     }
 
     @Override
-    public EconomyResponse bankDeposit(String s, double v) {
+    public EconomyResponse isBankOwner(String bank, String player) {
         return null;
     }
 
     @Override
-    public EconomyResponse isBankOwner(String s, String s1) {
+    public EconomyResponse isBankOwner(String bank, OfflinePlayer offlinePlayer) {
         return null;
     }
 
     @Override
-    public EconomyResponse isBankOwner(String s, OfflinePlayer offlinePlayer) {
+    public EconomyResponse isBankMember(String bank, String player) {
         return null;
     }
 
     @Override
-    public EconomyResponse isBankMember(String s, String s1) {
-        return null;
-    }
-
-    @Override
-    public EconomyResponse isBankMember(String s, OfflinePlayer offlinePlayer) {
+    public EconomyResponse isBankMember(String bank, OfflinePlayer offlinePlayer) {
         return null;
     }
 
@@ -235,7 +214,7 @@ public class EconomyImplementer implements Economy
     }
 
     @Override
-    public boolean createPlayerAccount(String s) {
+    public boolean createPlayerAccount(String player) {
         return false;
     }
 
@@ -245,12 +224,12 @@ public class EconomyImplementer implements Economy
     }
 
     @Override
-    public boolean createPlayerAccount(String s, String s1) {
+    public boolean createPlayerAccount(String player, String moeda) {
         return false;
     }
 
     @Override
-    public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String s) {
+    public boolean createPlayerAccount(OfflinePlayer offlinePlayer, String moeda) {
         return false;
     }
 }

@@ -1,16 +1,20 @@
-# Configs MIST
 xp-module: true
 warp-module: true
 tpa-module: true
 intervalo: 1
 cooldown: 4
-valor-do-back: 5000
-mysql: false
-host: '127.0.0.1'
-porta: 33
-database: 'admin'
-usuario: 'admin'
-senha: 'admin'
+money:
+  singular: 'Eternia'
+  plural: 'Eternias'
+  money-inicio: 1000
+  valor-do-back: 5000
+mysq:
+  mysql: false
+  host: '127.0.0.1'
+  porta: 33
+  database: 'admin'
+  usuario: 'admin'
+  senha: 'admin'
 # Spawn
 world: 'world'
 x: 0

@@ -1,23 +1,16 @@
 package center;
 
-import vault.EconomyImplementer;
-import vault.VaultHook;
+import economy.*;
+import vault.*;
 import events.*;
 import experience.*;
 import messages.*;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import others.*;
 import teleports.*;
-import org.bukkit.Bukkit;
+import storage.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Objects;
 
 public class Main extends JavaPlugin
@@ -25,50 +18,33 @@ public class Main extends JavaPlugin
     private static Main mainclasse;
     public EconomyImplementer economyImplementer;
     private Connection connection;
-    private VaultHook vaultHook;
-    private FileConfiguration messagesConfig;
+    public FileConfiguration messagesConfig;
     @Override
     public void onEnable()
     {
-        // Hook.
         mainclasse = this;
-        economyImplementer = new EconomyImplementer();
-        vaultHook = new VaultHook();
-        vaultHook.hook();
-        // Carrega todas as configurações do plugin e após isso
-        // ativa a classe NetherTrapCheck com o intervalo definido
-        // nas configurações.
+        // Configs
         saveDefaultConfig();
-        createMessageConfig();
-        long delay = getConfig().getInt("intervalo") * 20;
-        // Eventos
-        new NetherPortal().runTaskTimer(this, 20L, delay);
+        // Armazenamento
+        new MessagesConfig(this);
+        new StorageManager(this, Vars.getBool("mysql.mysql"));
+        new VaultHook(this).SetEconomyLink();
+        // Ativando eventos
+        new NetherPortal().runTaskTimer(this, 20L, getConfig().getInt("intervalo") * 20);
         this.getServer().getPluginManager().registerEvents(new OnChat(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
         this.getServer().getPluginManager().registerEvents(new ExpDrop(), this);
-        // Salvamento
-        boolean mysql = Vars.getBool("mysql");
-        if (mysql) { MySQLSetup(); } else { SQLiteSetup(); }
-        // Money.
-        if (!VaultCheck())
-        {
-            Vars.consoleMessage("vault-off");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
+        this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
         // Comandos
-        boolean xp_module = Vars.getBool("xp-module");
-        boolean warp_module = Vars.getBool("warp-module");
-        boolean tpa_module = Vars.getBool("tpa-module");
-        if (xp_module)
+        if (Vars.getBool("xp-module"))
         {
             Objects.requireNonNull(this.getCommand("depositlvl")).setExecutor(new DepositLevel());
             Objects.requireNonNull(this.getCommand("withdrawlvl")).setExecutor(new WithdrawLevel());
             Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new Bottlexp());
             Objects.requireNonNull(this.getCommand("checklevel")).setExecutor(new CheckLevel());
         }
-        if (warp_module)
+        if (Vars.getBool("warp-module"))
         {
             Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new Spawn());
             Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new SetSpawn());
@@ -79,7 +55,7 @@ public class Main extends JavaPlugin
             Objects.requireNonNull(this.getCommand("event")).setExecutor(new Event());
             Objects.requireNonNull(this.getCommand("setevent")).setExecutor(new SetEvent());
         }
-        if (tpa_module)
+        if (Vars.getBool("tpa-module"))
         {
             Objects.requireNonNull(this.getCommand("teleportaccept")).setExecutor(new TeleportAccept());
             Objects.requireNonNull(this.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
@@ -103,125 +79,24 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new Facebook());
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new Colors());
         Objects.requireNonNull(this.getCommand("vote")).setExecutor(new Vote());
+        Objects.requireNonNull(this.getCommand("balance")).setExecutor(new Balance());
+        Objects.requireNonNull(this.getCommand("pay")).setExecutor(new Pay());
+        Objects.requireNonNull(this.getCommand("eco")).setExecutor(new Eco());
     }
-    public FileConfiguration getMessages() { return this.messagesConfig; }
-    private void createMessageConfig()
+    public FileConfiguration getMessages()
     {
-        File messagesConfigFile = new File(getDataFolder(), "messages.yml");
-        if (!messagesConfigFile.exists())
-        {
-            saveResource("messages.yml", false);
-        }
-        messagesConfig = new YamlConfiguration();
-        try
-        {
-            messagesConfig.load(messagesConfigFile);
-        }
-        catch (IOException | InvalidConfigurationException e)
-        {
-            e.printStackTrace();
-        }
+        return this.messagesConfig;
     }
-    // Confirma que essa classe só será carregada uma vez e os valores
-    // fiquem fixos.
-    public static Main getMain() { return mainclasse; }
-    // Verifica se existe o plugin Vault na pasta de plugins, caso não
-    // encontre ele retorna falso e caso encontre retorna true.
-    private boolean VaultCheck()
+    public Connection getConnection()
     {
-        return Bukkit.getPluginManager().getPlugin("Vault") != null;
+        return connection;
     }
-    // Caso o método de salvamento escolhido seja MySQL ele irá carregar
-    // as configurações, tentar se conectar a database, verificar se a
-    // tabela existe e caso não exista ele irá criar uma tabela.
-    private void MySQLSetup()
+    public static Main getMain()
     {
-        try
-        {
-            synchronized (this)
-            {
-                if(getConnection() != null && !getConnection().isClosed())
-                {
-                    return;
-                }
-                Class.forName("java.sql.Driver");
-                String host = getConfig().getString("host");
-                int port = getConfig().getInt("porta");
-                String password = getConfig().getString("senha");
-                String username = getConfig().getString("usuario");
-                String database = getConfig().getString("database");
-                setConnection(DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password));
-                Vars.consoleMessage("conectado-sucesso-mysql");
-                String MySQLCreate = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(32) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
-                try
-                {
-                    Statement mysql_conect = getConnection().createStatement();
-                    mysql_conect.executeUpdate(MySQLCreate);
-                    mysql_conect.close();
-                }
-                catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        catch(SQLException | ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+        return mainclasse;
     }
-    // Caso o método de salvamento escolhido seja SQLite ele irá procurar
-    // na pasta principal desse plugin se o arquivo da tabela existe e caso
-    // não exista ele irá criar.
-    private void SQLiteSetup()
+    public void setConnection(Connection connection)
     {
-        try
-        {
-            synchronized (this)
-            {
-                if (getConnection() != null && !getConnection().isClosed())
-                {
-                    return;
-                }
-                File dataFolder = new File(getDataFolder(), "eternia.db");
-                if (!dataFolder.exists())
-                {
-                    try
-                    {
-                        //noinspection ResultOfMethodCallIgnored
-                        dataFolder.createNewFile();
-                    }
-                    catch (IOException e)
-                    {
-                        Vars.consoleReplaceMessage("erro-sqlite", "eternia");
-                    }
-                }
-                Class.forName("org.sqlite.JDBC");
-                setConnection(DriverManager.getConnection("jdbc:sqlite:" + dataFolder));
-                Vars.consoleMessage("conectado-sucesso-sql");
-                String SQLiteCreateTokensTable = "CREATE TABLE IF NOT EXISTS eternia (`UUID` varchar(255) NOT NULL, `NAME` varchar(32) NOT NULL, `XP` int(11) NOT NULL);";
-                try
-                {
-                    Statement sqlite_conect = getConnection().createStatement();
-                    sqlite_conect.executeUpdate(SQLiteCreateTokensTable);
-                    sqlite_conect.close();
-                }
-                catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        catch(SQLException | ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+        this.connection = connection;
     }
-    // Sempre que for necessário se conectar a database para salvar ou
-    // pegar dados ele irá pegar a conexão já existe sem precisar criar
-    // uma nova.
-    public Connection getConnection() { return connection; }
-    private void setConnection(Connection connection) { this.connection = connection; }
-    // Sempre que está função ser chamada ela vai retornar o plugin Vault.
-    public void onDisable() { vaultHook.unhook(); }
 }
