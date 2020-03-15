@@ -6,25 +6,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Facebook implements CommandExecutor
-{
+public class Facebook implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.facebook"))
-            {
+            if (player.hasPermission("eternia.facebook")) {
                 Vars.playerMessage("facebook", player);
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("facebook");
         }
         return true;

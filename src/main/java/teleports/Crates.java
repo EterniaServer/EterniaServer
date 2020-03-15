@@ -9,26 +9,19 @@ import org.bukkit.entity.Player;
 
 public class Crates implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (sender.hasPermission("eternia.arena"))
-            {
+            if (sender.hasPermission("eternia.arena")) {
                 player.teleport(new Location(Vars.getWorld("world-c"), Vars.getDouble("x-c"),
                         Vars.getDouble("y-c"), Vars.getDouble("z-c"),
                         Vars.getFloat("yaw-c"), Vars.getFloat("pitch-c")));
                 Vars.playerMessage("caixa", player);
                 return true;
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("somente-jogador");
         }
         return true;

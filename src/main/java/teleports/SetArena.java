@@ -7,17 +7,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetArena implements CommandExecutor
-{
+public class SetArena implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Main main = Main.getPlugin(Main.class);
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.setarena"))
-            {
+            if (player.hasPermission("eternia.setarena")) {
                 Vars.setWorld("world-a", player);
                 Vars.setConfig("x-a", player.getLocation().getX());
                 Vars.setConfig("y-a", player.getLocation().getY());
@@ -27,14 +23,10 @@ public class SetArena implements CommandExecutor
                 main.saveConfig();
                 Vars.playerMessage("arena-definida", player);
                 return true;
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("somente-jogador");
         }
         return true;

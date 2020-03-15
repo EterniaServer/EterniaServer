@@ -9,22 +9,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class GoldenShovel implements CommandExecutor
-{
+public class GoldenShovel implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.goldenshovel"))
-            {
+            if (player.hasPermission("eternia.goldenshovel")) {
                 int cooldownTime = 300;
-                if (Vars.shovel_cooldown.containsKey(player))
-                {
+                if (Vars.shovel_cooldown.containsKey(player)) {
                     long secondsLeft = ((Vars.shovel_cooldown.get(player) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
-                    if (secondsLeft > 0)
-                    {
+                    if (secondsLeft > 0) {
                         Vars.playerReplaceMessage("pa-falta-tempo", secondsLeft, player);
                     }
                 }
@@ -32,14 +26,10 @@ public class GoldenShovel implements CommandExecutor
                 PlayerInventory inventory = player.getInventory();
                 inventory.addItem(new ItemStack(Material.GOLDEN_SHOVEL));
                 Vars.playerMessage("pa-sucesso", player);
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("somente-jogador");
         }
         return true;

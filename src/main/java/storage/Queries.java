@@ -1,7 +1,6 @@
 package storage;
 
-public class Queries
-{
+public class Queries {
     public final static String createTable = "CREATE TABLE IF NOT EXISTS eternia " +
             "(`UUID` varchar(32) NOT NULL, " +
             "`NAME` varchar(32) NOT NULL, " +

@@ -8,28 +8,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TeleportAccept implements CommandExecutor
-{
+public class TeleportAccept implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.tpa"))
-            {
-                if (Vars.tpa_requests.containsKey(player))
-                {
+            if (player.hasPermission("eternia.tpa")) {
+                if (Vars.tpa_requests.containsKey(player)) {
                     Player target = Vars.tpa_requests.get(player);
-                    if (target.hasPermission( "eternia.timing.bypass"))
-                    {
+                    if (target.hasPermission("eternia.timing.bypass")) {
                         target.teleport(player.getLocation());
                         Vars.playerReplaceMessage("teleportado-ate", player.getName(), target);
                         Vars.playerReplaceMessage("aceitou-tpa", player.getName(), target);
                         Vars.tpa_requests.remove(player);
-                    }
-                    else
-                    {
+                    } else {
                         int tempo = Vars.getInt("cooldown");
                         Vars.playerReplaceMessage("teleportando-em", tempo, target);
                         Vars.playerReplaceMessage("aceitou-tpa", player.getName(), target);
@@ -40,19 +32,13 @@ public class TeleportAccept implements CommandExecutor
                             Vars.tpa_requests.remove(player);
                         }, 20 * tempo);
                     }
-                }
-                else
-                {
+                } else {
                     Vars.playerMessage("sem-pedido", player);
                 }
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("somente-jogador");
         }
         return true;

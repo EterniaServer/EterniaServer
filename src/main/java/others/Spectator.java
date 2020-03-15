@@ -7,26 +7,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Spectator implements CommandExecutor
-{
+public class Spectator implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.spectator"))
-            {
+            if (player.hasPermission("eternia.spectator")) {
                 player.setGameMode(GameMode.SPECTATOR);
                 Vars.playerMessage("escondido", player);
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("somente-jogador");
         }
         return true;

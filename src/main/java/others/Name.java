@@ -7,34 +7,23 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Name implements CommandExecutor
-{
+public class Name implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.name"))
-            {
-                if (args.length == 0)
-                {
+            if (player.hasPermission("eternia.name")) {
+                if (args.length == 0) {
                     player.setDisplayName(player.getName());
                     Vars.playerMessage("nick-removido", player);
-                }
-                else
-                {
+                } else {
                     player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
                     Vars.playerReplaceMessage("nick-novo", player.getDisplayName(), player);
                 }
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("somente-jogador");
         }
         return true;

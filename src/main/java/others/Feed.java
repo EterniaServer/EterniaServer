@@ -7,65 +7,44 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Feed implements CommandExecutor
-{
+public class Feed implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.feed"))
-            {
-                if (args.length == 0)
-                {
-                    if (command.getName().equalsIgnoreCase("comandos.staff.feed"))
-                    {
+            if (player.hasPermission("eternia.feed")) {
+                if (args.length == 0) {
+                    if (command.getName().equalsIgnoreCase("comandos.staff.feed")) {
                         player.setFoodLevel(20);
                         Vars.playerMessage("me-enchi", player);
                     }
-                }
-                else if (args.length == 1)
-                {
-                    if (player.hasPermission("eternia.feed.other"))
-                    {
+                } else if (args.length == 1) {
+                    if (player.hasPermission("eternia.feed.other")) {
                         String targetS = args[0];
                         Player target = Bukkit.getPlayer(targetS);
                         assert target != null;
-                        if (target.isOnline())
-                        {
+                        if (target.isOnline()) {
                             target.setFoodLevel(20);
                             Vars.playerReplaceMessage("encheu-barra", target.getName(), player);
                             Vars.playerReplaceMessage("recebeu-barra", player.getName(), target);
-                        }
-                        else
-                        {
+                        } else {
                             Vars.playerMessage("jogador-offline", player);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Vars.playerMessage("sem-permissao", player);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else if (args.length == 1)
-        {
+        } else if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
             assert target != null;
-            if (target.isOnline())
-            {
+            if (target.isOnline()) {
                 target.setFoodLevel(20);
                 Vars.consoleReplaceMessage("encheu-barra", target.getName());
                 Vars.playerReplaceMessage("recebeu-barra", "console", target);
-            }
-            else
-            {
+            } else {
                 Vars.consoleMessage("jogador-offline");
             }
         }

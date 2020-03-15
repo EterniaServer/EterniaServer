@@ -7,36 +7,26 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Vote implements CommandExecutor
-{
+public class Vote implements CommandExecutor {
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.vote"))
-            {
+            if (player.hasPermission("eternia.vote")) {
                 String sites_voto = Vars.getString("votar");
                 assert sites_voto != null;
                 String[] sites_lista = sites_voto.split("/split/");
-                for (String s : sites_lista)
-                {
+                for (String s : sites_lista) {
                     sender.sendMessage(Vars.getColor(s));
                 }
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             String sites_voto = Vars.getString("votar");
             assert sites_voto != null;
             String[] sites_lista = sites_voto.split("/split/");
-            for (String s : sites_lista)
-            {
+            for (String s : sites_lista) {
                 Bukkit.getConsoleSender().sendMessage(Vars.getColor(s));
             }
         }

@@ -1,51 +1,50 @@
 package center;
 
-import economy.*;
-import vault.*;
 import events.*;
 import experience.*;
 import messages.*;
-import others.*;
-import teleports.*;
-import storage.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import others.*;
+import storage.*;
+import teleports.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.Connection;
 import java.util.Objects;
+import net.milkbowl.vault.economy.Economy;
 
-public class Main extends JavaPlugin
-{
-    private static Main mainclasse;
-    public EconomyImplementer economyImplementer;
+public class Main extends JavaPlugin {
+    private final Vault setupEconomy = new Vault(this);
     private Connection connection;
-    public FileConfiguration messagesConfig;
+    private static Main mainclasse;
+    public static FileConfiguration messagesConfig;
+    public static Economy econ;
+
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         mainclasse = this;
-        // Configs
+
         saveDefaultConfig();
-        // Armazenamento
         new MessagesConfig(this);
-        new StorageManager(this, Vars.getBool("mysql.mysql"));
-        new VaultHook(this).SetEconomyLink();
-        // Ativando eventos
+        new StorageManager(this, Vars.getBool("mysql"));
+
+        if (!setupEconomy.load()) {
+            Vars.consoleMessage("no-vault");
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
         new NetherPortal().runTaskTimer(this, 20L, getConfig().getInt("intervalo") * 20);
         this.getServer().getPluginManager().registerEvents(new OnChat(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleport(), this);
         this.getServer().getPluginManager().registerEvents(new ExpDrop(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
-        // Comandos
-        if (Vars.getBool("xp-module"))
-        {
+
+        if (Vars.getBool("xp-module")) {
             Objects.requireNonNull(this.getCommand("depositlvl")).setExecutor(new DepositLevel());
             Objects.requireNonNull(this.getCommand("withdrawlvl")).setExecutor(new WithdrawLevel());
             Objects.requireNonNull(this.getCommand("bottlexp")).setExecutor(new Bottlexp());
             Objects.requireNonNull(this.getCommand("checklevel")).setExecutor(new CheckLevel());
         }
-        if (Vars.getBool("warp-module"))
-        {
+        if (Vars.getBool("warp-module")) {
             Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new Spawn());
             Objects.requireNonNull(this.getCommand("setspawn")).setExecutor(new SetSpawn());
             Objects.requireNonNull(this.getCommand("arena")).setExecutor(new Arena());
@@ -55,8 +54,7 @@ public class Main extends JavaPlugin
             Objects.requireNonNull(this.getCommand("event")).setExecutor(new Event());
             Objects.requireNonNull(this.getCommand("setevent")).setExecutor(new SetEvent());
         }
-        if (Vars.getBool("tpa-module"))
-        {
+        if (Vars.getBool("tpa-module")) {
             Objects.requireNonNull(this.getCommand("teleportaccept")).setExecutor(new TeleportAccept());
             Objects.requireNonNull(this.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
             Objects.requireNonNull(this.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer());
@@ -79,24 +77,25 @@ public class Main extends JavaPlugin
         Objects.requireNonNull(this.getCommand("facebook")).setExecutor(new Facebook());
         Objects.requireNonNull(this.getCommand("colors")).setExecutor(new Colors());
         Objects.requireNonNull(this.getCommand("vote")).setExecutor(new Vote());
-        Objects.requireNonNull(this.getCommand("balance")).setExecutor(new Balance());
-        Objects.requireNonNull(this.getCommand("pay")).setExecutor(new Pay());
-        Objects.requireNonNull(this.getCommand("eco")).setExecutor(new Eco());
     }
-    public FileConfiguration getMessages()
-    {
-        return this.messagesConfig;
-    }
-    public Connection getConnection()
-    {
+
+    public Connection getConnection() {
         return connection;
     }
-    public static Main getMain()
-    {
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public static Main getMain() {
         return mainclasse;
     }
-    public void setConnection(Connection connection)
-    {
-        this.connection = connection;
+
+    public static FileConfiguration getMessages() {
+        return messagesConfig;
+    }
+
+    public static Economy getEconomy() {
+        return econ;
     }
 }

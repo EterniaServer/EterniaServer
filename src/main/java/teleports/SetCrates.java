@@ -7,17 +7,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetCrates implements CommandExecutor
-{
+public class SetCrates implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Main main = Main.getPlugin(Main.class);
             Player player = (Player) sender;
-            if(player.hasPermission("eternia.setcaixas"))
-            {
+            if (player.hasPermission("eternia.setcaixas")) {
                 Vars.setWorld("world-c", player);
                 Vars.setConfig("x-c", player.getLocation().getX());
                 Vars.setConfig("y-c", player.getLocation().getY());
@@ -26,14 +22,10 @@ public class SetCrates implements CommandExecutor
                 Vars.setConfig("pitch-c", player.getLocation().getPitch());
                 main.saveConfig();
                 Vars.playerMessage("caixa-definida", player);
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("somente-jogador");
         }
         return true;

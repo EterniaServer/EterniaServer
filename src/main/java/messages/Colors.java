@@ -6,25 +6,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Colors implements CommandExecutor
-{
+public class Colors implements CommandExecutor {
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-    {
-        if (sender instanceof Player)
-        {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.colors"))
-            {
+            if (player.hasPermission("eternia.colors")) {
                 Vars.playerMessage("cores", player);
-            }
-            else
-            {
+            } else {
                 Vars.playerMessage("sem-permissao", player);
             }
-        }
-        else
-        {
+        } else {
             Vars.consoleMessage("cores");
         }
         return true;

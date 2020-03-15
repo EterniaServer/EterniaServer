@@ -72,6 +72,7 @@ pay-alvo: "&8[&aE&9S&8] &7Você recebeu &3%s &7eternias&8."
 pay-tu: "&8[&aE&9S&8] &7Você pagou &3%s &7eternias&8."
 pay-no: "&8[&aE&9S&8] &7Você não possui todo esse dinheiro&8."
 eco-use: "&8[&aE&9S&8] &7Use &6/eco &3<dar&8|&3tirar&8|&3definir> <nome> <quantia>&8."
+no-vault: "&8[&aE&9S&8] &7Vault não encontrado&8."
 regras: '&8[&aE&9S&8] &7Regras/split/
 &91.0 &8- &7Proibido ofensas&8./split/
 &91.1 &8- &7Qualquer forma de preconceito é proibida&8./split/
