@@ -1,0 +1,25 @@
+Blocks:
+  "STONE":
+    "[0.1]":
+      - ''
+  "COAL_ORE":
+    "[0.1]":
+      - ''
+  "IRON_ORE":
+    "[0.1]":
+      - ''
+  "GOLD_ORE":
+    "[0.1]":
+      - ''
+  "DIAMOND_ORE":
+    "[0.1]":
+      - ''
+  "EMERALD_ORE":
+    "[0.1]":
+      - ''
+  "LAPIS_ORE":
+    "[0.1]":
+      - ''
+  "NETHER_QUARTZ_ORE":
+    "[0.1]":
+      - ''

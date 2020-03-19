@@ -1,6 +1,6 @@
-main: center.Main
+main: Main
 
-name: EterniaServer
+name: center.EterniaServer
 version: '2.0.0'
 author: Yuri Nogueira
 description: Blablabla

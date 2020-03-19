@@ -1,5 +1,6 @@
 # Mensagens
 sem-permissao: '&8[&aE&9S&8] &7Você não tem permissão para isso&8.'
+fly-use: '&8[&aE&9S&8] &7Use &6/fly &3<jogador>&8.'
 spawn: '&8[&aE&9S&8] &7Bem-vindo ao spawn&8.'
 trap-mensagem-tempo: '&8[&aE&9S&8] &7Armadilha encontrada&8, &7se teleportando para o spawn em&3 %s &7segundos&8.'
 back-gratis: '&8[&aE&9S&8] &7Você voltou aonde estava de graça&8.'
