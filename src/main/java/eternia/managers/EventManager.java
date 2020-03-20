@@ -11,5 +11,6 @@ public class EventManager {
         plugin.getServer().getPluginManager().registerEvents(new PlayerTeleport(), EterniaServer.getMain());
         plugin.getServer().getPluginManager().registerEvents(new ExpDrop(), EterniaServer.getMain());
         plugin.getServer().getPluginManager().registerEvents(new OnBlockBreak(), EterniaServer.getMain());
+        plugin.getServer().getPluginManager().registerEvents(new PlayerLeave(), EterniaServer.getMain());
     }
 }

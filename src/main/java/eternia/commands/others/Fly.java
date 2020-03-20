@@ -15,7 +15,7 @@ public class Fly implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.fly")) {
                 if (args.length == 0) {
-                    if (!(player.getWorld() == Bukkit.getWorld("evento"))) {
+                    if (player.getWorld() == Bukkit.getWorld("evento")) {
                         if (player.hasPermission("eternia.fly.evento")) {
                             if (player.getAllowFlight()) {
                                 player.setAllowFlight(false);

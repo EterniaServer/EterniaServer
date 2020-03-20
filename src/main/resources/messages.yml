@@ -1,4 +1,6 @@
 # Mensagens
+join: '&8[&aE&9S&8] &3%s &8[&a+&8]'
+leave: '&8[&aE&9S&8] &3%s &8[&c+&8]'
 sem-permissao: '&8[&aE&9S&8] &7Você não tem permissão para isso&8.'
 fly-use: '&8[&aE&9S&8] &7Use &6/fly &3<jogador>&8.'
 spawn: '&8[&aE&9S&8] &7Bem-vindo ao spawn&8.'
@@ -67,12 +69,6 @@ tpa-negado: "&8[&aE&9S&8] &7Seu pedido de tpa foi negado&8."
 negou-tpa: "&8[&aE&9S&8] &7Você negou o tpa de &3%s&8."
 tpa-errado: "&8[&aE&9S&8] &7Use &6/tpa &3<nome>&8."
 tpa-voce: "&8[&aE&9S&8] &7Você não pode dar tpa em você mesmo&8."
-balance: "&8[&aE&9S&8] &7Você possui &3%s &7eternias&8."
-pay-use: "&8[&aE&9S&8] &7Use &6/pay &3<nome> <quantia>&8."
-pay-alvo: "&8[&aE&9S&8] &7Você recebeu &3%s &7eternias&8."
-pay-tu: "&8[&aE&9S&8] &7Você pagou &3%s &7eternias&8."
-pay-no: "&8[&aE&9S&8] &7Você não possui todo esse dinheiro&8."
-eco-use: "&8[&aE&9S&8] &7Use &6/eco &3<dar&8|&3tirar&8|&3definir> <nome> <quantia>&8."
 no-vault: "&8[&aE&9S&8] &7Vault não encontrado&8."
 regras: '&8[&aE&9S&8] &7Regras/split/
 &91.0 &8- &7Proibido ofensas&8./split/

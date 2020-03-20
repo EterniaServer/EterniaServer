@@ -1,6 +1,6 @@
-main: Main
+main: eternia.EterniaServer
 
-name: center.EterniaServer
+name: EterniaServer
 version: '${project.version}'
 author: Yuri Nogueira
 description: Blablabla

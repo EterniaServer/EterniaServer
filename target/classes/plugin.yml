@@ -1,6 +1,6 @@
-main: Main
+main: eternia.EterniaServer
 
-name: center.EterniaServer
+name: EterniaServer
 version: '2.0.0'
 author: Yuri Nogueira
 description: Blablabla
@@ -41,7 +41,7 @@ commands:
     description: Tira o xp.
     aliases: [tirarxp, retirarlvl, tirarlvl, pegarlvl]
   goldenshovel:
-    description: Pega uma comandos.player.pa.
+    description: Pega uma comandos.eternia.player.pa.
     aliases: [padeouro, pa]
   blocks:
     description: Transforma em bloco.
