@@ -1,11 +1,18 @@
 package eternia.configs;
 
 import eternia.EterniaServer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import java.util.*;
 
 public class Vars {
+    public static Player findPlayer(String targets) {
+        Player target = Bukkit.getPlayer(targets);
+        assert target != null;
+        return target;
+    }
+
     public static String getColor(String message) {
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', message);
     }

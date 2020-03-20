@@ -19,6 +19,7 @@
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/configs/MVar.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/storage/sqlsetup/MySQLSetup.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/teleports/SetCrates.java
+/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/player/PlayerFlyState.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/events/PlayerLeave.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/others/Feed.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/events/NetherPortal.java

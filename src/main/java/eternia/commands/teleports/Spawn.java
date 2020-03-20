@@ -34,9 +34,7 @@ public class Spawn implements CommandExecutor {
                 }
             } else if (args.length == 1) {
                 if (player.hasPermission("eternia.spawn.other")) {
-                    String targetS = args[0];
-                    Player target = Bukkit.getPlayer(targetS);
-                    assert target != null;
+                    Player target = Vars.findPlayer(args[0]);
                     if (target.isOnline()) {
                         target.teleport(Vars.spawn);
                         MVar.playerMessage("spawn", target);

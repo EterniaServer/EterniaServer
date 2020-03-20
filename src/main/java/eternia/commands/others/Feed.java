@@ -1,6 +1,7 @@
 package eternia.commands.others;
 
 import eternia.configs.MVar;
+import eternia.configs.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,9 +21,7 @@ public class Feed implements CommandExecutor {
                     }
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.feed.other")) {
-                        String targetS = args[0];
-                        Player target = Bukkit.getPlayer(targetS);
-                        assert target != null;
+                        Player target = Vars.findPlayer(args[0]);
                         if (target.isOnline()) {
                             target.setFoodLevel(20);
                             MVar.playerReplaceMessage("encheu-barra", target.getName(), player);
@@ -38,8 +37,7 @@ public class Feed implements CommandExecutor {
                 MVar.playerMessage("sem-permissao", player);
             }
         } else if (args.length == 1) {
-            Player target = Bukkit.getPlayer(args[0]);
-            assert target != null;
+            Player target = Vars.findPlayer(args[0]);
             if (target.isOnline()) {
                 target.setFoodLevel(20);
                 MVar.consoleReplaceMessage("encheu-barra", target.getName());

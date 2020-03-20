@@ -15,8 +15,7 @@ public class TeleportToPlayer implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.tpa")) {
                 if (args.length == 1) {
-                    Player target = Bukkit.getPlayer(args[0]);
-                    assert target != null;
+                    Player target = Vars.findPlayer(args[0]);
                     if (target.isOnline()) {
                         if (!(target == player)) {
                             Vars.tpa_requests.put(target, player);
