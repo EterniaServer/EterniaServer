@@ -47,6 +47,8 @@ public class CommandManager {
             Objects.requireNonNull(plugin.getCommand("setcrates")).setExecutor(new SetCrates());
             Objects.requireNonNull(plugin.getCommand("event")).setExecutor(new Event());
             Objects.requireNonNull(plugin.getCommand("setevent")).setExecutor(new SetEvent());
+            Objects.requireNonNull(plugin.getCommand("shop")).setExecutor(new Shop());
+            Objects.requireNonNull(plugin.getCommand("setshop")).setExecutor(new SetShop());
         }
         if (CVar.getBool("modules.xp")) {
             Objects.requireNonNull(plugin.getCommand("depositlvl")).setExecutor(new DepositLevel());

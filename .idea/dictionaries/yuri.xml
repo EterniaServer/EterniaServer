@@ -140,6 +140,7 @@
       <w>jogo</w>
       <w>lista</w>
       <w>localização</w>
+      <w>loja</w>
       <w>mainclasse</w>
       <w>membros</w>
       <w>mensagens</w>
@@ -215,6 +216,7 @@
       <w>setcrates</w>
       <w>setevent</w>
       <w>sethome</w>
+      <w>setshop</w>
       <w>setspawn</w>
       <w>somente</w>
       <w>sqlitesetup</w>

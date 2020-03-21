@@ -18,14 +18,14 @@ public class Spawn implements CommandExecutor {
             if (args.length == 0) {
                 if (player.hasPermission("eternia.spawn")) {
                     if (player.hasPermission("eternia.timing.bypass")) {
-                        player.teleport(Vars.spawn);
+                        player.teleport(Vars.getLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n"));
                         MVar.playerMessage("spawn", player);
                     } else {
                         int tempo = CVar.getInt("cooldown");
                         MVar.playerReplaceMessage("teleportando-em", tempo, player);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                         {
-                            player.teleport(Vars.spawn);
+                            player.teleport(Vars.getLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n"));
                             MVar.playerMessage("spawn", player);
                         }, 20 * tempo);
                     }
@@ -36,7 +36,7 @@ public class Spawn implements CommandExecutor {
                 if (player.hasPermission("eternia.spawn.other")) {
                     Player target = Vars.findPlayer(args[0]);
                     if (target.isOnline()) {
-                        target.teleport(Vars.spawn);
+                        player.teleport(Vars.getLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n"));
                         MVar.playerMessage("spawn", target);
                         MVar.playerReplaceMessage("teleportou-ele", target.getName(), player);
                     } else {

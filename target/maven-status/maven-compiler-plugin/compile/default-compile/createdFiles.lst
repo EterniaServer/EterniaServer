@@ -10,12 +10,14 @@ eternia/commands/teleports/Back.class
 eternia/commands/teleports/SetArena.class
 eternia/events/PlayerTeleport.class
 eternia/commands/messages/Facebook.class
+eternia/commands/teleports/SetShop.class
 eternia/commands/messages/Donation.class
 eternia/commands/messages/Suicide.class
 eternia/commands/teleports/Crates.class
 eternia/commands/others/Blocks.class
 eternia/commands/teleports/Arena.class
 eternia/commands/others/Feed.class
+eternia/commands/teleports/Shop.class
 eternia/commands/messages/Rules.class
 eternia/commands/teleports/Spawn.class
 eternia/commands/messages/Discord.class

@@ -1,8 +1,7 @@
 package eternia.commands.teleports;
 
-import eternia.configs.CVar;
 import eternia.configs.MVar;
-import org.bukkit.Location;
+import eternia.configs.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,9 +13,7 @@ public class Crates implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (sender.hasPermission("eternia.arena")) {
-                player.teleport(new Location(CVar.getWorld("world-c"), CVar.getDouble("x-c"),
-                        CVar.getDouble("y-c"), CVar.getDouble("z-c"),
-                        CVar.getFloat("yaw-c"), CVar.getFloat("pitch-c")));
+                player.teleport(Vars.getLocation("world-c", "x-c", "y-c", "z-c", "yaw-c", "pitch-c"));
                 MVar.playerMessage("caixa", player);
                 return true;
             } else {

@@ -1,8 +1,7 @@
 package eternia.commands.teleports;
 
-import eternia.configs.CVar;
 import eternia.configs.MVar;
-import org.bukkit.Location;
+import eternia.configs.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,9 +13,7 @@ public class Event implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (sender.hasPermission("eternia.event")) {
-                player.teleport(new Location(CVar.getWorld("world-e"), CVar.getDouble("x-e"),
-                        CVar.getDouble("y-e"), CVar.getDouble("z-e"),
-                        CVar.getFloat("yaw-e"), CVar.getFloat("pitch-e")));
+                player.teleport(Vars.getLocation("world-e", "x-e", "y-e", "z-e", "yaw-e", "pitch-e"));
                 MVar.playerMessage("evento", player);
                 return true;
             } else {

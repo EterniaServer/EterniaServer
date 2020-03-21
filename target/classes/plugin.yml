@@ -1,7 +1,7 @@
 main: eternia.EterniaServer
 
 name: EterniaServer
-version: '2.0.0'
+version: '2.0.1'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
@@ -106,12 +106,9 @@ commands:
   checklevel:
     description: Verifica o saldo guardado.
     aliases: [verxp, checkxp, xpguardado]
-  balance:
-    description: Verifica seu dinheiro.
-    aliases: [money, dinheiro, bal]
-  pay:
-    description: Paga dinheiro.
-    aliases: [pagar]
-  eco:
-    description: Mexe no money.
-    aliases: [economia]
+  shop:
+    description: Vai para a loja.
+    aliases: [loja]
+  setshop:
+    description: Define a loja.
+    aliases: [setloja]

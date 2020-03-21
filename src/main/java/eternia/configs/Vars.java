@@ -21,11 +21,23 @@ public class Vars {
         return EterniaServer.getMessages().getString(valor);
     }
 
+    public static Location getLocation(String w, String x, String y, String z, String yaw, String pitch) {
+        return (new Location(CVar.getWorld(w), CVar.getDouble(x), CVar.getDouble(y),
+                CVar.getDouble(z), CVar.getFloat(yaw), CVar.getFloat(pitch)));
+    }
+
+    public static void setLocation(String w, String x, String y, String z, String yaw, String pitch, Player player) {
+        CVar.setWorld(w, player);
+        CVar.setConfig(x, player.getLocation().getX());
+        CVar.setConfig(y, player.getLocation().getY());
+        CVar.setConfig(z, player.getLocation().getZ());
+        CVar.setConfig(yaw, player.getLocation().getYaw());
+        CVar.setConfig(pitch, player.getLocation().getPitch());
+        EterniaServer.getMain().saveConfig();
+    }
+
     public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();
     public static final HashMap<Player, Location> back = new HashMap<>();
     public static final HashMap<Player, Long> shovel_cooldown = new HashMap<>();
     public static final HashMap<Player, Player> tpa_requests = new HashMap<>();
-    public static final Location spawn = new Location(CVar.getWorld("world"), CVar.getDouble("x"),
-            CVar.getDouble("y"), CVar.getDouble("z"),
-            CVar.getFloat("yaw"), CVar.getFloat("pitch"));
 }

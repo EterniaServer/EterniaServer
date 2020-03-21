@@ -7,18 +7,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Arena implements CommandExecutor {
+public class Shop implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Verifica se quem está executando o comando é um jogador
-        // caso seja o comando é executado, caso não seja é enviado
-        // uma mensagem ao console.
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            // Caso o jogador tenha permissão ele será enviado até a localização da arena.
-            if (player.hasPermission("eternia.arena")) {
-                player.teleport(Vars.getLocation("world-a", "x-a", "y-a", "z-a", "yaw-a", "pitch-a"));
-                MVar.playerMessage("arena", player);
+            if (sender.hasPermission("eternia.shop")) {
+                player.teleport(Vars.getLocation("world-s", "x-s", "y-s", "z-s", "yaw-s", "pitch-s"));
+                MVar.playerMessage("loja", player);
+                return true;
             } else {
                 MVar.playerMessage("sem-permissao", player);
             }
