@@ -112,3 +112,12 @@ commands:
   setshop:
     description: Define a loja.
     aliases: [setloja]
+  pay:
+    description: Paga alguem.
+    aliases: [pagar]
+  money:
+    description: Ve seu ou de outro dinheiro.
+    aliases: [balance]
+  baltop:
+    description: Ve o top money.
+    aliases: [topmoney]

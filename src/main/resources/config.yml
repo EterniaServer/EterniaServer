@@ -3,6 +3,7 @@ modules:
   tpa: true
   warp: true
   xp: true
+money-inicial: 300
 intervalo: 1
 cooldown: 4
 valor-do-back: 2500

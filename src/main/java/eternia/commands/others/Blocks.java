@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@SuppressWarnings("NullableProblems")
 public class Blocks implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,7 +30,7 @@ public class Blocks implements CommandExecutor {
                 double emerald = 0;
                 //Carvão
                 for (ItemStack i : player.getInventory().getContents()) {
-                    if (i != null && i.getType() == Material.COAL) {
+                    if (i.getType() == Material.COAL) {
                         coal += i.getAmount();
                     }
                 }
@@ -40,7 +41,7 @@ public class Blocks implements CommandExecutor {
                 }
                 //Lapis Lazuli
                 for (ItemStack i : player.getInventory().getContents()) {
-                    if (i != null && i.getType() == Material.LAPIS_LAZULI) {
+                    if (i.getType() == Material.LAPIS_LAZULI) {
                         lapis_lazuli += i.getAmount();
                     }
                 }
@@ -51,7 +52,7 @@ public class Blocks implements CommandExecutor {
                 }
                 //Redstone
                 for (ItemStack i : player.getInventory().getContents()) {
-                    if (i != null && i.getType() == Material.REDSTONE) {
+                    if (i.getType() == Material.REDSTONE) {
                         redstone += i.getAmount();
                     }
                 }
@@ -62,7 +63,7 @@ public class Blocks implements CommandExecutor {
                 }
                 //Ferro
                 for (ItemStack i : player.getInventory().getContents()) {
-                    if (i != null && i.getType() == Material.IRON_INGOT) {
+                    if (i.getType() == Material.IRON_INGOT) {
                         iron_ingot += i.getAmount();
                     }
                 }
@@ -73,7 +74,7 @@ public class Blocks implements CommandExecutor {
                 }
                 //Ouro
                 for (ItemStack i : player.getInventory().getContents()) {
-                    if (i != null && i.getType() == Material.GOLD_INGOT) {
+                    if (i.getType() == Material.GOLD_INGOT) {
                         gold_ingot += i.getAmount();
                     }
                 }
@@ -84,7 +85,7 @@ public class Blocks implements CommandExecutor {
                 }
                 //Diamante
                 for (ItemStack i : player.getInventory().getContents()) {
-                    if (i != null && i.getType() == Material.DIAMOND) {
+                    if (i.getType() == Material.DIAMOND) {
                         diamond += i.getAmount();
                     }
                 }
@@ -95,7 +96,7 @@ public class Blocks implements CommandExecutor {
                 }
                 //Esmeralda
                 for (ItemStack i : player.getInventory().getContents()) {
-                    if (i != null && i.getType() == Material.EMERALD) {
+                    if (i.getType() == Material.EMERALD) {
                         emerald += i.getAmount();
                     }
                 }

@@ -1,6 +1,6 @@
 package eternia.commands.teleports;
 
-import eternia.EterniaServer;
+import eternia.api.MoneyAPI;
 import eternia.configs.CVar;
 import eternia.configs.MVar;
 import eternia.configs.Vars;
@@ -9,6 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("NullableProblems")
 public class Back implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -22,7 +23,7 @@ public class Back implements CommandExecutor {
             // irá executar o comando.
             if (player.hasPermission("eternia.back")) {
                 if (Vars.back.containsKey(player)) {
-                    double money = EterniaServer.getEconomy().getBalance(player);
+                    double money = MoneyAPI.getMoney(player.getUniqueId());
                     double valor = CVar.getInt("money.valor-do-back");
                     // Se ele tiver a permissão de executar de graça irá teleportar ele até
                     // a posição antiga dele, que está salva na váriavel back, caso contrário
@@ -35,7 +36,7 @@ public class Back implements CommandExecutor {
                         if (money >= valor) {
                             player.teleport(Vars.back.get(player));
                             Vars.back.remove(player);
-                            EterniaServer.getEconomy().withdrawPlayer(player, valor);
+                            MoneyAPI.removeMoney(player.getUniqueId(), valor);
                             MVar.playerReplaceMessage("back-sucesso", valor, player);
                         } else {
                             MVar.playerReplaceMessage("back-sem-dinheiro", valor, player);

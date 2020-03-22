@@ -1,18 +1,18 @@
 package eternia;
 
 import eternia.configs.CVar;
-import eternia.configs.MVar;
 import eternia.managers.*;
-import net.milkbowl.vault.economy.Economy;
+import eternia.storage.sqlsetup.Queries;
+import eternia.vault.VaultHook;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.sql.Connection;
 
 public class EterniaServer extends JavaPlugin {
-    public Connection connection;
+
     public static FileConfiguration messagesConfig;
     public static FileConfiguration blocks;
-    public static Economy econ;
+    public static Queries sqlcon;
     private static EterniaServer plugin;
 
     @Override
@@ -24,12 +24,19 @@ public class EterniaServer extends JavaPlugin {
         setStorage();
         setCommands();
         setEvents();
-        setEconomy();
+        setVault();
     }
 
-    private void setEconomy() {
-        if (!new VaultManager(this).load()) {
-            MVar.consoleMessage("no-vault");
+    @Override
+    public void onDisable() {
+        sqlcon.Close();
+    }
+
+    private void setVault() {
+        if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            final VaultHook vaultHook = new VaultHook();
+            vaultHook.hook();
+        } else {
             getServer().getPluginManager().disablePlugin(this);
         }
     }
@@ -54,16 +61,8 @@ public class EterniaServer extends JavaPlugin {
         new MessagesManager(this);
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
-
     public static EterniaServer getMain() {
         return plugin;
-    }
-
-    public static Economy getEconomy() {
-        return econ;
     }
 
     public static FileConfiguration getBlocks() {
@@ -73,4 +72,5 @@ public class EterniaServer extends JavaPlugin {
     public static FileConfiguration getMessages() {
         return messagesConfig;
     }
+
 }

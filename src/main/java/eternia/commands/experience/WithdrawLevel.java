@@ -8,11 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.UUID;
 
+@SuppressWarnings("NullableProblems")
 public class WithdrawLevel implements CommandExecutor {
-    private final EterniaServer plugin = EterniaServer.getPlugin(EterniaServer.class);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -21,18 +20,14 @@ public class WithdrawLevel implements CommandExecutor {
             if (player.hasPermission("eternia.withdrawlvl")) {
                 UUID uuid = player.getUniqueId();
                 try {
-                    Statement statement = plugin.getConnection().createStatement();
-                    String get_xp = String.format("SELECT XP FROM eternia WHERE UUID='%s'", uuid.toString());
-                    ResultSet results = statement.executeQuery(get_xp);
-                    String Vu = "";
-                    while (results.next()) {
-                        Vu = results.getString("XP");
+                    int xp;
+                    final ResultSet rs = EterniaServer.sqlcon.Query("SELECT XP FROM eternia WHERE UUID='" + uuid.toString() + "';");
+                    if (rs.next()) {
+                        rs.getInt("XP");
                     }
-                    results.close();
-                    player.giveExp(Integer.parseInt(Vu));
-                    String att_xp = String.format("UPDATE eternia SET XP=0 WHERE UUID='%s'", uuid.toString());
-                    statement.executeUpdate(att_xp);
-                    statement.close();
+                    xp = rs.getInt("XP");
+                    player.giveExp(xp);
+                    EterniaServer.sqlcon.Update("UPDATE eternia SET XP='" + 0 + "' WHERE UUID='" + uuid.toString() + "';");
                 } catch (SQLException e) {
                     e.printStackTrace();
                     MVar.playerMessage("tirar-xp-errou", player);

@@ -11,7 +11,9 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerManager.CreatePlayer(player.getUniqueId(), player);
+        if (!PlayerManager.PlayerExist(player.getUniqueId())) {
+            PlayerManager.CreatePlayer(player.getUniqueId());
+        }
         event.setJoinMessage(null);
         MVar.broadcastReplaceMessage("join", player.getName());
     }

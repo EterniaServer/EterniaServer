@@ -8,11 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.UUID;
 
+@SuppressWarnings("NullableProblems")
 public class DepositLevel implements CommandExecutor {
-    private final EterniaServer plugin = EterniaServer.getPlugin(EterniaServer.class);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -25,33 +24,27 @@ public class DepositLevel implements CommandExecutor {
                     if (xp_atual >= Integer.parseInt(args[0])) {
                         xp_atual = Integer.parseInt(args[0]);
                         MVar.playerReplaceMessage("xp-guardado", xp_atual, player);
+                        int xp = xp_atual;
+                        if (xp >= 1 && xp <= 15) {
+                            xp = (xp * xp) + (6 * xp);
+                        } else if (xp >= 16 && xp <= 30) {
+                            xp = (int) ((2.5 * (xp * xp)) - (40.5 * xp) + 360);
+                        } else {
+                            xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
+                        }
+                        int XP = 0;
                         try {
-                            int xp = xp_atual;
-                            if (xp >= 1 && xp <= 15) {
-                                xp = (xp * xp) + (6 * xp);
-                            } else if (xp >= 16 && xp <= 30) {
-                                xp = (int) ((2.5 * (xp * xp)) - (40.5 * xp) + 360);
-                            } else {
-                                xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
+                            final ResultSet rs = EterniaServer.sqlcon.Query("SELECT XP FROM eternia WHERE UUID='" + uuid.toString() + "';");
+                            if (rs.next()) {
+                                rs.getInt("XP");
                             }
-                            Statement statement = plugin.getConnection().createStatement();
-                            String get_xp = String.format("SELECT XP FROM eternia WHERE UUID='%s'", uuid.toString());
-                            ResultSet results = statement.executeQuery(get_xp);
-                            String Vu = "";
-                            while (results.next()) {
-                                Vu = results.getString("XP");
-                            }
-                            int XP = Integer.parseInt(Vu);
-                            xp = Math.max(xp + XP, 0);
-                            results.close();
-                            String att_xp = String.format("UPDATE eternia SET XP=%s WHERE UUID='%s'", xp, uuid.toString());
-                            statement.executeUpdate(att_xp);
-                            player.setLevel(Math.max(player.getLevel() - xp_atual, 0));
-                            statement.close();
+                            XP = rs.getInt("XP");
                         } catch (SQLException e) {
                             e.printStackTrace();
-                            MVar.playerMessage("guarda-level-errou", player);
                         }
+                        xp = Math.max(xp + XP, 0);
+                        EterniaServer.sqlcon.Update("UPDATE eternia SET XP = '" + xp + "' WHERE UUID='" + uuid.toString() + "';");
+                        player.setLevel(Math.max(player.getLevel() - xp_atual, 0));
                     } else {
                         MVar.playerMessage("xp-insuficiente", player);
                     }

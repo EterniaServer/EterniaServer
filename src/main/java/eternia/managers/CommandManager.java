@@ -2,10 +2,8 @@ package eternia.managers;
 
 import eternia.EterniaServer;
 import eternia.configs.CVar;
-import eternia.commands.experience.Bottlexp;
-import eternia.commands.experience.CheckLevel;
-import eternia.commands.experience.DepositLevel;
-import eternia.commands.experience.WithdrawLevel;
+import eternia.commands.experience.*;
+import eternia.commands.economy.*;
 import eternia.commands.messages.*;
 import eternia.commands.others.*;
 import eternia.commands.teleports.*;
@@ -31,6 +29,9 @@ public class CommandManager {
             Objects.requireNonNull(plugin.getCommand("facebook")).setExecutor(new Facebook());
             Objects.requireNonNull(plugin.getCommand("colors")).setExecutor(new Colors());
             Objects.requireNonNull(plugin.getCommand("vote")).setExecutor(new Vote());
+            Objects.requireNonNull(plugin.getCommand("pay")).setExecutor(new Pay());
+            Objects.requireNonNull(plugin.getCommand("money")).setExecutor(new Money());
+            Objects.requireNonNull(plugin.getCommand("baltop")).setExecutor(new Baltop());
         }
         if (CVar.getBool("modules.tpa")) {
             Objects.requireNonNull(plugin.getCommand("teleportaccept")).setExecutor(new TeleportAccept());

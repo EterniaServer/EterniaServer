@@ -54,7 +54,6 @@ caixa: '&8[&aE&9S&8] &7Indo para as caixas&8.'
 evento-definido: '&8[&aE&9S&8] &7Evento definido&8.'
 arena-definida: '&8[&aE&9S&8] &7Arena definida&8.'
 caixa-definida: '&8[&aE&9S&8] &7Caixa definida&8.'
-precisa-numero: '&8[&aE&9S&8] &7Bem... o número da página precisa ser um número&8.'
 proxima-pagina: '&8[&aE&9S&8] &7Use &6/regras &3%s &7para ir para a proxima página&8.'
 pagina-negativa: '&8[&aE&9S&8] &7Página negativa não existe né amigo&8, &7nem &30&8.'
 teleportou-geral: '&8[&aE&9S&8] &3%s &7teleportou a todos até si&8.'
@@ -72,6 +71,19 @@ negou-tpa: "&8[&aE&9S&8] &7Você negou o tpa de &3%s&8."
 tpa-errado: "&8[&aE&9S&8] &7Use &6/tpa &3<nome>&8."
 tpa-voce: "&8[&aE&9S&8] &7Você não pode dar tpa em você mesmo&8."
 no-vault: "&8[&aE&9S&8] &7Vault não encontrado&8."
+nao-pode-negativo: "&8[&aE&9S&8] &7O valor não pode ser negativo&8."
+precisa-numero: "&8[&aE&9S&8] &7O valor precisa ser um número&8."
+pay-use: "&8[&aE&9S&8] &7Use &6/pay &3<nome> <quantia>&8."
+pay-voce: "&8[&aE&9S&8] &7Você não pode se pagar&8."
+pay-voce-nao-tem: "&8[&aE&9S&8] &7Você não possui todo esse dinheiro&8."
+pay-pagou: "&8[&aE&9S&8] &7Você pagou &3%s&8."
+pay-recebeu: "&8[&aE&9S&8] &7Você recebeu &3%s&8."
+money-tem: "&8[&aE&9S&8] &7O jogador possui &3%s&8."
+money: "&8[&aE&9S&8] &7Você possui &3%s&8."
+jogador-nao: "&8[&aE&9S&8] &7Jogador não encontrado&8."
+baltop: "&8[&aE&9S&8] &7Top Money&8:"
+erro-sql: "&8[&aE&9S&8] &7SQL error&8 &3%s&8."
+conecao-sql: "&8[&aE&9S&8] &7Conexão SQL finalizada&8."
 regras: '&8[&aE&9S&8] &7Regras/split/
 &91.0 &8- &7Proibido ofensas&8./split/
 &91.1 &8- &7Qualquer forma de preconceito é proibida&8./split/

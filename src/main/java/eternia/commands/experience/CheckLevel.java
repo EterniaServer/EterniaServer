@@ -8,29 +8,24 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.UUID;
 
+@SuppressWarnings("NullableProblems")
 public class CheckLevel implements CommandExecutor {
-    private final EterniaServer plugin = EterniaServer.getPlugin(EterniaServer.class);
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.checklevel")) {
                 UUID uuid = player.getUniqueId();
+                int xp;
                 try {
-                    Statement statement = plugin.getConnection().createStatement();
-                    String get_xp = String.format("SELECT XP FROM eternia WHERE UUID='%s'", uuid.toString());
-                    ResultSet results = statement.executeQuery(get_xp);
-                    String Vu = "";
-                    while (results.next()) {
-                        Vu = results.getString("XP");
+                    final ResultSet rs = EterniaServer.sqlcon.Query("SELECT XP FROM eternia WHERE UUID='" + uuid.toString() + "';");
+                    if (rs.next()) {
+                        rs.getInt("XP");
                     }
-                    MVar.playerReplaceMessage("tem-xp", Vu, player);
-                    results.close();
-                    statement.close();
+                    xp = rs.getInt("XP");
+                    MVar.playerReplaceMessage("tem-xp", xp, player);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

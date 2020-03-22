@@ -7,7 +7,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings({"ALL", "NullableProblems"})
 public class Arena implements CommandExecutor {
+    @SuppressWarnings("NullableProblems")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Verifica se quem está executando o comando é um jogador
