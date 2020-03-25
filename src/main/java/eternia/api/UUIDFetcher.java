@@ -12,13 +12,9 @@ public class UUIDFetcher {
 
     public static UUID getUUID(String playername) {
         String output = callURL("https://api.mojang.com/users/profiles/minecraft/" + playername);
-
         StringBuilder result = new StringBuilder();
-
         readData(output, result);
-
         String u = result.toString();
-
         StringBuilder uuid = new StringBuilder();
 
         for (int i = 0; i <= 31; i++) {

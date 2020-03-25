@@ -32,6 +32,10 @@ public class MoneyAPI {
         return i;
     }
 
+    public static boolean hasMoney(UUID uuid, double Money) {
+        return getMoney(uuid) >= Money;
+    }
+
     public static void setMoney(UUID uuid, double Money) {
         if (PlayerManager.PlayerExist(uuid)) {
             Vars.money.remove(uuid.toString());

@@ -3,12 +3,14 @@ package eternia.vault;
 import eternia.api.MoneyAPI;
 import eternia.api.UUIDFetcher;
 import eternia.player.PlayerManager;
-import net.milkbowl.vault.economy.AbstractEconomy;
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SystemEconomy extends AbstractEconomy implements UnsupportedBankEconomy {
+public class SystemEconomy implements Economy {
     private static final DecimalFormat df2 = new DecimalFormat(".##");
 
     @Override
@@ -19,6 +21,11 @@ public class SystemEconomy extends AbstractEconomy implements UnsupportedBankEco
     @Override
     public String getName() {
         return "EterniaServer";
+    }
+
+    @Override
+    public boolean hasBankSupport() {
+        return false;
     }
 
     @Override
@@ -43,7 +50,6 @@ public class SystemEconomy extends AbstractEconomy implements UnsupportedBankEco
 
     @Override
     public boolean hasAccount(String playerName) {
-        UUIDFetcher.getUUID(playerName);
         return PlayerManager.PlayerExist(UUIDFetcher.getUUID(playerName));
     }
 
@@ -54,12 +60,12 @@ public class SystemEconomy extends AbstractEconomy implements UnsupportedBankEco
 
     @Override
     public boolean hasAccount(String playerName, String worldName) {
-        return PlayerManager.PlayerExist(UUIDFetcher.getUUID(playerName));
+        return hasAccount(playerName);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return PlayerManager.PlayerExist(player.getUniqueId());
+        return hasAccount(player);
     }
 
     @Override
@@ -74,32 +80,32 @@ public class SystemEconomy extends AbstractEconomy implements UnsupportedBankEco
 
     @Override
     public double getBalance(String playerName, String world) {
-        return MoneyAPI.getMoney(UUIDFetcher.getUUID(playerName));
+        return getBalance(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer player, String world) {
-        return MoneyAPI.getMoney(player.getUniqueId());
+        return getBalance(player);
     }
 
     @Override
     public boolean has(String playerName, double amount) {
-        return amount >= MoneyAPI.getMoney(UUIDFetcher.getUUID(playerName));
+        return MoneyAPI.hasMoney(UUIDFetcher.getUUID(playerName), amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return amount >= MoneyAPI.getMoney(player.getUniqueId());
+        return MoneyAPI.hasMoney(player.getUniqueId(), amount);
     }
 
     @Override
     public boolean has(String playerName, String worldName, double amount) {
-        return amount >= MoneyAPI.getMoney(UUIDFetcher.getUUID(playerName));
+        return has(playerName, amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, String worldName, double amount) {
-        return amount >= MoneyAPI.getMoney(player.getUniqueId());
+        return has(player, amount);
     }
 
     @Override
@@ -116,14 +122,12 @@ public class SystemEconomy extends AbstractEconomy implements UnsupportedBankEco
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
-        MoneyAPI.removeMoney(UUIDFetcher.getUUID(playerName), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(UUIDFetcher.getUUID(playerName)), EconomyResponse.ResponseType.SUCCESS, null);
+        return withdrawPlayer(playerName, amount);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
-        MoneyAPI.removeMoney(player.getUniqueId(), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getUniqueId()), EconomyResponse.ResponseType.SUCCESS, null);
+        return  withdrawPlayer(player, amount);
     }
 
     @Override
@@ -140,14 +144,76 @@ public class SystemEconomy extends AbstractEconomy implements UnsupportedBankEco
 
     @Override
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
-        MoneyAPI.addMoney(UUIDFetcher.getUUID(playerName), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(UUIDFetcher.getUUID(playerName)), EconomyResponse.ResponseType.SUCCESS, null);
+        return depositPlayer(playerName, amount);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
-        MoneyAPI.addMoney(player.getUniqueId(), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getUniqueId()), EconomyResponse.ResponseType.SUCCESS, null);
+        return depositPlayer(player, amount);
+    }
+
+    @Override
+    public EconomyResponse createBank(String playerName, String paramString2) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse createBank(String s, OfflinePlayer offlinePlayer) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse deleteBank(String paramString) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse bankBalance(String paramString) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse bankHas(String paramString, double paramDouble) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse bankWithdraw(String paramString, double paramDouble) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse bankDeposit(String paramString, double paramDouble) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse isBankOwner(String paramString1, String paramString2) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse isBankOwner(String s, OfflinePlayer offlinePlayer) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse isBankMember(String paramString1, String paramString2) {
+        return createUnsupportedResponse();
+    }
+
+    @Override
+    public EconomyResponse isBankMember(String s, OfflinePlayer offlinePlayer) {
+        return createUnsupportedResponse();
+    }
+
+    EconomyResponse createUnsupportedResponse() {
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "Sem suporte para bancos");
+    }
+
+    @Override
+    public List<String> getBanks() {
+        return new ArrayList<>();
     }
 
     @Override
@@ -170,19 +236,11 @@ public class SystemEconomy extends AbstractEconomy implements UnsupportedBankEco
 
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
-        if (this.hasAccount(playerName)) {
-            return false;
-        }
-        PlayerManager.CreatePlayer(UUIDFetcher.getUUID(playerName));
-        return true;
+        return  createPlayerAccount(playerName);
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
-        if (this.hasAccount(player)) {
-            return false;
-        }
-        PlayerManager.CreatePlayer(player.getUniqueId());
-        return true;
+        return createPlayerAccount(player);
     }
 }

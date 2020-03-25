@@ -38,7 +38,7 @@ public class Baltop implements CommandExecutor
                     try {
                         rs = EterniaServer.sqlcon.Query(query);
                         while (rs.next()) {
-                            final UUID uuid2 = UUID.fromString(rs.getString("player_name"));
+                            final UUID uuid2 = UUID.fromString(rs.getString("UUID"));
                             accounts.add(uuid2);
                         }
                     }
@@ -61,7 +61,7 @@ public class Baltop implements CommandExecutor
                         }
                     }
                     MVar.playerMessage("baltop", player);
-                    accounts.forEach(uuid -> player.sendMessage("§3" + (accounts.indexOf(uuid) + 1) + " §7Posição§8: §3" + Objects.requireNonNull(Bukkit.getPlayer(uuid)).getName() + " §7Dinheiro§8: §3" + MoneyAPI.getMoney(player.getUniqueId()) + "§8."));
+                    accounts.forEach(uuid -> player.sendMessage("§3" + (accounts.indexOf(uuid) + 1) + " §7Posição§8 - §3" + Objects.requireNonNull(Bukkit.getPlayer(uuid)).getName() + " §7Dinheiro§8: §3" + MoneyAPI.getMoney(player.getUniqueId()) + "§8."));
                 }
                 catch (Exception e3) {
                     e3.printStackTrace();
