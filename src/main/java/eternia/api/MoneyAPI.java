@@ -58,12 +58,10 @@ public class MoneyAPI {
 
     public static void removeMoney(UUID uuid, double money) {
         if (PlayerManager.PlayerExist(uuid)) {
-            money = getMoney(uuid) - money;
-            setMoney(uuid, money);
+            setMoney(uuid, getMoney(uuid) - money);
         } else {
             PlayerManager.CreatePlayer(uuid);
-            money = getMoney(uuid) - money;
-            removeMoney(uuid, money);
+            removeMoney(uuid, getMoney(uuid) - money);
         }
     }
 

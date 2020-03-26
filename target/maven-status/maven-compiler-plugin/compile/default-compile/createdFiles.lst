@@ -60,6 +60,5 @@ eternia/commands/others/Name.class
 eternia/commands/economy/Money.class
 eternia/events/OnBlockBreak.class
 eternia/storage/sqlsetup/MySQLSetup.class
-eternia/vault/UnsupportedBankEconomy.class
 eternia/player/PlayerFlyState.class
 eternia/storage/sqlsetup/SQLiteSetup.class

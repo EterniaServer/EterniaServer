@@ -11,6 +11,10 @@ public class CVar {
         return Bukkit.getWorld(Objects.requireNonNull(EterniaServer.getMain().getConfig().getString(valor)));
     }
 
+    public static String getString(String valor) {
+        return EterniaServer.getMain().getConfig().getString(valor);
+    }
+
     public static boolean getBool(String valor) {
         return EterniaServer.getMain().getConfig().getBoolean(valor);
     }

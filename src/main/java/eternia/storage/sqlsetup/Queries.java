@@ -2,6 +2,8 @@ package eternia.storage.sqlsetup;
 
 import eternia.EterniaServer;
 import eternia.configs.MVar;
+import org.bukkit.Bukkit;
+
 import java.io.File;
 import java.sql.*;
 
@@ -57,13 +59,14 @@ public class Queries {
     }
 
     public void Update(final String sql) {
-        try {
-            this.con.createStatement().executeUpdate(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(EterniaServer.getMain(), () -> {
+            try {
+                con.createStatement().executeUpdate(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
-
     public ResultSet Query(final String qry) {
         ResultSet rs = null;
         try {

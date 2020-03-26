@@ -36,6 +36,7 @@ public class Vars {
         EterniaServer.getMain().saveConfig();
     }
 
+    public static final HashMap<String, Integer> xp = new HashMap<>();
     public static final HashMap<String, Double> money = new HashMap<>();
     public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();
     public static final HashMap<Player, Location> back = new HashMap<>();

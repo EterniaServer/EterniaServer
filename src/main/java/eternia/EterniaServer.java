@@ -50,7 +50,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void setStorage() {
-        new StorageManager(this, CVar.getBool("mysql"));
+        new StorageManager(CVar.getBool("mysql"));
     }
 
     private void setBlockBreak() {

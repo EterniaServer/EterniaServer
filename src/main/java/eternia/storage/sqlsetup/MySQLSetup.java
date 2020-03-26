@@ -3,7 +3,11 @@ package eternia.storage.sqlsetup;
 import eternia.EterniaServer;
 
 public class MySQLSetup {
-    public MySQLSetup(String host, String database, String username, String password) {
+    public MySQLSetup() {
+        String host = EterniaServer.getMain().getConfig().getString("host");
+        String database = EterniaServer.getMain().getConfig().getString("database");
+        String username = EterniaServer.getMain().getConfig().getString("usuario");
+        String password = EterniaServer.getMain().getConfig().getString("senha");
         String createTable = "CREATE TABLE IF NOT EXISTS eternia " +
                 "(`UUID` varchar(32) NOT NULL, " +
                 "`NAME` varchar(32) NOT NULL, " +
