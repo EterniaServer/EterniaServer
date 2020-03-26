@@ -46,6 +46,7 @@ eternia/events/NetherPortal.class
 eternia/commands/experience/DepositLevel.class
 eternia/events/PlayerLeave.class
 eternia/managers/CommandManager.class
+eternia/api/ExpAPI.class
 eternia/managers/MessagesManager.class
 eternia/commands/teleports/SetCrates.class
 eternia/commands/teleports/SetEvent.class

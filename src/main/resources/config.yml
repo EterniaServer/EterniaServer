@@ -3,16 +3,16 @@ modules:
   tpa: true
   warp: true
   xp: true
+sql:
+  mysql: false
+  host: '127.0.0.1'
+  database: 'admin'
+  user: 'admin'
+  password: 'admin'
 money-inicial: 300
 intervalo: 1
 cooldown: 4
 valor-do-back: 2500
-mysql: false
-host: '127.0.0.1'
-porta: 3306
-database: 'admin'
-usuario: 'admin'
-senha: 'admin'
 # Spawn
 world-n: 'world'
 x-n: 0
