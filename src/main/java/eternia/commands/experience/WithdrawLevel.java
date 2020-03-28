@@ -15,17 +15,16 @@ public class WithdrawLevel implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.withdrawlvl")) {
                 try {
-                    player.giveExp(ExpAPI.takeExp(player.getUniqueId()));
+                    MVar.playerReplaceMessage("xp.withdraw", player.getLevel(), player);
+                    player.giveExp(ExpAPI.takeExp(player.getName()));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    MVar.playerMessage("tirar-xp-errou", player);
                 }
-                MVar.playerReplaceMessage("xp-tirar", player.getLevel(), player);
             } else {
-                MVar.playerMessage("sem-permissão", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

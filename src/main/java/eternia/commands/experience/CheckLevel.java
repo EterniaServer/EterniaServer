@@ -14,15 +14,15 @@ public class CheckLevel implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.checklevel")) {
                 try {
-                    MVar.playerReplaceMessage("tem-xp", ExpAPI.getExp(player.getUniqueId()), player);
+                    MVar.playerReplaceMessage("xp.getxp", ExpAPI.getExp(player.getName()), player);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
-                MVar.playerMessage("sem-permissão", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

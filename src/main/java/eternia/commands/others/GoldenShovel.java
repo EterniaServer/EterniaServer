@@ -20,18 +20,18 @@ public class GoldenShovel implements CommandExecutor {
                 if (Vars.shovel_cooldown.containsKey(player)) {
                     long secondsLeft = ((Vars.shovel_cooldown.get(player) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
                     if (secondsLeft > 0) {
-                        MVar.playerReplaceMessage("pa-falta-tempo", secondsLeft, player);
+                        MVar.playerReplaceMessage("server.timing", secondsLeft, player);
                     }
                 }
                 Vars.shovel_cooldown.put(player, System.currentTimeMillis());
                 PlayerInventory inventory = player.getInventory();
                 inventory.addItem(new ItemStack(Material.GOLDEN_SHOVEL));
-                MVar.playerMessage("pa-sucesso", player);
+                MVar.playerMessage("other.shovel", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

@@ -5,12 +5,14 @@ import eternia.events.*;
 
 public class EventManager {
     public EventManager(EterniaServer plugin) {
-        new NetherPortal().runTaskTimer(EterniaServer.getMain(), 20L, plugin.getConfig().getInt("intervalo") * 20);
+        new NetherPortal().runTaskTimer(EterniaServer.getMain(), 20L, plugin.getConfig().getInt("server.nether-check") * 20);
         plugin.getServer().getPluginManager().registerEvents(new OnChat(), EterniaServer.getMain());
         plugin.getServer().getPluginManager().registerEvents(new PlayerJoin(), EterniaServer.getMain());
         plugin.getServer().getPluginManager().registerEvents(new PlayerTeleport(), EterniaServer.getMain());
         plugin.getServer().getPluginManager().registerEvents(new ExpDrop(), EterniaServer.getMain());
         plugin.getServer().getPluginManager().registerEvents(new OnBlockBreak(), EterniaServer.getMain());
         plugin.getServer().getPluginManager().registerEvents(new PlayerLeave(), EterniaServer.getMain());
+        plugin.getServer().getPluginManager().registerEvents(new OnBlockPlace(), EterniaServer.getMain());
+        plugin.getServer().getPluginManager().registerEvents(new OnAnvilRename(), EterniaServer.getMain());
     }
 }

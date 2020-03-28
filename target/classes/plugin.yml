@@ -1,7 +1,7 @@
 main: eternia.EterniaServer
 
 name: EterniaServer
-version: '2.4.1'
+version: '2.5.0'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
@@ -121,3 +121,9 @@ commands:
   baltop:
     description: Ve o top money.
     aliases: [topmoney]
+  eco:
+    description: Meche na economia.
+    aliases: [ecochange]
+  spawnergive:
+    description: Da um spawner.
+    aliases: [darspawner]

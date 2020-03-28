@@ -14,12 +14,12 @@ public class SetEvent implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setevent")) {
                 Vars.setLocation("world-e", "x-e", "y-e", "z-e", "yaw-e", "pitch-e", player);
-                MVar.playerMessage("evento-definido", player);
+                MVar.playerMessage("warps.event-set", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

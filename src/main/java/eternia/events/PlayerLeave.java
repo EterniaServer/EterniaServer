@@ -11,6 +11,6 @@ public class PlayerLeave implements Listener {
     public void OnLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         event.setQuitMessage(null);
-        MVar.broadcastReplaceMessage("leave", player.getName());
+        MVar.broadcastReplaceMessage("server.leave", player.getName());
     }
 }

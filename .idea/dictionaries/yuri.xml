@@ -1,11 +1,15 @@
 <component name="ProjectDictionaryState">
   <dictionary name="yuri">
     <words>
+      <w>acabou</w>
       <w>aceitou</w>
       <w>aguarde</w>
+      <w>algo</w>
       <w>algum</w>
       <w>alguma</w>
+      <w>algumas</w>
       <w>alterada</w>
+      <w>alterar</w>
       <w>alvo</w>
       <w>antiga</w>
       <w>aplicar</w>
@@ -21,6 +25,7 @@
       <w>ativo</w>
       <w>atual</w>
       <w>atualizada</w>
+      <w>ballist</w>
       <w>banco</w>
       <w>bancos</w>
       <w>bancárias</w>
@@ -34,6 +39,7 @@
       <w>cancelado</w>
       <w>carrega</w>
       <w>carregada</w>
+      <w>carregado</w>
       <w>carregar</w>
       <w>cartão</w>
       <w>caso</w>
@@ -42,7 +48,11 @@
       <w>chamar</w>
       <w>chame</w>
       <w>checklevel</w>
+      <w>cheio</w>
+      <w>chão</w>
       <w>classe</w>
+      <w>colocar</w>
+      <w>coloque</w>
       <w>começar</w>
       <w>comunique</w>
       <w>conecao</w>
@@ -54,16 +64,19 @@
       <w>configurações</w>
       <w>confirma</w>
       <w>connectsql</w>
+      <w>conseguiu</w>
       <w>conta</w>
       <w>contador</w>
       <w>contagem</w>
       <w>contas</w>
       <w>contrário</w>
+      <w>craftbukkit</w>
       <w>criar</w>
       <w>cuidado</w>
       <w>dados</w>
       <w>definida</w>
       <w>definir</w>
+      <w>definiu</w>
       <w>dele</w>
       <w>delhome</w>
       <w>dentro</w>
@@ -73,8 +86,11 @@
       <w>desativar</w>
       <w>desativaram</w>
       <w>desse</w>
+      <w>destroystokyo</w>
       <w>dinheiro</w>
+      <w>direito</w>
       <w>doacao</w>
+      <w>dropar</w>
       <w>elas</w>
       <w>eles</w>
       <w>encheu</w>
@@ -82,6 +98,7 @@
       <w>encontrado</w>
       <w>encontrar</w>
       <w>encontre</w>
+      <w>entidades</w>
       <w>entrar</w>
       <w>entre</w>
       <w>então</w>
@@ -114,11 +131,15 @@
       <w>fiquem</w>
       <w>fixos</w>
       <w>funciona</w>
+      <w>funcionam</w>
+      <w>funcione</w>
       <w>função</w>
       <w>garrafas</w>
       <w>garrafinha</w>
       <w>garrafinhas</w>
       <w>geral</w>
+      <w>getxp</w>
+      <w>gotopaper</w>
       <w>guardado</w>
       <w>guardados</w>
       <w>guardou</w>
@@ -135,7 +156,9 @@
       <w>inteiro</w>
       <w>interno</w>
       <w>intervalo</w>
+      <w>invalido</w>
       <w>inventário</w>
+      <w>invfull</w>
       <w>jitpack</w>
       <w>jogadores</w>
       <w>jogadortempo</w>
@@ -161,6 +184,7 @@
       <w>moveu</w>
       <w>msgfinal</w>
       <w>muitas</w>
+      <w>mundo</w>
       <w>método</w>
       <w>métodos</w>
       <w>necessário</w>
@@ -168,7 +192,14 @@
       <w>negativa</w>
       <w>negou</w>
       <w>nenhum</w>
+      <w>nesse</w>
+      <w>noask</w>
+      <w>nofree</w>
+      <w>nomoney</w>
+      <w>nosilk</w>
       <w>nosso</w>
+      <w>notp</w>
+      <w>noxp</w>
       <w>numero</w>
       <w>nível</w>
       <w>objeto</w>
@@ -179,9 +210,11 @@
       <w>pegar</w>
       <w>pela</w>
       <w>pelo</w>
+      <w>perdeu</w>
       <w>permanecer</w>
       <w>permissao</w>
       <w>pessoais</w>
+      <w>picareta</w>
       <w>podem</w>
       <w>porta</w>
       <w>posição</w>
@@ -190,6 +223,7 @@
       <w>precisar</w>
       <w>preso</w>
       <w>presos</w>
+      <w>problema</w>
       <w>procura</w>
       <w>procurar</w>
       <w>proxima</w>
@@ -197,23 +231,29 @@
       <w>página</w>
       <w>qual</w>
       <w>quantidade</w>
+      <w>quebrar</w>
       <w>quem</w>
       <w>recebe</w>
       <w>recebeu</w>
+      <w>recomenda</w>
       <w>registro</w>
       <w>regra</w>
       <w>regralista</w>
       <w>removida</w>
       <w>retirar</w>
+      <w>retirou</w>
       <w>retorna</w>
       <w>retornar</w>
       <w>rodada</w>
+      <w>rremove</w>
+      <w>rset</w>
       <w>salva</w>
       <w>salvamento</w>
       <w>salvar</w>
       <w>seja</w>
       <w>sempedido</w>
       <w>sempre</w>
+      <w>sendtpa</w>
       <w>senha</w>
       <w>servidor</w>
       <w>setarena</w>
@@ -223,7 +263,11 @@
       <w>sethome</w>
       <w>setshop</w>
       <w>setspawn</w>
+      <w>silktouch</w>
       <w>somente</w>
+      <w>spawner</w>
+      <w>spawnergive</w>
+      <w>spawners</w>
       <w>sqlcon</w>
       <w>sqlitesetup</w>
       <w>suas</w>
@@ -234,6 +278,7 @@
       <w>suporta</w>
       <w>suporte</w>
       <w>tabela</w>
+      <w>talvez</w>
       <w>teleport</w>
       <w>teleportaccept</w>
       <w>teleportado</w>
@@ -247,14 +292,23 @@
       <w>teleporttoplayer</w>
       <w>tenha</w>
       <w>tentar</w>
+      <w>tente</w>
+      <w>tentou</w>
+      <w>tipo</w>
+      <w>tipos</w>
       <w>tiver</w>
       <w>toda</w>
       <w>todas</w>
       <w>topg</w>
       <w>tpaccept</w>
       <w>tpdeny</w>
+      <w>tpto</w>
+      <w>usepaper</w>
       <w>usuario</w>
       <w>usuário</w>
+      <w>utilizando</w>
+      <w>utilização</w>
+      <w>uuids</w>
       <w>valores</w>
       <w>vamos</w>
       <w>variaveis</w>
@@ -268,6 +322,7 @@
       <w>votar</w>
       <w>voto</w>
       <w>votos</w>
+      <w>válidos</w>
       <w>váriaveis</w>
       <w>váriavel</w>
       <w>xpmanager</w>

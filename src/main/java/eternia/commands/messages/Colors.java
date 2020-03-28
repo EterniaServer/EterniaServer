@@ -7,14 +7,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Colors implements CommandExecutor {
-
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.colors")) {
-                MVar.playerMessage("cores", player);
+                MVar.playerMessage("text.color", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
             MVar.consoleMessage("cores");

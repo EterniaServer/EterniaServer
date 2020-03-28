@@ -4,17 +4,16 @@ import eternia.EterniaServer;
 import eternia.configs.Vars;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
 public class ExpAPI {
 
-    public static Integer getExp(UUID uuid) {
-        if (Vars.xp.containsKey(uuid.toString())) {
-            return Vars.xp.get(uuid.toString());
+    public static Integer getExp(String playerName) {
+        if (Vars.xp.containsKey(playerName)) {
+            return Vars.xp.get(playerName);
         }
         int xp = 0;
         try {
-            final ResultSet rs = EterniaServer.sqlcon.Query("SELECT XP FROM eternia WHERE UUID='" + uuid.toString() + "';");
+            final ResultSet rs = EterniaServer.sqlcon.Query("SELECT XP FROM eternia WHERE NAME='" + playerName + "';");
             if (rs.next()) {
                 rs.getInt("XP");
             }
@@ -22,23 +21,23 @@ public class ExpAPI {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Vars.xp.put(uuid.toString(), xp);
+        Vars.xp.put(playerName, xp);
         return xp;
     }
 
-    public static void setExp(UUID uuid, int valor) {
-        Vars.xp.remove(uuid.toString());
-        Vars.xp.put(uuid.toString(), valor);
-        EterniaServer.sqlcon.Update("UPDATE eternia SET BALANCE='" + valor + "' WHERE UUID='" + uuid.toString() + "';");
+    public static void setExp(String playerName, int valor) {
+        Vars.xp.remove(playerName);
+        Vars.xp.put(playerName, valor);
+        EterniaServer.sqlcon.Update("UPDATE eternia SET BALANCE='" + valor + "' WHERE NAME='" + playerName + "';");
     }
 
-    public static void addExp(UUID uuid, int valor) {
-        setExp(uuid, getExp(uuid) + valor);
+    public static void addExp(String playerName, int valor) {
+        setExp(playerName, getExp(playerName) + valor);
     }
 
-    public static Integer takeExp(UUID uuid) {
-        setExp(uuid, 0);
-        return getExp(uuid);
+    public static Integer takeExp(String playerName) {
+        setExp(playerName, 0);
+        return getExp(playerName);
     }
 
 }

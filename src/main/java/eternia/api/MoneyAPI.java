@@ -5,18 +5,17 @@ import eternia.configs.Vars;
 import eternia.player.PlayerManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
 public class MoneyAPI {
 
-    public static double getMoney(UUID uuid) {
-        if (Vars.money.containsKey(uuid.toString())) {
-            return Vars.money.get(uuid.toString());
+    public static double getMoney(String playerName) {
+        if (Vars.money.containsKey(playerName)) {
+            return Vars.money.get(playerName);
         }
         double i = 0;
-        if (PlayerManager.PlayerExist(uuid)) {
+        if (PlayerManager.PlayerExist(playerName)) {
             try {
-                final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM eternia WHERE UUID='" + uuid.toString() + "';");
+                final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM eternia WHERE NAME='" + playerName + "';");
                 if (rs.next()) {
                     rs.getDouble("BALANCE");
                 }
@@ -25,43 +24,43 @@ public class MoneyAPI {
                 e.printStackTrace();
             }
         } else {
-            PlayerManager.CreatePlayer(uuid);
-            getMoney(uuid);
+            PlayerManager.CreatePlayer(playerName);
+            i = 300;
         }
-        Vars.money.put(uuid.toString(), i);
+        Vars.money.put(playerName, i);
         return i;
     }
 
-    public static boolean hasMoney(UUID uuid, double Money) {
-        return getMoney(uuid) >= Money;
+    public static boolean hasMoney(String playerName, double Money) {
+        return getMoney(playerName) >= Money;
     }
 
-    public static void setMoney(UUID uuid, double Money) {
-        if (PlayerManager.PlayerExist(uuid)) {
-            Vars.money.remove(uuid.toString());
-            Vars.money.put(uuid.toString(), Money);
-            EterniaServer.sqlcon.Update("UPDATE eternia SET BALANCE='" + Money + "' WHERE UUID='" + uuid.toString() + "';");
+    public static void setMoney(String playerName, double Money) {
+        if (PlayerManager.PlayerExist(playerName)) {
+            Vars.money.remove(playerName);
+            Vars.money.put(playerName, Money);
+            EterniaServer.sqlcon.Update("UPDATE eternia SET BALANCE='" + Money + "' WHERE NAME='" + playerName + "';");
         } else {
-            PlayerManager.CreatePlayer(uuid);
-            setMoney(uuid, Money);
+            PlayerManager.CreatePlayer(playerName);
+            setMoney(playerName, Money);
         }
     }
 
-    public static void addMoney(UUID uuid, double money) {
-        if (PlayerManager.PlayerExist(uuid)) {
-            setMoney(uuid, getMoney(uuid) + money);
+    public static void addMoney(String playerName, double money) {
+        if (PlayerManager.PlayerExist(playerName)) {
+            setMoney(playerName, getMoney(playerName) + money);
         } else {
-            PlayerManager.CreatePlayer(uuid);
-            addMoney(uuid, getMoney(uuid) + money);
+            PlayerManager.CreatePlayer(playerName);
+            addMoney(playerName, getMoney(playerName) + money);
         }
     }
 
-    public static void removeMoney(UUID uuid, double money) {
-        if (PlayerManager.PlayerExist(uuid)) {
-            setMoney(uuid, getMoney(uuid) - money);
+    public static void removeMoney(String playerName, double money) {
+        if (PlayerManager.PlayerExist(playerName)) {
+            setMoney(playerName, getMoney(playerName) - money);
         } else {
-            PlayerManager.CreatePlayer(uuid);
-            removeMoney(uuid, getMoney(uuid) - money);
+            PlayerManager.CreatePlayer(playerName);
+            removeMoney(playerName, getMoney(playerName) - money);
         }
     }
 

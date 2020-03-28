@@ -18,22 +18,22 @@ public class TeleportToPlayer implements CommandExecutor {
                     if (target.isOnline()) {
                         if (!(target == player)) {
                             Vars.tpa_requests.put(target, player);
-                            MVar.playerReplaceMessage("pediu-tpa", player.getName(), target);
-                            MVar.playerReplaceMessage("enviou-tpa", target.getName(), player);
+                            MVar.playerReplaceMessage("server.receiver", player.getName(), target);
+                            MVar.playerReplaceMessage("teleport.send", target.getName(), player);
                         } else {
-                            MVar.playerMessage("tpa-voce", player);
+                            MVar.playerMessage("teleport.auto", player);
                         }
                     } else {
-                        MVar.playerMessage("jogador-offline", player);
+                        MVar.playerMessage("server.player-offline", player);
                     }
                 } else {
-                    MVar.playerMessage("tpa-errado", player);
+                    MVar.playerMessage("teleport.use", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

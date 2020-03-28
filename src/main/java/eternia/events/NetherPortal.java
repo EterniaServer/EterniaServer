@@ -19,12 +19,12 @@ public class NetherPortal extends org.bukkit.scheduler.BukkitRunnable {
                         Location player_location = player.getLocation();
                         if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
                             player.teleport(Vars.getLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n"));
-                            MVar.playerMessage("spawn", player);
+                            MVar.playerMessage("warps.spawn", player);
                         }
                     } else {
                         Vars.playersInPortal.put(player, Vars.playersInPortal.get(player) - 1);
                         if (Vars.playersInPortal.get(player) < 5) {
-                            MVar.playerReplaceMessage("trap-mensagem-tempo", Vars.playersInPortal.get(player), player);
+                            MVar.playerReplaceMessage("server.nether-trap", Vars.playersInPortal.get(player), player);
                         }
                     }
                 } else Vars.playersInPortal.remove(player);

@@ -15,16 +15,16 @@ public class Name implements CommandExecutor {
             if (player.hasPermission("eternia.name")) {
                 if (args.length == 0) {
                     player.setDisplayName(player.getName());
-                    MVar.playerMessage("nick-removido", player);
+                    MVar.playerMessage("other.del-nick", player);
                 } else {
                     player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
-                    MVar.playerReplaceMessage("nick-novo", player.getDisplayName(), player);
+                    MVar.playerReplaceMessage("other.new-nick", player.getDisplayName(), player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

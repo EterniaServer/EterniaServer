@@ -14,13 +14,13 @@ public class SetShop implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setshop")) {
                 Vars.setLocation("world-s", "x-s", "y-s", "z-s", "yaw-s", "pitch-s", player);
-                MVar.playerMessage("loja-definida", player);
+                MVar.playerMessage("warps.shop-set", player);
                 return true;
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

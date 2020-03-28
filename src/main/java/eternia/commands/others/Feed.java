@@ -16,33 +16,33 @@ public class Feed implements CommandExecutor {
                 if (args.length == 0) {
                     if (command.getName().equalsIgnoreCase("comandos.staff.feed")) {
                         player.setFoodLevel(20);
-                        MVar.playerMessage("me-enchi", player);
+                        MVar.playerMessage("other.feed", player);
                     }
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.feed.other")) {
                         Player target = Vars.findPlayer(args[0]);
                         if (target.isOnline()) {
                             target.setFoodLevel(20);
-                            MVar.playerReplaceMessage("encheu-barra", target.getName(), player);
-                            MVar.playerReplaceMessage("recebeu-barra", player.getName(), target);
+                            MVar.playerReplaceMessage("other.feed-other", target.getName(), player);
+                            MVar.playerReplaceMessage("other.other-feed", player.getName(), target);
                         } else {
-                            MVar.playerMessage("jogador-offline", player);
+                            MVar.playerMessage("server.player-offline", player);
                         }
                     } else {
-                        MVar.playerMessage("sem-permissao", player);
+                        MVar.playerMessage("server.no-perm", player);
                     }
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else if (args.length == 1) {
             Player target = Vars.findPlayer(args[0]);
             if (target.isOnline()) {
                 target.setFoodLevel(20);
-                MVar.consoleReplaceMessage("encheu-barra", target.getName());
-                MVar.playerReplaceMessage("recebeu-barra", "console", target);
+                MVar.consoleReplaceMessage("other.feed-other", target.getName());
+                MVar.playerReplaceMessage("other.other-feed", "console", target);
             } else {
-                MVar.consoleMessage("jogador-offline");
+                MVar.consoleMessage("server.player-offline");
             }
         }
         return true;

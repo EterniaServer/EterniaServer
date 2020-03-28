@@ -12,7 +12,7 @@ eternia/commands/teleports/Back.class
 eternia/commands/teleports/SetArena.class
 eternia/vault/VaultHook.class
 eternia/events/PlayerTeleport.class
-eternia/api/UUIDFetcher.class
+eternia/events/OnAnvilRename.class
 eternia/commands/messages/Facebook.class
 eternia/commands/teleports/SetShop.class
 eternia/commands/messages/Donation.class
@@ -24,6 +24,9 @@ eternia/commands/economy/Pay.class
 eternia/commands/others/Feed.class
 eternia/commands/teleports/Shop.class
 eternia/commands/messages/Rules.class
+eternia/commands/others/SpawnerGive.class
+eternia/spawner/SpawnerPlace.class
+eternia/commands/economy/Eco.class
 eternia/commands/teleports/Spawn.class
 eternia/commands/messages/Discord.class
 eternia/commands/others/GoldenShovel.class
@@ -32,6 +35,7 @@ eternia/commands/others/Fly.class
 eternia/commands/others/Survival.class
 eternia/commands/others/Hat.class
 eternia/commands/economy/Baltop.class
+eternia/spawner/SpawnerBreak.class
 eternia/commands/experience/WithdrawLevel.class
 eternia/vault/SystemEconomy.class
 eternia/commands/teleports/TeleportToPlayer.class
@@ -42,6 +46,7 @@ eternia/commands/teleports/TeleportAccept.class
 eternia/EterniaServer.class
 eternia/commands/teleports/TeleportDeny.class
 eternia/commands/teleports/Event.class
+eternia/events/OnBlockPlace.class
 eternia/events/NetherPortal.class
 eternia/commands/experience/DepositLevel.class
 eternia/events/PlayerLeave.class

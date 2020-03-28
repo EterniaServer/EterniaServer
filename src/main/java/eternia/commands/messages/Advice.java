@@ -19,12 +19,12 @@ public class Advice implements CommandExecutor {
                     }
                     sb.substring(0, sb.length() - 1);
                     String s = sb.toString();
-                    MVar.broadcastReplaceMessage("aviso-global", s);
+                    MVar.broadcastReplaceMessage("text.global-advice", s);
                 } else {
-                    MVar.playerMessage("aviso", player);
+                    MVar.playerMessage("text.advice", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
             if (args.length >= 1) {
@@ -34,9 +34,9 @@ public class Advice implements CommandExecutor {
                 }
                 sb.substring(0, sb.length() - 1);
                 String s = sb.toString();
-                MVar.broadcastReplaceMessage("aviso-global", s);
+                MVar.broadcastReplaceMessage("text.global-advice", s);
             } else {
-                MVar.consoleMessage("aviso");
+                MVar.consoleMessage("text.advice");
             }
         }
         return true;

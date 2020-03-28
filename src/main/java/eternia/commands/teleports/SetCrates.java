@@ -14,12 +14,12 @@ public class SetCrates implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setcaixas")) {
                 Vars.setLocation("world-c", "x-c", "y-c", "z-c", "yaw-c", "pitch-c", player);
-                MVar.playerMessage("caixa-definida", player);
+                MVar.playerMessage("warps.crate-set", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

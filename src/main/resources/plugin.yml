@@ -121,3 +121,9 @@ commands:
   baltop:
     description: Ve o top money.
     aliases: [topmoney]
+  eco:
+    description: Meche na economia.
+    aliases: [ecochange]
+  spawnergive:
+    description: Da um spawner.
+    aliases: [darspawner]

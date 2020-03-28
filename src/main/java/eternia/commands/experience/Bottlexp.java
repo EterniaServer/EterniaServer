@@ -26,16 +26,16 @@ public class Bottlexp implements CommandExecutor {
                 if (xp_real >= 10) {
                     xp_real = (xp_real / 10);
                     player.getWorld().dropItem(player.getLocation().add(0, 1, 0), new ItemStack(Material.EXPERIENCE_BOTTLE, xp_real));
-                    MVar.playerMessage("xp-sucesso", player);
+                    MVar.playerMessage("xp.bottlexp", player);
                     player.setLevel(0);
                 } else {
-                    MVar.playerMessage("xp-insuficiente", player);
+                    MVar.playerMessage("xp.noxp", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissão", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

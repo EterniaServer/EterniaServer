@@ -9,10 +9,26 @@ sql:
   database: 'admin'
   user: 'admin'
   password: 'admin'
-money-inicial: 300
-intervalo: 1
-cooldown: 4
-valor-do-back: 2500
+money:
+  start: 300
+  back: 2500
+  singular: 'Eternia'
+  plural: 'Eternias'
+server:
+  nether-check: 1
+  cooldown: 4
+spawners:
+  mob-name-color: '&e'
+  lore:
+    - '&7Coloque isso no chão&8.'
+    - '&3%s &7spawner&8.'
+  enable-lore: false
+  prevent-anvil: true
+  blacklisted-worlds:
+    - 'shop'
+  log: true
+  drop-in-inventory: true
+  drop-chance: 1.0
 # Spawn
 world-n: 'world'
 x-n: 0

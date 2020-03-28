@@ -1,7 +1,7 @@
 package eternia.vault;
 
 import eternia.api.MoneyAPI;
-import eternia.api.UUIDFetcher;
+import eternia.configs.CVar;
 import eternia.player.PlayerManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -40,22 +40,22 @@ public class SystemEconomy implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return "Eternias";
+        return CVar.getString("money.plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return "Eternia";
+        return CVar.getString("money.singular");
     }
 
     @Override
     public boolean hasAccount(String playerName) {
-        return PlayerManager.PlayerExist(UUIDFetcher.getUUID(playerName));
+        return PlayerManager.PlayerExist(playerName);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return PlayerManager.PlayerExist(player.getUniqueId());
+        return PlayerManager.PlayerExist(player.getName());
     }
 
     @Override
@@ -70,12 +70,12 @@ public class SystemEconomy implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return MoneyAPI.getMoney(UUIDFetcher.getUUID(playerName));
+        return MoneyAPI.getMoney(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return MoneyAPI.getMoney(player.getUniqueId());
+        return MoneyAPI.getMoney(player.getName());
     }
 
     @Override
@@ -90,12 +90,12 @@ public class SystemEconomy implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        return MoneyAPI.hasMoney(UUIDFetcher.getUUID(playerName), amount);
+        return MoneyAPI.hasMoney(playerName, amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return MoneyAPI.hasMoney(player.getUniqueId(), amount);
+        return MoneyAPI.hasMoney(player.getName(), amount);
     }
 
     @Override
@@ -110,14 +110,14 @@ public class SystemEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        MoneyAPI.removeMoney(UUIDFetcher.getUUID(playerName), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(UUIDFetcher.getUUID(playerName)), EconomyResponse.ResponseType.SUCCESS, null);
+        MoneyAPI.removeMoney(playerName, amount);
+        return new EconomyResponse(amount, MoneyAPI.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        MoneyAPI.removeMoney(player.getUniqueId(), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getUniqueId()), EconomyResponse.ResponseType.SUCCESS, null);
+        MoneyAPI.removeMoney(player.getName(), amount);
+        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
@@ -132,14 +132,14 @@ public class SystemEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        MoneyAPI.addMoney(UUIDFetcher.getUUID(playerName), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(UUIDFetcher.getUUID(playerName)), EconomyResponse.ResponseType.SUCCESS, null);
+        MoneyAPI.addMoney(playerName, amount);
+        return new EconomyResponse(amount, MoneyAPI.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        MoneyAPI.addMoney(player.getUniqueId(), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getUniqueId()), EconomyResponse.ResponseType.SUCCESS, null);
+        MoneyAPI.addMoney(player.getName(), amount);
+        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
@@ -221,7 +221,7 @@ public class SystemEconomy implements Economy {
         if (this.hasAccount(playerName)) {
             return false;
         }
-        PlayerManager.CreatePlayer(UUIDFetcher.getUUID(playerName));
+        PlayerManager.CreatePlayer(playerName);
         return true;
     }
 
@@ -230,7 +230,7 @@ public class SystemEconomy implements Economy {
         if (this.hasAccount(player)) {
             return false;
         }
-        PlayerManager.CreatePlayer(player.getUniqueId());
+        PlayerManager.CreatePlayer(player.getName());
         return true;
     }
 

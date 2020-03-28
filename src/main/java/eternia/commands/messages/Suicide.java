@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings("ALL")
 public class Suicide implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -21,15 +20,15 @@ public class Suicide implements CommandExecutor {
                     sb.append("&8- &3").append(player.getName());
                     String s = sb.toString();
                     player.setHealth(0);
-                    MVar.broadcastReplaceMessage("suicidio", s);
+                    MVar.broadcastReplaceMessage("text.suicide", s);
                 } else {
                     player.setHealth(0);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

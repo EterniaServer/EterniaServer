@@ -15,17 +15,17 @@ public class TeleportDeny implements CommandExecutor {
             if (player.hasPermission("eternia.tpa")) {
                 if (Vars.tpa_requests.containsKey(player)) {
                     Player target = Vars.tpa_requests.get(player);
-                    MVar.playerReplaceMessage("negou-tpa", target.getName(), player);
-                    MVar.playerMessage("tpa-negado", target);
+                    MVar.playerReplaceMessage("teleport.auto-deny", target.getName(), player);
+                    MVar.playerMessage("teleport.deny", target);
                     Vars.tpa_requests.remove(player);
                 } else {
-                    MVar.playerMessage("sem-pedido", player);
+                    MVar.playerMessage("teleport.noask", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

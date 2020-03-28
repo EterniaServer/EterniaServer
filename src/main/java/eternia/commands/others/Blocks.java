@@ -104,12 +104,12 @@ public class Blocks implements CommandExecutor {
                     player.getInventory().removeItem(new ItemStack(Material.EMERALD, emerald_block * 9));
                     player.getInventory().addItem(new ItemStack(Material.EMERALD_BLOCK, emerald_block));
                 }
-                MVar.playerMessage("feito", player);
+                MVar.playerMessage("other.done", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

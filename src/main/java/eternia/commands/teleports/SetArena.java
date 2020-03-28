@@ -14,13 +14,13 @@ public class SetArena implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setarena")) {
                 Vars.setLocation("world-a", "x-a", "y-a", "z-a", "yaw-a", "pitch-a", player);
-                MVar.playerMessage("arena-definida", player);
+                MVar.playerMessage("warps.arena-set", player);
                 return true;
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

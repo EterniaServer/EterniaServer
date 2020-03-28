@@ -32,6 +32,8 @@ public class CommandManager {
             Objects.requireNonNull(plugin.getCommand("pay")).setExecutor(new Pay());
             Objects.requireNonNull(plugin.getCommand("money")).setExecutor(new Money());
             Objects.requireNonNull(plugin.getCommand("baltop")).setExecutor(new Baltop());
+            Objects.requireNonNull(plugin.getCommand("eco")).setExecutor(new Eco());
+            Objects.requireNonNull(plugin.getCommand("spawnergive")).setExecutor(new SpawnerGive());
         }
         if (CVar.getBool("modules.tpa")) {
             Objects.requireNonNull(plugin.getCommand("teleportaccept")).setExecutor(new TeleportAccept());

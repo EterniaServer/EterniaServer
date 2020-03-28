@@ -18,12 +18,12 @@ public class TeleportAll implements CommandExecutor {
                         other.teleport(player);
                     }
                 }
-                MVar.playerMessage("teleportou-geral", player);
+                MVar.playerMessage("teleport.all", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

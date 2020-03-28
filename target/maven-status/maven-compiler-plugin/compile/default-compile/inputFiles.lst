@@ -1,14 +1,15 @@
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/experience/WithdrawLevel.java
+/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/spawner/SpawnerPlace.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/economy/Baltop.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/player/PlayerManager.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/managers/BlockBreakManager.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/messages/Discord.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/vault/SystemEconomy.java
-/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/vault/UnsupportedBankEconomy.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/teleports/Shop.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/experience/CheckLevel.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/teleports/TeleportDeny.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/messages/Donation.java
+/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/spawner/SpawnerBreak.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/managers/CommandManager.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/teleports/Arena.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/teleports/TeleportAll.java
@@ -29,6 +30,7 @@
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/player/PlayerFlyState.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/events/PlayerLeave.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/others/Feed.java
+/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/events/OnAnvilRename.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/events/NetherPortal.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/teleports/SetShop.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/messages/Vote.java
@@ -36,6 +38,7 @@
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/experience/DepositLevel.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/configs/CVar.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/teleports/Crates.java
+/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/economy/Eco.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/others/Fly.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/others/Name.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/others/Hat.java
@@ -45,8 +48,11 @@
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/messages/Advice.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/managers/MessagesManager.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/messages/Colors.java
+/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/events/OnBlockPlace.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/managers/EventManager.java
+/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/api/ExpAPI.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/others/Survival.java
+/home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/others/SpawnerGive.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/others/Spectator.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/managers/StorageManager.java
 /home/yuri/IdeaProjects/eterniaserver/src/main/java/eternia/commands/teleports/Event.java

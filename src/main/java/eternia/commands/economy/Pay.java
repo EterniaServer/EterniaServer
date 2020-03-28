@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
 
 public class Pay implements CommandExecutor {
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             final Player player = (Player) sender;
@@ -21,35 +22,35 @@ public class Pay implements CommandExecutor {
                             final Player target = Bukkit.getPlayer(args[0]);
                             if (target != null) {
                                 if (target.equals(player)) {
-                                    MVar.playerMessage("pay-voce", player);
+                                    MVar.playerMessage("eco.auto-pay", player);
                                     return true;
                                 }
-                                if (MoneyAPI.getMoney(player.getUniqueId()) >= coins) {
-                                    MoneyAPI.addMoney(target.getUniqueId(), coins);
-                                    MoneyAPI.removeMoney(player.getUniqueId(), coins);
-                                    MVar.playerReplaceMessage("pay-pagou", coins, player);
-                                    MVar.playerReplaceMessage("pay-recebeu", coins, target);
+                                if (MoneyAPI.getMoney(player.getName()) >= coins) {
+                                    MoneyAPI.addMoney(target.getName(), coins);
+                                    MoneyAPI.removeMoney(player.getName(), coins);
+                                    MVar.playerReplaceMessage("eco.pay", coins, target.getName(), player);
+                                    MVar.playerReplaceMessage("eco.pay-me", coins, player.getName(), target);
                                 } else {
-                                    MVar.playerMessage("pay-voce-nao-tem", player);
+                                    MVar.playerMessage("eco.pay-nomoney", player);
                                 }
                             } else {
-                                MVar.playerMessage("jogador-nao", player);
+                                MVar.playerMessage("server.player-offline", player);
                             }
                         } else {
-                            MVar.playerMessage("nao-pode-negativo", player);
+                            MVar.playerMessage("server.no-negative", player);
                         }
                     } catch (Exception e) {
-                        MVar.playerMessage("precisa-numero", player);
+                        MVar.playerMessage("server.no-number", player);
                         return true;
                     }
                 } else {
-                    MVar.playerMessage("pay-use", player);
+                    MVar.playerMessage("eco.use", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

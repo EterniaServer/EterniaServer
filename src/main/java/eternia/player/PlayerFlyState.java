@@ -9,11 +9,11 @@ public class PlayerFlyState {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-            MVar.playerMessage("desativar-voar", player);
+            MVar.playerMessage("fly.disable", player);
         } else {
             player.setAllowFlight(true);
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-            MVar.playerMessage("ativar-voar", player);
+            MVar.playerMessage("fly.enable", player);
         }
     }
 
@@ -21,13 +21,13 @@ public class PlayerFlyState {
         if (target.getAllowFlight()) {
             target.setAllowFlight(false);
             target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-            MVar.playerReplaceMessage("desativaram-voar", "console", target);
-            MVar.consoleReplaceMessage("desativar-voar-de", target.getName());
+            MVar.playerReplaceMessage("fly.other-disable", "console", target);
+            MVar.consoleReplaceMessage("fly.disable-other", target.getName());
         } else {
             target.setAllowFlight(true);
             target.playSound(target.getLocation(), Sound.BLOCK_ANVIL_HIT, 1, 1);
-            MVar.playerReplaceMessage("ativaram-voar", "console", target);
-            MVar.consoleReplaceMessage("ativar-voar-de", target.getName());
+            MVar.playerReplaceMessage("fly.other-enable", "console", target);
+            MVar.consoleReplaceMessage("fly.enable-other", target.getName());
         }
     }
 

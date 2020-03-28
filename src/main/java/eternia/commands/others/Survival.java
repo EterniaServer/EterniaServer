@@ -14,12 +14,12 @@ public class Survival implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.survival")) {
                 player.setGameMode(GameMode.SURVIVAL);
-                MVar.playerMessage("jogando", player);
+                MVar.playerMessage("other.play", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

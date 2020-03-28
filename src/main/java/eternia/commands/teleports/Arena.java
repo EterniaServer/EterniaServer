@@ -1,15 +1,15 @@
 package eternia.commands.teleports;
 
+import eternia.EterniaServer;
 import eternia.configs.MVar;
 import eternia.configs.Vars;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings({"ALL", "NullableProblems"})
 public class Arena implements CommandExecutor {
-    @SuppressWarnings("NullableProblems")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Verifica se quem está executando o comando é um jogador
@@ -19,13 +19,22 @@ public class Arena implements CommandExecutor {
             Player player = (Player) sender;
             // Caso o jogador tenha permissão ele será enviado até a localização da arena.
             if (player.hasPermission("eternia.arena")) {
-                player.teleport(Vars.getLocation("world-a", "x-a", "y-a", "z-a", "yaw-a", "pitch-a"));
-                MVar.playerMessage("arena", player);
+                if (player.hasPermission("eternia.timing.bypass")) {
+                    player.teleport(Vars.getLocation("world-a", "x-a", "y-a", "z-a", "yaw-a", "pitch-a"));
+                    MVar.playerMessage("warps.arena", player);
+                } else {
+                    MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
+                    {
+                        player.teleport(Vars.getLocation("world-a", "x-a", "y-a", "z-a", "yaw-a", "pitch-a"));
+                        MVar.playerMessage("warps.arena", player);
+                    }, 20 * Vars.cooldown);
+                }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

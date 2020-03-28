@@ -20,12 +20,12 @@ public class Hat implements CommandExecutor {
                 }
                 set_capacete(player);
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                MVar.playerMessage("capacete", player);
+                MVar.playerMessage("other.helmet", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

@@ -12,9 +12,9 @@ public class Facebook implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.facebook")) {
-                MVar.playerMessage("facebook", player);
+                MVar.playerMessage("text.facebook", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
             MVar.consoleMessage("facebook");

@@ -1,90 +1,122 @@
 # Mensagens
-join: '&8[&aE&9S&8] &3%s &8[&a+&8]'
-leave: '&8[&aE&9S&8] &3%s &8[&c-&8]'
-sem-permissao: '&8[&aE&9S&8] &7Você não tem permissão para isso&8.'
-fly-use: '&8[&aE&9S&8] &7Use &6/fly &3<jogador>&8.'
-spawn: '&8[&aE&9S&8] &7Bem-vindo ao spawn&8.'
-trap-mensagem-tempo: '&8[&aE&9S&8] &7Armadilha encontrada&8, &7se teleportando para o spawn em&3 %s &7segundos&8.'
-back-gratis: '&8[&aE&9S&8] &7Você voltou aonde estava de graça&8.'
-back-nao-pode: '&8[&aE&9S&8] &7Você ainda não se teleportou&8.'
-back-sem-dinheiro: '&8[&aE&9S&8] &7Você não possui eternias suficiêntes&8,&7 você precisa de &3%s&8.'
-back-sucesso: '&8[&aE&9S&8] &7Você voltou aonde estava e isso custou &3%s &7eternias&8.'
-xp-sucesso: '&8[&aE&9S&8] &7Toma ai suas garrafinhas&8!'
-xp-insuficiente: '&8[&aE&9S&8] &7Você não tem EXP suficiênte&8.'
-xp-guardado: '&8[&aE&9S&8] &7Pronto você guardou &3%s &7de EXP&8.'
-xp-tirar: '&8[&aE&9S&8] &7Pronto seu nível agora é &3%s&8.'
-xp-tirar-errou: '&8[&aE&9S&8] &7Erro 01-Interno&8, &7comunique um Staff&8.'
-tem-xp: '&8[&aE&9S&8] &7Você possui &3%s &7de exp guardados&8.'
-cores: '&8[&aE&9S&8] &7&&aa &7&&bb &7&&cc &7&&dd &7&&ee &7&&ff &7&&00 &7&&11 &7&&22 &7&&33 &7&&44 &7&&55 &7&&66 &7&&77 &7&&88 &7&&99&8.'
-guarda-level: '&8[&aE&9S&8] &7Use &6/guardalvl &3<quantia>&8.'
-guarda-level-errou: '&8[&aE&9S&8] &7Use &6/guardalvl &3<quantia>&8, &7vamos lá&8,&7 não é difícil&8.'
-discord: '&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8.'
-doacao: '&8[&aE&9S&8] &7Olá&8, &7você pode fazer uma doação via transferência bancária&8, &7boleto ou cartão&8, &7entre no discord e fale com yurinogueira&8.'
-facebook: '&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8.'
-pa-falta-tempo: '&8[&aE&9S&8] &7Você deve esperar &3%s &7segundos para poder usar esse comando novamente&8.'
-pa-sucesso: '&8[&aE&9S&8] &7Toma sua pá&8!'
-capacete: '&8[&aE&9S&8] &7Aproveite seu novo Caçapete&8.'
-suicidio: '&8[&aE&9S&8] &3%s &7disse antes de tirar sua própria vida&8.'
-aviso: '&8[&aE&9S&8] &7Use &6/aviso &3<mensagem>&8.'
-aviso-global: '&8[&aE&9S&8] &7%s'
-jogador-offline: '&8[&aE&9S&8] &7O jogador não está online&8.'
-encheu-barra: '&8[&aE&9S&8] &7Você saciou o jogador &3%s&8.'
-recebeu-barra: '&8[&aE&9S&8] &7Você foi saciado por &3%s&8.'
-me-enchi: '&8[&aE&9S&8] &7Você se saciou&8.'
-ativar-voar: '&8[&aE&9S&8] &7Voar ativado&8.'
-desativar-voar: '&8[&aE&9S&8] &7Voar desativado&8.'
-ativar-voar-de: '&8[&aE&9S&8] &7Você ativou o voar de &3%s&8.'
-desativar-voar-de: '&8[&aE&9S&8] &7Você desativou o voar de &3%s&8.'
-ativaram-voar: '&8[&aE&9S&8] &3%s &7ativou seu voar&8.'
-desativaram-voar: '&8[&aE&9S&8] &3%s &7desativou seu voar&8.'
-nick-novo: '&8[&aE&9S&8] &7Seu apelido alternativo é &3%s&8.'
-nick-removido: '&8[&aE&9S&8] &7Apelido alternativo removido&8.'
-escondido: '&8[&aE&9S&8] &7Shiii&8, &7agora você está escondido&8.'
-jogando: '&8[&aE&9S&8] &7Agora você está jogando novamente&8.'
-teleportando-em: '&8[&aE&9S&8] &7Você será teleportado em &3%s &7segundos&8.'
-spawn-definido: '&8[&aE&9S&8] &7Spawn definido&8.'
-teleportou-ele: '&8[&aE&9S&8] &7Você teleportou &3%s&8.'
-feito: '&8[&aE&9S&8] &7:)&8.'
-sem-evento: '&8[&aE&9S&8] &7Não há nenhum evento no momento&8.'
-evento: '&8[&aE&9S&8] &7Indo para o evento :)&8!'
-arena: '&8[&aE&9S&8] &7Indo para a arena&8, &7cuidado&8.'
-loja: '&8[&aE&9S&8] &7Indo para a loja&8.'
-loja-definida: '&8[&aE&9S&8] &7Loja definida&8.'
-caixa: '&8[&aE&9S&8] &7Indo para as caixas&8.'
-evento-definido: '&8[&aE&9S&8] &7Evento definido&8.'
-arena-definida: '&8[&aE&9S&8] &7Arena definida&8.'
-caixa-definida: '&8[&aE&9S&8] &7Caixa definida&8.'
-proxima-pagina: '&8[&aE&9S&8] &7Use &6/regras &3%s &7para ir para a proxima página&8.'
-pagina-negativa: '&8[&aE&9S&8] &7Página negativa não existe né amigo&8, &7nem &30&8.'
-teleportou-geral: '&8[&aE&9S&8] &3%s &7teleportou a todos até si&8.'
-somente-jogador: '&8[&aE&9S&8] &7Somente jogadores podem usar isso&8.'
-conectado-sucesso-mysql: '&8[&aE&9S&8] &7Conectado com sucesso a database &3MySQL&8.'
-conectado-sucesso-sql: '&8[&aE&9S&8] &7Conectado com sucesso a database &3SQLite&8.'
-erro-sqlite: "&8[&aE&9S&8] &7Erro ao criar arquivo &3%s&8."
-pediu-tpa: "&8[&aE&9S&8] &3%s &7lhe enviou um pedido de tpa&8, &7use &6/tpaccept &7ou &6/tpdeny &7para aceitar ou negar o tpa&8."
-enviou-tpa: "&8[&aE&9S&8] &7Você enviou um pedido de tpa ao &3%s&8."
-teleportado-ate: "&8[&aE&9S&8] &7Você foi até &3%s&8."
-sem-pedido: "&8[&aE&9S&8] &7Você não tem nenhum pedido de tpa&8."
-aceitou-tpa: "&8[&aE&9S&8] &3%s &7aceitou seu pedido de tpa&8."
-tpa-negado: "&8[&aE&9S&8] &7Seu pedido de tpa foi negado&8."
-negou-tpa: "&8[&aE&9S&8] &7Você negou o tpa de &3%s&8."
-tpa-errado: "&8[&aE&9S&8] &7Use &6/tpa &3<nome>&8."
-tpa-voce: "&8[&aE&9S&8] &7Você não pode dar tpa em você mesmo&8."
-no-vault: "&8[&aE&9S&8] &7Vault não encontrado&8."
-nao-pode-negativo: "&8[&aE&9S&8] &7O valor não pode ser negativo&8."
-precisa-numero: "&8[&aE&9S&8] &7O valor precisa ser um número&8."
-pay-use: "&8[&aE&9S&8] &7Use &6/pay &3<nome> <quantia>&8."
-pay-voce: "&8[&aE&9S&8] &7Você não pode se pagar&8."
-pay-voce-nao-tem: "&8[&aE&9S&8] &7Você não possui todo esse dinheiro&8."
-pay-pagou: "&8[&aE&9S&8] &7Você pagou &3%s&8."
-pay-recebeu: "&8[&aE&9S&8] &7Você recebeu &3%s&8."
-money-tem: "&8[&aE&9S&8] &7O jogador possui &3%s&8."
-money: "&8[&aE&9S&8] &7Você possui &3%s&8."
-jogador-nao: "&8[&aE&9S&8] &7Jogador não encontrado&8."
-baltop: "&8[&aE&9S&8] &7Top Money&8:"
-erro-sql: "&8[&aE&9S&8] &7SQL error&8 &3%s&8."
-conecao-sql: "&8[&aE&9S&8] &7Conexão SQL finalizada&8."
-regras: '&8[&aE&9S&8] &7Regras/split/
+server:
+  join: '&8[&aE&9S&8] &3%s &8[&a+&8]'
+  leave: '&8[&aE&9S&8] &3%s &8[&c-&8]'
+  no-perm: '&8[&aE&9S&8] &7Você não tem permissão para isso&8.'
+  only-player: '&8[&aE&9S&8] &7Somente jogadores podem usar isso&8.'
+  player-offline: '&8[&aE&9S&8] &7O jogador não está online&8.'
+  nether-trap: '&8[&aE&9S&8] &7Armadilha encontrada&8, &7se teleportando para o spawn em&3 %s &7segundos&8.'
+  no-vault: "&8[&aE&9S&8] &7Vault não encontrado&8."
+  no-negative: "&8[&aE&9S&8] &7O valor não pode ser negativo&8."
+  no-number: "&8[&aE&9S&8] &7O valor precisa ser um número&8."
+  mysql-ok: '&8[&aE&9S&8] &7Conectado com sucesso a database &3MySQL&8.'
+  sql-ok: '&8[&aE&9S&8] &7Conectado com sucesso a database &3SQLite&8.'
+  sql-error: "&8[&aE&9S&8] &7SQL error&8 &3%s&8."
+  sql-finish: "&8[&aE&9S&8] &7Conexão SQL finalizada&8."
+  timing: '&8[&aE&9S&8] &7Você deve esperar &3%s &7segundos para poder usar esse comando novamente&8.'
+  gotopaper: '&8[&aE&9S&8] &7O &3EterniaPlugin &7recomenda a utilização do &3Paper &7em vez do &3Spigot &7ou &3Craftbukkit&8.'
+  usepaper: '&8[&aE&9S&8] &3EterniaPlugin &7carregado utilizando a API do &3Paper&8.'
+  mojang: '&8[&aE&9S&8] &7Problema com a &3Mojang&7 talvez o &3EterniaPlugin &7não funcione direito&8.'
+xp:
+  bottlexp: '&8[&aE&9S&8] &7Toma ai suas garrafinhas&8!'
+  noxp: '&8[&aE&9S&8] &7Você não tem EXP suficiênte&8.'
+  deposit: '&8[&aE&9S&8] &7Pronto você guardou &3%s &7de EXP&8.'
+  withdraw: '&8[&aE&9S&8] &7Pronto seu nível agora é &3%s&8.'
+  getxp: '&8[&aE&9S&8] &7Você possui &3%s &7de exp guardados&8.'
+  use: '&8[&aE&9S&8] &7Use &6/guardalvl &3<quantia>&8.'
+fly:
+  use: '&8[&aE&9S&8] &7Use &6/fly &3<jogador>&8.'
+  enable: '&8[&aE&9S&8] &7Voar ativado&8.'
+  disable: '&8[&aE&9S&8] &7Voar desativado&8.'
+  enable-other: '&8[&aE&9S&8] &7Você ativou o voar de &3%s&8.'
+  disable-other: '&8[&aE&9S&8] &7Você desativou o voar de &3%s&8.'
+  other-enable: '&8[&aE&9S&8] &3%s &7ativou seu voar&8.'
+  other-disable: '&8[&aE&9S&8] &3%s &7desativou seu voar&8.'
+eco:
+  use: "&8[&aE&9S&8] &7Use &6/pay &3<nome> <quantia>&8."
+  auto-pay: "&8[&aE&9S&8] &7Você não pode se pagar&8."
+  pay-nomoney: "&8[&aE&9S&8] &7Você não possui todo esse dinheiro&8."
+  pay: "&8[&aE&9S&8] &7Você pagou &3%s &7para &3%b&8."
+  pay-me: "&8[&aE&9S&8] &7Você recebeu &3%s &7de &3%b&8."
+  money-other: "&8[&aE&9S&8] &7O jogador possui &3%s&8."
+  money: "&8[&aE&9S&8] &7Você possui &3%s&8."
+  baltop: "&8[&aE&9S&8] &7Top Money&8:"
+  ballist: "&3%s &7Posição &8- &3%b &8- &7Saldo&8 - &3%v&8."
+  eco: '&8[&aE&9S&8] &7Use &6/eco &3<jogador> <set &8| &3remove &8| &3give> <quantia>&8..'
+  eco-give: '&8[&aE&9S&8] &7Você deu &3%s&7 para &3%b&8.'
+  eco-receive: '&8[&aE&9S&8] &7Você recebeu &3%s&7 de &3%b&8.'
+  eco-remove: '&8[&aE&9S&8] &7Você retirou &3%s&7 de &3%b&8.'
+  eco-rremove: '&8[&aE&9S&8] &7Você perdeu &3%s&7 por &3%b&8.'
+  eco-set: '&8[&aE&9S&8] &7Você definiu para &3%s&7 o saldo de &3%b&8.'
+  eco-rset: '&8[&aE&9S&8] &7Seu saldo foi definido para &3%s&7 por &3%b&8.'
+teleport:
+  send: "&8[&aE&9S&8] &7Você enviou um pedido de tpa ao &3%s&8."
+  receiver: "&8[&aE&9S&8] &3%s &7lhe enviou um pedido de tpa&8, &7use &6/tpaccept &7ou &6/tpdeny &7para aceitar ou negar o tpa&8."
+  auto: "&8[&aE&9S&8] &7Você não pode dar tpa em você mesmo&8."
+  use: "&8[&aE&9S&8] &7Use &6/tpa &3<nome>&8."
+  tpto: "&8[&aE&9S&8] &7Você foi até &3%s&8."
+  noask: "&8[&aE&9S&8] &7Você não tem nenhum pedido de tpa&8."
+  accept: "&8[&aE&9S&8] &3%s &7aceitou seu pedido de tpa&8."
+  deny: "&8[&aE&9S&8] &7Seu pedido de tpa foi negado&8."
+  auto-deny: "&8[&aE&9S&8] &7Você negou o tpa de &3%s&8."
+  timing: '&8[&aE&9S&8] &7Você será teleportado em &3%s &7segundos&8.'
+  all: '&8[&aE&9S&8] &3%s &7teleportou a todos até si&8.'
+warps:
+  spawn-other: '&8[&aE&9S&8] &7Você teleportou &3%s&8.'
+  spawn: '&8[&aE&9S&8] &7Bem-vindo ao spawn&8.'
+  no-event: '&8[&aE&9S&8] &7Não há nenhum evento no momento&8.'
+  event: '&8[&aE&9S&8] &7Indo para o evento :)&8!'
+  arena: '&8[&aE&9S&8] &7Indo para a arena&8, &7cuidado&8.'
+  shop: '&8[&aE&9S&8] &7Indo para a loja&8.'
+  crate: '&8[&aE&9S&8] &7Indo para as caixas&8.'
+  shop-set: '&8[&aE&9S&8] &7Loja definida&8.'
+  event-set: '&8[&aE&9S&8] &7Evento definido&8.'
+  arena-set: '&8[&aE&9S&8] &7Arena definida&8.'
+  crate-set: '&8[&aE&9S&8] &7Caixa definida&8.'
+  spawn-set: '&8[&aE&9S&8] &7Spawn definido&8.'
+back:
+  free: '&8[&aE&9S&8] &7Você voltou aonde estava de graça&8.'
+  notp: '&8[&aE&9S&8] &7Você ainda não se teleportou&8.'
+  nomoney: '&8[&aE&9S&8] &7Você não possui eternias suficiêntes&8,&7 você precisa de &3%s&8.'
+  nofree: '&8[&aE&9S&8] &7Você voltou aonde estava e isso custou &3%s &7eternias&8.'
+other:
+  shovel: '&8[&aE&9S&8] &7Toma sua pá&8!'
+  feed-other: '&8[&aE&9S&8] &7Você saciou o jogador &3%s&8.'
+  other-feed: '&8[&aE&9S&8] &7Você foi saciado por &3%s&8.'
+  feed: '&8[&aE&9S&8] &7Você se saciou&8.'
+  new-nick: '&8[&aE&9S&8] &7Seu apelido alternativo é &3%s&8.'
+  del-nick: '&8[&aE&9S&8] &7Apelido alternativo removido&8.'
+  spy: '&8[&aE&9S&8] &7Shiii&8, &7agora você está escondido&8.'
+  play: '&8[&aE&9S&8] &7Agora você está jogando novamente&8.'
+  helmet: '&8[&aE&9S&8] &7Aproveite seu novo Caçapete&8.'
+  done: '&8[&aE&9S&8] &7:)&8.'
+spawners:
+  log: '&8[&aE&9S&8] &3%s &7acabou de colocar um spawner de &3%b&8.'
+  block: '&8[&aE&9S&8] &7É proibido retirar spawns nesse mundo&8.'
+  invfull: '&8[&aE&9S&8] &7Inventário cheio&8.'
+  no-drop: '&8[&aE&9S&8] &7Você não conseguiu dropar o spawner&8.'
+  no-silktouch: '&8[&aE&9S&8] &7Você não possui silk touch ou algo do tipo&8.'
+  anvil: '&8[&aE&9S&8] &7Não tente alterar o nome do spawner&8.'
+  anvil-try: '&8[&aE&9S&8] &3%s &7tentou alterar o nome de um spawner&8.'
+  use: '&8[&aE&9S&8] &7Use &6/spawnergive &3<jogador> <tipo> <quantia>&8.'
+  send: '&8[&aE&9S&8] &7Você enviou &3%s &7spawners de &3%b &7para &3%v&8.'
+  receive: '&8[&aE&9S&8] &7Você recebeu &3%s &7spawners de &3%b &7por &3%v&8.'
+  types: '&8[&aE&9S&8] &7Os tipos válidos são&8: &3%s&8.'
+text:
+  color: '&8[&aE&9S&8] &7&&aa &7&&bb &7&&cc &7&&dd &7&&ee &7&&ff &7&&00 &7&&11 &7&&22 &7&&33 &7&&44 &7&&55 &7&&66 &7&&77 &7&&88 &7&&99&8.'
+  discord: '&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8.'
+  donation: '&8[&aE&9S&8] &7Olá&8, &7você pode fazer uma doação via transferência bancária&8, &7boleto ou cartão&8, &7entre no discord e fale com yurinogueira&8.'
+  facebook: '&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8.'
+  suicide: '&8[&aE&9S&8] &3%s &7disse antes de tirar sua própria vida&8.'
+  advice: '&8[&aE&9S&8] &7Use &6/aviso &3<mensagem>&8.'
+  global-advice: '&8[&aE&9S&8] &7%s'
+  next: '&8[&aE&9S&8] &7Use &6/regras &3%s &7para ir para a proxima página&8.'
+  vote: '&8[&aE&9S&8] &7Sites&8:/split/
+&9https://minecraft-mp.com/server-s229257&8./split/
+&9https://topg.org/server-eterniaserver-id484008&8./split/
+&9https://www.planetminecraft.com/server/eterniaserver/&8./split/
+&9https://minecraftservers.biz/servers/144674/&8.'
+  rules: '&8[&aE&9S&8] &7Regras/split/
 &91.0 &8- &7Proibido ofensas&8./split/
 &91.1 &8- &7Qualquer forma de preconceito é proibida&8./split/
 &91.2 &8- &7Proibido apologia a coisas ofensiva e&8/&7ou que trouxeram uma grande perda para a sociedade&8./split/
@@ -103,8 +135,3 @@ regras: '&8[&aE&9S&8] &7Regras/split/
 &98.0 &8- &7Proibido apologia a coisas ilícitas&8,&7 inclusive programas&8./split/
 &99.0 &8- &7Proibido flood&8/&7spam&8./split/
 &99.1 &8- &7Proibido discutir sobre a punição dada ou não dada por um staff&8.'
-votar: '&8[&aE&9S&8] &7Sites&8:/split/
-&9https://minecraft-mp.com/server-s229257&8./split/
-&9https://topg.org/server-eterniaserver-id484008&8./split/
-&9https://www.planetminecraft.com/server/eterniaserver/&8./split/
-&9https://minecraftservers.biz/servers/144674/&8.'

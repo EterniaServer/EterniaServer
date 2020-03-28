@@ -3,8 +3,6 @@ package eternia.commands.economy;
 import java.sql.ResultSet;
 import java.util.List;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.ArrayList;
 
 import eternia.EterniaServer;
@@ -16,29 +14,21 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 
-public class Baltop implements CommandExecutor
-{
+public class Baltop implements CommandExecutor {
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             final Player player = (Player) sender;
             if (sender.hasPermission("eternia.baltop")) {
-                int amount = 10;
-                if (args.length == 1) {
-                    if (!this.isnumber(args[0])) {
-                        MVar.playerMessage("precisa-numero", player);
-                        return true;
-                    }
-                    amount = Integer.parseInt(args[0]);
-                }
-                final String query = "SELECT * FROM eternia ORDER BY BALANCE DESC LIMIT " + amount + ";";
-                final List<UUID> accounts = new ArrayList<>();
+                final String query = "SELECT * FROM eternia ORDER BY BALANCE DESC LIMIT " + 10 + ";";
+                final List<String> accounts = new ArrayList<>();
                 Bukkit.getScheduler().runTaskAsynchronously(EterniaServer.getMain(), () -> {
                     ResultSet rs = null;
                     try {
                         rs = EterniaServer.sqlcon.Query(query);
                         while (rs.next()) {
-                            final UUID uuid2 = UUID.fromString(rs.getString("UUID"));
-                            accounts.add(uuid2);
+                            final String string2 = rs.getString("NAME");
+                            accounts.add(string2);
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -55,28 +45,16 @@ public class Baltop implements CommandExecutor
                             e2.printStackTrace();
                         }
                     }
-                    MVar.playerMessage("baltop", player);
-                    accounts.forEach(uuid -> player.sendMessage("§3" + (accounts.indexOf(uuid) + 1) + " §7Posição§8 - §3" + Objects.requireNonNull(Bukkit.getPlayer(uuid)).getName() + " §7Dinheiro§8: §3" + MoneyAPI.getMoney(player.getUniqueId()) + "§8."));
-
+                    MVar.playerMessage("eco.baltop", player);
+                    accounts.forEach(name -> MVar.playerReplaceMessage("eco.ballist", (accounts.indexOf(name) + 1), name, MoneyAPI.getMoney(name), player));
                 });
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }
-    
-    public boolean isnumber(String eingabe) {
-        boolean zahl = true;
-        eingabe = eingabe.trim();
-        final char[] c = eingabe.toCharArray();
-        for (int i = 0; i < eingabe.length(); ++i) {
-            if (!Character.isDigit(c[i])) {
-                zahl = false;
-            }
-        }
-        return zahl;
-    }
+
 }

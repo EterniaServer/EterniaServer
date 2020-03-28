@@ -14,12 +14,12 @@ public class SetSpawn implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setspawn")) {
                 Vars.setLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n", player);
-                MVar.playerMessage("spawn-definido", player);
+                MVar.playerMessage("warps.spawn-set", player);
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

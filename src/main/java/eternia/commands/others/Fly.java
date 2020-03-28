@@ -20,7 +20,7 @@ public class Fly implements CommandExecutor {
                         if (player.hasPermission("eternia.fly.evento")) {
                             PlayerFlyState.selfFly(player);
                         } else {
-                            MVar.playerMessage("sem-permissao", player);
+                            MVar.playerMessage("server.no-perm", player);
                         }
                     } else {
                         PlayerFlyState.selfFly(player);
@@ -32,23 +32,23 @@ public class Fly implements CommandExecutor {
                         if (target.isOnline()) {
                             PlayerFlyState.otherFly(target);
                         } else {
-                            MVar.playerMessage("jogador-offline", player);
+                            MVar.playerMessage("server.player-offline", player);
                         }
                     } else {
-                        MVar.playerMessage("sem-permissao", player);
+                        MVar.playerMessage("server.no-perm", player);
                     }
                 } else {
-                    MVar.playerMessage("fly-use", player);
+                    MVar.playerMessage("fly.use", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else if (args.length == 1) {
             Player target = Vars.findPlayer(args[0]);
             if (target.isOnline()) {
                 PlayerFlyState.otherFly(target);
             } else {
-                MVar.consoleMessage("jogador-offline");
+                MVar.consoleMessage("server.player-offline");
             }
         }
         return true;

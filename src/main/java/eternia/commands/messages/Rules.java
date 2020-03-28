@@ -20,7 +20,7 @@ public class Rules implements CommandExecutor {
                         int inicio = 5 * (valor - 1);
                         int fim = 6 * (valor);
                         int cont = 0;
-                        String regras = Vars.getString("regras");
+                        String regras = Vars.getString("text.rules");
                         assert regras != null;
                         String[] regralista = regras.split("/split/");
                         for (int i = inicio; i < fim; i++) {
@@ -32,16 +32,16 @@ public class Rules implements CommandExecutor {
                             }
                         }
                         if (cont == fim - inicio) {
-                            MVar.playerReplaceMessage("proxima-pagina", Integer.parseInt(args[0]) + 1, player);
+                            MVar.playerReplaceMessage("text.next", Integer.parseInt(args[0]) + 1, player);
                         }
                     } else {
-                        MVar.playerMessage("pagina-negativa", player);
+                        MVar.playerMessage("server.no-negative", player);
                     }
                 } else {
-                    MVar.playerMessage("precisa-numero", player);
+                    MVar.playerMessage("server.no-number", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
             if (args.length == 1) {
@@ -50,7 +50,7 @@ public class Rules implements CommandExecutor {
                     int inicio = 5 * (valor - 1);
                     int fim = 6 * (valor);
                     int cont = 0;
-                    String regras = Vars.getString("regras");
+                    String regras = Vars.getString("text.rules");
                     assert regras != null;
                     String[] regralista = regras.split("/split/");
                     for (int i = inicio; i < fim; i++) {
@@ -62,13 +62,13 @@ public class Rules implements CommandExecutor {
                         }
                     }
                     if (cont == fim - inicio) {
-                        MVar.consoleReplaceMessage("proxima-pagina", Integer.parseInt(args[0]) + 1);
+                        MVar.consoleReplaceMessage("text.next", Integer.parseInt(args[0]) + 1);
                     }
                 } else {
-                    sender.sendMessage(MVar.getMessage("pagina-negativa"));
+                    sender.sendMessage(MVar.getMessage("server.no-negative"));
                 }
             } else {
-                sender.sendMessage(MVar.getMessage("precisa-numero"));
+                sender.sendMessage(MVar.getMessage("server.no-number"));
             }
         }
         return true;

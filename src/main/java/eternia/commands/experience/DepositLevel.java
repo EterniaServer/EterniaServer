@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class DepositLevel implements CommandExecutor {
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -18,7 +17,6 @@ public class DepositLevel implements CommandExecutor {
                     int xp_atual = player.getLevel();
                     if (xp_atual >= Integer.parseInt(args[0])) {
                         xp_atual = Integer.parseInt(args[0]);
-                        MVar.playerReplaceMessage("xp-guardado", xp_atual, player);
                         int xp = xp_atual;
                         if (xp >= 1 && xp <= 15) {
                             xp = (xp * xp) + (6 * xp);
@@ -28,22 +26,23 @@ public class DepositLevel implements CommandExecutor {
                             xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
                         }
                         try {
-                            ExpAPI.addExp(player.getUniqueId(), xp);
+                            ExpAPI.addExp(player.getName(), xp);
+                            MVar.playerReplaceMessage("xp.deposit", xp_atual, player);
                             player.setLevel(Math.max(player.getLevel() - xp_atual, 0));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     } else {
-                        MVar.playerMessage("xp-insuficiente", player);
+                        MVar.playerMessage("xp.noxp", player);
                     }
                 } else {
-                    MVar.playerMessage("guarda-level", player);
+                    MVar.playerMessage("xp.use", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissão", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

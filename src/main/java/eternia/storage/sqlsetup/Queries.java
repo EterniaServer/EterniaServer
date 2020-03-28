@@ -32,17 +32,17 @@ public class Queries {
         if (mysql) {
             try {
                 this.con = DriverManager.getConnection("jdbc:mysql://" + this.HOST + ":3306/" + this.DATABASE + "?autoReconnect=true", this.USER, this.PASSWORD);
-                MVar.consoleMessage("conectado-sucesso-mysql");
+                MVar.consoleMessage("server.mysql-ok");
             } catch (SQLException e) {
-                MVar.consoleReplaceMessage("erro-sql", e.getMessage());
+                MVar.consoleReplaceMessage("server.sql-error", e.getMessage());
             }
         } else {
             try {
                 File dataFolder = new File(EterniaServer.getMain().getDataFolder(), "eternia.db");
                 this.con = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
-                MVar.consoleMessage("conectado-sucesso-sql");
+                MVar.consoleMessage("server.sql-ok");
             } catch (SQLException e) {
-                MVar.consoleReplaceMessage("erro-sql", e.getMessage());
+                MVar.consoleReplaceMessage("server.sql-error", e.getMessage());
             }
         }
     }
@@ -51,10 +51,10 @@ public class Queries {
         try {
             if (this.con != null) {
                 this.con.close();
-                MVar.consoleMessage("conecao-sql");
+                MVar.consoleMessage("server.sql-finish");
             }
         } catch (SQLException e) {
-            MVar.consoleReplaceMessage("erro-sql", e.getMessage());
+            MVar.consoleReplaceMessage("server.sql-error", e.getMessage());
         }
     }
 

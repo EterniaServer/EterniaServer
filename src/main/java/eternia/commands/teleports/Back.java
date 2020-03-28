@@ -1,9 +1,11 @@
 package eternia.commands.teleports;
 
+import eternia.EterniaServer;
 import eternia.api.MoneyAPI;
 import eternia.configs.CVar;
 import eternia.configs.MVar;
 import eternia.configs.Vars;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,33 +24,54 @@ public class Back implements CommandExecutor {
             // irá executar o comando.
             if (player.hasPermission("eternia.back")) {
                 if (Vars.back.containsKey(player)) {
-                    double money = MoneyAPI.getMoney(player.getUniqueId());
-                    double valor = CVar.getInt("money.valor-do-back");
+                    double money = MoneyAPI.getMoney(player.getName());
+                    double valor = CVar.getInt("money.back");
                     // Se ele tiver a permissão de executar de graça irá teleportar ele até
                     // a posição antiga dele, que está salva na váriavel back, caso contrário
                     // irá ser removido da conta dele o valor informado na configuração.
                     if (player.hasPermission("eternia.backfree")) {
-                        player.teleport(Vars.back.get(player));
-                        Vars.back.remove(player);
-                        MVar.playerMessage("back-gratis", player);
-                    } else {
-                        if (money >= valor) {
+                        if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(Vars.back.get(player));
                             Vars.back.remove(player);
-                            MoneyAPI.removeMoney(player.getUniqueId(), valor);
-                            MVar.playerReplaceMessage("back-sucesso", valor, player);
+                            MVar.playerMessage("back.free", player);
                         } else {
-                            MVar.playerReplaceMessage("back-sem-dinheiro", valor, player);
+                            MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
+                            {
+                                player.teleport(Vars.back.get(player));
+                                Vars.back.remove(player);
+                                MVar.playerMessage("back.free", player);
+                            }, 20 * Vars.cooldown);
+                        }
+                    } else {
+                        if (money >= valor) {
+                            if (player.hasPermission("eternia.timing.bypass")) {
+                                player.teleport(Vars.back.get(player));
+                                Vars.back.remove(player);
+                                MoneyAPI.removeMoney(player.getName(), valor);
+                                MVar.playerReplaceMessage("back.nofree", valor, player);
+                            } else {
+                                MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
+                                {
+                                    player.teleport(Vars.back.get(player));
+                                    Vars.back.remove(player);
+                                    MoneyAPI.removeMoney(player.getName(), valor);
+                                    MVar.playerReplaceMessage("back.nofree", valor, player);
+                                }, 20 * Vars.cooldown);
+                            }
+                        } else {
+                            MVar.playerReplaceMessage("back.nomoney", valor, player);
                         }
                     }
                 } else {
-                    MVar.playerMessage("back-nao-pode", player);
+                    MVar.playerMessage("back.notp", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

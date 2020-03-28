@@ -1,7 +1,9 @@
 package eternia.commands.teleports;
 
+import eternia.EterniaServer;
 import eternia.configs.MVar;
 import eternia.configs.Vars;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,14 +15,23 @@ public class Crates implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (sender.hasPermission("eternia.arena")) {
-                player.teleport(Vars.getLocation("world-c", "x-c", "y-c", "z-c", "yaw-c", "pitch-c"));
-                MVar.playerMessage("caixa", player);
+                if (player.hasPermission("eternia.timing.bypass")) {
+                    player.teleport(Vars.getLocation("world-c", "x-c", "y-c", "z-c", "yaw-c", "pitch-c"));
+                    MVar.playerMessage("warps.crate", player);
+                } else {
+                    MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
+                    {
+                        player.teleport(Vars.getLocation("world-c", "x-c", "y-c", "z-c", "yaw-c", "pitch-c"));
+                        MVar.playerMessage("warps.crate", player);
+                    }, 20 * Vars.cooldown);
+                }
                 return true;
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }

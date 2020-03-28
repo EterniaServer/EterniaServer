@@ -1,6 +1,7 @@
 package eternia;
 
 import eternia.configs.CVar;
+import eternia.configs.MVar;
 import eternia.managers.*;
 import eternia.storage.sqlsetup.Queries;
 import eternia.vault.VaultHook;
@@ -25,6 +26,7 @@ public class EterniaServer extends JavaPlugin {
         setCommands();
         setEvents();
         setVault();
+        testPaper();
     }
 
     @Override
@@ -32,11 +34,25 @@ public class EterniaServer extends JavaPlugin {
         sqlcon.Close();
     }
 
+    private void testPaper() {
+        boolean isPapermc = false;
+        try {
+            isPapermc = Class.forName("com.destroystokyo.paper.VersionHistoryManager$VersionData") != null;
+        } catch (ClassNotFoundException e) {
+            MVar.consoleMessage("server.gotopaper");
+        }
+
+        if (isPapermc) {
+            MVar.consoleMessage("server.usepaper");
+        }
+    }
+
     private void setVault() {
         if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             final VaultHook vaultHook = new VaultHook();
             vaultHook.hook();
         } else {
+            MVar.consoleMessage("server.no-vault");
             getServer().getPluginManager().disablePlugin(this);
         }
     }

@@ -1,7 +1,6 @@
 package eternia.commands.teleports;
 
 import eternia.EterniaServer;
-import eternia.configs.CVar;
 import eternia.configs.MVar;
 import eternia.configs.Vars;
 import org.bukkit.Bukkit;
@@ -20,28 +19,27 @@ public class TeleportAccept implements CommandExecutor {
                     Player target = Vars.tpa_requests.get(player);
                     if (target.hasPermission("eternia.timing.bypass")) {
                         target.teleport(player.getLocation());
-                        MVar.playerReplaceMessage("teleportado-ate", player.getName(), target);
-                        MVar.playerReplaceMessage("aceitou-tpa", player.getName(), target);
+                        MVar.playerReplaceMessage("teleport.tpto", player.getName(), target);
+                        MVar.playerReplaceMessage("teleport.accept", player.getName(), target);
                         Vars.tpa_requests.remove(player);
                     } else {
-                        int tempo = CVar.getInt("cooldown");
-                        MVar.playerReplaceMessage("teleportando-em", tempo, target);
-                        MVar.playerReplaceMessage("aceitou-tpa", player.getName(), target);
+                        MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, target);
+                        MVar.playerReplaceMessage("teleport.accept", player.getName(), target);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                         {
                             target.teleport(player.getLocation());
-                            MVar.playerReplaceMessage("teleportado-ate", player.getName(), target);
+                            MVar.playerReplaceMessage("teleport.tpto", player.getName(), target);
                             Vars.tpa_requests.remove(player);
-                        }, 20 * tempo);
+                        }, 20 * Vars.cooldown);
                     }
                 } else {
-                    MVar.playerMessage("sem-pedido", player);
+                    MVar.playerMessage("teleport.noask", player);
                 }
             } else {
-                MVar.playerMessage("sem-permissao", player);
+                MVar.playerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("somente-jogador");
+            MVar.consoleMessage("server.only-player");
         }
         return true;
     }
