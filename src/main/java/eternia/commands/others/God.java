@@ -1,4 +1,4 @@
-package eternia.commands.teleports;
+package eternia.commands.others;
 
 import eternia.configs.MVar;
 import eternia.configs.Vars;
@@ -7,17 +7,19 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetArena implements CommandExecutor {
+public class God implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.setarena")) {
-                Vars.setLocation("world-a", "x-a", "y-a", "z-a", "yaw-a", "pitch-a", player);
-                MVar.playerMessage("warps.arena-set", player);
-                return true;
-            } else {
-                MVar.playerMessage("server.no-perm", player);
+            if (player.hasPermission("eternia.god")) {
+                if (Vars.god.contains(player.getName())) {
+                    MVar.playerMessage("simp.godd", player);
+                    Vars.god.remove(player.getName());
+                } else {
+                    MVar.playerMessage("simp.gode", player);
+                    Vars.god.add(player.getName());
+                }
             }
         } else {
             MVar.consoleMessage("server.only-player");

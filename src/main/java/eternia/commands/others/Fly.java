@@ -1,7 +1,6 @@
 package eternia.commands.others;
 
 import eternia.configs.MVar;
-import eternia.configs.Vars;
 import eternia.player.PlayerFlyState;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -28,8 +27,8 @@ public class Fly implements CommandExecutor {
                     return true;
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.fly.other")) {
-                        Player target = Vars.findPlayer(args[0]);
-                        if (target.isOnline()) {
+                        Player target = Bukkit.getPlayer(args[0]);
+                        if (target != null && target.isOnline()) {
                             PlayerFlyState.otherFly(target);
                         } else {
                             MVar.playerMessage("server.player-offline", player);
@@ -44,8 +43,8 @@ public class Fly implements CommandExecutor {
                 MVar.playerMessage("server.no-perm", player);
             }
         } else if (args.length == 1) {
-            Player target = Vars.findPlayer(args[0]);
-            if (target.isOnline()) {
+            Player target = Bukkit.getPlayer(args[0]);
+            if (target != null && target.isOnline()) {
                 PlayerFlyState.otherFly(target);
             } else {
                 MVar.consoleMessage("server.player-offline");

@@ -3,6 +3,7 @@ package eternia.api;
 import eternia.EterniaServer;
 import eternia.configs.Vars;
 import eternia.player.PlayerManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -13,18 +14,18 @@ public class MoneyAPI {
             return Vars.money.get(playerName);
         }
         double i = 0;
-        if (PlayerManager.PlayerExist(playerName)) {
+        if (PlayerManager.PlayerExistE(playerName)) {
             try {
-                final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM eternia WHERE NAME='" + playerName + "';");
+                final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM economy WHERE player_name='" + playerName + "';");
                 if (rs.next()) {
-                    rs.getDouble("BALANCE");
+                    rs.getDouble("balance");
                 }
-                i = rs.getDouble("BALANCE");
+                i = rs.getDouble("balance");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            PlayerManager.CreatePlayer(playerName);
+            PlayerManager.CreateEconomy(playerName);
             i = 300;
         }
         Vars.money.put(playerName, i);
@@ -36,30 +37,30 @@ public class MoneyAPI {
     }
 
     public static void setMoney(String playerName, double Money) {
-        if (PlayerManager.PlayerExist(playerName)) {
+        if (PlayerManager.PlayerExistE(playerName)) {
             Vars.money.remove(playerName);
             Vars.money.put(playerName, Money);
-            EterniaServer.sqlcon.Update("UPDATE eternia SET BALANCE='" + Money + "' WHERE NAME='" + playerName + "';");
+            EterniaServer.sqlcon.Update("UPDATE economy SET balance='" + Money + "' WHERE player_name='" + playerName + "';");
         } else {
-            PlayerManager.CreatePlayer(playerName);
+            PlayerManager.CreateEconomy(playerName);
             setMoney(playerName, Money);
         }
     }
 
     public static void addMoney(String playerName, double money) {
-        if (PlayerManager.PlayerExist(playerName)) {
+        if (PlayerManager.PlayerExistE(playerName)) {
             setMoney(playerName, getMoney(playerName) + money);
         } else {
-            PlayerManager.CreatePlayer(playerName);
+            PlayerManager.CreateEconomy(playerName);
             addMoney(playerName, getMoney(playerName) + money);
         }
     }
 
     public static void removeMoney(String playerName, double money) {
-        if (PlayerManager.PlayerExist(playerName)) {
+        if (PlayerManager.PlayerExistE(playerName)) {
             setMoney(playerName, getMoney(playerName) - money);
         } else {
-            PlayerManager.CreatePlayer(playerName);
+            PlayerManager.CreateEconomy(playerName);
             removeMoney(playerName, getMoney(playerName) - money);
         }
     }

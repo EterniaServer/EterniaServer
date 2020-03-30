@@ -15,25 +15,25 @@ public class DepositLevel implements CommandExecutor {
             if (player.hasPermission("eternia.depositlvl")) {
                 if (args.length == 1) {
                     int xp_atual = player.getLevel();
-                    if (xp_atual >= Integer.parseInt(args[0])) {
-                        xp_atual = Integer.parseInt(args[0]);
-                        int xp = xp_atual;
-                        if (xp >= 1 && xp <= 15) {
-                            xp = (xp * xp) + (6 * xp);
-                        } else if (xp >= 16 && xp <= 30) {
-                            xp = (int) ((2.5 * (xp * xp)) - (40.5 * xp) + 360);
-                        } else {
-                            xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
-                        }
-                        try {
+                    try {
+                        int xpla = Integer.parseInt(args[0]);
+                        if (xp_atual >= xpla) {
+                            int xp = xp_atual;
+                            if (xp >= 1 && xp <= 15) {
+                                xp = (xp * xp) + (6 * xp);
+                            } else if (xp >= 16 && xp <= 30) {
+                                xp = (int) ((2.5 * (xp * xp)) - (40.5 * xp) + 360);
+                            } else {
+                                xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
+                            }
                             ExpAPI.addExp(player.getName(), xp);
-                            MVar.playerReplaceMessage("xp.deposit", xp_atual, player);
-                            player.setLevel(Math.max(player.getLevel() - xp_atual, 0));
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            MVar.playerReplaceMessage("xp.deposit", xpla, player);
+                            player.setLevel(Math.max(player.getLevel() - xpla, 0));
+                        } else {
+                            MVar.playerMessage("xp.noxp", player);
                         }
-                    } else {
-                        MVar.playerMessage("xp.noxp", player);
+                    } catch (NumberFormatException e) {
+                        MVar.playerMessage("server.no-number", player);
                     }
                 } else {
                     MVar.playerMessage("xp.use", player);

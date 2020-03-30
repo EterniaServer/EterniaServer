@@ -1,9 +1,10 @@
 package eternia.commands.teleports;
 
-import eternia.EterniaServer;
+import eternia.api.ShopAPI;
+import eternia.api.WarpAPI;
 import eternia.configs.MVar;
 import eternia.configs.Vars;
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,20 +15,32 @@ public class Shop implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (sender.hasPermission("eternia.shop")) {
-                if (sender.hasPermission("eternia.timing.bypass")) {
-                    player.teleport(Vars.getLocation("world-s", "x-s", "y-s", "z-s", "yaw-s", "pitch-s"));
-                    MVar.playerMessage("warps.shop", player);
+            if (args.length == 0) {
+                final Location location = WarpAPI.getWarp("shop");
+                if (player.hasPermission("eternia.warp.shop")) {
+                    if (location != Vars.error) {
+                        player.teleport(location);
+                        MVar.playerReplaceMessage("warps.warp", "Loja", player);
+                    } else {
+                        MVar.playerReplaceMessage("warps.noexist", "Loja", player);
+                    }
                 } else {
-                    MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
-                    {
-                        player.teleport(Vars.getLocation("world-s", "x-s", "y-s", "z-s", "yaw-s", "pitch-s"));
-                        MVar.playerMessage("warps.shop", player);
-                    }, 20 * Vars.cooldown);
+                    MVar.playerMessage("server.no-perm", player);
+                }
+            } else if (args.length == 1) {
+                final Location location = ShopAPI.getShop(args[0].toLowerCase());
+                if (player.hasPermission("eternia.shop.player")) {
+                    if (location != Vars.error) {
+                        player.teleport(location);
+                        MVar.playerReplaceMessage("warps.shopp", args[0], player);
+                    } else {
+                        MVar.playerReplaceMessage("warps.shopno", "Loja", player);
+                    }
+                } else {
+                    MVar.playerMessage("server.no-perm", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                MVar.playerMessage("warps.shopuse", player);
             }
         } else {
             MVar.consoleMessage("server.only-player");

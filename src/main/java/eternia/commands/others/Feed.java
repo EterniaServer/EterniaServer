@@ -1,7 +1,7 @@
 package eternia.commands.others;
 
 import eternia.configs.MVar;
-import eternia.configs.Vars;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,8 +20,8 @@ public class Feed implements CommandExecutor {
                     }
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.feed.other")) {
-                        Player target = Vars.findPlayer(args[0]);
-                        if (target.isOnline()) {
+                        Player target = Bukkit.getPlayer(args[0]);
+                        if (target != null && target.isOnline()) {
                             target.setFoodLevel(20);
                             MVar.playerReplaceMessage("other.feed-other", target.getName(), player);
                             MVar.playerReplaceMessage("other.other-feed", player.getName(), target);
@@ -36,8 +36,8 @@ public class Feed implements CommandExecutor {
                 MVar.playerMessage("server.no-perm", player);
             }
         } else if (args.length == 1) {
-            Player target = Vars.findPlayer(args[0]);
-            if (target.isOnline()) {
+            Player target = Bukkit.getPlayer(args[0]);
+            if (target != null && target.isOnline()) {
                 target.setFoodLevel(20);
                 MVar.consoleReplaceMessage("other.feed-other", target.getName());
                 MVar.playerReplaceMessage("other.other-feed", "console", target);

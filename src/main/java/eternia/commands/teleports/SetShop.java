@@ -1,7 +1,7 @@
 package eternia.commands.teleports;
 
+import eternia.api.ShopAPI;
 import eternia.configs.MVar;
-import eternia.configs.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,9 +13,8 @@ public class SetShop implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setshop")) {
-                Vars.setLocation("world-s", "x-s", "y-s", "z-s", "yaw-s", "pitch-s", player);
-                MVar.playerMessage("warps.shop-set", player);
-                return true;
+                ShopAPI.setShop(player.getLocation(), player.getName().toLowerCase());
+                MVar.playerMessage("warps.shopd", player);
             } else {
                 MVar.playerMessage("server.no-perm", player);
             }

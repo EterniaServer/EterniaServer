@@ -8,11 +8,7 @@ public class MySQLSetup {
         String database = EterniaServer.getMain().getConfig().getString("sql.database");
         String username = EterniaServer.getMain().getConfig().getString("sql.user");
         String password = EterniaServer.getMain().getConfig().getString("sql.password");
-        String createTable = "CREATE TABLE IF NOT EXISTS eternia " +
-                "(`NAME` varchar(32) NOT NULL, " +
-                "`XP` int(11) NOT NULL, " +
-                "`BALANCE` double(22) NOT NULL);";
         EterniaServer.sqlcon = new Queries(host, database, username, password, true);
-        EterniaServer.sqlcon.Update(createTable);
+        new Tables();
     }
 }

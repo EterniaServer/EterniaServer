@@ -11,13 +11,8 @@ import org.bukkit.inventory.ItemStack;
 public class Blocks implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Verifica se quem está executando o comando é um jogador
-        // caso seja o comando é executado, caso não seja é enviado
-        // uma mensagem ao console.
+
         if (sender instanceof Player) {
-            // Se o jogador tiver a permissão para usar o /blocks ele irá
-            // procurar pelo inventário do jogador todos os minérios que ele
-            // possui e irá converter em blocos todos eles.
             Player player = (Player) sender;
             if (player.hasPermission("eternia.blocks")) {
                 double coal = 0;

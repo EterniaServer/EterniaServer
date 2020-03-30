@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.eternia</groupId>
     <artifactId>EterniaServer</artifactId>
-    <version>2.5.0</version>
+    <version>2.6.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -31,20 +31,18 @@
     <repositories>
         <repository>
             <id>spigot-repo</id>
+            <name>Spigot's Repository</name>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>destroystokyo-repo</id>
+            <name>Paper's Repository</name>
             <url>https://repo.destroystokyo.com/repository/maven-public/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
+            <name>Vault's Repository</name>
             <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>mojang</id>
-            <name>Mojang's Repository</name>
-            <url>https://libraries.minecraft.net/</url>
         </repository>
     </repositories>
     <dependencies>
@@ -65,11 +63,6 @@
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>authlib</artifactId>
-            <version>1.5.21</version>
         </dependency>
     </dependencies>
 </project>

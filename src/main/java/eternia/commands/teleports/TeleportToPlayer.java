@@ -2,6 +2,7 @@ package eternia.commands.teleports;
 
 import eternia.configs.MVar;
 import eternia.configs.Vars;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,16 +15,21 @@ public class TeleportToPlayer implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.tpa")) {
                 if (args.length == 1) {
-                    Player target = Vars.findPlayer(args[0]);
-                    if (target.isOnline()) {
-                        if (!(target == player)) {
-                            Vars.tpa_requests.put(target, player);
-                            MVar.playerReplaceMessage("server.receiver", player.getName(), target);
-                            MVar.playerReplaceMessage("teleport.send", target.getName(), player);
+                    try {
+                        Player target = Bukkit.getPlayer(args[0]);
+                        assert target != null;
+                        if (target.isOnline()) {
+                            if (target != player) {
+                                Vars.tpa_requests.put(target, player);
+                                MVar.playerReplaceMessage("teleport.receiver", player.getName(), target);
+                                MVar.playerReplaceMessage("teleport.send", target.getName(), player);
+                            } else {
+                                MVar.playerMessage("teleport.auto", player);
+                            }
                         } else {
-                            MVar.playerMessage("teleport.auto", player);
+                            MVar.playerMessage("server.player-offline", player);
                         }
-                    } else {
+                    } catch (Exception e) {
                         MVar.playerMessage("server.player-offline", player);
                     }
                 } else {

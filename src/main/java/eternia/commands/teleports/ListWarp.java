@@ -1,35 +1,35 @@
-package eternia.commands.economy;
-
-import java.sql.ResultSet;
-import java.text.DecimalFormat;
-import java.util.List;
-import java.sql.SQLException;
-import java.util.ArrayList;
+package eternia.commands.teleports;
 
 import eternia.EterniaServer;
 import eternia.api.MoneyAPI;
 import eternia.configs.MVar;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Baltop implements CommandExecutor {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListWarp implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            final Player player = (Player) sender;
-            if (sender.hasPermission("eternia.baltop")) {
-                final String query = "SELECT * FROM economy ORDER BY balance DESC LIMIT " + 10 + ";";
-                final List<String> accounts = new ArrayList<>();
+            Player player = (Player) sender;
+            if (player.hasPermission("eternia.listwarp")) {
+                final String query = "SELECT * FROM warp;";
                 Bukkit.getScheduler().runTaskAsynchronously(EterniaServer.getMain(), () -> {
+                    String accounts = "";
                     ResultSet rs = null;
                     try {
                         rs = EterniaServer.sqlcon.Query(query);
                         while (rs.next()) {
-                            final String string2 = rs.getString("player_name");
-                            accounts.add(string2);
+                            final String string2 = rs.getString("name");
+                            accounts = string2 + "&8, &3";
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -46,17 +46,12 @@ public class Baltop implements CommandExecutor {
                             e2.printStackTrace();
                         }
                     }
-                    DecimalFormat df2 = new DecimalFormat(".##");
-                    MVar.playerMessage("eco.baltop", player);
-                    accounts.forEach(name -> MVar.playerReplaceMessage("eco.ballist", (accounts.indexOf(name) + 1), name, df2.format(MoneyAPI.getMoney(name)), player));
+                    MVar.playerReplaceMessage("warps.list", accounts, player);
                 });
             } else {
                 MVar.playerMessage("server.no-perm", player);
             }
-        } else {
-            MVar.consoleMessage("server.only-player");
         }
         return true;
     }
-
 }

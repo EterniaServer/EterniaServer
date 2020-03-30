@@ -1,5 +1,6 @@
 package eternia.events;
 
+import eternia.api.WarpAPI;
 import eternia.configs.MVar;
 import eternia.configs.Vars;
 import org.bukkit.Bukkit;
@@ -18,7 +19,7 @@ public class NetherPortal extends org.bukkit.scheduler.BukkitRunnable {
                     } else if (Vars.playersInPortal.get(player) <= 1) {
                         Location player_location = player.getLocation();
                         if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
-                            player.teleport(Vars.getLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n"));
+                            player.teleport(WarpAPI.getWarp("Spawn"));
                             MVar.playerMessage("warps.spawn", player);
                         }
                     } else {

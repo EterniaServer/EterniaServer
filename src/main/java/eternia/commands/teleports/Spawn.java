@@ -1,9 +1,11 @@
 package eternia.commands.teleports;
 
 import eternia.EterniaServer;
+import eternia.api.WarpAPI;
 import eternia.configs.MVar;
 import eternia.configs.Vars;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,35 +16,42 @@ public class Spawn implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (args.length == 0) {
-                if (player.hasPermission("eternia.spawn")) {
-                    if (player.hasPermission("eternia.timing.bypass")) {
-                        player.teleport(Vars.getLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n"));
-                        MVar.playerMessage("warps.spawn", player);
+            final Location location = WarpAPI.getWarp("spawn");
+            if (location != Vars.error) {
+                if (args.length == 0) {
+                    if (player.hasPermission("eternia.spawn")) {
+                        if (player.hasPermission("eternia.timing.bypass")) {
+                            player.teleport(location);
+                            MVar.playerReplaceMessage("warps.warp", "Spawn", player);
+                        } else {
+                            MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
+                            {
+                                player.teleport(location);
+                                MVar.playerReplaceMessage("warps.warp", "Spawn", player);
+                            }, 20 * Vars.cooldown);
+                        }
                     } else {
-                        MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
-                        {
-                            player.teleport(Vars.getLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n"));
-                            MVar.playerMessage("warps.spawn", player);
-                        }, 20 * Vars.cooldown);
+                        MVar.playerMessage("sem-permissao", player);
+                    }
+                } else if (args.length == 1) {
+                    if (player.hasPermission("eternia.spawn.other")) {
+                        Player target = Bukkit.getPlayer(args[0]);
+                        if (target != null && target.isOnline()) {
+                            target.teleport(location);
+                            MVar.playerReplaceMessage("warps.warp", "Spawn", player);
+                            MVar.playerReplaceMessage("warps.spawn-other", target.getName(), player);
+                        } else {
+                            MVar.playerMessage("server.player-offline", player);
+                        }
+                    } else {
+                        MVar.playerMessage("server.no-perm", player);
                     }
                 } else {
-                    MVar.playerMessage("sem-permissao", player);
+                    MVar.playerMessage("warps.spawn-use", player);
                 }
-            } else if (args.length == 1) {
-                if (player.hasPermission("eternia.spawn.other")) {
-                    Player target = Vars.findPlayer(args[0]);
-                    if (target.isOnline()) {
-                        player.teleport(Vars.getLocation("world-n", "x-n", "y-n", "z-n", "yaw-n", "pitch-n"));
-                        MVar.playerMessage("warps.spawn", target);
-                        MVar.playerReplaceMessage("warps.spawn-other", target.getName(), player);
-                    } else {
-                        MVar.playerMessage("server.player-offline", player);
-                    }
-                } else {
-                    MVar.playerMessage("server.no-perm", player);
-                }
+            } else {
+                MVar.playerReplaceMessage("warps.spawnno", "Spawn", player);
             }
         } else {
             MVar.consoleMessage("server.only-player");

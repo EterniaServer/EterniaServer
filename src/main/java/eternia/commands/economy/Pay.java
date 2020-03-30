@@ -19,19 +19,19 @@ public class Pay implements CommandExecutor {
                     try {
                         coins = Double.parseDouble(args[1]);
                         if (coins > -1) {
-                            final Player target = Bukkit.getPlayer(args[0]);
-                            if (target != null) {
-                                if (target.equals(player)) {
-                                    MVar.playerMessage("eco.auto-pay", player);
-                                    return true;
-                                }
-                                if (MoneyAPI.getMoney(player.getName()) >= coins) {
-                                    MoneyAPI.addMoney(target.getName(), coins);
-                                    MoneyAPI.removeMoney(player.getName(), coins);
-                                    MVar.playerReplaceMessage("eco.pay", coins, target.getName(), player);
-                                    MVar.playerReplaceMessage("eco.pay-me", coins, player.getName(), target);
+                            Player target = Bukkit.getPlayer(args[0]);
+                            if (target != null && target.isOnline()) {
+                                if (!(target.equals(player))) {
+                                    if (MoneyAPI.getMoney(player.getName()) >= coins) {
+                                        MoneyAPI.addMoney(target.getName(), coins);
+                                        MoneyAPI.removeMoney(player.getName(), coins);
+                                        MVar.playerReplaceMessage("eco.pay", coins, target.getName(), player);
+                                        MVar.playerReplaceMessage("eco.pay-me", coins, player.getName(), target);
+                                    } else {
+                                        MVar.playerMessage("eco.pay-nomoney", player);
+                                    }
                                 } else {
-                                    MVar.playerMessage("eco.pay-nomoney", player);
+                                    MVar.playerMessage("eco.auto-pay", player);
                                 }
                             } else {
                                 MVar.playerMessage("server.player-offline", player);
@@ -39,9 +39,8 @@ public class Pay implements CommandExecutor {
                         } else {
                             MVar.playerMessage("server.no-negative", player);
                         }
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                         MVar.playerMessage("server.no-number", player);
-                        return true;
                     }
                 } else {
                     MVar.playerMessage("eco.use", player);

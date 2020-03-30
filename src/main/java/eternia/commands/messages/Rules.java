@@ -38,7 +38,24 @@ public class Rules implements CommandExecutor {
                         MVar.playerMessage("server.no-negative", player);
                     }
                 } else {
-                    MVar.playerMessage("server.no-number", player);
+                    int valor = 1;
+                    int inicio = 5 * (valor - 1);
+                    int fim = 6 * (valor);
+                    int cont = 0;
+                    String regras = Vars.getString("text.rules");
+                    assert regras != null;
+                    String[] regralista = regras.split("/split/");
+                    for (int i = inicio; i < fim; i++) {
+                        try {
+                            player.sendMessage(Vars.getColor(regralista[i]));
+                            cont += 1;
+                        } catch (Exception e) {
+                            break;
+                        }
+                    }
+                    if (cont == fim - inicio) {
+                        MVar.playerReplaceMessage("text.next", Integer.parseInt(args[0]) + 1, player);
+                    }
                 }
             } else {
                 MVar.playerMessage("server.no-perm", player);

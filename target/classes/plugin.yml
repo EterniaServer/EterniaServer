@@ -1,7 +1,7 @@
 main: eternia.EterniaServer
 
 name: EterniaServer
-version: '2.5.0'
+version: '2.6.0'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
@@ -49,12 +49,6 @@ commands:
   back:
     description: Volta aonde morreu.
     aliases: [dback, voltarmorte]
-  spectator:
-    description: Va para o modo spectator.
-    aliases: [inv, spect]
-  survival:
-    description: Volta ao modo survival.
-    aliases: [jogar, aparecer]
   facebook:
     description: Pagina do server.
     aliases: [paginadoface]
@@ -64,33 +58,6 @@ commands:
   colors:
     description: Descubra as cores.
     aliases: [cores]
-  spawn:
-    description: Se teleporta para o spawn.
-    aliases: [inicio]
-  setspawn:
-    description: Define o spawn.
-    aliases: [definirinicio]
-  event:
-    description: Vai para o evento.
-    aliases: [evento]
-  setevent:
-    description: Define o local do evento.
-    aliases: [definirevento]
-  teleportall:
-    description: Teleporta todos para tu.
-    aliases: [tpall, teleportageral]
-  arena:
-    description: Vai pra arena.
-    aliases: [pvp]
-  setarena:
-    description: Define a arena.
-    aliases: [definirarena]
-  crates:
-    description: Vai pra caixas.
-    aliases: [caixas]
-  setcrates:
-    description: Define a caixa.
-    aliases: [setcaixas]
   vote:
     description: Vota.
     aliases: [votar, voto]
@@ -106,12 +73,6 @@ commands:
   checklevel:
     description: Verifica o saldo guardado.
     aliases: [verxp, checkxp, xpguardado]
-  shop:
-    description: Vai para a loja.
-    aliases: [loja]
-  setshop:
-    description: Define a loja.
-    aliases: [setloja]
   pay:
     description: Paga alguem.
     aliases: [pagar]
@@ -127,3 +88,39 @@ commands:
   spawnergive:
     description: Da um spawner.
     aliases: [darspawner]
+  gamemode:
+    description: Altera o gamemode de um jogador.
+    aliases: [gm]
+  rain:
+    description: Altera o clima para chuvoso.
+    aliases: [chuva]
+  sun:
+    description: Altera o clima para ensolarado.
+    aliases: [sol]
+  god:
+    description: Ativa e desativa o godmode.
+    aliases: [deus]
+  thor:
+    description: Puna as pessoas.
+    aliases: [lightningbolt]
+  warp:
+    description: Vai para uma warp.
+    aliases: [local]
+  setwarp:
+    description: Define uma warp.
+    aliases: [setlocal]
+  shop:
+    description: Vai para uma loja.
+    aliases: [loja]
+  spawn:
+    description: Se teleporta para o spawn.
+    aliases: [inicio]
+  setspawn:
+    description: Define o spawn.
+    aliases: [definirinicio]
+  teleportall:
+    description: Teleporta todos.
+    aliases: [tpall]
+  setshop:
+    description: Define sua loja.
+    aliases: [setloja]

@@ -9,7 +9,9 @@
       <w>alguma</w>
       <w>algumas</w>
       <w>alterada</w>
+      <w>alterado</w>
       <w>alterar</w>
+      <w>alterou</w>
       <w>alvo</w>
       <w>antiga</w>
       <w>aplicar</w>
@@ -25,6 +27,7 @@
       <w>ativo</w>
       <w>atual</w>
       <w>atualizada</w>
+      <w>aventura</w>
       <w>ballist</w>
       <w>banco</w>
       <w>bancos</w>
@@ -49,8 +52,10 @@
       <w>chame</w>
       <w>checklevel</w>
       <w>cheio</w>
+      <w>chuvoso</w>
       <w>chão</w>
       <w>classe</w>
+      <w>clima</w>
       <w>colocar</w>
       <w>coloque</w>
       <w>começar</w>
@@ -71,7 +76,10 @@
       <w>contas</w>
       <w>contrário</w>
       <w>craftbukkit</w>
+      <w>createwarp</w>
       <w>criar</w>
+      <w>criativo</w>
+      <w>criou</w>
       <w>cuidado</w>
       <w>dados</w>
       <w>definida</w>
@@ -89,6 +97,7 @@
       <w>destroystokyo</w>
       <w>dinheiro</w>
       <w>direito</w>
+      <w>divinas</w>
       <w>doacao</w>
       <w>dropar</w>
       <w>elas</w>
@@ -98,6 +107,7 @@
       <w>encontrado</w>
       <w>encontrar</w>
       <w>encontre</w>
+      <w>ensolarado</w>
       <w>entidades</w>
       <w>entrar</w>
       <w>entre</w>
@@ -108,6 +118,7 @@
       <w>errou</w>
       <w>escolheu</w>
       <w>escolhido</w>
+      <w>espectador</w>
       <w>esperando</w>
       <w>estava</w>
       <w>estejam</w>
@@ -130,15 +141,21 @@
       <w>finalizada</w>
       <w>fiquem</w>
       <w>fixos</w>
+      <w>forças</w>
       <w>funciona</w>
       <w>funcionam</w>
       <w>funcione</w>
       <w>função</w>
+      <w>gamemode</w>
       <w>garrafas</w>
       <w>garrafinha</w>
       <w>garrafinhas</w>
       <w>geral</w>
       <w>getxp</w>
+      <w>gmuse</w>
+      <w>godd</w>
+      <w>gode</w>
+      <w>godmode</w>
       <w>gotopaper</w>
       <w>guardado</w>
       <w>guardados</w>
@@ -165,6 +182,7 @@
       <w>jogando</w>
       <w>jogo</w>
       <w>lista</w>
+      <w>listwarp</w>
       <w>localização</w>
       <w>loja</w>
       <w>mainclasse</w>
@@ -177,6 +195,7 @@
       <w>minecraftservers</w>
       <w>minérios</w>
       <w>miníma</w>
+      <w>modo</w>
       <w>moeda</w>
       <w>moldador</w>
       <w>momento</w>
@@ -192,8 +211,10 @@
       <w>negativa</w>
       <w>negou</w>
       <w>nenhum</w>
+      <w>nenhuma</w>
       <w>nesse</w>
       <w>noask</w>
+      <w>noexist</w>
       <w>nofree</w>
       <w>nomoney</w>
       <w>nosilk</w>
@@ -227,6 +248,8 @@
       <w>procura</w>
       <w>procurar</w>
       <w>proxima</w>
+      <w>punido</w>
+      <w>puniu</w>
       <w>pyixurr</w>
       <w>página</w>
       <w>qual</w>
@@ -250,6 +273,7 @@
       <w>salva</w>
       <w>salvamento</w>
       <w>salvar</w>
+      <w>saveloc</w>
       <w>seja</w>
       <w>sempedido</w>
       <w>sempre</w>
@@ -263,11 +287,21 @@
       <w>sethome</w>
       <w>setshop</w>
       <w>setspawn</w>
+      <w>setwarp</w>
+      <w>shopd</w>
+      <w>shopno</w>
+      <w>shopp</w>
+      <w>shopuse</w>
       <w>silktouch</w>
+      <w>simp</w>
+      <w>sobrevivencia</w>
+      <w>sobrevivência</w>
       <w>somente</w>
       <w>spawner</w>
       <w>spawnergive</w>
       <w>spawners</w>
+      <w>spawnno</w>
+      <w>spect</w>
       <w>sqlcon</w>
       <w>sqlitesetup</w>
       <w>suas</w>
@@ -294,6 +328,7 @@
       <w>tentar</w>
       <w>tente</w>
       <w>tentou</w>
+      <w>teve</w>
       <w>tipo</w>
       <w>tipos</w>
       <w>tiver</w>
@@ -325,6 +360,7 @@
       <w>válidos</w>
       <w>váriaveis</w>
       <w>váriavel</w>
+      <w>xpla</w>
       <w>xpmanager</w>
       <w>zhykloxiwur</w>
     </words>

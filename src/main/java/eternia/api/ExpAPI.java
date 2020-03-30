@@ -13,11 +13,11 @@ public class ExpAPI {
         }
         int xp = 0;
         try {
-            final ResultSet rs = EterniaServer.sqlcon.Query("SELECT XP FROM eternia WHERE NAME='" + playerName + "';");
+            final ResultSet rs = EterniaServer.sqlcon.Query("SELECT xp FROM xp WHERE player_name='" + playerName + "';");
             if (rs.next()) {
-                rs.getInt("XP");
+                rs.getInt("xp");
             }
-            xp = rs.getInt("XP");
+            xp = rs.getInt("xp");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,7 +28,7 @@ public class ExpAPI {
     public static void setExp(String playerName, int valor) {
         Vars.xp.remove(playerName);
         Vars.xp.put(playerName, valor);
-        EterniaServer.sqlcon.Update("UPDATE eternia SET BALANCE='" + valor + "' WHERE NAME='" + playerName + "';");
+        EterniaServer.sqlcon.Update("UPDATE xp SET xp='" + valor + "' WHERE player_name='" + playerName + "';");
     }
 
     public static void addExp(String playerName, int valor) {

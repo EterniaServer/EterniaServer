@@ -4,14 +4,10 @@ import eternia.EterniaServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
 import java.util.*;
 
 public class Vars {
-    public static Player findPlayer(String targets) {
-        Player target = Bukkit.getPlayer(targets);
-        assert target != null;
-        return target;
-    }
 
     public static String getColor(String message) {
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', message);
@@ -21,22 +17,10 @@ public class Vars {
         return EterniaServer.getMessages().getString(valor);
     }
 
-    public static Location getLocation(String w, String x, String y, String z, String yaw, String pitch) {
-        return (new Location(CVar.getWorld(w), CVar.getDouble(x), CVar.getDouble(y),
-                CVar.getDouble(z), CVar.getFloat(yaw), CVar.getFloat(pitch)));
-    }
-
-    public static void setLocation(String w, String x, String y, String z, String yaw, String pitch, Player player) {
-        CVar.setWorld(w, player);
-        CVar.setConfig(x, player.getLocation().getX());
-        CVar.setConfig(y, player.getLocation().getY());
-        CVar.setConfig(z, player.getLocation().getZ());
-        CVar.setConfig(yaw, player.getLocation().getYaw());
-        CVar.setConfig(pitch, player.getLocation().getPitch());
-        EterniaServer.getMain().saveConfig();
-    }
-
+    public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     public static final int cooldown = CVar.getInt("server.cooldown");
+    public static final List<String> god = new ArrayList<>();
+    public static final HashMap<String, Location> warps = new HashMap<>();
     public static final HashMap<String, Integer> xp = new HashMap<>();
     public static final HashMap<String, Double> money = new HashMap<>();
     public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();

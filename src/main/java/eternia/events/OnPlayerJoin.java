@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import eternia.player.PlayerManager;
 
-public class PlayerJoin implements Listener {
+public class OnPlayerJoin implements Listener {
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
