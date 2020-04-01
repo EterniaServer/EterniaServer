@@ -9,6 +9,7 @@ com/eterniaserver/commands/experience/WithdrawLevel.class
 com/eterniaserver/commands/economy/Money.class
 com/eterniaserver/events/OnDamage.class
 com/eterniaserver/commands/economy/Eco.class
+com/eterniaserver/events/OnInventoryClick.class
 com/eterniaserver/storage/sqlsetup/Queries.class
 com/eterniaserver/commands/experience/CheckLevel.class
 com/eterniaserver/vault/SystemEconomy.class
@@ -54,7 +55,6 @@ com/eterniaserver/managers/StorageManager.class
 com/eterniaserver/api/WarpAPI.class
 com/eterniaserver/commands/teleports/TeleportDeny.class
 com/eterniaserver/commands/teleports/ListWarp.class
-com/eterniaserver/events/OnAnvilRename.class
 com/eterniaserver/commands/teleports/DelWarp.class
 com/eterniaserver/commands/messages/Colors.class
 com/eterniaserver/events/OnChat.class
