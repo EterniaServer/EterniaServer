@@ -86,7 +86,10 @@
       <w>definir</w>
       <w>definiu</w>
       <w>dele</w>
+      <w>deletada</w>
       <w>delhome</w>
+      <w>deluse</w>
+      <w>delwarp</w>
       <w>dentro</w>
       <w>dependencia</w>
       <w>depois</w>
@@ -193,8 +196,11 @@
       <w>mesma</w>
       <w>minecraft</w>
       <w>minecraftservers</w>
+      <w>minerador</w>
       <w>minérios</w>
       <w>miníma</w>
+      <w>mobspawner</w>
+      <w>mobspawners</w>
       <w>modo</w>
       <w>moeda</w>
       <w>moldador</w>
@@ -203,6 +209,7 @@
       <w>moveu</w>
       <w>msgfinal</w>
       <w>muitas</w>
+      <w>muito</w>
       <w>mundo</w>
       <w>método</w>
       <w>métodos</w>
@@ -268,6 +275,7 @@
       <w>retorna</w>
       <w>retornar</w>
       <w>rodada</w>
+      <w>roubada</w>
       <w>rremove</w>
       <w>rset</w>
       <w>salva</w>
@@ -297,6 +305,7 @@
       <w>sobrevivencia</w>
       <w>sobrevivência</w>
       <w>somente</w>
+      <w>sorte</w>
       <w>spawner</w>
       <w>spawnergive</w>
       <w>spawners</w>
@@ -321,10 +330,13 @@
       <w>teleportar</w>
       <w>teleportdeny</w>
       <w>teleporte</w>
+      <w>teleported</w>
       <w>teleportevents</w>
       <w>teleportou</w>
+      <w>teleports</w>
       <w>teleporttoplayer</w>
       <w>tenha</w>
+      <w>tenta</w>
       <w>tentar</w>
       <w>tente</w>
       <w>tentou</w>

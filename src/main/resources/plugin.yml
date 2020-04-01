@@ -1,4 +1,4 @@
-main: eternia.EterniaServer
+main: com.eterniaserver.EterniaServer
 
 name: EterniaServer
 version: '${project.version}'
@@ -127,3 +127,6 @@ commands:
   listwarp:
     description: Lista as warps.
     aliases: [warps, locais]
+  delwarp:
+    description: Deleta uma warp.
+    aliases: [dellocal]

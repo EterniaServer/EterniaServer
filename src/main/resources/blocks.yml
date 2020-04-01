@@ -1,7 +1,21 @@
+#  _______ .___________. _______ .______      .__   __.  __       ___
+# |   ____||           ||   ____||   _  \     |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  |    |   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      /     |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
+
+# Add the blocks that you want and when a user broke it, the user may get
+# a reward, "STONE" is the name of block "[0.1]" is the chance of get a
+# reward, it must be greater than 0 but no greater than 1, "[1.0]" == 100%
+# and in last you place the command that will run, %PLAYER% is a placeholder
+# for the player username.
 Blocks:
   "STONE":
     "[0.1]":
-      - ''
+      - 'say Oi %PLAYER%!'
+    "[0.01]":
+      - 'say Oi %PLAYER% você é um minerador de sorte em!'
   "COAL_ORE":
     "[0.1]":
       - ''

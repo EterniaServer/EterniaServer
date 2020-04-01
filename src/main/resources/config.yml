@@ -1,31 +1,68 @@
+#  _______ .___________. _______ .______      .__   __.  __       ___
+# |   ____||           ||   ____||   _  \     |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  |    |   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      /     |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
+
+# nether-check is the interval in seconds that the server will check if the
+# player is trapped in a nether trap.
+
+# cooldown is the interval between the player being teleported when using a
+# command that teleports him.
+# table-prefix is the prefix of database, example table-prefix: 'es_' the
+# tables will be 'es_warps' and etc..
+server:
+  nether-check: 1
+  cooldown: 4
+  table-prefix: 'es_'
+
+# generic contains the varied and basic commands.
+# tpa contains the teleport to a player commands.
+# warp contains warps commands, like /spawn or /warp.
+# xp contains the xp commands.
 modules:
   generic: true
   tpa: true
   warp: true
   xp: true
+
+# With this you can choose between using MySQL or SQLite.
 sql:
   mysql: false
   host: '127.0.0.1'
   database: 'admin'
   user: 'admin'
   password: 'admin'
+
+# start is the amount of money the player will have when starting.
+# back is the cost of the /back command.
+# singular is the name of the currency in the singular.
+# plural is the name of the currency in the plural.
 money:
   start: 300
   back: 2500
   singular: 'Eternia'
   plural: 'Eternias'
-server:
-  nether-check: 1
-  cooldown: 4
+
+# mob-name-color is the color of the mobs name in the mobspawner.
+# enable-lore will enable or disable lore of mobspawners.
+# lore is the lore of mobspawner.
+# drop-in-inventory will make the mobspawner go to the inventory instead of
+# the ground.
+# drop-chance is the chance of drop a mobspawner, 1.0 == 100%.
+# prevent-anvil will block the option to rename a mobspawner.
+# blacklisted-worlds will block to get a mobspawner in the listed worlds.
+# log will report to console all mobspawners placed.
 spawners:
   mob-name-color: '&e'
+  enable-lore: false
   lore:
     - '&7Coloque isso no chão&8.'
     - '&3%s &7spawner&8.'
-  enable-lore: false
-  prevent-anvil: true
-  blacklisted-worlds:
-    - 'shop'
-  log: true
   drop-in-inventory: true
   drop-chance: 1.0
+  prevent-anvil: true
+  blacklisted-worlds:
+    - 'evento'
+  log: true
