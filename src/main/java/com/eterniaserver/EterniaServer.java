@@ -2,6 +2,7 @@ package com.eterniaserver;
 
 import com.eterniaserver.configs.CVar;
 import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.Vars;
 import com.eterniaserver.managers.*;
 import com.eterniaserver.storage.Queries;
 import com.eterniaserver.vault.VaultHook;

@@ -2,6 +2,7 @@ package com.eterniaserver.managers;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
+import com.eterniaserver.configs.Vars;
 import com.eterniaserver.events.*;
 
 public class EventManager {
