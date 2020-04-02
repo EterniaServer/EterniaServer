@@ -1,6 +1,8 @@
 package com.eterniaserver.events;
 
-import com.eterniaserver.spawner.SpawnerPlace;
+import com.eterniaserver.configs.Vars;
+import com.eterniaserver.modules.spawnermanager.actions.SpawnerPlace;
+
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +12,9 @@ public class OnBlockPlace implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getBlock().getType() == Material.SPAWNER) {
-            new SpawnerPlace(event);
+            if (Vars.spawner) {
+                new SpawnerPlace(event);
+            }
         }
     }
 }

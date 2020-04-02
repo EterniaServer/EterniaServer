@@ -8,6 +8,19 @@
 # nether-check is the interval in seconds that the server will check if the
 # player is trapped in a nether trap.
 
+# generic contains the varied and basic commands.
+# tpa contains the teleport to a player commands.
+# warp contains warps commands, like /spawn or /warp.
+# xp contains the xp commands.
+modules:
+  anti-nether-trap: true
+  block-reward: true
+  economy: true
+  experience: true
+  generic: true
+  spawners: true
+  teleports: true
+
 # cooldown is the interval between the player being teleported when using a
 # command that teleports him.
 # table-prefix is the prefix of database, example table-prefix: 'es_' the
@@ -16,16 +29,6 @@ server:
   nether-check: 1
   cooldown: 4
   table-prefix: 'es_'
-
-# generic contains the varied and basic commands.
-# tpa contains the teleport to a player commands.
-# warp contains warps commands, like /spawn or /warp.
-# xp contains the xp commands.
-modules:
-  generic: true
-  tpa: true
-  warp: true
-  xp: true
 
 # With this you can choose between using MySQL or SQLite.
 sql:
