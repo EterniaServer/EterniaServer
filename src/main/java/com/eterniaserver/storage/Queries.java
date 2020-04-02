@@ -1,4 +1,4 @@
-package com.eterniaserver.storage.sqlsetup;
+package com.eterniaserver.storage;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.MVar;

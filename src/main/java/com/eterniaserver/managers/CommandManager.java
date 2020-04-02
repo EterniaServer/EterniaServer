@@ -38,6 +38,7 @@ public class CommandManager {
             Objects.requireNonNull(plugin.getCommand("rain")).setExecutor(new Rain());
             Objects.requireNonNull(plugin.getCommand("god")).setExecutor(new God());
             Objects.requireNonNull(plugin.getCommand("thor")).setExecutor(new Thor());
+            Objects.requireNonNull(plugin.getCommand("itemrename")).setExecutor(new ItemRename());
         }
         if (CVar.getBool("modules.tpa")) {
             Objects.requireNonNull(plugin.getCommand("teleportaccept")).setExecutor(new TeleportAccept());

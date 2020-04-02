@@ -1,8 +1,8 @@
 package com.eterniaserver.managers;
 
 import com.eterniaserver.EterniaServer;
-import com.eterniaserver.storage.sqlsetup.Queries;
-import com.eterniaserver.storage.sqlsetup.Tables;
+import com.eterniaserver.storage.Queries;
+import com.eterniaserver.storage.Tables;
 
 public class StorageManager {
 

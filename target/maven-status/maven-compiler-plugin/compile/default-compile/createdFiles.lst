@@ -10,7 +10,7 @@ com/eterniaserver/commands/economy/Money.class
 com/eterniaserver/events/OnDamage.class
 com/eterniaserver/commands/economy/Eco.class
 com/eterniaserver/events/OnInventoryClick.class
-com/eterniaserver/storage/sqlsetup/Queries.class
+com/eterniaserver/storage/Queries.class
 com/eterniaserver/commands/experience/CheckLevel.class
 com/eterniaserver/vault/SystemEconomy.class
 com/eterniaserver/api/ExpAPI.class
@@ -20,16 +20,17 @@ com/eterniaserver/events/NetherPortal.class
 com/eterniaserver/commands/messages/Advice.class
 com/eterniaserver/commands/teleports/TeleportAll.class
 com/eterniaserver/commands/others/God.class
+com/eterniaserver/commands/others/ItemRename.class
 com/eterniaserver/commands/teleports/TeleportToPlayer.class
 com/eterniaserver/configs/Vars.class
 com/eterniaserver/player/PlayerFlyState.class
 com/eterniaserver/commands/teleports/SetSpawn.class
 com/eterniaserver/commands/messages/Vote.class
 com/eterniaserver/managers/EventManager.class
-com/eterniaserver/storage/sqlsetup/Tables.class
 com/eterniaserver/commands/teleports/Warp.class
 com/eterniaserver/managers/BlockBreakManager.class
 com/eterniaserver/commands/simplifications/Sun.class
+com/eterniaserver/storage/Tables.class
 com/eterniaserver/commands/simplifications/Thor.class
 com/eterniaserver/player/PlayerManager.class
 com/eterniaserver/EterniaServer.class
@@ -46,7 +47,6 @@ com/eterniaserver/events/OnPlayerLeave.class
 com/eterniaserver/events/OnPlayerTeleport.class
 com/eterniaserver/commands/others/GoldenShovel.class
 com/eterniaserver/configs/MVar.class
-com/eterniaserver/storage/RewardBlockBreak.class
 com/eterniaserver/spawner/SpawnerBreak.class
 com/eterniaserver/commands/messages/Suicide.class
 com/eterniaserver/commands/experience/DepositLevel.class

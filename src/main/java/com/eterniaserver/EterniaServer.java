@@ -3,7 +3,7 @@ package com.eterniaserver;
 import com.eterniaserver.configs.CVar;
 import com.eterniaserver.configs.MVar;
 import com.eterniaserver.managers.*;
-import com.eterniaserver.storage.sqlsetup.Queries;
+import com.eterniaserver.storage.Queries;
 import com.eterniaserver.vault.VaultHook;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;

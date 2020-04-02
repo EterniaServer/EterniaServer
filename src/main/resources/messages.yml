@@ -103,6 +103,8 @@ other:
   del-nick: '&7Apelido alternativo removido&8.'
   helmet: '&7Aproveite seu novo Caçapete&8.'
   done: '&7:)&8.'
+  noitem: '&7Nenhum há item na sua mão&8.'
+  rename: '&7Use &6/itemrename &3<name&8|&3lore>&8.'
 spawners:
   log: '&3%s &7acabou de colocar um spawner de &3%b&8.'
   block: '&7É proibido retirar spawns nesse mundo&8.'
