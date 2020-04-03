@@ -17,6 +17,11 @@ public class Vars {
         return EterniaServer.getMessages().getString(valor);
     }
 
+    public static boolean spawner = false;
+    public static boolean experience = false;
+    public static boolean economy = false;
+    public static boolean blockreward = false;
+
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     public static final int cooldown = CVar.getInt("server.cooldown");
     public static final List<String> god = new ArrayList<>();
