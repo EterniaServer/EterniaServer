@@ -3,7 +3,6 @@ package com.eterniaserver.modules;
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
 import com.eterniaserver.configs.MVar;
-import com.eterniaserver.configs.Vars;
 import com.eterniaserver.modules.economymanager.commands.*;
 import com.eterniaserver.modules.economymanager.vault.VaultHook;
 
@@ -14,7 +13,6 @@ import java.util.Objects;
 public class EconomyManager {
     public EconomyManager(EterniaServer plugin) {
         if (CVar.getBool("modules.economy")) {
-            Vars.economy = true;
             if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
                 final VaultHook vaultHook = new VaultHook();
                 vaultHook.hook();

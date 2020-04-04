@@ -15,9 +15,9 @@ server:
   sql-error: '&7SQL error&8 &3%s&8.'
   sql-finish: '&7Conexão SQL finalizada&8.'
   timing: '&7Você deve esperar &3%s &7segundos para poder usar esse comando novamente&8.'
-  gotopaper: '&7O &3EterniaPlugin &7recomenda a utilização do &3Paper &7em vez do &3Spigot &7ou &3Craftbukkit&8.'
-  usepaper: '&3EterniaPlugin &7carregado utilizando &3Paper&8.'
   mojang: '&7Problema com a &3Mojang&7 talvez o &3EterniaPlugin &7não funcione direito&8.'
+  afk-kick: '&7Você foi kickado por está afk&8.'
+  reload: '&7Configurações reiniciadas&8.'
 modules:
   enable: '&7Modulo de &3%s &7habilitado&8.'
   disable: '&7Modulo de &3%s &7desabilitado&8.'
@@ -92,6 +92,7 @@ warps:
   list: '&7Warps&8: &3%s&7algumas warps você pode não ter permissão&8.'
   delwarp: '&7Warp deletada'
   deluse: '&7Use &6/delwarp &3<nome>&8.'
+  move: '&7Você se moveu por isso o teleporte foi cancelado&8.'
 back:
   free: '&7Você voltou aonde estava de graça&8.'
   notp: '&7Você ainda não se teleportou&8.'

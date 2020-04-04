@@ -3,15 +3,13 @@ package com.eterniaserver.modules;
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
 import com.eterniaserver.configs.MVar;
-import com.eterniaserver.configs.Vars;
 import com.eterniaserver.modules.experiencemanager.commands.*;
 
 import java.util.Objects;
 
 public class ExperienceManager {
     public ExperienceManager(EterniaServer plugin) {
-        if (CVar.getBool("modules.teleports")) {
-            Vars.experience = true;
+        if (CVar.getBool("modules.experience")) {
             Objects.requireNonNull(plugin.getCommand("depositlvl")).setExecutor(new DepositLevel());
             Objects.requireNonNull(plugin.getCommand("withdrawlvl")).setExecutor(new WithdrawLevel());
             Objects.requireNonNull(plugin.getCommand("bottlexp")).setExecutor(new Bottlexp());

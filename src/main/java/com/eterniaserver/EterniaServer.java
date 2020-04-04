@@ -1,10 +1,8 @@
 package com.eterniaserver;
 
-import com.eterniaserver.configs.Vars;
+import com.eterniaserver.configs.CVar;
 import com.eterniaserver.events.*;
 import com.eterniaserver.modules.*;
-import com.eterniaserver.configs.CVar;
-import com.eterniaserver.configs.MVar;
 import com.eterniaserver.storage.MessagesConfig;
 import com.eterniaserver.storage.Connections;
 import com.eterniaserver.storage.StorageConfig;
@@ -30,12 +28,11 @@ public class EterniaServer extends JavaPlugin {
         teleportsManager();
         spawnersManager();
         antiNetherTrapManager();
+        afkManager();
         economyManager();
         experienceManager();
         genericManager();
         blockRewardManager();
-
-        testPaper();
 
         this.getServer().getPluginManager().registerEvents(new OnChat(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
@@ -46,26 +43,18 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnBlockPlace(), this);
         this.getServer().getPluginManager().registerEvents(new OnDamage(), this);
         this.getServer().getPluginManager().registerEvents(new OnInventoryClick(), this);
+
+        if (CVar.getBool("server.async-check")) {
+            new OnPlayerMove().runTaskTimerAsynchronously(this, 20L, 20);
+        } else {
+            new OnPlayerMove().runTaskTimer(this, 20L, 20);
+        }
     }
 
     @Override
     public void onDisable() {
-        if (Vars.economy)
-        {
+        if (CVar.getBool("modules.economy")) {
             sqlcon.Close();
-        }
-    }
-
-    private void testPaper() {
-        boolean isPapermc = false;
-        try {
-            isPapermc = Class.forName("com.destroystokyo.paper.VersionHistoryManager$VersionData") != null;
-        } catch (ClassNotFoundException e) {
-            MVar.consoleMessage("server.gotopaper");
-        }
-
-        if (isPapermc) {
-            MVar.consoleMessage("server.usepaper");
         }
     }
 
@@ -85,6 +74,10 @@ public class EterniaServer extends JavaPlugin {
         new EconomyManager(this);
     }
 
+    private void afkManager() {
+        new AFKManager(this);
+    }
+
     private void antiNetherTrapManager() {
         new AntiNetherTrapManager(this);
     }
@@ -98,7 +91,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void setDefaultStorage() {
-        new StorageConfig(CVar.getBool("sql.mysql"));
+        new StorageConfig(this);
     }
 
     private void saveDefaultMessage() {

@@ -14,10 +14,8 @@ public class Feed implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.feed")) {
                 if (args.length == 0) {
-                    if (command.getName().equalsIgnoreCase("comandos.staff.feed")) {
-                        player.setFoodLevel(20);
-                        MVar.playerMessage("other.feed", player);
-                    }
+                    player.setFoodLevel(20);
+                    MVar.playerMessage("other.feed", player);
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.feed.other")) {
                         Player target = Bukkit.getPlayer(args[0]);

@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
 import com.eterniaserver.EterniaServer;
+import com.eterniaserver.configs.CVar;
 import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
 import org.bukkit.Bukkit;
@@ -23,14 +24,14 @@ public class TeleportAccept implements CommandExecutor {
                         MVar.playerReplaceMessage("teleport.accept", player.getName(), target);
                         Vars.tpa_requests.remove(player);
                     } else {
-                        MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, target);
+                        MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), target);
                         MVar.playerReplaceMessage("teleport.accept", player.getName(), target);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                         {
                             target.teleport(player.getLocation());
                             MVar.playerReplaceMessage("teleport.tpto", player.getName(), target);
                             Vars.tpa_requests.remove(player);
-                        }, 20 * Vars.cooldown);
+                        }, 20 * CVar.getInt("server.cooldown"));
                     }
                 } else {
                     MVar.playerMessage("teleport.noask", player);

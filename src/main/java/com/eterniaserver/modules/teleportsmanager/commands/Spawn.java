@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
 import com.eterniaserver.EterniaServer;
+import com.eterniaserver.configs.CVar;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
 import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
@@ -24,12 +25,18 @@ public class Spawn implements CommandExecutor {
                             player.teleport(location);
                             MVar.playerReplaceMessage("warps.warp", "Spawn", player);
                         } else {
-                            MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                            MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            Vars.playerposition.put(player, player.getLocation());
+                            Vars.moved.put(player, false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                             {
-                                player.teleport(location);
-                                MVar.playerReplaceMessage("warps.warp", "Spawn", player);
-                            }, 20 * Vars.cooldown);
+                                if (!Vars.moved.get(player)) {
+                                    player.teleport(location);
+                                    MVar.playerReplaceMessage("warps.warp", "Spawn", player);
+                                } else {
+                                    MVar.playerMessage("warps.move", player);
+                                }
+                            }, 20 * CVar.getInt("server.cooldown"));
                         }
                     } else {
                         MVar.playerMessage("sem-permissao", player);

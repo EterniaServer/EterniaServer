@@ -20,19 +20,25 @@ public class Back implements CommandExecutor {
                 if (Vars.back.containsKey(player)) {
                     double money = Queries.getMoney(player.getName());
                     double valor = CVar.getInt("money.back");
-                    if (player.hasPermission("eternia.backfree") || !(Vars.economy)) {
+                    if (player.hasPermission("eternia.backfree") || !(CVar.getBool("modules.economy"))) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(Vars.back.get(player));
                             Vars.back.remove(player);
                             MVar.playerMessage("back.free", player);
                         } else {
-                            MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                            MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            Vars.playerposition.put(player, player.getLocation());
+                            Vars.moved.put(player, false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                             {
-                                player.teleport(Vars.back.get(player));
-                                Vars.back.remove(player);
-                                MVar.playerMessage("back.free", player);
-                            }, 20 * Vars.cooldown);
+                                if (!Vars.moved.get(player)) {
+                                    player.teleport(Vars.back.get(player));
+                                    Vars.back.remove(player);
+                                    MVar.playerMessage("back.free", player);
+                                } else {
+                                    MVar.playerMessage("warps.move", player);
+                                }
+                            }, 20 * CVar.getInt("server.cooldown"));
                         }
                     } else {
                         if (money >= valor) {
@@ -42,14 +48,20 @@ public class Back implements CommandExecutor {
                                 Queries.removeMoney(player.getName(), valor);
                                 MVar.playerReplaceMessage("back.nofree", valor, player);
                             } else {
-                                MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                                MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                                Vars.moved.put(player, false);
+                                Vars.playerposition.put(player, player.getLocation());
                                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                                 {
-                                    player.teleport(Vars.back.get(player));
-                                    Vars.back.remove(player);
-                                    Queries.removeMoney(player.getName(), valor);
-                                    MVar.playerReplaceMessage("back.nofree", valor, player);
-                                }, 20 * Vars.cooldown);
+                                    if (!Vars.moved.get(player)) {
+                                        player.teleport(Vars.back.get(player));
+                                        Vars.back.remove(player);
+                                        Queries.removeMoney(player.getName(), valor);
+                                        MVar.playerReplaceMessage("back.nofree", valor, player);
+                                    } else {
+                                        MVar.playerMessage("warps.move", player);
+                                    }
+                                }, 20 * CVar.getInt("server.cooldown"));
                             }
                         } else {
                             MVar.playerReplaceMessage("back.nomoney", valor, player);

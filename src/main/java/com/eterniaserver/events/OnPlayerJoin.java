@@ -1,7 +1,7 @@
 package com.eterniaserver.events;
 
+import com.eterniaserver.configs.CVar;
 import com.eterniaserver.configs.MVar;
-import com.eterniaserver.configs.Vars;
 import com.eterniaserver.player.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +12,7 @@ public class OnPlayerJoin implements Listener {
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (Vars.experience) {
+        if (CVar.getBool("modules.experience")) {
             if (!PlayerManager.PlayerExist(player.getName())) {
                 PlayerManager.CreatePlayer(player.getName());
             }

@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
 import com.eterniaserver.EterniaServer;
+import com.eterniaserver.configs.CVar;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesP;
 import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
@@ -25,12 +26,18 @@ public class Shop implements CommandExecutor {
                             player.teleport(location);
                             MVar.playerReplaceMessage("warps.warp", "Loja", player);
                         } else {
-                            MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                            MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            Vars.playerposition.put(player, player.getLocation());
+                            Vars.moved.put(player, false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                             {
-                                player.teleport(location);
-                                MVar.playerReplaceMessage("warps.warp", "Loja", player);
-                            }, 20 * Vars.cooldown);
+                                if (!Vars.moved.get(player)) {
+                                    player.teleport(location);
+                                    MVar.playerReplaceMessage("warps.warp", "Loja", player);
+                                } else {
+                                    MVar.playerMessage("warps.move", player);
+                                }
+                            }, 20 * CVar.getInt("server.cooldown"));
                         }
                     } else {
                         MVar.playerReplaceMessage("warps.noexist", "shop", player);
@@ -46,12 +53,18 @@ public class Shop implements CommandExecutor {
                             player.teleport(location);
                             MVar.playerReplaceMessage("warps.shopp", args[0], player);
                         } else {
-                            MVar.playerReplaceMessage("teleport.timing", Vars.cooldown, player);
+                            MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            Vars.playerposition.put(player, player.getLocation());
+                            Vars.moved.put(player, false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                             {
-                                player.teleport(location);
-                                MVar.playerReplaceMessage("warps.shopp", args[0], player);
-                            }, 20 * Vars.cooldown);
+                                if (!Vars.moved.get(player)) {
+                                    player.teleport(location);
+                                    MVar.playerReplaceMessage("warps.shopp", args[0], player);
+                                } else {
+                                    MVar.playerMessage("warps.move", player);
+                                }
+                            }, 20 * CVar.getInt("server.cooldown"));
                         }
                     } else {
                         MVar.playerReplaceMessage("warps.shopno", "Loja", player);

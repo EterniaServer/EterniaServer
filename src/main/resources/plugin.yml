@@ -133,3 +133,6 @@ commands:
   itemrename:
     description: Renomeia um item.
     aliases: [renameitem]
+  reloadeternia:
+    description: Reinicia as configs.
+    aliases: [eterniareload]

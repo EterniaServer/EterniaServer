@@ -15,8 +15,10 @@ public class Connections {
     private String PASSWORD;
     private Connection con;
     private final boolean mysql;
+    private final EterniaServer plugin;
 
-    public Connections(final String host, final String database, final String user, final String password, final boolean mysql) {
+    public Connections(EterniaServer plugin, final String host, final String database, final String user, final String password, final boolean mysql) {
+        this.plugin = plugin;
         this.HOST = "";
         this.DATABASE = "";
         this.USER = "";
@@ -39,7 +41,7 @@ public class Connections {
             }
         } else {
             try {
-                File dataFolder = new File(EterniaServer.getMain().getDataFolder(), "eternia.db");
+                File dataFolder = new File(plugin.getDataFolder(), "eternia.db");
                 this.con = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
                 MVar.consoleMessage("server.sql-ok");
             } catch (SQLException e) {
@@ -60,7 +62,7 @@ public class Connections {
     }
 
     public void Update(final String sql) {
-        Bukkit.getScheduler().runTaskAsynchronously(EterniaServer.getMain(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 con.createStatement().executeUpdate(sql);
             } catch (SQLException e) {

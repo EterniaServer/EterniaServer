@@ -5,14 +5,12 @@
 # |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
 # |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
 
-# nether-check is the interval in seconds that the server will check if the
-# player is trapped in a nether trap.
-
 # generic contains the varied and basic commands.
 # tpa contains the teleport to a player commands.
 # warp contains warps commands, like /spawn or /warp.
 # xp contains the xp commands.
 modules:
+  afk: true
   anti-nether-trap: true
   block-reward: true
   economy: true
@@ -21,12 +19,18 @@ modules:
   spawners: true
   teleports: true
 
+# async-check will enable the async method.
+# checks is the interval between checks, like afk or anti nether trap, don't
+# user this lower than 2.
+# afk-timer is the time in seconds for player be kicked by afk.
 # cooldown is the interval between the player being teleported when using a
 # command that teleports him.
 # table-prefix is the prefix of database, example table-prefix: 'es_' the
 # tables will be 'es_warps' and etc..
 server:
-  nether-check: 1
+  async-check: true
+  checks: 3
+  afk-timer: 900
   cooldown: 4
   table-prefix: 'es_'
 

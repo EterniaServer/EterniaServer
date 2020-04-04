@@ -1,6 +1,6 @@
 package com.eterniaserver.events;
 
-import com.eterniaserver.configs.Vars;
+import com.eterniaserver.configs.CVar;
 import com.eterniaserver.modules.spawnermanager.actions.SpawnerBreak;
 import com.eterniaserver.modules.blockrewardmanager.BlockReward;
 
@@ -11,10 +11,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 public class OnBlockBreak implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent breakEvent) {
-        if (Vars.spawner) {
+        if (CVar.getBool("modules.spawners")) {
             new SpawnerBreak(breakEvent);
         }
-        if (Vars.blockreward) {
+        if (CVar.getBool("modules.block-reward")) {
             new BlockReward(breakEvent);
         }
     }

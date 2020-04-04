@@ -14,7 +14,7 @@ public class OnDamage implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
             Player player = (Player) entity;
-            if (Vars.god.contains(player.getName())) {
+            if (Vars.god.get(player)) {
                 event.setCancelled(true);
             }
         }

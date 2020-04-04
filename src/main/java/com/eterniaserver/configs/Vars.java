@@ -17,19 +17,18 @@ public class Vars {
         return EterniaServer.getMessages().getString(valor);
     }
 
-    public static boolean spawner = false;
-    public static boolean experience = false;
-    public static boolean economy = false;
-    public static boolean blockreward = false;
-
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
-    public static final int cooldown = CVar.getInt("server.cooldown");
-    public static final List<String> god = new ArrayList<>();
+
     public static final HashMap<String, Location> warps = new HashMap<>();
     public static final HashMap<String, Integer> xp = new HashMap<>();
     public static final HashMap<String, Double> money = new HashMap<>();
-    public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();
-    public static final HashMap<Player, Location> back = new HashMap<>();
+
+    public static final HashMap<Player, Long> afktime = new HashMap<>();
     public static final HashMap<Player, Long> shovel_cooldown = new HashMap<>();
     public static final HashMap<Player, Player> tpa_requests = new HashMap<>();
+    public static final HashMap<Player, Boolean> god = new HashMap<>();
+    public static final HashMap<Player, Boolean> moved = new HashMap<>();
+    public static final HashMap<Player, Integer> playersInPortal = new HashMap<>();
+    public static final HashMap<Player, Location> playerposition = new HashMap<>();
+    public static final HashMap<Player, Location> back = new HashMap<>();
 }

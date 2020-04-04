@@ -1,7 +1,7 @@
 package com.eterniaserver.events;
 
+import com.eterniaserver.configs.CVar;
 import com.eterniaserver.configs.Vars;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -9,7 +9,11 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class OnPlayerTeleport implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
-        Player player = event.getPlayer();
-        Vars.back.put(player, player.getLocation());
+        if (CVar.getBool("modules.teleports")) {
+            Vars.back.put(event.getPlayer(), event.getPlayer().getLocation());
+        }
+        if (CVar.getBool("modules.afk")) {
+            Vars.afktime.put(event.getPlayer(), System.currentTimeMillis());
+        }
     }
 }
