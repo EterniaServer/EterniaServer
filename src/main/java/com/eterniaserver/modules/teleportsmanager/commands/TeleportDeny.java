@@ -1,7 +1,9 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
-import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,19 +15,20 @@ public class TeleportDeny implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.tpa")) {
-                if (Vars.tpa_requests.containsKey(player)) {
-                    Player target = Vars.tpa_requests.get(player);
-                    MVar.playerReplaceMessage("teleport.auto-deny", target.getName(), player);
-                    MVar.playerMessage("teleport.deny", target);
-                    Vars.tpa_requests.remove(player);
+                if (Vars.tpa_requests.containsKey(player.getName())) {
+                    Player target = Bukkit.getPlayer(Vars.tpa_requests.get(player.getName()));
+                    assert target != null;
+                    new PlayerMessage("teleport.auto-deny", target.getName(), player);
+                    new PlayerMessage("teleport.deny", target);
+                    Vars.tpa_requests.remove(player.getName());
                 } else {
-                    MVar.playerMessage("teleport.noask", player);
+                    new PlayerMessage("teleport.noask", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

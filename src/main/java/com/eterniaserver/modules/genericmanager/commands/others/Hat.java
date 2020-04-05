@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.genericmanager.commands.others;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,12 +21,12 @@ public class Hat implements CommandExecutor {
                 }
                 set_capacete(player);
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                MVar.playerMessage("other.helmet", player);
+                new PlayerMessage("other.helmet", player);
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

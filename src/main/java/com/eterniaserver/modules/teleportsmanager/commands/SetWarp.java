@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,15 +16,15 @@ public class SetWarp implements CommandExecutor {
             if (args.length == 1) {
                 if (player.hasPermission("eternia.setwarp")) {
                     QueriesW.setWarp(player.getLocation(), args[0].toLowerCase());
-                    MVar.playerReplaceMessage("warps.createwarp", args[0], player);
+                    new PlayerMessage("warps.createwarp", args[0], player);
                 } else {
-                    MVar.playerMessage("server.no-perm", player);
+                    new PlayerMessage("server.no-perm", player);
                 }
             } else {
-                MVar.playerMessage("warps.use2", player);
+                new PlayerMessage("warps.use2", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

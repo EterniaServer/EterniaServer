@@ -1,12 +1,16 @@
 package com.eterniaserver.modules.genericmanager.commands.messages;
 
 import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.BroadcastMessage;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Advice implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -19,12 +23,12 @@ public class Advice implements CommandExecutor {
                     }
                     sb.substring(0, sb.length() - 1);
                     String s = sb.toString();
-                    MVar.broadcastReplaceMessage("text.global-advice", s);
+                    new BroadcastMessage("text.global-advice", MVar.getColor(s));
                 } else {
-                    MVar.playerMessage("text.advice", player);
+                    new PlayerMessage("text.advice", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
             if (args.length >= 1) {
@@ -34,9 +38,9 @@ public class Advice implements CommandExecutor {
                 }
                 sb.substring(0, sb.length() - 1);
                 String s = sb.toString();
-                MVar.broadcastReplaceMessage("text.global-advice", s);
+                new BroadcastMessage("text.global-advice", MVar.getColor(s));
             } else {
-                MVar.consoleMessage("text.advice");
+                new ConsoleMessage("text.advice");
             }
         }
         return true;

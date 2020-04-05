@@ -1,7 +1,8 @@
 package com.eterniaserver.modules.economymanager.commands;
 
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.economymanager.sql.Queries;
-import com.eterniaserver.configs.MVar;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,37 +25,37 @@ public class Eco implements CommandExecutor {
                                 switch (fun) {
                                     case "set":
                                         Queries.setMoney(target.getName(), money);
-                                        MVar.playerReplaceMessage("eco.eco-set", money, target.getName(), player);
-                                        MVar.playerReplaceMessage("eco.eco-rset", money, player.getName(), target);
+                                        new PlayerMessage("eco.eco-set", money, target.getName(), player);
+                                        new PlayerMessage("eco.eco-rset", money, player.getName(), target);
                                         break;
                                     case "remove":
                                         Queries.removeMoney(target.getName(), money);
-                                        MVar.playerReplaceMessage("eco.eco-remove", money, target.getName(), player);
-                                        MVar.playerReplaceMessage("eco.eco-rremove", money, player.getName(), target);
+                                        new PlayerMessage("eco.eco-remove", money, target.getName(), player);
+                                        new PlayerMessage("eco.eco-rremove", money, player.getName(), target);
                                         break;
                                     case "give":
                                         Queries.addMoney(target.getName(), money);
-                                        MVar.playerReplaceMessage("eco.eco-give", money, target.getName(), player);
-                                        MVar.playerReplaceMessage("eco.eco-receive", money, player.getName(), target);
+                                        new PlayerMessage("eco.eco-give", money, target.getName(), player);
+                                        new PlayerMessage("eco.eco-receive", money, player.getName(), target);
                                         break;
                                     default:
-                                        MVar.playerMessage("eco.eco", player);
+                                        new PlayerMessage("eco.eco", player);
                                         break;
                                 }
                             } else {
-                                MVar.playerMessage("server.no-negative", player);
+                                new PlayerMessage("server.no-negative", player);
                             }
                         } catch (Exception e) {
-                            MVar.playerMessage("server.no-number", player);
+                            new PlayerMessage("server.no-number", player);
                         }
                     } else {
-                        MVar.playerMessage("server.player-offline", player);
+                        new PlayerMessage("server.player-offline", player);
                     }
                 } else {
-                    MVar.playerMessage("eco.eco", player);
+                    new PlayerMessage("eco.eco", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
             if (args.length == 3) {
@@ -69,33 +70,33 @@ public class Eco implements CommandExecutor {
                                 switch (fun) {
                                     case "set":
                                         Queries.setMoney(target.getName(), money);
-                                        MVar.consoleReplaceMessage("eco.eco-set", money, target.getName());
-                                        MVar.playerReplaceMessage("eco.eco-rset", money, "console", target);
+                                        new ConsoleMessage("eco.eco-set", money, target.getName());
+                                        new PlayerMessage("eco.eco-rset", money, "console", target);
                                     case "remove":
                                         Queries.removeMoney(target.getName(), money);
-                                        MVar.consoleReplaceMessage("eco.eco-remove", money, target.getName());
-                                        MVar.playerReplaceMessage("eco.eco-rremove", money, "console", target);
+                                        new ConsoleMessage("eco.eco-remove", money, target.getName());
+                                        new PlayerMessage("eco.eco-rremove", money, "console", target);
                                     case "give":
                                         Queries.addMoney(target.getName(), money);
-                                        MVar.consoleReplaceMessage("eco.eco-give", money, target.getName());
-                                        MVar.playerReplaceMessage("eco.eco-receive", money, "console", target);
+                                        new ConsoleMessage("eco.eco-give", money, target.getName());
+                                        new PlayerMessage("eco.eco-receive", money, "console", target);
                                     default:
-                                        MVar.consoleMessage("eco.eco");
+                                        new ConsoleMessage("eco.eco");
                                 }
                             } else {
-                                MVar.consoleMessage("server.no-negative");
+                                new ConsoleMessage("server.no-negative");
                             }
                         } catch (NumberFormatException e) {
-                            MVar.consoleMessage("server.no-number");
+                            new ConsoleMessage("server.no-number");
                         }
                     } else {
-                        MVar.consoleMessage("server.player-offline");
+                        new ConsoleMessage("server.player-offline");
                     }
                 } catch (Exception e) {
-                    MVar.consoleMessage("server.player-offline");
+                    new ConsoleMessage("server.player-offline");
                 }
             } else {
-                MVar.consoleMessage("eco.eco");
+                new ConsoleMessage("eco.eco");
             }
         }
         return true;

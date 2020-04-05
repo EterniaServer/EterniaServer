@@ -1,6 +1,9 @@
 package com.eterniaserver.modules.genericmanager.commands.messages;
 
 import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.BroadcastMessage;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,15 +23,15 @@ public class Suicide implements CommandExecutor {
                     sb.append("&8- &3").append(player.getName());
                     String s = sb.toString();
                     player.setHealth(0);
-                    MVar.broadcastReplaceMessage("text.suicide", s);
+                    new BroadcastMessage("text.suicide", MVar.getColor(s));
                 } else {
                     player.setHealth(0);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

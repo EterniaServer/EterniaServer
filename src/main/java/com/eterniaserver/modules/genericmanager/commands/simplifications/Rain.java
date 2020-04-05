@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.genericmanager.commands.simplifications;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,12 +14,12 @@ public class Rain implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.rain")) {
                 player.getWorld().setStorm(true);
-                MVar.playerReplaceMessage("simp.weather", "chuvoso", player);
+                new PlayerMessage("simp.weather", "chuvoso", player);
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

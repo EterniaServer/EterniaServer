@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.experiencemanager.commands;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.experiencemanager.sql.Queries;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,12 +14,12 @@ public class CheckLevel implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.checklevel")) {
-                MVar.playerReplaceMessage("xp.getxp", Queries.getExp(player.getName()), player);
+                new PlayerMessage("xp.getxp", Queries.getExp(player.getName()), player);
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

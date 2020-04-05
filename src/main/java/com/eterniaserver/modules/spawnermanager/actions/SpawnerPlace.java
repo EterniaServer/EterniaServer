@@ -1,6 +1,6 @@
 package com.eterniaserver.modules.spawnermanager.actions;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
@@ -20,7 +20,7 @@ public class SpawnerPlace {
             CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
             spawner.setSpawnedType(entity);
             spawner.update();
-            MVar.consoleReplaceMessage("spawners.log", event.getPlayer().getName(), entity.name().toLowerCase());
+            new ConsoleMessage("spawners.log", event.getPlayer().getName(), entity.name().toLowerCase());
         } catch (NullPointerException|IllegalArgumentException e) {
             e.printStackTrace();
         }

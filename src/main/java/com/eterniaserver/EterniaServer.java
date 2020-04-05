@@ -33,6 +33,7 @@ public class EterniaServer extends JavaPlugin {
         experienceManager();
         genericManager();
         blockRewardManager();
+        bedManager();
 
         this.getServer().getPluginManager().registerEvents(new OnChat(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
@@ -56,6 +57,10 @@ public class EterniaServer extends JavaPlugin {
         if (CVar.getBool("modules.economy")) {
             sqlcon.Close();
         }
+    }
+
+    private void bedManager() {
+        new BedManager(this);
     }
 
     private void blockRewardManager(){

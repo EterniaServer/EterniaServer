@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.genericmanager.commands.messages;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,12 +13,12 @@ public class Colors implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.colors")) {
-                MVar.playerMessage("text.color", player);
+                new PlayerMessage("text.color", player);
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("cores");
+            new ConsoleMessage("cores");
         }
         return true;
     }

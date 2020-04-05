@@ -12,28 +12,28 @@
 # for the player username.
 Blocks:
   "STONE":
-    "[0.1]":
+    "0.1":
       - 'say Oi %PLAYER%!'
-    "[0.01]":
+    "0.01":
       - 'say Oi %PLAYER% você é um minerador de sorte em!'
   "COAL_ORE":
-    "[0.1]":
+    "0.1":
       - ''
   "IRON_ORE":
-    "[0.1]":
+    "0.1":
       - ''
   "GOLD_ORE":
-    "[0.1]":
+    "0.1":
       - ''
   "DIAMOND_ORE":
-    "[0.1]":
+    "0.1":
       - ''
   "EMERALD_ORE":
-    "[0.1]":
+    "0.1":
       - ''
   "LAPIS_ORE":
-    "[0.1]":
+    "0.1":
       - ''
   "NETHER_QUARTZ_ORE":
-    "[0.1]":
+    "0.1":
       - ''

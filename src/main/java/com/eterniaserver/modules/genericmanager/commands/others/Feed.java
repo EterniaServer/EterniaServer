@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.genericmanager.commands.others;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,32 +16,32 @@ public class Feed implements CommandExecutor {
             if (player.hasPermission("eternia.feed")) {
                 if (args.length == 0) {
                     player.setFoodLevel(20);
-                    MVar.playerMessage("other.feed", player);
+                    new PlayerMessage("other.feed", player);
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.feed.other")) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target.isOnline()) {
                             target.setFoodLevel(20);
-                            MVar.playerReplaceMessage("other.feed-other", target.getName(), player);
-                            MVar.playerReplaceMessage("other.other-feed", player.getName(), target);
+                            new PlayerMessage("other.feed-other", target.getName(), player);
+                            new PlayerMessage("other.other-feed", player.getName(), target);
                         } else {
-                            MVar.playerMessage("server.player-offline", player);
+                            new PlayerMessage("server.player-offline", player);
                         }
                     } else {
-                        MVar.playerMessage("server.no-perm", player);
+                        new PlayerMessage("server.no-perm", player);
                     }
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && target.isOnline()) {
                 target.setFoodLevel(20);
-                MVar.consoleReplaceMessage("other.feed-other", target.getName());
-                MVar.playerReplaceMessage("other.other-feed", "console", target);
+                new ConsoleMessage("other.feed-other", target.getName());
+                new PlayerMessage("other.other-feed", "console", target);
             } else {
-                MVar.consoleMessage("server.player-offline");
+                new ConsoleMessage("server.player-offline");
             }
         }
         return true;

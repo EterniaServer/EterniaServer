@@ -1,7 +1,8 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesP;
-import com.eterniaserver.configs.MVar;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,12 +15,12 @@ public class SetShop implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setshop")) {
                 QueriesP.setShop(player.getLocation(), player.getName().toLowerCase());
-                MVar.playerMessage("warps.shopd", player);
+                new PlayerMessage("warps.shopd", player);
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

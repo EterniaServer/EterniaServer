@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,12 +19,12 @@ public class TeleportAll implements CommandExecutor {
                         other.teleport(player);
                     }
                 }
-                MVar.playerMessage("teleport.all", player);
+                new PlayerMessage("teleport.all", player);
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

@@ -2,7 +2,7 @@ package com.eterniaserver.modules;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
 import com.eterniaserver.modules.genericmanager.commands.messages.*;
 import com.eterniaserver.modules.genericmanager.commands.others.*;
 import com.eterniaserver.modules.genericmanager.commands.simplifications.*;
@@ -33,9 +33,9 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("thor")).setExecutor(new Thor());
             Objects.requireNonNull(plugin.getCommand("itemrename")).setExecutor(new ItemRename());
             Objects.requireNonNull(plugin.getCommand("reloadeternia")).setExecutor(new ReloadEternia());
-            MVar.consoleReplaceMessage("modules.enable", "Generic");
+            new ConsoleMessage("modules.enable", "Generic");
         } else {
-            MVar.consoleReplaceMessage("modules.disable", "Generic");
+            new ConsoleMessage("modules.disable", "Generic");
         }
     }
 }

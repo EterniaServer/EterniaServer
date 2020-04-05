@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,18 +17,18 @@ public class DelWarp implements CommandExecutor {
                 if (player.hasPermission("eternia.delwarp")) {
                     if (QueriesW.existWarp(args[0])) {
                         QueriesW.delWarp(args[0]);
-                        MVar.playerMessage("warps.delwarp", player);
+                        new PlayerMessage("warps.delwarp", player);
                     } else {
-                        MVar.playerReplaceMessage("warps.noexist", args[0], player);
+                        new PlayerMessage("warps.noexist", args[0], player);
                     }
                 } else {
-                    MVar.playerMessage("server.no-perm", player);
+                    new PlayerMessage("server.no-perm", player);
                 }
             } else {
-                MVar.playerMessage("warps.deluse", player);
+                new PlayerMessage("warps.deluse", player);
             }
         } else {
-            MVar.consoleMessage("only-player");
+            new ConsoleMessage("only-player");
         }
         return true;
     }

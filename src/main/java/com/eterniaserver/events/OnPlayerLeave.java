@@ -1,6 +1,6 @@
 package com.eterniaserver.events;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.BroadcastMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +11,6 @@ public class OnPlayerLeave implements Listener {
     public void OnLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         event.setQuitMessage(null);
-        MVar.broadcastReplaceMessage("server.leave", player.getName());
+        new BroadcastMessage("server.leave", player.getName());
     }
 }

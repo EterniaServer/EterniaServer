@@ -2,8 +2,9 @@ package com.eterniaserver.modules.teleportsmanager.commands;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesP;
-import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
 import org.bukkit.Bukkit;
@@ -24,26 +25,26 @@ public class Shop implements CommandExecutor {
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(location);
-                            MVar.playerReplaceMessage("warps.warp", "Loja", player);
+                            new PlayerMessage("warps.warp", "Loja", player);
                         } else {
-                            MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            new PlayerMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player, player.getLocation());
                             Vars.moved.put(player, false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                             {
                                 if (!Vars.moved.get(player)) {
                                     player.teleport(location);
-                                    MVar.playerReplaceMessage("warps.warp", "Loja", player);
+                                    new PlayerMessage("warps.warp", "Loja", player);
                                 } else {
-                                    MVar.playerMessage("warps.move", player);
+                                    new PlayerMessage("warps.move", player);
                                 }
                             }, 20 * CVar.getInt("server.cooldown"));
                         }
                     } else {
-                        MVar.playerReplaceMessage("warps.noexist", "shop", player);
+                        new PlayerMessage("warps.noexist", "shop", player);
                     }
                 } else {
-                    MVar.playerMessage("server.no-perm", player);
+                    new PlayerMessage("server.no-perm", player);
                 }
             } else if (args.length == 1) {
                 final Location location = QueriesP.getShop(args[0].toLowerCase());
@@ -51,32 +52,32 @@ public class Shop implements CommandExecutor {
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(location);
-                            MVar.playerReplaceMessage("warps.shopp", args[0], player);
+                            new PlayerMessage("warps.shopp", args[0], player);
                         } else {
-                            MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            new PlayerMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player, player.getLocation());
                             Vars.moved.put(player, false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                             {
                                 if (!Vars.moved.get(player)) {
                                     player.teleport(location);
-                                    MVar.playerReplaceMessage("warps.shopp", args[0], player);
+                                    new PlayerMessage("warps.shopp", args[0], player);
                                 } else {
-                                    MVar.playerMessage("warps.move", player);
+                                    new PlayerMessage("warps.move", player);
                                 }
                             }, 20 * CVar.getInt("server.cooldown"));
                         }
                     } else {
-                        MVar.playerReplaceMessage("warps.shopno", "Loja", player);
+                        new PlayerMessage("warps.shopno", "Loja", player);
                     }
                 } else {
-                    MVar.playerMessage("server.no-perm", player);
+                    new PlayerMessage("server.no-perm", player);
                 }
             } else {
-                MVar.playerMessage("warps.shopuse", player);
+                new PlayerMessage("warps.shopuse", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

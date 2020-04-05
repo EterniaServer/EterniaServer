@@ -10,7 +10,8 @@ public class OnPlayerTeleport implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         if (CVar.getBool("modules.teleports")) {
-            Vars.back.put(event.getPlayer(), event.getPlayer().getLocation());
+            Vars.back.remove(event.getPlayer().getName());
+            Vars.back.put(event.getPlayer().getName(), event.getPlayer().getLocation());
         }
         if (CVar.getBool("modules.afk")) {
             Vars.afktime.put(event.getPlayer(), System.currentTimeMillis());

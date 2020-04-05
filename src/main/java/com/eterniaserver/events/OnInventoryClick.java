@@ -1,8 +1,9 @@
 package com.eterniaserver.events;
 
 import com.eterniaserver.configs.CVar;
-import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,8 +19,8 @@ public class OnInventoryClick implements Listener {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
                 Player player = (Player) e.getWhoClicked();
                 e.setCancelled(true);
-                MVar.playerMessage("spawners.anvil", player);
-                MVar.consoleReplaceMessage("spawners.anvil-try", player.getName());
+                new PlayerMessage("spawners.anvil", player);
+                new ConsoleMessage("spawners.anvil-try", player.getName());
             }
         }
         if (CVar.getBool("modules.afk")) {

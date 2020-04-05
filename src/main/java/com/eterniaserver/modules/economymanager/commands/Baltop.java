@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.eterniaserver.EterniaServer;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.economymanager.sql.Queries;
-import com.eterniaserver.configs.MVar;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -47,14 +48,14 @@ public class Baltop implements CommandExecutor {
                         }
                     }
                     DecimalFormat df2 = new DecimalFormat(".##");
-                    MVar.playerMessage("eco.baltop", player);
-                    accounts.forEach(name -> MVar.playerReplaceMessage("eco.ballist", (accounts.indexOf(name) + 1), name, df2.format(Queries.getMoney(name)), player));
+                    new PlayerMessage("eco.baltop", player);
+                    accounts.forEach(name -> new PlayerMessage("eco.ballist", (accounts.indexOf(name) + 1), name, df2.format(Queries.getMoney(name)), player));
                 });
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

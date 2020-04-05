@@ -2,8 +2,9 @@ package com.eterniaserver.modules.teleportsmanager.commands;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
-import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,32 +24,32 @@ public class Warp implements CommandExecutor {
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(location);
-                            MVar.playerReplaceMessage("warps.warp", args[0], player);
+                            new PlayerMessage("warps.warp", args[0], player);
                         } else {
-                            MVar.playerReplaceMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            new PlayerMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player, player.getLocation());
                             Vars.moved.put(player, false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
                             {
                                 if (!Vars.moved.get(player)) {
                                     player.teleport(location);
-                                    MVar.playerReplaceMessage("warps.warp", args[0], player);
+                                    new PlayerMessage("warps.warp", args[0], player);
                                 } else {
-                                    MVar.playerMessage("warps.move", player);
+                                    new PlayerMessage("warps.move", player);
                                 }
                             }, 20 * CVar.getInt("server.cooldown"));
                         }
                     } else {
-                        MVar.playerReplaceMessage("warps.noexist", args[0], player);
+                        new PlayerMessage("warps.noexist", args[0], player);
                     }
                 } else {
-                    MVar.playerMessage("server.no-perm", player);
+                    new PlayerMessage("server.no-perm", player);
                 }
             } else {
-                MVar.playerMessage("warps.use", player);
+                new PlayerMessage("warps.use", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

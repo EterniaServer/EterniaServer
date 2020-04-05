@@ -2,8 +2,8 @@ package com.eterniaserver.modules.spawnermanager.actions;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
-import com.eterniaserver.configs.MVar;
 
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,7 +30,7 @@ public class SpawnerBreak {
             Material material = block.getType();
             Player player = event.getPlayer();
             if (EterniaServer.getMain().getConfig().getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
-                MVar.playerMessage("spawners.block", player);
+                new PlayerMessage("spawners.block", player);
                 event.setCancelled(true);
                 return;
             }
@@ -56,14 +56,14 @@ public class SpawnerBreak {
                     if (CVar.getDouble("spawners.drop-chance") != 1) {
                         double random = Math.random();
                         if (random >= CVar.getDouble("spawners.drop-chance")) {
-                            MVar.playerMessage("spawners.no-drop", player);
+                            new PlayerMessage("spawners.no-drop", player);
                             return;
                         }
                     }
                     if (CVar.getBool("spawners.drop-in-inventory")) {
                         if (player.getInventory().firstEmpty() == -1) {
                             event.setCancelled(true);
-                            MVar.playerMessage("spawners.invfull", player);
+                            new PlayerMessage("spawners.invfull", player);
                             return;
                         }
                         player.getInventory().addItem(item);
@@ -74,11 +74,11 @@ public class SpawnerBreak {
                     Objects.requireNonNull(loc.getWorld()).dropItemNaturally(loc, item);
                 } else {
                     event.setCancelled(true);
-                    MVar.playerMessage("spawners.no-silktouch", player);
+                    new PlayerMessage("spawners.no-silktouch", player);
                 }
             } else {
                 event.setCancelled(true);
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         }
     }

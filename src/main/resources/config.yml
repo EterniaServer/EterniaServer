@@ -12,6 +12,7 @@
 modules:
   afk: true
   anti-nether-trap: true
+  bed: true
   block-reward: true
   economy: true
   experience: true
@@ -19,7 +20,8 @@ modules:
   spawners: true
   teleports: true
 
-# async-check will enable the async method.
+# async-check will enable the async method, please don't disable it if you
+# don't know what you're doing.
 # checks is the interval between checks, like afk or anti nether trap, don't
 # user this lower than 2.
 # afk-timer is the time in seconds for player be kicked by afk.
@@ -41,6 +43,11 @@ sql:
   database: 'admin'
   user: 'admin'
   password: 'admin'
+
+bed:
+  percentage: 25
+  blacklisted-worlds:
+    - 'evento'
 
 # start is the amount of money the player will have when starting.
 # back is the cost of the /back command.

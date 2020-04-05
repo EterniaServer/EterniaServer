@@ -3,8 +3,8 @@ package com.eterniaserver.modules.genericmanager.commands.others;
 import java.util.Collections;
 
 import com.eterniaserver.configs.MVar;
-import com.eterniaserver.configs.Vars;
-
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,36 +27,36 @@ public class ItemRename implements CommandExecutor {
                             ItemStack item = player.getInventory().getItemInMainHand();
                             ItemMeta meta = item.getItemMeta();
                             if (meta != null) {
-                                meta.setDisplayName(Vars.getColor(args[1]));
+                                meta.setDisplayName(MVar.getColor(args[1]));
                                 item.setItemMeta(meta);
                                 player.getInventory().setItemInMainHand(item);
                             } else {
-                                MVar.playerMessage("other.noitem", player);
+                                new PlayerMessage("other.noitem", player);
                             }
                         } else if (args[0].equals("lore")) {
                             ItemStack item = player.getInventory().getItemInMainHand();
                             ItemMeta meta = item.getItemMeta();
                             if (meta != null) {
-                                meta.setLore(Collections.singletonList(Vars.getColor(args[1])));
+                                meta.setLore(Collections.singletonList(MVar.getColor(args[1])));
                                 item.setItemMeta(meta);
                                 player.getInventory().setItemInMainHand(item);
                             } else {
-                                MVar.playerMessage("other.noitem", player);
+                                new PlayerMessage("other.noitem", player);
                             }
                         } else {
-                            MVar.playerMessage("other.rename", player);
+                            new PlayerMessage("other.rename", player);
                         }
                     } else {
-                        MVar.playerMessage("other.noitem", player);
+                        new PlayerMessage("other.noitem", player);
                     }
                 } else {
-                    MVar.playerMessage("other.rename", player);
+                    new PlayerMessage("other.rename", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

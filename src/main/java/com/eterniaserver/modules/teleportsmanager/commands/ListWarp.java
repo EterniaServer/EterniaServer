@@ -2,6 +2,7 @@ package com.eterniaserver.modules.teleportsmanager.commands;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,10 +42,10 @@ public class ListWarp implements CommandExecutor {
                             e2.printStackTrace();
                         }
                     }
-                    MVar.playerReplaceMessage("warps.list", accounts.toString(), player);
+                    new PlayerMessage("warps.list", MVar.getColor(accounts.toString()), player);
                 });
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         }
         return true;

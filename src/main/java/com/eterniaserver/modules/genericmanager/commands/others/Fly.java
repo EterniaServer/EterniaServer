@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.genericmanager.commands.others;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.player.PlayerFlyState;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -19,7 +20,7 @@ public class Fly implements CommandExecutor {
                         if (player.hasPermission("eternia.fly.evento")) {
                             PlayerFlyState.selfFly(player);
                         } else {
-                            MVar.playerMessage("server.no-perm", player);
+                            new PlayerMessage("server.no-perm", player);
                         }
                     } else {
                         PlayerFlyState.selfFly(player);
@@ -31,23 +32,23 @@ public class Fly implements CommandExecutor {
                         if (target != null && target.isOnline()) {
                             PlayerFlyState.otherFly(target);
                         } else {
-                            MVar.playerMessage("server.player-offline", player);
+                            new PlayerMessage("server.player-offline", player);
                         }
                     } else {
-                        MVar.playerMessage("server.no-perm", player);
+                        new PlayerMessage("server.no-perm", player);
                     }
                 } else {
-                    MVar.playerMessage("fly.use", player);
+                    new PlayerMessage("fly.use", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && target.isOnline()) {
                 PlayerFlyState.otherFly(target);
             } else {
-                MVar.consoleMessage("server.player-offline");
+                new ConsoleMessage("server.player-offline");
             }
         }
         return true;

@@ -1,7 +1,8 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
-import com.eterniaserver.configs.MVar;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,12 +15,12 @@ public class SetSpawn implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setspawn")) {
                 QueriesW.setWarp(player.getLocation(), "spawn");
-                MVar.playerMessage("warps.spawn-set", player);
+                new PlayerMessage("warps.spawn-set", player);
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

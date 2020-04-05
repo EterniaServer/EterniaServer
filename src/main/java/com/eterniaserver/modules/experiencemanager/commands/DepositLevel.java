@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.experiencemanager.commands;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.experiencemanager.sql.Queries;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,22 +28,22 @@ public class DepositLevel implements CommandExecutor {
                                 xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
                             }
                             Queries.addExp(player.getName(), xp);
-                            MVar.playerReplaceMessage("xp.deposit", xpla, player);
+                            new PlayerMessage("xp.deposit", xpla, player);
                             player.setLevel(Math.max(player.getLevel() - xpla, 0));
                         } else {
-                            MVar.playerMessage("xp.noxp", player);
+                            new PlayerMessage("xp.noxp", player);
                         }
                     } catch (NumberFormatException e) {
-                        MVar.playerMessage("server.no-number", player);
+                        new PlayerMessage("server.no-number", player);
                     }
                 } else {
-                    MVar.playerMessage("xp.use", player);
+                    new PlayerMessage("xp.use", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

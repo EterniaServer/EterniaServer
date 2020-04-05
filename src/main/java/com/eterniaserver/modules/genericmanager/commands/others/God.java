@@ -1,7 +1,8 @@
 package com.eterniaserver.modules.genericmanager.commands.others;
 
-import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,16 +14,16 @@ public class God implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.god")) {
-                if (Vars.god.get(player)) {
-                    MVar.playerMessage("simp.godd", player);
-                    Vars.god.remove(player);
+                if (Vars.god.contains(player.getName())) {
+                    new PlayerMessage("simp.godd", player);
+                    Vars.god.remove(player.getName());
                 } else {
-                    MVar.playerMessage("simp.gode", player);
-                    Vars.god.put(player, true);
+                    new PlayerMessage("simp.gode", player);
+                    Vars.god.add(player.getName());
                 }
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

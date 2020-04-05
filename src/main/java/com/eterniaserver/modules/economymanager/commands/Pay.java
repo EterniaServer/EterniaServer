@@ -1,7 +1,8 @@
 package com.eterniaserver.modules.economymanager.commands;
 
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.economymanager.sql.Queries;
-import com.eterniaserver.configs.MVar;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
@@ -25,31 +26,31 @@ public class Pay implements CommandExecutor {
                                     if (Queries.getMoney(player.getName()) >= coins) {
                                         Queries.addMoney(target.getName(), coins);
                                         Queries.removeMoney(player.getName(), coins);
-                                        MVar.playerReplaceMessage("eco.pay", coins, target.getName(), player);
-                                        MVar.playerReplaceMessage("eco.pay-me", coins, player.getName(), target);
+                                        new PlayerMessage("eco.pay", coins, target.getName(), player);
+                                        new PlayerMessage("eco.pay-me", coins, player.getName(), target);
                                     } else {
-                                        MVar.playerMessage("eco.pay-nomoney", player);
+                                        new PlayerMessage("eco.pay-nomoney", player);
                                     }
                                 } else {
-                                    MVar.playerMessage("eco.auto-pay", player);
+                                    new PlayerMessage("eco.auto-pay", player);
                                 }
                             } else {
-                                MVar.playerMessage("server.player-offline", player);
+                                new PlayerMessage("server.player-offline", player);
                             }
                         } else {
-                            MVar.playerMessage("server.no-negative", player);
+                            new PlayerMessage("server.no-negative", player);
                         }
                     } catch (NumberFormatException e) {
-                        MVar.playerMessage("server.no-number", player);
+                        new PlayerMessage("server.no-number", player);
                     }
                 } else {
-                    MVar.playerMessage("eco.use", player);
+                    new PlayerMessage("eco.use", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

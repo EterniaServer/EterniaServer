@@ -2,7 +2,7 @@ package com.eterniaserver.modules;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
 import com.eterniaserver.modules.teleportsmanager.commands.*;
 
 import java.util.Objects;
@@ -24,9 +24,9 @@ public class TeleportsManager {
             Objects.requireNonNull(plugin.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
             Objects.requireNonNull(plugin.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer());
             Objects.requireNonNull(plugin.getCommand("teleportall")).setExecutor(new TeleportAll());
-            MVar.consoleReplaceMessage("modules.enable", "Teleports");
+            new ConsoleMessage("modules.enable", "Teleports");
         } else {
-            MVar.consoleReplaceMessage("modules.disable", "Teleports");
+            new ConsoleMessage("modules.disable", "Teleports");
         }
     }
 

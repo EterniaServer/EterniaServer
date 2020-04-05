@@ -1,6 +1,7 @@
 package com.eterniaserver.modules.genericmanager.commands.others;
 
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import com.eterniaserver.modules.genericmanager.Reload;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,11 +15,11 @@ public class ReloadEternia implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.reload")) {
                 new Reload();
-                MVar.playerMessage("server.reload", player);
+                new PlayerMessage("server.reload", player);
             }
         } else {
             new Reload();
-            MVar.consoleMessage("server.reload");
+            new ConsoleMessage("server.reload");
         }
         return true;
     }

@@ -1,7 +1,8 @@
 package com.eterniaserver.modules.teleportsmanager.commands;
 
-import com.eterniaserver.configs.MVar;
 import com.eterniaserver.configs.Vars;
+import com.eterniaserver.configs.methods.ConsoleMessage;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,26 +21,27 @@ public class TeleportToPlayer implements CommandExecutor {
                         assert target != null;
                         if (target.isOnline()) {
                             if (target != player) {
-                                Vars.tpa_requests.put(target, player);
-                                MVar.playerReplaceMessage("teleport.receiver", player.getName(), target);
-                                MVar.playerReplaceMessage("teleport.send", target.getName(), player);
+                                Vars.tpa_requests.remove(target.getName());
+                                Vars.tpa_requests.put(target.getName(), player.getName());
+                                new PlayerMessage("teleport.receiver", player.getName(), target);
+                                new PlayerMessage("teleport.send", target.getName(), player);
                             } else {
-                                MVar.playerMessage("teleport.auto", player);
+                                new PlayerMessage("teleport.auto", player);
                             }
                         } else {
-                            MVar.playerMessage("server.player-offline", player);
+                            new PlayerMessage("server.player-offline", player);
                         }
                     } catch (Exception e) {
-                        MVar.playerMessage("server.player-offline", player);
+                        new PlayerMessage("server.player-offline", player);
                     }
                 } else {
-                    MVar.playerMessage("teleport.use", player);
+                    new PlayerMessage("teleport.use", player);
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            MVar.consoleMessage("server.only-player");
+            new ConsoleMessage("server.only-player");
         }
         return true;
     }

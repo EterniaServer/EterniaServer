@@ -1,7 +1,7 @@
 package com.eterniaserver.events;
 
 import com.eterniaserver.configs.CVar;
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.BroadcastMessage;
 import com.eterniaserver.player.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +18,6 @@ public class OnPlayerJoin implements Listener {
             }
         }
         event.setJoinMessage(null);
-        MVar.broadcastReplaceMessage("server.join", player.getName());
+        new BroadcastMessage("server.join", player.getName());
     }
 }

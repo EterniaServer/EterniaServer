@@ -2,7 +2,7 @@ package com.eterniaserver.modules;
 
 import com.eterniaserver.EterniaServer;
 import com.eterniaserver.configs.CVar;
-import com.eterniaserver.configs.MVar;
+import com.eterniaserver.configs.methods.ConsoleMessage;
 import com.eterniaserver.modules.experiencemanager.commands.*;
 
 import java.util.Objects;
@@ -14,9 +14,9 @@ public class ExperienceManager {
             Objects.requireNonNull(plugin.getCommand("withdrawlvl")).setExecutor(new WithdrawLevel());
             Objects.requireNonNull(plugin.getCommand("bottlexp")).setExecutor(new Bottlexp());
             Objects.requireNonNull(plugin.getCommand("checklevel")).setExecutor(new CheckLevel());
-            MVar.consoleReplaceMessage("modules.enable", "Teleports");
+            new ConsoleMessage("modules.enable", "Teleports");
         } else {
-            MVar.consoleReplaceMessage("modules.disable", "Teleports");
+            new ConsoleMessage("modules.disable", "Teleports");
         }
     }
 }

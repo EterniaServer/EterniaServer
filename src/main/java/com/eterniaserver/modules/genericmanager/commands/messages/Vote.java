@@ -1,7 +1,7 @@
 package com.eterniaserver.modules.genericmanager.commands.messages;
 
 import com.eterniaserver.configs.MVar;
-import com.eterniaserver.configs.Vars;
+import com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,21 +14,19 @@ public class Vote implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.vote")) {
-                String sites_voto = Vars.getString("text.vote");
-                assert sites_voto != null;
+                String sites_voto = MVar.getMessage("text.vote");
                 String[] sites_lista = sites_voto.split("/split/");
                 for (String s : sites_lista) {
-                    sender.sendMessage(Vars.getColor(s));
+                    sender.sendMessage(MVar.getColor(s));
                 }
             } else {
-                MVar.playerMessage("server.no-perm", player);
+                new PlayerMessage("server.no-perm", player);
             }
         } else {
-            String sites_voto = Vars.getString("text.vote");
-            assert sites_voto != null;
+            String sites_voto = MVar.getMessage("text.vote");
             String[] sites_lista = sites_voto.split("/split/");
             for (String s : sites_lista) {
-                Bukkit.getConsoleSender().sendMessage(Vars.getColor(s));
+                Bukkit.getConsoleSender().sendMessage(MVar.getColor(s));
             }
         }
         return true;
