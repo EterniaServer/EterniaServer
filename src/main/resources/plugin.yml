@@ -1,4 +1,4 @@
-main: com.eterniaserver.EterniaServer
+main: br.com.eterniaserver.EterniaServer
 
 name: EterniaServer
 version: '${project.version}'

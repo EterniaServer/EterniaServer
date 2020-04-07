@@ -5,13 +5,17 @@
 # |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
 # |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
 
-# generic contains the varied and basic commands.
-# tpa contains the teleport to a player commands.
-# warp contains warps commands, like /spawn or /warp.
-# xp contains the xp commands.
+# playerchecks contain importants checks, please don't disable.
+# bed contain the bed module to skip night.
+# block-reward will enable or disable the rewards for break certain
+# types of blocks.
+# economy will enable or disable the economy module.
+# experience will enable or disable the experience module.
+# generic will enable or disable the common commands.
+# spawners will enable or disable to get and place spawners.
+# teleports will enable or disable warps, teleportoplayer and others.
 modules:
-  afk: true
-  anti-nether-trap: true
+  playerchecks: true
   bed: true
   block-reward: true
   economy: true
@@ -34,18 +38,21 @@ server:
   checks: 3
   afk-timer: 900
   cooldown: 4
-  table-prefix: 'es_'
 
 # With this you can choose between using MySQL or SQLite.
 sql:
   mysql: false
   host: '127.0.0.1'
+  port: '3306'
   database: 'admin'
   user: 'admin'
   password: 'admin'
+  table-xp: 'xp'
+  table-money: 'economy'
+  table-warp: 'warp'
+  table-shop: 'shop'
 
 bed:
-  percentage: 25
   blacklisted-worlds:
     - 'evento'
 
