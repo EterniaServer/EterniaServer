@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PlayerManager {
+
     public static boolean PlayerExist(final String playerName) {
         try {
             final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM xp WHERE player_name='" + playerName + "';");
@@ -36,4 +37,5 @@ public class PlayerManager {
             return false;
         }
     }
+
 }

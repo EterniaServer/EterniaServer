@@ -3,6 +3,7 @@ package br.com.eterniaserver.modules;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
+
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class BlockRewardManager {
+
     public BlockRewardManager(EterniaServer plugin) {
         if (CVar.getBool("modules.block-reward")) {
             File blocksFile = new File(plugin.getDataFolder(), "blocks.yml");
@@ -27,4 +29,5 @@ public class BlockRewardManager {
             new ConsoleMessage("modules.disable", "Block-Reward");
         }
     }
+
 }

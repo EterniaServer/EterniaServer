@@ -4,15 +4,18 @@ import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+
 import java.util.Objects;
 
 public class OnInventoryClick implements Listener {
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (CVar.getBool("spawners.prevent-anvil") && CVar.getBool("modules.spawners")) {
@@ -27,4 +30,5 @@ public class OnInventoryClick implements Listener {
             Vars.afktime.put(e.getWhoClicked().getName(), System.currentTimeMillis());
         }
     }
+
 }

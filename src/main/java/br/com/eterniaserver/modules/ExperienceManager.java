@@ -8,6 +8,7 @@ import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import java.util.Objects;
 
 public class ExperienceManager {
+
     public ExperienceManager(EterniaServer plugin) {
         if (CVar.getBool("modules.experience")) {
             Objects.requireNonNull(plugin.getCommand("depositlvl")).setExecutor(new DepositLevel());
@@ -19,4 +20,5 @@ public class ExperienceManager {
             new ConsoleMessage("modules.disable", "Teleports");
         }
     }
+
 }

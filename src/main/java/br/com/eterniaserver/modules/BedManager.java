@@ -8,6 +8,7 @@ import br.com.eterniaserver.events.OnBedLeave;
 import br.com.eterniaserver.modules.bedmanager.BedTimer;
 
 public class BedManager {
+
     public BedManager(EterniaServer plugin) {
         if (CVar.getBool("modules.bed")) {
             if (CVar.getBool("server.async-check")) {
@@ -22,4 +23,5 @@ public class BedManager {
             new ConsoleMessage("modules.disable", "Bed");
         }
     }
+
 }

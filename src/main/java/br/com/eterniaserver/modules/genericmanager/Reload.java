@@ -18,9 +18,9 @@ public class Reload {
         if (!messagesConfigFile.exists()) {
             plugin.saveResource("messages.yml", false);
         }
-        EterniaServer.messagesConfig = new YamlConfiguration();
+        EterniaServer.messages = new YamlConfiguration();
         try {
-            EterniaServer.messagesConfig.load(messagesConfigFile);
+            EterniaServer.messages.load(messagesConfigFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }

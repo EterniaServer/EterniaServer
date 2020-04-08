@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 public class OnBlockBreak implements Listener {
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent breakEvent) {
         if (CVar.getBool("modules.spawners")) {
@@ -18,4 +19,5 @@ public class OnBlockBreak implements Listener {
             new BlockReward(breakEvent);
         }
     }
+
 }

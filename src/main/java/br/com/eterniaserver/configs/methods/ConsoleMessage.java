@@ -1,6 +1,7 @@
 package br.com.eterniaserver.configs.methods;
 
 import br.com.eterniaserver.configs.MVar;
+
 import org.bukkit.Bukkit;
 
 public class ConsoleMessage {

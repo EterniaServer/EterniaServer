@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 public class OnBlockPlace implements Listener {
+
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getBlock().getType() == Material.SPAWNER) {
@@ -17,4 +18,5 @@ public class OnBlockPlace implements Listener {
             }
         }
     }
+
 }

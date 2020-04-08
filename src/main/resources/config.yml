@@ -31,8 +31,6 @@ modules:
 # afk-timer is the time in seconds for player be kicked by afk.
 # cooldown is the interval between the player being teleported when using a
 # command that teleports him.
-# table-prefix is the prefix of database, example table-prefix: 'es_' the
-# tables will be 'es_warps' and etc..
 server:
   async-check: true
   checks: 3
@@ -47,10 +45,10 @@ sql:
   database: 'admin'
   user: 'admin'
   password: 'admin'
-  table-xp: 'xp'
-  table-money: 'economy'
-  table-warp: 'warp'
-  table-shop: 'shop'
+  table-xp: 'es_xp'
+  table-money: 'es_economy'
+  table-warp: 'es_warp'
+  table-shop: 'es_shop'
 
 bed:
   blacklisted-worlds:

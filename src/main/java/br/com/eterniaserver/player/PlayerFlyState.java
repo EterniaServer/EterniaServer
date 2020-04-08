@@ -2,10 +2,12 @@ package br.com.eterniaserver.player;
 
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
+
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 public class PlayerFlyState {
+
     public static void selfFly(Player player) {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);

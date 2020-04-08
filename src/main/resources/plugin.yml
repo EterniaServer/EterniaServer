@@ -5,7 +5,7 @@ version: '${project.version}'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
-depend: [Vault]
+softdepend: [Vault]
 commands:
   suicide:
     description: Se mate.

@@ -3,14 +3,18 @@ package br.com.eterniaserver.vault;
 import br.com.eterniaserver.modules.economymanager.sql.Queries;
 import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.player.PlayerManager;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+
 import org.bukkit.OfflinePlayer;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SystemEconomy implements Economy {
+
     private static final DecimalFormat df2 = new DecimalFormat(".##");
 
     @Override
@@ -243,4 +247,5 @@ public class SystemEconomy implements Economy {
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
         return createPlayerAccount(player);
     }
+
 }

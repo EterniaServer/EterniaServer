@@ -3,9 +3,10 @@ package br.com.eterniaserver.modules.teleportsmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
-import br.com.eterniaserver.modules.economymanager.sql.Queries;
 import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.Vars;
+import br.com.eterniaserver.modules.economymanager.sql.Queries;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -4,31 +4,37 @@ import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.events.*;
 import br.com.eterniaserver.modules.*;
 import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.storages.Configs;
 import br.com.eterniaserver.storages.MessagesConfig;
 import br.com.eterniaserver.storages.Connections;
 import br.com.eterniaserver.storages.StorageConfig;
 import br.com.eterniaserver.vault.VaultHook;
+
+import net.milkbowl.vault.chat.Chat;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
-    public static FileConfiguration messagesConfig;
+    public static FileConfiguration configs;
     public static FileConfiguration blocks;
+    public static FileConfiguration messages;
     public static Connections sqlcon;
+    public static Chat chat;
     private static EterniaServer plugin;
 
     @Override
     public void onEnable() {
         plugin = this;
 
-        saveDefaultConfig();
+        saveDefaultConfigs();
         saveDefaultMessage();
 
         if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             final VaultHook vaultHook = new VaultHook();
-            vaultHook.hook();
+            vaultHook.hook(this);
         } else {
             new ConsoleMessage("server.no-vault");
             this.getPluginLoader().disablePlugin(this);
@@ -105,6 +111,10 @@ public class EterniaServer extends JavaPlugin {
         new MessagesConfig(this);
     }
 
+    private void saveDefaultConfigs() {
+        new Configs(this);
+    }
+
     public static EterniaServer getMain() {
         return plugin;
     }
@@ -114,7 +124,11 @@ public class EterniaServer extends JavaPlugin {
     }
 
     public static FileConfiguration getMessages() {
-        return messagesConfig;
+        return messages;
+    }
+
+    public static FileConfiguration getConfigs() {
+        return configs;
     }
 
 }

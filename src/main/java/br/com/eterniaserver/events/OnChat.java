@@ -2,6 +2,7 @@ package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.Vars;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
@@ -10,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class OnChat implements Listener {
+
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
         if (e.getMessage().contains("yurinogueira")) {
@@ -22,4 +24,5 @@ public class OnChat implements Listener {
             Vars.afktime.put(e.getPlayer().getName(), System.currentTimeMillis());
         }
     }
+
 }

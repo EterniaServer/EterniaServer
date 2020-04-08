@@ -23,11 +23,11 @@ public class Connections {
     public void Connect() {
         if (mysql) {
             try {
-                String host = plugin.getConfig().getString("sql.host");
-                String port = plugin.getConfig().getString("sql.port");
-                String database = plugin.getConfig().getString("sql.database");
-                String username = plugin.getConfig().getString("sql.user");
-                String password = plugin.getConfig().getString("sql.password");
+                String host = EterniaServer.getConfigs().getString("sql.host");
+                String port = EterniaServer.getConfigs().getString("sql.port");
+                String database = EterniaServer.getConfigs().getString("sql.database");
+                String username = EterniaServer.getConfigs().getString("sql.user");
+                String password = EterniaServer.getConfigs().getString("sql.password");
                 this.con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", username, password);
                 new ConsoleMessage("server.mysql-ok");
             } catch (SQLException e) {

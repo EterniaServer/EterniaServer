@@ -3,6 +3,7 @@ package br.com.eterniaserver.events;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.configs.methods.BroadcastMessage;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,7 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import java.util.concurrent.TimeUnit;
 
 public class OnBedEnter implements Listener {
+
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {

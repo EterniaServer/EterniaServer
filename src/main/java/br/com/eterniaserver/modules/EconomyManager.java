@@ -8,6 +8,7 @@ import br.com.eterniaserver.modules.economymanager.commands.*;
 import java.util.Objects;
 
 public class EconomyManager {
+
     public EconomyManager(EterniaServer plugin) {
         if (CVar.getBool("modules.economy")) {
             Objects.requireNonNull(plugin.getCommand("pay")).setExecutor(new Pay());
@@ -19,4 +20,5 @@ public class EconomyManager {
             new ConsoleMessage("modules.disable", "Economy");
         }
     }
+
 }

@@ -10,6 +10,7 @@ import br.com.eterniaserver.modules.genericmanager.commands.simplifications.*;
 import java.util.Objects;
 
 public class GenericManager {
+
     public GenericManager(EterniaServer plugin) {
         if (CVar.getBool("modules.generic")) {
             Objects.requireNonNull(plugin.getCommand("suicide")).setExecutor(new Suicide());
@@ -38,4 +39,5 @@ public class GenericManager {
             new ConsoleMessage("modules.disable", "Generic");
         }
     }
+
 }

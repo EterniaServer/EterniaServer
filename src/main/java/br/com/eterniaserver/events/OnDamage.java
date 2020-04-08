@@ -2,6 +2,7 @@ package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.Vars;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,4 +21,5 @@ public class OnDamage implements Listener {
             }
         }
     }
+
 }

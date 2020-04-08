@@ -1,6 +1,7 @@
 package br.com.eterniaserver.configs.methods;
 
 import br.com.eterniaserver.configs.MVar;
+
 import org.bukkit.entity.Player;
 
 public class PlayerMessage {
@@ -27,4 +28,5 @@ public class PlayerMessage {
         message = message.replace("%b", String.valueOf(valor2));
         player.sendMessage(message.replace("%v", String.valueOf(valor3)));
     }
+
 }
