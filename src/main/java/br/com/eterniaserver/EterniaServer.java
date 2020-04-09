@@ -1,18 +1,14 @@
 package br.com.eterniaserver;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.events.*;
 import br.com.eterniaserver.modules.*;
 import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.storages.Configs;
 import br.com.eterniaserver.storages.MessagesConfig;
-import br.com.eterniaserver.storages.Connections;
+import br.com.eterniaserver.storages.sql.Connections;
 import br.com.eterniaserver.storages.StorageConfig;
 import br.com.eterniaserver.vault.VaultHook;
 
-import net.milkbowl.vault.chat.Chat;
-
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,24 +17,13 @@ public class EterniaServer extends JavaPlugin {
     public static FileConfiguration configs;
     public static FileConfiguration blocks;
     public static FileConfiguration messages;
+
     public static Connections sqlcon;
-    public static Chat chat;
-    private static EterniaServer plugin;
 
     @Override
     public void onEnable() {
-        plugin = this;
-
         saveDefaultConfigs();
         saveDefaultMessage();
-
-        if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-            final VaultHook vaultHook = new VaultHook();
-            vaultHook.hook(this);
-        } else {
-            new ConsoleMessage("server.no-vault");
-            this.getPluginLoader().disablePlugin(this);
-        }
 
         setDefaultStorage();
 
@@ -50,8 +35,9 @@ public class EterniaServer extends JavaPlugin {
         genericManager();
         blockRewardManager();
         bedManager();
+        vaultHook();
 
-        this.getServer().getPluginManager().registerEvents(new OnBlockBreak(), this);
+        this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this), this);
         this.getServer().getPluginManager().registerEvents(new OnBlockPlace(), this);
         this.getServer().getPluginManager().registerEvents(new OnChat(), this);
         this.getServer().getPluginManager().registerEvents(new OnDamage(), this);
@@ -69,6 +55,10 @@ public class EterniaServer extends JavaPlugin {
         if (CVar.getBool("modules.economy")) {
             sqlcon.Close();
         }
+    }
+
+    private void vaultHook() {
+        new VaultHook(this);
     }
 
     private void bedManager() {
@@ -113,10 +103,6 @@ public class EterniaServer extends JavaPlugin {
 
     private void saveDefaultConfigs() {
         new Configs(this);
-    }
-
-    public static EterniaServer getMain() {
-        return plugin;
     }
 
     public static FileConfiguration getBlocks() {

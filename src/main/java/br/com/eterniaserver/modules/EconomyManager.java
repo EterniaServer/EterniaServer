@@ -13,7 +13,7 @@ public class EconomyManager {
         if (CVar.getBool("modules.economy")) {
             Objects.requireNonNull(plugin.getCommand("pay")).setExecutor(new Pay());
             Objects.requireNonNull(plugin.getCommand("money")).setExecutor(new Money());
-            Objects.requireNonNull(plugin.getCommand("baltop")).setExecutor(new Baltop());
+            Objects.requireNonNull(plugin.getCommand("baltop")).setExecutor(new Baltop(plugin));
             Objects.requireNonNull(plugin.getCommand("eco")).setExecutor(new Eco());
             new ConsoleMessage("modules.enable", "Economy");
         } else {

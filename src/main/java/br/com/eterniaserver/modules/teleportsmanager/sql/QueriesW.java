@@ -1,6 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.sql;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.Vars;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,15 +18,18 @@ public class QueriesW {
         String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                 ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (existWarp(warp)) {
-            EterniaServer.sqlcon.Update("UPDATE warp SET location='" + saveloc + "' WHERE name='" + warp + "';");
+            final String querie = "UPDATE " + CVar.getString("sql.table-warp") + " SET location='" + saveloc + "' WHERE name='" + warp + "';";
+            EterniaServer.sqlcon.Update(querie);
         } else {
-            EterniaServer.sqlcon.Update("INSERT INTO warp (name, location) VALUES ('" + warp + "', '" + saveloc + "')");
+            final String querie = "INSERT INTO " + CVar.getString("sql.table-warp") + " (name, location) VALUES ('" + warp + "', '" + saveloc + "')";
+            EterniaServer.sqlcon.Update(querie);
         }
     }
 
     public static void delWarp(String warp) {
         Vars.warps.remove(warp);
-        EterniaServer.sqlcon.Update("DELETE FROM warp WHERE name='" + warp + "';");
+        final String querie = "DELETE FROM " + CVar.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+        EterniaServer.sqlcon.Update(querie);
     }
 
     public static Location getWarp(String warp) {
@@ -35,7 +39,8 @@ public class QueriesW {
         } else {
             if (existWarp(warp)) {
                 try {
-                    final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM warp WHERE name='" + warp + "';");
+                    final String querie = "SELECT * FROM " + CVar.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+                    final ResultSet rs = EterniaServer.sqlcon.Query(querie);
                     if (rs.next()) {
                         rs.getString("location");
                     }
@@ -51,7 +56,8 @@ public class QueriesW {
 
     public static boolean existWarp(String warp) {
         try {
-            final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM warp WHERE name='" + warp + "';");
+            final String querie = "SELECT * FROM " + CVar.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+            final ResultSet rs = EterniaServer.sqlcon.Query(querie);
             return rs.next() && rs.getString("name") != null;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.storages;
+package br.com.eterniaserver.storages.sql;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
@@ -43,6 +43,7 @@ public class Connections {
             }
         }
     }
+
 
     public void Close() {
         try {

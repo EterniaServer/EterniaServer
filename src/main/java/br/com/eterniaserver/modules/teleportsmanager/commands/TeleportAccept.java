@@ -12,6 +12,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TeleportAccept implements CommandExecutor {
+
+    private final EterniaServer plugin;
+
+    public TeleportAccept(EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -28,7 +35,7 @@ public class TeleportAccept implements CommandExecutor {
                     } else {
                         new PlayerMessage("teleport.timing", CVar.getInt("server.cooldown"), target);
                         new PlayerMessage("teleport.accept", player.getName(), target);
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                         {
                             target.teleport(player.getLocation());
                             new PlayerMessage("teleport.tpto", player.getName(), target);
@@ -46,4 +53,5 @@ public class TeleportAccept implements CommandExecutor {
         }
         return true;
     }
+
 }

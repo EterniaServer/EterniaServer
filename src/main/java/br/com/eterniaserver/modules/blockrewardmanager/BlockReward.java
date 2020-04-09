@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockReward {
-    public BlockReward(BlockBreakEvent event) {
+    public BlockReward(BlockBreakEvent event, EterniaServer plugin) {
         if (event.isCancelled()) {
             return;
         }
@@ -29,7 +29,7 @@ public class BlockReward {
                 List<String> stringList = EterniaServer.getBlocks().getStringList("Blocks." + event.getBlock().getType() + "." + lowestNumberAboveRandom);
                 for (String command : stringList) {
                     String modifiedCommand = command.replace("%PLAYER%", event.getPlayer().getPlayerListName());
-                    EterniaServer.getMain().getServer().dispatchCommand(EterniaServer.getMain().getServer().getConsoleSender(), modifiedCommand);
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                 }
             }
         }

@@ -10,9 +10,12 @@ import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AccelerateNightTask extends BukkitRunnable {
+
+    private final EterniaServer plugin;
     private final World world;
 
-    public AccelerateNightTask(final World world) {
+    public AccelerateNightTask(final World world, EterniaServer plugin) {
+        this.plugin = plugin;
         this.world = world;
         new BroadcastMessage("bed.night-skipping", world.getName());
     }
@@ -29,7 +32,7 @@ public class AccelerateNightTask extends BukkitRunnable {
             world.setStorm(false);
             world.setThundering(false);
             world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
-            Bukkit.getScheduler().runTaskLaterAsynchronously(EterniaServer.getMain(), () -> Vars.skipping_worlds.remove(world), 20);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> Vars.skipping_worlds.remove(world), 20);
             new BroadcastMessage("bed.skip-night", "normalmente");
             this.cancel();
         } else {

@@ -10,7 +10,8 @@ public class PlayerManager {
 
     public static boolean PlayerExist(final String playerName) {
         try {
-            final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM xp WHERE player_name='" + playerName + "';");
+            final String querie = "SELECT * FROM " + CVar.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
+            final ResultSet rs = EterniaServer.sqlcon.Query(querie);
             return rs.next() && rs.getString("player_name") != null;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -20,17 +21,20 @@ public class PlayerManager {
 
     public static void CreatePlayer(final String playerName) {
         if (!PlayerExist(playerName)) {
-            EterniaServer.sqlcon.Update("INSERT INTO xp (player_name, xp) VALUES ('" + playerName + "', '" + 0 + "');");
+            final String querie = "INSERT INTO " + CVar.getString("sql.table-xp") + " (player_name, xp) VALUES ('" + playerName + "', '" + 0 + "');";
+            EterniaServer.sqlcon.Update(querie);
         }
     }
 
     public static void CreateEconomy(final String playerName) {
-        EterniaServer.sqlcon.Update("INSERT INTO economy (player_name, balance) VALUES('" + playerName + "', '" + CVar.getDouble("money.start") + "');");
+        final String querie = "INSERT INTO " + CVar.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + CVar.getDouble("money.start") + "');";
+        EterniaServer.sqlcon.Update(querie);
     }
 
     public static boolean PlayerExistE(final String playerName) {
         try {
-            final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM economy WHERE player_name='" + playerName + "';");
+            final String querie = "SELECT * FROM " + CVar.getString("sql.table-money")+ " WHERE player_name='" + playerName + "';";
+            final ResultSet rs = EterniaServer.sqlcon.Query(querie);
             return rs.next() && rs.getString("player_name") != null;
         } catch (SQLException e) {
             e.printStackTrace();

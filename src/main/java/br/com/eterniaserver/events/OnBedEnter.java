@@ -14,13 +14,19 @@ import java.util.concurrent.TimeUnit;
 
 public class OnBedEnter implements Listener {
 
+    private final EterniaServer plugin;
+
+    public OnBedEnter(EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             Player player = event.getPlayer();
             new BroadcastMessage("bed.player-s", player.getName());
             if (!Vars.skipping_worlds.contains(player.getWorld())) {
-                Bukkit.getScheduler().runTaskLater(EterniaServer.getMain(), () -> {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     if (!(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - getCooldown(player.getName())) > 100))
                         return;
                     Vars.bed_cooldown.put(player.getName(), System.currentTimeMillis());

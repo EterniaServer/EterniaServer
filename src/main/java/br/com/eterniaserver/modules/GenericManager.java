@@ -33,7 +33,7 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("god")).setExecutor(new God());
             Objects.requireNonNull(plugin.getCommand("thor")).setExecutor(new Thor());
             Objects.requireNonNull(plugin.getCommand("itemrename")).setExecutor(new ItemRename());
-            Objects.requireNonNull(plugin.getCommand("reloadeternia")).setExecutor(new ReloadEternia());
+            Objects.requireNonNull(plugin.getCommand("reloadeternia")).setExecutor(new ReloadEternia(plugin));
             new ConsoleMessage("modules.enable", "Generic");
         } else {
             new ConsoleMessage("modules.disable", "Generic");

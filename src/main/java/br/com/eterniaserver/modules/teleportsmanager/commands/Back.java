@@ -14,6 +14,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Back implements CommandExecutor {
+
+    private final EterniaServer plugin;
+
+    public Back(EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -31,7 +39,7 @@ public class Back implements CommandExecutor {
                             new PlayerMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.moved.put(player.getName(), false);
-                            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
+                            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {
                                 if (!Vars.moved.get(player.getName())) {
                                     player.teleport(Vars.back.get(player.getName()));
@@ -53,7 +61,7 @@ public class Back implements CommandExecutor {
                                 new PlayerMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
                                 Vars.moved.put(player.getName(), false);
                                 Vars.playerposition.put(player.getName(), player.getLocation());
-                                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EterniaServer.getMain(), () ->
+                                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                                 {
                                     if (!Vars.moved.get(player.getName())) {
                                         player.teleport(Vars.back.get(player.getName()));

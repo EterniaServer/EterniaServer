@@ -29,7 +29,7 @@ public class SpawnerBreak {
             Block block = event.getBlock();
             Material material = block.getType();
             Player player = event.getPlayer();
-            if (EterniaServer.getMain().getConfig().getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
+            if (EterniaServer.getConfigs().getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
                 new PlayerMessage("spawners.block", player);
                 event.setCancelled(true);
                 return;
@@ -45,9 +45,9 @@ public class SpawnerBreak {
                     assert meta != null;
                     meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + CVar.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
                     List<String> newLore = new ArrayList<>();
-                    EterniaServer.getMain().getConfig().getStringList("spawners.lore");
+                    EterniaServer.getConfigs().getStringList("spawners.lore");
                     if (CVar.getBool("spawners.enable-lore")) {
-                        for (String line : EterniaServer.getMain().getConfig().getStringList("spawners.lore")) {
+                        for (String line : EterniaServer.getConfigs().getStringList("spawners.lore")) {
                             newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
                         }
                         meta.setLore(newLore);

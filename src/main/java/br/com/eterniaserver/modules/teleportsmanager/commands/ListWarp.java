@@ -1,6 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.MVar;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
@@ -12,13 +13,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ListWarp implements CommandExecutor {
+
+    private final EterniaServer plugin;
+
+    public ListWarp(EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.listwarp")) {
-                Bukkit.getScheduler().runTaskAsynchronously(EterniaServer.getMain(), () -> {
-                    final String query = "SELECT * FROM warp;";
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                    final String query = "SELECT * FROM " + CVar.getString("sql.table-warp") + ";";
                     StringBuilder accounts = new StringBuilder();
                     ResultSet rs = null;
                     try {

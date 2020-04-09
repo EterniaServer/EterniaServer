@@ -14,11 +14,17 @@ import java.util.concurrent.TimeUnit;
 
 public class OnBedLeave implements Listener {
 
+    private final EterniaServer plugin;
+
+    public OnBedLeave(EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onBedLeave(PlayerBedLeaveEvent event) {
         Player player = event.getPlayer();
         if (!Vars.skipping_worlds.contains(player.getWorld())) {
-            Bukkit.getScheduler().runTaskLater(EterniaServer.getMain(), () -> {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if ((TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - getCooldown(player.getName())) > 100)) {
                     new BroadcastMessage("bed.player-leave", player.getName());
                     Vars.bed_cooldown.put(player.getName(), System.currentTimeMillis());

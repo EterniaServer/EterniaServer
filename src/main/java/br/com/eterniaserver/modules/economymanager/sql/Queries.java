@@ -1,6 +1,7 @@
 package br.com.eterniaserver.modules.economymanager.sql;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.player.PlayerManager;
 
@@ -16,7 +17,8 @@ public class Queries {
         double i = 0;
         if (PlayerManager.PlayerExistE(playerName)) {
             try {
-                final ResultSet rs = EterniaServer.sqlcon.Query("SELECT * FROM economy WHERE player_name='" + playerName + "';");
+                final String querie = "SELECT * FROM " + CVar.getString("sql.table-money") + " WHERE player_name='" + playerName + "';";
+                final ResultSet rs = EterniaServer.sqlcon.Query(querie);
                 if (rs.next()) {
                     rs.getDouble("balance");
                 }
@@ -40,7 +42,8 @@ public class Queries {
         if (PlayerManager.PlayerExistE(playerName)) {
             Vars.money.remove(playerName);
             Vars.money.put(playerName, Money);
-            EterniaServer.sqlcon.Update("UPDATE economy SET balance='" + Money + "' WHERE player_name='" + playerName + "';");
+            final String querie = "UPDATE " + CVar.getString("sql.table-money") + " SET balance='" + Money + "' WHERE player_name='" + playerName + "';";
+            EterniaServer.sqlcon.Update(querie);
         } else {
             PlayerManager.CreateEconomy(playerName);
             setMoney(playerName, Money);

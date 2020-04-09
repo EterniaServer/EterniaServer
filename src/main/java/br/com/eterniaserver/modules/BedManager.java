@@ -12,12 +12,12 @@ public class BedManager {
     public BedManager(EterniaServer plugin) {
         if (CVar.getBool("modules.bed")) {
             if (CVar.getBool("server.async-check")) {
-                plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new BedTimer(), 0L, CVar.getInt("server.checks") * 20);
+                plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new BedTimer(plugin), 0L, CVar.getInt("server.checks") * 20);
             } else {
-                plugin.getServer().getScheduler().runTaskTimer(plugin, new BedTimer(), 0L, CVar.getInt("server.checks") * 20);
+                plugin.getServer().getScheduler().runTaskTimer(plugin, new BedTimer(plugin), 0L, CVar.getInt("server.checks") * 20);
             }
-            plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(), plugin);
-            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(plugin), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(plugin), plugin);
             new ConsoleMessage("modules.enable", "Bed");
         } else {
             new ConsoleMessage("modules.disable", "Bed");

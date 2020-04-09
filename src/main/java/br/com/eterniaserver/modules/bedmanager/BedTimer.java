@@ -12,6 +12,14 @@ import java.util.Objects;
 import static java.util.stream.Collectors.toList;
 
 public class BedTimer implements Runnable {
+
+    private final EterniaServer plugin;
+
+    public BedTimer(EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
+
     @Override
     public void run() {
         Bukkit.getWorlds().stream().filter(this::validateWorld).forEach(this::checkWorld);
@@ -21,7 +29,7 @@ public class BedTimer implements Runnable {
         final int sleeping = getSleeping(world).size();
         if (sleeping > 0) {
             Vars.skipping_worlds.add(world);
-            new AccelerateNightTask(world).runTaskTimer(EterniaServer.getMain(), 1, 1);
+            new AccelerateNightTask(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }
 
@@ -32,7 +40,7 @@ public class BedTimer implements Runnable {
     }
 
     private boolean isBlacklisted(final World world) {
-        return Objects.requireNonNull(EterniaServer.getMain().getConfig().getList("bed.blacklisted-worlds")).contains(world.getName());
+        return Objects.requireNonNull(EterniaServer.getConfigs().getList("bed.blacklisted-worlds")).contains(world.getName());
     }
 
     private boolean isNight(final World world) {
