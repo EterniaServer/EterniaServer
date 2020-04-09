@@ -136,3 +136,12 @@ commands:
   reloadeternia:
     description: Reinicia as configs.
     aliases: [eterniareload]
+  enderchest:
+    description: Abre o enderchest.
+    aliases: [openender]
+  openinventory:
+    description: Abre o inventario de algum jogador.
+    aliases: [openinv]
+  workbench:
+    description: Abre uma workbench.
+    aliases: [craft]

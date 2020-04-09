@@ -34,6 +34,9 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("thor")).setExecutor(new Thor());
             Objects.requireNonNull(plugin.getCommand("itemrename")).setExecutor(new ItemRename());
             Objects.requireNonNull(plugin.getCommand("reloadeternia")).setExecutor(new ReloadEternia(plugin));
+            Objects.requireNonNull(plugin.getCommand("enderchest")).setExecutor(new EnderChest());
+            Objects.requireNonNull(plugin.getCommand("openinventory")).setExecutor(new OpenInventory());
+            Objects.requireNonNull(plugin.getCommand("workbench")).setExecutor(new Workbench());
             new ConsoleMessage("modules.enable", "Generic");
         } else {
             new ConsoleMessage("modules.disable", "Generic");

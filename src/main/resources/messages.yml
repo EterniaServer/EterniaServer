@@ -36,6 +36,7 @@ simp:
   gode: '&7Godmode ativado&8.'
   thor-other: '&7Você puniu &3%s &7com as forças divinas&8!'
   other-thor: '&7Você foi punido por &3%s &7com as forças divinas&8!'
+  inv: '&7Use &6/openinv &3<jogador>&8.'
 xp:
   bottlexp: '&7Toma ai suas garrafinhas&8!'
   noxp: '&7Você não tem EXP suficiênte&8.'
