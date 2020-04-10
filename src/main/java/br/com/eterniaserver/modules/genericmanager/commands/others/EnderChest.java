@@ -21,7 +21,6 @@ public class EnderChest implements CommandExecutor {
                 } else {
                     new PlayerMessage("server.player-offline", player);
                 }
-                player.openInventory(player.getEnderChest());
             } else if (args.length == 0 && player.hasPermission("eternia.enderchest")) {
                 player.openInventory(player.getEnderChest());
             } else {

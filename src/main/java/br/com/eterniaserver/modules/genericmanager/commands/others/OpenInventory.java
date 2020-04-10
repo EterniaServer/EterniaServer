@@ -21,7 +21,6 @@ public class OpenInventory implements CommandExecutor {
                 } else {
                     new PlayerMessage("server.player-offline", player);
                 }
-                player.openInventory(player.getEnderChest());
             } else if (args.length == 0 && player.hasPermission("eternia.openinv")) {
                 new PlayerMessage("simp.inv", player);
             } else {
