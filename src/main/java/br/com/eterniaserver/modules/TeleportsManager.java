@@ -2,7 +2,6 @@ package br.com.eterniaserver.modules;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.modules.teleportsmanager.commands.*;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
 
 import java.util.Objects;
@@ -10,7 +9,7 @@ import java.util.Objects;
 public class TeleportsManager {
 
     public TeleportsManager(EterniaServer plugin) {
-        if (CVar.getBool("modules.teleports")) {
+        if (EterniaServer.configs.getBoolean("modules.teleports")) {
             Objects.requireNonNull(plugin.getCommand("back")).setExecutor(new Back(plugin));
             Objects.requireNonNull(plugin.getCommand("spawn")).setExecutor(new Spawn(plugin));
             Objects.requireNonNull(plugin.getCommand("setspawn")).setExecutor(new SetSpawn());

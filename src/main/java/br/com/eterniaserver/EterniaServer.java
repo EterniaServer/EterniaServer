@@ -2,30 +2,32 @@ package br.com.eterniaserver;
 
 import br.com.eterniaserver.events.*;
 import br.com.eterniaserver.modules.*;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.storages.Configs;
 import br.com.eterniaserver.storages.MessagesConfig;
 import br.com.eterniaserver.storages.sql.Connections;
-import br.com.eterniaserver.storages.StorageConfig;
+import br.com.eterniaserver.storages.DatabaseType;
 import br.com.eterniaserver.vault.VaultHook;
 
+import br.com.eterniaserver.vault.VaultUnHook;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
-    public static FileConfiguration configs;
     public static FileConfiguration blocks;
+    public static FileConfiguration configs;
     public static FileConfiguration messages;
 
     public static Connections sqlcon;
 
     @Override
     public void onEnable() {
-        saveDefaultConfigs();
-        saveDefaultMessage();
 
-        setDefaultStorage();
+        saveDefaultConfigs();
+        saveDefaultMessages();
+        saveDefaultBlocks();
+
+        databaseType();
 
         teleportsManager();
         spawnersManager();
@@ -33,8 +35,9 @@ public class EterniaServer extends JavaPlugin {
         economyManager();
         experienceManager();
         genericManager();
-        blockRewardManager();
         bedManager();
+        homesManager();
+
         vaultHook();
 
         this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this), this);
@@ -43,6 +46,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnDamage(), this);
         this.getServer().getPluginManager().registerEvents(new OnExpDrop(), this);
         this.getServer().getPluginManager().registerEvents(new OnInventoryClick(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
@@ -52,21 +56,25 @@ public class EterniaServer extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (CVar.getBool("modules.economy")) {
-            sqlcon.Close();
-        }
+
+        vaultUnHook();
+
+    }
+
+    private void vaultUnHook() {
+        new VaultUnHook();
     }
 
     private void vaultHook() {
         new VaultHook(this);
     }
 
-    private void bedManager() {
-        new BedManager(this);
+    private void homesManager() {
+        new HomesManager(this);
     }
 
-    private void blockRewardManager(){
-        new BlockRewardManager(this);
+    private void bedManager() {
+        new BedManager(this);
     }
 
     private void genericManager() {
@@ -93,28 +101,20 @@ public class EterniaServer extends JavaPlugin {
         new TeleportsManager(this);
     }
 
-    private void setDefaultStorage() {
-        new StorageConfig(this);
+    private void databaseType() {
+        new DatabaseType(this);
     }
 
-    private void saveDefaultMessage() {
+    private void saveDefaultBlocks(){
+        new BlockRewardManager(this);
+    }
+
+    private void saveDefaultMessages() {
         new MessagesConfig(this);
     }
 
     private void saveDefaultConfigs() {
         new Configs(this);
-    }
-
-    public static FileConfiguration getBlocks() {
-        return blocks;
-    }
-
-    public static FileConfiguration getMessages() {
-        return messages;
-    }
-
-    public static FileConfiguration getConfigs() {
-        return configs;
     }
 
 }

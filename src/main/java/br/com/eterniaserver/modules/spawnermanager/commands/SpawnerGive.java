@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.spawnermanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.MVar;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
@@ -50,11 +49,11 @@ public class SpawnerGive implements CommandExecutor {
                                 item.setAmount(amount);
                                 String mobFormatted = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
                                 assert meta != null;
-                                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + CVar.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
+                                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.configs.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
                                 List<String> newLore = new ArrayList<>();
-                                EterniaServer.getConfigs().getStringList("spawners.lore");
-                                if (CVar.getBool("spawners.enable-lore")) {
-                                    for (String line : EterniaServer.getConfigs().getStringList("spawners.lore")) {
+                                EterniaServer.configs.getStringList("spawners.lore");
+                                if (EterniaServer.configs.getBoolean("spawners.enable-lore")) {
+                                    for (String line : EterniaServer.configs.getStringList("spawners.lore")) {
                                         newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
                                     }
                                     meta.setLore(newLore);
@@ -108,11 +107,11 @@ public class SpawnerGive implements CommandExecutor {
                             item.setAmount(amount);
                             String mobFormatted = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
                             assert meta != null;
-                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + CVar.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
+                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.configs.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
                             List<String> newLore = new ArrayList<>();
-                            EterniaServer.getConfigs().getStringList("spawners.lore");
-                            if (CVar.getBool("spawners.enable-lore")) {
-                                for (String line : EterniaServer.getConfigs().getStringList("spawners.lore")) {
+                            EterniaServer.configs.getStringList("spawners.lore");
+                            if (EterniaServer.configs.getBoolean("spawners.enable-lore")) {
+                                for (String line : EterniaServer.configs.getStringList("spawners.lore")) {
                                     newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
                                 }
                                 meta.setLore(newLore);

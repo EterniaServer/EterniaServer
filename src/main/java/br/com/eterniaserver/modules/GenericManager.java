@@ -3,7 +3,6 @@ package br.com.eterniaserver.modules;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.modules.genericmanager.commands.messages.*;
 import br.com.eterniaserver.modules.genericmanager.commands.others.*;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.modules.genericmanager.commands.simplifications.*;
 
@@ -12,7 +11,7 @@ import java.util.Objects;
 public class GenericManager {
 
     public GenericManager(EterniaServer plugin) {
-        if (CVar.getBool("modules.generic")) {
+        if (EterniaServer.configs.getBoolean("modules.generic")) {
             Objects.requireNonNull(plugin.getCommand("suicide")).setExecutor(new Suicide());
             Objects.requireNonNull(plugin.getCommand("advice")).setExecutor(new Advice());
             Objects.requireNonNull(plugin.getCommand("discord")).setExecutor(new Discord());

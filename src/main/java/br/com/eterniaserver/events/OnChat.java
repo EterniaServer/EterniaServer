@@ -1,6 +1,6 @@
 package br.com.eterniaserver.events;
 
-import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 
 import org.bukkit.Bukkit;
@@ -20,7 +20,7 @@ public class OnChat implements Listener {
         if (e.getMessage().contains("Cobra")) {
             Bukkit.getOnlinePlayers().forEach(player -> player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.B)));
         }
-        if (CVar.getBool("modules.playerchecks")) {
+        if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             Vars.afktime.put(e.getPlayer().getName(), System.currentTimeMillis());
         }
     }

@@ -1,6 +1,6 @@
 package br.com.eterniaserver.modules.antinethertrapmanager;
 
-import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.MVar;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
@@ -33,7 +33,7 @@ public class NetherTimer extends org.bukkit.scheduler.BukkitRunnable {
                         }
                     }
                 } else Vars.playersInPortal.remove(player.getName());
-                if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afktime.get(player.getName())) >= CVar.getInt("server.afk-timer")) {
+                if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afktime.get(player.getName())) >= EterniaServer.configs.getInt("server.afk-timer")) {
                     if (!player.hasPermission("eternia.afk")) {
                         player.kickPlayer(MVar.getMessage("server.afk-kick"));
                     }

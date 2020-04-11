@@ -1,6 +1,6 @@
 package br.com.eterniaserver.events;
 
-import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 
 import org.bukkit.entity.Player;
@@ -17,10 +17,10 @@ public class OnPlayerMove implements Listener {
         if (Objects.requireNonNull(event.getTo()).distanceSquared(event.getFrom()) != 0) {
             Player player = event.getPlayer();
             if (Vars.playerposition.get(player.getName()) != player.getLocation()) {
-                if (CVar.getBool("modules.playerchecks")) {
+                if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
                     Vars.afktime.put(player.getName(), System.currentTimeMillis());
                 }
-                if (CVar.getBool("modules.teleports")) {
+                if (EterniaServer.configs.getBoolean("modules.teleports")) {
                     Vars.moved.put(player.getName(), true);
                 }
             }

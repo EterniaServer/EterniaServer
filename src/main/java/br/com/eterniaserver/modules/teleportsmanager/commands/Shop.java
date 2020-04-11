@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
 import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesP;
@@ -34,7 +33,7 @@ public class Shop implements CommandExecutor {
                             player.teleport(location);
                             new PlayerMessage("warps.warp", "Loja", player);
                         } else {
-                            new PlayerMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            new PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
@@ -45,7 +44,7 @@ public class Shop implements CommandExecutor {
                                 } else {
                                     new PlayerMessage("warps.move", player);
                                 }
-                            }, 20 * CVar.getInt("server.cooldown"));
+                            }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                         }
                     } else {
                         new PlayerMessage("warps.noexist", "shop", player);
@@ -61,7 +60,7 @@ public class Shop implements CommandExecutor {
                             player.teleport(location);
                             new PlayerMessage("warps.shopp", args[0], player);
                         } else {
-                            new PlayerMessage("teleport.timing", CVar.getInt("server.cooldown"), player);
+                            new PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
@@ -72,7 +71,7 @@ public class Shop implements CommandExecutor {
                                 } else {
                                     new PlayerMessage("warps.move", player);
                                 }
-                            }, 20 * CVar.getInt("server.cooldown"));
+                            }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                         }
                     } else {
                         new PlayerMessage("warps.shopno", "Loja", player);

@@ -40,7 +40,7 @@ public class BedTimer implements Runnable {
     }
 
     private boolean isBlacklisted(final World world) {
-        return Objects.requireNonNull(EterniaServer.getConfigs().getList("bed.blacklisted-worlds")).contains(world.getName());
+        return Objects.requireNonNull(EterniaServer.configs.getList("bed.blacklisted-worlds")).contains(world.getName());
     }
 
     private boolean isNight(final World world) {

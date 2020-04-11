@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
 import br.com.eterniaserver.modules.economymanager.sql.Queries;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
@@ -31,7 +30,7 @@ public class Baltop implements CommandExecutor {
             final Player player = (Player) sender;
             if (sender.hasPermission("eternia.baltop")) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    final String query = "SELECT * FROM " + CVar.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
+                    final String query = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
                     List<String> accounts = new ArrayList<>();
                     ResultSet rs = null;
                     try {

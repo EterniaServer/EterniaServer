@@ -24,5 +24,7 @@ public class Vars {
     public static final HashMap<String, Location> playerposition = new HashMap<>();
     public static final HashMap<String, Location> warps = new HashMap<>();
     public static final HashMap<String, Location> back = new HashMap<>();
+    public static final HashMap<String, Location> shops = new HashMap<>();
+    public static final HashMap<String, Location> homes = new HashMap<>();
 
 }

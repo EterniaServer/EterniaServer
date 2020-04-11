@@ -141,7 +141,19 @@ commands:
     aliases: [openender]
   openinventory:
     description: Abre o inventario de algum jogador.
-    aliases: [openinv]
+    aliases: [openinv, invsee]
   workbench:
     description: Abre uma workbench.
     aliases: [craft]
+  delhome:
+    description: Deleta uma home.
+    aliases: [delhouse, delcasa]
+  home:
+    description: Vai pra uma home.
+    aliases: [casa, house]
+  homes:
+    description: Ve suas homes.
+    aliases: [casas, houses]
+  sethome:
+    description: Define uma home.
+    aliases: [setcasa, sethouse]

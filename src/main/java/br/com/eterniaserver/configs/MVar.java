@@ -9,7 +9,7 @@ public class MVar {
     }
 
     public static String getString(String valor) {
-        return EterniaServer.getMessages().getString(valor);
+        return EterniaServer.messages.getString(valor);
     }
 
     public static String getColor(String valor) {

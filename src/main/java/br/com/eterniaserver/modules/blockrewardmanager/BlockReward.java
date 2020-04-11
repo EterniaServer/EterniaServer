@@ -13,8 +13,8 @@ public class BlockReward {
         if (event.isCancelled()) {
             return;
         }
-        if (EterniaServer.getBlocks().contains("Blocks." + event.getBlock().getType())) {
-            ConfigurationSection cs = EterniaServer.getBlocks().getConfigurationSection("Blocks." + event.getBlock().getType());
+        if (EterniaServer.blocks.contains("Blocks." + event.getBlock().getType())) {
+            ConfigurationSection cs = EterniaServer.blocks.getConfigurationSection("Blocks." + event.getBlock().getType());
             double randomNumber = new Random().nextDouble();
             assert cs != null;
             List<String> mainList = new ArrayList<>(cs.getKeys(true));
@@ -26,7 +26,7 @@ public class BlockReward {
                 }
             }
             if (lowestNumberAboveRandom <= 1) {
-                List<String> stringList = EterniaServer.getBlocks().getStringList("Blocks." + event.getBlock().getType() + "." + lowestNumberAboveRandom);
+                List<String> stringList = EterniaServer.blocks.getStringList("Blocks." + event.getBlock().getType() + "." + lowestNumberAboveRandom);
                 for (String command : stringList) {
                     String modifiedCommand = command.replace("%PLAYER%", event.getPlayer().getPlayerListName());
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);

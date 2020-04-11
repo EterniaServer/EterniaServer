@@ -1,6 +1,6 @@
 package br.com.eterniaserver.events;
 
-import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.configs.methods.BroadcastMessage;
 
@@ -14,7 +14,7 @@ public class OnPlayerLeave implements Listener {
     @EventHandler
     public void OnLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (CVar.getBool("modules.playerchecks")) {
+        if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             Vars.afktime.remove(player.getName());
         }
         event.setQuitMessage(null);

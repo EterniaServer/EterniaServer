@@ -21,6 +21,7 @@ modules:
   economy: true
   experience: true
   generic: true
+  home: true
   spawners: true
   teleports: true
 
@@ -49,6 +50,8 @@ sql:
   table-money: 'es_economy'
   table-warp: 'es_warp'
   table-shop: 'es_shop'
+  table-home: 'es_home'
+  table-homes: 'es_homes'
 
 bed:
   blacklisted-worlds:

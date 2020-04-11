@@ -1,6 +1,6 @@
 package br.com.eterniaserver.events;
 
-import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.modules.spawnermanager.actions.SpawnerPlace;
 
 import org.bukkit.Material;
@@ -13,7 +13,7 @@ public class OnBlockPlace implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getBlock().getType() == Material.SPAWNER) {
-            if (CVar.getBool("modules.spawners")) {
+            if (EterniaServer.configs.getBoolean("modules.spawners")) {
                 new SpawnerPlace(event);
             }
         }

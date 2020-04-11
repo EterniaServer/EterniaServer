@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.experiencemanager.sql;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.configs.Vars;
 
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ public class Queries {
         }
         int xp = 0;
         try {
-            final String querie = "SELECT xp FROM " + CVar.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
+            final String querie = "SELECT xp FROM " + EterniaServer.configs.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
             final ResultSet rs = EterniaServer.sqlcon.Query(querie);
             if (rs.next()) {
                 rs.getInt("xp");
@@ -31,7 +30,7 @@ public class Queries {
     public static void setExp(String playerName, int valor) {
         Vars.xp.remove(playerName);
         Vars.xp.put(playerName, valor);
-        final String querie = "UPDATE " + CVar.getString("sql.table-xp") + " SET xp='" + valor + "' WHERE player_name='" + playerName + "';";
+        final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-xp") + " SET xp='" + valor + "' WHERE player_name='" + playerName + "';";
         EterniaServer.sqlcon.Update(querie);
     }
 

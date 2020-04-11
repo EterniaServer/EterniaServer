@@ -1,6 +1,6 @@
 package br.com.eterniaserver.events;
 
-import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.configs.methods.BroadcastMessage;
 import br.com.eterniaserver.player.PlayerManager;
@@ -15,13 +15,18 @@ public class OnPlayerJoin implements Listener {
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (CVar.getBool("modules.experience")) {
+        if (EterniaServer.configs.getBoolean("modules.experience")) {
             if (!PlayerManager.PlayerExist(player.getName())) {
                 PlayerManager.CreatePlayer(player.getName());
             }
         }
-        if (CVar.getBool("modules.playerchecks")) {
+        if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             Vars.afktime.put(player.getName(), System.currentTimeMillis());
+        }
+        if (EterniaServer.configs.getBoolean("modules.home")) {
+            if (!PlayerManager.PlayerExistH(player.getName())) {
+                PlayerManager.CreateHome(player.getName());
+            }
         }
         event.setJoinMessage(null);
         new BroadcastMessage("server.join", player.getName());

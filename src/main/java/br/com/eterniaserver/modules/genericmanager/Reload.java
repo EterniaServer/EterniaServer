@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.genericmanager;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.storages.sql.Connections;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -46,6 +45,6 @@ public class Reload {
             e.printStackTrace();
         }
 
-        EterniaServer.sqlcon = new Connections(plugin, CVar.getBool("sql.mysql"));
+        EterniaServer.sqlcon = new Connections(plugin, EterniaServer.configs.getBoolean("sql.mysql"));
     }
 }

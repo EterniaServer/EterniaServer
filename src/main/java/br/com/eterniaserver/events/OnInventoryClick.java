@@ -1,6 +1,6 @@
 package br.com.eterniaserver.events;
 
-import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
@@ -18,7 +18,7 @@ public class OnInventoryClick implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (CVar.getBool("spawners.prevent-anvil") && CVar.getBool("modules.spawners")) {
+        if (EterniaServer.configs.getBoolean("spawners.prevent-anvil") && EterniaServer.configs.getBoolean("modules.spawners")) {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
                 Player player = (Player) e.getWhoClicked();
                 e.setCancelled(true);
@@ -26,7 +26,7 @@ public class OnInventoryClick implements Listener {
                 new ConsoleMessage("spawners.anvil-try", player.getName());
             }
         }
-        if (CVar.getBool("modules.playerchecks")) {
+        if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             Vars.afktime.put(e.getWhoClicked().getName(), System.currentTimeMillis());
         }
     }

@@ -1,7 +1,7 @@
 package br.com.eterniaserver.vault;
 
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.modules.economymanager.sql.Queries;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.player.PlayerManager;
 
 import net.milkbowl.vault.economy.Economy;
@@ -44,12 +44,12 @@ public class SystemEconomy implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return CVar.getString("money.plural");
+        return EterniaServer.configs.getString("money.plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return CVar.getString("money.singular");
+        return EterniaServer.configs.getString("money.singular");
     }
 
     @Override

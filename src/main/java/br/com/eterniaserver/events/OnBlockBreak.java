@@ -1,7 +1,6 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.CVar;
 import br.com.eterniaserver.modules.spawnermanager.actions.SpawnerBreak;
 import br.com.eterniaserver.modules.blockrewardmanager.BlockReward;
 
@@ -19,10 +18,10 @@ public class OnBlockBreak implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent breakEvent) {
-        if (CVar.getBool("modules.spawners")) {
+        if (EterniaServer.configs.getBoolean("modules.spawners")) {
             new SpawnerBreak(breakEvent);
         }
-        if (CVar.getBool("modules.block-reward")) {
+        if (EterniaServer.configs.getBoolean("modules.block-reward")) {
             new BlockReward(breakEvent, plugin);
         }
     }

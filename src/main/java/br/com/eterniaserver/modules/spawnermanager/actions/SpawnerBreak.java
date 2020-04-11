@@ -2,7 +2,6 @@ package br.com.eterniaserver.modules.spawnermanager.actions;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.methods.PlayerMessage;
-import br.com.eterniaserver.configs.CVar;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -29,7 +28,7 @@ public class SpawnerBreak {
             Block block = event.getBlock();
             Material material = block.getType();
             Player player = event.getPlayer();
-            if (EterniaServer.getConfigs().getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
+            if (EterniaServer.configs.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
                 new PlayerMessage("spawners.block", player);
                 event.setCancelled(true);
                 return;
@@ -43,24 +42,24 @@ public class SpawnerBreak {
                     String mob = spawner.getSpawnedType().toString().replace("_", " ");
                     String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
                     assert meta != null;
-                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + CVar.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.configs.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
                     List<String> newLore = new ArrayList<>();
-                    EterniaServer.getConfigs().getStringList("spawners.lore");
-                    if (CVar.getBool("spawners.enable-lore")) {
-                        for (String line : EterniaServer.getConfigs().getStringList("spawners.lore")) {
+                    EterniaServer.configs.getStringList("spawners.lore");
+                    if (EterniaServer.configs.getBoolean("spawners.enable-lore")) {
+                        for (String line : EterniaServer.configs.getStringList("spawners.lore")) {
                             newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
                         }
                         meta.setLore(newLore);
                     }
                     item.setItemMeta(meta);
-                    if (CVar.getDouble("spawners.drop-chance") != 1) {
+                    if (EterniaServer.configs.getDouble("spawners.drop-chance") != 1) {
                         double random = Math.random();
-                        if (random >= CVar.getDouble("spawners.drop-chance")) {
+                        if (random >= EterniaServer.configs.getDouble("spawners.drop-chance")) {
                             new PlayerMessage("spawners.no-drop", player);
                             return;
                         }
                     }
-                    if (CVar.getBool("spawners.drop-in-inventory")) {
+                    if (EterniaServer.configs.getBoolean("spawners.drop-in-inventory")) {
                         if (player.getInventory().firstEmpty() == -1) {
                             event.setCancelled(true);
                             new PlayerMessage("spawners.invfull", player);

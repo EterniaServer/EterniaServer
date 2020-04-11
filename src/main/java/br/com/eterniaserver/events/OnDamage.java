@@ -1,6 +1,6 @@
 package br.com.eterniaserver.events;
 
-import br.com.eterniaserver.configs.CVar;
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 
 import org.bukkit.entity.Entity;
@@ -16,7 +16,7 @@ public class OnDamage implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
             Player player = (Player) entity;
-            if (Vars.god.contains(player.getName()) && CVar.getBool("modules.generic")) {
+            if (Vars.god.contains(player.getName()) && EterniaServer.configs.getBoolean("modules.generic")) {
                 event.setCancelled(true);
             }
         }
