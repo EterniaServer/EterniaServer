@@ -18,10 +18,10 @@ public class QueriesP {
                 ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (existShop(shop)) {
             final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-shop") + " SET location='" + saveloc + "' WHERE name='" + shop + "';";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
         } else {
             final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-shop") + " (name, location) VALUES ('" + shop + "', '" + saveloc + "')";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
         }
     }
 
@@ -33,7 +33,7 @@ public class QueriesP {
             if (existShop(shop)) {
                 try {
                     final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-                    final ResultSet rs = EterniaServer.sqlcon.Query(querie);
+                    final ResultSet rs = EterniaServer.connection.Query(querie);
                     if (rs.next()) {
                         rs.getString("location");
                     }
@@ -51,7 +51,7 @@ public class QueriesP {
     private static boolean existShop(String shop) {
         try {
             final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-            final ResultSet rs = EterniaServer.sqlcon.Query(querie);
+            final ResultSet rs = EterniaServer.connection.Query(querie);
             return rs.next() && rs.getString("name") != null;
         } catch (SQLException e) {
             e.printStackTrace();

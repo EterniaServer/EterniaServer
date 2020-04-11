@@ -15,7 +15,7 @@ public class Queries {
         int xp = 0;
         try {
             final String querie = "SELECT xp FROM " + EterniaServer.configs.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
-            final ResultSet rs = EterniaServer.sqlcon.Query(querie);
+            final ResultSet rs = EterniaServer.connection.Query(querie);
             if (rs.next()) {
                 rs.getInt("xp");
             }
@@ -31,7 +31,7 @@ public class Queries {
         Vars.xp.remove(playerName);
         Vars.xp.put(playerName, valor);
         final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-xp") + " SET xp='" + valor + "' WHERE player_name='" + playerName + "';";
-        EterniaServer.sqlcon.Update(querie);
+        EterniaServer.connection.Update(querie);
     }
 
     public static void addExp(String playerName, int valor) {

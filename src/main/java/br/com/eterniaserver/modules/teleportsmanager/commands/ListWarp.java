@@ -29,7 +29,7 @@ public class ListWarp implements CommandExecutor {
                     StringBuilder accounts = new StringBuilder();
                     ResultSet rs = null;
                     try {
-                        rs = EterniaServer.sqlcon.Query(query);
+                        rs = EterniaServer.connection.Query(query);
                         while (rs.next()) {
                             final String string2 = rs.getString("name");
                             accounts.append(string2).append("&8, &3");

@@ -7,7 +7,7 @@ import br.com.eterniaserver.storages.sql.Tables;
 public class DatabaseType {
 
     public DatabaseType(EterniaServer plugin) {
-        EterniaServer.sqlcon = new Connections(plugin, EterniaServer.configs.getBoolean("sql.mysql"));
+        EterniaServer.connection = new Connections(plugin, EterniaServer.configs.getBoolean("sql.mysql"));
         new Tables();
     }
 

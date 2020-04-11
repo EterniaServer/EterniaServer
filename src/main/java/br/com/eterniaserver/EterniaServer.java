@@ -7,8 +7,8 @@ import br.com.eterniaserver.storages.MessagesConfig;
 import br.com.eterniaserver.storages.sql.Connections;
 import br.com.eterniaserver.storages.DatabaseType;
 import br.com.eterniaserver.vault.VaultHook;
-
 import br.com.eterniaserver.vault.VaultUnHook;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,7 +18,7 @@ public class EterniaServer extends JavaPlugin {
     public static FileConfiguration configs;
     public static FileConfiguration messages;
 
-    public static Connections sqlcon;
+    public static Connections connection;
 
     @Override
     public void onEnable() {

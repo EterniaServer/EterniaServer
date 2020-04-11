@@ -34,7 +34,7 @@ public class Baltop implements CommandExecutor {
                     List<String> accounts = new ArrayList<>();
                     ResultSet rs = null;
                     try {
-                        rs = EterniaServer.sqlcon.Query(query);
+                        rs = EterniaServer.connection.Query(query);
                         while (rs.next()) {
                             final String string2 = rs.getString("player_name");
                             accounts.add(string2);

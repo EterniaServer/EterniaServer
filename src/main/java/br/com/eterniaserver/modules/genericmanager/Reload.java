@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Reload {
     public Reload(EterniaServer plugin) {
-        EterniaServer.sqlcon.Close();
+        EterniaServer.connection.Close();
 
         File config = new File(plugin.getDataFolder(), "config.yml");
         if (!config.exists()) {
@@ -45,6 +45,6 @@ public class Reload {
             e.printStackTrace();
         }
 
-        EterniaServer.sqlcon = new Connections(plugin, EterniaServer.configs.getBoolean("sql.mysql"));
+        EterniaServer.connection = new Connections(plugin, EterniaServer.configs.getBoolean("sql.mysql"));
     }
 }

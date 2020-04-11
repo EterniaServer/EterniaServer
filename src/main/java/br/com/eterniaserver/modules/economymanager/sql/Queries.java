@@ -17,7 +17,7 @@ public class Queries {
         if (PlayerManager.PlayerExistE(playerName)) {
             try {
                 final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-money") + " WHERE player_name='" + playerName + "';";
-                final ResultSet rs = EterniaServer.sqlcon.Query(querie);
+                final ResultSet rs = EterniaServer.connection.Query(querie);
                 if (rs.next()) {
                     rs.getDouble("balance");
                 }
@@ -42,7 +42,7 @@ public class Queries {
             Vars.money.remove(playerName);
             Vars.money.put(playerName, Money);
             final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-money") + " SET balance='" + Money + "' WHERE player_name='" + playerName + "';";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
         } else {
             PlayerManager.CreateEconomy(playerName);
             setMoney(playerName, Money);

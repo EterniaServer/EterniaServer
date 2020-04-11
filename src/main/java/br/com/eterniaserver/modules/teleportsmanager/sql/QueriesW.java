@@ -18,17 +18,17 @@ public class QueriesW {
                 ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (existWarp(warp)) {
             final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-warp") + " SET location='" + saveloc + "' WHERE name='" + warp + "';";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
         } else {
             final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-warp") + " (name, location) VALUES ('" + warp + "', '" + saveloc + "')";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
         }
     }
 
     public static void delWarp(String warp) {
         Vars.warps.remove(warp);
         final String querie = "DELETE FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-        EterniaServer.sqlcon.Update(querie);
+        EterniaServer.connection.Update(querie);
     }
 
     public static Location getWarp(String warp) {
@@ -39,7 +39,7 @@ public class QueriesW {
             if (existWarp(warp)) {
                 try {
                     final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-                    final ResultSet rs = EterniaServer.sqlcon.Query(querie);
+                    final ResultSet rs = EterniaServer.connection.Query(querie);
                     if (rs.next()) {
                         rs.getString("location");
                     }
@@ -57,7 +57,7 @@ public class QueriesW {
     public static boolean existWarp(String warp) {
         try {
             final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-            final ResultSet rs = EterniaServer.sqlcon.Query(querie);
+            final ResultSet rs = EterniaServer.connection.Query(querie);
             return rs.next() && rs.getString("name") != null;
         } catch (SQLException e) {
             e.printStackTrace();

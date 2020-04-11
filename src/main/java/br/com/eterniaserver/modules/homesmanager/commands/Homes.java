@@ -27,7 +27,7 @@ public class Homes implements CommandExecutor {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     StringBuilder accounts = new StringBuilder();
                     final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE name='" + player.getName() + "';";
-                    final ResultSet rsn = EterniaServer.sqlcon.Query(querie);
+                    final ResultSet rsn = EterniaServer.connection.Query(querie);
                     try {
                         if (rsn.next()) {
                             rsn.getString("homes");

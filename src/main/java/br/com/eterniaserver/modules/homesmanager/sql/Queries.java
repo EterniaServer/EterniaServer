@@ -20,7 +20,7 @@ public class Queries {
         String valor = "";
         try {
             final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE name='" + jogador + "';";
-            final ResultSet rsn = EterniaServer.sqlcon.Query(querie);
+            final ResultSet rsn = EterniaServer.connection.Query(querie);
             if (rsn.next()) {
                 rsn.getString("homes");
             }
@@ -38,19 +38,19 @@ public class Queries {
         if (!t) {
             result.append(valor).append(home).append(":");
             String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET homes='" + result + "' WHERE name='" + jogador + "';";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
             String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                     ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
             querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-homes") + " (name, location) VALUES ('" + home + "." + jogador + "', '" + saveloc + "')";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
         } else {
             String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                     ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
             final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-homes") + " SET location='" + saveloc + "' WHERE name='" + home + "." + jogador + "';";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
         }
         final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET many='" + (canHome(jogador) + 1) + "' WHERE name='" + jogador + "';";
-        EterniaServer.sqlcon.Update(querie);
+        EterniaServer.connection.Update(querie);
 
     }
 
@@ -58,7 +58,7 @@ public class Queries {
         Vars.homes.remove(home);
         try {
             String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE name='" + home + "';";
-            final ResultSet rsd = EterniaServer.sqlcon.Query(querie);
+            final ResultSet rsd = EterniaServer.connection.Query(querie);
             if (rsd.next()) {
                 rsd.getString("homes");
             }
@@ -70,9 +70,9 @@ public class Queries {
                 }
             }
             querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET homes='" + nova + "', SET many='" + (canHome(jogador) - 1) + "' WHERE name='" + jogador + "';";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
             querie = "DELETE FROM " + EterniaServer.configs.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
-            EterniaServer.sqlcon.Update(querie);
+            EterniaServer.connection.Update(querie);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,7 +87,7 @@ public class Queries {
                 if (existHome(home, jogador)) {
                     try {
                         final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
-                        final ResultSet rss = EterniaServer.sqlcon.Query(querie);
+                        final ResultSet rss = EterniaServer.connection.Query(querie);
                         if (rss.next()) {
                             rss.getString("location");
                         }
@@ -107,7 +107,7 @@ public class Queries {
     public static boolean existHome(String home, String jogador) {
         try {
             final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE name='" + jogador + "';";
-            final ResultSet rs = EterniaServer.sqlcon.Query(querie);
+            final ResultSet rs = EterniaServer.connection.Query(querie);
             if (rs.next()) {
                 rs.getString("homes");
             }
@@ -128,7 +128,7 @@ public class Queries {
         int i = 0;
         try {
             final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE name='" + jogador + "';";
-            final ResultSet rsv = EterniaServer.sqlcon.Query(querie);
+            final ResultSet rsv = EterniaServer.connection.Query(querie);
             if (rsv.next()) {
                 rsv.getInt("many");
             }

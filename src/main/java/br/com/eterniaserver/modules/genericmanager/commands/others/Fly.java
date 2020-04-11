@@ -18,19 +18,19 @@ public class Fly implements CommandExecutor {
                 if (args.length == 0) {
                     if (player.getWorld() == Bukkit.getWorld("evento")) {
                         if (player.hasPermission("eternia.fly.evento")) {
-                            PlayerFlyState.selfFly(player);
+                            new PlayerFlyState(player);
                         } else {
                             new PlayerMessage("server.no-perm", player);
                         }
                     } else {
-                        PlayerFlyState.selfFly(player);
+                        new PlayerFlyState(player);
                     }
                     return true;
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.fly.other")) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target.isOnline()) {
-                            PlayerFlyState.otherFly(target);
+                            new PlayerFlyState(target);
                         } else {
                             new PlayerMessage("server.player-offline", player);
                         }
@@ -46,7 +46,7 @@ public class Fly implements CommandExecutor {
         } else if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && target.isOnline()) {
-                PlayerFlyState.otherFly(target);
+                new PlayerFlyState(target);
             } else {
                 new ConsoleMessage("server.player-offline");
             }
