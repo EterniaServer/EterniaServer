@@ -14,7 +14,7 @@ public class OnBlockPlace implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.getBlock().getType() == Material.SPAWNER) {
             if (EterniaServer.configs.getBoolean("modules.spawners")) {
-                new SpawnerPlace(event);
+                SpawnerPlace.Place(event);
             }
         }
     }

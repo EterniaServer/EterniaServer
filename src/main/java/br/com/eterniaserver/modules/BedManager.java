@@ -1,8 +1,8 @@
 package br.com.eterniaserver.modules;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.events.OnBedEnter;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.events.OnBedLeave;
 import br.com.eterniaserver.modules.bedmanager.BedTimer;
 
@@ -17,9 +17,9 @@ public class BedManager {
             }
             plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(plugin), plugin);
             plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(plugin), plugin);
-            new ConsoleMessage("modules.enable", "Bed");
+            Messages.ConsoleMessage("modules.enable", "Bed");
         } else {
-            new ConsoleMessage("modules.disable", "Bed");
+            Messages.ConsoleMessage("modules.disable", "Bed");
         }
     }
 

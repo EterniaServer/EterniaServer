@@ -1,9 +1,9 @@
 package br.com.eterniaserver.modules;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.genericmanager.commands.messages.*;
 import br.com.eterniaserver.modules.genericmanager.commands.others.*;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
 import br.com.eterniaserver.modules.genericmanager.commands.simplifications.*;
 
 import java.util.Objects;
@@ -36,9 +36,9 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("enderchest")).setExecutor(new EnderChest());
             Objects.requireNonNull(plugin.getCommand("openinventory")).setExecutor(new OpenInventory());
             Objects.requireNonNull(plugin.getCommand("workbench")).setExecutor(new Workbench());
-            new ConsoleMessage("modules.enable", "Generic");
+            Messages.ConsoleMessage("modules.enable", "Generic");
         } else {
-            new ConsoleMessage("modules.disable", "Generic");
+            Messages.ConsoleMessage("modules.disable", "Generic");
         }
     }
 

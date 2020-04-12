@@ -1,8 +1,8 @@
 package br.com.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.MVar;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.configs.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,29 +20,29 @@ public class Homes implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, java.lang.String label, java.lang.String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.homes")) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     StringBuilder accounts = new StringBuilder();
-                    final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE name='" + player.getName() + "';";
+                    final java.lang.String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE name='" + player.getName() + "';";
                     final ResultSet rsn = EterniaServer.connection.Query(querie);
                     try {
                         if (rsn.next()) {
                             rsn.getString("homes");
                         }
-                        String[] values = rsn.getString("homes").split(":");
-                        for (String line : values) {
+                        java.lang.String[] values = rsn.getString("homes").split(":");
+                        for (java.lang.String line : values) {
                             accounts.append(line).append("&8, &3");
                         }
-                        new PlayerMessage("home.list", MVar.getColor(accounts.toString()), player);
+                        Messages.PlayerMessage("home.list", Strings.getColor(accounts.toString()), player);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 });
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         }
         return true;

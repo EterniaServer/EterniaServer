@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.genericmanager.commands.messages;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,12 +12,12 @@ public class Discord implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.discord")) {
-                new PlayerMessage("text.discord", player);
+                Messages.PlayerMessage("text.discord", player);
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("discord");
+            Messages.ConsoleMessage("discord");
         }
         return true;
     }

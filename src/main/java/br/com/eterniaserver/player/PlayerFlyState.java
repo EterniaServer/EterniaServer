@@ -1,7 +1,6 @@
 package br.com.eterniaserver.player;
 
-import br.com.eterniaserver.configs.methods.PlayerMessage;
-
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.entity.Player;
 
 public class PlayerFlyState {
@@ -9,10 +8,10 @@ public class PlayerFlyState {
     public PlayerFlyState(Player player) {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
-            new PlayerMessage("fly.disable", player);
+            Messages.PlayerMessage("fly.disable", player);
         } else {
             player.setAllowFlight(true);
-            new PlayerMessage("fly.enable", player);
+            Messages.PlayerMessage("fly.enable", player);
         }
     }
 

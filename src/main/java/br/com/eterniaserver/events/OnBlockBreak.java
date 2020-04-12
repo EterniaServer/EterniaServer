@@ -19,10 +19,10 @@ public class OnBlockBreak implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent breakEvent) {
         if (EterniaServer.configs.getBoolean("modules.spawners")) {
-            new SpawnerBreak(breakEvent);
+            SpawnerBreak.Break(breakEvent);
         }
         if (EterniaServer.configs.getBoolean("modules.block-reward")) {
-            new BlockReward(breakEvent, plugin);
+            BlockReward.Break(breakEvent, plugin);
         }
     }
 

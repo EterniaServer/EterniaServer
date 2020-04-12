@@ -1,9 +1,8 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,27 +27,27 @@ public class TeleportAccept implements CommandExecutor {
                     assert target != null;
                     if (target.hasPermission("eternia.timing.bypass")) {
                         target.teleport(player.getLocation());
-                        new PlayerMessage("teleport.tpto", player.getName(), target);
-                        new PlayerMessage("teleport.accept", player.getName(), target);
+                        Messages.PlayerMessage("teleport.tpto", player.getName(), target);
+                        Messages.PlayerMessage("teleport.accept", player.getName(), target);
                         Vars.tpa_requests.remove(player.getName());
                     } else {
-                        new PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), target);
-                        new PlayerMessage("teleport.accept", player.getName(), target);
+                        Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), target);
+                        Messages.PlayerMessage("teleport.accept", player.getName(), target);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                         {
                             target.teleport(player.getLocation());
-                            new PlayerMessage("teleport.tpto", player.getName(), target);
+                            Messages.PlayerMessage("teleport.tpto", player.getName(), target);
                             Vars.tpa_requests.remove(player.getName());
                         }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                     }
                 } else {
-                    new PlayerMessage("teleport.noask", player);
+                    Messages.PlayerMessage("teleport.noask", player);
                 }
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

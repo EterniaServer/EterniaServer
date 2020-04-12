@@ -2,7 +2,7 @@ package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,17 +34,17 @@ public class OnPlayerInteract implements Listener {
                     final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]), Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
                     if (player.hasPermission("eternia.timing.bypass")) {
                         player.teleport(location);
-                        new PlayerMessage("home.suc", player);
+                        Messages.PlayerMessage("home.suc", player);
                     } else {
-                        new PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
+                        Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                         Vars.playerposition.put(player.getName(), player.getLocation());
                         Vars.moved.put(player.getName(), false);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                             if (!Vars.moved.get(player.getName())) {
                                 player.teleport(location);
-                                new PlayerMessage("home.suc", player);
+                                Messages.PlayerMessage("home.suc", player);
                             } else {
-                                new PlayerMessage("warps.move", player);
+                                Messages.PlayerMessage("warps.move", player);
                             }
                         }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                     }

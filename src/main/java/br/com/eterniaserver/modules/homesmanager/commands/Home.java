@@ -1,9 +1,8 @@
 package br.com.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
 import br.com.eterniaserver.modules.homesmanager.sql.Queries;
 
 import org.bukkit.Bukkit;
@@ -31,31 +30,31 @@ public class Home implements CommandExecutor {
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(location);
-                            new PlayerMessage("home.suc", player);
+                            Messages.PlayerMessage("home.suc", player);
                         } else {
-                            new PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
+                            Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                                 if (!Vars.moved.get(player.getName())) {
                                     player.teleport(location);
-                                    new PlayerMessage("home.suc", player);
+                                    Messages.PlayerMessage("home.suc", player);
                                 } else {
-                                    new PlayerMessage("warps.move", player);
+                                    Messages.PlayerMessage("warps.move", player);
                                 }
                             }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                         }
                     } else {
-                        new PlayerMessage("home.no", player);
+                        Messages.PlayerMessage("home.no", player);
                     }
                 } else {
-                    new PlayerMessage("home.use2", player);
+                    Messages.PlayerMessage("home.use2", player);
                 }
             } else {
-                new PlayerMessage("sem-permissao", player);
+                Messages.PlayerMessage("sem-permissao", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

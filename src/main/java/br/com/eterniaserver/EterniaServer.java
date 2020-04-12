@@ -29,14 +29,14 @@ public class EterniaServer extends JavaPlugin {
 
         databaseType();
 
-        teleportsManager();
-        spawnersManager();
         antiNetherTrapManager();
+        bedManager();
         economyManager();
         experienceManager();
         genericManager();
-        bedManager();
         homesManager();
+        spawnersManager();
+        teleportsManager();
 
         vaultHook();
 
@@ -69,12 +69,16 @@ public class EterniaServer extends JavaPlugin {
         new VaultHook(this);
     }
 
-    private void homesManager() {
-        new HomesManager(this);
+    private void spawnersManager() {
+        new SpawnersManager(this);
     }
 
-    private void bedManager() {
-        new BedManager(this);
+    private void teleportsManager() {
+        new TeleportsManager(this);
+    }
+
+    private void homesManager() {
+        new HomesManager(this);
     }
 
     private void genericManager() {
@@ -89,16 +93,12 @@ public class EterniaServer extends JavaPlugin {
         new EconomyManager(this);
     }
 
+    private void bedManager() {
+        new BedManager(this);
+    }
+
     private void antiNetherTrapManager() {
         new AntiNetherTrapManager(this);
-    }
-
-    private void spawnersManager() {
-        new SpawnersManager(this);
-    }
-
-    private void teleportsManager() {
-        new TeleportsManager(this);
     }
 
     private void databaseType() {

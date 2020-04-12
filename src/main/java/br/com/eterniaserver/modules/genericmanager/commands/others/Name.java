@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.genericmanager.commands.others;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,16 +15,16 @@ public class Name implements CommandExecutor {
             if (player.hasPermission("eternia.name")) {
                 if (args.length == 0) {
                     player.setDisplayName(player.getName());
-                    new PlayerMessage("other.del-nick", player);
+                    Messages.PlayerMessage("other.del-nick", player);
                 } else {
                     player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
-                    new PlayerMessage("other.new-nick", player.getDisplayName(), player);
+                    Messages.PlayerMessage("other.new-nick", player.getDisplayName(), player);
                 }
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

@@ -1,8 +1,6 @@
 package br.com.eterniaserver.modules.homesmanager.commands;
 
-import br.com.eterniaserver.configs.MVar;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.homesmanager.sql.Queries;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,7 +24,7 @@ public class SetHome implements CommandExecutor {
                 if (args.length == 1) {
                     if (Queries.canHome(player.getName()) < 3) {
                         Queries.setHome(player.getLocation(), args[0], player.getName());
-                        new PlayerMessage("home.def", player);
+                        Messages.PlayerMessage("home.def", player);
                     } else {
                         ItemStack item = new ItemStack(Material.COMPASS);
                         ItemMeta meta = item.getItemMeta();
@@ -40,16 +38,16 @@ public class SetHome implements CommandExecutor {
                         }
                         PlayerInventory inventory = player.getInventory();
                         inventory.addItem(item);
-                        new PlayerMessage("home.max", player);
+                        Messages.PlayerMessage("home.max", player);
                     }
                 } else {
-                    new PlayerMessage("home.use", player);
+                    Messages.PlayerMessage("home.use", player);
                 }
             } else {
-                new PlayerMessage("sem-permissao", player);
+                Messages.PlayerMessage("sem-permissao", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.genericmanager.commands.others;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,15 +18,15 @@ public class OpenInventory implements CommandExecutor {
                 if (target != null && target.isOnline()) {
                     player.openInventory(target.getInventory());
                 } else {
-                    new PlayerMessage("server.player-offline", player);
+                    Messages.PlayerMessage("server.player-offline", player);
                 }
             } else if (args.length == 0 && player.hasPermission("eternia.openinv")) {
-                new PlayerMessage("simp.inv", player);
+                Messages.PlayerMessage("simp.inv", player);
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

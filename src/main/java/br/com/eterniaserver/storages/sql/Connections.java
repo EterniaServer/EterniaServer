@@ -1,8 +1,8 @@
 package br.com.eterniaserver.storages.sql;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
 
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -29,17 +29,17 @@ public class Connections {
                 String username = EterniaServer.configs.getString("sql.user");
                 String password = EterniaServer.configs.getString("sql.password");
                 this.con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", username, password);
-                new ConsoleMessage("server.mysql-ok");
+                Messages.ConsoleMessage("server.mysql-ok");
             } catch (SQLException e) {
-                new ConsoleMessage("server.sql-error", e.getMessage());
+                Messages.ConsoleMessage("server.sql-error", e.getMessage());
             }
         } else {
             try {
                 File dataFolder = new File(plugin.getDataFolder(), "eternia.db");
                 this.con = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
-                new ConsoleMessage("server.sql-ok");
+                Messages.ConsoleMessage("server.sql-ok");
             } catch (SQLException e) {
-                new ConsoleMessage("server.sql-error", e.getMessage());
+                Messages.ConsoleMessage("server.sql-error", e.getMessage());
             }
         }
     }
@@ -49,10 +49,10 @@ public class Connections {
         try {
             if (this.con != null) {
                 this.con.close();
-                new ConsoleMessage("server.sql-finish");
+                Messages.ConsoleMessage("server.sql-finish");
             }
         } catch (SQLException e) {
-            new ConsoleMessage("server.sql-error", e.getMessage());
+            Messages.ConsoleMessage("server.sql-error", e.getMessage());
         }
     }
 

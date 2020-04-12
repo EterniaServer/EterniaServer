@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.experiencemanager.commands;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.command.Command;
@@ -27,16 +26,16 @@ public class Bottlexp implements CommandExecutor {
                 if (xp_real >= 10) {
                     xp_real = (xp_real / 10);
                     player.getWorld().dropItem(player.getLocation().add(0, 1, 0), new ItemStack(Material.EXPERIENCE_BOTTLE, xp_real));
-                    new PlayerMessage("xp.bottlexp", player);
+                    Messages.PlayerMessage("xp.bottlexp", player);
                     player.setLevel(0);
                 } else {
-                    new PlayerMessage("xp.noxp", player);
+                    Messages.PlayerMessage("xp.noxp", player);
                 }
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

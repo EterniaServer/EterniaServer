@@ -2,8 +2,8 @@ package br.com.eterniaserver.modules.bedmanager;
 
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.BroadcastMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
@@ -17,7 +17,7 @@ public class AccelerateNightTask extends BukkitRunnable {
     public AccelerateNightTask(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        new BroadcastMessage("bed.night-skipping", world.getName());
+        Messages.BroadcastMessage("bed.night-skipping", world.getName());
     }
 
     @Override
@@ -33,7 +33,7 @@ public class AccelerateNightTask extends BukkitRunnable {
             world.setThundering(false);
             world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> Vars.skipping_worlds.remove(world), 20);
-            new BroadcastMessage("bed.skip-night", "normalmente");
+            Messages.BroadcastMessage("bed.skip-night", "normalmente");
             this.cancel();
         } else {
             world.setTime(time + (int) timeRate);

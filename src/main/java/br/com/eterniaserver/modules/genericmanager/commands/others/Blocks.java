@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.genericmanager.commands.others;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -75,12 +74,12 @@ public class Blocks implements CommandExecutor {
                     player.getInventory().removeItem(new ItemStack(Material.EMERALD, itens * 9));
                     player.getInventory().addItem(new ItemStack(Material.EMERALD_BLOCK, itens));
                 }
-                new PlayerMessage("other.done", player);
+                Messages.PlayerMessage("other.done", player);
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

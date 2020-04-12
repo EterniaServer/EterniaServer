@@ -1,8 +1,8 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.BroadcastMessage;
 import br.com.eterniaserver.player.PlayerManager;
 
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class OnPlayerJoin implements Listener {
             }
         }
         event.setJoinMessage(null);
-        new BroadcastMessage("server.join", player.getName());
+        Messages.BroadcastMessage("server.join", player.getName());
     }
 
 }

@@ -1,8 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,25 +23,25 @@ public class TeleportToPlayer implements CommandExecutor {
                             if (target != player) {
                                 Vars.tpa_requests.remove(target.getName());
                                 Vars.tpa_requests.put(target.getName(), player.getName());
-                                new PlayerMessage("teleport.receiver", player.getName(), target);
-                                new PlayerMessage("teleport.send", target.getName(), player);
+                                Messages.PlayerMessage("teleport.receiver", player.getName(), target);
+                                Messages.PlayerMessage("teleport.send", target.getName(), player);
                             } else {
-                                new PlayerMessage("teleport.auto", player);
+                                Messages.PlayerMessage("teleport.auto", player);
                             }
                         } else {
-                            new PlayerMessage("server.player-offline", player);
+                            Messages.PlayerMessage("server.player-offline", player);
                         }
                     } catch (Exception e) {
-                        new PlayerMessage("server.player-offline", player);
+                        Messages.PlayerMessage("server.player-offline", player);
                     }
                 } else {
-                    new PlayerMessage("teleport.use", player);
+                    Messages.PlayerMessage("teleport.use", player);
                 }
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

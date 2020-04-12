@@ -2,8 +2,8 @@ package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.BroadcastMessage;
 
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +26,7 @@ public class OnBedLeave implements Listener {
         if (!Vars.skipping_worlds.contains(player.getWorld())) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if ((TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - getCooldown(player.getName())) > 100)) {
-                    new BroadcastMessage("bed.player-leave", player.getName());
+                    Messages.BroadcastMessage("bed.player-leave", player.getName());
                     Vars.bed_cooldown.put(player.getName(), System.currentTimeMillis());
                 }
             }, 1);

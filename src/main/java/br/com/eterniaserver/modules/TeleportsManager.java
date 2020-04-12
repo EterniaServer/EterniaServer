@@ -1,8 +1,8 @@
 package br.com.eterniaserver.modules;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.teleportsmanager.commands.*;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
 
 import java.util.Objects;
 
@@ -23,9 +23,9 @@ public class TeleportsManager {
             Objects.requireNonNull(plugin.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
             Objects.requireNonNull(plugin.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer());
             Objects.requireNonNull(plugin.getCommand("teleportall")).setExecutor(new TeleportAll());
-            new ConsoleMessage("modules.enable", "Teleports");
+            Messages.ConsoleMessage("modules.enable", "Teleports");
         } else {
-            new ConsoleMessage("modules.disable", "Teleports");
+            Messages.ConsoleMessage("modules.disable", "Teleports");
         }
     }
 

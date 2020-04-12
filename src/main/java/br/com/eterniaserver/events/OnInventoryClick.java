@@ -2,8 +2,7 @@ package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,8 +21,8 @@ public class OnInventoryClick implements Listener {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
                 Player player = (Player) e.getWhoClicked();
                 e.setCancelled(true);
-                new PlayerMessage("spawners.anvil", player);
-                new ConsoleMessage("spawners.anvil-try", player.getName());
+                Messages.PlayerMessage("spawners.anvil", player);
+                Messages.ConsoleMessage("spawners.anvil-try", player.getName());
             }
         }
         if (EterniaServer.configs.getBoolean("modules.playerchecks")) {

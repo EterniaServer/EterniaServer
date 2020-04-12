@@ -1,8 +1,8 @@
 package br.com.eterniaserver.modules.spawnermanager.actions;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
 
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class SpawnerBreak {
 
-    public SpawnerBreak(BlockBreakEvent event) {
+    public static void Break(BlockBreakEvent event) {
         if (event.isCancelled()) {
             return;
         }
@@ -29,7 +29,7 @@ public class SpawnerBreak {
             Material material = block.getType();
             Player player = event.getPlayer();
             if (EterniaServer.configs.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
-                new PlayerMessage("spawners.block", player);
+                Messages.PlayerMessage("spawners.block", player);
                 event.setCancelled(true);
                 return;
             }
@@ -55,14 +55,14 @@ public class SpawnerBreak {
                     if (EterniaServer.configs.getDouble("spawners.drop-chance") != 1) {
                         double random = Math.random();
                         if (random >= EterniaServer.configs.getDouble("spawners.drop-chance")) {
-                            new PlayerMessage("spawners.no-drop", player);
+                            Messages.PlayerMessage("spawners.no-drop", player);
                             return;
                         }
                     }
                     if (EterniaServer.configs.getBoolean("spawners.drop-in-inventory")) {
                         if (player.getInventory().firstEmpty() == -1) {
                             event.setCancelled(true);
-                            new PlayerMessage("spawners.invfull", player);
+                            Messages.PlayerMessage("spawners.invfull", player);
                             return;
                         }
                         player.getInventory().addItem(item);
@@ -73,11 +73,11 @@ public class SpawnerBreak {
                     Objects.requireNonNull(loc.getWorld()).dropItemNaturally(loc, item);
                 } else {
                     event.setCancelled(true);
-                    new PlayerMessage("spawners.no-silktouch", player);
+                    Messages.PlayerMessage("spawners.no-silktouch", player);
                 }
             } else {
                 event.setCancelled(true);
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         }
     }

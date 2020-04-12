@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.economymanager.commands;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.economymanager.sql.Queries;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
@@ -19,21 +18,21 @@ public class Money implements CommandExecutor {
             if (args.length == 0) {
                 if (player.hasPermission("eternia.money")) {
                     double money = Queries.getMoney(player.getName());
-                    new PlayerMessage("eco.money", df2.format(money), player);
+                    Messages.PlayerMessage("eco.money", df2.format(money), player);
                 }
             } else if (args.length == 1) {
                 if (player.hasPermission("eternia.money.other")) {
                     double money = Queries.getMoney(args[0]);
-                    new PlayerMessage("eco.money-other", df2.format(money), player);
+                    Messages.PlayerMessage("eco.money-other", df2.format(money), player);
                 } else {
-                    new PlayerMessage("server.no-perm", player);
+                    Messages.PlayerMessage("server.no-perm", player);
                 }
             }
         } else {
             DecimalFormat df2 = new DecimalFormat(".##");
             if (args.length == 1) {
                 double money = Queries.getMoney(args[0]);
-                new ConsoleMessage("eco.money-other", df2.format(money));
+                Messages.ConsoleMessage("eco.money-other", df2.format(money));
             }
         }
         return true;

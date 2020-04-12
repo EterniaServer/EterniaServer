@@ -1,8 +1,8 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.BroadcastMessage;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +18,7 @@ public class OnPlayerLeave implements Listener {
             Vars.afktime.remove(player.getName());
         }
         event.setQuitMessage(null);
-        new BroadcastMessage("server.leave", player.getName());
+        Messages.BroadcastMessage("server.leave", player.getName());
     }
 
 }

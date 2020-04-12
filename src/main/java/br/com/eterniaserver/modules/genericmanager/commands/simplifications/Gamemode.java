@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.genericmanager.commands.simplifications;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -24,9 +23,9 @@ public class Gamemode implements CommandExecutor {
                         case "sobrevivencia":
                             if (player.hasPermission("eternia.gamemode.0")) {
                                 player.setGameMode(GameMode.SURVIVAL);
-                                new PlayerMessage("simp.gm", "Sobrevivência", player);
+                                Messages.PlayerMessage("simp.gm", "Sobrevivência", player);
                             } else {
-                                new PlayerMessage("server.no-perm", player);
+                                Messages.PlayerMessage("server.no-perm", player);
                             }
                             break;
                         case "1":
@@ -35,9 +34,9 @@ public class Gamemode implements CommandExecutor {
                         case "criativo":
                             if (player.hasPermission("eternia.gamemode.1")) {
                                 player.setGameMode(GameMode.CREATIVE);
-                                new PlayerMessage("simp.gm", "Criativo", player);
+                                Messages.PlayerMessage("simp.gm", "Criativo", player);
                             } else {
-                                new PlayerMessage("server.no-perm", player);
+                                Messages.PlayerMessage("server.no-perm", player);
                             }
                             break;
                         case "2":
@@ -46,9 +45,9 @@ public class Gamemode implements CommandExecutor {
                         case "aventura":
                             if (player.hasPermission("eternia.gamemode.2")) {
                                 player.setGameMode(GameMode.ADVENTURE);
-                                new PlayerMessage("simp.gm", "Aventura", player);
+                                Messages.PlayerMessage("simp.gm", "Aventura", player);
                             } else {
-                                new PlayerMessage("server.no-perm", player);
+                                Messages.PlayerMessage("server.no-perm", player);
                             }
                             break;
                         case "3":
@@ -57,13 +56,13 @@ public class Gamemode implements CommandExecutor {
                         case "spect":
                             if (player.hasPermission("eternia.gamemode.3")) {
                                 player.setGameMode(GameMode.SPECTATOR);
-                                new PlayerMessage("simp.gm", "Espectador", player);
+                                Messages.PlayerMessage("simp.gm", "Espectador", player);
                             } else {
-                                new PlayerMessage("server.no-perm", player);
+                                Messages.PlayerMessage("server.no-perm", player);
                             }
                             break;
                         default:
-                            new PlayerMessage("simp.gmuse", player);
+                            Messages.PlayerMessage("simp.gmuse", player);
                             break;
                     }
                 } else if (args.length == 2) {
@@ -77,10 +76,10 @@ public class Gamemode implements CommandExecutor {
                             case "sobrevivencia":
                                 if (player.hasPermission("eternia.gamemode.0")) {
                                     target.setGameMode(GameMode.SURVIVAL);
-                                    new PlayerMessage("simp.gm-other", "Sobrevivência", player.getName(), target);
-                                    new PlayerMessage("simp.other-gm", target.getName(), "Sobrevivência", player);
+                                    Messages.PlayerMessage("simp.gm-other", "Sobrevivência", player.getName(), target);
+                                    Messages.PlayerMessage("simp.other-gm", target.getName(), "Sobrevivência", player);
                                 } else {
-                                    new PlayerMessage("server.no-perm", player);
+                                    Messages.PlayerMessage("server.no-perm", player);
                                 }
                                 break;
                             case "1":
@@ -89,10 +88,10 @@ public class Gamemode implements CommandExecutor {
                             case "criativo":
                                 if (player.hasPermission("eternia.gamemode.1")) {
                                     target.setGameMode(GameMode.CREATIVE);
-                                    new PlayerMessage("simp.gm-other", "Criativo", player.getName(), target);
-                                    new PlayerMessage("simp.other-gm", target.getName(), "Criativo", player);
+                                    Messages.PlayerMessage("simp.gm-other", "Criativo", player.getName(), target);
+                                    Messages.PlayerMessage("simp.other-gm", target.getName(), "Criativo", player);
                                 } else {
-                                    new PlayerMessage("server.no-perm", player);
+                                    Messages.PlayerMessage("server.no-perm", player);
                                 }
                                 break;
                             case "2":
@@ -101,10 +100,10 @@ public class Gamemode implements CommandExecutor {
                             case "aventura":
                                 if (player.hasPermission("eternia.gamemode.2")) {
                                     target.setGameMode(GameMode.ADVENTURE);
-                                    new PlayerMessage("simp.gm-other", "Aventura", player.getName(), target);
-                                    new PlayerMessage("simp.other-gm", target.getName(), "Aventura", player);
+                                    Messages.PlayerMessage("simp.gm-other", "Aventura", player.getName(), target);
+                                    Messages.PlayerMessage("simp.other-gm", target.getName(), "Aventura", player);
                                 } else {
-                                    new PlayerMessage("server.no-perm", player);
+                                    Messages.PlayerMessage("server.no-perm", player);
                                 }
                                 break;
                             case "3":
@@ -113,24 +112,24 @@ public class Gamemode implements CommandExecutor {
                             case "spect":
                                 if (player.hasPermission("eternia.gamemode.3")) {
                                     target.setGameMode(GameMode.SPECTATOR);
-                                    new PlayerMessage("simp.gm-other", "Espectador", player.getName(), target);
-                                    new PlayerMessage("simp.other-gm", target.getName(), "Espectador", player);
+                                    Messages.PlayerMessage("simp.gm-other", "Espectador", player.getName(), target);
+                                    Messages.PlayerMessage("simp.other-gm", target.getName(), "Espectador", player);
                                 } else {
-                                    new PlayerMessage("server.no-perm", player);
+                                    Messages.PlayerMessage("server.no-perm", player);
                                 }
                                 break;
                             default:
-                                new PlayerMessage("simp.gmuse", player);
+                                Messages.PlayerMessage("simp.gmuse", player);
                                 break;
                         }
                     } else {
-                        new PlayerMessage("server.player-offline", player);
+                        Messages.PlayerMessage("server.player-offline", player);
                     }
                 } else {
-                    new PlayerMessage("simp.gmuse", player);
+                    Messages.PlayerMessage("simp.gmuse", player);
                 }
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
             if (args.length == 2) {
@@ -143,42 +142,42 @@ public class Gamemode implements CommandExecutor {
                         case "survival":
                         case "sobrevivencia":
                             target.setGameMode(GameMode.SURVIVAL);
-                            new PlayerMessage("simp.gm-other", "Sobrevivência", "Console", target);
-                            new ConsoleMessage("simp.other-gm", target.getName(), "Sobrevivência");
+                            Messages.PlayerMessage("simp.gm-other", "Sobrevivência", "Console", target);
+                            Messages.ConsoleMessage("simp.other-gm", target.getName(), "Sobrevivência");
                             break;
                         case "1":
                         case "c":
                         case "creative":
                         case "criativo":
                             target.setGameMode(GameMode.CREATIVE);
-                            new PlayerMessage("simp.gm-other", "Criativo", "Console", target);
-                            new ConsoleMessage("simp.other-gm", target.getName(), "Criativo");
+                            Messages.PlayerMessage("simp.gm-other", "Criativo", "Console", target);
+                            Messages.ConsoleMessage("simp.other-gm", target.getName(), "Criativo");
                             break;
                         case "2":
                         case "a":
                         case "adventure":
                         case "aventura":
                             target.setGameMode(GameMode.ADVENTURE);
-                            new PlayerMessage("simp.gm-other", "Aventura", "Console", target);
-                            new ConsoleMessage("simp.other-gm", target.getName(), "Aventura");
+                            Messages.PlayerMessage("simp.gm-other", "Aventura", "Console", target);
+                            Messages.ConsoleMessage("simp.other-gm", target.getName(), "Aventura");
                             break;
                         case "3":
                         case "sp":
                         case "spectator":
                         case "spect":
                             target.setGameMode(GameMode.SPECTATOR);
-                            new PlayerMessage("simp.gm-other", "Espectador", "Console", target);
-                            new ConsoleMessage("simp.other-gm", target.getName(), "Espectador");
+                            Messages.PlayerMessage("simp.gm-other", "Espectador", "Console", target);
+                            Messages.ConsoleMessage("simp.other-gm", target.getName(), "Espectador");
                             break;
                         default:
-                            new ConsoleMessage("simp.gmuse");
+                            Messages.ConsoleMessage("simp.gmuse");
                             break;
                     }
                 } else {
-                    new ConsoleMessage("server.player-offline");
+                    Messages.ConsoleMessage("server.player-offline");
                 }
             } else {
-                new ConsoleMessage("simp.gmuse");
+                Messages.ConsoleMessage("simp.gmuse");
             }
         }
         return true;

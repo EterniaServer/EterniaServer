@@ -1,8 +1,7 @@
 package br.com.eterniaserver.modules.genericmanager.commands.others;
 
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,19 +20,19 @@ public class GoldenShovel implements CommandExecutor {
                 if (Vars.shovel_cooldown.containsKey(player.getName())) {
                     long secondsLeft = ((Vars.shovel_cooldown.get(player.getName()) / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
                     if (secondsLeft > 0) {
-                        new PlayerMessage("server.timing", secondsLeft, player);
+                        Messages.PlayerMessage("server.timing", secondsLeft, player);
                         return true;
                     }
                 }
                 Vars.shovel_cooldown.put(player.getName(), System.currentTimeMillis());
                 PlayerInventory inventory = player.getInventory();
                 inventory.addItem(new ItemStack(Material.GOLDEN_SHOVEL));
-                new PlayerMessage("other.shovel", player);
+                Messages.PlayerMessage("other.shovel", player);
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

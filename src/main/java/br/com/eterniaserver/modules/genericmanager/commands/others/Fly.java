@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.genericmanager.commands.others;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.player.PlayerFlyState;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -20,7 +19,7 @@ public class Fly implements CommandExecutor {
                         if (player.hasPermission("eternia.fly.evento")) {
                             new PlayerFlyState(player);
                         } else {
-                            new PlayerMessage("server.no-perm", player);
+                            Messages.PlayerMessage("server.no-perm", player);
                         }
                     } else {
                         new PlayerFlyState(player);
@@ -32,23 +31,23 @@ public class Fly implements CommandExecutor {
                         if (target != null && target.isOnline()) {
                             new PlayerFlyState(target);
                         } else {
-                            new PlayerMessage("server.player-offline", player);
+                            Messages.PlayerMessage("server.player-offline", player);
                         }
                     } else {
-                        new PlayerMessage("server.no-perm", player);
+                        Messages.PlayerMessage("server.no-perm", player);
                     }
                 } else {
-                    new PlayerMessage("fly.use", player);
+                    Messages.PlayerMessage("fly.use", player);
                 }
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && target.isOnline()) {
                 new PlayerFlyState(target);
             } else {
-                new ConsoleMessage("server.player-offline");
+                Messages.ConsoleMessage("server.player-offline");
             }
         }
         return true;

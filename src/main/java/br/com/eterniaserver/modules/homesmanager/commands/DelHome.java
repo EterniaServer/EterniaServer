@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.homesmanager.commands;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.homesmanager.sql.Queries;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,18 +17,18 @@ public class DelHome implements CommandExecutor {
                 if (player.hasPermission("eternia.delhome")) {
                     if (Queries.existHome(args[0], player.getName())) {
                         Queries.delHome(args[0], player.getName());
-                        new PlayerMessage("home.del", player);
+                        Messages.PlayerMessage("home.del", player);
                     } else {
-                        new PlayerMessage("home.no", player);
+                        Messages.PlayerMessage("home.no", player);
                     }
                 } else {
-                    new PlayerMessage("server.no-perm", player);
+                    Messages.PlayerMessage("server.no-perm", player);
                 }
             } else {
-                new PlayerMessage("home.use3", player);
+                Messages.PlayerMessage("home.use3", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

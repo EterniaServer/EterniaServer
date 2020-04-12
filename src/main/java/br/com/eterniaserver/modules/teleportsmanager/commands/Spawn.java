@@ -1,8 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
 import br.com.eterniaserver.configs.Vars;
 import org.bukkit.Bukkit;
@@ -30,45 +29,45 @@ public class Spawn implements CommandExecutor {
                     if (player.hasPermission("eternia.spawn")) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(location);
-                            new PlayerMessage("warps.warp", "Spawn", player);
+                            Messages.PlayerMessage("warps.warp", "Spawn", player);
                         } else {
-                            new PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
+                            Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {
                                 if (!Vars.moved.get(player.getName())) {
                                     player.teleport(location);
-                                    new PlayerMessage("warps.warp", "Spawn", player);
+                                    Messages.PlayerMessage("warps.warp", "Spawn", player);
                                 } else {
-                                    new PlayerMessage("warps.move", player);
+                                    Messages.PlayerMessage("warps.move", player);
                                 }
                             }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                         }
                     } else {
-                        new PlayerMessage("sem-permissao", player);
+                        Messages.PlayerMessage("sem-permissao", player);
                     }
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.spawn.other")) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target.isOnline()) {
                             target.teleport(location);
-                            new PlayerMessage("warps.warp", "Spawn", player);
-                            new PlayerMessage("warps.spawn-other", target.getName(), player);
+                            Messages.PlayerMessage("warps.warp", "Spawn", player);
+                            Messages.PlayerMessage("warps.spawn-other", target.getName(), player);
                         } else {
-                            new PlayerMessage("server.player-offline", player);
+                            Messages.PlayerMessage("server.player-offline", player);
                         }
                     } else {
-                        new PlayerMessage("server.no-perm", player);
+                        Messages.PlayerMessage("server.no-perm", player);
                     }
                 } else {
-                    new PlayerMessage("warps.spawn-use", player);
+                    Messages.PlayerMessage("warps.spawn-use", player);
                 }
             } else {
-                new PlayerMessage("warps.spawnno", "Spawn", player);
+                Messages.PlayerMessage("warps.spawnno", "Spawn", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

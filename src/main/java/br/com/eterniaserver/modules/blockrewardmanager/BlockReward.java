@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockReward {
-    public BlockReward(BlockBreakEvent event, EterniaServer plugin) {
+    public static void Break(BlockBreakEvent event, EterniaServer plugin) {
         if (event.isCancelled()) {
             return;
         }

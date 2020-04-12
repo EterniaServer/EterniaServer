@@ -1,6 +1,6 @@
 package br.com.eterniaserver.modules.spawnermanager.actions;
 
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class SpawnerPlace {
-    public SpawnerPlace(BlockPlaceEvent event) {
+    public static void Place(BlockPlaceEvent event) {
         ItemStack placed = event.getItemInHand();
         ItemMeta meta = placed.getItemMeta();
         EntityType entity;
@@ -20,7 +20,7 @@ public class SpawnerPlace {
             CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
             spawner.setSpawnedType(entity);
             spawner.update();
-            new ConsoleMessage("spawners.log", event.getPlayer().getName(), entity.name().toLowerCase());
+            Messages.ConsoleMessage("spawners.log", event.getPlayer().getName(), entity.name().toLowerCase());
         } catch (NullPointerException|IllegalArgumentException e) {
             e.printStackTrace();
         }

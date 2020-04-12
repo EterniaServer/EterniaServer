@@ -1,8 +1,7 @@
 package br.com.eterniaserver.modules.genericmanager.commands.others;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.genericmanager.Reload;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,11 +22,11 @@ public class ReloadEternia implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.reload")) {
                 new Reload(plugin);
-                new PlayerMessage("server.reload", player);
+                Messages.PlayerMessage("server.reload", player);
             }
         } else {
             new Reload(plugin);
-            new ConsoleMessage("server.reload");
+            Messages.ConsoleMessage("server.reload");
         }
         return true;
     }

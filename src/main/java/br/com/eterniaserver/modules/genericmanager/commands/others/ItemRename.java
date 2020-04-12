@@ -2,9 +2,8 @@ package br.com.eterniaserver.modules.genericmanager.commands.others;
 
 import java.util.Collections;
 
-import br.com.eterniaserver.configs.MVar;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
+import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.configs.Strings;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class ItemRename implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, java.lang.String label, java.lang.String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.renameitem")) {
@@ -27,36 +26,36 @@ public class ItemRename implements CommandExecutor {
                             ItemStack item = player.getInventory().getItemInMainHand();
                             ItemMeta meta = item.getItemMeta();
                             if (meta != null) {
-                                meta.setDisplayName(MVar.getColor(args[1]));
+                                meta.setDisplayName(Strings.getColor(args[1]));
                                 item.setItemMeta(meta);
                                 player.getInventory().setItemInMainHand(item);
                             } else {
-                                new PlayerMessage("other.noitem", player);
+                                Messages.PlayerMessage("other.noitem", player);
                             }
                         } else if (args[0].equals("lore")) {
                             ItemStack item = player.getInventory().getItemInMainHand();
                             ItemMeta meta = item.getItemMeta();
                             if (meta != null) {
-                                meta.setLore(Collections.singletonList(MVar.getColor(args[1])));
+                                meta.setLore(Collections.singletonList(Strings.getColor(args[1])));
                                 item.setItemMeta(meta);
                                 player.getInventory().setItemInMainHand(item);
                             } else {
-                                new PlayerMessage("other.noitem", player);
+                                Messages.PlayerMessage("other.noitem", player);
                             }
                         } else {
-                            new PlayerMessage("other.rename", player);
+                            Messages.PlayerMessage("other.rename", player);
                         }
                     } else {
-                        new PlayerMessage("other.noitem", player);
+                        Messages.PlayerMessage("other.noitem", player);
                     }
                 } else {
-                    new PlayerMessage("other.rename", player);
+                    Messages.PlayerMessage("other.rename", player);
                 }
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

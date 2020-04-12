@@ -1,8 +1,8 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.BroadcastMessage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public class OnBedEnter implements Listener {
     public void onBedEnter(PlayerBedEnterEvent event) {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             Player player = event.getPlayer();
-            new BroadcastMessage("bed.player-s", player.getName());
+            Messages.BroadcastMessage("bed.player-s", player.getName());
             if (!Vars.skipping_worlds.contains(player.getWorld())) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     if (!(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - getCooldown(player.getName())) > 100))

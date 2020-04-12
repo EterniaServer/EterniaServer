@@ -1,8 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
-import br.com.eterniaserver.configs.methods.PlayerMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,17 +18,17 @@ public class TeleportDeny implements CommandExecutor {
                 if (Vars.tpa_requests.containsKey(player.getName())) {
                     Player target = Bukkit.getPlayer(Vars.tpa_requests.get(player.getName()));
                     assert target != null;
-                    new PlayerMessage("teleport.auto-deny", target.getName(), player);
-                    new PlayerMessage("teleport.deny", target);
+                    Messages.PlayerMessage("teleport.auto-deny", target.getName(), player);
+                    Messages.PlayerMessage("teleport.deny", target);
                     Vars.tpa_requests.remove(player.getName());
                 } else {
-                    new PlayerMessage("teleport.noask", player);
+                    Messages.PlayerMessage("teleport.noask", player);
                 }
             } else {
-                new PlayerMessage("server.no-perm", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            new ConsoleMessage("server.only-player");
+            Messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

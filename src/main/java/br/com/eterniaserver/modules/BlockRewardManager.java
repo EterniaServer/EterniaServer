@@ -1,8 +1,8 @@
 package br.com.eterniaserver.modules;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.methods.ConsoleMessage;
 
+import br.com.eterniaserver.configs.Messages;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -23,9 +23,9 @@ public class BlockRewardManager {
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            new ConsoleMessage("modules.enable", "Block-Reward");
+            Messages.ConsoleMessage("modules.enable", "Block-Reward");
         } else {
-            new ConsoleMessage("modules.disable", "Block-Reward");
+            Messages.ConsoleMessage("modules.disable", "Block-Reward");
         }
     }
 
