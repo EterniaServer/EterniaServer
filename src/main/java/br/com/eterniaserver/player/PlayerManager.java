@@ -42,13 +42,13 @@ public class PlayerManager {
     }
 
     public static void CreateHome(final String playerName) {
-        final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-home") + " (name, homes) VALUES('" + playerName + "', '" + "" + "');";
+        final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');";
         EterniaServer.connection.Update(querie);
     }
 
     public static boolean PlayerExistH(final String playerName) {
         try {
-            final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home")+ " WHERE name='" + playerName + "';";
+            final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home")+ " WHERE player_name='" + playerName + "';";
             final ResultSet rs = EterniaServer.connection.Query(querie);
             return rs.next() && rs.getString("name") != null;
         } catch (SQLException e) {

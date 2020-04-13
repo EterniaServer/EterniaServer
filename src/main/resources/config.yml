@@ -34,7 +34,7 @@ modules:
 # command that teleports him.
 server:
   async-check: true
-  checks: 3
+  checks: 2
   afk-timer: 900
   cooldown: 4
 

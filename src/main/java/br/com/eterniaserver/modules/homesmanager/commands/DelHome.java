@@ -15,8 +15,8 @@ public class DelHome implements CommandExecutor {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (player.hasPermission("eternia.delhome")) {
-                    if (Queries.existHome(args[0], player.getName())) {
-                        Queries.delHome(args[0], player.getName());
+                    if (Queries.existHome(args[0].toLowerCase(), player.getName())) {
+                        Queries.delHome(args[0].toLowerCase(), player.getName());
                         Messages.PlayerMessage("home.del", player);
                     } else {
                         Messages.PlayerMessage("home.no", player);

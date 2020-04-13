@@ -26,7 +26,7 @@ public class Home implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.home")) {
                 if (args.length == 1) {
-                    final Location location = Queries.getHome(args[0].toLowerCase(), player.getName());
+                    Location location = Queries.getHome(args[0].toLowerCase(), player.getName());
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(location);
@@ -45,13 +45,30 @@ public class Home implements CommandExecutor {
                             }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                         }
                     } else {
-                        Messages.PlayerMessage("home.no", player);
+                        Messages.PlayerMessage("home.noex", player);
+                    }
+                } else if (args.length == 2) {
+                    if (player.hasPermission("eternia.home.others")) {
+                        Player target = Bukkit.getPlayer(args[0]);
+                        if (target != null && target.isOnline()) {
+                            Location location = Queries.getHome(args[1].toLowerCase(), target.getName());
+                            if (location != Vars.error) {
+                                player.teleport(location);
+                                Messages.PlayerMessage("home.suc", player);
+                            } else {
+                                Messages.PlayerMessage("home.noex", player);
+                            }
+                        } else {
+                            Messages.PlayerMessage("server.player-offline", player);
+                        }
+                    } else {
+                        Messages.PlayerMessage("server.no-perm", player);
                     }
                 } else {
                     Messages.PlayerMessage("home.use2", player);
                 }
             } else {
-                Messages.PlayerMessage("sem-permissao", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
             Messages.ConsoleMessage("server.only-player");

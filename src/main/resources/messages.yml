@@ -33,9 +33,9 @@ home:
   del: '&7Home deletada com sucesso&8.'
   max: '&7Máximo de homes&8,&7 delete alguma&8, &7ou use essa bussola&8.'
   def: '&7Home definida&8.'
-  no: '&7Essa home não existe&8.'
+  noex: '&7Essa home não existe&8.'
   suc: '&7Você foi até sua home&8.'
-  list: '&7Homes&8: %s&7use &6/home &3<nome> &7para ir até elas&8.'
+  list: '&7Homes&8: &3%s&7use &6/home &3<nome> &7para ir até elas&8.'
 simp:
   gmuse: '&7Utilize &6/gamemode &3<3 &8| &32 &8| &31&3> <jogador>&8.'
   gm: '&7Seu modo de jogo foi alterado para &3%s&8.'

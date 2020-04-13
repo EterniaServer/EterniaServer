@@ -38,8 +38,8 @@ public class QueriesW {
         } else {
             if (existWarp(warp)) {
                 try {
-                    final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-                    final ResultSet rs = EterniaServer.connection.Query(querie);
+                    String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+                    ResultSet rs = EterniaServer.connection.Query(querie);
                     if (rs.next()) {
                         rs.getString("location");
                     }
@@ -56,8 +56,8 @@ public class QueriesW {
 
     public static boolean existWarp(String warp) {
         try {
-            final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-            final ResultSet rs = EterniaServer.connection.Query(querie);
+            String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+            ResultSet rs = EterniaServer.connection.Query(querie);
             return rs.next() && rs.getString("name") != null;
         } catch (SQLException e) {
             e.printStackTrace();

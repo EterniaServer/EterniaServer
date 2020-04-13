@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class OnPlayerInteract implements Listener {
 
-    private EterniaServer plugin;
+    private final EterniaServer plugin;
 
     public OnPlayerInteract (EterniaServer plugin) {
         this.plugin = plugin;

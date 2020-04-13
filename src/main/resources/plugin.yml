@@ -145,15 +145,15 @@ commands:
   workbench:
     description: Abre uma workbench.
     aliases: [craft]
-  delhome:
+  delhouse:
     description: Deleta uma home.
-    aliases: [delhouse, delcasa]
-  home:
+    aliases: [delhome, delcasa]
+  house:
     description: Vai pra uma home.
-    aliases: [casa, house]
-  homes:
+    aliases: [casa, home]
+  houses:
     description: Ve suas homes.
-    aliases: [casas, houses]
-  sethome:
+    aliases: [casas, homes]
+  sethouse:
     description: Define uma home.
-    aliases: [setcasa, sethouse]
+    aliases: [setcasa, sethome]

@@ -14,11 +14,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
+    public static Connections connection;
+
     public static FileConfiguration blocks;
     public static FileConfiguration configs;
     public static FileConfiguration messages;
-
-    public static Connections connection;
 
     @Override
     public void onEnable() {
@@ -42,7 +42,7 @@ public class EterniaServer extends JavaPlugin {
 
         this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this), this);
         this.getServer().getPluginManager().registerEvents(new OnBlockPlace(), this);
-        this.getServer().getPluginManager().registerEvents(new OnChat(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
         this.getServer().getPluginManager().registerEvents(new OnDamage(), this);
         this.getServer().getPluginManager().registerEvents(new OnExpDrop(), this);
         this.getServer().getPluginManager().registerEvents(new OnInventoryClick(), this);

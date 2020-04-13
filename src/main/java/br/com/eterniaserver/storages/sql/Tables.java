@@ -13,7 +13,7 @@ public class Tables {
         EterniaServer.connection.Update(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-shop") + " (name varchar(16), location varchar(128));";
         EterniaServer.connection.Update(createTable);
-        createTable = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-home") + " (name varchar(16), many int(6), homes varchar(255));";
+        createTable = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-home") + " (player_name varchar(16), homes varchar(255));";
         EterniaServer.connection.Update(createTable);
         createTable = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-homes") + " (name varchar(32), location varchar(128));";
         EterniaServer.connection.Update(createTable);

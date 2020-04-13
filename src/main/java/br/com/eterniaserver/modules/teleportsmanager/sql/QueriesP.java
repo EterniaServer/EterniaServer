@@ -32,8 +32,8 @@ public class QueriesP {
         } else {
             if (existShop(shop)) {
                 try {
-                    final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-                    final ResultSet rs = EterniaServer.connection.Query(querie);
+                    String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
+                    ResultSet rs = EterniaServer.connection.Query(querie);
                     if (rs.next()) {
                         rs.getString("location");
                     }
@@ -50,8 +50,8 @@ public class QueriesP {
 
     private static boolean existShop(String shop) {
         try {
-            final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-            final ResultSet rs = EterniaServer.connection.Query(querie);
+            String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
+            ResultSet rs = EterniaServer.connection.Query(querie);
             return rs.next() && rs.getString("name") != null;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package br.com.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.homesmanager.sql.Queries;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -22,29 +23,41 @@ public class SetHome implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.sethome")) {
                 if (args.length == 1) {
-                    if (Queries.canHome(player.getName()) < 3) {
-                        Queries.setHome(player.getLocation(), args[0], player.getName());
+                    int i = 3;
+                    if (player.hasPermission("eternia.sethome.5")) i = 5;
+                    if (player.hasPermission("eternia.sethome.10")) i = 10;
+                    if (player.hasPermission("eternia.sethome.15")) i = 15;
+                    if (player.hasPermission("eternia.sethome.20")) i = 20;
+                    if (player.hasPermission("eternia.sethome.25")) i = 25;
+                    if (player.hasPermission("eternia.sethome.30")) i = 30;
+                    if (Queries.canHome(player.getName()) < i) {
+                        Queries.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
                         Messages.PlayerMessage("home.def", player);
                     } else {
-                        ItemStack item = new ItemStack(Material.COMPASS);
-                        ItemMeta meta = item.getItemMeta();
-                        if (meta != null) {
-                            final Location loc = player.getLocation();
-                            final String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
-                                    ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
-                            meta.setLore(Collections.singletonList(saveloc));
-                            meta.setDisplayName(args[0]);
-                            item.setItemMeta(meta);
+                        if (Queries.existHome(args[0].toLowerCase(), player.getName())) {
+                            Queries.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
+                            Messages.PlayerMessage("home.def", player);
+                        } else {
+                            ItemStack item = new ItemStack(Material.COMPASS);
+                            ItemMeta meta = item.getItemMeta();
+                            if (meta != null) {
+                                final Location loc = player.getLocation();
+                                final String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
+                                        ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
+                                meta.setLore(Collections.singletonList(saveloc));
+                                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&e" + args[0].toLowerCase() + "&8]"));
+                                item.setItemMeta(meta);
+                            }
+                            PlayerInventory inventory = player.getInventory();
+                            inventory.addItem(item);
+                            Messages.PlayerMessage("home.max", player);
                         }
-                        PlayerInventory inventory = player.getInventory();
-                        inventory.addItem(item);
-                        Messages.PlayerMessage("home.max", player);
                     }
                 } else {
                     Messages.PlayerMessage("home.use", player);
                 }
             } else {
-                Messages.PlayerMessage("sem-permissao", player);
+                Messages.PlayerMessage("server.no-perm", player);
             }
         } else {
             Messages.ConsoleMessage("server.only-player");
