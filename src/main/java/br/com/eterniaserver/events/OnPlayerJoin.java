@@ -28,6 +28,7 @@ public class OnPlayerJoin implements Listener {
                 PlayerManager.CreateHome(player.getName());
             }
         }
+        Vars.teleporting.put(player.getName(), System.currentTimeMillis());
         event.setJoinMessage(null);
         Messages.BroadcastMessage("server.join", player.getName());
     }

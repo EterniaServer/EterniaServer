@@ -1,6 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.economymanager.sql.Queries;
@@ -25,6 +26,10 @@ public class Back implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.back")) {
+                if (Checks.isTp(player.getName())) {
+                    Messages.PlayerMessage("server.telep", player);
+                    return true;
+                }
                 if (Vars.back.containsKey(player.getName())) {
                     double money = Queries.getMoney(player.getName());
                     double valor = EterniaServer.configs.getInt("money.back");
@@ -36,6 +41,7 @@ public class Back implements CommandExecutor {
                         } else {
                             Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
+                            Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {
@@ -59,6 +65,7 @@ public class Back implements CommandExecutor {
                                 Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                                 Vars.moved.put(player.getName(), false);
                                 Vars.playerposition.put(player.getName(), player.getLocation());
+                                Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                                 {
                                     if (!Vars.moved.get(player.getName())) {

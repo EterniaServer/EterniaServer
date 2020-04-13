@@ -52,33 +52,31 @@ public class Queries {
     }
 
     public static void delHome(String home, String jogador) {
-        Vars.homes.remove(home);
-        try {
-            String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE player_name='" + home + "';";
-            ResultSet rsd = EterniaServer.connection.Query(querie);
-            if (rsd.next()) {
-                rsd.getString("homes");
+        Vars.homes.remove(home + "." + jogador);
+        StringBuilder nova = new StringBuilder();
+        String[] values = getHomes(jogador);
+        boolean t = true;
+        for (String line : values) {
+            if (!line.equals(home)) {
+                nova.append(line).append(":");
+                t = false;
             }
-            String[] values = rsd.getString("homes").split(":");
-            StringBuilder nova = new StringBuilder();
-            for (String line : values) {
-                if (!line.equals(home)) {
-                    nova.append(line).append(":");
-                }
-            }
-            querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
-            EterniaServer.connection.Update(querie);
-            querie = "DELETE FROM " + EterniaServer.configs.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
-            EterniaServer.connection.Update(querie);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+        if (t) {
+            String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
+            EterniaServer.connection.Update(querie);
+        } else {
+            String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
+            EterniaServer.connection.Update(querie);
+        }
+        String querie = "DELETE FROM " + EterniaServer.configs.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
+        EterniaServer.connection.Update(querie);
     }
 
     public static Location getHome(String home, String jogador) {
         Location loc = Vars.error;
-        if (Vars.homes.containsKey(home)) {
-            loc = Vars.homes.get(home);
+        if (Vars.homes.containsKey(home + "." + jogador)) {
+            loc = Vars.homes.get(home + "." + jogador);
         } else {
             try {
                 if (existHome(home, jogador)) {
@@ -90,7 +88,7 @@ public class Queries {
                         }
                         String[] values = rss.getString("location").split(":");
                         loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                        Vars.homes.put(home, loc);
+                        Vars.homes.put(home + "." + jogador, loc);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }

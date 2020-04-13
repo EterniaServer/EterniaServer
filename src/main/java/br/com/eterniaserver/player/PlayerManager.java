@@ -50,7 +50,7 @@ public class PlayerManager {
         try {
             final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home")+ " WHERE player_name='" + playerName + "';";
             final ResultSet rs = EterniaServer.connection.Query(querie);
-            return rs.next() && rs.getString("name") != null;
+            return rs.next() && rs.getString("player_name") != null;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

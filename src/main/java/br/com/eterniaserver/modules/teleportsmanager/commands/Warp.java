@@ -1,6 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
@@ -25,6 +26,10 @@ public class Warp implements CommandExecutor {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (player.hasPermission("eternia.warp." + args[0].toLowerCase())) {
+                    if (Checks.isTp(player.getName())) {
+                        Messages.PlayerMessage("server.telep", player);
+                        return true;
+                    }
                     final Location location = QueriesW.getWarp(args[0].toLowerCase());
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
@@ -34,6 +39,7 @@ public class Warp implements CommandExecutor {
                             Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.moved.put(player.getName(), false);
+                            Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {
                                 if (!Vars.moved.get(player.getName())) {

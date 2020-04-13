@@ -24,13 +24,12 @@ public class TeleportAccept implements CommandExecutor {
             if (player.hasPermission("eternia.tpa")) {
                 if (Vars.tpa_requests.containsKey(player.getName())) {
                     Player target = Bukkit.getPlayer(Vars.tpa_requests.get(player.getName()));
-                    assert target != null;
-                    if (target.hasPermission("eternia.timing.bypass")) {
+                    if (target != null && target.hasPermission("eternia.timing.bypass")) {
                         target.teleport(player.getLocation());
                         Messages.PlayerMessage("teleport.tpto", player.getName(), target);
                         Messages.PlayerMessage("teleport.accept", player.getName(), target);
                         Vars.tpa_requests.remove(player.getName());
-                    } else {
+                    } else if (target != null){
                         Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), target);
                         Messages.PlayerMessage("teleport.accept", player.getName(), target);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->

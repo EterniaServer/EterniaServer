@@ -1,6 +1,7 @@
 package br.com.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.homesmanager.sql.Queries;
@@ -25,6 +26,10 @@ public class Home implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.home")) {
+                if (Checks.isTp(player.getName())) {
+                    Messages.PlayerMessage("server.telep", player);
+                    return true;
+                }
                 if (args.length == 1) {
                     Location location = Queries.getHome(args[0].toLowerCase(), player.getName());
                     if (location != Vars.error) {
@@ -34,6 +39,7 @@ public class Home implements CommandExecutor {
                         } else {
                             Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
+                            Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                                 if (!Vars.moved.get(player.getName())) {

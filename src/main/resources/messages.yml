@@ -18,6 +18,7 @@ server:
   timing: '&7Você deve esperar &3%s &7segundos para poder usar esse comando novamente&8.'
   afk-kick: '&7Você foi kickado por está afk&8.'
   reload: '&7Configurações reiniciadas&8.'
+  telep: '&7Você já está em um teleporte&8, &7espere acabar&8.'
 modules:
   enable: '&7Modulo de &3%s &7habilitado&8.'
   disable: '&7Modulo de &3%s &7desabilitado&8.'
@@ -36,6 +37,7 @@ home:
   noex: '&7Essa home não existe&8.'
   suc: '&7Você foi até sua home&8.'
   list: '&7Homes&8: &3%s&7use &6/home &3<nome> &7para ir até elas&8.'
+  grand: '&7O nome da sua home é grande demais&8.'
 simp:
   gmuse: '&7Utilize &6/gamemode &3<3 &8| &32 &8| &31&3> <jogador>&8.'
   gm: '&7Seu modo de jogo foi alterado para &3%s&8.'
@@ -109,6 +111,7 @@ warps:
   delwarp: '&7Warp deletada'
   deluse: '&7Use &6/delwarp &3<nome>&8.'
   move: '&7Você se moveu por isso o teleporte foi cancelado&8.'
+  jadeu: '&7Essa pessoa já tem um pedido de teleporte ativo&8.'
 back:
   free: '&7Você voltou aonde estava de graça&8.'
   notp: '&7Você ainda não se teleportou&8.'

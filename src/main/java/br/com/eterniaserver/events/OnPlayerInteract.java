@@ -1,6 +1,7 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.configs.Messages;
 import org.bukkit.Bukkit;
@@ -29,6 +30,10 @@ public class OnPlayerInteract implements Listener {
                 ItemStack is = e.getPlayer().getInventory().getItemInMainHand();
                 if (is.getType().equals(Material.COMPASS) && is.getItemMeta() != null && is.getItemMeta().getLore() != null) {
                     Player player = e.getPlayer();
+                    if (Checks.isTp(player.getName())) {
+                        Messages.PlayerMessage("server.telep", player);
+                        return;
+                    }
                     String values = is.getItemMeta().getLore().get(0);
                     String[] isso = values.split(":");
                     final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]), Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
@@ -38,6 +43,7 @@ public class OnPlayerInteract implements Listener {
                     } else {
                         Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                         Vars.playerposition.put(player.getName(), player.getLocation());
+                        Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                         Vars.moved.put(player.getName(), false);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                             if (!Vars.moved.get(player.getName())) {

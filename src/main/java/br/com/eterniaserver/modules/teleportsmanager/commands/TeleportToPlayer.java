@@ -1,5 +1,6 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
+import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import org.bukkit.Bukkit;
@@ -15,16 +16,24 @@ public class TeleportToPlayer implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.tpa")) {
+                if (Checks.isTp(player.getName())) {
+                    Messages.PlayerMessage("server.telep", player);
+                    return true;
+                }
                 if (args.length == 1) {
                     try {
                         Player target = Bukkit.getPlayer(args[0]);
-                        assert target != null;
-                        if (target.isOnline()) {
+                        if (target != null && target.isOnline()) {
                             if (target != player) {
-                                Vars.tpa_requests.remove(target.getName());
-                                Vars.tpa_requests.put(target.getName(), player.getName());
-                                Messages.PlayerMessage("teleport.receiver", player.getName(), target);
-                                Messages.PlayerMessage("teleport.send", target.getName(), player);
+                                if (!Vars.tpa_requests.containsKey(target.getName())) {
+                                    Vars.tpa_requests.remove(target.getName());
+                                    Vars.tpa_requests.put(target.getName(), player.getName());
+                                    Vars.teleporting.put(player.getName(), System.currentTimeMillis());
+                                    Messages.PlayerMessage("teleport.receiver", player.getName(), target);
+                                    Messages.PlayerMessage("teleport.send", target.getName(), player);
+                                } else {
+                                    Messages.PlayerMessage("warps.jadeu", player);
+                                }
                             } else {
                                 Messages.PlayerMessage("teleport.auto", player);
                             }

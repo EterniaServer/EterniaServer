@@ -1,6 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesP;
 import br.com.eterniaserver.configs.Vars;
@@ -27,6 +28,10 @@ public class Shop implements CommandExecutor {
             if (args.length == 0) {
                 final Location location = QueriesW.getWarp("shop");
                 if (player.hasPermission("eternia.warp.shop")) {
+                    if (Checks.isTp(player.getName())) {
+                        Messages.PlayerMessage("server.telep", player);
+                        return true;
+                    }
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             player.teleport(location);
@@ -34,6 +39,7 @@ public class Shop implements CommandExecutor {
                         } else {
                             Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
+                            Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {
@@ -61,6 +67,7 @@ public class Shop implements CommandExecutor {
                         } else {
                             Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
+                            Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {

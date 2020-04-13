@@ -24,24 +24,45 @@ public class Homes implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.homes")) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    StringBuilder accounts = new StringBuilder();
-                    String[] values = new String[0];
-                    try {
-                        String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE player_name='" + player.getName() + "';";
-                        ResultSet rs = EterniaServer.connection.Query(querie);
-                        if (rs.next()) {
-                            rs.getString("homes");
+                if (args.length == 1) {
+                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                        StringBuilder accounts = new StringBuilder();
+                        String[] values = new String[0];
+                        try {
+                            String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE player_name='" + args[0] + "';";
+                            ResultSet rs = EterniaServer.connection.Query(querie);
+                            if (rs.next()) {
+                                rs.getString("homes");
+                            }
+                            values = rs.getString("homes").split(":");
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
-                        values = rs.getString("homes").split(":");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    for (String line : values) {
-                        accounts.append(line).append("&8, &3");
-                    }
-                    Messages.PlayerMessage("home.list", Strings.getColor(accounts.toString()), player);
-                });
+                        for (String line : values) {
+                            accounts.append(line).append("&8, &3");
+                        }
+                        Messages.PlayerMessage("home.list", Strings.getColor(accounts.toString()), player);
+                    });
+                } else {
+                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                        StringBuilder accounts = new StringBuilder();
+                        String[] values = new String[0];
+                        try {
+                            String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE player_name='" + player.getName() + "';";
+                            ResultSet rs = EterniaServer.connection.Query(querie);
+                            if (rs.next()) {
+                                rs.getString("homes");
+                            }
+                            values = rs.getString("homes").split(":");
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        for (String line : values) {
+                            accounts.append(line).append("&8, &3");
+                        }
+                        Messages.PlayerMessage("home.list", Strings.getColor(accounts.toString()), player);
+                    });
+                }
             } else {
                 Messages.PlayerMessage("server.no-perm", player);
             }
