@@ -16,11 +16,12 @@ public class TeleportDeny implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.tpa")) {
                 if (Vars.tpa_requests.containsKey(player.getName())) {
+                    Messages.PlayerMessage("teleport.auto-deny", Vars.tpa_requests.get(player.getName()), player);
                     Player target = Bukkit.getPlayer(Vars.tpa_requests.get(player.getName()));
-                    assert target != null;
-                    Messages.PlayerMessage("teleport.auto-deny", target.getName(), player);
-                    Messages.PlayerMessage("teleport.deny", target);
                     Vars.tpa_requests.remove(player.getName());
+                    if (target != null && target.isOnline()) {
+                        Messages.PlayerMessage("teleport.deny", target);
+                    }
                 } else {
                     Messages.PlayerMessage("teleport.noask", player);
                 }

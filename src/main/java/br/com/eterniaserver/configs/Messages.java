@@ -71,6 +71,16 @@ public class Messages {
         player.sendMessage(message.replace("%v", String.valueOf(valor3)));
     }
 
+    public static void PlayerMessage(String message, Object valor, Object valor2, Object valor3, Player player, boolean console) {
+        message = Strings.getMessage(message);
+        message = message.replace("%s", String.valueOf(valor));
+        message = message.replace("%b", String.valueOf(valor2));
+        player.sendMessage(message.replace("%v", String.valueOf(valor3)));
+        if (console) {
+            ConsoleMessage(message.replace("%v", String.valueOf(valor3)));
+        }
+    }
+
     private static java.lang.String putPrefix(String message) {
         return Strings.getMessage("server.prefix") + Strings.getMessage(message);
     }

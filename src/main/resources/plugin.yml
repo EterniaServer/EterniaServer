@@ -5,14 +5,15 @@ version: '${project.version}'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
-softdepend: [Vault]
+depend: [Vault]
+loadbefore: [VentureChat]
 commands:
   suicide:
     description: Se mate.
     aliases: [suicidio, killme]
   advice:
     description: Avise.
-    aliases: [broadcast, anuncio, aviso]
+    aliases: [broadcast, aviso, anuncio]
   donation:
     description: Doe.
     aliases: [doacao, doar, comprarvip]
@@ -157,3 +158,9 @@ commands:
   sethouse:
     description: Define uma home.
     aliases: [setcasa, sethome]
+  tell:
+    description: Manda uma mensagem privada.
+    aliases: [msg, w, whisper, message, pm]
+  resp:
+    description: Manda uma resposta.
+    aliases: [r]
