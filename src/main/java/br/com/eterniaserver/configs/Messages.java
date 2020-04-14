@@ -77,7 +77,7 @@ public class Messages {
         message = message.replace("%b", String.valueOf(valor2));
         player.sendMessage(message.replace("%v", String.valueOf(valor3)));
         if (console) {
-            ConsoleMessage(message.replace("%v", String.valueOf(valor3)));
+            Bukkit.getConsoleSender().sendMessage(message.replace("%v", String.valueOf(valor3)));
         }
     }
 

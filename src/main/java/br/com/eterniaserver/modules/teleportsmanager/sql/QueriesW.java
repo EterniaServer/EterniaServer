@@ -12,7 +12,6 @@ import java.util.Objects;
 public class QueriesW {
 
     public static void setWarp(Location loc, String warp) {
-        Vars.warps.remove(warp);
         Vars.warps.put(warp, loc);
         String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                 ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());

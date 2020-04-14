@@ -12,7 +12,6 @@ import java.util.Objects;
 public class QueriesP {
 
     public static void setShop(Location loc, String shop) {
-        Vars.shops.remove(shop);
         Vars.shops.put(shop, loc);
         String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                 ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
