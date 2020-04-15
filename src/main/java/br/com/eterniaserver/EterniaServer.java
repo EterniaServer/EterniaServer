@@ -58,7 +58,6 @@ public class EterniaServer extends JavaPlugin {
     public void onDisable() {
 
         vaultUnHook();
-        connection.Close();
 
     }
 
