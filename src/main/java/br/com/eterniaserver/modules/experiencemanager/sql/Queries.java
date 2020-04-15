@@ -3,8 +3,9 @@ package br.com.eterniaserver.modules.experiencemanager.sql;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Queries {
 
@@ -12,26 +13,29 @@ public class Queries {
         if (Vars.xp.containsKey(playerName)) {
             return Vars.xp.get(playerName);
         }
-        int xp = 0;
-        try {
-            String querie = "SELECT xp FROM " + EterniaServer.configs.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
-            ResultSet rs = EterniaServer.connection.Query(querie);
-            if (rs.next()) {
-                rs.getInt("xp");
+
+        AtomicReference<Integer> xp = new AtomicReference<>(0);
+        final String querie = "SELECT xp FROM " + EterniaServer.configs.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
+        EterniaServer.connection.executeSQLQuery(connection -> {
+            PreparedStatement getshop = connection.prepareStatement(querie);
+            ResultSet resultSet = getshop.executeQuery();
+            if (resultSet.next() && resultSet.getInt("xp") != 0) {
+                xp.set(resultSet.getInt("xp"));
             }
-            xp = rs.getInt("xp");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        Vars.xp.put(playerName, xp);
-        return xp;
+        });
+
+        Vars.xp.put(playerName, xp.get());
+        return xp.get();
     }
 
     public static void setExp(String playerName, int valor) {
-        Vars.xp.remove(playerName);
         Vars.xp.put(playerName, valor);
-        String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-xp") + " SET xp='" + valor + "' WHERE player_name='" + playerName + "';";
-        EterniaServer.connection.Update(querie);
+        final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-xp") + " SET xp='" + valor + "' WHERE player_name='" + playerName + "';";
+        EterniaServer.connection.executeSQLQuery(connection -> {
+            PreparedStatement setexp = connection.prepareStatement(querie);
+            setexp.execute();
+            setexp.close();
+        }, true);
     }
 
     public static void addExp(String playerName, int valor) {

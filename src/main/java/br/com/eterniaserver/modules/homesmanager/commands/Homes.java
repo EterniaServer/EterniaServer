@@ -3,13 +3,12 @@ package br.com.eterniaserver.modules.homesmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
+import br.com.eterniaserver.modules.homesmanager.sql.Queries;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Homes implements CommandExecutor {
 
@@ -25,38 +24,27 @@ public class Homes implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.homes")) {
                 if (args.length == 1) {
-                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                        StringBuilder accounts = new StringBuilder();
-                        String[] values = new String[0];
-                        try {
-                            String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE player_name='" + args[0] + "';";
-                            ResultSet rs = EterniaServer.connection.Query(querie);
-                            if (rs.next()) {
-                                rs.getString("homes");
-                            }
-                            values = rs.getString("homes").split(":");
-                        } catch (SQLException e) {
-                            e.printStackTrace();
+                    if (player.hasPermission("eternia.homes.other")) {
+                        Player target = Bukkit.getPlayer(args[0]);
+                        if (target != null && target.isOnline()) {
+                            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                                StringBuilder accounts = new StringBuilder();
+                                String[] values = Queries.getHomes(target.getName());
+                                for (String line : values) {
+                                    accounts.append(line).append("&8, &3");
+                                }
+                                Messages.PlayerMessage("home.list", Strings.getColor(accounts.toString()), player);
+                            });
+                        } else {
+                            Messages.PlayerMessage("server.player-offline", player);
                         }
-                        for (String line : values) {
-                            accounts.append(line).append("&8, &3");
-                        }
-                        Messages.PlayerMessage("home.list", Strings.getColor(accounts.toString()), player);
-                    });
+                    } else {
+                        Messages.PlayerMessage("server.no-perm", player);
+                    }
                 } else {
                     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                         StringBuilder accounts = new StringBuilder();
-                        String[] values = new String[0];
-                        try {
-                            String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE player_name='" + player.getName() + "';";
-                            ResultSet rs = EterniaServer.connection.Query(querie);
-                            if (rs.next()) {
-                                rs.getString("homes");
-                            }
-                            values = rs.getString("homes").split(":");
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+                        String[] values = Queries.getHomes(player.getName());
                         for (String line : values) {
                             accounts.append(line).append("&8, &3");
                         }

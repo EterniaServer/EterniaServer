@@ -1,18 +1,18 @@
 package br.com.eterniaserver.storages.sql;
 
 import br.com.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.configs.Messages;
-import org.bukkit.Bukkit;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.File;
 import java.sql.*;
 
 public class Connections {
 
-    private Connection con;
     private final boolean mysql;
     private final EterniaServer plugin;
+    private HikariDataSource hikari;
 
     public Connections(EterniaServer plugin, final boolean mysql) {
         this.plugin = plugin;
@@ -22,60 +22,53 @@ public class Connections {
 
     public void Connect() {
         if (mysql) {
-            try {
-                String host = EterniaServer.configs.getString("sql.host");
-                String port = EterniaServer.configs.getString("sql.port");
-                String database = EterniaServer.configs.getString("sql.database");
-                String username = EterniaServer.configs.getString("sql.user");
-                String password = EterniaServer.configs.getString("sql.password");
-                this.con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", username, password);
-                Messages.ConsoleMessage("server.mysql-ok");
-            } catch (SQLException e) {
-                Messages.ConsoleMessage("server.sql-error", e.getMessage());
-            }
+            hikari = new HikariDataSource();
+            hikari.setPoolName("EterniaServer MySQL Pool");
+            hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+            hikari.addDataSourceProperty("serverName", EterniaServer.configs.getString("sql.host"));
+            hikari.addDataSourceProperty("port", EterniaServer.configs.getString("sql.port"));
+            hikari.addDataSourceProperty("databaseName", EterniaServer.configs.getString("sql.database"));
+            hikari.addDataSourceProperty("user", EterniaServer.configs.getString("sql.user"));
+            hikari.addDataSourceProperty("password", EterniaServer.configs.getString("sql.password"));
+            hikari.setMaximumPoolSize(50);
+            Messages.ConsoleMessage("server.mysql-ok");
         } else {
-            try {
-                File dataFolder = new File(plugin.getDataFolder(), "eternia.db");
-                this.con = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
-                Messages.ConsoleMessage("server.sql-ok");
-            } catch (SQLException e) {
-                Messages.ConsoleMessage("server.sql-error", e.getMessage());
-            }
+            hikari = new HikariDataSource();
+            hikari.setPoolName("EterniaServer SQLite Pool");
+            hikari.setDriverClassName("org.sqlite.JDBC");
+            hikari.setJdbcUrl("jdbc:sqlite:" + new File(plugin.getDataFolder(), "eternia.db"));
+            hikari.setMaximumPoolSize(50);
+            Messages.ConsoleMessage("server.sql-ok");
         }
     }
 
+    public boolean isClosed() {
+        return hikari.isClosed();
+    }
 
     public void Close() {
-        try {
-            if (this.con != null) {
-                this.con.close();
-                Messages.ConsoleMessage("server.sql-finish");
-            }
-        } catch (SQLException e) {
-            Messages.ConsoleMessage("server.sql-error", e.getMessage());
+        hikari.close();
+        Messages.ConsoleMessage("server.sql-finish");
+    }
+
+    public void executeSQLQuery(SQLCallback callback) {
+        executeSQLQuery(callback, false);
+    }
+
+    public void executeSQLQuery(SQLCallback callback, boolean async) {
+        SQLTask task = new SQLTask(this, callback);
+        if(async) {
+            task.executeAsync();
+        } else {
+            task.run();
         }
     }
 
-    public void Update(final String sql) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                con.createStatement().executeUpdate(sql);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+    public Connection getConnection() throws SQLException {
+        return hikari != null ? hikari.getConnection() : null;
     }
 
-    public ResultSet Query(final String qry) {
-        ResultSet rs = null;
-        try {
-            final Statement st = this.con.createStatement();
-            rs = st.executeQuery(qry);
-        } catch (SQLException e) {
-            this.Connect();
-            e.printStackTrace();
-        }
-        return rs;
+    public EterniaServer getPlugin() {
+        return plugin;
     }
-
 }

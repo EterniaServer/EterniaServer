@@ -4,8 +4,9 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.player.PlayerManager;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Queries {
 
@@ -13,24 +14,24 @@ public class Queries {
         if (Vars.money.containsKey(playerName)) {
             return Vars.money.get(playerName);
         }
-        double i = 0;
-        if (PlayerManager.PlayerExistE(playerName)) {
-            try {
-                String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-money") + " WHERE player_name='" + playerName + "';";
-                ResultSet rs = EterniaServer.connection.Query(querie);
-                if (rs.next()) {
-                    rs.getDouble("balance");
+
+        AtomicReference<Double> money = new AtomicReference<>(0.0);
+        if (PlayerManager.playerMoneyExist(playerName)) {
+            final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-money") + " WHERE player_name='" + playerName + "';";
+            EterniaServer.connection.executeSQLQuery(connection -> {
+                PreparedStatement getshop = connection.prepareStatement(querie);
+                ResultSet resultSet = getshop.executeQuery();
+                if (resultSet.next() && resultSet.getDouble("balance") != 0) {
+                    money.set(resultSet.getDouble("balance"));
                 }
-                i = rs.getDouble("balance");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            });
         } else {
-            PlayerManager.CreateEconomy(playerName);
-            i = 300;
+            PlayerManager.playerMoneyCreate(playerName);
+            money.set(300.0);
         }
-        Vars.money.put(playerName, i);
-        return i;
+
+        Vars.money.put(playerName, money.get());
+        return money.get();
     }
 
     public static boolean hasMoney(String playerName, double Money) {
@@ -38,31 +39,35 @@ public class Queries {
     }
 
     public static void setMoney(String playerName, double Money) {
-        if (PlayerManager.PlayerExistE(playerName)) {
+        if (PlayerManager.playerMoneyExist(playerName)) {
             Vars.money.remove(playerName);
             Vars.money.put(playerName, Money);
-            String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-money") + " SET balance='" + Money + "' WHERE player_name='" + playerName + "';";
-            EterniaServer.connection.Update(querie);
+            final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-money") + " SET balance='" + Money + "' WHERE player_name='" + playerName + "';";
+            EterniaServer.connection.executeSQLQuery(connection -> {
+                PreparedStatement setmoney = connection.prepareStatement(querie);
+                setmoney.execute();
+                setmoney.close();
+            }, true);
         } else {
-            PlayerManager.CreateEconomy(playerName);
+            PlayerManager.playerMoneyCreate(playerName);
             setMoney(playerName, Money);
         }
     }
 
     public static void addMoney(String playerName, double money) {
-        if (PlayerManager.PlayerExistE(playerName)) {
+        if (PlayerManager.playerMoneyExist(playerName)) {
             setMoney(playerName, getMoney(playerName) + money);
         } else {
-            PlayerManager.CreateEconomy(playerName);
+            PlayerManager.playerMoneyCreate(playerName);
             addMoney(playerName, getMoney(playerName) + money);
         }
     }
 
     public static void removeMoney(String playerName, double money) {
-        if (PlayerManager.PlayerExistE(playerName)) {
+        if (PlayerManager.playerMoneyExist(playerName)) {
             setMoney(playerName, getMoney(playerName) - money);
         } else {
-            PlayerManager.CreateEconomy(playerName);
+            PlayerManager.playerMoneyCreate(playerName);
             removeMoney(playerName, getMoney(playerName) - money);
         }
     }

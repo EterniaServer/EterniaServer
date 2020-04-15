@@ -8,8 +8,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class ListWarp implements CommandExecutor {
 
@@ -25,30 +26,18 @@ public class ListWarp implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.listwarp")) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    final java.lang.String query = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + ";";
+                    final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + ";";
                     StringBuilder accounts = new StringBuilder();
-                    ResultSet rs = null;
-                    try {
-                        rs = EterniaServer.connection.Query(query);
-                        while (rs.next()) {
-                            final java.lang.String string2 = rs.getString("name");
-                            accounts.append(string2).append("&8, &3");
+                    EterniaServer.connection.executeSQLQuery(connection -> {
+                        PreparedStatement getHome = connection.prepareStatement(querie);
+                        ResultSet resultSet = getHome.executeQuery();
+                        while (resultSet.next()) {
+                            final String warpname = resultSet.getString("name");
+                            accounts.append(warpname).append("&8, &3");
                         }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        try {
-                            rs.close();
-                        } catch (SQLException ee) {
-                            ee.printStackTrace();
-                        }
-                    } finally {
-                        try {
-                            assert rs != null;
-                            rs.close();
-                        } catch (SQLException e2) {
-                            e2.printStackTrace();
-                        }
-                    }
+                        resultSet.close();
+                        getHome.close();
+                    });
                     Messages.PlayerMessage("warps.list", Strings.getColor(accounts.toString()), player);
                 });
             } else {

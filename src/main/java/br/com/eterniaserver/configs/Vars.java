@@ -20,6 +20,7 @@ public class Vars {
     public static final HashMap<String, Double> money = new HashMap<>();
     public static final HashMap<String, String> tell = new HashMap<>();
     public static final HashMap<String, String> tpa_requests = new HashMap<>();
+    public static final HashMap<String, String[]> home = new HashMap<>();
     public static final HashMap<String, Boolean> moved = new HashMap<>();
     public static final HashMap<String, Integer> xp = new HashMap<>();
     public static final HashMap<String, Integer> playersInPortal = new HashMap<>();

@@ -54,12 +54,12 @@ public class SystemEconomy implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return PlayerManager.PlayerExist(playerName);
+        return PlayerManager.playerXPExist(playerName);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return PlayerManager.PlayerExist(player.getName());
+        return PlayerManager.playerXPExist(player.getName());
     }
 
     @Override
@@ -225,7 +225,7 @@ public class SystemEconomy implements Economy {
         if (this.hasAccount(playerName)) {
             return false;
         }
-        PlayerManager.CreatePlayer(playerName);
+        PlayerManager.playerXPCreate(playerName);
         return true;
     }
 
@@ -234,7 +234,7 @@ public class SystemEconomy implements Economy {
         if (this.hasAccount(player)) {
             return false;
         }
-        PlayerManager.CreatePlayer(player.getName());
+        PlayerManager.playerXPCreate(player.getName());
         return true;
     }
 

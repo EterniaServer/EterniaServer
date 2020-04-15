@@ -25,12 +25,12 @@ public class EterniaServer extends JavaPlugin {
 
         saveDefaultConfigs();
         saveDefaultMessages();
-        saveDefaultBlocks();
 
         databaseType();
 
         antiNetherTrapManager();
         bedManager();
+        blockRewardManager();
         economyManager();
         experienceManager();
         genericManager();
@@ -58,6 +58,7 @@ public class EterniaServer extends JavaPlugin {
     public void onDisable() {
 
         vaultUnHook();
+        connection.Close();
 
     }
 
@@ -93,6 +94,10 @@ public class EterniaServer extends JavaPlugin {
         new EconomyManager(this);
     }
 
+    private void blockRewardManager(){
+        new BlockRewardManager(this);
+    }
+
     private void bedManager() {
         new BedManager(this);
     }
@@ -103,10 +108,6 @@ public class EterniaServer extends JavaPlugin {
 
     private void databaseType() {
         new DatabaseType(this);
-    }
-
-    private void saveDefaultBlocks(){
-        new BlockRewardManager(this);
     }
 
     private void saveDefaultMessages() {

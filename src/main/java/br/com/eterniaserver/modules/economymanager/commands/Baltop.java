@@ -1,9 +1,9 @@
 package br.com.eterniaserver.modules.economymanager.commands;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.eterniaserver.EterniaServer;
@@ -29,30 +29,18 @@ public class Baltop implements CommandExecutor {
             final Player player = (Player) sender;
             if (sender.hasPermission("eternia.baltop")) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    final String query = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
+                    final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
                     List<String> accounts = new ArrayList<>();
-                    ResultSet rs = null;
-                    try {
-                        rs = EterniaServer.connection.Query(query);
-                        while (rs.next()) {
-                            final String string2 = rs.getString("player_name");
-                            accounts.add(string2);
+                    EterniaServer.connection.executeSQLQuery(connection -> {
+                        PreparedStatement getbaltop = connection.prepareStatement(querie);
+                        ResultSet resultSet = getbaltop.executeQuery();
+                        while (resultSet.next()) {
+                            final String warpname = resultSet.getString("player_name");
+                            accounts.add(warpname);
                         }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        try {
-                            rs.close();
-                        } catch (SQLException ee) {
-                            ee.printStackTrace();
-                        }
-                    } finally {
-                        try {
-                            assert rs != null;
-                            rs.close();
-                        } catch (SQLException e2) {
-                            e2.printStackTrace();
-                        }
-                    }
+                        resultSet.close();
+                        getbaltop.close();
+                    });
                     DecimalFormat df2 = new DecimalFormat(".##");
                     Messages.PlayerMessage("eco.baltop", player);
                     accounts.forEach(name -> Messages.PlayerMessage("eco.ballist", (accounts.indexOf(name) + 1), name, df2.format(Queries.getMoney(name)), player));

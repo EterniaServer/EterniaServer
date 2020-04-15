@@ -16,16 +16,16 @@ public class OnPlayerJoin implements Listener {
     public void OnJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (EterniaServer.configs.getBoolean("modules.experience")) {
-            if (!PlayerManager.PlayerExist(player.getName())) {
-                PlayerManager.CreatePlayer(player.getName());
+            if (!PlayerManager.playerXPExist(player.getName())) {
+                PlayerManager.playerXPCreate(player.getName());
             }
         }
         if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             Vars.afktime.put(player.getName(), System.currentTimeMillis());
         }
         if (EterniaServer.configs.getBoolean("modules.home")) {
-            if (!PlayerManager.PlayerExistH(player.getName())) {
-                PlayerManager.CreateHome(player.getName());
+            if (!PlayerManager.playerHomeExist(player.getName())) {
+                PlayerManager.playerHomeCreate(player.getName());
             }
         }
         Vars.teleporting.put(player.getName(), System.currentTimeMillis());
