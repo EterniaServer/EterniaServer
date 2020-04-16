@@ -13,12 +13,21 @@ public class Table {
             xpsql.execute();
             xpsql.close();
         }, true);
-        final String money = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-money") + " (player_name varchar(32), balance double(22,4));";
-        EterniaServer.connection.executeSQLQuery(connection -> {
-            PreparedStatement moneysql = connection.prepareStatement(money);
-            moneysql.execute();
-            moneysql.close();
-        }, true);
+        if (EterniaServer.configs.getBoolean("sql.mysql")) {
+            final String money = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-money") + " (player_name varchar(32), balance double(22,4));";
+            EterniaServer.connection.executeSQLQuery(connection -> {
+                PreparedStatement moneysql = connection.prepareStatement(money);
+                moneysql.execute();
+                moneysql.close();
+            }, true);
+        } else {
+            final String money = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-money") + " (player_name varchar(32), balance double(22));";
+            EterniaServer.connection.executeSQLQuery(connection -> {
+                PreparedStatement moneysql = connection.prepareStatement(money);
+                moneysql.execute();
+                moneysql.close();
+            }, true);
+        }
         final String warp = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-warp") + " (name varchar(16), location varchar(128));";
         EterniaServer.connection.executeSQLQuery(connection -> {
             PreparedStatement warpsql = connection.prepareStatement(warp);

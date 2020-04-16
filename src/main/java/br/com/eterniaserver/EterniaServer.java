@@ -32,6 +32,7 @@ public class EterniaServer extends JavaPlugin {
         bedManager();
         blockRewardManager();
         economyManager();
+        elevatorManager();
         experienceManager();
         genericManager();
         homesManager();
@@ -51,6 +52,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneakEvent(), this);
 
     }
 
@@ -87,6 +89,10 @@ public class EterniaServer extends JavaPlugin {
 
     private void experienceManager() {
         new ExperienceManager(this);
+    }
+
+    private void elevatorManager() {
+        new ElevatorManager();
     }
 
     private void economyManager() {

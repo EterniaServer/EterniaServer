@@ -24,19 +24,25 @@ public class AccelerateNightTask extends BukkitRunnable {
     public void run() {
         final long time = world.getTime();
         final int sleeping = BedTimer.getSleeping(world).size();
-        double timeRate = 40;
-        if (sleeping != 0) {
-            timeRate = Math.min(timeRate, Math.round(timeRate / world.getPlayers().size() * sleeping));
-        }
-        if (time >= (1200 - timeRate * 1.5) && time <= 1200) {
-            world.setStorm(false);
-            world.setThundering(false);
-            world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
+        final int players = plugin.getServer().getMaxPlayers();
+        double base = EterniaServer.configs.getInt("bed.speed");
+        double timeRate;
+        if (sleeping > 0) {
+            int x = players / sleeping;
+            timeRate = base / x;
+            if (time >= (1200 - timeRate * 1.5) && time <= 1200) {
+                world.setStorm(false);
+                world.setThundering(false);
+                world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
+                Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> Vars.skipping_worlds.remove(world), 20);
+                Messages.BroadcastMessage("bed.skip-night", "normalmente");
+                this.cancel();
+            } else {
+                world.setTime(time + (int) timeRate);
+            }
+        } else if (Vars.skipping_worlds.contains(world)) {
             Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> Vars.skipping_worlds.remove(world), 20);
-            Messages.BroadcastMessage("bed.skip-night", "normalmente");
             this.cancel();
-        } else {
-            world.setTime(time + (int) timeRate);
         }
     }
 }

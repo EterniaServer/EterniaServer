@@ -20,6 +20,7 @@ modules:
   bed: true
   block-reward: true
   economy: true
+  elevator: true
   experience: true
   generic: true
   home: true
@@ -39,6 +40,16 @@ server:
   afk-timer: 900
   cooldown: 4
 
+# The blocks you choose will be able to be elevators if have another of the
+# same type above or bellow.
+# max is the max distance.
+# min is the min distance.
+elevator:
+  block:
+    - 'IRON_BLOCK'
+  max: 50
+  min: 2
+
 # With this you can choose between using MySQL or SQLite and
 # define the name of each table.
 sql:
@@ -55,8 +66,11 @@ sql:
   table-home: 'es_home'
   table-homes: 'es_homes'
 
-# This will set which worlds could not skip the night sleeping.
+# speed is how faster the night will pass (this will be divided by the (players
+# online divided by the players sleeping))
+# blacklisted-worlds will set which worlds could not skip the night sleeping.
 bed:
+  speed: 300
   blacklisted-worlds:
     - 'evento'
 

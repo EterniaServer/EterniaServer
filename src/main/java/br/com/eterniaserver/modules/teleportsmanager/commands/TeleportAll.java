@@ -13,7 +13,7 @@ public class TeleportAll implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.spectator")) {
+            if (player.hasPermission("eternia.tpall")) {
                 for (Player other : Bukkit.getOnlinePlayers()) {
                     if (other != player) {
                         other.teleport(player);
