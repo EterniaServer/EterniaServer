@@ -13,7 +13,7 @@ public class Table {
             xpsql.execute();
             xpsql.close();
         }, true);
-        final String money = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-money") + " (player_name varchar(32), balance double(22));";
+        final String money = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-money") + " (player_name varchar(32), balance double(22,4));";
         EterniaServer.connection.executeSQLQuery(connection -> {
             PreparedStatement moneysql = connection.prepareStatement(money);
             moneysql.execute();

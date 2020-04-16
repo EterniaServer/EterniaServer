@@ -23,14 +23,14 @@ public class SetHome implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.sethome")) {
                 if (args.length == 1) {
-                    int i = 3;
-                    if (player.hasPermission("eternia.sethome.5")) i = 5;
-                    if (player.hasPermission("eternia.sethome.10")) i = 10;
-                    if (player.hasPermission("eternia.sethome.15")) i = 15;
-                    if (player.hasPermission("eternia.sethome.20")) i = 20;
-                    if (player.hasPermission("eternia.sethome.25")) i = 25;
-                    if (player.hasPermission("eternia.sethome.30")) i = 30;
-                    if (args[0].length() <= 7) {
+                    int i = 4;
+                    if (player.hasPermission("eternia.sethome.5")) i = 6;
+                    if (player.hasPermission("eternia.sethome.10")) i = 11;
+                    if (player.hasPermission("eternia.sethome.15")) i = 16;
+                    if (player.hasPermission("eternia.sethome.20")) i = 21;
+                    if (player.hasPermission("eternia.sethome.25")) i = 26;
+                    if (player.hasPermission("eternia.sethome.30")) i = 31;
+                    if (args[0].length() <= 8) {
                         if (Queries.canHome(player.getName()) < i) {
                             Queries.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
                             Messages.PlayerMessage("home.def", player);

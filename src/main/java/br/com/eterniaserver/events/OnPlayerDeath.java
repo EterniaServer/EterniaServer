@@ -11,7 +11,6 @@ public class OnPlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (EterniaServer.configs.getBoolean("modules.teleports")) {
-            Vars.back.remove(event.getEntity().getName());
             Vars.back.put(event.getEntity().getName(), event.getEntity().getLocation());
         }
     }

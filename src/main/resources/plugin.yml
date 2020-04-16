@@ -161,3 +161,6 @@ commands:
   resp:
     description: Manda uma resposta.
     aliases: [r]
+  mem:
+    description: Verifica status da jvm.
+    aliases: [memoria]

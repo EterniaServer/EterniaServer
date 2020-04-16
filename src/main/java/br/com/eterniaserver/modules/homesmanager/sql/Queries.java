@@ -143,7 +143,7 @@ public class Queries {
             }
         });
 
-        String[] homess =string.toString().split(":");
+        String[] homess = string.toString().split(":");
         Vars.home.put(jogador, homess);
         return homess;
     }

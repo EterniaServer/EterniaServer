@@ -21,8 +21,8 @@ public class Connections {
     }
 
     public void Connect() {
+        hikari = new HikariDataSource();
         if (mysql) {
-            hikari = new HikariDataSource();
             hikari.setPoolName("EterniaServer MySQL Pool");
             hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
             hikari.addDataSourceProperty("serverName", EterniaServer.configs.getString("sql.host"));
@@ -33,7 +33,6 @@ public class Connections {
             hikari.setMaximumPoolSize(50);
             Messages.ConsoleMessage("server.mysql-ok");
         } else {
-            hikari = new HikariDataSource();
             hikari.setPoolName("EterniaServer SQLite Pool");
             hikari.setDriverClassName("org.sqlite.JDBC");
             hikari.setJdbcUrl("jdbc:sqlite:" + new File(plugin.getDataFolder(), "eternia.db"));

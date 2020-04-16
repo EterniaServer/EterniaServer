@@ -12,7 +12,6 @@ public class OnPlayerTeleport implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         if (EterniaServer.configs.getBoolean("modules.teleports")) {
-            Vars.back.remove(event.getPlayer().getName());
             Vars.back.put(event.getPlayer().getName(), event.getPlayer().getLocation());
         }
         if (EterniaServer.configs.getBoolean("modules.playerchecks")) {

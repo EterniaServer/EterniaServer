@@ -16,14 +16,13 @@ public class Advice implements CommandExecutor {
             if (player.hasPermission("eternia.advice")) {
                 if (args.length >= 1) {
                     StringBuilder sb = new StringBuilder();
-                    for (java.lang.String arg : args) {
+                    for (String arg : args) {
                         sb.append(arg).append(" ");
                     }
                     sb.substring(0, sb.length() - 1);
-                    java.lang.String s = sb.toString();
-                    Messages.BroadcastMessage("text.global-advice", Strings.getColor(s));
+                    Messages.BroadcastMessage("text.global-advice", Strings.getColor(sb.toString()));
                 } else {
-                    Messages.PlayerMessage("text.advice", player);
+                    Messages.PlayerMessage("text.use", player);
                 }
             } else {
                 Messages.PlayerMessage("server.no-perm", player);
@@ -31,14 +30,13 @@ public class Advice implements CommandExecutor {
         } else {
             if (args.length >= 1) {
                 StringBuilder sb = new StringBuilder();
-                for (java.lang.String arg : args) {
+                for (String arg : args) {
                     sb.append(arg).append(" ");
                 }
                 sb.substring(0, sb.length() - 1);
-                java.lang.String s = sb.toString();
-                Messages.BroadcastMessage("text.global-advice", Strings.getColor(s));
+                Messages.BroadcastMessage("text.global-advice", Strings.getColor(sb.toString()));
             } else {
-                Messages.ConsoleMessage("text.advice");
+                Messages.ConsoleMessage("text.use");
             }
         }
         return true;

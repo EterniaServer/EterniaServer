@@ -12,6 +12,7 @@
 # economy will enable or disable the economy module.
 # experience will enable or disable the experience module.
 # generic will enable or disable the common commands.
+# home will enable or disable the home module.
 # spawners will enable or disable to get and place spawners.
 # teleports will enable or disable warps, teleportoplayer and others.
 modules:
@@ -38,7 +39,8 @@ server:
   afk-timer: 900
   cooldown: 4
 
-# With this you can choose between using MySQL or SQLite.
+# With this you can choose between using MySQL or SQLite and
+# define the name of each table.
 sql:
   mysql: false
   host: '127.0.0.1'
@@ -53,6 +55,7 @@ sql:
   table-home: 'es_home'
   table-homes: 'es_homes'
 
+# This will set which worlds could not skip the night sleeping.
 bed:
   blacklisted-worlds:
     - 'evento'

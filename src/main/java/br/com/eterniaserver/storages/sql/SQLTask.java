@@ -10,8 +10,8 @@ class SQLTask extends BukkitRunnable {
     private final Connections connections;
     private final SQLCallback sqlCallBack;
 
-    SQLTask(Connections mySQLConnectionHandler, SQLCallback sqlCallBack) {
-        this.connections = mySQLConnectionHandler;
+    SQLTask(Connections Connection, SQLCallback sqlCallBack) {
+        this.connections = Connection;
         this.sqlCallBack = sqlCallBack;
     }
 

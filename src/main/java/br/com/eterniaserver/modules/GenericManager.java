@@ -4,6 +4,7 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.genericmanager.commands.messages.*;
 import br.com.eterniaserver.modules.genericmanager.commands.others.*;
+import br.com.eterniaserver.modules.genericmanager.commands.replaces.*;
 import br.com.eterniaserver.modules.genericmanager.commands.simplifications.*;
 
 import java.util.Objects;
@@ -27,6 +28,7 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("facebook")).setExecutor(new Facebook());
             Objects.requireNonNull(plugin.getCommand("colors")).setExecutor(new Colors());
             Objects.requireNonNull(plugin.getCommand("vote")).setExecutor(new Vote());
+            Objects.requireNonNull(plugin.getCommand("mem")).setExecutor(new Mem());
             Objects.requireNonNull(plugin.getCommand("gamemode")).setExecutor(new Gamemode());
             Objects.requireNonNull(plugin.getCommand("sun")).setExecutor(new Sun());
             Objects.requireNonNull(plugin.getCommand("rain")).setExecutor(new Rain());
