@@ -5,6 +5,7 @@ import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -33,7 +34,7 @@ public class Warp implements CommandExecutor {
                     final Location location = QueriesW.getWarp(args[0].toLowerCase());
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
-                            player.teleport(location);
+                            PaperLib.teleportAsync(player, location);
                             Messages.PlayerMessage("warps.warp", args[0], player);
                         } else {
                             Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
@@ -43,7 +44,7 @@ public class Warp implements CommandExecutor {
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {
                                 if (!Vars.moved.get(player.getName())) {
-                                    player.teleport(location);
+                                    PaperLib.teleportAsync(player, location);
                                     Messages.PlayerMessage("warps.warp", args[0], player);
                                 } else {
                                     Messages.PlayerMessage("warps.move", player);

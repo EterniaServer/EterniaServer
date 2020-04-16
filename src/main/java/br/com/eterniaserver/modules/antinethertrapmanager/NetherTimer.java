@@ -4,7 +4,9 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
 import br.com.eterniaserver.configs.Vars;
+import br.com.eterniaserver.modules.homesmanager.sql.Queries;
 import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,8 +25,8 @@ public class NetherTimer extends org.bukkit.scheduler.BukkitRunnable {
                     } else if (Vars.playersInPortal.get(player.getName()) <= 1) {
                         Location player_location = player.getLocation();
                         if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
-                            player.teleport(QueriesW.getWarp("Spawn"));
-                            Messages.PlayerMessage("warps.spawn", player);
+                            PaperLib.teleportAsync(player, QueriesW.getWarp("spawn"));
+                            Messages.PlayerMessage("warps.warp", "Spawn", player);
                         }
                     } else {
                         Vars.playersInPortal.put(player.getName(), Vars.playersInPortal.get(player.getName()) - 1);

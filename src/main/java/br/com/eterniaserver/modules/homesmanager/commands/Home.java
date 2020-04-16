@@ -6,6 +6,7 @@ import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.homesmanager.sql.Queries;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -34,7 +35,7 @@ public class Home implements CommandExecutor {
                     Location location = Queries.getHome(args[0].toLowerCase(), player.getName());
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
-                            player.teleport(location);
+                            PaperLib.teleportAsync(player, location);
                             Messages.PlayerMessage("home.suc", player);
                         } else {
                             Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
@@ -43,7 +44,7 @@ public class Home implements CommandExecutor {
                             Vars.moved.put(player.getName(), false);
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                                 if (!Vars.moved.get(player.getName())) {
-                                    player.teleport(location);
+                                    PaperLib.teleportAsync(player, location);
                                     Messages.PlayerMessage("home.suc", player);
                                 } else {
                                     Messages.PlayerMessage("warps.move", player);

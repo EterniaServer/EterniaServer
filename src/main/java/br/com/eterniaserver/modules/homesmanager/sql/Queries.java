@@ -107,7 +107,7 @@ public class Queries {
                     }
                 });
                 String[] values = string.toString().split(":");
-                loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
+                loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), (Double.parseDouble(values[2]) + 1), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
                 Vars.homes.put(home + "." + jogador, loc);
             }
         }

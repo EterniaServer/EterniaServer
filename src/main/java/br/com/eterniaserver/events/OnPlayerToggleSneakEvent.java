@@ -1,6 +1,7 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,13 +28,13 @@ public class OnPlayerToggleSneakEvent implements Listener {
                     final int min = EterniaServer.configs.getInt("elevator.min");
                     block = block.getRelative(BlockFace.DOWN, min);
                     int i;
-                    for (i = max; i > 0 && (block.getType() != material || !block.getRelative(BlockFace.UP).getType().isTransparent() || !block.getRelative(BlockFace.UP, 2).getType().isTransparent()); block = block.getRelative(BlockFace.DOWN)) {
+                    for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.DOWN)) {
                         --i;
                     }
                     if (i > 0) {
                         Location location = player.getLocation();
                         location.setY((location.getY() - (double) max - 3.0D + (double) i) + 1);
-                        player.teleport(location);
+                        PaperLib.teleportAsync(player, location);
                     }
                     break;
                 }

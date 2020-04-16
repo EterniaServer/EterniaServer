@@ -3,6 +3,7 @@ package br.com.eterniaserver.modules.teleportsmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +26,7 @@ public class TeleportAccept implements CommandExecutor {
                 if (Vars.tpa_requests.containsKey(player.getName())) {
                     Player target = Bukkit.getPlayer(Vars.tpa_requests.get(player.getName()));
                     if (target != null && target.hasPermission("eternia.timing.bypass")) {
-                        target.teleport(player.getLocation());
+                        PaperLib.teleportAsync(target, player.getLocation());
                         Messages.PlayerMessage("teleport.tpto", player.getName(), target);
                         Messages.PlayerMessage("teleport.accept", player.getName(), target);
                         Vars.tpa_requests.remove(player.getName());
@@ -34,7 +35,7 @@ public class TeleportAccept implements CommandExecutor {
                         Messages.PlayerMessage("teleport.accept", player.getName(), target);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                         {
-                            target.teleport(player.getLocation());
+                            PaperLib.teleportAsync(target, player.getLocation());
                             Messages.PlayerMessage("teleport.tpto", player.getName(), target);
                             Vars.tpa_requests.remove(player.getName());
                         }, 20 * EterniaServer.configs.getInt("server.cooldown"));

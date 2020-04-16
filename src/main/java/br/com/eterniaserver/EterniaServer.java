@@ -9,6 +9,8 @@ import br.com.eterniaserver.storages.DatabaseType;
 import br.com.eterniaserver.vault.VaultHook;
 import br.com.eterniaserver.vault.VaultUnHook;
 
+import io.papermc.lib.PaperLib;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,6 +24,8 @@ public class EterniaServer extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        PaperLib.suggestPaper(this);
 
         saveDefaultConfigs();
         saveDefaultMessages();

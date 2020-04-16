@@ -5,6 +5,7 @@ import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
 import br.com.eterniaserver.configs.Vars;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -33,7 +34,7 @@ public class Spawn implements CommandExecutor {
                 if (args.length == 0) {
                     if (player.hasPermission("eternia.spawn")) {
                         if (player.hasPermission("eternia.timing.bypass")) {
-                            player.teleport(location);
+                            PaperLib.teleportAsync(player, location);
                             Messages.PlayerMessage("warps.warp", "Spawn", player);
                         } else {
                             Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
@@ -43,7 +44,7 @@ public class Spawn implements CommandExecutor {
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {
                                 if (!Vars.moved.get(player.getName())) {
-                                    player.teleport(location);
+                                    PaperLib.teleportAsync(player, location);
                                     Messages.PlayerMessage("warps.warp", "Spawn", player);
                                 } else {
                                     Messages.PlayerMessage("warps.move", player);
@@ -57,7 +58,7 @@ public class Spawn implements CommandExecutor {
                     if (player.hasPermission("eternia.spawn.other")) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target.isOnline()) {
-                            target.teleport(location);
+                            PaperLib.teleportAsync(target, location);
                             Messages.PlayerMessage("warps.warp", "Spawn", player);
                             Messages.PlayerMessage("warps.spawn-other", target.getName(), player);
                         } else {

@@ -6,6 +6,7 @@ import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.economymanager.sql.Queries;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,7 +36,7 @@ public class Back implements CommandExecutor {
                     double valor = EterniaServer.configs.getInt("money.back");
                     if (player.hasPermission("eternia.backfree") || !(EterniaServer.configs.getBoolean("modules.economy"))) {
                         if (player.hasPermission("eternia.timing.bypass")) {
-                            player.teleport(Vars.back.get(player.getName()));
+                            PaperLib.teleportAsync(player, Vars.back.get(player.getName()));
                             Vars.back.remove(player.getName());
                             Messages.PlayerMessage("back.free", player);
                         } else {
@@ -46,7 +47,7 @@ public class Back implements CommandExecutor {
                             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                             {
                                 if (!Vars.moved.get(player.getName())) {
-                                    player.teleport(Vars.back.get(player.getName()));
+                                    PaperLib.teleportAsync(player, Vars.back.get(player.getName()));
                                     Vars.back.remove(player.getName());
                                     Messages.PlayerMessage("back.free", player);
                                 } else {
@@ -57,7 +58,7 @@ public class Back implements CommandExecutor {
                     } else {
                         if (money >= valor) {
                             if (player.hasPermission("eternia.timing.bypass")) {
-                                player.teleport(Vars.back.get(player.getName()));
+                                PaperLib.teleportAsync(player, Vars.back.get(player.getName()));
                                 Vars.back.remove(player.getName());
                                 Queries.removeMoney(player.getName(), valor);
                                 Messages.PlayerMessage("back.nofree", valor, player);
@@ -69,7 +70,7 @@ public class Back implements CommandExecutor {
                                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                                 {
                                     if (!Vars.moved.get(player.getName())) {
-                                        player.teleport(Vars.back.get(player.getName()));
+                                        PaperLib.teleportAsync(player, Vars.back.get(player.getName()));
                                         Vars.back.remove(player.getName());
                                         Queries.removeMoney(player.getName(), valor);
                                         Messages.PlayerMessage("back.nofree", valor, player);

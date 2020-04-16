@@ -47,7 +47,11 @@ public class Connections {
 
     public void Close() {
         hikari.close();
-        Messages.ConsoleMessage("server.sql-finish");
+        if (mysql) {
+            Messages.ConsoleMessage("server.mysql-finish");
+        } else {
+            Messages.ConsoleMessage("server.sql-finish");
+        }
     }
 
     public void executeSQLQuery(SQLCallback callback) {

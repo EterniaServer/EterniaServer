@@ -3,6 +3,7 @@ package br.com.eterniaserver.events;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,13 +41,13 @@ public class OnPlayerMove implements Listener {
                     final int min = EterniaServer.configs.getInt("elevator.min");
                     block = block.getRelative(BlockFace.UP, min);
                     int i;
-                    for (i = max; i > 0 && (block.getType() != material || !block.getRelative(BlockFace.UP).getType().isTransparent() || !block.getRelative(BlockFace.UP, 2).getType().isTransparent()); block = block.getRelative(BlockFace.UP)) {
+                    for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) {
                         -- i;
                     }
                     if (i > 0) {
                         Location location = event.getPlayer().getLocation();
                         location.setY((location.getY() + (double) max + 3.0D - (double) i) - 1);
-                        event.getPlayer().teleport(location);
+                        PaperLib.teleportAsync(event.getPlayer(), location);
                     }
                     break;
                 }
