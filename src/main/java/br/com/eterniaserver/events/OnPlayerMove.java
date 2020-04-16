@@ -4,8 +4,10 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 
 import io.papermc.lib.PaperLib;
+import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -45,9 +47,11 @@ public class OnPlayerMove implements Listener {
                         -- i;
                     }
                     if (i > 0) {
-                        Location location = event.getPlayer().getLocation();
+                        Player player = event.getPlayer();
+                        Location location = player.getLocation();
                         location.setY((location.getY() + (double) max + 3.0D - (double) i) - 1);
-                        PaperLib.teleportAsync(event.getPlayer(), location);
+                        PaperLib.teleportAsync(player, location);
+                        player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
                     }
                     break;
                 }

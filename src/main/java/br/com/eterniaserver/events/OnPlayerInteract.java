@@ -4,6 +4,7 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.configs.Messages;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,7 +39,7 @@ public class OnPlayerInteract implements Listener {
                     String[] isso = values.split(":");
                     final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]), Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
                     if (player.hasPermission("eternia.timing.bypass")) {
-                        player.teleport(location);
+                        PaperLib.teleportAsync(player, location);
                         Messages.PlayerMessage("home.suc", player);
                     } else {
                         Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
@@ -47,7 +48,7 @@ public class OnPlayerInteract implements Listener {
                         Vars.moved.put(player.getName(), false);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                             if (!Vars.moved.get(player.getName())) {
-                                player.teleport(location);
+                                PaperLib.teleportAsync(player, location);
                                 Messages.PlayerMessage("home.suc", player);
                             } else {
                                 Messages.PlayerMessage("warps.move", player);

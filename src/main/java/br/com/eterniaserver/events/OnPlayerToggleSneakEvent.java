@@ -2,8 +2,10 @@ package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
 import io.papermc.lib.PaperLib;
+import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -35,6 +37,7 @@ public class OnPlayerToggleSneakEvent implements Listener {
                         Location location = player.getLocation();
                         location.setY((location.getY() - (double) max - 3.0D + (double) i) + 1);
                         PaperLib.teleportAsync(player, location);
+                        player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.D));
                     }
                     break;
                 }
