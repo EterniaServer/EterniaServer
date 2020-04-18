@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Queries {
+public class MoneyAPI {
 
     public static double getMoney(String playerName) {
         if (Vars.money.containsKey(playerName)) {

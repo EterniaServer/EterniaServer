@@ -1,4 +1,4 @@
-package br.com.eterniaserver.vault;
+package br.com.eterniaserver.dependencies;
 
 import br.com.eterniaserver.EterniaServer;
 

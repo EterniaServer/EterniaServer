@@ -12,6 +12,7 @@ public class Vars {
 
     public static final ArrayList<World> skipping_worlds = new ArrayList<>();
     public static final ArrayList<String> god = new ArrayList<>();
+    public static final ArrayList<String> afk = new ArrayList<>();
 
     public static final HashMap<String, Long> teleporting = new HashMap<>();
     public static final HashMap<String, Long> bed_cooldown = new HashMap<>();

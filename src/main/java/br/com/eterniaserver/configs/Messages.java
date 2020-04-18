@@ -1,9 +1,14 @@
 package br.com.eterniaserver.configs;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Messages {
+
+    public static String putPAPI(Player player, String message) {
+        return PlaceholderAPI.setPlaceholders(player, message);
+    }
 
     public static void BroadcastMessage(String message) {
         Bukkit.broadcastMessage(putPrefix(message));

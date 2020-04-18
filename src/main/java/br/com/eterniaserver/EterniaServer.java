@@ -1,13 +1,14 @@
 package br.com.eterniaserver;
 
+import br.com.eterniaserver.dependencies.PAPI;
 import br.com.eterniaserver.events.*;
 import br.com.eterniaserver.modules.*;
 import br.com.eterniaserver.storages.Configs;
 import br.com.eterniaserver.storages.MessagesConfig;
 import br.com.eterniaserver.storages.sql.Connections;
 import br.com.eterniaserver.storages.DatabaseType;
-import br.com.eterniaserver.vault.VaultHook;
-import br.com.eterniaserver.vault.VaultUnHook;
+import br.com.eterniaserver.dependencies.VaultHook;
+import br.com.eterniaserver.dependencies.VaultUnHook;
 
 import io.papermc.lib.PaperLib;
 
@@ -20,6 +21,7 @@ public class EterniaServer extends JavaPlugin {
 
     public static FileConfiguration blocks;
     public static FileConfiguration configs;
+    public static FileConfiguration commands;
     public static FileConfiguration messages;
 
     @Override
@@ -35,6 +37,7 @@ public class EterniaServer extends JavaPlugin {
         antiNetherTrapManager();
         bedManager();
         blockRewardManager();
+        commandsManager();
         economyManager();
         elevatorManager();
         experienceManager();
@@ -43,6 +46,7 @@ public class EterniaServer extends JavaPlugin {
         spawnersManager();
         teleportsManager();
 
+        placeholderAPIHook();
         vaultHook();
 
         this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this), this);
@@ -51,6 +55,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnExpDrop(), this);
         this.getServer().getPluginManager().registerEvents(new OnInventoryClick(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(), this);
@@ -70,6 +75,10 @@ public class EterniaServer extends JavaPlugin {
 
     private void vaultUnHook() {
         new VaultUnHook();
+    }
+
+    private void placeholderAPIHook() {
+        new PAPI();
     }
 
     private void vaultHook() {
@@ -102,6 +111,10 @@ public class EterniaServer extends JavaPlugin {
 
     private void economyManager() {
         new EconomyManager(this);
+    }
+
+    private void commandsManager() {
+        new CommandsManager(this);
     }
 
     private void blockRewardManager(){

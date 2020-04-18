@@ -4,6 +4,8 @@ import br.com.eterniaserver.EterniaServer;
 
 public class Strings {
 
+    public static boolean papi = true;
+
     public static String getMessage(String valor) {
         return getColor(getString(valor));
     }

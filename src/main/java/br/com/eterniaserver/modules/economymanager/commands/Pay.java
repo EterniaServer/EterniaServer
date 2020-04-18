@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.economymanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.economymanager.sql.Queries;
+import br.com.eterniaserver.modules.economymanager.sql.MoneyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
@@ -22,9 +22,9 @@ public class Pay implements CommandExecutor {
                             Player target = Bukkit.getPlayer(args[0]);
                             if (target != null && target.isOnline()) {
                                 if (!(target.equals(player))) {
-                                    if (Queries.getMoney(player.getName()) >= coins) {
-                                        Queries.addMoney(target.getName(), coins);
-                                        Queries.removeMoney(player.getName(), coins);
+                                    if (MoneyAPI.getMoney(player.getName()) >= coins) {
+                                        MoneyAPI.addMoney(target.getName(), coins);
+                                        MoneyAPI.removeMoney(player.getName(), coins);
                                         Messages.PlayerMessage("eco.pay", coins, target.getName(), player);
                                         Messages.PlayerMessage("eco.pay-me", coins, player.getName(), target);
                                     } else {

@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.experiencemanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.experiencemanager.sql.Queries;
+import br.com.eterniaserver.modules.experiencemanager.sql.XPAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,7 +26,7 @@ public class DepositLevel implements CommandExecutor {
                             } else {
                                 xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
                             }
-                            Queries.addExp(player.getName(), xp);
+                            XPAPI.addExp(player.getName(), xp);
                             Messages.PlayerMessage("xp.deposit", xpla, player);
                             player.setLevel(Math.max(player.getLevel() - xpla, 0));
                         } else {

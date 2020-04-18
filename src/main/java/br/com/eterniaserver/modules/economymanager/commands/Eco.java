@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.economymanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.economymanager.sql.Queries;
+import br.com.eterniaserver.modules.economymanager.sql.MoneyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,17 +23,17 @@ public class Eco implements CommandExecutor {
                             if (money > 0) {
                                 switch (fun) {
                                     case "set":
-                                        Queries.setMoney(target.getName(), money);
+                                        MoneyAPI.setMoney(target.getName(), money);
                                         Messages.PlayerMessage("eco.eco-set", money, target.getName(), player);
                                         Messages.PlayerMessage("eco.eco-rset", money, player.getName(), target);
                                         break;
                                     case "remove":
-                                        Queries.removeMoney(target.getName(), money);
+                                        MoneyAPI.removeMoney(target.getName(), money);
                                         Messages.PlayerMessage("eco.eco-remove", money, target.getName(), player);
                                         Messages.PlayerMessage("eco.eco-rremove", money, player.getName(), target);
                                         break;
                                     case "give":
-                                        Queries.addMoney(target.getName(), money);
+                                        MoneyAPI.addMoney(target.getName(), money);
                                         Messages.PlayerMessage("eco.eco-give", money, target.getName(), player);
                                         Messages.PlayerMessage("eco.eco-receive", money, player.getName(), target);
                                         break;
@@ -68,15 +68,15 @@ public class Eco implements CommandExecutor {
                             if (money > 0) {
                                 switch (fun) {
                                     case "set":
-                                        Queries.setMoney(target.getName(), money);
+                                        MoneyAPI.setMoney(target.getName(), money);
                                         Messages.ConsoleMessage("eco.eco-set", money, target.getName());
                                         Messages.PlayerMessage("eco.eco-rset", money, "console", target);
                                     case "remove":
-                                        Queries.removeMoney(target.getName(), money);
+                                        MoneyAPI.removeMoney(target.getName(), money);
                                         Messages.ConsoleMessage("eco.eco-remove", money, target.getName());
                                         Messages.PlayerMessage("eco.eco-rremove", money, "console", target);
                                     case "give":
-                                        Queries.addMoney(target.getName(), money);
+                                        MoneyAPI.addMoney(target.getName(), money);
                                         Messages.ConsoleMessage("eco.eco-give", money, target.getName());
                                         Messages.PlayerMessage("eco.eco-receive", money, "console", target);
                                     default:

@@ -1,7 +1,7 @@
-package br.com.eterniaserver.vault;
+package br.com.eterniaserver.dependencies;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.modules.economymanager.sql.Queries;
+import br.com.eterniaserver.modules.economymanager.sql.MoneyAPI;
 import br.com.eterniaserver.player.PlayerManager;
 
 import net.milkbowl.vault.economy.Economy;
@@ -74,12 +74,12 @@ public class SystemEconomy implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return Queries.getMoney(playerName);
+        return MoneyAPI.getMoney(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return Queries.getMoney(player.getName());
+        return MoneyAPI.getMoney(player.getName());
     }
 
     @Override
@@ -94,12 +94,12 @@ public class SystemEconomy implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        return Queries.hasMoney(playerName, amount);
+        return MoneyAPI.hasMoney(playerName, amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return Queries.hasMoney(player.getName(), amount);
+        return MoneyAPI.hasMoney(player.getName(), amount);
     }
 
     @Override
@@ -114,14 +114,14 @@ public class SystemEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        Queries.removeMoney(playerName, amount);
-        return new EconomyResponse(amount, Queries.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
+        MoneyAPI.removeMoney(playerName, amount);
+        return new EconomyResponse(amount, MoneyAPI.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        Queries.removeMoney(player.getName(), amount);
-        return new EconomyResponse(amount, Queries.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
+        MoneyAPI.removeMoney(player.getName(), amount);
+        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
@@ -136,14 +136,14 @@ public class SystemEconomy implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        Queries.addMoney(playerName, amount);
-        return new EconomyResponse(amount, Queries.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
+        MoneyAPI.addMoney(playerName, amount);
+        return new EconomyResponse(amount, MoneyAPI.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        Queries.addMoney(player.getName(), amount);
-        return new EconomyResponse(amount, Queries.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
+        MoneyAPI.addMoney(player.getName(), amount);
+        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override

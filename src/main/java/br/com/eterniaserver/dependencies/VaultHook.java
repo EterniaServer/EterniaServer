@@ -1,4 +1,4 @@
-package br.com.eterniaserver.vault;
+package br.com.eterniaserver.dependencies;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
@@ -18,7 +18,6 @@ public class VaultHook {
             Bukkit.getServicesManager().register(Economy.class, vaultEcoHook, vault, ServicePriority.High);
         } else {
             Messages.ConsoleMessage("server.no-vault");
-            plugin.getPluginLoader().disablePlugin(plugin);
         }
     }
 

@@ -4,8 +4,8 @@ name: EterniaServer
 version: '${project.version}'
 author: Yuri Nogueira
 description: Blablabla
-api-version: '1.13'
-depend: [Vault]
+api-version: '1.15'
+softdepend: [Vault, PlaceholderAPI]
 loadbefore: [VentureChat]
 commands:
   suicide:
@@ -14,15 +14,6 @@ commands:
   advice:
     description: Avise.
     aliases: [broadcast, aviso, anuncio]
-  donation:
-    description: Doe.
-    aliases: [doacao, doar, comprarvip]
-  discord:
-    description: Discord.
-    aliases: [contato]
-  rules:
-    description: Regras.
-    aliases: [regras]
   feed:
     description: Alimenta.
     aliases: [heal, fome]
@@ -47,18 +38,9 @@ commands:
   back:
     description: Volta aonde morreu.
     aliases: [dback, voltarmorte]
-  facebook:
-    description: Pagina do server.
-    aliases: [paginadoface]
   bottlexp:
     description: Garrafinhas de xp.
     aliases: [garrafinhas]
-  colors:
-    description: Descubra as cores.
-    aliases: [cores]
-  vote:
-    description: Vota.
-    aliases: [votar, voto]
   teleportaccept:
     description: Aceita o tpa.
     aliases: [tpaccept, aceitartpa]
@@ -164,3 +146,6 @@ commands:
   mem:
     description: Verifica status da jvm.
     aliases: [memoria]
+  afk:
+    description: Fica afk.
+    aliases: [awayfromkeyboard]

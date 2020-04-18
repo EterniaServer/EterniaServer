@@ -1,0 +1,62 @@
+#  _______ .___________. _______ .______      .__   __.  __       ___
+# |   ____||           ||   ____||   _  \     |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  |    |   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      /     |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
+
+# If you use PlaceholderAPI you can set placeholder here.
+# The permission of commanders will be the name without "/".
+commands:
+  "/discord":
+    command:
+      - ''
+    text:
+      - '&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8.'
+  "/facebook":
+    command:
+      - ''
+    text:
+      - '&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8.'
+  "/doar":
+    command:
+      - ''
+    text:
+      - '&8[&aE&9S&8] &7Olá&8, &7você pode fazer uma doação via transferência bancária&8, &7boleto ou cartão&8, &7entre no discord e fale com yurinogueira&8.'
+  "/cores":
+    command:
+      - ''
+    text:
+      - '&8[&aE&9S&8] &7Cores&8: &7&&aa &7&&bb &7&&cc &7&&dd &7&&ee &7&&ff &7&&00 &7&&11 &7&&22 &7&&33 &7&&44 &7&&55 &7&&66 &7&&77 &7&&88 &7&&99&8.'
+  "/votar":
+    command:
+      - ''
+    text:
+      - '&8[&aE&9S&8] &7Sites&8:'
+      - '&9https://minecraft-mp.com/server-s229257&8.'
+      - '&9https://topg.org/server-eterniaserver-id484008&8.'
+      - '&9https://www.planetminecraft.com/server/eterniaserver/&8.'
+      - '&9https://minecraftservers.biz/servers/144674/&8.'
+  "/regras":
+    command:
+      - ''
+    text:
+      - '&8[&aE&9S&8] &7Regras&8:'
+      - '&91.0 &8- &7Proibido ofensas&8.'
+      - '&91.1 &8- &7Qualquer forma de preconceito é proibida&8.'
+      - '&91.2 &8- &7Proibido apologia a coisas ofensiva e&8/&7ou que trouxeram uma grande perda para a sociedade&8.'
+      - '&92.0 &8- &7Proibido o uso de apelido impropriado&8.'
+      - '&92.1 &8- &7A mesma regra se aplica a pets e etc&8.'
+      - '&93.0 &8- &7Proibido o uso de qualquer hack&8,&7 exploit e etc&8.'
+      - '&93.1 &8- &7Aproveitar-se ou esconder um bug também é proibido&8.'
+      - '&93.2 &8- &7O ato de má fé também é proibido&8.'
+      - '&94.0 &8- &7Proibido enganações&8.'
+      - '&94.1 &8- &7Certas traps são enganações sendo também proibido&8.'
+      - '&94.2 &8- &7Certas promessas também são consideradas enganação&8.'
+      - '&95.0 &8- &7Proibido se intrometer em assuntos pessoais e assuntos da Staff&8.'
+      - '&96.0 &8- &7Proibido pedir itens&8,&7 permissões e etc&8.'
+      - '&96.1 &8- &7O mesmo se aplica para cargos&8.'
+      - '&97.0 &8- &7Evitar falar vulgamente e&8/&7ou explicitamente sobre sexo no chat global&8.'
+      - '&98.0 &8- &7Proibido apologia a coisas ilícitas&8,&7 inclusive programas&8.'
+      - '&99.0 &8- &7Proibido flood&8/&7spam&8.'
+      - '&99.1 &8- &7Proibido discutir sobre a punição dada ou não dada por um staff&8.'

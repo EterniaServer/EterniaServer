@@ -1,6 +1,7 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 
 import org.bukkit.Bukkit;

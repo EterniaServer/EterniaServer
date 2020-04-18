@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Queries {
+public class XPAPI {
 
     public static Integer getExp(String playerName) {
         if (Vars.xp.containsKey(playerName)) {

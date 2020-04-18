@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Queries {
+public class HomesAPI {
 
     public static void setHome(Location loc, String home, String jogador) {
         Vars.homes.put(home, loc);

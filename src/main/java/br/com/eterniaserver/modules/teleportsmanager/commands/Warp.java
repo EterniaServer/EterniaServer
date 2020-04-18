@@ -4,7 +4,7 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
+import br.com.eterniaserver.modules.teleportsmanager.sql.WarpsAPI;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,7 +31,7 @@ public class Warp implements CommandExecutor {
                         Messages.PlayerMessage("server.telep", player);
                         return true;
                     }
-                    final Location location = QueriesW.getWarp(args[0].toLowerCase());
+                    final Location location = WarpsAPI.getWarp(args[0].toLowerCase());
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             PaperLib.teleportAsync(player, location);

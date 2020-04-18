@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
+import br.com.eterniaserver.modules.teleportsmanager.sql.WarpsAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,8 +14,8 @@ public class DelWarp implements CommandExecutor {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (player.hasPermission("eternia.delwarp")) {
-                    if (QueriesW.existWarp(args[0])) {
-                        QueriesW.delWarp(args[0]);
+                    if (WarpsAPI.existWarp(args[0])) {
+                        WarpsAPI.delWarp(args[0]);
                         Messages.PlayerMessage("warps.delwarp", player);
                     } else {
                         Messages.PlayerMessage("warps.noexist", args[0], player);

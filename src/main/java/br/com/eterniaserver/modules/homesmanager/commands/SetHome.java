@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.homesmanager.sql.Queries;
+import br.com.eterniaserver.modules.homesmanager.sql.HomesAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,12 +31,12 @@ public class SetHome implements CommandExecutor {
                     if (player.hasPermission("eternia.sethome.25")) i = 26;
                     if (player.hasPermission("eternia.sethome.30")) i = 31;
                     if (args[0].length() <= 8) {
-                        if (Queries.canHome(player.getName()) < i) {
-                            Queries.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
+                        if (HomesAPI.canHome(player.getName()) < i) {
+                            HomesAPI.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
                             Messages.PlayerMessage("home.def", player);
                         } else {
-                            if (Queries.existHome(args[0].toLowerCase(), player.getName())) {
-                                Queries.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
+                            if (HomesAPI.existHome(args[0].toLowerCase(), player.getName())) {
+                                HomesAPI.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
                                 Messages.PlayerMessage("home.def", player);
                             } else {
                                 ItemStack item = new ItemStack(Material.COMPASS);

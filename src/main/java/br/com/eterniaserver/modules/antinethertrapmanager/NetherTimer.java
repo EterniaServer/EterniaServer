@@ -4,8 +4,7 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.modules.homesmanager.sql.Queries;
-import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
+import br.com.eterniaserver.modules.teleportsmanager.sql.WarpsAPI;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,7 +24,7 @@ public class NetherTimer extends org.bukkit.scheduler.BukkitRunnable {
                     } else if (Vars.playersInPortal.get(player.getName()) <= 1) {
                         Location player_location = player.getLocation();
                         if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
-                            PaperLib.teleportAsync(player, QueriesW.getWarp("spawn"));
+                            PaperLib.teleportAsync(player, WarpsAPI.getWarp("spawn"));
                             Messages.PlayerMessage("warps.warp", "Spawn", player);
                         }
                     } else {
@@ -36,7 +35,7 @@ public class NetherTimer extends org.bukkit.scheduler.BukkitRunnable {
                     }
                 } else Vars.playersInPortal.remove(player.getName());
                 if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afktime.get(player.getName())) >= EterniaServer.configs.getInt("server.afk-timer")) {
-                    if (!player.hasPermission("eternia.afk")) {
+                    if (!Vars.afk.contains(player.getName())) {
                         player.kickPlayer(Strings.getMessage("server.afk-kick"));
                     }
                 }

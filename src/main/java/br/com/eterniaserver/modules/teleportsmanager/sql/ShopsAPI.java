@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class QueriesP {
+public class ShopsAPI {
 
     public static void setShop(Location loc, String shop) {
         Vars.shops.put(shop, loc);
@@ -57,7 +57,7 @@ public class QueriesP {
         return loc;
     }
 
-    private static boolean existShop(String shop) {
+    public static boolean existShop(String shop) {
         AtomicBoolean exist = new AtomicBoolean(false);
         final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
         EterniaServer.connection.executeSQLQuery(connection -> {

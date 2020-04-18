@@ -3,9 +3,9 @@ package br.com.eterniaserver.modules.teleportsmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesP;
+import br.com.eterniaserver.modules.teleportsmanager.sql.ShopsAPI;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.modules.teleportsmanager.sql.QueriesW;
+import br.com.eterniaserver.modules.teleportsmanager.sql.WarpsAPI;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,7 +27,7 @@ public class Shop implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length == 0) {
-                final Location location = QueriesW.getWarp("shop");
+                final Location location = WarpsAPI.getWarp("shop");
                 if (player.hasPermission("eternia.warp.shop")) {
                     if (Checks.isTp(player.getName())) {
                         Messages.PlayerMessage("server.telep", player);
@@ -59,7 +59,7 @@ public class Shop implements CommandExecutor {
                     Messages.PlayerMessage("server.no-perm", player);
                 }
             } else if (args.length == 1) {
-                final Location location = QueriesP.getShop(args[0].toLowerCase());
+                final Location location = ShopsAPI.getShop(args[0].toLowerCase());
                 if (player.hasPermission("eternia.shop.player")) {
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {

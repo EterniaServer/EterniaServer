@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class QueriesW {
+public class WarpsAPI {
 
     public static void setWarp(Location loc, String warp) {
         Vars.warps.put(warp, loc);
