@@ -26,6 +26,7 @@ modules:
   experience: true
   generic: true
   home: true
+  kits: true
   spawners: true
   teleports: true
 
@@ -67,6 +68,7 @@ sql:
   table-shop: 'es_shop'
   table-home: 'es_home'
   table-homes: 'es_homes'
+  table-kits: 'es_kits'
 
 # speed is how faster the night will pass (this will be divided by the (players
 # online divided by the players sleeping))

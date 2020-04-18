@@ -77,4 +77,19 @@ public class PlayerManager {
         return exist.get();
     }
 
+    public static boolean playerCooldownExist(final String jogador, String kit) {
+        AtomicBoolean exist = new AtomicBoolean(false);
+        final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
+        EterniaServer.connection.executeSQLQuery(connection -> {
+            PreparedStatement getHome = connection.prepareStatement(querie);
+            ResultSet resultSet = getHome.executeQuery();
+            if (resultSet.next() && resultSet.getString("name") != null) exist.set(true);
+            resultSet.close();
+            getHome.close();
+        });
+
+        return exist.get();
+
+    }
+
 }

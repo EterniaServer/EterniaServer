@@ -22,6 +22,7 @@ public class EterniaServer extends JavaPlugin {
     public static FileConfiguration blocks;
     public static FileConfiguration configs;
     public static FileConfiguration commands;
+    public static FileConfiguration kits;
     public static FileConfiguration messages;
 
     @Override
@@ -43,6 +44,7 @@ public class EterniaServer extends JavaPlugin {
         experienceManager();
         genericManager();
         homesManager();
+        kitsManager();
         spawnersManager();
         teleportsManager();
 
@@ -91,6 +93,10 @@ public class EterniaServer extends JavaPlugin {
 
     private void teleportsManager() {
         new TeleportsManager(this);
+    }
+
+    private void kitsManager() {
+        new KitsManager(this);
     }
 
     private void homesManager() {

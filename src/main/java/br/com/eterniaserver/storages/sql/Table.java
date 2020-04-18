@@ -52,6 +52,12 @@ public class Table {
             homessql.execute();
             homessql.close();
         }, true);
+        final String kits = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-kits") + " (name varchar(32), cooldown varchar(32));";
+        EterniaServer.connection.executeSQLQuery(connection -> {
+            PreparedStatement kitssql = connection.prepareStatement(kits);
+            kitssql.execute();
+            kitssql.close();
+        }, true);
     }
 
 }

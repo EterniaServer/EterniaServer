@@ -29,9 +29,6 @@ commands:
   withdrawlvl:
     description: Tira o xp.
     aliases: [tirarxp, retirarlvl, tirarlvl, pegarlvl]
-  goldenshovel:
-    description: Pega uma comandos.eternia.player.pa.
-    aliases: [padeouro, pa]
   blocks:
     description: Transforma em bloco.
     aliases: [condenser, transformarembloco]
@@ -149,3 +146,9 @@ commands:
   afk:
     description: Fica afk.
     aliases: [awayfromkeyboard]
+  kit:
+    description: Pegue um kit.
+    aliases: [getkit]
+  kits:
+    description: Veja os kits.
+    aliases: [getkits]

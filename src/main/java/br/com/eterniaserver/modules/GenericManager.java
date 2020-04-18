@@ -20,7 +20,6 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("resp")).setExecutor(new Resp());
             Objects.requireNonNull(plugin.getCommand("advice")).setExecutor(new Advice());
             Objects.requireNonNull(plugin.getCommand("fly")).setExecutor(new Fly());
-            Objects.requireNonNull(plugin.getCommand("goldenshovel")).setExecutor(new GoldenShovel());
             Objects.requireNonNull(plugin.getCommand("blocks")).setExecutor(new Blocks());
             Objects.requireNonNull(plugin.getCommand("mem")).setExecutor(new Mem());
             Objects.requireNonNull(plugin.getCommand("gamemode")).setExecutor(new Gamemode());

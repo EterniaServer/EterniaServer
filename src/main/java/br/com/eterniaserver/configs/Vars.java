@@ -14,10 +14,10 @@ public class Vars {
     public static final ArrayList<String> god = new ArrayList<>();
     public static final ArrayList<String> afk = new ArrayList<>();
 
+    public static final HashMap<String, String> kits_cooldown = new HashMap<>();
     public static final HashMap<String, Long> teleporting = new HashMap<>();
     public static final HashMap<String, Long> bed_cooldown = new HashMap<>();
     public static final HashMap<String, Long> afktime = new HashMap<>();
-    public static final HashMap<String, Long> shovel_cooldown = new HashMap<>();
     public static final HashMap<String, Double> money = new HashMap<>();
     public static final HashMap<String, String> tell = new HashMap<>();
     public static final HashMap<String, String> tpa_requests = new HashMap<>();

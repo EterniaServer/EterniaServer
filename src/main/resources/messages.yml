@@ -150,8 +150,8 @@ spawners:
   types: '&7Os tipos válidos são&8: &3%s&8.'
 tell:
   use: '&7Use &6/tell &3<jogador> <mensagem>&8.'
-  toplayer: '&8[&6P&8] &6%s &8-> &6%b&8: %v'
-  fromplayer: '&8[&6P&8] &6%s &8<- &6%b&8: %v'
+  toplayer: '&8[&6P&8] &6%s &8-> &6%b&8:&6 %v'
+  fromplayer: '&8[&6P&8] &6%s &8<- &6%b&8:&6 %v'
   ruse: '&7Use &6/r &3<mensagem>&8.'
   rnaote: '&7Você não possui ninguém para responder&8.'
 text:
@@ -160,3 +160,9 @@ text:
   suicide: '&3%s &7disse antes de tirar sua própria vida&8.'
   afke: '&3%s &7agora está AFK&8.'
   afkd: '&3%s &7não está mais AFK&8.'
+kits:
+  use: '&7Use &6/kit &3<nome do kit>&8.'
+  noexist: '&7O kit &3%s &7não existe&8.'
+  no-perm: '&7Você não tem permissão para usar o kit &3%s&8.'
+  cooldown: '&7Ainda falta &3%s &7para poder utilizar esse kit novamente&8.'
+  kits: '&7Kits&8: &3%s&8.'
