@@ -35,7 +35,7 @@ public class NetherTimer extends org.bukkit.scheduler.BukkitRunnable {
                     }
                 } else Vars.playersInPortal.remove(player.getName());
                 if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afktime.get(player.getName())) >= EterniaServer.configs.getInt("server.afk-timer")) {
-                    if (!Vars.afk.contains(player.getName())) {
+                    if (!Vars.afk.contains(player.getName()) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                         player.kickPlayer(Strings.getMessage("server.afk-kick"));
                     }
                 }

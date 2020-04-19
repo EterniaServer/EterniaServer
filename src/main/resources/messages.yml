@@ -164,5 +164,6 @@ kits:
   use: '&7Use &6/kit &3<nome do kit>&8.'
   noexist: '&7O kit &3%s &7não existe&8.'
   no-perm: '&7Você não tem permissão para usar o kit &3%s&8.'
-  cooldown: '&7Ainda falta &3%s &7para poder utilizar esse kit novamente&8.'
+  oldschool: '&7Você precisa está registrado desde &3%s&7para poder usar isso&8.'
+  cooldown: '&7Ainda falta &3%s segundos &7para poder utilizar esse kit novamente&8.'
   kits: '&7Kits&8: &3%s&8.'

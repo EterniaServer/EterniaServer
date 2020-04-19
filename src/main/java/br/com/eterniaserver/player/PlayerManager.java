@@ -4,6 +4,8 @@ import br.com.eterniaserver.EterniaServer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerManager {
@@ -81,11 +83,11 @@ public class PlayerManager {
         AtomicBoolean exist = new AtomicBoolean(false);
         final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
         EterniaServer.connection.executeSQLQuery(connection -> {
-            PreparedStatement getHome = connection.prepareStatement(querie);
-            ResultSet resultSet = getHome.executeQuery();
+            PreparedStatement getCooldown = connection.prepareStatement(querie);
+            ResultSet resultSet = getCooldown.executeQuery();
             if (resultSet.next() && resultSet.getString("name") != null) exist.set(true);
             resultSet.close();
-            getHome.close();
+            getCooldown.close();
         });
 
         return exist.get();

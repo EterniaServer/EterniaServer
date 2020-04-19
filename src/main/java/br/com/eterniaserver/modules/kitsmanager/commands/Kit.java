@@ -3,17 +3,20 @@ package br.com.eterniaserver.modules.kitsmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
-import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.kitsmanager.sql.KitsAPI;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Kit implements CommandExecutor {
 
@@ -32,7 +35,6 @@ public class Kit implements CommandExecutor {
                     final String kit = args[0].toLowerCase();
                     if (EterniaServer.kits.contains("kits." + kit)) {
                         if (player.hasPermission("kits." + kit)) {
-                            EterniaServer.kits.getInt("kits." + kit + "delay");
                             String data = KitsAPI.getKitCooldown(player.getName(), kit);
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                             Date date;

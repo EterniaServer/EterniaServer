@@ -21,6 +21,9 @@ public class OnPlayerChat implements Listener {
         if (e.getMessage().contains("Cobra")) {
             Bukkit.getOnlinePlayers().forEach(player -> player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.B)));
         }
+        if (e.getMessage().contains("Mates_CZ")) {
+            Bukkit.getOnlinePlayers().forEach(player -> player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G)));
+        }
         if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             Vars.afktime.put(e.getPlayer().getName(), System.currentTimeMillis());
         }

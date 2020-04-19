@@ -1,6 +1,7 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 
 import io.papermc.lib.PaperLib;
@@ -27,6 +28,10 @@ public class OnPlayerMove implements Listener {
             if (Vars.playerposition.get(player.getName()) != player.getLocation()) {
                 if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
                     Vars.afktime.put(player.getName(), System.currentTimeMillis());
+                    if (Vars.afk.contains(player.getName())) {
+                        Vars.afk.remove(player.getName());
+                        Messages.BroadcastMessage("text.afkd", player.getName());
+                    }
                 }
                 if (EterniaServer.configs.getBoolean("modules.teleports")) {
                     Vars.moved.put(player.getName(), true);
