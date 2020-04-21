@@ -1,4 +1,4 @@
-package br.com.eterniaserver.modules.bedmanager;
+package br.com.eterniaserver.modules.bedmanager.tasks;
 
 
 import br.com.eterniaserver.EterniaServer;
@@ -9,12 +9,12 @@ import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AccelerateNightTask extends BukkitRunnable {
+public class AccelerateNight extends BukkitRunnable {
 
     private final EterniaServer plugin;
     private final World world;
 
-    public AccelerateNightTask(final World world, EterniaServer plugin) {
+    public AccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
         Messages.BroadcastMessage("bed.night-skipping", world.getName());
@@ -23,7 +23,7 @@ public class AccelerateNightTask extends BukkitRunnable {
     @Override
     public void run() {
         final long time = world.getTime();
-        final int sleeping = BedTimer.getSleeping(world).size();
+        final int sleeping = AccelerateWorld.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
         double base = EterniaServer.configs.getInt("bed.speed");
         double timeRate;

@@ -4,7 +4,7 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.modules.economymanager.sql.MoneyAPI;
+import br.com.eterniaserver.API.MoneyAPI;
 
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;

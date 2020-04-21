@@ -1,4 +1,4 @@
-package br.com.eterniaserver.modules.experiencemanager.sql;
+package br.com.eterniaserver.API;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
@@ -7,8 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class XPAPI {
+public class ExpAPI {
 
+    /**
+     *
+     * @param playerName The player name in String.
+     * @return The amount of exp of the player.
+     */
     public static Integer getExp(String playerName) {
         if (Vars.xp.containsKey(playerName)) {
             return Vars.xp.get(playerName);
@@ -28,6 +33,11 @@ public class XPAPI {
         return xp.get();
     }
 
+    /**
+     *
+     * @param playerName The player name in String.
+     * @param valor the amount of exp to set for the player.
+     */
     public static void setExp(String playerName, int valor) {
         Vars.xp.put(playerName, valor);
         final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-xp") + " SET xp='" + valor + "' WHERE player_name='" + playerName + "';";
@@ -38,13 +48,24 @@ public class XPAPI {
         }, true);
     }
 
+    /**
+     *
+     * @param playerName The player name in String.
+     * @param valor the amount of exp to add to a player.
+     */
     public static void addExp(String playerName, int valor) {
         setExp(playerName, getExp(playerName) + valor);
     }
 
+    /**
+     *
+     * @param playerName The player name in string.
+     * @return all exp of the player.
+     */
     public static Integer takeExp(String playerName) {
+        int xp = getExp(playerName);
         setExp(playerName, 0);
-        return getExp(playerName);
+        return xp;
     }
 
 }

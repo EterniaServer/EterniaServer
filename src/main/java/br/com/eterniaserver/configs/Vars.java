@@ -10,15 +10,20 @@ public class Vars {
 
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
 
-    public static final ArrayList<World> skipping_worlds = new ArrayList<>();
-    public static final ArrayList<String> god = new ArrayList<>();
-    public static final ArrayList<String> afk = new ArrayList<>();
+    public static final List<World> skipping_worlds = new ArrayList<>();
+    public static final List<String> god = new ArrayList<>();
+    public static final List<String> afk = new ArrayList<>();
+
+    public static final List<String> player_bal = new ArrayList<>();
+    public static final List<String> player_exp = new ArrayList<>();
+    public static final List<String> player_homes = new ArrayList<>();
+    public static final List<String> player_cooldown = new ArrayList<>();
 
     public static final HashMap<String, String> kits_cooldown = new HashMap<>();
     public static final HashMap<String, Long> teleporting = new HashMap<>();
     public static final HashMap<String, Long> bed_cooldown = new HashMap<>();
     public static final HashMap<String, Long> afktime = new HashMap<>();
-    public static final HashMap<String, Double> money = new HashMap<>();
+    public static final HashMap<String, Double> balances = new HashMap<>();
     public static final HashMap<String, String> tell = new HashMap<>();
     public static final HashMap<String, String> tpa_requests = new HashMap<>();
     public static final HashMap<String, Boolean> moved = new HashMap<>();

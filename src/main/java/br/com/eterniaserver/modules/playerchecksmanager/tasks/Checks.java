@@ -1,10 +1,10 @@
-package br.com.eterniaserver.modules.antinethertrapmanager;
+package br.com.eterniaserver.modules.playerchecksmanager.tasks;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.modules.teleportsmanager.sql.WarpsAPI;
+import br.com.eterniaserver.API.WarpsAPI;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
 
-public class NetherTimer extends org.bukkit.scheduler.BukkitRunnable {
+public class Checks extends org.bukkit.scheduler.BukkitRunnable {
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {

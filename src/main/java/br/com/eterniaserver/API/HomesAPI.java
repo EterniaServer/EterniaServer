@@ -1,4 +1,4 @@
-package br.com.eterniaserver.modules.homesmanager.sql;
+package br.com.eterniaserver.API;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;

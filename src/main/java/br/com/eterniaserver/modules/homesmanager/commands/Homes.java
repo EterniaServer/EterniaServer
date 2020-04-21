@@ -3,7 +3,7 @@ package br.com.eterniaserver.modules.homesmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
-import br.com.eterniaserver.modules.homesmanager.sql.HomesAPI;
+import br.com.eterniaserver.API.HomesAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

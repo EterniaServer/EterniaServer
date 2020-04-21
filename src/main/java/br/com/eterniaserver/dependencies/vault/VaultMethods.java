@@ -1,19 +1,17 @@
-package br.com.eterniaserver.dependencies;
+package br.com.eterniaserver.dependencies.vault;
 
+import br.com.eterniaserver.API.MoneyAPI;
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.modules.economymanager.sql.MoneyAPI;
 import br.com.eterniaserver.player.PlayerManager;
-
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-
 import org.bukkit.OfflinePlayer;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SystemEconomy implements Economy {
+public class VaultMethods implements Economy {
 
     private static final DecimalFormat df2 = new DecimalFormat(".##");
 
@@ -114,14 +112,22 @@ public class SystemEconomy implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        MoneyAPI.removeMoney(playerName, amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
+        if (has(playerName, amount)) {
+            MoneyAPI.removeMoney(playerName, amount);
+            return new EconomyResponse(amount, MoneyAPI.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
+        } else {
+            return new EconomyResponse(amount, MoneyAPI.getMoney(playerName), EconomyResponse.ResponseType.FAILURE, null);
+        }
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        MoneyAPI.removeMoney(player.getName(), amount);
-        return new EconomyResponse(amount, MoneyAPI.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
+        if (has(player, amount)) {
+            MoneyAPI.removeMoney(player.getName(), amount);
+            return new EconomyResponse(amount, MoneyAPI.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
+        } else {
+            return new EconomyResponse(amount, MoneyAPI.getMoney(player.getName()), EconomyResponse.ResponseType.FAILURE, null);
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.modules.teleportsmanager.sql;
+package br.com.eterniaserver.API;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;

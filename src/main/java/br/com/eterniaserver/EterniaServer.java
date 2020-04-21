@@ -1,14 +1,23 @@
 package br.com.eterniaserver;
 
-import br.com.eterniaserver.dependencies.PAPI;
+import br.com.eterniaserver.dependencies.papi.PAPI;
 import br.com.eterniaserver.events.*;
 import br.com.eterniaserver.modules.*;
+import br.com.eterniaserver.modules.bedmanager.BedManager;
+import br.com.eterniaserver.modules.economymanager.EconomyManager;
+import br.com.eterniaserver.modules.experiencemanager.ExperienceManager;
+import br.com.eterniaserver.modules.genericmanager.GenericManager;
+import br.com.eterniaserver.modules.homesmanager.HomesManager;
+import br.com.eterniaserver.modules.kitsmanager.KitsManager;
+import br.com.eterniaserver.modules.playerchecksmanager.PlayerChecksManager;
+import br.com.eterniaserver.modules.spawnermanager.SpawnersManager;
+import br.com.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.storages.Configs;
 import br.com.eterniaserver.storages.MessagesConfig;
 import br.com.eterniaserver.storages.sql.Connections;
 import br.com.eterniaserver.storages.DatabaseType;
-import br.com.eterniaserver.dependencies.VaultHook;
-import br.com.eterniaserver.dependencies.VaultUnHook;
+import br.com.eterniaserver.dependencies.vault.VaultHook;
+import br.com.eterniaserver.dependencies.vault.VaultUnHook;
 
 import io.papermc.lib.PaperLib;
 
@@ -35,7 +44,6 @@ public class EterniaServer extends JavaPlugin {
 
         databaseType();
 
-        antiNetherTrapManager();
         bedManager();
         blockRewardManager();
         commandsManager();
@@ -45,6 +53,7 @@ public class EterniaServer extends JavaPlugin {
         genericManager();
         homesManager();
         kitsManager();
+        playerChecksManager();
         spawnersManager();
         teleportsManager();
 
@@ -79,12 +88,12 @@ public class EterniaServer extends JavaPlugin {
         new VaultUnHook();
     }
 
-    private void placeholderAPIHook() {
-        new PAPI();
-    }
-
     private void vaultHook() {
         new VaultHook(this);
+    }
+
+    private void placeholderAPIHook() {
+        new PAPI();
     }
 
     private void spawnersManager() {
@@ -93,6 +102,10 @@ public class EterniaServer extends JavaPlugin {
 
     private void teleportsManager() {
         new TeleportsManager(this);
+    }
+
+    private void playerChecksManager() {
+        new PlayerChecksManager(this);
     }
 
     private void kitsManager() {
@@ -129,10 +142,6 @@ public class EterniaServer extends JavaPlugin {
 
     private void bedManager() {
         new BedManager(this);
-    }
-
-    private void antiNetherTrapManager() {
-        new AntiNetherTrapManager(this);
     }
 
     private void databaseType() {

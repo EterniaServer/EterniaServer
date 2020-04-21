@@ -67,10 +67,12 @@ public class SpawnerBreak {
                         }
                         player.getInventory().addItem(item);
                         block.getDrops().clear();
+                        event.setExpToDrop(0);
                         return;
                     }
                     Location loc = block.getLocation();
                     Objects.requireNonNull(loc.getWorld()).dropItemNaturally(loc, item);
+                    event.setExpToDrop(0);
                 } else {
                     event.setCancelled(true);
                     Messages.PlayerMessage("spawners.no-silktouch", player);

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.economymanager.sql.MoneyAPI;
+import br.com.eterniaserver.API.MoneyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

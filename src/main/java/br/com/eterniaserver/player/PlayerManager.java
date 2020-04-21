@@ -1,6 +1,7 @@
 package br.com.eterniaserver.player;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Vars;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,18 +11,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerManager {
 
-    public static boolean playerXPExist(final String playerName) {
-        AtomicBoolean exist = new AtomicBoolean(false);
-        final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
+    public static void playerHomeCreate(final String playerName) {
+        final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');";
         EterniaServer.connection.executeSQLQuery(connection -> {
-            PreparedStatement getXP = connection.prepareStatement(querie);
-            ResultSet resultSet = getXP.executeQuery();
-            if (resultSet.next() && resultSet.getString("player_name") != null) exist.set(true);
-            resultSet.close();
-            getXP.close();
-        });
-
-        return exist.get();
+            PreparedStatement putHome = connection.prepareStatement(querie);
+            putHome.execute();
+            putHome.close();
+        }, true);
     }
 
     public static void playerXPCreate(final String playerName) {
@@ -40,15 +36,44 @@ public class PlayerManager {
             putMoney.execute();
             putMoney.close();
         }, true);
+        Vars.player_bal.add(playerName);
+    }
+
+    public static boolean playerXPExist(final String playerName) {
+        if (Vars.player_exp.contains(playerName)) {
+            return true;
+        }
+
+        AtomicBoolean exist = new AtomicBoolean(false);
+        final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
+        EterniaServer.connection.executeSQLQuery(connection -> {
+            PreparedStatement getXP = connection.prepareStatement(querie);
+            ResultSet resultSet = getXP.executeQuery();
+            if (resultSet.next() && resultSet.getString("player_name") != null) {
+                exist.set(true);
+                Vars.player_exp.add(playerName);
+            }
+            resultSet.close();
+            getXP.close();
+        });
+
+        return exist.get();
     }
 
     public static boolean playerMoneyExist(final String playerName) {
+        if (Vars.player_bal.contains(playerName)) {
+            return true;
+        }
+
         AtomicBoolean exist = new AtomicBoolean(false);
         final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-money")+ " WHERE player_name='" + playerName + "';";
         EterniaServer.connection.executeSQLQuery(connection -> {
             PreparedStatement getMoney = connection.prepareStatement(querie);
             ResultSet resultSet = getMoney.executeQuery();
-            if (resultSet.next() && resultSet.getString("player_name") != null) exist.set(true);
+            if (resultSet.next() && resultSet.getString("player_name") != null) {
+                exist.set(true);
+                Vars.player_bal.add(playerName);
+            }
             resultSet.close();
             getMoney.close();
         });
@@ -56,22 +81,20 @@ public class PlayerManager {
         return exist.get();
     }
 
-    public static void playerHomeCreate(final String playerName) {
-        final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');";
-        EterniaServer.connection.executeSQLQuery(connection -> {
-            PreparedStatement putHome = connection.prepareStatement(querie);
-            putHome.execute();
-            putHome.close();
-        }, true);
-    }
-
     public static boolean playerHomeExist(final String playerName) {
+        if (Vars.player_homes.contains(playerName)) {
+            return true;
+        }
+
         AtomicBoolean exist = new AtomicBoolean(false);
         final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home")+ " WHERE player_name='" + playerName + "';";
         EterniaServer.connection.executeSQLQuery(connection -> {
             PreparedStatement getHome = connection.prepareStatement(querie);
             ResultSet resultSet = getHome.executeQuery();
-            if (resultSet.next() && resultSet.getString("player_name") != null) exist.set(true);
+            if (resultSet.next() && resultSet.getString("player_name") != null) {
+                exist.set(true);
+                Vars.player_homes.add(playerName);
+            }
             resultSet.close();
             getHome.close();
         });
@@ -80,12 +103,19 @@ public class PlayerManager {
     }
 
     public static boolean playerCooldownExist(final String jogador, String kit) {
+        if (Vars.player_cooldown.contains(kit + "." + jogador)) {
+            return true;
+        }
+
         AtomicBoolean exist = new AtomicBoolean(false);
         final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
         EterniaServer.connection.executeSQLQuery(connection -> {
             PreparedStatement getCooldown = connection.prepareStatement(querie);
             ResultSet resultSet = getCooldown.executeQuery();
-            if (resultSet.next() && resultSet.getString("name") != null) exist.set(true);
+            if (resultSet.next() && resultSet.getString("name") != null) {
+                exist.set(true);
+                Vars.player_cooldown.add(kit + "." + jogador);
+            }
             resultSet.close();
             getCooldown.close();
         });

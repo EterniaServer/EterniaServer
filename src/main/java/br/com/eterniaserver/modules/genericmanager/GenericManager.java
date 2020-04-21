@@ -1,4 +1,4 @@
-package br.com.eterniaserver.modules;
+package br.com.eterniaserver.modules.genericmanager;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;

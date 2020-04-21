@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.economymanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.economymanager.sql.MoneyAPI;
+import br.com.eterniaserver.API.MoneyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

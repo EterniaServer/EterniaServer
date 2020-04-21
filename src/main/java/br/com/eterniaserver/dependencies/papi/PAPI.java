@@ -1,4 +1,4 @@
-package br.com.eterniaserver.dependencies;
+package br.com.eterniaserver.dependencies.papi;
 
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;

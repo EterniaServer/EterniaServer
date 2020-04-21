@@ -1,7 +1,8 @@
-package br.com.eterniaserver.modules.bedmanager;
+package br.com.eterniaserver.modules.bedmanager.tasks;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
+import br.com.eterniaserver.modules.bedmanager.tasks.AccelerateNight;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -11,11 +12,11 @@ import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
-public class BedTimer implements Runnable {
+public class AccelerateWorld implements Runnable {
 
     private final EterniaServer plugin;
 
-    public BedTimer(EterniaServer plugin) {
+    public AccelerateWorld(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
@@ -29,7 +30,7 @@ public class BedTimer implements Runnable {
         final int sleeping = getSleeping(world).size();
         if (sleeping > 0) {
             Vars.skipping_worlds.add(world);
-            new AccelerateNightTask(world, plugin).runTaskTimer(plugin, 1, 1);
+            new AccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }
 

@@ -5,6 +5,7 @@ version: '${project.version}'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
+load: STARTUP
 softdepend: [Vault, PlaceholderAPI]
 loadbefore: [VentureChat]
 commands:
@@ -115,7 +116,7 @@ commands:
     aliases: [eterniareload]
   enderchest:
     description: Abre o enderchest.
-    aliases: [openender]
+    aliases: [openender, ec]
   openinventory:
     description: Abre o inventario de algum jogador.
     aliases: [openinv, invsee]
