@@ -1,8 +1,7 @@
 package br.com.eterniaserver.modules.experiencemanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.API.ExpAPI;
-import br.com.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.API.Exp;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +17,7 @@ public class CheckLevel implements CommandExecutor {
                 float xp = player.getExp();
                 player.setLevel(0);
                 player.setExp(0);
-                player.giveExp(ExpAPI.getExp(player.getName()));
+                player.giveExp(Exp.getExp(player.getName()));
                 Messages.PlayerMessage("xp.getxp", "%amount%", player.getLevel(), player);
                 player.setLevel(lvl);
                 player.setExp(xp);

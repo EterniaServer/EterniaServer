@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.economymanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.API.MoneyAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,12 +16,12 @@ public class Money implements CommandExecutor {
             DecimalFormat df2 = new DecimalFormat(".##");
             if (args.length == 0) {
                 if (player.hasPermission("eternia.money")) {
-                    double money = MoneyAPI.getMoney(player.getName());
+                    double money = br.com.eterniaserver.API.Money.getMoney(player.getName());
                     Messages.PlayerMessage("eco.money", "%money%", df2.format(money), player);
                 }
             } else if (args.length == 1) {
                 if (player.hasPermission("eternia.money.other")) {
-                    double money = MoneyAPI.getMoney(args[0]);
+                    double money = br.com.eterniaserver.API.Money.getMoney(args[0]);
                     Messages.PlayerMessage("eco.money-other", "%money%", df2.format(money), player);
                 } else {
                     Messages.PlayerMessage("server.no-perm", player);
@@ -31,7 +30,7 @@ public class Money implements CommandExecutor {
         } else {
             DecimalFormat df2 = new DecimalFormat(".##");
             if (args.length == 1) {
-                double money = MoneyAPI.getMoney(args[0]);
+                double money = br.com.eterniaserver.API.Money.getMoney(args[0]);
                 Messages.ConsoleMessage("eco.money-other", "%money%", df2.format(money));
             }
         }

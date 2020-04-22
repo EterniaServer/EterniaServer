@@ -4,7 +4,7 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.API.MoneyAPI;
+import br.com.eterniaserver.API.Money;
 
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
@@ -32,7 +32,7 @@ public class Back implements CommandExecutor {
                     return true;
                 }
                 if (Vars.back.containsKey(player.getName())) {
-                    double money = MoneyAPI.getMoney(player.getName());
+                    double money = Money.getMoney(player.getName());
                     double valor = EterniaServer.configs.getInt("money.back");
                     if (player.hasPermission("eternia.backfree") || !(EterniaServer.configs.getBoolean("modules.economy"))) {
                         if (player.hasPermission("eternia.timing.bypass")) {
@@ -60,7 +60,7 @@ public class Back implements CommandExecutor {
                             if (player.hasPermission("eternia.timing.bypass")) {
                                 PaperLib.teleportAsync(player, Vars.back.get(player.getName()));
                                 Vars.back.remove(player.getName());
-                                MoneyAPI.removeMoney(player.getName(), valor);
+                                Money.removeMoney(player.getName(), valor);
                                 Messages.PlayerMessage("back.nofree", "%money%", valor, player);
                             } else {
                                 Messages.PlayerMessage("teleport.timing", "%cooldown%", EterniaServer.configs.getInt("server.cooldown"), player);
@@ -72,7 +72,7 @@ public class Back implements CommandExecutor {
                                     if (!Vars.moved.get(player.getName())) {
                                         PaperLib.teleportAsync(player, Vars.back.get(player.getName()));
                                         Vars.back.remove(player.getName());
-                                        MoneyAPI.removeMoney(player.getName(), valor);
+                                        Money.removeMoney(player.getName(), valor);
                                         Messages.PlayerMessage("back.nofree", "%money%", valor, player);
                                     } else {
                                         Messages.PlayerMessage("warps.move", player);

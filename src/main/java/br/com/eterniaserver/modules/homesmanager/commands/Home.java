@@ -4,7 +4,7 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.API.HomesAPI;
+import br.com.eterniaserver.modules.homesmanager.HomesManager;
 
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
@@ -32,7 +32,7 @@ public class Home implements CommandExecutor {
                     return true;
                 }
                 if (args.length == 1) {
-                    Location location = HomesAPI.getHome(args[0].toLowerCase(), player.getName());
+                    Location location = HomesManager.getHome(args[0].toLowerCase(), player.getName());
                     if (location != Vars.error) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             PaperLib.teleportAsync(player, location);
@@ -58,7 +58,7 @@ public class Home implements CommandExecutor {
                     if (player.hasPermission("eternia.home.others")) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target.isOnline()) {
-                            Location location = HomesAPI.getHome(args[1].toLowerCase(), target.getName());
+                            Location location = HomesManager.getHome(args[1].toLowerCase(), target.getName());
                             if (location != Vars.error) {
                                 PaperLib.teleportAsync(player, location);
                                 Messages.PlayerMessage("home.suc", player);

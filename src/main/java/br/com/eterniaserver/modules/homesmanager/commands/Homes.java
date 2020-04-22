@@ -3,7 +3,7 @@ package br.com.eterniaserver.modules.homesmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
-import br.com.eterniaserver.API.HomesAPI;
+import br.com.eterniaserver.modules.homesmanager.HomesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +29,7 @@ public class Homes implements CommandExecutor {
                         if (target != null && target.isOnline()) {
                             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                                 StringBuilder accounts = new StringBuilder();
-                                String[] values = HomesAPI.getHomes(target.getName());
+                                String[] values = HomesManager.getHomes(target.getName());
                                 for (String line : values) {
                                     accounts.append(line).append("&8, &3");
                                 }
@@ -44,7 +44,7 @@ public class Homes implements CommandExecutor {
                 } else {
                     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                         StringBuilder accounts = new StringBuilder();
-                        String[] values = HomesAPI.getHomes(player.getName());
+                        String[] values = HomesManager.getHomes(player.getName());
                         for (String line : values) {
                             accounts.append(line).append("&8, &3");
                         }

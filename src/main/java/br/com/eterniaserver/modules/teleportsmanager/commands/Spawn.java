@@ -3,8 +3,8 @@ package br.com.eterniaserver.modules.teleportsmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.API.WarpsAPI;
 import br.com.eterniaserver.configs.Vars;
+import br.com.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,7 +29,7 @@ public class Spawn implements CommandExecutor {
                 Messages.PlayerMessage("server.telep", player);
                 return true;
             }
-            final Location location = WarpsAPI.getWarp("spawn");
+            final Location location = TeleportsManager.getWarp("spawn");
             if (location != Vars.error) {
                 if (args.length == 0) {
                     if (player.hasPermission("eternia.spawn")) {

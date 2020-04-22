@@ -3,8 +3,7 @@ package br.com.eterniaserver.modules.kitsmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
-import br.com.eterniaserver.modules.kitsmanager.sql.KitsAPI;
-
+import br.com.eterniaserver.modules.kitsmanager.KitsManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,7 +31,7 @@ public class Kit implements CommandExecutor {
                     final String kit = args[0].toLowerCase();
                     if (EterniaServer.kits.contains("kits." + kit)) {
                         if (player.hasPermission("kits." + kit)) {
-                            String data = KitsAPI.getKitCooldown(player.getName(), kit);
+                            String data = KitsManager.getKitCooldown(player.getName(), kit);
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                             Date date;
                             try {
@@ -59,7 +58,7 @@ public class Kit implements CommandExecutor {
                                             player.sendMessage(Strings.getColor(modifiedText));
                                         }
                                     }
-                                    KitsAPI.setKitCooldown(player.getName(), kit);
+                                    KitsManager.setKitCooldown(player.getName(), kit);
                                 } else {
                                     Messages.PlayerMessage("kits.cooldown", "%cooldown%", (((millis / 1000) + EterniaServer.kits.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
                                 }

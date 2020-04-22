@@ -7,12 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ExpAPI {
+public class Exp {
 
     /**
-     *
-     * @param playerName The player name in String.
-     * @return The amount of exp of the player.
+     * Gets experience of a player on a database.
+     * @param playerName to check
+     * @return Amount currently held in player's database
      */
     public static Integer getExp(String playerName) {
         if (Vars.xp.containsKey(playerName)) {
@@ -34,13 +34,13 @@ public class ExpAPI {
     }
 
     /**
-     *
-     * @param playerName The player name in String.
-     * @param valor the amount of exp to set for the player.
+     * Defines the amount experience in player's database.
+     * @param playerName to check
+     * @param amount to set
      */
-    public static void setExp(String playerName, int valor) {
-        Vars.xp.put(playerName, valor);
-        final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-xp") + " SET xp='" + valor + "' WHERE player_name='" + playerName + "';";
+    public static void setExp(String playerName, int amount) {
+        Vars.xp.put(playerName, amount);
+        final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';";
         EterniaServer.connection.executeSQLQuery(connection -> {
             PreparedStatement setexp = connection.prepareStatement(querie);
             setexp.execute();
@@ -49,21 +49,21 @@ public class ExpAPI {
     }
 
     /**
-     *
-     * @param playerName The player name in String.
-     * @param valor the amount of exp to add to a player.
+     * Adds experience of player's database.
+     * @param playerName to check
+     * @param amount to add
      */
-    public static void addExp(String playerName, int valor) {
-        setExp(playerName, getExp(playerName) + valor);
+    public static void addExp(String playerName, int amount) {
+        setExp(playerName, getExp(playerName) + amount);
     }
 
     /**
-     *
-     * @param playerName The player name in String.
-     * @param valor The amount of exp to remove of the player.
+     * Removes experience of player's database.
+     * @param playerName to check
+     * @param amount to remove
      */
-    public static void removeExp(String playerName, int valor) {
-        setExp(playerName, getExp(playerName) - valor);
+    public static void removeExp(String playerName, int amount) {
+        setExp(playerName, getExp(playerName) - amount);
     }
 
 }

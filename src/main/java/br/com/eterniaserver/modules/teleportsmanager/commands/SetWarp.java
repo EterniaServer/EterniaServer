@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.API.WarpsAPI;
+import br.com.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,7 @@ public class SetWarp implements CommandExecutor {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (player.hasPermission("eternia.setwarp")) {
-                    WarpsAPI.setWarp(player.getLocation(), args[0].toLowerCase());
+                    TeleportsManager.setWarp(player.getLocation(), args[0].toLowerCase());
                     Messages.PlayerMessage("warps.createwarp", "%warp_name%", args[0], player);
                 } else {
                     Messages.PlayerMessage("server.no-perm", player);

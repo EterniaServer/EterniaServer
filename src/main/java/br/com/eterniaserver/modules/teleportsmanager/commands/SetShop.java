@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.API.ShopsAPI;
+import br.com.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +13,7 @@ public class SetShop implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.setshop")) {
-                ShopsAPI.setShop(player.getLocation(), player.getName().toLowerCase());
+                TeleportsManager.setShop(player.getLocation(), player.getName().toLowerCase());
                 Messages.PlayerMessage("warps.shopd", player);
             } else {
                 Messages.PlayerMessage("server.no-perm", player);

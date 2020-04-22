@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.API.MoneyAPI;
+import br.com.eterniaserver.API.Money;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -43,7 +43,7 @@ public class Baltop implements CommandExecutor {
                     });
                     DecimalFormat df2 = new DecimalFormat(".##");
                     Messages.PlayerMessage("eco.baltop", player);
-                    accounts.forEach(name -> Messages.PlayerMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(MoneyAPI.getMoney(name)), player));
+                    accounts.forEach(name -> Messages.PlayerMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(Money.getMoney(name)), player));
                 });
             } else {
                 Messages.PlayerMessage("server.no-perm", player);

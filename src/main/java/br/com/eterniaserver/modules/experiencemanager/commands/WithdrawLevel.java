@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.experiencemanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.API.ExpAPI;
+import br.com.eterniaserver.API.Exp;
 import br.com.eterniaserver.configs.methods.Checks;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,8 +18,8 @@ public class WithdrawLevel implements CommandExecutor {
                 if (args.length == 1) {
                     try {
                         int xpla = Checks.getXPForLevel(Integer.parseInt(args[0]));
-                        if (ExpAPI.getExp(player.getName()) >= xpla) {
-                            ExpAPI.removeExp(player.getName(), xpla);
+                        if (Exp.getExp(player.getName()) >= xpla) {
+                            Exp.removeExp(player.getName(), xpla);
                             player.giveExp(xpla);
                             Messages.PlayerMessage("xp.withdraw", "%level%", player.getLevel(), player);
                         } else {

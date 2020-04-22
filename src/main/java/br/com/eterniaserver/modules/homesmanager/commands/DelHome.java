@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.API.HomesAPI;
+import br.com.eterniaserver.modules.homesmanager.HomesManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,8 +15,8 @@ public class DelHome implements CommandExecutor {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (player.hasPermission("eternia.delhome")) {
-                    if (HomesAPI.existHome(args[0].toLowerCase(), player.getName())) {
-                        HomesAPI.delHome(args[0].toLowerCase(), player.getName());
+                    if (HomesManager.existHome(args[0].toLowerCase(), player.getName())) {
+                        HomesManager.delHome(args[0].toLowerCase(), player.getName());
                         Messages.PlayerMessage("home.del", player);
                     } else {
                         Messages.PlayerMessage("home.no", player);

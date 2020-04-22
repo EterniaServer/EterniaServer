@@ -4,7 +4,7 @@ import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.API.WarpsAPI;
+import br.com.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,7 +24,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                     } else if (Vars.playersInPortal.get(player.getName()) <= 1) {
                         Location player_location = player.getLocation();
                         if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
-                            PaperLib.teleportAsync(player, WarpsAPI.getWarp("spawn"));
+                            PaperLib.teleportAsync(player, TeleportsManager.getWarp("spawn"));
                             Messages.PlayerMessage("warps.warp", "%warp_name%", "Spawn", player);
                         }
                     } else {
