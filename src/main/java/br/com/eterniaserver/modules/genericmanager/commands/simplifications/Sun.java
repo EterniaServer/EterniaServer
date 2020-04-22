@@ -13,7 +13,7 @@ public class Sun implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.sun")) {
                 player.getWorld().setStorm(false);
-                Messages.PlayerMessage("simp.weather", "ensolarado", player);
+                Messages.PlayerMessage("simp.weather", player);
             } else {
                 Messages.PlayerMessage("server.no-perm", player);
             }

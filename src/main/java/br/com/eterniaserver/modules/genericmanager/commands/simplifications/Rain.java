@@ -13,7 +13,7 @@ public class Rain implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.rain")) {
                 player.getWorld().setStorm(true);
-                Messages.PlayerMessage("simp.weather", "chuvoso", player);
+                Messages.PlayerMessage("simp.weather", player);
             } else {
                 Messages.PlayerMessage("server.no-perm", player);
             }

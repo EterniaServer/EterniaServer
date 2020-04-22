@@ -18,12 +18,12 @@ public class Money implements CommandExecutor {
             if (args.length == 0) {
                 if (player.hasPermission("eternia.money")) {
                     double money = MoneyAPI.getMoney(player.getName());
-                    Messages.PlayerMessage("eco.money", df2.format(money), player);
+                    Messages.PlayerMessage("eco.money", "%money%", df2.format(money), player);
                 }
             } else if (args.length == 1) {
                 if (player.hasPermission("eternia.money.other")) {
                     double money = MoneyAPI.getMoney(args[0]);
-                    Messages.PlayerMessage("eco.money-other", df2.format(money), player);
+                    Messages.PlayerMessage("eco.money-other", "%money%", df2.format(money), player);
                 } else {
                     Messages.PlayerMessage("server.no-perm", player);
                 }
@@ -32,7 +32,7 @@ public class Money implements CommandExecutor {
             DecimalFormat df2 = new DecimalFormat(".##");
             if (args.length == 1) {
                 double money = MoneyAPI.getMoney(args[0]);
-                Messages.ConsoleMessage("eco.money-other", df2.format(money));
+                Messages.ConsoleMessage("eco.money-other", "%money%", df2.format(money));
             }
         }
         return true;

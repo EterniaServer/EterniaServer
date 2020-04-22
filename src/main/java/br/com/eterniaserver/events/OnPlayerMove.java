@@ -5,6 +5,7 @@ import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 
 import io.papermc.lib.PaperLib;
+
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,35 +31,34 @@ public class OnPlayerMove implements Listener {
                     Vars.afktime.put(player.getName(), System.currentTimeMillis());
                     if (Vars.afk.contains(player.getName())) {
                         Vars.afk.remove(player.getName());
-                        Messages.BroadcastMessage("text.afkd", player.getName());
+                        Messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
                     }
                 }
                 if (EterniaServer.configs.getBoolean("modules.teleports")) {
                     Vars.moved.put(player.getName(), true);
                 }
             }
-        }
-        if (EterniaServer.configs.getBoolean("modules.playerchecks") && event.getFrom().getY() < event.getTo().getY() && event.getPlayer().hasPermission("eternia.elevator")) {
-            Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-            Material material = block.getType();
-            List<String> stringList = EterniaServer.configs.getStringList("elevator.block");
-            for (String value : stringList) {
-                if (value.equals(material.toString())) {
-                    final int max = EterniaServer.configs.getInt("elevator.max");
-                    final int min = EterniaServer.configs.getInt("elevator.min");
-                    block = block.getRelative(BlockFace.UP, min);
-                    int i;
-                    for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) {
-                        -- i;
+            if (event.getTo().getY() > event.getTo().getY() && EterniaServer.configs.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {
+                Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
+                Material material = block.getType();
+                List<String> stringList = EterniaServer.configs.getStringList("elevator.block");
+                for (String value : stringList) {
+                    if (value.equals(material.toString())) {
+                        final int max = EterniaServer.configs.getInt("elevator.max");
+                        final int min = EterniaServer.configs.getInt("elevator.min");
+                        block = block.getRelative(BlockFace.UP, min);
+                        int i;
+                        for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) {
+                            -- i;
+                        }
+                        if (i > 0) {
+                            Location location = player.getLocation();
+                            location.setY((location.getY() + (double) max + 3.0D - (double) i) - 1);
+                            PaperLib.teleportAsync(player, location);
+                            player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
+                        }
+                        break;
                     }
-                    if (i > 0) {
-                        Player player = event.getPlayer();
-                        Location location = player.getLocation();
-                        location.setY((location.getY() + (double) max + 3.0D - (double) i) - 1);
-                        PaperLib.teleportAsync(player, location);
-                        player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-                    }
-                    break;
                 }
             }
         }

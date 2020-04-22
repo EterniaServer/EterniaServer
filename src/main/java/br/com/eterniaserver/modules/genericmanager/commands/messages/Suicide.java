@@ -1,7 +1,6 @@
 package br.com.eterniaserver.modules.genericmanager.commands.messages;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.configs.Strings;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,10 +17,9 @@ public class Suicide implements CommandExecutor {
                     for (java.lang.String arg : args) {
                         sb.append(arg).append(" ");
                     }
-                    sb.append("&8- &3").append(player.getName());
                     java.lang.String s = sb.toString();
                     player.setHealth(0);
-                    Messages.BroadcastMessage("text.suicide", Strings.getColor(s));
+                    Messages.BroadcastMessage("text.suicide", "%message%", s, "%player_name%", player.getName());
                 } else {
                     player.setHealth(0);
                 }

@@ -43,7 +43,7 @@ public class Baltop implements CommandExecutor {
                     });
                     DecimalFormat df2 = new DecimalFormat(".##");
                     Messages.PlayerMessage("eco.baltop", player);
-                    accounts.forEach(name -> Messages.PlayerMessage("eco.ballist", (accounts.indexOf(name) + 1), name, df2.format(MoneyAPI.getMoney(name)), player));
+                    accounts.forEach(name -> Messages.PlayerMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(MoneyAPI.getMoney(name)), player));
                 });
             } else {
                 Messages.PlayerMessage("server.no-perm", player);

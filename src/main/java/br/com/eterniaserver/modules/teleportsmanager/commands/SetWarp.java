@@ -15,7 +15,7 @@ public class SetWarp implements CommandExecutor {
             if (args.length == 1) {
                 if (player.hasPermission("eternia.setwarp")) {
                     WarpsAPI.setWarp(player.getLocation(), args[0].toLowerCase());
-                    Messages.PlayerMessage("warps.createwarp", args[0], player);
+                    Messages.PlayerMessage("warps.createwarp", "%warp_name%", args[0], player);
                 } else {
                     Messages.PlayerMessage("server.no-perm", player);
                 }

@@ -10,13 +10,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Kit implements CommandExecutor {
 
@@ -64,16 +61,16 @@ public class Kit implements CommandExecutor {
                                     }
                                     KitsAPI.setKitCooldown(player.getName(), kit);
                                 } else {
-                                    Messages.PlayerMessage("kits.cooldown", (((millis / 1000) + EterniaServer.kits.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
+                                    Messages.PlayerMessage("kits.cooldown", "%cooldown%", (((millis / 1000) + EterniaServer.kits.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
                                 }
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                         } else {
-                            Messages.PlayerMessage("kits.no-perm", kit, player);
+                            Messages.PlayerMessage("kits.no-perm", "%kit_name%", kit, player);
                         }
                     } else {
-                        Messages.PlayerMessage("kits.noexist", kit, player);
+                        Messages.PlayerMessage("kits.noexist", "%kit_name%", kit, player);
                     }
                 } else {
                     Messages.PlayerMessage("kits.use", player);

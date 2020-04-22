@@ -14,9 +14,9 @@ public class EconomyManager {
             Objects.requireNonNull(plugin.getCommand("money")).setExecutor(new Money());
             Objects.requireNonNull(plugin.getCommand("baltop")).setExecutor(new Baltop(plugin));
             Objects.requireNonNull(plugin.getCommand("eco")).setExecutor(new Eco());
-            Messages.ConsoleMessage("modules.enable", "Economy");
+            Messages.ConsoleMessage("modules.enable", "%module%", "Economy");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Economy");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Economy");
         }
     }
 

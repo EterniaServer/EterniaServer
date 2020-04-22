@@ -18,7 +18,7 @@ public class DelWarp implements CommandExecutor {
                         WarpsAPI.delWarp(args[0]);
                         Messages.PlayerMessage("warps.delwarp", player);
                     } else {
-                        Messages.PlayerMessage("warps.noexist", args[0], player);
+                        Messages.PlayerMessage("warps.noexist", "%warp_name%", args[0], player);
                     }
                 } else {
                     Messages.PlayerMessage("server.no-perm", player);

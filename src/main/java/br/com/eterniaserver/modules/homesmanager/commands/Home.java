@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.Checks;
+import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.API.HomesAPI;
@@ -38,7 +38,7 @@ public class Home implements CommandExecutor {
                             PaperLib.teleportAsync(player, location);
                             Messages.PlayerMessage("home.suc", player);
                         } else {
-                            Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
+                            Messages.PlayerMessage("teleport.timing", "%cooldown%", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                             Vars.moved.put(player.getName(), false);

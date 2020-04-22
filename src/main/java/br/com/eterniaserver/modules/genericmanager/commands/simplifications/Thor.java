@@ -17,8 +17,8 @@ public class Thor implements CommandExecutor {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null && target.isOnline()) {
                         target.getWorld().strikeLightning(target.getLocation());
-                        Messages.PlayerMessage("simp.thor-other", target.getName(), player);
-                        Messages.PlayerMessage("simp.other-thor", player.getName(), target);
+                        Messages.PlayerMessage("simp.thor-other", "%target_name%", target.getName(), player);
+                        Messages.PlayerMessage("simp.other-thor", "%target_name%", player.getName(), target);
                     } else {
                         Messages.PlayerMessage("server.player-offline", player);
                     }

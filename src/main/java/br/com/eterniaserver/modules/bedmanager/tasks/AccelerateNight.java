@@ -17,7 +17,7 @@ public class AccelerateNight extends BukkitRunnable {
     public AccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        Messages.BroadcastMessage("bed.night-skipping", world.getName());
+        Messages.BroadcastMessage("bed.night-skipping", "%world_name%", world.getName());
     }
 
     @Override
@@ -35,7 +35,7 @@ public class AccelerateNight extends BukkitRunnable {
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                 Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> Vars.skipping_worlds.remove(world), 20);
-                Messages.BroadcastMessage("bed.skip-night", "normalmente");
+                Messages.BroadcastMessage("bed.skip-night");
                 this.cancel();
             } else {
                 world.setTime(time + (int) timeRate);

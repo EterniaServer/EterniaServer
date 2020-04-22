@@ -16,11 +16,11 @@ public class AFK implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.afk")) {
                 if (Vars.afk.contains(player.getName())) {
-                    Messages.BroadcastMessage("text.afkd", player.getName());
+                    Messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
                     Vars.afk.remove(player.getName());
                 } else {
                     Vars.afk.add(player.getName());
-                    Messages.BroadcastMessage("text.afke", player.getName());
+                    Messages.BroadcastMessage("text.afke", "%player_name%", player.getName());
                 }
             } else {
                 Messages.PlayerMessage("server.no-perm", player);

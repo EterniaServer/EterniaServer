@@ -59,8 +59,8 @@ public class SpawnerGive implements CommandExecutor {
                                 }
                                 item.setItemMeta(meta);
                                 target.getInventory().addItem(item);
-                                Messages.PlayerMessage("spawners.send", amount, mobFormatted, target.getName(), player);
-                                Messages.PlayerMessage("spawners.receive", amount, mobFormatted, player.getName(), target);
+                                Messages.PlayerMessage("spawners.send", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%", target.getName(), player);
+                                Messages.PlayerMessage("spawners.receive", "amount%", amount, "%mob_type%", mobFormatted, "%target_name%", player.getName(), target);
                             }
                         } else {
                             Messages.PlayerMessage("server.no-negative", player);
@@ -72,7 +72,7 @@ public class SpawnerGive implements CommandExecutor {
                             str.append(", ");
                         }
                         str.append("&7algumas entidades não funcionam");
-                        Messages.PlayerMessage("spawners.types", str.toString(), player);
+                        Messages.PlayerMessage("spawners.types", "%types%", str.toString(), player);
                     }
                 } else {
                     Messages.PlayerMessage("spawners.use", player);
@@ -117,8 +117,8 @@ public class SpawnerGive implements CommandExecutor {
                             }
                             item.setItemMeta(meta);
                             target.getInventory().addItem(item);
-                            Messages.ConsoleMessage("spawners.send", amount, mobFormatted, target.getName());
-                            Messages.PlayerMessage("spawners.receive", amount, mobFormatted, "console", target);
+                            Messages.ConsoleMessage("spawners.send", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%",target.getName());
+                            Messages.PlayerMessage("spawners.receive", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%", "console", target);
                         }
                     } else {
                         Messages.ConsoleMessage("server.no-negative");
@@ -130,7 +130,7 @@ public class SpawnerGive implements CommandExecutor {
                         str.append("&8, &3");
                     }
                     str.append("&7algumas entidades não funcionam");
-                    Messages.ConsoleMessage("spawners.types", Strings.getColor(str.toString()));
+                    Messages.ConsoleMessage("spawners.types", "%types%", Strings.getColor(str.toString()));
                 }
             } else {
                 Messages.ConsoleMessage("spawners.use");

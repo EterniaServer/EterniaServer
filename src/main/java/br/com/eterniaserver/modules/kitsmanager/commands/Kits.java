@@ -16,7 +16,7 @@ public class Kits implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.kits")) {
-                Messages.PlayerMessage("kits.kits", Strings.getColor(EterniaServer.kits.getString("kits.nameofkits")), player);
+                Messages.PlayerMessage("kits.kits", "%kits%", Strings.getColor(EterniaServer.kits.getString("kits.nameofkits")), player);
             } else {
                 Messages.PlayerMessage("server.no-perm", player);
             }

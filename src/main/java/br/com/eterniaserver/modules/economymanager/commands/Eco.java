@@ -24,18 +24,18 @@ public class Eco implements CommandExecutor {
                                 switch (fun) {
                                     case "set":
                                         MoneyAPI.setMoney(target.getName(), money);
-                                        Messages.PlayerMessage("eco.eco-set", money, target.getName(), player);
-                                        Messages.PlayerMessage("eco.eco-rset", money, player.getName(), target);
+                                        Messages.PlayerMessage("eco.eco-set", "%money%", money, "%target_name", target.getName(), player);
+                                        Messages.PlayerMessage("eco.eco-rset", "%money%", money, "%target_name%", player.getName(), target);
                                         break;
                                     case "remove":
                                         MoneyAPI.removeMoney(target.getName(), money);
-                                        Messages.PlayerMessage("eco.eco-remove", money, target.getName(), player);
-                                        Messages.PlayerMessage("eco.eco-rremove", money, player.getName(), target);
+                                        Messages.PlayerMessage("eco.eco-remove", "%money%" ,money, "%target_name%", target.getName(), player);
+                                        Messages.PlayerMessage("eco.eco-rremove", "%money%", money, "%target_name%", player.getName(), target);
                                         break;
                                     case "give":
                                         MoneyAPI.addMoney(target.getName(), money);
-                                        Messages.PlayerMessage("eco.eco-give", money, target.getName(), player);
-                                        Messages.PlayerMessage("eco.eco-receive", money, player.getName(), target);
+                                        Messages.PlayerMessage("eco.eco-give", "%money%", money, "%target_name%", target.getName(), player);
+                                        Messages.PlayerMessage("eco.eco-receive", "%money%", money, "%target_name%", player.getName(), target);
                                         break;
                                     default:
                                         Messages.PlayerMessage("eco.eco", player);
@@ -69,16 +69,16 @@ public class Eco implements CommandExecutor {
                                 switch (fun) {
                                     case "set":
                                         MoneyAPI.setMoney(target.getName(), money);
-                                        Messages.ConsoleMessage("eco.eco-set", money, target.getName());
-                                        Messages.PlayerMessage("eco.eco-rset", money, "console", target);
+                                        Messages.ConsoleMessage("eco.eco-set", "%money%", money, "%target_name%", target.getName());
+                                        Messages.PlayerMessage("eco.eco-rset", "%money%", money, "%target_name%", "console", target);
                                     case "remove":
                                         MoneyAPI.removeMoney(target.getName(), money);
-                                        Messages.ConsoleMessage("eco.eco-remove", money, target.getName());
-                                        Messages.PlayerMessage("eco.eco-rremove", money, "console", target);
+                                        Messages.ConsoleMessage("eco.eco-remove", "%money%", money, "%target_name%", target.getName());
+                                        Messages.PlayerMessage("eco.eco-rremove", "%money%", money, "%target_name%", "console", target);
                                     case "give":
                                         MoneyAPI.addMoney(target.getName(), money);
-                                        Messages.ConsoleMessage("eco.eco-give", money, target.getName());
-                                        Messages.PlayerMessage("eco.eco-receive", money, "console", target);
+                                        Messages.ConsoleMessage("eco.eco-give", "%money%", money, "%target_name%", target.getName());
+                                        Messages.PlayerMessage("eco.eco-receive", "%money%", money, "%target_name%", "console", target);
                                     default:
                                         Messages.ConsoleMessage("eco.eco");
                                 }

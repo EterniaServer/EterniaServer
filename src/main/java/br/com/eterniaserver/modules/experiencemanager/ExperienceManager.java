@@ -12,11 +12,11 @@ public class ExperienceManager {
         if (EterniaServer.configs.getBoolean("modules.experience")) {
             Objects.requireNonNull(plugin.getCommand("depositlvl")).setExecutor(new DepositLevel());
             Objects.requireNonNull(plugin.getCommand("withdrawlvl")).setExecutor(new WithdrawLevel());
-            Objects.requireNonNull(plugin.getCommand("bottlexp")).setExecutor(new Bottlexp());
-            Objects.requireNonNull(plugin.getCommand("checklevel")).setExecutor(new CheckLevel());
-            Messages.ConsoleMessage("modules.enable", "Teleports");
+            Objects.requireNonNull(plugin.getCommand("bottlelvl")).setExecutor(new BottleLevel());
+            Objects.requireNonNull(plugin.getCommand("checklvl")).setExecutor(new CheckLevel());
+            Messages.ConsoleMessage("modules.enable", "%module%", "Teleports");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Teleports");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Teleports");
         }
     }
 

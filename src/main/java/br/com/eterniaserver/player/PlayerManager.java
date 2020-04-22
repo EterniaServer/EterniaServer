@@ -5,8 +5,6 @@ import br.com.eterniaserver.configs.Vars;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerManager {

@@ -27,16 +27,16 @@ public class TeleportAccept implements CommandExecutor {
                     Player target = Bukkit.getPlayer(Vars.tpa_requests.get(player.getName()));
                     if (target != null && target.hasPermission("eternia.timing.bypass")) {
                         PaperLib.teleportAsync(target, player.getLocation());
-                        Messages.PlayerMessage("teleport.tpto", player.getName(), target);
-                        Messages.PlayerMessage("teleport.accept", player.getName(), target);
+                        Messages.PlayerMessage("teleport.tpto", "%target_name%", player.getName(), target);
+                        Messages.PlayerMessage("teleport.accept", "%target_name%", player.getName(), target);
                         Vars.tpa_requests.remove(player.getName());
                     } else if (target != null){
-                        Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), target);
-                        Messages.PlayerMessage("teleport.accept", player.getName(), target);
+                        Messages.PlayerMessage("teleport.timing", "%cooldown%", EterniaServer.configs.getInt("server.cooldown"), target);
+                        Messages.PlayerMessage("teleport.accept", "%target_name%", player.getName(), target);
                         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                         {
                             PaperLib.teleportAsync(target, player.getLocation());
-                            Messages.PlayerMessage("teleport.tpto", player.getName(), target);
+                            Messages.PlayerMessage("teleport.tpto", "%target_name%", player.getName(), target);
                             Vars.tpa_requests.remove(player.getName());
                         }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                     }

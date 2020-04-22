@@ -13,9 +13,9 @@ public class HomesManager {
             Objects.requireNonNull(plugin.getCommand("house")).setExecutor(new Home(plugin));
             Objects.requireNonNull(plugin.getCommand("houses")).setExecutor(new Homes(plugin));
             Objects.requireNonNull(plugin.getCommand("sethouse")).setExecutor(new SetHome());
-            Messages.ConsoleMessage("modules.enable", "Homes");
+            Messages.ConsoleMessage("modules.enable", "%module%", "Homes");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Homes");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Homes");
         }
     }
 }

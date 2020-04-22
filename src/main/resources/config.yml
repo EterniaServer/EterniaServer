@@ -74,7 +74,7 @@ sql:
 # online divided by the players sleeping))
 # blacklisted-worlds will set which worlds could not skip the night sleeping.
 bed:
-  speed: 300
+  speed: 600
   blacklisted-worlds:
     - 'evento'
 

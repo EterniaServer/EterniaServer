@@ -25,9 +25,9 @@ public class KitsManager {
             }
             Objects.requireNonNull(plugin.getCommand("kit")).setExecutor(new Kit(plugin));
             Objects.requireNonNull(plugin.getCommand("kits")).setExecutor(new Kits());
-            Messages.ConsoleMessage("modules.enable", "Kits");
+            Messages.ConsoleMessage("modules.enable", "%module%", "Kits");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Kits");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Kits");
         }
     }
 }

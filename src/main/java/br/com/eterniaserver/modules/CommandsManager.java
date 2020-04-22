@@ -21,9 +21,9 @@ public class CommandsManager {
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            Messages.ConsoleMessage("modules.enable", "Custom-Commands");
+            Messages.ConsoleMessage("modules.enable", "%module%", "Custom-Commands");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Custom-Commands");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Custom-Commands");
         }
     }
 

@@ -2,6 +2,7 @@ package br.com.eterniaserver.modules.experiencemanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.API.ExpAPI;
+import br.com.eterniaserver.configs.methods.Checks;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,8 +15,22 @@ public class WithdrawLevel implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.withdrawlvl")) {
-                Messages.PlayerMessage("xp.withdraw", player.getLevel(), player);
-                player.giveExp(ExpAPI.takeExp(player.getName()));
+                if (args.length == 1) {
+                    try {
+                        int xpla = Checks.getXPForLevel(Integer.parseInt(args[0]));
+                        if (ExpAPI.getExp(player.getName()) >= xpla) {
+                            ExpAPI.removeExp(player.getName(), xpla);
+                            player.giveExp(xpla);
+                            Messages.PlayerMessage("xp.withdraw", "%level%", player.getLevel(), player);
+                        } else {
+                            Messages.PlayerMessage("xp.noxp", player);
+                        }
+                    } catch (NumberFormatException e) {
+                        Messages.PlayerMessage("server.no-number", player);
+                    }
+                } else {
+                    Messages.PlayerMessage("xp.use2", player);
+                }
             } else {
                 Messages.PlayerMessage("server.no-perm", player);
             }

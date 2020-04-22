@@ -23,9 +23,9 @@ public class TeleportsManager {
             Objects.requireNonNull(plugin.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
             Objects.requireNonNull(plugin.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer());
             Objects.requireNonNull(plugin.getCommand("teleportall")).setExecutor(new TeleportAll());
-            Messages.ConsoleMessage("modules.enable", "Teleports");
+            Messages.ConsoleMessage("modules.enable", "%module%", "Teleports");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Teleports");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Teleports");
         }
     }
 

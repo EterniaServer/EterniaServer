@@ -26,19 +26,19 @@ commands:
     aliases: [voar, ativarvoar, ativarfly]
   depositlvl:
     description: Guarde xp.
-    aliases: [armazenarxp, guardalvl, armazenarlvl]
+    aliases: [guardalvl, armazenarlvl, depositlevel]
   withdrawlvl:
     description: Tira o xp.
-    aliases: [tirarxp, retirarlvl, tirarlvl, pegarlvl]
+    aliases: [retirarlvl, tirarlvl, pegarlvl, withdrawlevel]
   blocks:
     description: Transforma em bloco.
     aliases: [condenser, transformarembloco]
   back:
     description: Volta aonde morreu.
     aliases: [dback, voltarmorte]
-  bottlexp:
-    description: Garrafinhas de xp.
-    aliases: [garrafinhas]
+  bottlelvl:
+    description: Garrafinha de xp.
+    aliases: [bottleexp]
   teleportaccept:
     description: Aceita o tpa.
     aliases: [tpaccept, aceitartpa]
@@ -48,9 +48,9 @@ commands:
   teleporttoplayer:
     description: Envia pedido de tpa.
     aliases: [tpa]
-  checklevel:
+  checklvl:
     description: Verifica o saldo guardado.
-    aliases: [verxp, checkxp, xpguardado]
+    aliases: [checklevel]
   pay:
     description: Paga alguem.
     aliases: [pagar]
@@ -153,3 +153,6 @@ commands:
   kits:
     description: Veja os kits.
     aliases: [getkits]
+  memall:
+    description: Mostra infos do server para todos.
+    aliases: [memoryall]

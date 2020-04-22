@@ -21,8 +21,8 @@ public class Feed implements CommandExecutor {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target.isOnline()) {
                             target.setFoodLevel(20);
-                            Messages.PlayerMessage("other.feed-other", target.getName(), player);
-                            Messages.PlayerMessage("other.other-feed", player.getName(), target);
+                            Messages.PlayerMessage("other.feed-other", "%target_name%", target.getName(), player);
+                            Messages.PlayerMessage("other.other-feed", "%target_name%", player.getName(), target);
                         } else {
                             Messages.PlayerMessage("server.player-offline", player);
                         }
@@ -37,8 +37,8 @@ public class Feed implements CommandExecutor {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && target.isOnline()) {
                 target.setFoodLevel(20);
-                Messages.ConsoleMessage("other.feed-other", target.getName());
-                Messages.PlayerMessage("other.other-feed", "console", target);
+                Messages.ConsoleMessage("other.feed-other", "%target_name%", target.getName());
+                Messages.PlayerMessage("other.other-feed", "%target_name%", "console", target);
             } else {
                 Messages.ConsoleMessage("server.player-offline");
             }

@@ -33,7 +33,7 @@ public class Homes implements CommandExecutor {
                                 for (String line : values) {
                                     accounts.append(line).append("&8, &3");
                                 }
-                                Messages.PlayerMessage("home.list", Strings.getColor(accounts.toString()), player);
+                                Messages.PlayerMessage("home.list", "%homes%", Strings.getColor(accounts.toString()), player);
                             });
                         } else {
                             Messages.PlayerMessage("server.player-offline", player);
@@ -48,7 +48,7 @@ public class Homes implements CommandExecutor {
                         for (String line : values) {
                             accounts.append(line).append("&8, &3");
                         }
-                        Messages.PlayerMessage("home.list", Strings.getColor(accounts.toString()), player);
+                        Messages.PlayerMessage("home.list", "%homes%", Strings.getColor(accounts.toString()), player);
                     });
                 }
             } else {

@@ -23,9 +23,9 @@ public class BlockRewardManager {
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            Messages.ConsoleMessage("modules.enable", "Block-Reward");
+            Messages.ConsoleMessage("modules.enable", "%module%", "Block-Reward");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Block-Reward");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Block-Reward");
         }
     }
 

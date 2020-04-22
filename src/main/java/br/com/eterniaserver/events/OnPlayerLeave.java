@@ -18,7 +18,7 @@ public class OnPlayerLeave implements Listener {
             Vars.afktime.remove(player.getName());
         }
         event.setQuitMessage(null);
-        Messages.BroadcastMessage("server.leave", player.getName());
+        Messages.BroadcastMessage("server.leave", "%player_name%", player.getName());
     }
 
 }

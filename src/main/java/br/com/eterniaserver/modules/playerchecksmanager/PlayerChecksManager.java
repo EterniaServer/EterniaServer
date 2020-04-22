@@ -9,9 +9,9 @@ public class PlayerChecksManager {
     public PlayerChecksManager(EterniaServer plugin) {
         if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             new Checks().runTaskTimer(plugin, 20L, EterniaServer.configs.getInt("server.checks") * 20);
-            Messages.ConsoleMessage("modules.enable", "Player-Checks");
+            Messages.ConsoleMessage("modules.enable", "%module%", "Player-Checks");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Player-Checks");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Player-Checks");
         }
     }
 

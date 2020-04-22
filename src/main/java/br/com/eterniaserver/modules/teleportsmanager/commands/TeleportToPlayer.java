@@ -1,6 +1,6 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
-import br.com.eterniaserver.configs.Checks;
+import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import org.bukkit.Bukkit;
@@ -29,8 +29,8 @@ public class TeleportToPlayer implements CommandExecutor {
                                     Vars.tpa_requests.remove(target.getName());
                                     Vars.tpa_requests.put(target.getName(), player.getName());
                                     Vars.teleporting.put(player.getName(), System.currentTimeMillis());
-                                    Messages.PlayerMessage("teleport.receiver", player.getName(), target);
-                                    Messages.PlayerMessage("teleport.send", target.getName(), player);
+                                    Messages.PlayerMessage("teleport.receiver", "%target_name%", player.getName(), target);
+                                    Messages.PlayerMessage("teleport.send", "%target_name%", target.getName(), player);
                                 } else {
                                     Messages.PlayerMessage("warps.jadeu", player);
                                 }

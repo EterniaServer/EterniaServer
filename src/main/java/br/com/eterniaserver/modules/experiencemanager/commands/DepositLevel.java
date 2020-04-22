@@ -2,6 +2,7 @@ package br.com.eterniaserver.modules.experiencemanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.API.ExpAPI;
+import br.com.eterniaserver.configs.methods.Checks;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,17 +19,13 @@ public class DepositLevel implements CommandExecutor {
                     try {
                         int xpla = Integer.parseInt(args[0]);
                         if (xp_atual >= xpla) {
-                            int xp = xp_atual;
-                            if (xp >= 1 && xp <= 15) {
-                                xp = (xp * xp) + (6 * xp);
-                            } else if (xp >= 16 && xp <= 30) {
-                                xp = (int) ((2.5 * (xp * xp)) - (40.5 * xp) + 360);
-                            } else {
-                                xp = (int) ((4.5 * (xp * xp)) - (162.5 * xp) + 2220);
-                            }
+                            int xp = Checks.getXPForLevel(xpla);
+                            int xpto = Checks.getXPForLevel(xp_atual);
                             ExpAPI.addExp(player.getName(), xp);
-                            Messages.PlayerMessage("xp.deposit", xpla, player);
-                            player.setLevel(Math.max(player.getLevel() - xpla, 0));
+                            Messages.PlayerMessage("xp.deposit", "%amount%", xpla, player);
+                            player.setLevel(0);
+                            player.setExp(0);
+                            player.giveExp(xpto - xp);
                         } else {
                             Messages.PlayerMessage("xp.noxp", player);
                         }

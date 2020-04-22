@@ -25,12 +25,12 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                         Location player_location = player.getLocation();
                         if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
                             PaperLib.teleportAsync(player, WarpsAPI.getWarp("spawn"));
-                            Messages.PlayerMessage("warps.warp", "Spawn", player);
+                            Messages.PlayerMessage("warps.warp", "%warp_name%", "Spawn", player);
                         }
                     } else {
                         Vars.playersInPortal.put(player.getName(), Vars.playersInPortal.get(player.getName()) - 1);
                         if (Vars.playersInPortal.get(player.getName()) < 5) {
-                            Messages.PlayerMessage("server.nether-trap", Vars.playersInPortal.get(player.getName()), player);
+                            Messages.PlayerMessage("server.nether-trap", "%cooldown%", Vars.playersInPortal.get(player.getName()), player);
                         }
                     }
                 } else Vars.playersInPortal.remove(player.getName());

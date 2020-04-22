@@ -19,12 +19,12 @@ public class Mem implements CommandExecutor {
                 Runtime r = Runtime.getRuntime();
                 long milliseconds = ManagementFactory.getRuntimeMXBean().getUptime();
                 long totalmem = r.totalMemory() / 1048576;
-                long freemem = r.freeMemory() / 1048576;
+                long freemem = totalmem - (r.freeMemory() / 1048576);
                 int seconds = (int) (milliseconds / 1000) % 60;
                 int minutes = (int) ((milliseconds / (1000*60)) % 60);
                 int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
-                Messages.PlayerMessage("replaces.mem", freemem, totalmem, player);
-                Messages.PlayerMessage("replaces.online", hours, minutes, seconds, player);
+                Messages.PlayerMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem, player);
+                Messages.PlayerMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds, player);
             } else {
                 Messages.PlayerMessage("server.no-perm", player);
             }
@@ -32,12 +32,12 @@ public class Mem implements CommandExecutor {
             Runtime r = Runtime.getRuntime();
             long milliseconds = ManagementFactory.getRuntimeMXBean().getUptime();
             long totalmem = r.totalMemory() / 1048576;
-            long freemem = r.freeMemory() / 1048576;
+            long freemem = totalmem - (r.freeMemory() / 1048576);
             int seconds = (int) (milliseconds / 1000) % 60 ;
             int minutes = (int) ((milliseconds / (1000*60)) % 60);
             int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
-            Messages.ConsoleMessage("replaces.mem", freemem, totalmem);
-            Messages.ConsoleMessage("replaces.online", hours, minutes, seconds);
+            Messages.ConsoleMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
+            Messages.ConsoleMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
         }
         return true;
     }

@@ -22,7 +22,7 @@ public class OnInventoryClick implements Listener {
                 Player player = (Player) e.getWhoClicked();
                 e.setCancelled(true);
                 Messages.PlayerMessage("spawners.anvil", player);
-                Messages.ConsoleMessage("spawners.anvil-try", player.getName());
+                Messages.ConsoleMessage("spawners.anvil-try", "%player_name%", player.getName());
             }
         }
         if (EterniaServer.configs.getBoolean("modules.playerchecks")) {

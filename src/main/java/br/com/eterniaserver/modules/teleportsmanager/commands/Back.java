@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.Checks;
+import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.API.MoneyAPI;
@@ -40,7 +40,7 @@ public class Back implements CommandExecutor {
                             Vars.back.remove(player.getName());
                             Messages.PlayerMessage("back.free", player);
                         } else {
-                            Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
+                            Messages.PlayerMessage("teleport.timing", "%cooldown%", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.teleporting.put(player.getName(), System.currentTimeMillis());
                             Vars.moved.put(player.getName(), false);
@@ -61,9 +61,9 @@ public class Back implements CommandExecutor {
                                 PaperLib.teleportAsync(player, Vars.back.get(player.getName()));
                                 Vars.back.remove(player.getName());
                                 MoneyAPI.removeMoney(player.getName(), valor);
-                                Messages.PlayerMessage("back.nofree", valor, player);
+                                Messages.PlayerMessage("back.nofree", "%money%", valor, player);
                             } else {
-                                Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
+                                Messages.PlayerMessage("teleport.timing", "%cooldown%", EterniaServer.configs.getInt("server.cooldown"), player);
                                 Vars.moved.put(player.getName(), false);
                                 Vars.playerposition.put(player.getName(), player.getLocation());
                                 Vars.teleporting.put(player.getName(), System.currentTimeMillis());
@@ -73,14 +73,14 @@ public class Back implements CommandExecutor {
                                         PaperLib.teleportAsync(player, Vars.back.get(player.getName()));
                                         Vars.back.remove(player.getName());
                                         MoneyAPI.removeMoney(player.getName(), valor);
-                                        Messages.PlayerMessage("back.nofree", valor, player);
+                                        Messages.PlayerMessage("back.nofree", "%money%", valor, player);
                                     } else {
                                         Messages.PlayerMessage("warps.move", player);
                                     }
                                 }, 20 * EterniaServer.configs.getInt("server.cooldown"));
                             }
                         } else {
-                            Messages.PlayerMessage("back.nomoney", valor, player);
+                            Messages.PlayerMessage("back.nomoney", "%money%", valor, player);
                         }
                     }
                 } else {

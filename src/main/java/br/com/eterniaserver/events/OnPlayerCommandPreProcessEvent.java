@@ -29,7 +29,7 @@ public class OnPlayerCommandPreProcessEvent implements Listener {
             }
             Player player = event.getPlayer();
             String s = PlaceholderAPI.setPlaceholders(player, "%server_tps%");
-            Messages.PlayerMessage("replaces.tps", s.substring(0, s.length() - 2), player);
+            Messages.PlayerMessage("replaces.tps", "%tps%", s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
         }
         if (EterniaServer.configs.getBoolean("modules.commands")) {

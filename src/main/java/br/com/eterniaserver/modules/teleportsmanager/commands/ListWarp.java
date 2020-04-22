@@ -38,7 +38,7 @@ public class ListWarp implements CommandExecutor {
                         resultSet.close();
                         getHome.close();
                     });
-                    Messages.PlayerMessage("warps.list", Strings.getColor(accounts.toString()), player);
+                    Messages.PlayerMessage("warps.list", "%warps%", Strings.getColor(accounts.toString()), player);
                 });
             } else {
                 Messages.PlayerMessage("server.no-perm", player);

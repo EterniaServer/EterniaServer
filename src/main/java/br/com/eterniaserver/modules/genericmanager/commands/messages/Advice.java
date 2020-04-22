@@ -20,7 +20,7 @@ public class Advice implements CommandExecutor {
                         sb.append(arg).append(" ");
                     }
                     sb.substring(0, sb.length() - 1);
-                    Messages.BroadcastMessage("text.global-advice", Strings.getColor(sb.toString()));
+                    Messages.BroadcastMessage("text.global-advice", "%advice%", Strings.getColor(sb.toString()));
                 } else {
                     Messages.PlayerMessage("text.use", player);
                 }
@@ -34,7 +34,7 @@ public class Advice implements CommandExecutor {
                     sb.append(arg).append(" ");
                 }
                 sb.substring(0, sb.length() - 1);
-                Messages.BroadcastMessage("text.global-advice", Strings.getColor(sb.toString()));
+                Messages.BroadcastMessage("text.global-advice", "%advice%", Strings.getColor(sb.toString()));
             } else {
                 Messages.ConsoleMessage("text.use");
             }

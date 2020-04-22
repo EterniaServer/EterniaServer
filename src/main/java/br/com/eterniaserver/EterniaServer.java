@@ -63,7 +63,6 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this), this);
         this.getServer().getPluginManager().registerEvents(new OnBlockPlace(), this);
         this.getServer().getPluginManager().registerEvents(new OnDamage(), this);
-        this.getServer().getPluginManager().registerEvents(new OnExpDrop(), this);
         this.getServer().getPluginManager().registerEvents(new OnInventoryClick(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this), this);

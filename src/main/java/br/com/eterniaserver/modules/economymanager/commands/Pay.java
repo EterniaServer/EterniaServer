@@ -25,8 +25,8 @@ public class Pay implements CommandExecutor {
                                     if (MoneyAPI.getMoney(player.getName()) >= coins) {
                                         MoneyAPI.addMoney(target.getName(), coins);
                                         MoneyAPI.removeMoney(player.getName(), coins);
-                                        Messages.PlayerMessage("eco.pay", coins, target.getName(), player);
-                                        Messages.PlayerMessage("eco.pay-me", coins, player.getName(), target);
+                                        Messages.PlayerMessage("eco.pay", "%amount%", coins, "%target_name%", target.getName(), player);
+                                        Messages.PlayerMessage("eco.pay-me", "%amount%", coins, "%target_name%", player.getName(), target);
                                     } else {
                                         Messages.PlayerMessage("eco.pay-nomoney", player);
                                     }

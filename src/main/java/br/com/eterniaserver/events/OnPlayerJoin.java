@@ -10,10 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.sql.PreparedStatement;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class OnPlayerJoin implements Listener {
 
     @EventHandler
@@ -34,7 +30,7 @@ public class OnPlayerJoin implements Listener {
         }
         Vars.teleporting.put(player.getName(), System.currentTimeMillis());
         event.setJoinMessage(null);
-        Messages.BroadcastMessage("server.join", player.getName());
+        Messages.BroadcastMessage("server.join", "%player_name%", player.getName());
     }
 
 }

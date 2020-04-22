@@ -1,7 +1,7 @@
 package br.com.eterniaserver.modules.teleportsmanager.commands;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.Checks;
+import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.API.WarpsAPI;
 import br.com.eterniaserver.configs.Vars;
@@ -35,9 +35,9 @@ public class Spawn implements CommandExecutor {
                     if (player.hasPermission("eternia.spawn")) {
                         if (player.hasPermission("eternia.timing.bypass")) {
                             PaperLib.teleportAsync(player, location);
-                            Messages.PlayerMessage("warps.warp", "Spawn", player);
+                            Messages.PlayerMessage("warps.warp", "%warp_name%", "Spawn", player);
                         } else {
-                            Messages.PlayerMessage("teleport.timing", EterniaServer.configs.getInt("server.cooldown"), player);
+                            Messages.PlayerMessage("teleport.timing", "%cooldown%", EterniaServer.configs.getInt("server.cooldown"), player);
                             Vars.playerposition.put(player.getName(), player.getLocation());
                             Vars.moved.put(player.getName(), false);
                             Vars.teleporting.put(player.getName(), System.currentTimeMillis());
@@ -45,7 +45,7 @@ public class Spawn implements CommandExecutor {
                             {
                                 if (!Vars.moved.get(player.getName())) {
                                     PaperLib.teleportAsync(player, location);
-                                    Messages.PlayerMessage("warps.warp", "Spawn", player);
+                                    Messages.PlayerMessage("warps.warp", "%warp_name%", "Spawn", player);
                                 } else {
                                     Messages.PlayerMessage("warps.move", player);
                                 }
@@ -59,8 +59,8 @@ public class Spawn implements CommandExecutor {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target.isOnline()) {
                             PaperLib.teleportAsync(target, location);
-                            Messages.PlayerMessage("warps.warp", "Spawn", player);
-                            Messages.PlayerMessage("warps.spawn-other", target.getName(), player);
+                            Messages.PlayerMessage("warps.warp", "%warp_name%", "Spawn", player);
+                            Messages.PlayerMessage("warps.spawn-other", "%target_name%", target.getName(), player);
                         } else {
                             Messages.PlayerMessage("server.player-offline", player);
                         }
@@ -71,7 +71,7 @@ public class Spawn implements CommandExecutor {
                     Messages.PlayerMessage("warps.spawn-use", player);
                 }
             } else {
-                Messages.PlayerMessage("warps.spawnno", "Spawn", player);
+                Messages.PlayerMessage("warps.spawnno", player);
             }
         } else {
             Messages.ConsoleMessage("server.only-player");

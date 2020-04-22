@@ -15,11 +15,11 @@ public class BedManager {
             } else {
                 plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, EterniaServer.configs.getInt("server.checks") * 20);
             }
-            plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(plugin), plugin);
-            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(plugin), plugin);
-            Messages.ConsoleMessage("modules.enable", "Bed");
+            plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(), plugin);
+            Messages.ConsoleMessage("modules.enable", "%module%", "Bed");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Bed");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Bed");
         }
     }
 

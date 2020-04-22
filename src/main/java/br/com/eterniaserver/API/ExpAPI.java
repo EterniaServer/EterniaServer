@@ -59,13 +59,11 @@ public class ExpAPI {
 
     /**
      *
-     * @param playerName The player name in string.
-     * @return all exp of the player.
+     * @param playerName The player name in String.
+     * @param valor The amount of exp to remove of the player.
      */
-    public static Integer takeExp(String playerName) {
-        int xp = getExp(playerName);
-        setExp(playerName, 0);
-        return xp;
+    public static void removeExp(String playerName, int valor) {
+        setExp(playerName, getExp(playerName) - valor);
     }
 
 }

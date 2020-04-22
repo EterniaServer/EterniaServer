@@ -24,8 +24,8 @@ public class Resp implements CommandExecutor {
                         sb.substring(0, sb.length() - 1);
                         String s = sb.toString();
                         Vars.tell.put(target.getName(), player.getName());
-                        Messages.PlayerMessage("tell.toplayer", player.getName(), target.getName(), s, player, false);
-                        Messages.PlayerMessage("tell.fromplayer", target.getName(), player.getName(), s, target, false);
+                        Messages.PlayerMessage("tell.toplayer", "%player_name%", player.getName(), "%target_name%", target.getName(), "%message%", s, player, false);
+                        Messages.PlayerMessage("tell.fromplayer", "%player_name%", target.getName(), "%target_name%", player.getName(), "%message%", s, target, false);
                     } else {
                         Messages.PlayerMessage("tell.rnaote", player);
                     }

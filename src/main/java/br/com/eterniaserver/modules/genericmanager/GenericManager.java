@@ -22,6 +22,7 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("fly")).setExecutor(new Fly());
             Objects.requireNonNull(plugin.getCommand("blocks")).setExecutor(new Blocks());
             Objects.requireNonNull(plugin.getCommand("mem")).setExecutor(new Mem());
+            Objects.requireNonNull(plugin.getCommand("memall")).setExecutor(new MemAll());
             Objects.requireNonNull(plugin.getCommand("gamemode")).setExecutor(new Gamemode());
             Objects.requireNonNull(plugin.getCommand("sun")).setExecutor(new Sun());
             Objects.requireNonNull(plugin.getCommand("rain")).setExecutor(new Rain());
@@ -33,9 +34,9 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("enderchest")).setExecutor(new EnderChest());
             Objects.requireNonNull(plugin.getCommand("openinventory")).setExecutor(new OpenInventory());
             Objects.requireNonNull(plugin.getCommand("workbench")).setExecutor(new Workbench());
-            Messages.ConsoleMessage("modules.enable", "Generic");
+            Messages.ConsoleMessage("modules.enable", "%module%", "Generic");
         } else {
-            Messages.ConsoleMessage("modules.disable", "Generic");
+            Messages.ConsoleMessage("modules.disable", "%module%", "Generic");
         }
     }
 

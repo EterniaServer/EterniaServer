@@ -20,7 +20,7 @@ public class SpawnerPlace {
             CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
             spawner.setSpawnedType(entity);
             spawner.update();
-            Messages.ConsoleMessage("spawners.log", event.getPlayer().getName(), entity.name().toLowerCase());
+            Messages.ConsoleMessage("spawners.log", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
         } catch (NullPointerException|IllegalArgumentException e) {
             e.printStackTrace();
         }
