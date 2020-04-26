@@ -20,6 +20,7 @@ modules:
   playerchecks: true
   bed: true
   block-reward: true
+  chat: true
   commands: true
   economy: true
   elevator: true
@@ -30,10 +31,15 @@ modules:
   spawners: true
   teleports: true
 
+# Placeholders for PlaceholderAPI.
+placeholders:
+  afk: '&9 AFK'
+  godmode: '&9 GOD'
+
 # async-check will enable the async method, please don't disable it if you
 # don't know what you're doing.
-# checks is the interval between checks, like afk or anti nether trap, if
-# you use Paper let this in 1 else if Spigot 2.
+# checks is the interval between checks, like afk, anti nether trap, cooldowns
+# don't touch this, if you don't know what you're doing.
 # afk-timer is the time in seconds for player be kicked by afk.
 # cooldown is the interval between the player being teleported when using a
 # command that teleports him.
@@ -41,6 +47,7 @@ server:
   async-check: true
   checks: 1
   afk-timer: 900
+  afk-kick: true
   cooldown: 4
 
 # The blocks you choose will be able to be elevators if have another of the
@@ -69,6 +76,7 @@ sql:
   table-home: 'es_home'
   table-homes: 'es_homes'
   table-kits: 'es_kits'
+  table-player: 'es_player'
 
 # speed is how faster the night will pass (this will be divided by the (players
 # online divided by the players sleeping))

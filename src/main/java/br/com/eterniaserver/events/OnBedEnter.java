@@ -15,6 +15,9 @@ public class OnBedEnter implements Listener {
 
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             Player player = event.getPlayer();
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Checks.getCooldown(player.getName())) > 6) {

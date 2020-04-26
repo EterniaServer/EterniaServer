@@ -17,7 +17,7 @@ public class TeleportsManager {
 
     public TeleportsManager(EterniaServer plugin) {
         if (EterniaServer.configs.getBoolean("modules.teleports")) {
-            Objects.requireNonNull(plugin.getCommand("back")).setExecutor(new Back(plugin));
+            Objects.requireNonNull(plugin.getCommand("back")).setExecutor(new Back());
             Objects.requireNonNull(plugin.getCommand("spawn")).setExecutor(new Spawn(plugin));
             Objects.requireNonNull(plugin.getCommand("setspawn")).setExecutor(new SetSpawn());
             Objects.requireNonNull(plugin.getCommand("warp")).setExecutor(new Warp(plugin));

@@ -23,19 +23,16 @@ public class OnPlayerCommandPreProcessEvent implements Listener {
 
     @EventHandler
     public void onPlayerCommandPreProcessEvent(PlayerCommandPreprocessEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         if (event.getMessage().equalsIgnoreCase("/tps") && Strings.papi) {
-            if (event.isCancelled()) {
-                return;
-            }
             Player player = event.getPlayer();
             String s = PlaceholderAPI.setPlaceholders(player, "%server_tps%");
             Messages.PlayerMessage("replaces.tps", "%tps%", s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
         }
         if (EterniaServer.configs.getBoolean("modules.commands")) {
-            if (event.isCancelled()) {
-                return;
-            }
             Player player = event.getPlayer();
             if (EterniaServer.commands.contains("commands." + event.getMessage().toLowerCase())) {
                 final String cmd = event.getMessage().toLowerCase().replace("/", "");

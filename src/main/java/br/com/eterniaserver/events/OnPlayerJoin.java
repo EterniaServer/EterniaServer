@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.Date;
+
 public class OnPlayerJoin implements Listener {
 
     @EventHandler
@@ -22,13 +24,18 @@ public class OnPlayerJoin implements Listener {
         }
         if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             Vars.afktime.put(player.getName(), System.currentTimeMillis());
+            if (!PlayerManager.playerProfileExist(player.getName())) {
+                PlayerManager.playerProfileCreate(player.getName());
+            }
         }
         if (EterniaServer.configs.getBoolean("modules.home")) {
             if (!PlayerManager.playerHomeExist(player.getName())) {
                 PlayerManager.playerHomeCreate(player.getName());
             }
         }
-        Vars.teleporting.put(player.getName(), System.currentTimeMillis());
+        if (EterniaServer.configs.getBoolean("modules.chat")) {
+            Vars.global.put(player.getName(), 0);
+        }
         event.setJoinMessage(null);
         Messages.BroadcastMessage("server.join", "%player_name%", player.getName());
     }

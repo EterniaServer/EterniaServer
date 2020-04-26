@@ -6,15 +6,11 @@ author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
 load: STARTUP
-softdepend: [Vault, PlaceholderAPI]
-loadbefore: [VentureChat]
+softdepend: [Vault, PlaceholderAPI, DiscordSRV]
 commands:
   suicide:
     description: Se mate.
     aliases: [suicidio, killme]
-  advice:
-    description: Avise.
-    aliases: [broadcast, aviso, anuncio]
   feed:
     description: Alimenta.
     aliases: [heal, fome]
@@ -83,7 +79,6 @@ commands:
     aliases: [lightningbolt]
   warp:
     description: Vai para uma warp.
-    aliases: [local]
   setwarp:
     description: Define uma warp.
     aliases: [setlocal]
@@ -128,19 +123,13 @@ commands:
     aliases: [delhome, delcasa]
   house:
     description: Vai pra uma home.
-    aliases: [casa, home]
+    aliases: [casa, home, h]
   houses:
     description: Ve suas homes.
     aliases: [casas, homes]
   sethouse:
     description: Define uma home.
     aliases: [setcasa, sethome]
-  tell:
-    description: Manda uma mensagem privada.
-    aliases: [msg, w, whisper, message, pm]
-  resp:
-    description: Manda uma resposta.
-    aliases: [r]
   mem:
     description: Verifica status da jvm.
     aliases: [memoria]
@@ -156,3 +145,27 @@ commands:
   memall:
     description: Mostra infos do server para todos.
     aliases: [memoryall]
+  profile:
+    description: Veja seu perfil.
+    aliases: [perfil]
+  speed:
+    description: Acelera sua velocidade.
+    aliases: [velocidade]
+  global:
+    description: Chat global.
+    aliases: [g]
+  local:
+    description: Chat local.
+    aliases: [l]
+  staff:
+    description: Chat staff.
+    aliases: [s, a]
+  broadcast:
+    description: Anuncia.
+    aliases: [advice, anuncio, aviso]
+  resp:
+    description: Responde.
+    aliases: [r]
+  tell:
+    description: Conversa com alguém.
+    aliases: [msg, w, whisper, me]

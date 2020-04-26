@@ -4,6 +4,7 @@ import br.com.eterniaserver.dependencies.papi.PAPI;
 import br.com.eterniaserver.events.*;
 import br.com.eterniaserver.modules.*;
 import br.com.eterniaserver.modules.bedmanager.BedManager;
+import br.com.eterniaserver.modules.chatmanager.ChatManager;
 import br.com.eterniaserver.modules.economymanager.EconomyManager;
 import br.com.eterniaserver.modules.experiencemanager.ExperienceManager;
 import br.com.eterniaserver.modules.genericmanager.GenericManager;
@@ -32,6 +33,7 @@ public class EterniaServer extends JavaPlugin {
     public static FileConfiguration configs;
     public static FileConfiguration commands;
     public static FileConfiguration kits;
+    public static FileConfiguration chat;
     public static FileConfiguration messages;
 
     @Override
@@ -46,6 +48,7 @@ public class EterniaServer extends JavaPlugin {
 
         bedManager();
         blockRewardManager();
+        chatManager();
         commandsManager();
         economyManager();
         elevatorManager();
@@ -67,8 +70,8 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerChat(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(), this);
@@ -133,6 +136,10 @@ public class EterniaServer extends JavaPlugin {
 
     private void commandsManager() {
         new CommandsManager(this);
+    }
+
+    private void chatManager() {
+        new ChatManager(this);
     }
 
     private void blockRewardManager(){

@@ -17,6 +17,9 @@ public class OnInventoryClick implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        if (e.isCancelled()) {
+            return;
+        }
         if (EterniaServer.configs.getBoolean("spawners.prevent-anvil") && EterniaServer.configs.getBoolean("modules.spawners")) {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
                 Player player = (Player) e.getWhoClicked();

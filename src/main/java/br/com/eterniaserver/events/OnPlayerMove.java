@@ -24,21 +24,19 @@ public class OnPlayerMove implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         if (Objects.requireNonNull(event.getTo()).distanceSquared(event.getFrom()) != 0) {
             Player player = event.getPlayer();
-            if (Vars.playerposition.get(player.getName()) != player.getLocation()) {
-                if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
-                    Vars.afktime.put(player.getName(), System.currentTimeMillis());
-                    if (Vars.afk.contains(player.getName())) {
-                        Vars.afk.remove(player.getName());
-                        Messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
-                    }
-                }
-                if (EterniaServer.configs.getBoolean("modules.teleports")) {
-                    Vars.moved.put(player.getName(), true);
+            if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
+                Vars.afktime.put(player.getName(), System.currentTimeMillis());
+                if (Vars.afk.contains(player.getName())) {
+                    Vars.afk.remove(player.getName());
+                    Messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
                 }
             }
-            if (event.getTo().getY() > event.getTo().getY() && EterniaServer.configs.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {
+            if (event.getTo().getY() > event.getFrom().getY() && EterniaServer.configs.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {
                 Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
                 Material material = block.getType();
                 List<String> stringList = EterniaServer.configs.getStringList("elevator.block");

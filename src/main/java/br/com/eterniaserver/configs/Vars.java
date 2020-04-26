@@ -1,8 +1,10 @@
 package br.com.eterniaserver.configs;
 
+import br.com.eterniaserver.player.PlayerTeleport;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -19,21 +21,21 @@ public class Vars {
     public static final List<String> player_homes = new ArrayList<>();
     public static final List<String> player_cooldown = new ArrayList<>();
 
-    public static final HashMap<String, Long> teleporting = new HashMap<>();
     public static final HashMap<String, Long> bed_cooldown = new HashMap<>();
     public static final HashMap<String, Long> afktime = new HashMap<>();
     public static final HashMap<String, Double> balances = new HashMap<>();
-    public static final HashMap<String, String> tell = new HashMap<>();
     public static final HashMap<String, String> tpa_requests = new HashMap<>();
     public static final HashMap<String, String> kits_cooldown = new HashMap<>();
-    public static final HashMap<String, Boolean> moved = new HashMap<>();
+    public static final HashMap<String, String> player_login = new HashMap<>();
+    public static final HashMap<String, String> tell = new HashMap<>();
+    public static final HashMap<String, Integer> global = new HashMap<>();
     public static final HashMap<String, Integer> xp = new HashMap<>();
     public static final HashMap<String, Integer> playersInPortal = new HashMap<>();
     public static final HashMap<String, String[]> home = new HashMap<>();
-    public static final HashMap<String, Location> playerposition = new HashMap<>();
     public static final HashMap<String, Location> warps = new HashMap<>();
     public static final HashMap<String, Location> back = new HashMap<>();
     public static final HashMap<String, Location> shops = new HashMap<>();
     public static final HashMap<String, Location> homes = new HashMap<>();
+    public static final HashMap<Player, PlayerTeleport> teleports = new HashMap<>();
 
 }

@@ -20,7 +20,7 @@ public class MemAll implements CommandExecutor {
             int minutes = (int) ((milliseconds / (1000*60)) % 60);
             int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
             Messages.BroadcastMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
-            Messages.BroadcastMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "seconds", seconds);
+            Messages.BroadcastMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
         }
         return true;
     }

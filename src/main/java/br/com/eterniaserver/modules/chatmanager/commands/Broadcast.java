@@ -1,4 +1,4 @@
-package br.com.eterniaserver.modules.genericmanager.commands.messages;
+package br.com.eterniaserver.modules.chatmanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Strings;
@@ -7,8 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Advice implements CommandExecutor {
-
+public class Broadcast implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, java.lang.String label, java.lang.String[] args) {
         if (sender instanceof Player) {
@@ -20,9 +19,9 @@ public class Advice implements CommandExecutor {
                         sb.append(arg).append(" ");
                     }
                     sb.substring(0, sb.length() - 1);
-                    Messages.BroadcastMessage("text.global-advice", "%advice%", Strings.getColor(sb.toString()));
+                    Messages.BroadcastMessage("chat.global-advice", "%advice%", Strings.getColor(sb.toString()));
                 } else {
-                    Messages.PlayerMessage("text.use", player);
+                    Messages.PlayerMessage("chat.use", player);
                 }
             } else {
                 Messages.PlayerMessage("server.no-perm", player);
@@ -34,9 +33,9 @@ public class Advice implements CommandExecutor {
                     sb.append(arg).append(" ");
                 }
                 sb.substring(0, sb.length() - 1);
-                Messages.BroadcastMessage("text.global-advice", "%advice%", Strings.getColor(sb.toString()));
+                Messages.BroadcastMessage("chat.global-advice", "%advice%", Strings.getColor(sb.toString()));
             } else {
-                Messages.ConsoleMessage("text.use");
+                Messages.ConsoleMessage("chat.use");
             }
         }
         return true;

@@ -16,14 +16,13 @@ public class GenericManager {
             Objects.requireNonNull(plugin.getCommand("suicide")).setExecutor(new Suicide());
             Objects.requireNonNull(plugin.getCommand("feed")).setExecutor(new Feed());
             Objects.requireNonNull(plugin.getCommand("hat")).setExecutor(new Hat());
-            Objects.requireNonNull(plugin.getCommand("tell")).setExecutor(new Tell());
-            Objects.requireNonNull(plugin.getCommand("resp")).setExecutor(new Resp());
-            Objects.requireNonNull(plugin.getCommand("advice")).setExecutor(new Advice());
             Objects.requireNonNull(plugin.getCommand("fly")).setExecutor(new Fly());
             Objects.requireNonNull(plugin.getCommand("blocks")).setExecutor(new Blocks());
             Objects.requireNonNull(plugin.getCommand("mem")).setExecutor(new Mem());
             Objects.requireNonNull(plugin.getCommand("memall")).setExecutor(new MemAll());
             Objects.requireNonNull(plugin.getCommand("gamemode")).setExecutor(new Gamemode());
+            Objects.requireNonNull(plugin.getCommand("profile")).setExecutor(new Profile());
+            Objects.requireNonNull(plugin.getCommand("speed")).setExecutor(new Speed());
             Objects.requireNonNull(plugin.getCommand("sun")).setExecutor(new Sun());
             Objects.requireNonNull(plugin.getCommand("rain")).setExecutor(new Rain());
             Objects.requireNonNull(plugin.getCommand("god")).setExecutor(new God());

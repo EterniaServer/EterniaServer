@@ -58,6 +58,12 @@ public class Table {
             kitssql.execute();
             kitssql.close();
         });
+        final String player = "CREATE TABLE IF NOT EXISTS " + EterniaServer.configs.getString("sql.table-player") + " (player_name varchar(16), time varchar(16));";
+        EterniaServer.connection.executeSQLQuery(connection -> {
+            PreparedStatement playersql = connection.prepareStatement(player);
+            playersql.execute();
+            playersql.close();
+        });
     }
 
 }

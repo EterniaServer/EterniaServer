@@ -13,6 +13,9 @@ public class OnDamage implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
             Player player = (Player) entity;

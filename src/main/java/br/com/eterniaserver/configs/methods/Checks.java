@@ -1,14 +1,8 @@
 package br.com.eterniaserver.configs.methods;
 
-import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 
 public class Checks {
-
-    public static boolean isTp(String jogador) {
-        long secondsLeft = ((Vars.teleporting.get(jogador) / 1000) + EterniaServer.configs.getInt("server.cooldown")) - (System.currentTimeMillis() / 1000);
-        return secondsLeft >= 0;
-    }
 
     public static int getXPForLevel(int lvl) {
         if (lvl > 0 && lvl < 16) {
