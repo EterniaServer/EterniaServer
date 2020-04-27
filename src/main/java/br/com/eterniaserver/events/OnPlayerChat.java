@@ -45,7 +45,7 @@ public class OnPlayerChat implements Listener {
             if (e.isCancelled()) {
                 return;
             }
-            ChatMessage message = new ChatMessage(e.getMessage());
+            ChatMessage message = new ChatMessage(e.getMessage(), e.getPlayer());
             cf.filter(e, message);
             c.filter(e, message);
             cp.filter(e, message);

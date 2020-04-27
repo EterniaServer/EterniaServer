@@ -17,5 +17,5 @@ public class Info {
 	public String getName() {
 		return StringHelper.cc(name);
 	}
-	
+
 }

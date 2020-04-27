@@ -1,6 +1,6 @@
 default:
   priority: 1
-  perm: act.group.default
+  perm: eternia.chat.default
   format: '{canal} {clan}{prefix} &f%player_name%&8: %message%'
   useChatColor: true
   chatColor: f

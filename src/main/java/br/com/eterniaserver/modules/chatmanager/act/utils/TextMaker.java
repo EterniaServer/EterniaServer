@@ -23,7 +23,7 @@ public class TextMaker {
 		this.p = p;
 		this.message = message;
 	}
-	
+
 	// Only used whenever relational placeholders is disabled
 	public void convertMessageToComponents() {
 		BaseComponent[] baseComp = new BaseComponent[message.size()];
@@ -56,7 +56,7 @@ public class TextMaker {
 		}
 		text = new TextComponent(baseComp);
 	}
-	
+
 	private void setTextAttr(TextComponent text, Player p) {
 		if (getConfigBoolean(p, "on_click.suggest_command")) {
 			addClickSuggest(text, customPlaceholder(p, getConfigString(p, "on_click.suggested_command")));
@@ -86,7 +86,7 @@ public class TextMaker {
 		if(s == null) return;
 		text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, s));
 	}
-	
+
 	public TextComponent getText() {
 		return text;
 	}
