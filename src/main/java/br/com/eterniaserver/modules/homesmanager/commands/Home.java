@@ -40,7 +40,7 @@ public class Home implements CommandExecutor {
                             Messages.PlayerMessage("home.noex", player);
                         }
                     } else if (args.length == 2) {
-                        if (player.hasPermission("eternia.home.others")) {
+                        if (player.hasPermission("eternia.home.other")) {
                             Player target = Bukkit.getPlayer(args[0]);
                             if (target != null && target.isOnline()) {
                                 Location location = HomesManager.getHome(args[1].toLowerCase(), target.getName());

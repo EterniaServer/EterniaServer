@@ -73,7 +73,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(), this);

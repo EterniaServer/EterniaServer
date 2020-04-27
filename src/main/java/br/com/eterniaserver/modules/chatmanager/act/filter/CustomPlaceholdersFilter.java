@@ -1,6 +1,6 @@
 package br.com.eterniaserver.modules.chatmanager.act.filter;
 
-import br.com.eterniaserver.modules.chatmanager.act.AdvancedChatTorch;
+import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.chatmanager.act.PlaceholderAPIIntegrator;
 import br.com.eterniaserver.modules.chatmanager.act.utils.*;
 import org.bukkit.entity.Player;
@@ -10,11 +10,13 @@ public class CustomPlaceholdersFilter {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		for(CustomPlaceholder cp: AdvancedChatTorch.getInstance().getCustomPlaceholders()) {
+		for(CustomPlaceholder cp: Vars.customPlaceholders) {
 			for(int i = 0; i < message.size(); i++) {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();
-				if(!objMsg.contains("{" + cp.getId() + "}")) continue;
+				if(!objMsg.contains("{" + cp.getId() + "}")) {
+					continue;
+				}
 				SubPlaceholder bestPlaceholder = null;
 				try {
 					for(SubPlaceholder subPlaceholder: cp.getPlaceholders()) {
@@ -53,5 +55,5 @@ public class CustomPlaceholdersFilter {
 			}
 		}
 	}
-	
+
 }

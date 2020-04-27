@@ -13,7 +13,7 @@ public class SubPlaceholder {
 	String suggest;
 	String run;
 	boolean isText = false;
-	
+
 	public boolean isText() {
 		return isText;
 	}
@@ -23,15 +23,19 @@ public class SubPlaceholder {
 		this.priority = section.getInt("priority");
 		this.perm = section.getString("perm");
 		this.value = section.getString("value");
-		if(section.contains("hoverText")) 
+		if(section.contains("hoverText")) {
 			hover = section.getString("hoverText");
-		if(section.contains("suggestCmd"))
+		}
+		if(section.contains("suggestCmd")) {
 			suggest = section.getString("suggestCmd");
-		if(section.contains("runCmd")) 
+		}
+		if(section.contains("runCmd")) {
 			run = section.getString("runCmd");
+		}
 		if(section.contains("useGroupEvents")) {
-			if(section.getBoolean("useGroupEvents")) 
+			if(section.getBoolean("useGroupEvents")) {
 				isText = true;
+			}
 		}
 	}
 
@@ -47,18 +51,6 @@ public class SubPlaceholder {
 		return run;
 	}
 
-	public boolean hasHover() {
-		return hover != null;
-	}
-
-	public boolean hasSuggest() {
-		return suggest != null;
-	}
-
-	public boolean hasRun() {
-		return run != null;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -70,7 +62,7 @@ public class SubPlaceholder {
 	public String getPerm() {
 		return perm;
 	}
-	
+
 	public boolean hasPerm(Player p) {
 		return perm.equals("") || p.hasPermission(perm);
 	}

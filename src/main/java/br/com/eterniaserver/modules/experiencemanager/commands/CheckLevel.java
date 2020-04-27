@@ -12,7 +12,7 @@ public class CheckLevel implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.checklevel")) {
+            if (player.hasPermission("eternia.checklvl")) {
                 int lvl = player.getLevel();
                 float xp = player.getExp();
                 player.setLevel(0);

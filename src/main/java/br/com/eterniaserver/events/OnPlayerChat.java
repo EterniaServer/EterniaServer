@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -23,7 +24,7 @@ public class OnPlayerChat implements Listener {
     final CustomPlaceholdersFilter cp = new CustomPlaceholdersFilter();
     final Colors c = new Colors();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) {
             return;
@@ -41,15 +42,12 @@ public class OnPlayerChat implements Listener {
             Vars.afktime.put(e.getPlayer().getName(), System.currentTimeMillis());
         }
         if (EterniaServer.configs.getBoolean("modules.chat")) {
-            ChatEvent.onPlayerChat(e);
-            if (e.isCancelled()) {
-                return;
-            }
-            ChatMessage message = new ChatMessage(e.getMessage(), e.getPlayer());
+            ChatMessage message = new ChatMessage(e.getMessage());
             cf.filter(e, message);
             c.filter(e, message);
             cp.filter(e, message);
             js.filter(e, message);
+            ChatEvent.onPlayerChat(e);
         }
     }
 

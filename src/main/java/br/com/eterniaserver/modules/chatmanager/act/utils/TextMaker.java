@@ -3,7 +3,7 @@ package br.com.eterniaserver.modules.chatmanager.act.utils;
 import java.util.ArrayList;
 
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.modules.chatmanager.act.AdvancedChatTorch;
+import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.chatmanager.act.PlaceholderAPIIntegrator;
 import org.bukkit.entity.Player;
 
@@ -18,7 +18,7 @@ public class TextMaker {
 	private final ChatMessage message;
 	public TextComponent text;
 	private final Player p;
-	
+
 	public TextMaker(ChatMessage message, Player p) {
 		this.p = p;
 		this.message = message;
@@ -31,8 +31,9 @@ public class TextMaker {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
 			msg = PlaceholderAPIIntegrator.setPlaceholders(p, msg);
-			if(msg.contains("%message%"))
+			if(msg.contains("%message%")) {
 				msg = msg.replace("%message%", message.messageSent);
+			}
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();
@@ -70,20 +71,26 @@ public class TextMaker {
 	}
 
 	public void addHover(TextComponent text, String s) {
-		if(s == null) return;
+		if(s == null) {
+			return;
+		}
 		ArrayList<TextComponent> tcs = new ArrayList<>();
 		tcs.add(new TextComponent(StringHelper.cc(s)));
 		TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
 		text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, bc));
 	}
-	
+
 	public void addClickSuggest(TextComponent text, String s) {
-		if(s == null) return;
+		if(s == null) {
+			return;
+		}
 		text.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, s));
 	}
-	
+
 	public void addClickRun(TextComponent text, String s) {
-		if(s == null) return;
+		if(s == null) {
+			return;
+		}
 		text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, s));
 	}
 
@@ -123,22 +130,22 @@ public class TextMaker {
 		}
 		return new TextComponent(baseComp);
 	}
-	
+
 	public String getConfigString(Player p, String extra) {
-		AdvancedChatTorch pl = AdvancedChatTorch.getInstance();
-		return EterniaServer.groups.getString (pl.uufi.get(p.getUniqueId()).getName() + "." + extra);
+		return EterniaServer.groups.getString (Vars.uufi.get(p.getUniqueId()).getName() + "." + extra);
 	}
-	
+
 	public boolean getConfigBoolean(Player p, String extra) {
-		AdvancedChatTorch pl = AdvancedChatTorch.getInstance();
-		return EterniaServer.groups.getBoolean(pl.uufi.get(p.getUniqueId()).getName() + "." + extra);
+		return EterniaServer.groups.getBoolean(Vars.uufi.get(p.getUniqueId()).getName() + "." + extra);
 	}
-	
+
 	public String customPlaceholder(Player p, String s2) {
 		String message = s2;
-		for(CustomPlaceholder cp: AdvancedChatTorch.getInstance().getCustomPlaceholders()) {
+		for(CustomPlaceholder cp: Vars.customPlaceholders) {
 			String id = cp.getId();
-			if(!message.contains("{" + id + "}")) continue;
+			if(!message.contains("{" + id + "}")) {
+				continue;
+			}
 			try {
 				SubPlaceholder bestPlaceholder = null;
 				for(SubPlaceholder subPlaceholder: cp.getPlaceholders()) {
@@ -163,5 +170,5 @@ public class TextMaker {
 		s2 = message;
 		return PlaceholderAPIIntegrator.setPlaceholders(p, s2);
 	}
-	
+
 }

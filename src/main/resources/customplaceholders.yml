@@ -1,3 +1,13 @@
+#  _______ .___________. _______ .______      .__   __.  __       ___
+# |   ____||           ||   ____||   _  \     |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  |    |   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      /     |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
+
+# The start is the name of json placeholder.
+# independentTextComponent will separate this json from others.
+# default and next is the groups of this json object.
 prefix:
   independentTextComponent: true
   default:
@@ -22,5 +32,5 @@ canal:
     perm: eternia.chat.global
     value: '&8[&fG&8]'
     useGroupEvents: false
-    hoverText: '&7Clique para entrar no global&8.'
+    hoverText: '&7Clique para entrar no &fGlobal&8.'
     suggestCmd: '/global '

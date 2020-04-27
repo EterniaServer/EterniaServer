@@ -1,67 +1,41 @@
 package br.com.eterniaserver.modules.chatmanager.act;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.chatmanager.act.utils.CustomPlaceholder;
-import br.com.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
-
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class AdvancedChatTorch {
 
-	private static AdvancedChatTorch instance;
-	public final HashMap<UUID, FormatInfo> uufi = new HashMap<>();
-	public final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
-
-	public AdvancedChatTorch(EterniaServer plugin) {
-		instance = this;
-		File fileGroups = new File(plugin.getDataFolder(), "groups.yml");
-		if (!fileGroups.exists()) {
-			plugin.saveResource("groups.yml", false);
-		}
-		EterniaServer.groups = new YamlConfiguration();
-		try {
-			EterniaServer.blocks.load(fileGroups);
-		} catch (IOException | InvalidConfigurationException e) {
-			e.printStackTrace();
-		}
-		File placeholdersFile = new File(plugin.getDataFolder(), "customplaceholders.yml");
-		if (!placeholdersFile.exists()) {
-			plugin.saveResource("customplaceholders.yml", false);
-		}
-		EterniaServer.cph = new YamlConfiguration();
-		try {
-			EterniaServer.blocks.load(placeholdersFile);
-		} catch (IOException | InvalidConfigurationException e) {
-			e.printStackTrace();
-		}
+	public AdvancedChatTorch() {
 		registerCustomPlaceholders();
+		checkGroups();
 	}
 
 	public void registerCustomPlaceholders() {
-		customPlaceholders.clear();
+		Vars.customPlaceholders.clear();
 		for(String id: EterniaServer.cph.getKeys(false)) {
 			if(id.equals("customplaceholders")) {
 				continue;
 			}
 			CustomPlaceholder cp = new CustomPlaceholder(id);
-			customPlaceholders.add(cp);
+			Vars.customPlaceholders.add(cp);
 		}
 	}
 
+	public void checkGroups() {
+		for(Object s: EterniaServer.groups.getKeys(false)) {
+			if(s.equals("groups")) {
+				continue;
+			}
+			if(!EterniaServer.groups.contains(s.toString())) {
+				Messages.ConsoleMessage("server.chat-error", "%error%", "nenhum grupo encontrado");
+			}
+			if(!EterniaServer.groups.contains(s.toString() + ".perm")) {
+				Messages.ConsoleMessage("server.chat-error", "%error%", "permissão para o grupo não encontrada");
+			}
 
-	public static AdvancedChatTorch getInstance() {
-		return instance;
+		}
 	}
 
-	public List<CustomPlaceholder> getCustomPlaceholders() {
-		return customPlaceholders;
-	}
 }

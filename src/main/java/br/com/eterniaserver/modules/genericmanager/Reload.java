@@ -60,6 +60,41 @@ public class Reload {
             }
         }
 
+        if (EterniaServer.configs.getBoolean("modules.chat")) {
+            File chatFile = new File(plugin.getDataFolder(), "chat.yml");
+            if (!chatFile.exists()) {
+                plugin.saveResource("chat.yml", false);
+            }
+            EterniaServer.chat = new YamlConfiguration();
+            try {
+                EterniaServer.chat.load(chatFile);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+
+            File fileGroups = new File(plugin.getDataFolder(), "groups.yml");
+            if (!fileGroups.exists()) {
+                plugin.saveResource("groups.yml", false);
+            }
+            EterniaServer.groups = new YamlConfiguration();
+            try {
+                EterniaServer.groups.load(fileGroups);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+
+            File placeholdersFile = new File(plugin.getDataFolder(), "customplaceholders.yml");
+            if (!placeholdersFile.exists()) {
+                plugin.saveResource("customplaceholders.yml", false);
+            }
+            EterniaServer.cph = new YamlConfiguration();
+            try {
+                EterniaServer.cph.load(placeholdersFile);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+        }
+
         EterniaServer.connection = new Connections(plugin, EterniaServer.configs.getBoolean("sql.mysql"));
     }
 }

@@ -26,13 +26,33 @@ public class ChatManager {
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
+            File fileGroups = new File(plugin.getDataFolder(), "groups.yml");
+            if (!fileGroups.exists()) {
+                plugin.saveResource("groups.yml", false);
+            }
+            EterniaServer.groups = new YamlConfiguration();
+            try {
+                EterniaServer.groups.load(fileGroups);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+            File placeholdersFile = new File(plugin.getDataFolder(), "customplaceholders.yml");
+            if (!placeholdersFile.exists()) {
+                plugin.saveResource("customplaceholders.yml", false);
+            }
+            EterniaServer.cph = new YamlConfiguration();
+            try {
+                EterniaServer.cph.load(placeholdersFile);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
             Objects.requireNonNull(plugin.getCommand("global")).setExecutor(new Global());
             Objects.requireNonNull(plugin.getCommand("local")).setExecutor(new Local());
             Objects.requireNonNull(plugin.getCommand("staff")).setExecutor(new Staff());
             Objects.requireNonNull(plugin.getCommand("broadcast")).setExecutor(new Broadcast());
             Objects.requireNonNull(plugin.getCommand("resp")).setExecutor(new Resp(plugin));
             Objects.requireNonNull(plugin.getCommand("tell")).setExecutor(new Tell(plugin));
-            new AdvancedChatTorch(plugin);
+            new AdvancedChatTorch();
             Messages.ConsoleMessage("modules.enable", "%module%", "Chat");
         } else {
             Messages.ConsoleMessage("modules.disable", "%module%", "Chat");

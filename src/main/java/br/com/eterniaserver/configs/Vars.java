@@ -1,5 +1,7 @@
 package br.com.eterniaserver.configs;
 
+import br.com.eterniaserver.modules.chatmanager.act.utils.CustomPlaceholder;
+import br.com.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 import br.com.eterniaserver.player.PlayerTeleport;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,6 +17,7 @@ public class Vars {
     public static final List<World> skipping_worlds = new ArrayList<>();
     public static final List<String> god = new ArrayList<>();
     public static final List<String> afk = new ArrayList<>();
+    public static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
 
     public static final List<String> player_bal = new ArrayList<>();
     public static final List<String> player_exp = new ArrayList<>();
@@ -36,6 +39,7 @@ public class Vars {
     public static final HashMap<String, Location> back = new HashMap<>();
     public static final HashMap<String, Location> shops = new HashMap<>();
     public static final HashMap<String, Location> homes = new HashMap<>();
+    public static final HashMap<UUID, FormatInfo> uufi = new HashMap<>();
     public static final HashMap<Player, PlayerTeleport> teleports = new HashMap<>();
 
 }

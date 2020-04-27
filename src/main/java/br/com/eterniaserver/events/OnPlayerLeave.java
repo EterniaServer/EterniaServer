@@ -11,17 +11,21 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class OnPlayerLeave implements Listener {
 
-    public OnPlayerLeave(EterniaServer plugin) {
-    }
-
     @EventHandler
     public void OnLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
             Vars.afktime.remove(player.getName());
         }
+        if (EterniaServer.configs.getBoolean("modules.chat")) {
+            remove(event.getPlayer());
+        }
         event.setQuitMessage(null);
         Messages.BroadcastMessage("server.leave", "%player_name%", player.getName());
+    }
+
+    public static void remove(Player p) {
+        Vars.uufi.remove(p.getUniqueId());
     }
 
 }

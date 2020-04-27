@@ -2,6 +2,7 @@ package br.com.eterniaserver.modules.chatmanager.act.utils;
 
 import org.bukkit.ChatColor;
 
+
 public class ChatObject {
 
 	String message;
@@ -11,12 +12,12 @@ public class ChatObject {
 	String run;
 	ChatColor color;
 	boolean isText;
-	
+
 	public ChatObject(String message) {
 		this.message = message;
 		this.isText = true;
 	}
-	
+
 	public void setColor(ChatColor color) {
 		this.color = color;
 	}
@@ -60,5 +61,5 @@ public class ChatObject {
 	public boolean isText() {
 		return this.isText;
 	}
-	
+
 }

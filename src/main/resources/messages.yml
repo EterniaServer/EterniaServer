@@ -9,6 +9,7 @@
 server:
   prefix: '&8[&aE&9S&8] '
   join: '&3%player_name% &8[&a+&8]'
+  chat-error: '&7Erro no chat&8: &3%error%&8.'
   leave: '&3%player_name% &8[&c-&8]'
   no-perm: '&7Você não tem permissão para isso&8.'
   only-player: '&7Somente jogadores podem usar isso&8.'
