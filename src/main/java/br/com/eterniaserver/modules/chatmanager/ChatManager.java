@@ -3,6 +3,7 @@ package br.com.eterniaserver.modules.chatmanager;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.modules.chatmanager.act.AdvancedChatTorch;
 import br.com.eterniaserver.modules.chatmanager.commands.*;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,6 +32,7 @@ public class ChatManager {
             Objects.requireNonNull(plugin.getCommand("broadcast")).setExecutor(new Broadcast());
             Objects.requireNonNull(plugin.getCommand("resp")).setExecutor(new Resp(plugin));
             Objects.requireNonNull(plugin.getCommand("tell")).setExecutor(new Tell(plugin));
+            new AdvancedChatTorch(plugin);
             Messages.ConsoleMessage("modules.enable", "%module%", "Chat");
         } else {
             Messages.ConsoleMessage("modules.disable", "%module%", "Chat");

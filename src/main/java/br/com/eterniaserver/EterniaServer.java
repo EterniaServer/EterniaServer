@@ -35,6 +35,8 @@ public class EterniaServer extends JavaPlugin {
     public static FileConfiguration kits;
     public static FileConfiguration chat;
     public static FileConfiguration messages;
+    public static FileConfiguration cph;
+    public static FileConfiguration groups;
 
     @Override
     public void onEnable() {

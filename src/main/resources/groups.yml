@@ -1,0 +1,17 @@
+default:
+  priority: 1
+  perm: act.group.default
+  format: '{canal} {clan}{prefix} &f%player_name%&8: %message%'
+  useChatColor: true
+  chatColor: f
+  on_click:
+    suggest_command: true
+    suggested_command: /msg %player_name%
+    run_command: false
+    runned_command: /info %player_name%
+  on_hover:
+    show_text: true
+    text_shown: |-
+      &7%player_name%
+      &7Clique para enviar
+      &7uma mensagem.

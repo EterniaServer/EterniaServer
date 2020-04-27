@@ -1,0 +1,26 @@
+prefix:
+  independentTextComponent: true
+  default:
+    priority: 1
+    perm: eternia.membro
+    value: '&8[%vault_prefix_color%&8]'
+    useGroupEvents: false
+    hoverText: '&7Clique para enviar uma mensagem&8.'
+    suggestCmd: '/msg %player_name% '
+clan:
+  independentTextComponent: true
+  default:
+    priority: 1
+    perm: eternia.chat.global
+    value: '%simpleclans_tag_label%'
+    useGroupEvents: false
+    hoverText: '&7Clan&8: &3%simpleclans_clan_name%'
+canal:
+  independentTextComponent: true
+  default:
+    priority: 1
+    perm: eternia.chat.global
+    value: '&8[&fG&8]'
+    useGroupEvents: false
+    hoverText: '&7Clique para entrar no global&8.'
+    suggestCmd: '/global '

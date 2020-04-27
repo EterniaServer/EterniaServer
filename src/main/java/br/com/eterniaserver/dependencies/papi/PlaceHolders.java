@@ -12,10 +12,6 @@ public class PlaceHolders extends PlaceholderExpansion {
 
     private final String VERSION = this.getClass().getPackage().getImplementationVersion();
 
-    public boolean register() {
-        return super.register();
-    }
-
     public String getAuthor() {
         return "yurinogueira";
     }
