@@ -1,4 +1,11 @@
 # EterniaServer
-Plugin brasileiro com intuito de ser um plugin padrão para servidores sobrevivência.
-O foco do plugin está sendo em adicionar funções extras, mas sem esquecer a otimização.
-O plugin utiliza HikariCP para fazer conexão com a database (que pode ser escolhida entre MySQL e SQLite) para assim evitar problemas com pedidos.
+Plugin brasileiro feito com o intuito de substituir a maioria dos plugins,
+com um foco em otimização.
+# HikariCP
+Para acelerar a velocidade de acesso ao MySQL e ao SQLite o plugin
+utiliza um sistema de Pool com HikariCP.
+https://github.com/brettwooldridge/HikariCP
+# AdvancedChatTorch
+Para utilizar formato Json no chat global, o plugin utiliza do código
+feito pelo MCGamer00000.
+https://github.com/MCGamer00000/AdvancedChatTorch
