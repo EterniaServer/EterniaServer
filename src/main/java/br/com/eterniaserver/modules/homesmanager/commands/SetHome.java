@@ -17,6 +17,15 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class SetHome implements CommandExecutor {
+
+    private final Messages messages;
+    private final HomesManager homesManager;
+
+    public SetHome(Messages messages, HomesManager homesManager) {
+        this.messages = messages;
+        this.homesManager = homesManager;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -31,13 +40,13 @@ public class SetHome implements CommandExecutor {
                     if (player.hasPermission("eternia.sethome.25")) i = 26;
                     if (player.hasPermission("eternia.sethome.30")) i = 31;
                     if (args[0].length() <= 8) {
-                        if (HomesManager.canHome(player.getName()) < i) {
-                            HomesManager.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
-                            Messages.PlayerMessage("home.def", player);
+                        if (homesManager.canHome(player.getName()) < i) {
+                            homesManager.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
+                            messages.PlayerMessage("home.def", player);
                         } else {
-                            if (HomesManager.existHome(args[0].toLowerCase(), player.getName())) {
-                                HomesManager.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
-                                Messages.PlayerMessage("home.def", player);
+                            if (homesManager.existHome(args[0].toLowerCase(), player.getName())) {
+                                homesManager.setHome(player.getLocation(), args[0].toLowerCase(), player.getName());
+                                messages.PlayerMessage("home.def", player);
                             } else {
                                 ItemStack item = new ItemStack(Material.COMPASS);
                                 ItemMeta meta = item.getItemMeta();
@@ -51,20 +60,20 @@ public class SetHome implements CommandExecutor {
                                 }
                                 PlayerInventory inventory = player.getInventory();
                                 inventory.addItem(item);
-                                Messages.PlayerMessage("home.max", player);
+                                messages.PlayerMessage("home.max", player);
                             }
                         }
                     } else {
-                        Messages.PlayerMessage("home.grand", player);
+                        messages.PlayerMessage("home.grand", player);
                     }
                 } else {
-                    Messages.PlayerMessage("home.use", player);
+                    messages.PlayerMessage("home.use", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

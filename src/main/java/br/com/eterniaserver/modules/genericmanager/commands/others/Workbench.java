@@ -8,6 +8,12 @@ import org.bukkit.entity.Player;
 
 public class Workbench implements CommandExecutor {
 
+    private final Messages messages;
+
+    public Workbench(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -15,10 +21,10 @@ public class Workbench implements CommandExecutor {
             if (player.hasPermission("eternia.workbench")) {
                 player.openWorkbench(null, true);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

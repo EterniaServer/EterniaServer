@@ -11,6 +11,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class Blocks implements CommandExecutor {
 
+    private final Messages messages;
+
+    public Blocks(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -71,12 +77,12 @@ public class Blocks implements CommandExecutor {
                     player.getInventory().removeItem(new ItemStack(Material.EMERALD, itens * 9));
                     player.getInventory().addItem(new ItemStack(Material.EMERALD_BLOCK, itens));
                 }
-                Messages.PlayerMessage("other.done", player);
+                messages.PlayerMessage("other.done", player);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

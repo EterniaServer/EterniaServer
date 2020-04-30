@@ -18,10 +18,14 @@ public class TextMaker {
 	private final ChatMessage message;
 	public TextComponent text;
 	private final Player p;
+	private final EterniaServer plugin;
+	private final Vars vars;
 
-	public TextMaker(ChatMessage message, Player p) {
+	public TextMaker(ChatMessage message, Player p, EterniaServer plugin, Vars vars) {
 		this.p = p;
 		this.message = message;
+		this.plugin = plugin;
+		this.vars = vars;
 	}
 
 	// Only used whenever relational placeholders is disabled
@@ -132,16 +136,16 @@ public class TextMaker {
 	}
 
 	public String getConfigString(Player p, String extra) {
-		return EterniaServer.groups.getString (Vars.uufi.get(p.getUniqueId()).getName() + "." + extra);
+		return plugin.groupConfig.getString (vars.uufi.get(p.getName()).getName() + "." + extra);
 	}
 
 	public boolean getConfigBoolean(Player p, String extra) {
-		return EterniaServer.groups.getBoolean(Vars.uufi.get(p.getUniqueId()).getName() + "." + extra);
+		return plugin.groupConfig.getBoolean(vars.uufi.get(p.getName()).getName() + "." + extra);
 	}
 
 	public String customPlaceholder(Player p, String s2) {
 		String message = s2;
-		for(CustomPlaceholder cp: Vars.customPlaceholders) {
+		for(CustomPlaceholder cp: vars.customPlaceholders) {
 			String id = cp.getId();
 			if(!message.contains("{" + id + "}")) {
 				continue;

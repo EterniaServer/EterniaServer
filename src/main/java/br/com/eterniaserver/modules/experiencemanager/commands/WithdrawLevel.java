@@ -10,6 +10,16 @@ import org.bukkit.entity.Player;
 
 public class WithdrawLevel implements CommandExecutor {
 
+    private final Checks checks;
+    private final Messages messages;
+    private final Exp expx;
+
+    public WithdrawLevel(Checks checks, Messages messages, Exp expx) {
+        this.checks = checks;
+        this.messages = messages;
+        this.expx = expx;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -17,25 +27,25 @@ public class WithdrawLevel implements CommandExecutor {
             if (player.hasPermission("eternia.withdrawlvl")) {
                 if (args.length == 1) {
                     try {
-                        int xpla = Checks.getXPForLevel(Integer.parseInt(args[0]));
-                        if (Exp.getExp(player.getName()) >= xpla) {
-                            Exp.removeExp(player.getName(), xpla);
+                        int xpla = checks.getXPForLevel(Integer.parseInt(args[0]));
+                        if (expx.getExp(player.getName()) >= xpla) {
+                            expx.removeExp(player.getName(), xpla);
                             player.giveExp(xpla);
-                            Messages.PlayerMessage("xp.withdraw", "%level%", player.getLevel(), player);
+                            messages.PlayerMessage("xp.withdraw", "%level%", player.getLevel(), player);
                         } else {
-                            Messages.PlayerMessage("xp.noxp", player);
+                            messages.PlayerMessage("xp.noxp", player);
                         }
                     } catch (NumberFormatException e) {
-                        Messages.PlayerMessage("server.no-number", player);
+                        messages.PlayerMessage("server.no-number", player);
                     }
                 } else {
-                    Messages.PlayerMessage("xp.use2", player);
+                    messages.PlayerMessage("xp.use2", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

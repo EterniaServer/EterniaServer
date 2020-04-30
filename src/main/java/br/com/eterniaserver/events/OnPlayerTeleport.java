@@ -9,16 +9,25 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class OnPlayerTeleport implements Listener {
 
+    private final EterniaServer plugin;
+    private final Vars vars;
+
+    public OnPlayerTeleport(EterniaServer plugin, Vars vars) {
+        this.plugin = plugin;
+        this.vars = vars;
+    }
+
+
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) {
             return;
         }
-        if (EterniaServer.configs.getBoolean("modules.teleports")) {
-            Vars.back.put(event.getPlayer().getName(), event.getPlayer().getLocation());
+        if (plugin.serverConfig.getBoolean("modules.teleports")) {
+            vars.back.put(event.getPlayer().getName(), event.getPlayer().getLocation());
         }
-        if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
-            Vars.afktime.put(event.getPlayer().getName(), System.currentTimeMillis());
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
+            vars.afktime.put(event.getPlayer().getName(), System.currentTimeMillis());
         }
     }
 

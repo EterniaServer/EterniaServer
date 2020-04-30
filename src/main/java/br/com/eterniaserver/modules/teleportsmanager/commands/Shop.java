@@ -16,9 +16,15 @@ import org.bukkit.entity.Player;
 public class Shop implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final TeleportsManager teleportsManager;
+    private final Vars vars;
 
-    public Shop(EterniaServer plugin) {
+    public Shop(EterniaServer plugin, Messages messages, TeleportsManager teleportsManager, Vars vars) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.teleportsManager = teleportsManager;
+        this.vars = vars;
     }
 
     @Override
@@ -27,41 +33,41 @@ public class Shop implements CommandExecutor {
             Player player = (Player) sender;
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 if (args.length == 0) {
-                    final Location location = TeleportsManager.getWarp("shop");
+                    final Location location = teleportsManager.getWarp("shop");
                     if (player.hasPermission("eternia.warp.shop")) {
-                        if (location != Vars.error) {
-                            if (Vars.teleports.containsKey(player)) {
-                                Messages.PlayerMessage("server.telep", player);
+                        if (location != vars.error) {
+                            if (vars.teleports.containsKey(player)) {
+                                messages.PlayerMessage("server.telep", player);
                             } else {
-                                Vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp"));
+                                vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
                             }
                         } else {
-                            Messages.PlayerMessage("warps.noexist", "%warp_name%", "shop", player);
+                            messages.PlayerMessage("warps.noexist", "%warp_name%", "shop", player);
                         }
                     } else {
-                        Messages.PlayerMessage("server.no-perm", player);
+                        messages.PlayerMessage("server.no-perm", player);
                     }
                 } else if (args.length == 1) {
-                    final Location location = TeleportsManager.getShop(args[0].toLowerCase());
+                    final Location location = teleportsManager.getShop(args[0].toLowerCase());
                     if (player.hasPermission("eternia.shop.player")) {
-                        if (location != Vars.error) {
-                            if (Vars.teleports.containsKey(player)) {
-                                Messages.PlayerMessage("server.telep", player);
+                        if (location != vars.error) {
+                            if (vars.teleports.containsKey(player)) {
+                                messages.PlayerMessage("server.telep", player);
                             } else {
-                                Vars.teleports.put(player, new PlayerTeleport(player, location, "warps.shopp"));
+                                vars.teleports.put(player, new PlayerTeleport(player, location, "warps.shopp", plugin));
                             }
                         } else {
-                            Messages.PlayerMessage("warps.shopno", player);
+                            messages.PlayerMessage("warps.shopno", player);
                         }
                     } else {
-                        Messages.PlayerMessage("server.no-perm", player);
+                        messages.PlayerMessage("server.no-perm", player);
                     }
                 } else {
-                    Messages.PlayerMessage("warps.shopuse", player);
+                    messages.PlayerMessage("warps.shopuse", player);
                 }
             });
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

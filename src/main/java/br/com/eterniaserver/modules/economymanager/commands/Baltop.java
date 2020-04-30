@@ -18,9 +18,13 @@ import org.bukkit.entity.Player;
 public class Baltop implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final Money moneyx;
 
-    public Baltop(EterniaServer plugin) {
+    public Baltop(EterniaServer plugin, Messages messages, Money moneyx) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.moneyx = moneyx;
     }
 
     @Override
@@ -29,9 +33,9 @@ public class Baltop implements CommandExecutor {
             final Player player = (Player) sender;
             if (sender.hasPermission("eternia.baltop")) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
+                    final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
                     List<String> accounts = new ArrayList<>();
-                    EterniaServer.connection.executeSQLQuery(connection -> {
+                    plugin.connections.executeSQLQuery(connection -> {
                         PreparedStatement getbaltop = connection.prepareStatement(querie);
                         ResultSet resultSet = getbaltop.executeQuery();
                         while (resultSet.next()) {
@@ -42,14 +46,14 @@ public class Baltop implements CommandExecutor {
                         getbaltop.close();
                     });
                     DecimalFormat df2 = new DecimalFormat(".##");
-                    Messages.PlayerMessage("eco.baltop", player);
-                    accounts.forEach(name -> Messages.PlayerMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(Money.getMoney(name)), player));
+                    messages.PlayerMessage("eco.baltop", player);
+                    accounts.forEach(name -> messages.PlayerMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), player));
                 });
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

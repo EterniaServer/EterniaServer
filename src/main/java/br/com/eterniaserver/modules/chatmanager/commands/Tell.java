@@ -11,12 +11,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Set;
+
 public class Tell implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final Strings strings;
+    private final Vars vars;
 
-    public Tell(EterniaServer plugin) {
+    public Tell(EterniaServer plugin, Messages messages, Strings strings, Vars vars) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.strings = strings;
+        this.vars = vars;
     }
 
     @Override
@@ -36,21 +44,21 @@ public class Tell implements CommandExecutor {
                             }
                             sb.substring(0, sb.length() - 1);
                             String s = sb.toString();
-                            Vars.tell.put(target.getName(), player.getName());
-                            Messages.PlayerMessage("chat.toplayer", "%player_name%", player.getName(), "%target_name%", target.getName(), "%message%", s, player, false);
-                            Messages.PlayerMessage("chat.fromplayer", "%player_name%", target.getName(), "%target_name%", player.getName(), "%message%", s, target, false);
-                            for (Player p : Bukkit.getOnlinePlayers()) {
-                                if (p.hasPermission("eternia.spy") && p != player && p != target) {
-                                    p.sendMessage(Strings.getColor("&8[&7SPY-&6P&8] &7" + player.getName() + "->" + target.getName() + ": " + s));
+                            vars.tell.put(target.getName(), player.getName());
+                            messages.PlayerMessage("chat.toplayer", "%player_name%", player.getName(), "%target_name%", target.getName(), "%message%", s, player, false);
+                            messages.PlayerMessage("chat.fromplayer", "%player_name%", target.getName(), "%target_name%", player.getName(), "%message%", s, target, false);
+                            for (Player p : vars.spy.keySet()) {
+                                if (vars.spy.get(p) && p != player && p != target) {
+                                    p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &7" + player.getName() + "->" + target.getName() + ": " + s));
                                 }
                             }
                         });
                     }
                 } else {
-                    Messages.PlayerMessage("chat.tuse", player);
+                    messages.PlayerMessage("chat.tuse", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         }
         return true;

@@ -8,26 +8,35 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class DelWarp implements CommandExecutor {
+
+    private final TeleportsManager teleportsManager;
+    private final Messages messages;
+
+    public DelWarp(TeleportsManager teleportsManager, Messages messages) {
+        this.teleportsManager = teleportsManager;
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (player.hasPermission("eternia.delwarp")) {
-                    if (TeleportsManager.existWarp(args[0])) {
-                        TeleportsManager.delWarp(args[0]);
-                        Messages.PlayerMessage("warps.delwarp", player);
+                    if (teleportsManager.existWarp(args[0])) {
+                        teleportsManager.delWarp(args[0]);
+                        messages.PlayerMessage("warps.delwarp", player);
                     } else {
-                        Messages.PlayerMessage("warps.noexist", "%warp_name%", args[0], player);
+                        messages.PlayerMessage("warps.noexist", "%warp_name%", args[0], player);
                     }
                 } else {
-                    Messages.PlayerMessage("server.no-perm", player);
+                    messages.PlayerMessage("server.no-perm", player);
                 }
             } else {
-                Messages.PlayerMessage("warps.deluse", player);
+                messages.PlayerMessage("warps.deluse", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

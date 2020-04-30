@@ -13,9 +13,15 @@ import org.bukkit.entity.Player;
 public class Homes implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final HomesManager homesManager;
+    private final Strings strings;
 
-    public Homes(EterniaServer plugin) {
+    public Homes(EterniaServer plugin, Messages messages, HomesManager homesManager, Strings strings) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.homesManager = homesManager;
+        this.strings = strings;
     }
 
     @Override
@@ -29,30 +35,30 @@ public class Homes implements CommandExecutor {
                         if (target != null && target.isOnline()) {
                             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                                 StringBuilder accounts = new StringBuilder();
-                                String[] values = HomesManager.getHomes(target.getName());
+                                String[] values = homesManager.getHomes(target.getName());
                                 for (String line : values) {
                                     accounts.append(line).append("&8, &3");
                                 }
-                                Messages.PlayerMessage("home.list", "%homes%", Strings.getColor(accounts.toString()), player);
+                                messages.PlayerMessage("home.list", "%homes%", strings.getColor(accounts.toString()), player);
                             });
                         } else {
-                            Messages.PlayerMessage("server.player-offline", player);
+                            messages.PlayerMessage("server.player-offline", player);
                         }
                     } else {
-                        Messages.PlayerMessage("server.no-perm", player);
+                        messages.PlayerMessage("server.no-perm", player);
                     }
                 } else {
                     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                         StringBuilder accounts = new StringBuilder();
-                        String[] values = HomesManager.getHomes(player.getName());
+                        String[] values = homesManager.getHomes(player.getName());
                         for (String line : values) {
                             accounts.append(line).append("&8, &3");
                         }
-                        Messages.PlayerMessage("home.list", "%homes%", Strings.getColor(accounts.toString()), player);
+                        messages.PlayerMessage("home.list", "%homes%", strings.getColor(accounts.toString()), player);
                     });
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         }
         return true;

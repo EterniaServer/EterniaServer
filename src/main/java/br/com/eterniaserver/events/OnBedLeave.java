@@ -13,12 +13,22 @@ import java.util.concurrent.TimeUnit;
 
 public class OnBedLeave implements Listener {
 
+    private final Messages messages;
+    private final Checks checks;
+    private final Vars vars;
+
+    public OnBedLeave(Messages messages, Checks checks, Vars vars) {
+        this.messages = messages;
+        this.checks = checks;
+        this.vars = vars;
+    }
+
     @EventHandler
     public void onBedLeave(PlayerBedLeaveEvent event) {
         Player player = event.getPlayer();
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Checks.getCooldown(player.getName())) > 6) {
-            Vars.bed_cooldown.put(player.getName(), System.currentTimeMillis());
-            Messages.BroadcastMessage("bed.player-leave", "%player_name%", player.getName());
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - checks.getCooldown(player.getName())) > 6) {
+            vars.bed_cooldown.put(player.getName(), System.currentTimeMillis());
+            messages.BroadcastMessage("bed.player-leave", "%player_name%", player.getName());
         }
     }
 

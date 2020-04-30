@@ -12,14 +12,19 @@ import org.bukkit.entity.Player;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class Kit implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final KitsManager kitsManager;
+    private final Messages messages;
+    private final Strings strings;
 
-    public Kit(EterniaServer plugin) {
+    public Kit(EterniaServer plugin, KitsManager kitsManager, Messages messages, Strings strings) {
         this.plugin = plugin;
+        this.kitsManager = kitsManager;
+        this.messages = messages;
+        this.strings = strings;
     }
 
     @Override
@@ -29,53 +34,51 @@ public class Kit implements CommandExecutor {
             if (player.hasPermission("eternia.kit")) {
                 if (args.length == 1) {
                     final String kit = args[0].toLowerCase();
-                    if (EterniaServer.kits.contains("kits." + kit)) {
+                    if (plugin.kitConfig.contains("kits." + kit)) {
                         if (player.hasPermission("kits." + kit)) {
-                            String data = KitsManager.getKitCooldown(player.getName(), kit);
+                            String data = kitsManager.getKitCooldown(player.getName(), kit);
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                             Date date;
                             try {
                                 date = sdf.parse(data);
                                 long millis = date.getTime();
-                                if ((((millis / 1000) + EterniaServer.kits.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)) <= 0) {
-                                    List<String> commandList = EterniaServer.kits.getStringList("kits." + kit + ".command");
-                                    for (String line : commandList) {
-                                        if (Strings.papi) {
-                                            String modifiedCommand = Messages.putPAPI(player, line);
+                                if ((((millis / 1000) + plugin.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)) <= 0) {
+                                    for (String line : plugin.kitConfig.getStringList("kits." + kit + ".command")) {
+                                        if (plugin.hasPlaceholderAPI) {
+                                            String modifiedCommand = messages.putPAPI(player, line);
                                             plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                                         } else {
                                             String modifiedCommand = line.replace("%player_name%", player.getName());
                                             plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                                         }
                                     }
-                                    List<String> textList = EterniaServer.kits.getStringList("kits." + kit + ".text");
-                                    for (String line : textList) {
-                                        if (Strings.papi) {
-                                            String modifiedText = Messages.putPAPI(player, line);
-                                            player.sendMessage(Strings.getColor(modifiedText));
+                                    for (String line : plugin.kitConfig.getStringList("kits." + kit + ".text")) {
+                                        if (plugin.hasPlaceholderAPI) {
+                                            String modifiedText = messages.putPAPI(player, line);
+                                            player.sendMessage(strings.getColor(modifiedText));
                                         } else {
                                             String modifiedText = line.replace("%player_name%", player.getName());
-                                            player.sendMessage(Strings.getColor(modifiedText));
+                                            player.sendMessage(strings.getColor(modifiedText));
                                         }
                                     }
-                                    KitsManager.setKitCooldown(player.getName(), kit);
+                                    kitsManager.setKitCooldown(player.getName(), kit);
                                 } else {
-                                    Messages.PlayerMessage("kits.cooldown", "%cooldown%", (((millis / 1000) + EterniaServer.kits.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
+                                    messages.PlayerMessage("kits.cooldown", "%cooldown%", (((millis / 1000) + plugin.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
                                 }
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                         } else {
-                            Messages.PlayerMessage("kits.no-perm", "%kit_name%", kit, player);
+                            messages.PlayerMessage("kits.no-perm", "%kit_name%", kit, player);
                         }
                     } else {
-                        Messages.PlayerMessage("kits.noexist", "%kit_name%", kit, player);
+                        messages.PlayerMessage("kits.noexist", "%kit_name%", kit, player);
                     }
                 } else {
-                    Messages.PlayerMessage("kits.use", player);
+                    messages.PlayerMessage("kits.use", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         }
         return true;

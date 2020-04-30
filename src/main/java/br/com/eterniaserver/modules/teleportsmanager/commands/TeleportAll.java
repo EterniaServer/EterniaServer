@@ -9,6 +9,12 @@ import org.bukkit.entity.Player;
 
 public class TeleportAll implements CommandExecutor {
 
+    private final Messages messages;
+
+    public TeleportAll(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -19,12 +25,12 @@ public class TeleportAll implements CommandExecutor {
                         other.teleport(player);
                     }
                 }
-                Messages.PlayerMessage("teleport.all", player);
+                messages.PlayerMessage("teleport.all", player);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

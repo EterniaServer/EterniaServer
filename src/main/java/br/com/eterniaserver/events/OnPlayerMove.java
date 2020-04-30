@@ -17,10 +17,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.List;
 import java.util.Objects;
 
 public class OnPlayerMove implements Listener {
+
+    private final EterniaServer plugin;
+    private final Messages messages;
+    private final Vars vars;
+
+    public OnPlayerMove(EterniaServer plugin, Messages messages, Vars vars) {
+        this.plugin = plugin;
+        this.messages = messages;
+        this.vars = vars;
+    }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -29,21 +38,20 @@ public class OnPlayerMove implements Listener {
         }
         if (Objects.requireNonNull(event.getTo()).distanceSquared(event.getFrom()) != 0) {
             Player player = event.getPlayer();
-            if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
-                Vars.afktime.put(player.getName(), System.currentTimeMillis());
-                if (Vars.afk.contains(player.getName())) {
-                    Vars.afk.remove(player.getName());
-                    Messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
+            if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
+                vars.afktime.put(player.getName(), System.currentTimeMillis());
+                if (vars.afk.contains(player.getName())) {
+                    vars.afk.remove(player.getName());
+                    messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
                 }
             }
-            if (event.getTo().getY() > event.getFrom().getY() && EterniaServer.configs.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {
+            if (event.getTo().getY() > event.getFrom().getY() && plugin.serverConfig.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {
                 Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
                 Material material = block.getType();
-                List<String> stringList = EterniaServer.configs.getStringList("elevator.block");
-                for (String value : stringList) {
+                for (String value : plugin.serverConfig.getStringList("elevator.block")) {
                     if (value.equals(material.toString())) {
-                        final int max = EterniaServer.configs.getInt("elevator.max");
-                        final int min = EterniaServer.configs.getInt("elevator.min");
+                        final int max = plugin.serverConfig.getInt("elevator.max");
+                        final int min = plugin.serverConfig.getInt("elevator.min");
                         block = block.getRelative(BlockFace.UP, min);
                         int i;
                         for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) {

@@ -9,6 +9,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
 
 public class Pay implements CommandExecutor {
+
+    private final Messages messages;
+    private final Money moneyx;
+
+    public Pay(Messages messages, Money moneyx) {
+        this.messages = messages;
+        this.moneyx = moneyx;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -22,34 +31,34 @@ public class Pay implements CommandExecutor {
                             Player target = Bukkit.getPlayer(args[0]);
                             if (target != null && target.isOnline()) {
                                 if (!(target.equals(player))) {
-                                    if (Money.getMoney(player.getName()) >= coins) {
-                                        Money.addMoney(target.getName(), coins);
-                                        Money.removeMoney(player.getName(), coins);
-                                        Messages.PlayerMessage("eco.pay", "%amount%", coins, "%target_name%", target.getName(), player);
-                                        Messages.PlayerMessage("eco.pay-me", "%amount%", coins, "%target_name%", player.getName(), target);
+                                    if (moneyx.getMoney(player.getName()) >= coins) {
+                                        moneyx.addMoney(target.getName(), coins);
+                                        moneyx.removeMoney(player.getName(), coins);
+                                        messages.PlayerMessage("eco.pay", "%amount%", coins, "%target_name%", target.getName(), player);
+                                        messages.PlayerMessage("eco.pay-me", "%amount%", coins, "%target_name%", player.getName(), target);
                                     } else {
-                                        Messages.PlayerMessage("eco.pay-nomoney", player);
+                                        messages.PlayerMessage("eco.pay-nomoney", player);
                                     }
                                 } else {
-                                    Messages.PlayerMessage("eco.auto-pay", player);
+                                    messages.PlayerMessage("eco.auto-pay", player);
                                 }
                             } else {
-                                Messages.PlayerMessage("server.player-offline", player);
+                                messages.PlayerMessage("server.player-offline", player);
                             }
                         } else {
-                            Messages.PlayerMessage("server.no-negative", player);
+                            messages.PlayerMessage("server.no-negative", player);
                         }
                     } catch (NumberFormatException e) {
-                        Messages.PlayerMessage("server.no-number", player);
+                        messages.PlayerMessage("server.no-number", player);
                     }
                 } else {
-                    Messages.PlayerMessage("eco.use", player);
+                    messages.PlayerMessage("eco.use", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

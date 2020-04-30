@@ -17,9 +17,15 @@ import org.bukkit.entity.Player;
 public class Home implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final HomesManager homesManager;
+    private final Vars vars;
 
-    public Home(EterniaServer plugin) {
+    public Home(EterniaServer plugin, Messages messages, HomesManager homesManager, Vars vars) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.homesManager = homesManager;
+        this.vars = vars;
     }
 
     @Override
@@ -29,42 +35,42 @@ public class Home implements CommandExecutor {
             if (player.hasPermission("eternia.home")) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     if (args.length == 1) {
-                        Location location = HomesManager.getHome(args[0].toLowerCase(), player.getName());
-                        if (location != Vars.error) {
-                            if (Vars.teleports.containsKey(player)) {
-                                Messages.PlayerMessage("server.telep", player);
+                        Location location = homesManager.getHome(args[0].toLowerCase(), player.getName());
+                        if (location != vars.error) {
+                            if (vars.teleports.containsKey(player)) {
+                                messages.PlayerMessage("server.telep", player);
                             } else {
-                                Vars.teleports.put(player, new PlayerTeleport(player, location, "home.suc"));
+                                vars.teleports.put(player, new PlayerTeleport(player, location, "home.suc", plugin));
                             }
                         } else {
-                            Messages.PlayerMessage("home.noex", player);
+                            messages.PlayerMessage("home.noex", player);
                         }
                     } else if (args.length == 2) {
                         if (player.hasPermission("eternia.home.other")) {
                             Player target = Bukkit.getPlayer(args[0]);
                             if (target != null && target.isOnline()) {
-                                Location location = HomesManager.getHome(args[1].toLowerCase(), target.getName());
-                                if (location != Vars.error) {
+                                Location location = homesManager.getHome(args[1].toLowerCase(), target.getName());
+                                if (location != vars.error) {
                                     PaperLib.teleportAsync(player, location);
-                                    Messages.PlayerMessage("home.suc", player);
+                                    messages.PlayerMessage("home.suc", player);
                                 } else {
-                                    Messages.PlayerMessage("home.noex", player);
+                                    messages.PlayerMessage("home.noex", player);
                                 }
                             } else {
-                                Messages.PlayerMessage("server.player-offline", player);
+                                messages.PlayerMessage("server.player-offline", player);
                             }
                         } else {
-                            Messages.PlayerMessage("server.no-perm", player);
+                            messages.PlayerMessage("server.no-perm", player);
                         }
                     } else {
-                        Messages.PlayerMessage("home.use2", player);
+                        messages.PlayerMessage("home.use2", player);
                     }
                 });
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

@@ -7,18 +7,25 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Sun implements CommandExecutor {
+
+    private final Messages messages;
+
+    public Sun(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.sun")) {
                 player.getWorld().setStorm(false);
-                Messages.PlayerMessage("simp.weather", player);
+                messages.PlayerMessage("simp.weather", player);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

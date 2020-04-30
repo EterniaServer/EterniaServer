@@ -11,11 +11,19 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class JsonSender {
 
+	private final EterniaServer plugin;
+	private final Vars vars;
+
+	public JsonSender(EterniaServer plugin, Vars vars) {
+		this.plugin = plugin;
+		this.vars = vars;
+	}
+
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		if(e.isCancelled()) return;
-		if(!Vars.uufi.containsKey(e.getPlayer().getUniqueId())) return;
-		TextMaker tm = new TextMaker(message, e.getPlayer());
-		boolean relationalPlaceholders = EterniaServer.chat.getBoolean("chat.enableRelationalPlaceholders");
+		if(!vars.uufi.containsKey(e.getPlayer().getName())) return;
+		TextMaker tm = new TextMaker(message, e.getPlayer(), plugin, vars);
+		boolean relationalPlaceholders = plugin.chatConfig.getBoolean("chat.enableRelationalPlaceholders");
 		if(!relationalPlaceholders) {
 			tm.convertMessageToComponents();
 		}

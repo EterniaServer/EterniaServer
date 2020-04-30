@@ -16,9 +16,15 @@ import org.bukkit.entity.Player;
 public class Spawn implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final TeleportsManager teleportsManager;
+    private final Vars vars;
 
-    public Spawn(EterniaServer plugin) {
+    public Spawn(EterniaServer plugin, Messages messages, TeleportsManager teleportsManager, Vars vars) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.teleportsManager = teleportsManager;
+        this.vars = vars;
     }
 
     @Override
@@ -26,40 +32,40 @@ public class Spawn implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                final Location location = TeleportsManager.getWarp("spawn");
-                if (location != Vars.error) {
+                final Location location = teleportsManager.getWarp("spawn");
+                if (location != vars.error) {
                     if (args.length == 0) {
                         if (player.hasPermission("eternia.spawn")) {
-                            if (Vars.teleports.containsKey(player)) {
-                                Messages.PlayerMessage("server.telep", player);
+                            if (vars.teleports.containsKey(player)) {
+                                messages.PlayerMessage("server.telep", player);
                             } else {
-                                Vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp"));
+                                vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
                             }
                         } else {
-                            Messages.PlayerMessage("sem-permissao", player);
+                            messages.PlayerMessage("sem-permissao", player);
                         }
                     } else if (args.length == 1) {
                         if (player.hasPermission("eternia.spawn.other")) {
                             Player target = Bukkit.getPlayer(args[0]);
                             if (target != null && target.isOnline()) {
                                 PaperLib.teleportAsync(target, location);
-                                Messages.PlayerMessage("warps.warp", "%warp_name%", "Spawn", player);
-                                Messages.PlayerMessage("warps.spawn-other", "%target_name%", target.getName(), player);
+                                messages.PlayerMessage("warps.warp", "%warp_name%", "Spawn", player);
+                                messages.PlayerMessage("warps.spawn-other", "%target_name%", target.getName(), player);
                             } else {
-                                Messages.PlayerMessage("server.player-offline", player);
+                                messages.PlayerMessage("server.player-offline", player);
                             }
                         } else {
-                            Messages.PlayerMessage("server.no-perm", player);
+                            messages.PlayerMessage("server.no-perm", player);
                         }
                     } else {
-                        Messages.PlayerMessage("warps.spawn-use", player);
+                        messages.PlayerMessage("warps.spawn-use", player);
                     }
                 } else {
-                    Messages.PlayerMessage("warps.spawnno", player);
+                    messages.PlayerMessage("warps.spawnno", player);
                 }
             });
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

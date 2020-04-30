@@ -8,15 +8,15 @@ import java.util.Objects;
 
 public class EconomyManager {
 
-    public EconomyManager(EterniaServer plugin) {
-        if (EterniaServer.configs.getBoolean("modules.economy")) {
-            Objects.requireNonNull(plugin.getCommand("pay")).setExecutor(new Pay());
-            Objects.requireNonNull(plugin.getCommand("money")).setExecutor(new Money());
-            Objects.requireNonNull(plugin.getCommand("baltop")).setExecutor(new Baltop(plugin));
-            Objects.requireNonNull(plugin.getCommand("eco")).setExecutor(new Eco());
-            Messages.ConsoleMessage("modules.enable", "%module%", "Economy");
+    public EconomyManager(EterniaServer plugin, Messages messages, br.com.eterniaserver.API.Money money) {
+        if (plugin.serverConfig.getBoolean("modules.economy")) {
+            Objects.requireNonNull(plugin.getCommand("pay")).setExecutor(new Pay(messages, money));
+            Objects.requireNonNull(plugin.getCommand("money")).setExecutor(new Money(messages, money));
+            Objects.requireNonNull(plugin.getCommand("baltop")).setExecutor(new Baltop(plugin, messages, money));
+            Objects.requireNonNull(plugin.getCommand("eco")).setExecutor(new Eco(messages, money));
+            messages.ConsoleMessage("modules.enable", "%module%", "Economy");
         } else {
-            Messages.ConsoleMessage("modules.disable", "%module%", "Economy");
+            messages.ConsoleMessage("modules.disable", "%module%", "Economy");
         }
     }
 

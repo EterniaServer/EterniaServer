@@ -2,6 +2,7 @@ package br.com.eterniaserver.dependencies.vault;
 
 import br.com.eterniaserver.API.Money;
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.player.PlayerManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -13,7 +14,18 @@ import java.util.List;
 
 public class VaultMethods implements Economy {
 
-    private static final DecimalFormat df2 = new DecimalFormat(".##");
+    private final DecimalFormat df2 = new DecimalFormat(".##");
+    private final EterniaServer plugin;
+    private final PlayerManager playerManager;
+    private final Money moneyx;
+    private final Vars vars;
+
+    public VaultMethods(EterniaServer plugin, PlayerManager playerManager, Money moneyx, Vars vars) {
+        this.plugin = plugin;
+        this.playerManager = playerManager;
+        this.moneyx = moneyx;
+        this.vars = vars;
+    }
 
     @Override
     public boolean isEnabled() {
@@ -42,22 +54,22 @@ public class VaultMethods implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return EterniaServer.configs.getString("money.plural");
+        return plugin.serverConfig.getString("money.plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return EterniaServer.configs.getString("money.singular");
+        return plugin.serverConfig.getString("money.singular");
     }
 
     @Override
     public boolean hasAccount(String playerName) {
-        return PlayerManager.playerXPExist(playerName);
+        return playerManager.playerXPExist(playerName);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return PlayerManager.playerXPExist(player.getName());
+        return playerManager.playerXPExist(player.getName());
     }
 
     @Override
@@ -72,12 +84,12 @@ public class VaultMethods implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return Money.getMoney(playerName);
+        return moneyx.getMoney(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return Money.getMoney(player.getName());
+        return moneyx.getMoney(player.getName());
     }
 
     @Override
@@ -92,12 +104,12 @@ public class VaultMethods implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        return Money.hasMoney(playerName, amount);
+        return moneyx.hasMoney(playerName, amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return Money.hasMoney(player.getName(), amount);
+        return moneyx.hasMoney(player.getName(), amount);
     }
 
     @Override
@@ -113,20 +125,20 @@ public class VaultMethods implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         if (has(playerName, amount)) {
-            Money.removeMoney(playerName, amount);
-            return new EconomyResponse(amount, Money.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
+            moneyx.removeMoney(playerName, amount);
+            return new EconomyResponse(amount, moneyx.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
         } else {
-            return new EconomyResponse(amount, Money.getMoney(playerName), EconomyResponse.ResponseType.FAILURE, null);
+            return new EconomyResponse(amount, moneyx.getMoney(playerName), EconomyResponse.ResponseType.FAILURE, null);
         }
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
         if (has(player, amount)) {
-            Money.removeMoney(player.getName(), amount);
-            return new EconomyResponse(amount, Money.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
+            moneyx.removeMoney(player.getName(), amount);
+            return new EconomyResponse(amount, moneyx.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
         } else {
-            return new EconomyResponse(amount, Money.getMoney(player.getName()), EconomyResponse.ResponseType.FAILURE, null);
+            return new EconomyResponse(amount, moneyx.getMoney(player.getName()), EconomyResponse.ResponseType.FAILURE, null);
         }
     }
 
@@ -142,14 +154,14 @@ public class VaultMethods implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        Money.addMoney(playerName, amount);
-        return new EconomyResponse(amount, Money.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
+        moneyx.addMoney(playerName, amount);
+        return new EconomyResponse(amount, moneyx.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        Money.addMoney(player.getName(), amount);
-        return new EconomyResponse(amount, Money.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
+        moneyx.addMoney(player.getName(), amount);
+        return new EconomyResponse(amount, moneyx.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
@@ -231,7 +243,7 @@ public class VaultMethods implements Economy {
         if (this.hasAccount(playerName)) {
             return false;
         }
-        PlayerManager.playerXPCreate(playerName);
+        playerManager.playerXPCreate(playerName);
         return true;
     }
 
@@ -240,7 +252,7 @@ public class VaultMethods implements Economy {
         if (this.hasAccount(player)) {
             return false;
         }
-        PlayerManager.playerXPCreate(player.getName());
+        playerManager.playerXPCreate(player.getName());
         return true;
     }
 

@@ -165,7 +165,10 @@ commands:
     aliases: [advice, anuncio, aviso]
   resp:
     description: Responde.
-    aliases: [r]
+    aliases: [r, reply]
   tell:
     description: Conversa com alguém.
-    aliases: [msg, w, whisper, me]
+    aliases: [msg, w, whisper, me, emsg]
+  spy:
+    description: Ativa ou desativa o spy.
+    aliases: [chatspy]

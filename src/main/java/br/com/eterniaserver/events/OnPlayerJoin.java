@@ -3,7 +3,7 @@ package br.com.eterniaserver.events;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
+import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.player.PlayerManager;
 
 import org.bukkit.entity.Player;
@@ -11,53 +11,50 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.Objects;
-import java.util.UUID;
-
 public class OnPlayerJoin implements Listener {
+
+    private final EterniaServer plugin;
+    private final PlayerManager playerManager;
+    private final Messages messages;
+    private final Checks checks;
+    private final Vars vars;
+
+    public OnPlayerJoin(EterniaServer plugin, PlayerManager playerManager, Messages messages, Checks checks, Vars vars) {
+        this.plugin = plugin;
+        this.playerManager = playerManager;
+        this.messages = messages;
+        this.checks = checks;
+        this.vars = vars;
+    }
 
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (EterniaServer.configs.getBoolean("modules.experience")) {
-            if (!PlayerManager.playerXPExist(player.getName())) {
-                PlayerManager.playerXPCreate(player.getName());
+        if (plugin.serverConfig.getBoolean("modules.experience")) {
+            if (!playerManager.playerXPExist(player.getName())) {
+                playerManager.playerXPCreate(player.getName());
             }
         }
-        if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
-            Vars.afktime.put(player.getName(), System.currentTimeMillis());
-            if (!PlayerManager.playerProfileExist(player.getName())) {
-                PlayerManager.playerProfileCreate(player.getName());
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
+            vars.afktime.put(player.getName(), System.currentTimeMillis());
+            if (!playerManager.playerProfileExist(player.getName())) {
+                playerManager.playerProfileCreate(player.getName());
             }
         }
-        if (EterniaServer.configs.getBoolean("modules.home")) {
-            if (!PlayerManager.playerHomeExist(player.getName())) {
-                PlayerManager.playerHomeCreate(player.getName());
+        if (plugin.serverConfig.getBoolean("modules.home")) {
+            if (!playerManager.playerHomeExist(player.getName())) {
+                playerManager.playerHomeCreate(player.getName());
             }
         }
-        if (EterniaServer.configs.getBoolean("modules.chat")) {
-            add(event.getPlayer());
-            Vars.global.put(player.getName(), 0);
+        if (plugin.serverConfig.getBoolean("modules.chat")) {
+            checks.addUUIF(event.getPlayer());
+            vars.global.put(player.getName(), 0);
+            if (player.hasPermission("eternia.spy")) {
+                vars.spy.put(player, true);
+            }
         }
         event.setJoinMessage(null);
-        Messages.BroadcastMessage("server.join", "%player_name%", player.getName());
-    }
-
-    public static void add(Player p) {
-        UUID u = p.getUniqueId();
-        for (String s : EterniaServer.groups.getKeys(false)) {
-            if(s.equals("groups")) continue;
-            int priority = EterniaServer.groups.getInt(s + ".priority");
-            if(Objects.requireNonNull(EterniaServer.groups.getString(s + ".perm")).equals("") || p.hasPermission(Objects.requireNonNull(EterniaServer.groups.getString(s + ".perm")))) {
-                if(Vars.uufi.containsKey(u)) {
-                    if(Vars.uufi.get(u).getPriority() < priority) {
-                        Vars.uufi.put(u, new FormatInfo(priority, s));
-                    }
-                } else {
-                    Vars.uufi.put(u, new FormatInfo(priority, s));
-                }
-            }
-        }
+        messages.BroadcastMessage("server.join", "%player_name%", player.getName());
     }
 
 }

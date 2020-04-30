@@ -3,6 +3,7 @@ package br.com.eterniaserver.modules.teleportsmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
+import br.com.eterniaserver.player.PlayerTeleport;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -13,9 +14,13 @@ import org.bukkit.entity.Player;
 public class TeleportAccept implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final Vars vars;
 
-    public TeleportAccept(EterniaServer plugin) {
+    public TeleportAccept(EterniaServer plugin, Messages messages, Vars vars) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.vars = vars;
     }
 
     @Override
@@ -23,31 +28,25 @@ public class TeleportAccept implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.tpa")) {
-                if (Vars.tpa_requests.containsKey(player.getName())) {
-                    Player target = Bukkit.getPlayer(Vars.tpa_requests.get(player.getName()));
+                if (vars.tpa_requests.containsKey(player.getName())) {
+                    Player target = Bukkit.getPlayer(vars.tpa_requests.get(player.getName()));
                     if (target != null && target.hasPermission("eternia.timing.bypass")) {
                         PaperLib.teleportAsync(target, player.getLocation());
-                        Messages.PlayerMessage("teleport.tpto", "%target_name%", player.getName(), target);
-                        Messages.PlayerMessage("teleport.accept", "%target_name%", player.getName(), target);
-                        Vars.tpa_requests.remove(player.getName());
+                        messages.PlayerMessage("teleport.tpto", "%target_name%", player.getName(), target);
+                        messages.PlayerMessage("teleport.accept", "%target_name%", player.getName(), target);
+                        vars.tpa_requests.remove(player.getName());
                     } else if (target != null){
-                        Messages.PlayerMessage("teleport.timing", "%cooldown%", EterniaServer.configs.getInt("server.cooldown"), target);
-                        Messages.PlayerMessage("teleport.accept", "%target_name%", player.getName(), target);
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
-                        {
-                            PaperLib.teleportAsync(target, player.getLocation());
-                            Messages.PlayerMessage("teleport.tpto", "%target_name%", player.getName(), target);
-                            Vars.tpa_requests.remove(player.getName());
-                        }, 20 * EterniaServer.configs.getInt("server.cooldown"));
+                        messages.PlayerMessage("teleport.accept", "%target_name%", player.getName(), target);
+                        vars.teleports.put(player, new PlayerTeleport(target, player.getLocation(), "teleport.tpto", plugin));
                     }
                 } else {
-                    Messages.PlayerMessage("teleport.noask", player);
+                    messages.PlayerMessage("teleport.noask", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

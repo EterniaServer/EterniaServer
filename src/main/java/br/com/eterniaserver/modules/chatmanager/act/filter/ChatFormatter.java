@@ -2,7 +2,7 @@ package br.com.eterniaserver.modules.chatmanager.act.filter;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
-import br.com.eterniaserver.events.OnPlayerJoin;
+import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.modules.chatmanager.act.PlaceholderAPIIntegrator;
 import br.com.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 import br.com.eterniaserver.modules.chatmanager.act.utils.ChatObject;
@@ -17,20 +17,29 @@ import java.util.Objects;
 
 public class ChatFormatter {
 
+	private final EterniaServer plugin;
+	private final Checks checks;
+	private final Vars vars;
+
+	public ChatFormatter(EterniaServer plugin, Checks checks, Vars vars) {
+		this.plugin = plugin;
+		this.checks = checks;
+		this.vars = vars;
+	}
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		if (!Vars.uufi.containsKey(p.getUniqueId())) {
+		if (!vars.uufi.containsKey(p.getName())) {
 			return;
 		}
-		if(EterniaServer.chat.getBoolean("chat.autoUpdateGroups", false)) {
-			OnPlayerJoin.add(p);
+		if(plugin.chatConfig.getBoolean("chat.autoUpdateGroups", false)) {
+			checks.addUUIF(p);
 		}
-		FormatInfo fi = Vars.uufi.get(p.getUniqueId());
-		if(EterniaServer.groups.getBoolean(fi.getName() + ".useChatColor")) {
+		FormatInfo fi = vars.uufi.get(p.getName());
+		if(plugin.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
 			ChatObject msg = new ChatObject("%message%");
-			msg.setColor(ChatColor.getByChar(Objects.requireNonNull(EterniaServer.groups.getString(fi.getName() + ".chatColor")).toCharArray()[0]));
-			String total = parse(p, Objects.requireNonNull(EterniaServer.groups.getString(fi.getName() + ".format")));
+			msg.setColor(ChatColor.getByChar(Objects.requireNonNull(plugin.groupConfig.getString(fi.getName() + ".chatColor")).toCharArray()[0]));
+			String total = parse(p, Objects.requireNonNull(plugin.groupConfig.getString(fi.getName() + ".format")));
 			int i = total.indexOf("%message%");
 			int i2 = i+"%message%".length();
 			String prefix = total.substring(0, i);
@@ -40,7 +49,7 @@ public class ChatFormatter {
 				message.getChatObjects().add(new ChatObject(total.substring(i2+1)));
 			}
 		} else {
-			message.get(0).setMessage(parse(p, Objects.requireNonNull(EterniaServer.groups.getString(fi.getName() + ".format"))));
+			message.get(0).setMessage(parse(p, Objects.requireNonNull(plugin.groupConfig.getString(fi.getName() + ".format"))));
 		}
 	}
 

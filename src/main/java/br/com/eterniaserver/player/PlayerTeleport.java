@@ -9,14 +9,15 @@ public class PlayerTeleport {
     private final Player player;
     private final Location first_location;
     private final Location wantLocation;
-    private int cooldown = EterniaServer.configs.getInt("server.cooldown");
     private final String message;
+    private int cooldown;
 
-    public PlayerTeleport(Player player, Location wantLocation, String message) {
+    public PlayerTeleport(Player player, Location wantLocation, String message, EterniaServer plugin) {
         this.player = player;
         this.first_location = player.getLocation();
         this.wantLocation = wantLocation;
         this.message = message;
+        this.cooldown = plugin.serverConfig.getInt("server.cooldown");
     }
 
     public boolean hasMoved() {

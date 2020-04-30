@@ -11,6 +11,12 @@ import java.lang.management.ManagementFactory;
 
 public class Mem implements CommandExecutor {
 
+    private final Messages messages;
+
+    public Mem(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -23,10 +29,10 @@ public class Mem implements CommandExecutor {
                 int seconds = (int) (milliseconds / 1000) % 60;
                 int minutes = (int) ((milliseconds / (1000*60)) % 60);
                 int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
-                Messages.PlayerMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem, player);
-                Messages.PlayerMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds, player);
+                messages.PlayerMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem, player);
+                messages.PlayerMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds, player);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
             Runtime r = Runtime.getRuntime();
@@ -36,8 +42,8 @@ public class Mem implements CommandExecutor {
             int seconds = (int) (milliseconds / 1000) % 60 ;
             int minutes = (int) ((milliseconds / (1000*60)) % 60);
             int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
-            Messages.ConsoleMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
-            Messages.ConsoleMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
+            messages.ConsoleMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
+            messages.ConsoleMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
         }
         return true;
     }

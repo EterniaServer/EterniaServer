@@ -3,6 +3,8 @@ package br.com.eterniaserver.modules.chatmanager;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.configs.Strings;
+import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.chatmanager.act.AdvancedChatTorch;
 import br.com.eterniaserver.modules.chatmanager.commands.*;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -14,15 +16,15 @@ import java.util.Objects;
 
 public class ChatManager {
 
-    public ChatManager(EterniaServer plugin) {
-        if (EterniaServer.configs.getBoolean("modules.chat")) {
+    public ChatManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars) {
+        if (plugin.serverConfig.getBoolean("modules.chat")) {
             File chatFile = new File(plugin.getDataFolder(), "chat.yml");
             if (!chatFile.exists()) {
                 plugin.saveResource("chat.yml", false);
             }
-            EterniaServer.chat = new YamlConfiguration();
+            plugin.chatConfig = new YamlConfiguration();
             try {
-                EterniaServer.chat.load(chatFile);
+                plugin.chatConfig.load(chatFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
@@ -30,9 +32,9 @@ public class ChatManager {
             if (!fileGroups.exists()) {
                 plugin.saveResource("groups.yml", false);
             }
-            EterniaServer.groups = new YamlConfiguration();
+            plugin.groupConfig = new YamlConfiguration();
             try {
-                EterniaServer.groups.load(fileGroups);
+                plugin.groupConfig.load(fileGroups);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
@@ -40,22 +42,23 @@ public class ChatManager {
             if (!placeholdersFile.exists()) {
                 plugin.saveResource("customplaceholders.yml", false);
             }
-            EterniaServer.cph = new YamlConfiguration();
+            plugin.placeholderConfig = new YamlConfiguration();
             try {
-                EterniaServer.cph.load(placeholdersFile);
+                plugin.placeholderConfig.load(placeholdersFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            Objects.requireNonNull(plugin.getCommand("global")).setExecutor(new Global());
-            Objects.requireNonNull(plugin.getCommand("local")).setExecutor(new Local());
-            Objects.requireNonNull(plugin.getCommand("staff")).setExecutor(new Staff());
-            Objects.requireNonNull(plugin.getCommand("broadcast")).setExecutor(new Broadcast());
-            Objects.requireNonNull(plugin.getCommand("resp")).setExecutor(new Resp(plugin));
-            Objects.requireNonNull(plugin.getCommand("tell")).setExecutor(new Tell(plugin));
-            new AdvancedChatTorch();
-            Messages.ConsoleMessage("modules.enable", "%module%", "Chat");
+            Objects.requireNonNull(plugin.getCommand("global")).setExecutor(new Global(messages, vars));
+            Objects.requireNonNull(plugin.getCommand("local")).setExecutor(new Local(messages, vars));
+            Objects.requireNonNull(plugin.getCommand("staff")).setExecutor(new Staff(messages, vars));
+            Objects.requireNonNull(plugin.getCommand("broadcast")).setExecutor(new Broadcast(messages, strings));
+            Objects.requireNonNull(plugin.getCommand("resp")).setExecutor(new Resp(plugin, messages, strings, vars));
+            Objects.requireNonNull(plugin.getCommand("tell")).setExecutor(new Tell(plugin, messages, strings, vars));
+            Objects.requireNonNull(plugin.getCommand("spy")).setExecutor(new Spy(messages, vars));
+            new AdvancedChatTorch(plugin, messages, vars);
+            messages.ConsoleMessage("modules.enable", "%module%", "Chat");
         } else {
-            Messages.ConsoleMessage("modules.disable", "%module%", "Chat");
+            messages.ConsoleMessage("modules.disable", "%module%", "Chat");
         }
     }
 

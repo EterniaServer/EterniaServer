@@ -8,9 +8,15 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class CustomPlaceholdersFilter {
 
+	private final Vars vars;
+
+	public CustomPlaceholdersFilter(Vars vars) {
+		this.vars = vars;
+	}
+
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		for(CustomPlaceholder cp: Vars.customPlaceholders) {
+		for(CustomPlaceholder cp: vars.customPlaceholders) {
 			for(int i = 0; i < message.size(); i++) {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();

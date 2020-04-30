@@ -11,14 +11,24 @@ import org.bukkit.entity.Player;
 
 public class Kits implements CommandExecutor {
 
+    private final EterniaServer plugin;
+    private final Messages messages;
+    private final Strings strings;
+
+    public Kits(EterniaServer plugin, Messages messages, Strings strings) {
+        this.plugin = plugin;
+        this.messages = messages;
+        this.strings = strings;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.kits")) {
-                Messages.PlayerMessage("kits.kits", "%kits%", Strings.getColor(EterniaServer.kits.getString("kits.nameofkits")), player);
+                messages.PlayerMessage("kits.kits", "%kits%", strings.getColor(plugin.kitConfig.getString("kits.nameofkits")), player);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         }
         return true;

@@ -9,6 +9,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Eco implements CommandExecutor {
+
+    private final Messages messages;
+    private final Money moneyx;
+
+    public Eco(Messages messages, Money moneyx) {
+        this.messages = messages;
+        this.moneyx = moneyx;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -23,38 +32,38 @@ public class Eco implements CommandExecutor {
                             if (money > 0) {
                                 switch (fun) {
                                     case "set":
-                                        Money.setMoney(target.getName(), money);
-                                        Messages.PlayerMessage("eco.eco-set", "%money%", money, "%target_name", target.getName(), player);
-                                        Messages.PlayerMessage("eco.eco-rset", "%money%", money, "%target_name%", player.getName(), target);
+                                        moneyx.setMoney(target.getName(), money);
+                                        messages.PlayerMessage("eco.eco-set", "%money%", money, "%target_name%", target.getName(), player);
+                                        messages.PlayerMessage("eco.eco-rset", "%money%", money, "%target_name%", player.getName(), target);
                                         break;
                                     case "remove":
-                                        Money.removeMoney(target.getName(), money);
-                                        Messages.PlayerMessage("eco.eco-remove", "%money%" ,money, "%target_name%", target.getName(), player);
-                                        Messages.PlayerMessage("eco.eco-rremove", "%money%", money, "%target_name%", player.getName(), target);
+                                        moneyx.removeMoney(target.getName(), money);
+                                        messages.PlayerMessage("eco.eco-remove", "%money%" ,money, "%target_name%", target.getName(), player);
+                                        messages.PlayerMessage("eco.eco-rremove", "%money%", money, "%target_name%", player.getName(), target);
                                         break;
                                     case "give":
-                                        Money.addMoney(target.getName(), money);
-                                        Messages.PlayerMessage("eco.eco-give", "%money%", money, "%target_name%", target.getName(), player);
-                                        Messages.PlayerMessage("eco.eco-receive", "%money%", money, "%target_name%", player.getName(), target);
+                                        moneyx.addMoney(target.getName(), money);
+                                        messages.PlayerMessage("eco.eco-give", "%money%", money, "%target_name%", target.getName(), player);
+                                        messages.PlayerMessage("eco.eco-receive", "%money%", money, "%target_name%", player.getName(), target);
                                         break;
                                     default:
-                                        Messages.PlayerMessage("eco.eco", player);
+                                        messages.PlayerMessage("eco.eco", player);
                                         break;
                                 }
                             } else {
-                                Messages.PlayerMessage("server.no-negative", player);
+                                messages.PlayerMessage("server.no-negative", player);
                             }
                         } catch (Exception e) {
-                            Messages.PlayerMessage("server.no-number", player);
+                            messages.PlayerMessage("server.no-number", player);
                         }
                     } else {
-                        Messages.PlayerMessage("server.player-offline", player);
+                        messages.PlayerMessage("server.player-offline", player);
                     }
                 } else {
-                    Messages.PlayerMessage("eco.eco", player);
+                    messages.PlayerMessage("eco.eco", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
             if (args.length == 3) {
@@ -68,34 +77,34 @@ public class Eco implements CommandExecutor {
                             if (money > 0) {
                                 switch (fun) {
                                     case "set":
-                                        Money.setMoney(target.getName(), money);
-                                        Messages.ConsoleMessage("eco.eco-set", "%money%", money, "%target_name%", target.getName());
-                                        Messages.PlayerMessage("eco.eco-rset", "%money%", money, "%target_name%", "console", target);
+                                        moneyx.setMoney(target.getName(), money);
+                                        messages.ConsoleMessage("eco.eco-set", "%money%", money, "%target_name%", target.getName());
+                                        messages.PlayerMessage("eco.eco-rset", "%money%", money, "%target_name%", "console", target);
                                     case "remove":
-                                        Money.removeMoney(target.getName(), money);
-                                        Messages.ConsoleMessage("eco.eco-remove", "%money%", money, "%target_name%", target.getName());
-                                        Messages.PlayerMessage("eco.eco-rremove", "%money%", money, "%target_name%", "console", target);
+                                        moneyx.removeMoney(target.getName(), money);
+                                        messages.ConsoleMessage("eco.eco-remove", "%money%", money, "%target_name%", target.getName());
+                                        messages.PlayerMessage("eco.eco-rremove", "%money%", money, "%target_name%", "console", target);
                                     case "give":
-                                        Money.addMoney(target.getName(), money);
-                                        Messages.ConsoleMessage("eco.eco-give", "%money%", money, "%target_name%", target.getName());
-                                        Messages.PlayerMessage("eco.eco-receive", "%money%", money, "%target_name%", "console", target);
+                                        moneyx.addMoney(target.getName(), money);
+                                        messages.ConsoleMessage("eco.eco-give", "%money%", money, "%target_name%", target.getName());
+                                        messages.PlayerMessage("eco.eco-receive", "%money%", money, "%target_name%", "console", target);
                                     default:
-                                        Messages.ConsoleMessage("eco.eco");
+                                        messages.ConsoleMessage("eco.eco");
                                 }
                             } else {
-                                Messages.ConsoleMessage("server.no-negative");
+                                messages.ConsoleMessage("server.no-negative");
                             }
                         } catch (NumberFormatException e) {
-                            Messages.ConsoleMessage("server.no-number");
+                            messages.ConsoleMessage("server.no-number");
                         }
                     } else {
-                        Messages.ConsoleMessage("server.player-offline");
+                        messages.ConsoleMessage("server.player-offline");
                     }
                 } catch (Exception e) {
-                    Messages.ConsoleMessage("server.player-offline");
+                    messages.ConsoleMessage("server.player-offline");
                 }
             } else {
-                Messages.ConsoleMessage("eco.eco");
+                messages.ConsoleMessage("eco.eco");
             }
         }
         return true;

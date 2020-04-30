@@ -1,6 +1,7 @@
 package br.com.eterniaserver.modules.bedmanager.tasks;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.bedmanager.tasks.AccelerateNight;
 import org.bukkit.Bukkit;
@@ -15,9 +16,13 @@ import static java.util.stream.Collectors.toList;
 public class AccelerateWorld implements Runnable {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final Vars vars;
 
-    public AccelerateWorld(EterniaServer plugin) {
+    public AccelerateWorld(EterniaServer plugin, Messages messages, Vars vars) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.vars = vars;
     }
 
 
@@ -29,19 +34,19 @@ public class AccelerateWorld implements Runnable {
     private void checkWorld(final World world) {
         final int sleeping = getSleeping(world).size();
         if (sleeping > 0) {
-            Vars.skipping_worlds.add(world);
-            new AccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
+            vars.skipping_worlds.add(world);
+            new AccelerateNight(world, plugin, messages, vars).runTaskTimer(plugin, 1, 1);
         }
     }
 
     private boolean validateWorld(final World world) {
         return !isBlacklisted(world)
-                && !Vars.skipping_worlds.contains(world)
+                && !vars.skipping_worlds.contains(world)
                 && isNight(world);
     }
 
     private boolean isBlacklisted(final World world) {
-        return Objects.requireNonNull(EterniaServer.configs.getList("bed.blacklisted-worlds")).contains(world.getName());
+        return Objects.requireNonNull(plugin.serverConfig.getList("bed.blacklisted-worlds")).contains(world.getName());
     }
 
     private boolean isNight(final World world) {

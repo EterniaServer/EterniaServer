@@ -9,6 +9,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class DepositLevel implements CommandExecutor {
+
+    private final Checks checks;
+    private final Messages messages;
+    private final Exp expx;
+
+    public DepositLevel(Checks checks, Messages messages, Exp expx) {
+        this.checks = checks;
+        this.messages = messages;
+        this.expx = expx;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -19,27 +30,27 @@ public class DepositLevel implements CommandExecutor {
                     try {
                         int xpla = Integer.parseInt(args[0]);
                         if (xp_atual >= xpla) {
-                            int xp = Checks.getXPForLevel(xpla);
-                            int xpto = Checks.getXPForLevel(xp_atual);
-                            Exp.addExp(player.getName(), xp);
-                            Messages.PlayerMessage("xp.deposit", "%amount%", xpla, player);
+                            int xp = checks.getXPForLevel(xpla);
+                            int xpto = checks.getXPForLevel(xp_atual);
+                            expx.addExp(player.getName(), xp);
+                            messages.PlayerMessage("xp.deposit", "%amount%", xpla, player);
                             player.setLevel(0);
                             player.setExp(0);
                             player.giveExp(xpto - xp);
                         } else {
-                            Messages.PlayerMessage("xp.noxp", player);
+                            messages.PlayerMessage("xp.noxp", player);
                         }
                     } catch (NumberFormatException e) {
-                        Messages.PlayerMessage("server.no-number", player);
+                        messages.PlayerMessage("server.no-number", player);
                     }
                 } else {
-                    Messages.PlayerMessage("xp.use", player);
+                    messages.PlayerMessage("xp.use", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

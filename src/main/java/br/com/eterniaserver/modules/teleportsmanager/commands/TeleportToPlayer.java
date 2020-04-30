@@ -10,45 +10,53 @@ import org.bukkit.entity.Player;
 
 public class TeleportToPlayer implements CommandExecutor {
 
+    private final Messages messages;
+    private final Vars vars;
+
+    public TeleportToPlayer(Messages messages, Vars vars) {
+        this.messages = messages;
+        this.vars = vars;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.tpa")) {
-                if (Vars.teleports.containsKey(player)) {
-                    Messages.PlayerMessage("server.telep", player);
+                if (vars.teleports.containsKey(player)) {
+                    messages.PlayerMessage("server.telep", player);
                 } else {
                     if (args.length == 1) {
                         try {
                             Player target = Bukkit.getPlayer(args[0]);
                             if (target != null && target.isOnline()) {
                                 if (target != player) {
-                                    if (!Vars.tpa_requests.containsKey(target.getName())) {
-                                        Vars.tpa_requests.remove(target.getName());
-                                        Vars.tpa_requests.put(target.getName(), player.getName());
-                                        Messages.PlayerMessage("teleport.receiver", "%target_name%", player.getName(), target);
-                                        Messages.PlayerMessage("teleport.send", "%target_name%", target.getName(), player);
+                                    if (!vars.tpa_requests.containsKey(target.getName())) {
+                                        vars.tpa_requests.remove(target.getName());
+                                        vars.tpa_requests.put(target.getName(), player.getName());
+                                        messages.PlayerMessage("teleport.receiver", "%target_name%", player.getName(), target);
+                                        messages.PlayerMessage("teleport.send", "%target_name%", target.getName(), player);
                                     } else {
-                                        Messages.PlayerMessage("warps.jadeu", player);
+                                        messages.PlayerMessage("warps.jadeu", player);
                                     }
                                 } else {
-                                    Messages.PlayerMessage("teleport.auto", player);
+                                    messages.PlayerMessage("teleport.auto", player);
                                 }
                             } else {
-                                Messages.PlayerMessage("server.player-offline", player);
+                                messages.PlayerMessage("server.player-offline", player);
                             }
                         } catch (Exception e) {
-                            Messages.PlayerMessage("server.player-offline", player);
+                            messages.PlayerMessage("server.player-offline", player);
                         }
                     } else {
-                        Messages.PlayerMessage("teleport.use", player);
+                        messages.PlayerMessage("teleport.use", player);
                     }
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

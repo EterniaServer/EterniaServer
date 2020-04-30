@@ -1,10 +1,23 @@
 package br.com.eterniaserver.configs.methods;
 
+import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
+import br.com.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
+import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class Checks {
 
-    public static int getXPForLevel(int lvl) {
+    private final EterniaServer plugin;
+    private final Vars vars;
+
+    public Checks(EterniaServer plugin, Vars vars) {
+        this.plugin = plugin;
+        this.vars = vars;
+    }
+
+    public int getXPForLevel(int lvl) {
         if (lvl > 0 && lvl < 16) {
             return (lvl * lvl) + 6 * lvl;
         } else if (lvl > 15 && lvl < 31) {
@@ -15,12 +28,32 @@ public class Checks {
         return 0;
     }
 
-    public static long getCooldown(String name) {
-        if (!Vars.bed_cooldown.containsKey(name)) {
+    public long getCooldown(String name) {
+        if (!vars.bed_cooldown.containsKey(name)) {
             return 0;
         } else {
-            return Vars.bed_cooldown.get(name);
+            return vars.bed_cooldown.get(name);
         }
+    }
+
+    public void addUUIF(Player p) {
+        for (String s : plugin.groupConfig.getKeys(false)) {
+            if(s.equals("groups")) continue;
+            int priority = plugin.groupConfig.getInt(s + ".priority");
+            if(Objects.requireNonNull(plugin.groupConfig.getString(s + ".perm")).equals("") || p.hasPermission(Objects.requireNonNull(plugin.groupConfig.getString(s + ".perm")))) {
+                if(vars.uufi.containsKey(p.getName())) {
+                    if(vars.uufi.get(p.getName()).getPriority() < priority) {
+                        vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+                    }
+                } else {
+                    vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+                }
+            }
+        }
+    }
+
+    public void removeUUIF(Player p) {
+        vars.uufi.remove(p.getName());
     }
 
 }

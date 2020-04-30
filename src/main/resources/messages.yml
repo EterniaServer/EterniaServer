@@ -37,6 +37,8 @@ chat:
   fromplayer: '&8[&6P&8] &6%player_name% &8<- &6%target_name%&8: &6%message%'
   tuse: '&7Use &6/msg &3<mensagem>&8.'
   noone: '&7Não há ninguém para ti ouvir&8.'
+  spye: '&7Spy ativado&8.'
+  spyd: '&7Spy desativado&8.'
 profile:
   data: '&7Data de registro&8: &3%player_register_data%&8.'
   hours: '&7Horas de conta&8: &3%hours%&8.'
@@ -111,7 +113,7 @@ teleport:
   receiver: '&3%target_name% &7lhe enviou um pedido de tpa&8, &7use &6/tpaccept &7ou &6/tpdeny &7para aceitar ou negar o tpa&8.'
   auto: '&7Você não pode dar tpa em você mesmo&8.'
   use: '&7Use &6/tpa &3<nome>&8.'
-  tpto: '&7Você foi até &3%target_name%&8.'
+  tpto: '&7Você foi até o jogador.'
   noask: '&7Você não tem nenhum pedido de tpa&8.'
   accept: '&3%target_name% &7aceitou seu pedido de tpa&8.'
   deny: '&7Seu pedido de tpa foi negado&8.'

@@ -12,10 +12,12 @@ public class Connections {
 
     private final boolean mysql;
     private final EterniaServer plugin;
+    private final Messages messages;
     private HikariDataSource hikari;
 
-    public Connections(EterniaServer plugin, final boolean mysql) {
+    public Connections(EterniaServer plugin, final boolean mysql, Messages messages) {
         this.plugin = plugin;
+        this.messages = messages;
         this.mysql = mysql;
         this.Connect();
     }
@@ -25,19 +27,19 @@ public class Connections {
         if (mysql) {
             hikari.setPoolName("EterniaServer MySQL Pool");
             hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-            hikari.addDataSourceProperty("serverName", EterniaServer.configs.getString("sql.host"));
-            hikari.addDataSourceProperty("port", EterniaServer.configs.getString("sql.port"));
-            hikari.addDataSourceProperty("databaseName", EterniaServer.configs.getString("sql.database"));
-            hikari.addDataSourceProperty("user", EterniaServer.configs.getString("sql.user"));
-            hikari.addDataSourceProperty("password", EterniaServer.configs.getString("sql.password"));
+            hikari.addDataSourceProperty("serverName", plugin.serverConfig.getString("sql.host"));
+            hikari.addDataSourceProperty("port", plugin.serverConfig.getString("sql.port"));
+            hikari.addDataSourceProperty("databaseName", plugin.serverConfig.getString("sql.database"));
+            hikari.addDataSourceProperty("user", plugin.serverConfig.getString("sql.user"));
+            hikari.addDataSourceProperty("password", plugin.serverConfig.getString("sql.password"));
             hikari.setMaximumPoolSize(50);
-            Messages.ConsoleMessage("server.mysql-ok");
+            messages.ConsoleMessage("server.mysql-ok");
         } else {
             hikari.setPoolName("EterniaServer SQLite Pool");
             hikari.setDriverClassName("org.sqlite.JDBC");
             hikari.setJdbcUrl("jdbc:sqlite:" + new File(plugin.getDataFolder(), "eternia.db"));
             hikari.setMaximumPoolSize(50);
-            Messages.ConsoleMessage("server.sql-ok");
+            messages.ConsoleMessage("server.sql-ok");
         }
     }
 
@@ -48,9 +50,9 @@ public class Connections {
     public void Close() {
         hikari.close();
         if (mysql) {
-            Messages.ConsoleMessage("server.mysql-finish");
+            messages.ConsoleMessage("server.mysql-finish");
         } else {
-            Messages.ConsoleMessage("server.sql-finish");
+            messages.ConsoleMessage("server.sql-finish");
         }
     }
 

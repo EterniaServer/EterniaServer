@@ -13,11 +13,15 @@ public class AccelerateNight extends BukkitRunnable {
 
     private final EterniaServer plugin;
     private final World world;
+    private final Messages messages;
+    private final Vars vars;
 
-    public AccelerateNight(final World world, EterniaServer plugin) {
+    public AccelerateNight(final World world, EterniaServer plugin, Messages messages, Vars vars) {
         this.plugin = plugin;
         this.world = world;
-        Messages.BroadcastMessage("bed.night-skipping", "%world_name%", world.getName());
+        this.messages = messages;
+        this.vars = vars;
+        messages.BroadcastMessage("bed.night-skipping", "%world_name%", world.getName());
     }
 
     @Override
@@ -25,7 +29,7 @@ public class AccelerateNight extends BukkitRunnable {
         final long time = world.getTime();
         final int sleeping = AccelerateWorld.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
-        double base = EterniaServer.configs.getInt("bed.speed");
+        double base = plugin.serverConfig.getInt("bed.speed");
         double timeRate;
         if (sleeping > 0) {
             int x = players / sleeping;
@@ -34,14 +38,14 @@ public class AccelerateNight extends BukkitRunnable {
                 world.setStorm(false);
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
-                Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> Vars.skipping_worlds.remove(world), 20);
-                Messages.BroadcastMessage("bed.skip-night");
+                Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> vars.skipping_worlds.remove(world), 20);
+                messages.BroadcastMessage("bed.skip-night");
                 this.cancel();
             } else {
                 world.setTime(time + (int) timeRate);
             }
-        } else if (Vars.skipping_worlds.contains(world)) {
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> Vars.skipping_worlds.remove(world), 20);
+        } else if (vars.skipping_worlds.contains(world)) {
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> vars.skipping_worlds.remove(world), 20);
             this.cancel();
         }
     }

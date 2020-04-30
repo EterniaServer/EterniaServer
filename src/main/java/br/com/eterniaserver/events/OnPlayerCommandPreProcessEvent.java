@@ -11,14 +11,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.List;
-
 public class OnPlayerCommandPreProcessEvent implements Listener {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final Strings strings;
 
-    public OnPlayerCommandPreProcessEvent(EterniaServer plugin) {
+    public OnPlayerCommandPreProcessEvent(EterniaServer plugin, Messages messages, Strings strings) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.strings = strings;
     }
 
     @EventHandler
@@ -26,39 +28,37 @@ public class OnPlayerCommandPreProcessEvent implements Listener {
         if (event.isCancelled()) {
             return;
         }
-        if (event.getMessage().equalsIgnoreCase("/tps") && Strings.papi) {
+        if (event.getMessage().equalsIgnoreCase("/tps") && plugin.hasPlaceholderAPI) {
             Player player = event.getPlayer();
             String s = PlaceholderAPI.setPlaceholders(player, "%server_tps%");
-            Messages.PlayerMessage("replaces.tps", "%tps%", s.substring(0, s.length() - 2), player);
+            messages.PlayerMessage("replaces.tps", "%tps%", s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
         }
-        if (EterniaServer.configs.getBoolean("modules.commands")) {
+        if (plugin.serverConfig.getBoolean("modules.commands")) {
             Player player = event.getPlayer();
-            if (EterniaServer.commands.contains("commands." + event.getMessage().toLowerCase())) {
+            if (plugin.cmdConfig.contains("commands." + event.getMessage().toLowerCase())) {
                 final String cmd = event.getMessage().toLowerCase().replace("/", "");
                 if (player.hasPermission("eternia." + cmd)) {
-                    List<String> commandList = EterniaServer.commands.getStringList("commands." + event.getMessage() + ".command");
-                    for (String line : commandList) {
-                        if (Strings.papi) {
-                            String modifiedCommand = Messages.putPAPI(player, line);
+                    for (String line : plugin.cmdConfig.getStringList("commands." + event.getMessage() + ".command")) {
+                        if (plugin.hasPlaceholderAPI) {
+                            String modifiedCommand = messages.putPAPI(player, line);
                             plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                         } else {
                             String modifiedCommand = line.replace("%player_name%", player.getName());
                             plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                         }
                     }
-                    List<String> textList = EterniaServer.commands.getStringList("commands." + event.getMessage() + ".text");
-                    for (String line : textList) {
-                        if (Strings.papi) {
-                            String modifiedText = Messages.putPAPI(player, line);
-                            player.sendMessage(Strings.getColor(modifiedText));
+                    for (String line : plugin.cmdConfig.getStringList("commands." + event.getMessage() + ".text")) {
+                        if (plugin.hasPlaceholderAPI) {
+                            String modifiedText = messages.putPAPI(player, line);
+                            player.sendMessage(strings.getColor(modifiedText));
                         } else {
                             String modifiedText = line.replace("%player_name%", player.getName());
-                            player.sendMessage(Strings.getColor(modifiedText));
+                            player.sendMessage(strings.getColor(modifiedText));
                         }
                     }
                 } else {
-                    Messages.PlayerMessage("server.no-perm", player);
+                    messages.PlayerMessage("server.no-perm", player);
                 }
                 event.setCancelled(true);
             }

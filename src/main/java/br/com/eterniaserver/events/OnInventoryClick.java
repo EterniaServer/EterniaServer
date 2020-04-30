@@ -15,21 +15,31 @@ import java.util.Objects;
 
 public class OnInventoryClick implements Listener {
 
+    private final EterniaServer plugin;
+    private final Messages messages;
+    private final Vars vars;
+
+    public OnInventoryClick(EterniaServer plugin, Messages messages, Vars vars) {
+        this.plugin = plugin;
+        this.messages = messages;
+        this.vars = vars;
+    }
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.isCancelled()) {
             return;
         }
-        if (EterniaServer.configs.getBoolean("spawners.prevent-anvil") && EterniaServer.configs.getBoolean("modules.spawners")) {
+        if (plugin.serverConfig.getBoolean("spawners.prevent-anvil") && plugin.serverConfig.getBoolean("modules.spawners")) {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
                 Player player = (Player) e.getWhoClicked();
                 e.setCancelled(true);
-                Messages.PlayerMessage("spawners.anvil", player);
-                Messages.ConsoleMessage("spawners.anvil-try", "%player_name%", player.getName());
+                messages.PlayerMessage("spawners.anvil", player);
+                messages.ConsoleMessage("spawners.anvil-try", "%player_name%", player.getName());
             }
         }
-        if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
-            Vars.afktime.put(e.getWhoClicked().getName(), System.currentTimeMillis());
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
+            vars.afktime.put(e.getWhoClicked().getName(), System.currentTimeMillis());
         }
     }
 

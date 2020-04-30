@@ -13,7 +13,7 @@ prefix:
   default:
     priority: 1
     perm: eternia.membro
-    value: '&8[%vault_prefix_color%&8]'
+    value: '&8[%vault_prefix%&8]'
     useGroupEvents: false
     hoverText: '&7Clique para enviar uma mensagem&8.'
     suggestCmd: '/msg %player_name% '

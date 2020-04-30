@@ -9,26 +9,34 @@ import org.bukkit.entity.Player;
 
 public class DelHome implements CommandExecutor {
 
+    private final HomesManager homesManager;
+    private final Messages messages;
+
+    public DelHome(HomesManager homesManager, Messages messages) {
+        this.homesManager = homesManager;
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (player.hasPermission("eternia.delhome")) {
-                    if (HomesManager.existHome(args[0].toLowerCase(), player.getName())) {
-                        HomesManager.delHome(args[0].toLowerCase(), player.getName());
-                        Messages.PlayerMessage("home.del", player);
+                    if (homesManager.existHome(args[0].toLowerCase(), player.getName())) {
+                        homesManager.delHome(args[0].toLowerCase(), player.getName());
+                        messages.PlayerMessage("home.del", player);
                     } else {
-                        Messages.PlayerMessage("home.no", player);
+                        messages.PlayerMessage("home.no", player);
                     }
                 } else {
-                    Messages.PlayerMessage("server.no-perm", player);
+                    messages.PlayerMessage("server.no-perm", player);
                 }
             } else {
-                Messages.PlayerMessage("home.use3", player);
+                messages.PlayerMessage("home.use3", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

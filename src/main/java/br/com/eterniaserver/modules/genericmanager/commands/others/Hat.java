@@ -9,6 +9,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Hat implements CommandExecutor {
+
+    private final Messages messages;
+
+    public Hat(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -20,12 +27,12 @@ public class Hat implements CommandExecutor {
                 }
                 set_capacete(player);
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                Messages.PlayerMessage("other.helmet", player);
+                messages.PlayerMessage("other.helmet", player);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

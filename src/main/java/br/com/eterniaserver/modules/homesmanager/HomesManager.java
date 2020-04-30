@@ -2,6 +2,7 @@ package br.com.eterniaserver.modules.homesmanager;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.configs.Strings;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.homesmanager.commands.*;
 import org.bukkit.Bukkit;
@@ -14,20 +15,25 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class HomesManager {
 
-    public HomesManager(EterniaServer plugin) {
-        if (EterniaServer.configs.getBoolean("modules.home")) {
-            Objects.requireNonNull(plugin.getCommand("delhouse")).setExecutor(new DelHome());
-            Objects.requireNonNull(plugin.getCommand("house")).setExecutor(new Home(plugin));
-            Objects.requireNonNull(plugin.getCommand("houses")).setExecutor(new Homes(plugin));
-            Objects.requireNonNull(plugin.getCommand("sethouse")).setExecutor(new SetHome());
-            Messages.ConsoleMessage("modules.enable", "%module%", "Homes");
+    private final EterniaServer plugin;
+    private final Vars vars;
+
+    public HomesManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars) {
+        this.plugin = plugin;
+        this.vars = vars;
+        if (plugin.serverConfig.getBoolean("modules.home")) {
+            Objects.requireNonNull(plugin.getCommand("delhouse")).setExecutor(new DelHome(this, messages));
+            Objects.requireNonNull(plugin.getCommand("house")).setExecutor(new Home(plugin, messages, this, vars));
+            Objects.requireNonNull(plugin.getCommand("houses")).setExecutor(new Homes(plugin, messages, this, strings));
+            Objects.requireNonNull(plugin.getCommand("sethouse")).setExecutor(new SetHome(messages, this));
+            messages.ConsoleMessage("modules.enable", "%module%", "Homes");
         } else {
-            Messages.ConsoleMessage("modules.disable", "%module%", "Homes");
+            messages.ConsoleMessage("modules.disable", "%module%", "Homes");
         }
     }
 
-    public static void setHome(Location loc, String home, String jogador) {
-        Vars.homes.put(home, loc);
+    public void setHome(Location loc, String home, String jogador) {
+        vars.homes.put(home, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
         String[] values = getHomes(jogador);
@@ -41,18 +47,18 @@ public class HomesManager {
         }
         if (!t) {
             result.append(home).append(":");
-            final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement sethome = connection.prepareStatement(querie);
                 sethome.execute();
                 sethome.close();
             }, true);
             values = result.toString().split(":");
-            Vars.home.put(jogador, values);
+            vars.home.put(jogador, values);
             String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                     ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
-            final String querie2 = "INSERT INTO " + EterniaServer.configs.getString("sql.table-homes") + " (name, location) VALUES ('" + home + "." + jogador + "', '" + saveloc + "')";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            final String querie2 = "INSERT INTO " + plugin.serverConfig.getString("sql.table-homes") + " (name, location) VALUES ('" + home + "." + jogador + "', '" + saveloc + "')";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement sethome = connection.prepareStatement(querie2);
                 sethome.execute();
                 sethome.close();
@@ -60,8 +66,8 @@ public class HomesManager {
         } else {
             String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                     ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
-            final String querie3 = "UPDATE " + EterniaServer.configs.getString("sql.table-homes") + " SET location='" + saveloc + "' WHERE name='" + home + "." + jogador + "';";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            final String querie3 = "UPDATE " + plugin.serverConfig.getString("sql.table-homes") + " SET location='" + saveloc + "' WHERE name='" + home + "." + jogador + "';";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement sethome = connection.prepareStatement(querie3);
                 sethome.execute();
                 sethome.close();
@@ -69,8 +75,8 @@ public class HomesManager {
         }
     }
 
-    public static void delHome(String home, String jogador) {
-        Vars.homes.remove(home + "." + jogador);
+    public void delHome(String home, String jogador) {
+        vars.homes.remove(home + "." + jogador);
         StringBuilder nova = new StringBuilder();
         String[] values = getHomes(jogador);
         boolean t = true;
@@ -81,39 +87,39 @@ public class HomesManager {
             }
         }
         values = nova.toString().split(":");
-        Vars.home.put(jogador, values);
+        vars.home.put(jogador, values);
         if (t) {
-            String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement delhome = connection.prepareStatement(querie);
                 delhome.execute();
                 delhome.close();
             }, true);
         } else {
-            String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement delhome = connection.prepareStatement(querie);
                 delhome.execute();
                 delhome.close();
             }, true);
         }
-        String querie = "DELETE FROM " + EterniaServer.configs.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
-        EterniaServer.connection.executeSQLQuery(connection -> {
+        String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
+        plugin.connections.executeSQLQuery(connection -> {
             PreparedStatement delhome = connection.prepareStatement(querie);
             delhome.execute();
             delhome.close();
         }, true);
     }
 
-    public static Location getHome(String home, String jogador) {
-        Location loc = Vars.error;
-        if (Vars.homes.containsKey(home + "." + jogador)) {
-            loc = Vars.homes.get(home + "." + jogador);
+    public Location getHome(String home, String jogador) {
+        Location loc = vars.error;
+        if (vars.homes.containsKey(home + "." + jogador)) {
+            loc = vars.homes.get(home + "." + jogador);
         } else {
             if (existHome(home, jogador)) {
                 AtomicReference<String> string = new AtomicReference<>("");
-                final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
-                EterniaServer.connection.executeSQLQuery(connection -> {
+                final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
+                plugin.connections.executeSQLQuery(connection -> {
                     PreparedStatement gethome = connection.prepareStatement(querie);
                     ResultSet resultSet = gethome.executeQuery();
                     if (resultSet.next() && resultSet.getString("location") != null) {
@@ -122,13 +128,13 @@ public class HomesManager {
                 });
                 String[] values = string.toString().split(":");
                 loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), (Double.parseDouble(values[2]) + 1), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                Vars.homes.put(home + "." + jogador, loc);
+                vars.homes.put(home + "." + jogador, loc);
             }
         }
         return loc;
     }
 
-    public static boolean existHome(String home, String jogador) {
+    public boolean existHome(String home, String jogador) {
         String[] homes = getHomes(jogador);
         for (String line : homes) {
             if (line.equals(home)) {
@@ -138,18 +144,18 @@ public class HomesManager {
         return false;
     }
 
-    public static int canHome(String jogador) {
+    public int canHome(String jogador) {
         return getHomes(jogador).length;
     }
 
-    public static String[] getHomes(String jogador) {
-        if (Vars.home.containsKey(jogador)) {
-            return Vars.home.get(jogador);
+    public String[] getHomes(String jogador) {
+        if (vars.home.containsKey(jogador)) {
+            return vars.home.get(jogador);
         }
 
-        final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-home") + " WHERE player_name='" + jogador + "';";
+        final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + " WHERE player_name='" + jogador + "';";
         AtomicReference<String> string = new AtomicReference<>("");
-        EterniaServer.connection.executeSQLQuery(connection -> {
+        plugin.connections.executeSQLQuery(connection -> {
             PreparedStatement gethomes = connection.prepareStatement(querie);
             ResultSet resultSet = gethomes.executeQuery();
             if (resultSet.next() && resultSet.getString("homes") != null) {
@@ -158,7 +164,7 @@ public class HomesManager {
         });
 
         String[] homess = string.toString().split(":");
-        Vars.home.put(jogador, homess);
+        vars.home.put(jogador, homess);
         return homess;
     }
 }

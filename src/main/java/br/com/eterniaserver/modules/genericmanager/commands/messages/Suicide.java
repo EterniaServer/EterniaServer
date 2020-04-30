@@ -7,6 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Suicide implements CommandExecutor {
+
+    private final Messages messages;
+
+    public Suicide(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, java.lang.String label, java.lang.String[] args) {
         if (sender instanceof Player) {
@@ -19,15 +26,15 @@ public class Suicide implements CommandExecutor {
                     }
                     java.lang.String s = sb.toString();
                     player.setHealth(0);
-                    Messages.BroadcastMessage("text.suicide", "%message%", s, "%player_name%", player.getName());
+                    messages.BroadcastMessage("text.suicide", "%message%", s, "%player_name%", player.getName());
                 } else {
                     player.setHealth(0);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

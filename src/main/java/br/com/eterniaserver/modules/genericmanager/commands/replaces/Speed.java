@@ -9,6 +9,12 @@ import org.bukkit.entity.Player;
 
 public class Speed implements CommandExecutor {
 
+    private final Messages messages;
+
+    public Speed(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -21,17 +27,17 @@ public class Speed implements CommandExecutor {
                             player.setFlySpeed((float) speed / 10);
                             player.setWalkSpeed((float) speed / 10);
                         } else {
-                            Messages.PlayerMessage("other.speed-no", player);
+                            messages.PlayerMessage("other.speed-no", player);
                         }
                     } catch (NumberFormatException e) {
-                        Messages.PlayerMessage("server.no-number", player);
+                        messages.PlayerMessage("server.no-number", player);
                     }
                 } else {
-                    Messages.PlayerMessage("other.speed-use", player);
+                    messages.PlayerMessage("other.speed-use", player);
                 }
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

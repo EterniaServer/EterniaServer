@@ -9,6 +9,12 @@ import org.bukkit.entity.Player;
 
 public class EnderChest implements CommandExecutor {
 
+    private final Messages messages;
+
+    public EnderChest(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -18,15 +24,15 @@ public class EnderChest implements CommandExecutor {
                 if (target != null && target.isOnline()) {
                     player.openInventory(target.getEnderChest());
                 } else {
-                    Messages.PlayerMessage("server.player-offline", player);
+                    messages.PlayerMessage("server.player-offline", player);
                 }
             } else if (args.length == 0 && player.hasPermission("eternia.enderchest")) {
                 player.openInventory(player.getEnderChest());
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

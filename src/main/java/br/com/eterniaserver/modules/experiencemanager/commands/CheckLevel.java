@@ -8,6 +8,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CheckLevel implements CommandExecutor {
+
+    private final Messages messages;
+    private final Exp expx;
+
+    public CheckLevel(Messages messages, Exp expx) {
+        this.messages = messages;
+        this.expx = expx;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -17,15 +26,15 @@ public class CheckLevel implements CommandExecutor {
                 float xp = player.getExp();
                 player.setLevel(0);
                 player.setExp(0);
-                player.giveExp(Exp.getExp(player.getName()));
-                Messages.PlayerMessage("xp.getxp", "%amount%", player.getLevel(), player);
+                player.giveExp(expx.getExp(player.getName()));
+                messages.PlayerMessage("xp.getxp", "%amount%", player.getLevel(), player);
                 player.setLevel(lvl);
                 player.setExp(xp);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

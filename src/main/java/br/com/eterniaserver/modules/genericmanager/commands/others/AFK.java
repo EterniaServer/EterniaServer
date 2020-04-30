@@ -10,20 +10,28 @@ import org.bukkit.entity.Player;
 
 public class AFK implements CommandExecutor {
 
+    private final Messages messages;
+    private final Vars vars;
+
+    public AFK(Messages messages, Vars vars) {
+        this.messages = messages;
+        this.vars = vars;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.afk")) {
-                if (Vars.afk.contains(player.getName())) {
-                    Messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
-                    Vars.afk.remove(player.getName());
+                if (vars.afk.contains(player.getName())) {
+                    messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
+                    vars.afk.remove(player.getName());
                 } else {
-                    Vars.afk.add(player.getName());
-                    Messages.BroadcastMessage("text.afke", "%player_name%", player.getName());
+                    vars.afk.add(player.getName());
+                    messages.BroadcastMessage("text.afke", "%player_name%", player.getName());
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         }
         return true;

@@ -9,6 +9,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Fly implements CommandExecutor {
+
+    private final Messages messages;
+    private final PlayerFlyState playerFlyState;
+
+    public Fly(Messages messages, PlayerFlyState playerFlyState) {
+        this.messages = messages;
+        this.playerFlyState = playerFlyState;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -17,37 +26,37 @@ public class Fly implements CommandExecutor {
                 if (args.length == 0) {
                     if (player.getWorld() == Bukkit.getWorld("evento")) {
                         if (player.hasPermission("eternia.fly.evento")) {
-                            new PlayerFlyState(player);
+                            playerFlyState.changeFlyState(player);
                         } else {
-                            Messages.PlayerMessage("server.no-perm", player);
+                            messages.PlayerMessage("server.no-perm", player);
                         }
                     } else {
-                        new PlayerFlyState(player);
+                        playerFlyState.changeFlyState(player);
                     }
                     return true;
                 } else if (args.length == 1) {
                     if (player.hasPermission("eternia.fly.other")) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null && target.isOnline()) {
-                            new PlayerFlyState(target);
+                            playerFlyState.changeFlyState(target);
                         } else {
-                            Messages.PlayerMessage("server.player-offline", player);
+                            messages.PlayerMessage("server.player-offline", player);
                         }
                     } else {
-                        Messages.PlayerMessage("server.no-perm", player);
+                        messages.PlayerMessage("server.no-perm", player);
                     }
                 } else {
-                    Messages.PlayerMessage("fly.use", player);
+                    messages.PlayerMessage("fly.use", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && target.isOnline()) {
-                new PlayerFlyState(target);
+                playerFlyState.changeFlyState(target);
             } else {
-                Messages.ConsoleMessage("server.player-offline");
+                messages.ConsoleMessage("server.player-offline");
             }
         }
         return true;

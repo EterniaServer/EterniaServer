@@ -9,19 +9,27 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Exp {
 
+    private final EterniaServer plugin;
+    private final Vars vars;
+
+    public Exp(EterniaServer plugin, Vars vars) {
+        this.plugin = plugin;
+        this.vars = vars;
+    }
+
     /**
      * Gets experience of a player on a database.
      * @param playerName to check
      * @return Amount currently held in player's database
      */
-    public static Integer getExp(String playerName) {
-        if (Vars.xp.containsKey(playerName)) {
-            return Vars.xp.get(playerName);
+    public Integer getExp(String playerName) {
+        if (vars.xp.containsKey(playerName)) {
+            return vars.xp.get(playerName);
         }
 
         AtomicReference<Integer> xp = new AtomicReference<>(0);
-        final String querie = "SELECT xp FROM " + EterniaServer.configs.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
-        EterniaServer.connection.executeSQLQuery(connection -> {
+        final String querie = "SELECT xp FROM " + plugin.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
+        plugin.connections.executeSQLQuery(connection -> {
             PreparedStatement getshop = connection.prepareStatement(querie);
             ResultSet resultSet = getshop.executeQuery();
             if (resultSet.next() && resultSet.getInt("xp") != 0) {
@@ -29,7 +37,7 @@ public class Exp {
             }
         });
 
-        Vars.xp.put(playerName, xp.get());
+        vars.xp.put(playerName, xp.get());
         return xp.get();
     }
 
@@ -38,10 +46,10 @@ public class Exp {
      * @param playerName to check
      * @param amount to set
      */
-    public static void setExp(String playerName, int amount) {
-        Vars.xp.put(playerName, amount);
-        final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';";
-        EterniaServer.connection.executeSQLQuery(connection -> {
+    public void setExp(String playerName, int amount) {
+        vars.xp.put(playerName, amount);
+        final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';";
+        plugin.connections.executeSQLQuery(connection -> {
             PreparedStatement setexp = connection.prepareStatement(querie);
             setexp.execute();
             setexp.close();
@@ -53,7 +61,7 @@ public class Exp {
      * @param playerName to check
      * @param amount to add
      */
-    public static void addExp(String playerName, int amount) {
+    public void addExp(String playerName, int amount) {
         setExp(playerName, getExp(playerName) + amount);
     }
 
@@ -62,7 +70,7 @@ public class Exp {
      * @param playerName to check
      * @param amount to remove
      */
-    public static void removeExp(String playerName, int amount) {
+    public void removeExp(String playerName, int amount) {
         setExp(playerName, getExp(playerName) - amount);
     }
 

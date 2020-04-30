@@ -15,6 +15,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Collections;
 
 public class BottleLevel implements CommandExecutor {
+
+    private final Checks checks;
+    private final Messages messages;
+
+    public BottleLevel(Checks checks, Messages messages) {
+        this.checks = checks;
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -22,8 +31,8 @@ public class BottleLevel implements CommandExecutor {
             if (player.hasPermission("eternia.bottlexp")) {
                 if (args.length == 1) {
                     try {
-                        int xp_want = Checks.getXPForLevel(Integer.parseInt(args[0]));
-                        int xp_real = Checks.getXPForLevel(player.getLevel());
+                        int xp_want = checks.getXPForLevel(Integer.parseInt(args[0]));
+                        int xp_real = checks.getXPForLevel(player.getLevel());
                         if (Integer.parseInt(args[0]) > 0 && xp_real > xp_want) {
                             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
                             ItemMeta meta = item.getItemMeta();
@@ -34,24 +43,24 @@ public class BottleLevel implements CommandExecutor {
                             }
                             PlayerInventory inventory = player.getInventory();
                             inventory.addItem(item);
-                            Messages.PlayerMessage("xp.bottlexp", player);
+                            messages.PlayerMessage("xp.bottlexp", player);
                             player.setLevel(0);
                             player.setExp(0);
                             player.giveExp(xp_real - xp_want);
                         } else {
-                            Messages.PlayerMessage("xp.noxp", player);
+                            messages.PlayerMessage("xp.noxp", player);
                         }
                     } catch (NumberFormatException e) {
-                        Messages.PlayerMessage("server.no-number", player);
+                        messages.PlayerMessage("server.no-number", player);
                     }
                 } else {
-                    Messages.PlayerMessage("xp.use3", player);
+                    messages.PlayerMessage("xp.use3", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

@@ -15,9 +15,13 @@ import java.sql.ResultSet;
 public class ListWarp implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final Messages messages;
+    private final Strings strings;
 
-    public ListWarp(EterniaServer plugin) {
+    public ListWarp(EterniaServer plugin, Messages messages, Strings strings) {
         this.plugin = plugin;
+        this.messages = messages;
+        this.strings = strings;
     }
 
     @Override
@@ -26,9 +30,9 @@ public class ListWarp implements CommandExecutor {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.listwarp")) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + ";";
+                    final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
                     StringBuilder accounts = new StringBuilder();
-                    EterniaServer.connection.executeSQLQuery(connection -> {
+                    plugin.connections.executeSQLQuery(connection -> {
                         PreparedStatement getHome = connection.prepareStatement(querie);
                         ResultSet resultSet = getHome.executeQuery();
                         while (resultSet.next()) {
@@ -38,10 +42,10 @@ public class ListWarp implements CommandExecutor {
                         resultSet.close();
                         getHome.close();
                     });
-                    Messages.PlayerMessage("warps.list", "%warps%", Strings.getColor(accounts.toString()), player);
+                    messages.PlayerMessage("warps.list", "%warps%", strings.getColor(accounts.toString()), player);
                 });
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         }
         return true;

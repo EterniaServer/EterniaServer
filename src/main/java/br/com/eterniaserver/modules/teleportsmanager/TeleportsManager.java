@@ -1,7 +1,9 @@
 package br.com.eterniaserver.modules.teleportsmanager;
 
+import br.com.eterniaserver.API.Money;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.configs.Strings;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.teleportsmanager.commands.*;
 import org.bukkit.Bukkit;
@@ -15,41 +17,46 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class TeleportsManager {
 
-    public TeleportsManager(EterniaServer plugin) {
-        if (EterniaServer.configs.getBoolean("modules.teleports")) {
-            Objects.requireNonNull(plugin.getCommand("back")).setExecutor(new Back());
-            Objects.requireNonNull(plugin.getCommand("spawn")).setExecutor(new Spawn(plugin));
-            Objects.requireNonNull(plugin.getCommand("setspawn")).setExecutor(new SetSpawn());
-            Objects.requireNonNull(plugin.getCommand("warp")).setExecutor(new Warp(plugin));
-            Objects.requireNonNull(plugin.getCommand("setwarp")).setExecutor(new SetWarp());
-            Objects.requireNonNull(plugin.getCommand("delwarp")).setExecutor(new DelWarp());
-            Objects.requireNonNull(plugin.getCommand("listwarp")).setExecutor(new ListWarp(plugin));
-            Objects.requireNonNull(plugin.getCommand("shop")).setExecutor(new Shop(plugin));
-            Objects.requireNonNull(plugin.getCommand("setshop")).setExecutor(new SetShop());
-            Objects.requireNonNull(plugin.getCommand("teleportaccept")).setExecutor(new TeleportAccept(plugin));
-            Objects.requireNonNull(plugin.getCommand("teleportdeny")).setExecutor(new TeleportDeny());
-            Objects.requireNonNull(plugin.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer());
-            Objects.requireNonNull(plugin.getCommand("teleportall")).setExecutor(new TeleportAll());
-            Messages.ConsoleMessage("modules.enable", "%module%", "Teleports");
+    private final EterniaServer plugin;
+    private final Vars vars;
+
+    public TeleportsManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars, Money moneyx) {
+        this.plugin = plugin;
+        this.vars = vars;
+        if (plugin.serverConfig.getBoolean("modules.teleports")) {
+            Objects.requireNonNull(plugin.getCommand("back")).setExecutor(new Back(plugin, messages, moneyx, vars));
+            Objects.requireNonNull(plugin.getCommand("spawn")).setExecutor(new Spawn(plugin, messages, this, vars));
+            Objects.requireNonNull(plugin.getCommand("setspawn")).setExecutor(new SetSpawn(this, messages));
+            Objects.requireNonNull(plugin.getCommand("warp")).setExecutor(new Warp(plugin, this, messages, vars));
+            Objects.requireNonNull(plugin.getCommand("setwarp")).setExecutor(new SetWarp(this, messages));
+            Objects.requireNonNull(plugin.getCommand("delwarp")).setExecutor(new DelWarp(this, messages));
+            Objects.requireNonNull(plugin.getCommand("listwarp")).setExecutor(new ListWarp(plugin, messages, strings));
+            Objects.requireNonNull(plugin.getCommand("shop")).setExecutor(new Shop(plugin, messages, this, vars));
+            Objects.requireNonNull(plugin.getCommand("setshop")).setExecutor(new SetShop(this, messages));
+            Objects.requireNonNull(plugin.getCommand("teleportaccept")).setExecutor(new TeleportAccept(plugin, messages, vars));
+            Objects.requireNonNull(plugin.getCommand("teleportdeny")).setExecutor(new TeleportDeny(messages, vars));
+            Objects.requireNonNull(plugin.getCommand("teleporttoplayer")).setExecutor(new TeleportToPlayer(messages, vars));
+            Objects.requireNonNull(plugin.getCommand("teleportall")).setExecutor(new TeleportAll(messages));
+            messages.ConsoleMessage("modules.enable", "%module%", "Teleports");
         } else {
-            Messages.ConsoleMessage("modules.disable", "%module%", "Teleports");
+            messages.ConsoleMessage("modules.disable", "%module%", "Teleports");
         }
     }
 
-    public static void setWarp(Location loc, String warp) {
-        Vars.warps.put(warp, loc);
+    public void setWarp(Location loc, String warp) {
+        vars.warps.put(warp, loc);
         String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                 ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (existWarp(warp)) {
-            final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-warp") + " SET location='" + saveloc + "' WHERE name='" + warp + "';";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-warp") + " SET location='" + saveloc + "' WHERE name='" + warp + "';";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement setwarp = connection.prepareStatement(querie);
                 setwarp.execute();
                 setwarp.close();
             }, true);
         } else {
-            final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-warp") + " (name, location) VALUES ('" + warp + "', '" + saveloc + "')";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-warp") + " (name, location) VALUES ('" + warp + "', '" + saveloc + "')";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement setwarp = connection.prepareStatement(querie);
                 setwarp.execute();
                 setwarp.close();
@@ -57,25 +64,25 @@ public class TeleportsManager {
         }
     }
 
-    public static void delWarp(String warp) {
-        Vars.warps.remove(warp);
-        final String querie = "DELETE FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-        EterniaServer.connection.executeSQLQuery(connection -> {
+    public void delWarp(String warp) {
+        vars.warps.remove(warp);
+        final String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+        plugin.connections.executeSQLQuery(connection -> {
             PreparedStatement delwarp = connection.prepareStatement(querie);
             delwarp.execute();
             delwarp.close();
         }, true);
     }
 
-    public static Location getWarp(String warp) {
-        Location loc = Vars.error;
-        if (Vars.warps.containsKey(warp)) {
-            loc = Vars.warps.get(warp);
+    public Location getWarp(String warp) {
+        Location loc = vars.error;
+        if (vars.warps.containsKey(warp)) {
+            loc = vars.warps.get(warp);
         } else {
             if (existWarp(warp)) {
                 AtomicReference<String> string = new AtomicReference<>("");
-                final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-                EterniaServer.connection.executeSQLQuery(connection -> {
+                final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+                plugin.connections.executeSQLQuery(connection -> {
                     PreparedStatement getwarp = connection.prepareStatement(querie);
                     ResultSet resultSet = getwarp.executeQuery();
                     if (resultSet.next() && resultSet.getString("location") != null) {
@@ -84,17 +91,17 @@ public class TeleportsManager {
                 });
                 String[] values = string.toString().split(":");
                 loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                Vars.warps.put(warp, loc);
+                vars.warps.put(warp, loc);
             }
         }
 
         return loc;
     }
 
-    public static boolean existWarp(String warp) {
+    public boolean existWarp(String warp) {
         AtomicBoolean exist = new AtomicBoolean(false);
-        final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-        EterniaServer.connection.executeSQLQuery(connection -> {
+        final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+        plugin.connections.executeSQLQuery(connection -> {
             PreparedStatement existwarp = connection.prepareStatement(querie);
             ResultSet resultSet = existwarp.executeQuery();
             if (resultSet.next() && resultSet.getString("name") != null) exist.set(true);
@@ -105,20 +112,20 @@ public class TeleportsManager {
         return exist.get();
     }
 
-    public static void setShop(Location loc, String shop) {
-        Vars.shops.put(shop, loc);
+    public void setShop(Location loc, String shop) {
+        vars.shops.put(shop, loc);
         String saveloc = Objects.requireNonNull(loc.getWorld()).getName() + ":" + ((int) loc.getX()) + ":" +
                 ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (existShop(shop)) {
-            final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-shop") + " SET location='" + saveloc + "' WHERE name='" + shop + "';";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-shop") + " SET location='" + saveloc + "' WHERE name='" + shop + "';";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement setshop = connection.prepareStatement(querie);
                 setshop.execute();
                 setshop.close();
             }, true);
         } else {
-            final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-shop") + " (name, location) VALUES ('" + shop + "', '" + saveloc + "')";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-shop") + " (name, location) VALUES ('" + shop + "', '" + saveloc + "')";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement setshop = connection.prepareStatement(querie);
                 setshop.execute();
                 setshop.close();
@@ -126,15 +133,15 @@ public class TeleportsManager {
         }
     }
 
-    public static Location getShop(String shop) {
-        Location loc = Vars.error;
-        if (Vars.shops.containsKey(shop)) {
-            loc = Vars.shops.get(shop);
+    public Location getShop(String shop) {
+        Location loc = vars.error;
+        if (vars.shops.containsKey(shop)) {
+            loc = vars.shops.get(shop);
         } else {
             if (existShop(shop)) {
                 AtomicReference<String> string = new AtomicReference<>("");
-                final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-                EterniaServer.connection.executeSQLQuery(connection -> {
+                final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
+                plugin.connections.executeSQLQuery(connection -> {
                     PreparedStatement getshop = connection.prepareStatement(querie);
                     ResultSet resultSet = getshop.executeQuery();
                     if (resultSet.next() && resultSet.getString("location") != null) {
@@ -143,16 +150,16 @@ public class TeleportsManager {
                 });
                 String[] values = string.toString().split(":");
                 loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                Vars.shops.put(shop, loc);
+                vars.shops.put(shop, loc);
             }
         }
         return loc;
     }
 
-    public static boolean existShop(String shop) {
+    public boolean existShop(String shop) {
         AtomicBoolean exist = new AtomicBoolean(false);
-        final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-        EterniaServer.connection.executeSQLQuery(connection -> {
+        final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
+        plugin.connections.executeSQLQuery(connection -> {
             PreparedStatement existshop = connection.prepareStatement(querie);
             ResultSet resultSet = existshop.executeQuery();
             if (resultSet.next() && resultSet.getString("name") != null) exist.set(true);

@@ -13,6 +13,16 @@ import java.util.concurrent.TimeUnit;
 
 public class OnBedEnter implements Listener {
 
+    private final Messages messages;
+    private final Checks checks;
+    private final Vars vars;
+
+    public OnBedEnter(Messages messages, Checks checks, Vars vars) {
+        this.messages = messages;
+        this.checks = checks;
+        this.vars = vars;
+    }
+
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
         if (event.isCancelled()) {
@@ -20,9 +30,9 @@ public class OnBedEnter implements Listener {
         }
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             Player player = event.getPlayer();
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Checks.getCooldown(player.getName())) > 6) {
-                Vars.bed_cooldown.put(player.getName(), System.currentTimeMillis());
-                Messages.BroadcastMessage("bed.player-s", "%player_name%", player.getName());
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - checks.getCooldown(player.getName())) > 6) {
+                vars.bed_cooldown.put(player.getName(), System.currentTimeMillis());
+                messages.BroadcastMessage("bed.player-s", "%player_name%", player.getName());
             }
         }
     }

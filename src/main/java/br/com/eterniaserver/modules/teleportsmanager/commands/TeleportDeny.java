@@ -10,26 +10,34 @@ import org.bukkit.entity.Player;
 
 public class TeleportDeny implements CommandExecutor {
 
+    private final Messages messages;
+    private final Vars vars;
+
+    public TeleportDeny(Messages messages, Vars vars) {
+        this.messages = messages;
+        this.vars = vars;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.tpa")) {
-                if (Vars.tpa_requests.containsKey(player.getName())) {
-                    Messages.PlayerMessage("teleport.auto-deny", "%target_name%", Vars.tpa_requests.get(player.getName()), player);
-                    Player target = Bukkit.getPlayer(Vars.tpa_requests.get(player.getName()));
-                    Vars.tpa_requests.remove(player.getName());
+                if (vars.tpa_requests.containsKey(player.getName())) {
+                    messages.PlayerMessage("teleport.auto-deny", "%target_name%", vars.tpa_requests.get(player.getName()), player);
+                    Player target = Bukkit.getPlayer(vars.tpa_requests.get(player.getName()));
+                    vars.tpa_requests.remove(player.getName());
                     if (target != null && target.isOnline()) {
-                        Messages.PlayerMessage("teleport.deny", target);
+                        messages.PlayerMessage("teleport.deny", target);
                     }
                 } else {
-                    Messages.PlayerMessage("teleport.noask", player);
+                    messages.PlayerMessage("teleport.noask", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

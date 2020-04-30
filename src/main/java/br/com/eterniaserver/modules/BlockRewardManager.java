@@ -11,21 +11,21 @@ import java.io.IOException;
 
 public class BlockRewardManager {
 
-    public BlockRewardManager(EterniaServer plugin) {
-        if (EterniaServer.configs.getBoolean("modules.block-reward")) {
+    public BlockRewardManager(EterniaServer plugin, Messages messages) {
+        if (plugin.serverConfig.getBoolean("modules.block-reward")) {
             File blocksFile = new File(plugin.getDataFolder(), "blocks.yml");
             if (!blocksFile.exists()) {
                 plugin.saveResource("blocks.yml", false);
             }
-            EterniaServer.blocks = new YamlConfiguration();
+            plugin.blockConfig = new YamlConfiguration();
             try {
-                EterniaServer.blocks.load(blocksFile);
+                plugin.blockConfig.load(blocksFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            Messages.ConsoleMessage("modules.enable", "%module%", "Block-Reward");
+            messages.ConsoleMessage("modules.enable", "%module%", "Block-Reward");
         } else {
-            Messages.ConsoleMessage("modules.disable", "%module%", "Block-Reward");
+            messages.ConsoleMessage("modules.disable", "%module%", "Block-Reward");
         }
     }
 

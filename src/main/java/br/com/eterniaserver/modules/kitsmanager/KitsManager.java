@@ -2,6 +2,7 @@ package br.com.eterniaserver.modules.kitsmanager;
 
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.configs.Strings;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.kitsmanager.commands.*;
 import br.com.eterniaserver.player.PlayerManager;
@@ -19,42 +20,50 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class KitsManager {
 
-    public KitsManager(EterniaServer plugin) {
-        if (EterniaServer.configs.getBoolean("modules.kits")) {
+    private final EterniaServer plugin;
+    private final PlayerManager playerManager;
+    private final Vars vars;
+
+
+    public KitsManager(EterniaServer plugin, Messages messages, PlayerManager playerManager, Strings strings, Vars vars) {
+        this.plugin = plugin;
+        this.playerManager = playerManager;
+        this.vars = vars;
+        if (plugin.serverConfig.getBoolean("modules.kits")) {
             File commandsConfigFile = new File(plugin.getDataFolder(), "kits.yml");
             if (!commandsConfigFile.exists()) {
                 plugin.saveResource("kits.yml", false);
             }
-            EterniaServer.kits = new YamlConfiguration();
+            plugin.kitConfig = new YamlConfiguration();
             try {
-                EterniaServer.kits.load(commandsConfigFile);
+                plugin.kitConfig.load(commandsConfigFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            Objects.requireNonNull(plugin.getCommand("kit")).setExecutor(new Kit(plugin));
-            Objects.requireNonNull(plugin.getCommand("kits")).setExecutor(new Kits());
-            Messages.ConsoleMessage("modules.enable", "%module%", "Kits");
+            Objects.requireNonNull(plugin.getCommand("kit")).setExecutor(new Kit(plugin, this, messages, strings));
+            Objects.requireNonNull(plugin.getCommand("kits")).setExecutor(new Kits(plugin, messages, strings));
+            messages.ConsoleMessage("modules.enable", "%module%", "Kits");
         } else {
-            Messages.ConsoleMessage("modules.disable", "%module%", "Kits");
+            messages.ConsoleMessage("modules.disable", "%module%", "Kits");
         }
     }
 
-    public static void setKitCooldown(final String jogador, final String kit) {
+    public void setKitCooldown(final String jogador, final String kit) {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         final String data = format.format(date);
-        if (PlayerManager.playerCooldownExist(jogador, kit)) {
-            Vars.kits_cooldown.put(kit + "." + jogador, data);
-            final String querie = "UPDATE " + EterniaServer.configs.getString("sql.table-kits") + " SET cooldown='" + data + "' WHERE name='" + kit + "." + jogador + "';";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+        if (playerManager.playerCooldownExist(jogador, kit)) {
+            vars.kits_cooldown.put(kit + "." + jogador, data);
+            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-kits") + " SET cooldown='" + data + "' WHERE name='" + kit + "." + jogador + "';";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement putkit = connection.prepareStatement(querie);
                 putkit.execute();
                 putkit.close();
             }, true);
         } else {
-            Vars.kits_cooldown.put(kit + "." + jogador, data);
-            final String querie = "INSERT INTO " + EterniaServer.configs.getString("sql.table-kits") + " (name, cooldown) VALUES ('" + kit + "." + jogador + "', '" + data + "');";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+            vars.kits_cooldown.put(kit + "." + jogador, data);
+            final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES ('" + kit + "." + jogador + "', '" + data + "');";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement putkit = connection.prepareStatement(querie);
                 putkit.execute();
                 putkit.close();
@@ -62,15 +71,15 @@ public class KitsManager {
         }
     }
 
-    public static String getKitCooldown(final String jogador, final String kit) {
-        if (Vars.kits_cooldown.containsKey(kit + "." + jogador)) {
-            return Vars.kits_cooldown.get(kit + "." + jogador);
+    public String getKitCooldown(final String jogador, final String kit) {
+        if (vars.kits_cooldown.containsKey(kit + "." + jogador)) {
+            return vars.kits_cooldown.get(kit + "." + jogador);
         }
 
         AtomicReference<String> cooldown = new AtomicReference<>("");
-        if (PlayerManager.playerCooldownExist(jogador, kit)) {
-            final String querie = "SELECT * FROM " + EterniaServer.configs.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
-            EterniaServer.connection.executeSQLQuery(connection -> {
+        if (playerManager.playerCooldownExist(jogador, kit)) {
+            final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
+            plugin.connections.executeSQLQuery(connection -> {
                 PreparedStatement getkit = connection.prepareStatement(querie);
                 ResultSet resultSet = getkit.executeQuery();
                 if (resultSet.next() && resultSet.getString("cooldown") != null) {
@@ -81,7 +90,7 @@ public class KitsManager {
             cooldown.set("2020/01/01 00:00");
         }
 
-        Vars.kits_cooldown.put(kit + "." + jogador, cooldown.get());
+        vars.kits_cooldown.put(kit + "." + jogador, cooldown.get());
         return cooldown.get();
     }
 

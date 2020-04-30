@@ -8,22 +8,31 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SetWarp implements CommandExecutor {
+
+    private final TeleportsManager teleportsManager;
+    private final Messages messages;
+
+    public SetWarp(TeleportsManager teleportsManager, Messages messages) {
+        this.teleportsManager = teleportsManager;
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length == 1) {
                 if (player.hasPermission("eternia.setwarp")) {
-                    TeleportsManager.setWarp(player.getLocation(), args[0].toLowerCase());
-                    Messages.PlayerMessage("warps.createwarp", "%warp_name%", args[0], player);
+                    teleportsManager.setWarp(player.getLocation(), args[0].toLowerCase());
+                    messages.PlayerMessage("warps.createwarp", "%warp_name%", args[0], player);
                 } else {
-                    Messages.PlayerMessage("server.no-perm", player);
+                    messages.PlayerMessage("server.no-perm", player);
                 }
             } else {
-                Messages.PlayerMessage("warps.use2", player);
+                messages.PlayerMessage("warps.use2", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

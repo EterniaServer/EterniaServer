@@ -1,29 +1,34 @@
-package br.com.eterniaserver.modules.teleportsmanager.commands;
+package br.com.eterniaserver.modules.chatmanager.commands;
 
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.modules.teleportsmanager.TeleportsManager;
+import br.com.eterniaserver.configs.Vars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetSpawn implements CommandExecutor {
+public class Spy implements CommandExecutor {
 
-    private final TeleportsManager teleportsManager;
     private final Messages messages;
+    private final Vars vars;
 
-    public SetSpawn(TeleportsManager teleportsManager, Messages messages) {
-        this.teleportsManager = teleportsManager;
+    public Spy(Messages messages, Vars vars) {
         this.messages = messages;
+        this.vars = vars;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.setspawn")) {
-                teleportsManager.setWarp(player.getLocation(), "spawn");
-                messages.PlayerMessage("warps.spawn-set", player);
+            if (player.hasPermission("eternia.spy")) {
+                if (vars.spy.getOrDefault(player, false)) {
+                    vars.spy.put(player, false);
+                    messages.PlayerMessage("chat.spye", player);
+                } else {
+                    vars.spy.put(player, true);
+                    messages.PlayerMessage("chat.spyd", player);
+                }
             } else {
                 messages.PlayerMessage("server.no-perm", player);
             }
@@ -32,4 +37,5 @@ public class SetSpawn implements CommandExecutor {
         }
         return true;
     }
+
 }

@@ -15,9 +15,9 @@ public class MessagesConfig {
         if (!messagesConfigFile.exists()) {
             plugin.saveResource("messages.yml", false);
         }
-        EterniaServer.messages = new YamlConfiguration();
+        plugin.msgConfig = new YamlConfiguration();
         try {
-            EterniaServer.messages.load(messagesConfigFile);
+            plugin.msgConfig.load(messagesConfigFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package br.com.eterniaserver.events;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Vars;
 
+import br.com.eterniaserver.configs.methods.Checks;
 import br.com.eterniaserver.modules.chatmanager.act.filter.ChatFormatter;
 import br.com.eterniaserver.modules.chatmanager.act.filter.Colors;
 import br.com.eterniaserver.modules.chatmanager.act.filter.CustomPlaceholdersFilter;
@@ -19,10 +20,23 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class OnPlayerChat implements Listener {
 
-    final ChatFormatter cf = new ChatFormatter();
-    final JsonSender js = new JsonSender();
-    final CustomPlaceholdersFilter cp = new CustomPlaceholdersFilter();
-    final Colors c = new Colors();
+    private final EterniaServer plugin;
+    private final ChatEvent chatEvent;
+    private final ChatFormatter cf;
+    private final JsonSender js;
+    private final Vars vars;
+    private final CustomPlaceholdersFilter cp;
+    private final Colors c = new Colors();
+
+    public OnPlayerChat(EterniaServer plugin, ChatEvent chatEvent, Checks checks, Vars vars) {
+        this.plugin = plugin;
+        this.chatEvent = chatEvent;
+        this.vars = vars;
+        this.cp = new CustomPlaceholdersFilter(vars);
+        this.js = new JsonSender(plugin, vars);
+        this.cf = new ChatFormatter(plugin, checks, vars);
+    }
+
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
@@ -38,16 +52,19 @@ public class OnPlayerChat implements Listener {
         if (e.getMessage().contains("Mates_CZ")) {
             Bukkit.getOnlinePlayers().forEach(player -> player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G)));
         }
-        if (EterniaServer.configs.getBoolean("modules.playerchecks")) {
-            Vars.afktime.put(e.getPlayer().getName(), System.currentTimeMillis());
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
+            vars.afktime.put(e.getPlayer().getName(), System.currentTimeMillis());
         }
-        if (EterniaServer.configs.getBoolean("modules.chat")) {
+        if (plugin.serverConfig.getBoolean("modules.chat")) {
+            chatEvent.onPlayerChat(e);
+            if (e.isCancelled()) {
+                return;
+            }
             ChatMessage message = new ChatMessage(e.getMessage());
             cf.filter(e, message);
             c.filter(e, message);
             cp.filter(e, message);
             js.filter(e, message);
-            ChatEvent.onPlayerChat(e);
         }
     }
 

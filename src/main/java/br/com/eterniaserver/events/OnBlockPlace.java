@@ -15,24 +15,33 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class OnBlockPlace implements Listener {
 
+    private final EterniaServer plugin;
+    private final Messages messages;
+
+    public OnBlockPlace(EterniaServer plugin, Messages messages) {
+        this.plugin = plugin;
+        this.messages = messages;
+    }
+
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled()) {
             return;
         }
         if (event.getBlock().getType() == Material.SPAWNER) {
-            if (EterniaServer.configs.getBoolean("modules.spawners")) {
+            if (plugin.serverConfig.getBoolean("modules.spawners")) {
                 ItemStack placed = event.getItemInHand();
                 ItemMeta meta = placed.getItemMeta();
                 EntityType entity;
                 try {
-                    assert meta != null;
-                    String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
-                    entity = EntityType.valueOf(entityName);
-                    CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
-                    spawner.setSpawnedType(entity);
-                    spawner.update();
-                    Messages.ConsoleMessage("spawners.log", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
+                    if (meta != null) {
+                        String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
+                        entity = EntityType.valueOf(entityName);
+                        CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
+                        spawner.setSpawnedType(entity);
+                        spawner.update();
+                        messages.ConsoleMessage("spawners.log", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
+                    }
                 } catch (NullPointerException|IllegalArgumentException e) {
                     e.printStackTrace();
                 }

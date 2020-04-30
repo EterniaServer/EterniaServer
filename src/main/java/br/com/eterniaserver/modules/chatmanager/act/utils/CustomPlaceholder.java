@@ -14,14 +14,14 @@ public class CustomPlaceholder {
 	final boolean independentTextComponent;
 	final List<SubPlaceholder> placeholders = new ArrayList<>();
 
-	public CustomPlaceholder(String id) {
+	public CustomPlaceholder(String id, EterniaServer plugin) {
 		this.id = id;
-		if(EterniaServer.cph.contains(id + ".independentTextComponent")) {
-			independentTextComponent = EterniaServer.cph.getBoolean(id + ".independentTextComponent");
+		if(plugin.placeholderConfig.contains(id + ".independentTextComponent")) {
+			independentTextComponent = plugin.placeholderConfig.getBoolean(id + ".independentTextComponent");
 		} else {
 			independentTextComponent = true;
 		}
-		ConfigurationSection cpSection = EterniaServer.cph.getConfigurationSection(id);
+		ConfigurationSection cpSection = plugin.placeholderConfig.getConfigurationSection(id);
 		for(String placeholder: Objects.requireNonNull(cpSection).getKeys(false)) {
 			if(placeholder.equals("independentTextComponent")) continue;
 			if(placeholder.equals("list")) continue;

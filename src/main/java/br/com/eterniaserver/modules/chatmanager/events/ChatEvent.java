@@ -9,14 +9,28 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatEvent {
 
-    public static void onPlayerChat(AsyncPlayerChatEvent event) {
-        switch (Vars.global.getOrDefault(event.getPlayer().getName(), 0)) {
+    private final EterniaServer plugin;
+    private final Local local;
+    private final Staff staff;
+    private final Vars vars;
+
+    public ChatEvent(EterniaServer plugin, Local local, Staff staff, Vars vars) {
+        this.plugin = plugin;
+        this.local = local;
+        this.staff = staff;
+        this.vars = vars;
+    }
+
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        switch (vars.global.getOrDefault(event.getPlayer().getName(), 0)) {
             case 0:
-                Local.SendMessage(event.getMessage(), event.getPlayer(), EterniaServer.chat.getInt("local.range"));
+                local.SendMessage(event.getMessage(), event.getPlayer(), plugin.chatConfig.getInt("local.range"));
                 event.setCancelled(true);
                 break;
+            case 1:
+                break;
             case 2:
-                Staff.SendMessage(event.getMessage(), event.getPlayer());
+                staff.SendMessage(event.getMessage(), event.getPlayer());
                 event.setCancelled(true);
                 break;
         }

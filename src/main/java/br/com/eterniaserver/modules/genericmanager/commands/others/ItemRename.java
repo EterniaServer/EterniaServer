@@ -14,6 +14,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemRename implements CommandExecutor {
 
+    private final Messages messages;
+    private final Strings strings;
+
+    public ItemRename(Messages messages, Strings strings) {
+        this.messages = messages;
+        this.strings = strings;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, java.lang.String label, java.lang.String[] args) {
         if (sender instanceof Player) {
@@ -26,36 +34,36 @@ public class ItemRename implements CommandExecutor {
                             ItemStack item = player.getInventory().getItemInMainHand();
                             ItemMeta meta = item.getItemMeta();
                             if (meta != null) {
-                                meta.setDisplayName(Strings.getColor(args[1]));
+                                meta.setDisplayName(strings.getColor(args[1]));
                                 item.setItemMeta(meta);
                                 player.getInventory().setItemInMainHand(item);
                             } else {
-                                Messages.PlayerMessage("other.noitem", player);
+                                messages.PlayerMessage("other.noitem", player);
                             }
                         } else if (args[0].equals("lore")) {
                             ItemStack item = player.getInventory().getItemInMainHand();
                             ItemMeta meta = item.getItemMeta();
                             if (meta != null) {
-                                meta.setLore(Collections.singletonList(Strings.getColor(args[1])));
+                                meta.setLore(Collections.singletonList(strings.getColor(args[1])));
                                 item.setItemMeta(meta);
                                 player.getInventory().setItemInMainHand(item);
                             } else {
-                                Messages.PlayerMessage("other.noitem", player);
+                                messages.PlayerMessage("other.noitem", player);
                             }
                         } else {
-                            Messages.PlayerMessage("other.rename", player);
+                            messages.PlayerMessage("other.rename", player);
                         }
                     } else {
-                        Messages.PlayerMessage("other.noitem", player);
+                        messages.PlayerMessage("other.noitem", player);
                     }
                 } else {
-                    Messages.PlayerMessage("other.rename", player);
+                    messages.PlayerMessage("other.rename", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

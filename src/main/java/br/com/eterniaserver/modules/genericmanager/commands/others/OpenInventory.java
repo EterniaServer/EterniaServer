@@ -9,6 +9,12 @@ import org.bukkit.entity.Player;
 
 public class OpenInventory implements CommandExecutor {
 
+    private final Messages messages;
+
+    public OpenInventory(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -18,15 +24,15 @@ public class OpenInventory implements CommandExecutor {
                 if (target != null && target.isOnline()) {
                     player.openInventory(target.getInventory());
                 } else {
-                    Messages.PlayerMessage("server.player-offline", player);
+                    messages.PlayerMessage("server.player-offline", player);
                 }
             } else if (args.length == 0 && player.hasPermission("eternia.openinv")) {
-                Messages.PlayerMessage("simp.inv", player);
+                messages.PlayerMessage("simp.inv", player);
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

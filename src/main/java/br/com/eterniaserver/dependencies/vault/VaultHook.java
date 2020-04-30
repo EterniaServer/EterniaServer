@@ -1,21 +1,23 @@
 package br.com.eterniaserver.dependencies.vault;
 
+import br.com.eterniaserver.API.Money;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
+import br.com.eterniaserver.configs.Vars;
+import br.com.eterniaserver.player.PlayerManager;
 import net.milkbowl.vault.economy.Economy;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
 
 public class VaultHook {
 
-    public VaultHook(EterniaServer plugin) {
-        if (Bukkit.getPluginManager().isPluginEnabled("Vault") && EterniaServer.configs.getBoolean("modules.economy")) {
+    public VaultHook(EterniaServer plugin, Messages messages, PlayerManager playerManager, Money moneyx, Vars vars) {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && plugin.serverConfig.getBoolean("modules.economy")) {
             ServicesManager servicesManager = plugin.getServer().getServicesManager();
-            servicesManager.register(Economy.class, new VaultMethods(), plugin, ServicePriority.High);
+            servicesManager.register(Economy.class, new VaultMethods(plugin, playerManager, moneyx, vars), plugin, ServicePriority.High);
         } else {
-            Messages.ConsoleMessage("server.no-vault");
+            messages.ConsoleMessage("server.no-vault");
         }
     }
 

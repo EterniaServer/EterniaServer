@@ -9,21 +9,21 @@ import java.io.File;
 import java.io.IOException;
 
 public class CommandsManager {
-    public CommandsManager(EterniaServer plugin) {
-        if (EterniaServer.configs.getBoolean("modules.commands")) {
+    public CommandsManager(EterniaServer plugin, Messages messages) {
+        if (plugin.serverConfig.getBoolean("modules.commands")) {
             File commandsConfigFile = new File(plugin.getDataFolder(), "commands.yml");
             if (!commandsConfigFile.exists()) {
                 plugin.saveResource("commands.yml", false);
             }
-            EterniaServer.commands = new YamlConfiguration();
+            plugin.cmdConfig = new YamlConfiguration();
             try {
-                EterniaServer.commands.load(commandsConfigFile);
+                plugin.cmdConfig.load(commandsConfigFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            Messages.ConsoleMessage("modules.enable", "%module%", "Custom-Commands");
+            messages.ConsoleMessage("modules.enable", "%module%", "Custom-Commands");
         } else {
-            Messages.ConsoleMessage("modules.disable", "%module%", "Custom-Commands");
+            messages.ConsoleMessage("modules.disable", "%module%", "Custom-Commands");
         }
     }
 

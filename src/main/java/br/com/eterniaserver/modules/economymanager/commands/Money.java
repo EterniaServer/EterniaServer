@@ -9,6 +9,15 @@ import org.bukkit.command.CommandExecutor;
 import java.text.DecimalFormat;
 
 public class Money implements CommandExecutor {
+
+    private final Messages messages;
+    private final br.com.eterniaserver.API.Money moneyx;
+
+    public Money(Messages messages, br.com.eterniaserver.API.Money moneyx) {
+        this.messages = messages;
+        this.moneyx = moneyx;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -16,22 +25,22 @@ public class Money implements CommandExecutor {
             DecimalFormat df2 = new DecimalFormat(".##");
             if (args.length == 0) {
                 if (player.hasPermission("eternia.money")) {
-                    double money = br.com.eterniaserver.API.Money.getMoney(player.getName());
-                    Messages.PlayerMessage("eco.money", "%money%", df2.format(money), player);
+                    double money = moneyx.getMoney(player.getName());
+                    messages.PlayerMessage("eco.money", "%money%", df2.format(money), player);
                 }
             } else if (args.length == 1) {
                 if (player.hasPermission("eternia.money.other")) {
-                    double money = br.com.eterniaserver.API.Money.getMoney(args[0]);
-                    Messages.PlayerMessage("eco.money-other", "%money%", df2.format(money), player);
+                    double money = moneyx.getMoney(args[0]);
+                    messages.PlayerMessage("eco.money-other", "%money%", df2.format(money), player);
                 } else {
-                    Messages.PlayerMessage("server.no-perm", player);
+                    messages.PlayerMessage("server.no-perm", player);
                 }
             }
         } else {
             DecimalFormat df2 = new DecimalFormat(".##");
             if (args.length == 1) {
-                double money = br.com.eterniaserver.API.Money.getMoney(args[0]);
-                Messages.ConsoleMessage("eco.money-other", "%money%", df2.format(money));
+                double money = moneyx.getMoney(args[0]);
+                messages.ConsoleMessage("eco.money-other", "%money%", df2.format(money));
             }
         }
         return true;

@@ -15,9 +15,15 @@ import org.bukkit.entity.Player;
 public class Warp implements CommandExecutor {
 
     private final EterniaServer plugin;
+    private final TeleportsManager teleportsManager;
+    private final Messages messages;
+    private final Vars vars;
 
-    public Warp(EterniaServer plugin) {
+    public Warp(EterniaServer plugin, TeleportsManager teleportsManager, Messages messages, Vars vars) {
         this.plugin = plugin;
+        this.teleportsManager = teleportsManager;
+        this.messages = messages;
+        this.vars = vars;
     }
 
     @Override
@@ -27,25 +33,25 @@ public class Warp implements CommandExecutor {
             if (args.length == 1) {
                 if (player.hasPermission("eternia.warp." + args[0].toLowerCase())) {
                     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                        final Location location = TeleportsManager.getWarp(args[0].toLowerCase());
-                        if (location != Vars.error) {
-                            if (Vars.teleports.containsKey(player)) {
-                                Messages.PlayerMessage("server.telep", player);
+                        final Location location = teleportsManager.getWarp(args[0].toLowerCase());
+                        if (location != vars.error) {
+                            if (vars.teleports.containsKey(player)) {
+                                messages.PlayerMessage("server.telep", player);
                             } else {
-                                Vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp"));
+                                vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
                             }
                         } else {
-                            Messages.PlayerMessage("warps.noexist", "%warp_name%", args[0], player);
+                            messages.PlayerMessage("warps.noexist", "%warp_name%", args[0], player);
                         }
                     });
                 } else {
-                    Messages.PlayerMessage("server.no-perm", player);
+                    messages.PlayerMessage("server.no-perm", player);
                 }
             } else {
-                Messages.PlayerMessage("warps.use", player);
+                messages.PlayerMessage("warps.use", player);
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

@@ -8,21 +8,30 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class God implements CommandExecutor {
+
+    private final Messages messages;
+    private final Vars vars;
+
+    public God(Messages messages, Vars vars) {
+        this.messages = messages;
+        this.vars = vars;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.god")) {
-                if (Vars.god.contains(player.getName())) {
-                    Messages.PlayerMessage("simp.godd", player);
-                    Vars.god.remove(player.getName());
+                if (vars.god.contains(player.getName())) {
+                    messages.PlayerMessage("simp.godd", player);
+                    vars.god.remove(player.getName());
                 } else {
-                    Messages.PlayerMessage("simp.gode", player);
-                    Vars.god.add(player.getName());
+                    messages.PlayerMessage("simp.gode", player);
+                    vars.god.add(player.getName());
                 }
             }
         } else {
-            Messages.ConsoleMessage("server.only-player");
+            messages.ConsoleMessage("server.only-player");
         }
         return true;
     }

@@ -9,6 +9,12 @@ import java.lang.management.ManagementFactory;
 
 public class MemAll implements CommandExecutor {
 
+    private final Messages messages;
+
+    public MemAll(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender.hasPermission("eternia.mem.all")) {
@@ -19,8 +25,8 @@ public class MemAll implements CommandExecutor {
             int seconds = (int) (milliseconds / 1000) % 60;
             int minutes = (int) ((milliseconds / (1000*60)) % 60);
             int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
-            Messages.BroadcastMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
-            Messages.BroadcastMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
+            messages.BroadcastMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
+            messages.BroadcastMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
         }
         return true;
     }

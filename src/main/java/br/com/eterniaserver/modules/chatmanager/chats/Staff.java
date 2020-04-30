@@ -10,13 +10,21 @@ import org.bukkit.entity.Player;
 
 public class Staff {
 
-    public static void SendMessage(String message, Player player) {
+    private final EterniaServer plugin;
+    private final Strings strings;
+
+    public Staff(EterniaServer plugin,Strings strings) {
+        this.plugin = plugin;
+        this.strings = strings;
+    }
+
+    public void SendMessage(String message, Player player) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission("eternia.chat.staff")) {
-                String format = EterniaServer.chat.getString("staff.format");
+                String format = plugin.chatConfig.getString("staff.format");
                 format = PlaceholderAPI.setPlaceholders(player, format);
                 if (format != null) {
-                    format = Strings.getColor(format.replace("%message%", message));
+                    format = strings.getColor(format.replace("%message%", message));
                     p.sendMessage(format);
                 }
             }

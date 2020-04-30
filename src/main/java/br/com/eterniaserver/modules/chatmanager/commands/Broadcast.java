@@ -8,6 +8,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Broadcast implements CommandExecutor {
+
+    private final Messages messages;
+    private final Strings strings;
+
+    public Broadcast(Messages messages, Strings strings) {
+        this.messages = messages;
+        this.strings = strings;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, java.lang.String label, java.lang.String[] args) {
         if (sender instanceof Player) {
@@ -19,12 +28,12 @@ public class Broadcast implements CommandExecutor {
                         sb.append(arg).append(" ");
                     }
                     sb.substring(0, sb.length() - 1);
-                    Messages.BroadcastMessage("chat.global-advice", "%advice%", Strings.getColor(sb.toString()));
+                    messages.BroadcastMessage("chat.global-advice", "%advice%", strings.getColor(sb.toString()));
                 } else {
-                    Messages.PlayerMessage("chat.use", player);
+                    messages.PlayerMessage("chat.use", player);
                 }
             } else {
-                Messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
             if (args.length >= 1) {
@@ -33,9 +42,9 @@ public class Broadcast implements CommandExecutor {
                     sb.append(arg).append(" ");
                 }
                 sb.substring(0, sb.length() - 1);
-                Messages.BroadcastMessage("chat.global-advice", "%advice%", Strings.getColor(sb.toString()));
+                messages.BroadcastMessage("chat.global-advice", "%advice%", strings.getColor(sb.toString()));
             } else {
-                Messages.ConsoleMessage("chat.use");
+                messages.ConsoleMessage("chat.use");
             }
         }
         return true;
