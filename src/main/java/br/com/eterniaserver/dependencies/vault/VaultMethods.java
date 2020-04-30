@@ -2,7 +2,6 @@ package br.com.eterniaserver.dependencies.vault;
 
 import br.com.eterniaserver.API.Money;
 import br.com.eterniaserver.EterniaServer;
-import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.player.PlayerManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -18,13 +17,11 @@ public class VaultMethods implements Economy {
     private final EterniaServer plugin;
     private final PlayerManager playerManager;
     private final Money moneyx;
-    private final Vars vars;
 
-    public VaultMethods(EterniaServer plugin, PlayerManager playerManager, Money moneyx, Vars vars) {
+    public VaultMethods(EterniaServer plugin, PlayerManager playerManager, Money moneyx) {
         this.plugin = plugin;
         this.playerManager = playerManager;
         this.moneyx = moneyx;
-        this.vars = vars;
     }
 
     @Override

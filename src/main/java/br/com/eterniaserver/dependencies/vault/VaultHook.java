@@ -12,10 +12,10 @@ import org.bukkit.plugin.ServicesManager;
 
 public class VaultHook {
 
-    public VaultHook(EterniaServer plugin, Messages messages, PlayerManager playerManager, Money moneyx, Vars vars) {
+    public VaultHook(EterniaServer plugin, Messages messages, PlayerManager playerManager, Money moneyx) {
         if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && plugin.serverConfig.getBoolean("modules.economy")) {
             ServicesManager servicesManager = plugin.getServer().getServicesManager();
-            servicesManager.register(Economy.class, new VaultMethods(plugin, playerManager, moneyx, vars), plugin, ServicePriority.High);
+            servicesManager.register(Economy.class, new VaultMethods(plugin, playerManager, moneyx), plugin, ServicePriority.High);
         } else {
             messages.ConsoleMessage("server.no-vault");
         }

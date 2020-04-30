@@ -39,10 +39,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
-    private final Vars vars = new Vars();
-
     public boolean hasPlaceholderAPI = true;
-    private TeleportsManager teleportsManager;
+
+    private final Vars vars = new Vars();
 
     private final Strings strings = new Strings(this);
     private final Messages messages = new Messages(strings);
@@ -55,6 +54,8 @@ public class EterniaServer extends JavaPlugin {
     private final PlayerFlyState playerFlyState = new PlayerFlyState(messages);
     private final Exp exp = new Exp(this, vars);
     private final Money money = new Money(this, playerManager, vars);
+
+    private TeleportsManager teleportsManager;
 
     public Connections connections;
 
@@ -122,7 +123,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void vaultHook() {
-        new VaultHook(this, messages, playerManager, money, vars);
+        new VaultHook(this, messages, playerManager, money);
     }
 
     private void placeholderAPIHook() {
