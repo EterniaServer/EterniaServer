@@ -47,11 +47,15 @@ public class OnPlayerJoin implements Listener {
             }
         }
         if (plugin.serverConfig.getBoolean("modules.chat")) {
-            checks.addUUIF(event.getPlayer());
+            checks.addUUIF(player);
             vars.global.put(player.getName(), 0);
             if (player.hasPermission("eternia.spy")) {
                 vars.spy.put(player, true);
             }
+            if (!vars.player_muted.containsKey(player.getName())) {
+                playerManager.checkMuted(player.getName());
+            }
+
         }
         event.setJoinMessage(null);
         messages.BroadcastMessage("server.join", "%player_name%", player.getName());

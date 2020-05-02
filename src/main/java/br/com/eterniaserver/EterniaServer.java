@@ -37,9 +37,13 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.text.SimpleDateFormat;
+
 public class EterniaServer extends JavaPlugin {
 
     public boolean hasPlaceholderAPI = true;
+
+    public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
     private final Vars vars = new Vars();
 
@@ -99,13 +103,14 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnBlockPlace(this, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnDamage(this, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnInventoryClick(this, messages, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this, chatEvent, checks, vars), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this, chatEvent, checks, vars, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this, messages, strings), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this, messages, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(this, messages, checks, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(this, playerManager, messages, checks, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(this, messages, vars), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerSignChange(strings), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(this, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneakEvent(this), this);
 
@@ -171,7 +176,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void chatManager() {
-        new ChatManager(this, messages, strings, vars);
+        new ChatManager(this, messages, strings, vars, playerManager);
     }
 
     private void blockRewardManager(){

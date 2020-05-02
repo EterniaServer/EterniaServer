@@ -5,9 +5,11 @@ import br.com.eterniaserver.configs.Vars;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PlayerManager {
 
@@ -167,7 +169,45 @@ public class PlayerManager {
         });
 
         return exist.get();
+    }
+
+    public boolean registerMuted(String playerName) {
+        AtomicBoolean exist = new AtomicBoolean(false);
+        final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-muted")+ " WHERE player_name='" + playerName + "';";
+        plugin.connections.executeSQLQuery(connection -> {
+            PreparedStatement getMuted = connection.prepareStatement(querie);
+            ResultSet resultSet = getMuted.executeQuery();
+            if (resultSet.next() && resultSet.getString("player_name") != null) {
+                exist.set(true);
+            }
+            resultSet.close();
+            getMuted.close();
+        });
+
+        return exist.get();
+    }
+
+    public void checkMuted(String playerName) {
+
+        AtomicReference<Boolean> exist = new AtomicReference<>(false);
+        final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-muted") + " WHERE player_name='" + playerName + "';";
+        plugin.connections.executeSQLQuery(connection -> {
+            PreparedStatement getMuted = connection.prepareStatement(querie);
+            ResultSet resultSet = getMuted.executeQuery();
+            if (resultSet.next() && resultSet.getString("time") != null) {
+                try {
+                    vars.player_muted.put(playerName, plugin.sdf.parse(resultSet.getString("time")).getTime());
+                    exist.set(true);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        if (!exist.get()) {
+            vars.player_muted.put(playerName, System.currentTimeMillis());
+        }
 
     }
+
 
 }

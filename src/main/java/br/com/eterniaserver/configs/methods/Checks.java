@@ -5,7 +5,13 @@ import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 import org.bukkit.entity.Player;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Checks {
 

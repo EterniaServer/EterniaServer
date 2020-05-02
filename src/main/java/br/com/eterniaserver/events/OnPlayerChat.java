@@ -1,6 +1,7 @@
 package br.com.eterniaserver.events;
 
 import br.com.eterniaserver.EterniaServer;
+import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
 
 import br.com.eterniaserver.configs.methods.Checks;
@@ -18,6 +19,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.concurrent.TimeUnit;
+
 public class OnPlayerChat implements Listener {
 
     private final EterniaServer plugin;
@@ -26,15 +29,17 @@ public class OnPlayerChat implements Listener {
     private final JsonSender js;
     private final Vars vars;
     private final CustomPlaceholdersFilter cp;
+    private final Messages messages;
     private final Colors c = new Colors();
 
-    public OnPlayerChat(EterniaServer plugin, ChatEvent chatEvent, Checks checks, Vars vars) {
+    public OnPlayerChat(EterniaServer plugin, ChatEvent chatEvent, Checks checks, Vars vars, Messages messages) {
         this.plugin = plugin;
         this.chatEvent = chatEvent;
         this.vars = vars;
         this.cp = new CustomPlaceholdersFilter(vars);
         this.js = new JsonSender(plugin, vars);
         this.cf = new ChatFormatter(plugin, checks, vars);
+        this.messages = messages;
     }
 
 
@@ -56,6 +61,11 @@ public class OnPlayerChat implements Listener {
             vars.afktime.put(e.getPlayer().getName(), System.currentTimeMillis());
         }
         if (plugin.serverConfig.getBoolean("modules.chat")) {
+            if (vars.player_muted.get(e.getPlayer().getName()) - System.currentTimeMillis() > 0) {
+                messages.PlayerMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(vars.player_muted.get(e.getPlayer().getName()) - System.currentTimeMillis()), e.getPlayer());
+                e.setCancelled(true);
+                return;
+            }
             chatEvent.onPlayerChat(e);
             if (e.isCancelled()) {
                 return;

@@ -47,7 +47,7 @@ public class Tell implements CommandExecutor {
                             messages.PlayerMessage("chat.fromplayer", "%player_name%", target.getName(), "%target_name%", player.getName(), "%message%", s, target, false);
                             for (Player p : vars.spy.keySet()) {
                                 if (vars.spy.get(p) && p != player && p != target) {
-                                    p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &7" + player.getName() + "->" + target.getName() + ": " + s));
+                                    p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &8" + player.getName() + "->" + target.getName() + ": " + s));
                                 }
                             }
                         });

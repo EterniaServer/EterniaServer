@@ -25,6 +25,7 @@ public class Vars {
     public final List<String> player_homes = new ArrayList<>();
     public final List<String> player_cooldown = new ArrayList<>();
 
+    public final HashMap<String, Long> player_muted = new HashMap<>();
     public final HashMap<String, Long> bed_cooldown = new HashMap<>();
     public final HashMap<String, Long> afktime = new HashMap<>();
     public final HashMap<String, Double> balances = new HashMap<>();

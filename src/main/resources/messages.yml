@@ -39,6 +39,13 @@ chat:
   noone: '&7Não há ninguém para ti ouvir&8.'
   spye: '&7Spy ativado&8.'
   spyd: '&7Spy desativado&8.'
+  muted: '&7Você está mutado até&8: &3%time% segundos&8.'
+  muteuse: '&7Use &6/mute &3<jogador> <mensagem>&8.'
+  mutetuse: '&7Use &6/tempmute &3<jogador> <minutos> <mensagem>&8.'
+  mutebroad: '&3%player_name% &7foi mutado por &3%message%&8.'
+  mutetbroad: '&3%player_name% &7foi mutado em &3%time% minutos &7por &3%message%&8.'
+  unmutebroad: '&3%player_name% &7foi desmutado&8.'
+  useunm: '&7Utilize &6/unmute &3<jogador>&8.'
 profile:
   data: '&7Data de registro&8: &3%player_register_data%&8.'
   hours: '&7Horas de conta&8: &3%hours%&8.'

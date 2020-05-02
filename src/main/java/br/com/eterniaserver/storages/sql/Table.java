@@ -73,6 +73,13 @@ public class Table {
             playersql.close();
         });
 
+        final String muted = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-muted") + " (player_name varchar(16), time varchar(16));";
+        plugin.connections.executeSQLQuery(connection -> {
+            PreparedStatement mutedsql = connection.prepareStatement(muted);
+            mutedsql.execute();
+            mutedsql.close();
+        });
+
     }
 
 }

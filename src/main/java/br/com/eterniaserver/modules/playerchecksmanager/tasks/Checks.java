@@ -6,7 +6,9 @@ import br.com.eterniaserver.configs.Strings;
 import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.player.PlayerTeleport;
+
 import io.papermc.lib.PaperLib;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,36 +32,33 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
         this.teleportsManager = teleportsManager;
     }
 
-    @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            synchronized (player) {
-                if (player.getLocation().getBlock().getType() == Material.NETHER_PORTAL) {
-                    if (!vars.playersInPortal.containsKey(player.getName())) {
-                        vars.playersInPortal.put(player.getName(), 7);
-                    } else if (vars.playersInPortal.get(player.getName()) <= 1) {
-                        Location player_location = player.getLocation();
-                        if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
-                            PaperLib.teleportAsync(player, teleportsManager.getWarp("spawn"));
-                            messages.PlayerMessage("warps.warp", player);
-                        }
-                    } else {
-                        vars.playersInPortal.put(player.getName(), vars.playersInPortal.get(player.getName()) - 1);
-                        if (vars.playersInPortal.get(player.getName()) < 5) {
-                            messages.PlayerMessage("server.nether-trap", "%cooldown%", vars.playersInPortal.get(player.getName()), player);
-                        }
+            if (player.getLocation().getBlock().getType() == Material.NETHER_PORTAL) {
+                if (!vars.playersInPortal.containsKey(player.getName())) {
+                    vars.playersInPortal.put(player.getName(), 7);
+                } else if (vars.playersInPortal.get(player.getName()) <= 1) {
+                    Location player_location = player.getLocation();
+                    if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
+                        PaperLib.teleportAsync(player, teleportsManager.getWarp("spawn"));
+                        messages.PlayerMessage("warps.warp", player);
                     }
-                } else vars.playersInPortal.remove(player.getName());
-                if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - vars.afktime.get(player.getName())) >= plugin.serverConfig.getInt("server.afk-timer")) {
-                    if (plugin.serverConfig.getBoolean("server.afk-kick")) {
-                        if (!vars.afk.contains(player.getName()) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                            messages.BroadcastMessage("text.afkkick", "%player_name%", player.getName());
-                            player.kickPlayer(strings.getMessage("server.afk-kick"));
-                        }
-                    } else {
-                        messages.BroadcastMessage("text.afke", "%player_name%", player.getName());
-                        vars.afk.add(player.getName());
+                } else {
+                    vars.playersInPortal.put(player.getName(), vars.playersInPortal.get(player.getName()) - 1);
+                    if (vars.playersInPortal.get(player.getName()) < 5) {
+                        messages.PlayerMessage("server.nether-trap", "%cooldown%", vars.playersInPortal.get(player.getName()), player);
                     }
+                }
+            } else vars.playersInPortal.remove(player.getName());
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - vars.afktime.get(player.getName())) >= plugin.serverConfig.getInt("server.afk-timer")) {
+                if (plugin.serverConfig.getBoolean("server.afk-kick")) {
+                    if (!vars.afk.contains(player.getName()) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
+                        messages.BroadcastMessage("text.afkkick", "%player_name%", player.getName());
+                        player.kickPlayer(strings.getMessage("server.afk-kick"));
+                    }
+                } else {
+                    messages.BroadcastMessage("text.afke", "%player_name%", player.getName());
+                    vars.afk.add(player.getName());
                 }
             }
             if (vars.teleports.containsKey(player)) {

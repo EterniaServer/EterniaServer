@@ -35,13 +35,19 @@ public class Local {
                     pes += 1;
                     p.sendMessage(format);
                 } else {
-                    double distance = p.getLocation().distanceSquared(player.getLocation());
-                    if (p.hasPermission("eternia.spy") && p != player && !(distance <= Math.pow(radius, 2) && vars.spy.getOrDefault(p, false)) ) {
-                        p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &7" + player.getName() + ": " + message));
-                    }
-                    if (distance <= Math.pow(radius, 2)) {
-                        pes += 1;
-                        p.sendMessage(format);
+                    if (player.getWorld() == p.getWorld()) {
+                        double distance = p.getLocation().distanceSquared(player.getLocation());
+                        if (p.hasPermission("eternia.spy") && p != player && !(distance <= Math.pow(radius, 2) && vars.spy.getOrDefault(p, false))) {
+                            p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getName() + ": " + message));
+                        }
+                        if (distance <= Math.pow(radius, 2)) {
+                            pes += 1;
+                            p.sendMessage(format);
+                        }
+                    } else {
+                        if (p.hasPermission("eternia.spy") && p != player  && vars.spy.getOrDefault(p, false)) {
+                            p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getName() + ": " + message));
+                        }
                     }
                 }
             }

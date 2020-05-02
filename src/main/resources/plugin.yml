@@ -172,3 +172,11 @@ commands:
   spy:
     description: Ativa ou desativa o spy.
     aliases: [chatspy]
+  mute:
+    description: Muta o jogador.
+  tempmute:
+    description: Muta o jogador temporariamente.
+    aliases: [mutetemporario]
+  unmute:
+    description: Desmuta o jogador.
+    aliases: [desmutar]
