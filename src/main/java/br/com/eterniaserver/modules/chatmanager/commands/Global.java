@@ -24,6 +24,7 @@ public class Global implements CommandExecutor {
             if (player.hasPermission("eternia.chat.global")) {
                 if (args.length == 0) {
                     vars.global.put(player.getName(), 1);
+                    messages.PlayerMessage("chat.channelc", "%channel_name%", "Global", player);
                 } else {
                     int o = vars.global.get(player.getName());
                     vars.global.put(player.getName(), 1);
@@ -35,6 +36,8 @@ public class Global implements CommandExecutor {
                     player.chat(sb.toString());
                     vars.global.put(player.getName(), o);
                 }
+            } else {
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
             messages.ConsoleMessage("server.only-player");

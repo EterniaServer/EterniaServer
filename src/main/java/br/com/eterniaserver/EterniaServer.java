@@ -41,6 +41,7 @@ import java.text.SimpleDateFormat;
 
 public class EterniaServer extends JavaPlugin {
 
+    public boolean chatMuted = false;
     public boolean hasPlaceholderAPI = true;
 
     public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");

@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerKickEvent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +55,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
                     if (!vars.afk.contains(player.getName()) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                         messages.BroadcastMessage("text.afkkick", "%player_name%", player.getName());
-                        player.kickPlayer(strings.getMessage("server.afk-kick"));
+                        Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer(strings.getMessage("server.afk-kick")));
                     }
                 } else {
                     messages.BroadcastMessage("text.afke", "%player_name%", player.getName());

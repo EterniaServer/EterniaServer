@@ -180,3 +180,9 @@ commands:
   unmute:
     description: Desmuta o jogador.
     aliases: [desmutar]
+  nickname:
+    description: Altera o apelido.
+    aliases: [apelido, chagenick]
+  mutechannels:
+    description: Muta todos canais.
+    aliases: [muteall]

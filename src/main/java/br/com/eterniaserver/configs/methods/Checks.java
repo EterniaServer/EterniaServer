@@ -5,13 +5,7 @@ import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Checks {
 
@@ -44,7 +38,9 @@ public class Checks {
 
     public void addUUIF(Player p) {
         for (String s : plugin.groupConfig.getKeys(false)) {
-            if(s.equals("groups")) continue;
+            if(s.equals("groups")) {
+                continue;
+            }
             int priority = plugin.groupConfig.getInt(s + ".priority");
             if(Objects.requireNonNull(plugin.groupConfig.getString(s + ".perm")).equals("") || p.hasPermission(Objects.requireNonNull(plugin.groupConfig.getString(s + ".perm")))) {
                 if(vars.uufi.containsKey(p.getName())) {

@@ -25,6 +25,7 @@ public class Local implements CommandExecutor {
             if (player.hasPermission("eternia.chat.local")) {
                 if (args.length == 0) {
                     vars.global.put(player.getName(), 0);
+                    messages.PlayerMessage("chat.channelc", "%channel_name%", "Local", player);
                 } else {
                     int o = vars.global.get(player.getName());
                     vars.global.put(player.getName(), 0);
@@ -36,6 +37,8 @@ public class Local implements CommandExecutor {
                     player.chat(sb.toString());
                     vars.global.put(player.getName(), o);
                 }
+            } else {
+                messages.PlayerMessage("server.no-perm", player);
             }
         } else {
             messages.ConsoleMessage("server.only-player");

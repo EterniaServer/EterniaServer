@@ -24,10 +24,10 @@ public class Spy implements CommandExecutor {
             if (player.hasPermission("eternia.spy")) {
                 if (vars.spy.getOrDefault(player, false)) {
                     vars.spy.put(player, false);
-                    messages.PlayerMessage("chat.spye", player);
+                    messages.PlayerMessage("chat.spyd", player);
                 } else {
                     vars.spy.put(player, true);
-                    messages.PlayerMessage("chat.spyd", player);
+                    messages.PlayerMessage("chat.spye", player);
                 }
             } else {
                 messages.PlayerMessage("server.no-perm", player);

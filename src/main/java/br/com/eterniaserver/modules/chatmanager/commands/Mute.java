@@ -3,8 +3,8 @@ package br.com.eterniaserver.modules.chatmanager.commands;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
 import br.com.eterniaserver.configs.Vars;
-
 import br.com.eterniaserver.player.PlayerManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,7 +34,7 @@ public class Mute implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.mute")) {
-                if (args.length == 2) {
+                if (args.length >= 2) {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null && target.isOnline()) {
                         Calendar cal = Calendar.getInstance();
@@ -42,7 +42,11 @@ public class Mute implements CommandExecutor {
                         cal.add(Calendar.YEAR, 20);
                         Date dataa = cal.getTime();
                         final String date = plugin.sdf.format(dataa);
-                        messages.BroadcastMessage("chat.mutebroad", "%player_name%", target.getName(), "%message%", args[1]);
+                        StringBuilder sb = new StringBuilder();
+                        for (String arg : args) {
+                            sb.append(arg).append(" ");
+                        }
+                        messages.BroadcastMessage("chat.mutebroad", "%player_name%", target.getName(), "%message%", sb.substring(2, sb.length() - 1));
                         if (playerManager.registerMuted(target.getName())) {
                             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getName() + "';";
                             plugin.connections.executeSQLQuery(connection -> {
@@ -69,7 +73,7 @@ public class Mute implements CommandExecutor {
                 messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            if (args.length == 2) {
+            if (args.length >= 2) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null && target.isOnline()) {
                     Calendar cal = Calendar.getInstance();
@@ -78,7 +82,11 @@ public class Mute implements CommandExecutor {
                     Date dataa = cal.getTime();
                     final String date = plugin.sdf.format(dataa);
                     vars.player_muted.put(target.getName(), cal.getTimeInMillis());
-                    messages.BroadcastMessage("chat.mutebroad", "%player_name%", target.getName(), "%message%", args[2]);
+                    StringBuilder sb = new StringBuilder();
+                    for (String arg : args) {
+                        sb.append(arg).append(" ");
+                    }
+                    messages.BroadcastMessage("chat.mutebroad", "%player_name%", target.getName(), "%message%", sb.substring(2, sb.length() - 1));
                     if (playerManager.registerMuted(target.getName())) {
                         final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getName() + "';";
                         plugin.connections.executeSQLQuery(connection -> {

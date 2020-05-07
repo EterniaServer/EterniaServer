@@ -3,7 +3,6 @@ package br.com.eterniaserver.dependencies.vault;
 import br.com.eterniaserver.API.Money;
 import br.com.eterniaserver.EterniaServer;
 import br.com.eterniaserver.configs.Messages;
-import br.com.eterniaserver.configs.Vars;
 import br.com.eterniaserver.player.PlayerManager;
 import net.milkbowl.vault.economy.Economy;
 

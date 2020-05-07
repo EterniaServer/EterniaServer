@@ -46,6 +46,13 @@ chat:
   mutetbroad: '&3%player_name% &7foi mutado em &3%time% minutos &7por &3%message%&8.'
   unmutebroad: '&3%player_name% &7foi desmutado&8.'
   useunm: '&7Utilize &6/unmute &3<jogador>&8.'
+  remove-nick: '&7Apelido removido&8.'
+  usenick: '&7Use &6/nickname &3<apelido&8|&3clear> &8 | &6/nickname &3<jogador> <apelido&8|&3clear>&8.'
+  newnick: '&7Novo apelido definido como &3%player_display_name%&8.'
+  channelc: '&7Você entrou no canal &3%channel_name%&8.'
+  chatmuted: '&7O chat está mutado&8!'
+  cm-e: '&7Todos os canais foram mutados por &3%player_name%&8!'
+  cm-d: '&7Todos os canais foram desmutados por &3%player_name%&8!'
 profile:
   data: '&7Data de registro&8: &3%player_register_data%&8.'
   hours: '&7Horas de conta&8: &3%hours%&8.'

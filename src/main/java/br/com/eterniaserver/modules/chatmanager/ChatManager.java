@@ -59,6 +59,8 @@ public class ChatManager {
             Objects.requireNonNull(plugin.getCommand("mute")).setExecutor(new Mute(plugin, messages, vars, playerManager));
             Objects.requireNonNull(plugin.getCommand("tempmute")).setExecutor(new TempMute(plugin, messages, vars, playerManager));
             Objects.requireNonNull(plugin.getCommand("unmute")).setExecutor(new UnMute(plugin, messages, vars, playerManager));
+            Objects.requireNonNull(plugin.getCommand("nickname")).setExecutor(new Nickname(messages, strings));
+            Objects.requireNonNull(plugin.getCommand("mutechannels")).setExecutor(new MuteChannels(plugin, messages));
             new AdvancedChatTorch(plugin, messages, vars);
             messages.ConsoleMessage("modules.enable", "%module%", "Chat");
         } else {
