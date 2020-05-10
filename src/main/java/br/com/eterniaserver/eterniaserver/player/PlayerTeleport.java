@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 public class PlayerTeleport {
 
     private final Player player;
-    private final Location first_location;
-    private final Location wantLocation;
+    private final Location first_location, wantLocation;
     private final String message;
     private int cooldown;
 
