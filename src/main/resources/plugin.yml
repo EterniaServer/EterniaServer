@@ -1,4 +1,4 @@
-main: br.com.eterniaserver.EterniaServer
+main: br.com.eterniaserver.eterniaserver.EterniaServer
 
 name: EterniaServer
 version: '${project.version}'
@@ -186,3 +186,6 @@ commands:
   mutechannels:
     description: Muta todos canais.
     aliases: [muteall]
+  clearchat:
+    description: Limpa o chat.
+    aliases: [limparchat]

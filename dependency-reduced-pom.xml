@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>br.com.eterniaserver</groupId>
   <artifactId>EterniaServer</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.2</version>
   <build>
     <resources>
       <resource>
@@ -34,6 +34,16 @@
         </executions>
         <configuration>
           <minimizeJar>true</minimizeJar>
+          <relocations>
+            <relocation>
+              <pattern>io.papermc.lib</pattern>
+              <shadedPattern>br.com.eterniaserver.eterniaserver.paperlib</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>com.zaxxer.hikari</pattern>
+              <shadedPattern>br.com.eterniaserver.eterniaserver.hikaricp</shadedPattern>
+            </relocation>
+          </relocations>
         </configuration>
       </plugin>
     </plugins>
