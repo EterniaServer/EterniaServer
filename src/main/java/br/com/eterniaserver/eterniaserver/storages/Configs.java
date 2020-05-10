@@ -12,9 +12,8 @@ public class Configs {
 
     public Configs(EterniaServer plugin) {
         File messagesConfigFile = new File(plugin.getDataFolder(), "config.yml");
-        if (!messagesConfigFile.exists()) {
-            plugin.saveResource("config.yml", false);
-        }
+        if (!messagesConfigFile.exists()) plugin.saveResource("config.yml", false);
+        
         plugin.serverConfig = new YamlConfiguration();
         try {
             plugin.serverConfig.load(messagesConfigFile);
