@@ -14,9 +14,8 @@ public class BlockRewardManager {
     public BlockRewardManager(EterniaServer plugin, Messages messages) {
         if (plugin.serverConfig.getBoolean("modules.block-reward")) {
             File blocksFile = new File(plugin.getDataFolder(), "blocks.yml");
-            if (!blocksFile.exists()) {
-                plugin.saveResource("blocks.yml", false);
-            }
+            if (!blocksFile.exists()) plugin.saveResource("blocks.yml", false);
+            
             plugin.blockConfig = new YamlConfiguration();
             try {
                 plugin.blockConfig.load(blocksFile);
