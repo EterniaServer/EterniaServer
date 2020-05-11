@@ -203,11 +203,6 @@ public class PlayerManager {
                 }
             }
         });
-        if (!exist.get()) {
-            vars.player_muted.put(playerName, System.currentTimeMillis());
-        }
-
+        if (!exist.get()) vars.player_muted.put(playerName, System.currentTimeMillis());
     }
-
-
 }
