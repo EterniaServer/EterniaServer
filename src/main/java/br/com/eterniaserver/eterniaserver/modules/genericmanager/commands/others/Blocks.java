@@ -13,6 +13,14 @@ public class Blocks implements CommandExecutor {
 
     private final Messages messages;
 
+    private final ItemStack coali = new ItemStack(Material.COAL);
+    private final ItemStack lapizi = new ItemStack(Material.LAPIS_LAZULI);
+    private final ItemStack redstonei = new ItemStack(Material.REDSTONE);
+    private final ItemStack ironi = new ItemStack(Material.IRON_INGOT);
+    private final ItemStack goldi = new ItemStack(Material.GOLD_INGOT);
+    private final ItemStack diamondi = new ItemStack(Material.DIAMOND);
+    private final ItemStack esmeraldai = new ItemStack(Material.EMERALD);
+
     public Blocks(Messages messages) {
         this.messages = messages;
     }
@@ -25,19 +33,19 @@ public class Blocks implements CommandExecutor {
                 int coal = 0, lapiz = 0, redstone = 0, iron = 0, gold = 0, diamond = 0, esmeralda = 0;
                 for (ItemStack i : player.getInventory().getContents()) {
                     if (i != null) {
-                        if (i.getType() == Material.COAL) {
+                        if (i.isSimilar(coali) && i.getItemMeta().getDisplayName().equals(coali.getItemMeta().getDisplayName())) {
                             coal += i.getAmount();
-                        } else if (i.getType() == Material.LAPIS_LAZULI) {
+                        } else if (i.isSimilar(lapizi) && i.getItemMeta().getDisplayName().equals(lapizi.getItemMeta().getDisplayName())) {
                             lapiz += i.getAmount();
-                        } else if (i.getType() == Material.REDSTONE) {
+                        } else if (i.isSimilar(redstonei) && i.getItemMeta().getDisplayName().equals(redstonei.getItemMeta().getDisplayName())) {
                             redstone += i.getAmount();
-                        } else if (i.getType() == Material.IRON_INGOT) {
+                        } else if (i.isSimilar(ironi) && i.getItemMeta().getDisplayName().equals(ironi.getItemMeta().getDisplayName())) {
                             iron += i.getAmount();
-                        } else if (i.getType() == Material.GOLD_INGOT) {
+                        } else if (i.isSimilar(goldi) && i.getItemMeta().getDisplayName().equals(goldi.getItemMeta().getDisplayName())) {
                             gold += i.getAmount();
-                        } else if (i.getType() == Material.DIAMOND) {
+                        } else if (i.isSimilar(diamondi) && i.getItemMeta().getDisplayName().equals(diamondi.getItemMeta().getDisplayName())) {
                             diamond += i.getAmount();
-                        } else if (i.getType() == Material.EMERALD) {
+                        } else if (i.isSimilar(esmeraldai) && i.getItemMeta().getDisplayName().equals(esmeraldai.getItemMeta().getDisplayName())) {
                             esmeralda += i.getAmount();
                         }
                     }
@@ -86,4 +94,5 @@ public class Blocks implements CommandExecutor {
         }
         return true;
     }
+
 }
