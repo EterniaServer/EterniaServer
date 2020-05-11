@@ -66,7 +66,8 @@ public class EterniaServer extends JavaPlugin {
 
     public Connections connections;
 
-    public FileConfiguration blockConfig, serverConfig, cmdConfig, kitConfig, chatConfig, msgConfig, placeholderConfig, groupConfig;
+    public FileConfiguration serverConfig, msgConfig, cmdConfig;
+    public FileConfiguration blockConfig, kitConfig, chatConfig, placeholderConfig, groupConfig;
 
     @Override
     public void onEnable() {
