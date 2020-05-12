@@ -40,9 +40,7 @@ public class Colors {
 			perms.add("&k");
 		}
 
-		if(perms.isEmpty()) {
-			return;
-		}
+		if(perms.isEmpty()) return;
 		
 		String m = message.messageSent;
 		for(String s: perms) {

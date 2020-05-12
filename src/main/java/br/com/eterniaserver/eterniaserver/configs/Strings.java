@@ -15,7 +15,7 @@ public class Strings {
     }
 
     public String getString(String valor) {
-        return plugin.msgConfig.getString(valor);
+        return plugin.msgConfig.getString(valor, "&7Erro&8: &7String &3" + valor + " &7não encontrada&8.");
     }
 
     public String getColor(String valor) {

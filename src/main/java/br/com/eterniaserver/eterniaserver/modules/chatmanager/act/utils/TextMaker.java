@@ -76,9 +76,7 @@ public class TextMaker {
 	}
 
 	public void addHover(TextComponent text, String s) {
-		if(s == null) {
-			return;
-		}
+		if(s == null) return;
 		ArrayList<TextComponent> tcs = new ArrayList<>();
 		tcs.add(new TextComponent(StringHelper.cc(s)));
 		TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
@@ -86,16 +84,12 @@ public class TextMaker {
 	}
 
 	public void addClickSuggest(TextComponent text, String s) {
-		if(s == null) {
-			return;
-		}
+		if(s == null) return;
 		text.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, s));
 	}
 
 	public void addClickRun(TextComponent text, String s) {
-		if(s == null) {
-			return;
-		}
+		if(s == null) return;
 		text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, s));
 	}
 
@@ -148,9 +142,7 @@ public class TextMaker {
 		String message = s2;
 		for(CustomPlaceholder cp: vars.customPlaceholders) {
 			String id = cp.getId();
-			if(!message.contains("{" + id + "}")) {
-				continue;
-			}
+			if(!message.contains("{" + id + "}")) continue;
 			try {
 				SubPlaceholder bestPlaceholder = null;
 				for(SubPlaceholder subPlaceholder: cp.getPlaceholders()) {

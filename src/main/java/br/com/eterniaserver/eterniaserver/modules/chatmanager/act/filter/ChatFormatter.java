@@ -27,12 +27,8 @@ public class ChatFormatter {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		if (!vars.uufi.containsKey(p.getName())) {
-			return;
-		}
-		if(plugin.chatConfig.getBoolean("chat.autoUpdateGroups", false)) {
-			checks.addUUIF(p);
-		}
+		if (!vars.uufi.containsKey(p.getName())) return;
+		if(plugin.chatConfig.getBoolean("chat.autoUpdateGroups", false)) checks.addUUIF(p);
 		FormatInfo fi = vars.uufi.get(p.getName());
 		if(plugin.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
 			ChatObject msg = new ChatObject("%message%");

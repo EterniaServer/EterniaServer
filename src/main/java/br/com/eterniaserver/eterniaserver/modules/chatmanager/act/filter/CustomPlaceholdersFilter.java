@@ -21,9 +21,7 @@ public class CustomPlaceholdersFilter {
 			for(int i = 0; i < message.size(); i++) {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();
-				if(!objMsg.contains("{" + cp.getId() + "}")) {
-					continue;
-				}
+				if(!objMsg.contains("{" + cp.getId() + "}")) continue;
 				SubPlaceholder bestPlaceholder = null;
 				try {
 					for(SubPlaceholder subPlaceholder: cp.getPlaceholders()) {
