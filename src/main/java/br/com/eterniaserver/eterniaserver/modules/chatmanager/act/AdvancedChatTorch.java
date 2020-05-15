@@ -32,10 +32,10 @@ public class AdvancedChatTorch {
 		for(Object s: plugin.groupConfig.getKeys(false)) {
 			if(s.equals("groups")) continue;
 			if(!plugin.groupConfig.contains(s.toString())) {
-				messages.ConsoleMessage("server.chat-error", "%error%", "nenhum grupo encontrado");
+				messages.sendConsole("server.chat-error", "%error%", "nenhum grupo encontrado");
 			}
 			if(!plugin.groupConfig.contains(s.toString() + ".perm")) {
-				messages.ConsoleMessage("server.chat-error", "%error%", "permissão para o grupo não encontrada");
+				messages.sendConsole("server.chat-error", "%error%", "permissão para o grupo não encontrada");
 			}
 
 		}

@@ -27,6 +27,7 @@ public class Back implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.back")) {
@@ -57,7 +58,7 @@ public class Back implements CommandExecutor {
                 messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            messages.ConsoleMessage("server.only-player");
+            messages.sendConsole("server.only-player");
         }
         return true;
     }

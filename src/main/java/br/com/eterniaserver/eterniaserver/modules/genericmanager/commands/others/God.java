@@ -32,7 +32,7 @@ public class God implements CommandExecutor {
                 }
             }
         } else {
-            messages.ConsoleMessage("server.only-player");
+            messages.sendConsole("server.only-player");
         }
         return true;
     }

@@ -97,14 +97,14 @@ public class SpawnerGive implements CommandExecutor {
             if (args.length == 3) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target == null) {
-                    messages.ConsoleMessage("server.player-offline");
+                    messages.sendConsole("server.player-offline");
                     return true;
                 }
                 int amount;
                 try {
                     amount = Integer.parseInt(args[2]);
                 } catch (NumberFormatException e) {
-                    messages.ConsoleMessage("server.no-number");
+                    messages.sendConsole("server.no-number");
                     return true;
                 }
                 try {
@@ -112,7 +112,7 @@ public class SpawnerGive implements CommandExecutor {
                     EntityType.valueOf(type.toUpperCase());
                     if (amount > 0) {
                         if (target.getInventory().firstEmpty() == -1) {
-                            messages.ConsoleMessage("spawners.invfull");
+                            messages.sendConsole("spawners.invfull");
                         } else {
                             ItemStack item = new ItemStack(Material.SPAWNER);
                             ItemMeta meta = item.getItemMeta();
@@ -130,11 +130,11 @@ public class SpawnerGive implements CommandExecutor {
                             }
                             item.setItemMeta(meta);
                             target.getInventory().addItem(item);
-                            messages.ConsoleMessage("spawners.send", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%",target.getName());
+                            messages.sendConsole("spawners.send", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%",target.getName());
                             messages.PlayerMessage("spawners.receive", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%", "console", target);
                         }
                     } else {
-                        messages.ConsoleMessage("server.no-negative");
+                        messages.sendConsole("server.no-negative");
                     }
                 } catch (IllegalArgumentException e) {
                     StringBuilder str = new StringBuilder();
@@ -143,10 +143,10 @@ public class SpawnerGive implements CommandExecutor {
                         str.append("&8, &3");
                     }
                     str.append("&7algumas entidades não funcionam");
-                    messages.ConsoleMessage("spawners.types", "%types%", strings.getColor(str.toString()));
+                    messages.sendConsole("spawners.types", "%types%", strings.getColor(str.toString()));
                 }
             } else {
-                messages.ConsoleMessage("spawners.use");
+                messages.sendConsole("spawners.use");
             }
         }
         return true;

@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.genericmanager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
-import br.com.eterniaserver.eterniaserver.storages.sql.Connections;
+import br.com.eterniaserver.eterniaserver.storages.database.Connections;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.InvalidConfigurationException;

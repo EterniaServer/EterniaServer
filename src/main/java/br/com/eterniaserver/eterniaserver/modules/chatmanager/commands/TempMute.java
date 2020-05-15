@@ -109,13 +109,13 @@ public class TempMute implements CommandExecutor {
                         }
                         vars.player_muted.put(target.getName(), cal.getTimeInMillis());
                     } catch (NumberFormatException e) {
-                        messages.ConsoleMessage("no-number");
+                        messages.sendConsole("no-number");
                     }
                 } else {
-                    messages.ConsoleMessage("server.player-offline");
+                    messages.sendConsole("server.player-offline");
                 }
             } else {
-                messages.ConsoleMessage("chat.mutetuse");
+                messages.sendConsole("chat.mutetuse");
             }
         }
         return true;

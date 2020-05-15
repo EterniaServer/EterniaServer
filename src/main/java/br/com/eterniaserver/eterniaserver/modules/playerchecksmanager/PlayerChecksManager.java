@@ -22,9 +22,9 @@ public class PlayerChecksManager {
             } else {
                 new Checks(plugin, messages, strings, vars, teleportsManager).runTaskTimer(plugin, 20L, plugin.serverConfig.getInt("server.checks") * 20);
             }
-            messages.ConsoleMessage("modules.enable", "%module%", "Player-Checks");
+            messages.sendConsole("modules.enable", "%module%", "Player-Checks");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Player-Checks");
+            messages.sendConsole("modules.disable", "%module%", "Player-Checks");
         }
     }
 

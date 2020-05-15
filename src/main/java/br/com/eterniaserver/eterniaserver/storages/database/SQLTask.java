@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.storages.sql;
+package br.com.eterniaserver.eterniaserver.storages.database;
 
 import org.bukkit.scheduler.BukkitRunnable;
 

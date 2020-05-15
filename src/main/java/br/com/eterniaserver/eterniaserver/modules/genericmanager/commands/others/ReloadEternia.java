@@ -28,7 +28,7 @@ public class ReloadEternia implements CommandExecutor {
             }
         } else {
             reload.reload();
-            messages.ConsoleMessage("server.reload");
+            messages.sendConsole("server.reload");
         }
         return true;
     }

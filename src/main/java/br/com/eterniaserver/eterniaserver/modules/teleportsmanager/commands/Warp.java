@@ -52,7 +52,7 @@ public class Warp implements CommandExecutor {
                 messages.PlayerMessage("warps.use", player);
             }
         } else {
-            messages.ConsoleMessage("server.only-player");
+            messages.sendConsole("server.only-player");
         }
         return true;
     }

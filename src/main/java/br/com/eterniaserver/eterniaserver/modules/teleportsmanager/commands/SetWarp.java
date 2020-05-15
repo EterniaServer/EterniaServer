@@ -33,7 +33,7 @@ public class SetWarp implements CommandExecutor {
                 messages.PlayerMessage("warps.use2", player);
             }
         } else {
-            messages.ConsoleMessage("server.only-player");
+            messages.sendConsole("server.only-player");
         }
         return true;
     }

@@ -14,18 +14,17 @@ public class CommandsManager {
     public CommandsManager(EterniaServer plugin, Messages messages) {
         if (plugin.serverConfig.getBoolean("modules.commands")) {
             File commandsConfigFile = new File(plugin.getDataFolder(), "commands.yml");
-            if (!commandsConfigFile.exists()) {
-                plugin.saveResource("commands.yml", false);
-            }
+            if (!commandsConfigFile.exists()) plugin.saveResource("commands.yml", false);
+
             plugin.cmdConfig = new YamlConfiguration();
             try {
                 plugin.cmdConfig.load(commandsConfigFile);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            messages.ConsoleMessage("modules.enable", "%module%", "Custom-Commands");
+            messages.sendConsole("modules.enable", "%module%", "Custom-Commands");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Custom-Commands");
+            messages.sendConsole("modules.disable", "%module%", "Custom-Commands");
         }
     }
 

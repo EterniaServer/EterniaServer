@@ -63,17 +63,17 @@ public class Nickname implements CommandExecutor {
                     if (args[1].equals("clear")) {
                         target.setDisplayName(target.getName());
                         messages.PlayerMessage("chat.remove-nick", target);
-                        messages.ConsoleMessage("chat.remove-nick");
+                        messages.sendConsole("chat.remove-nick");
                     } else {
                         target.setDisplayName(strings.getColor(args[1]));
-                        messages.ConsoleMessage("chat.newnick", "%player_display_name%", strings.getColor(args[1]));
+                        messages.sendConsole("chat.newnick", "%player_display_name%", strings.getColor(args[1]));
                         messages.PlayerMessage("chat.newnick", "%player_display_name%", strings.getColor(args[1]), target);
                     }
                 } else {
-                    messages.ConsoleMessage("server.player-offline");
+                    messages.sendConsole("server.player-offline");
                 }
             } else {
-                messages.ConsoleMessage("chat.usenick");
+                messages.sendConsole("chat.usenick");
             }
         }
         return true;

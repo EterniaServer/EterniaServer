@@ -151,7 +151,7 @@ public class Gamemode implements CommandExecutor {
                         case "sobrevivencia":
                             target.setGameMode(GameMode.SURVIVAL);
                             messages.PlayerMessage("simp.gm-other", "%gamemode%", "Sobrevivência", "%target_name%", "Console", target);
-                            messages.ConsoleMessage("simp.other-gm", "%target_name%", target.getName(), "%gamemode%", "Sobrevivência");
+                            messages.sendConsole("simp.other-gm", "%target_name%", target.getName(), "%gamemode%", "Sobrevivência");
                             break;
                         case "1":
                         case "c":
@@ -159,7 +159,7 @@ public class Gamemode implements CommandExecutor {
                         case "criativo":
                             target.setGameMode(GameMode.CREATIVE);
                             messages.PlayerMessage("simp.gm-other", "%gamemode%", "Criativo", "%target_name%", "Console", target);
-                            messages.ConsoleMessage("simp.other-gm", "%target_name%", target.getName(), "%gamemode%", "Criativo");
+                            messages.sendConsole("simp.other-gm", "%target_name%", target.getName(), "%gamemode%", "Criativo");
                             break;
                         case "2":
                         case "a":
@@ -167,7 +167,7 @@ public class Gamemode implements CommandExecutor {
                         case "aventura":
                             target.setGameMode(GameMode.ADVENTURE);
                             messages.PlayerMessage("simp.gm-other", "%gamemode%", "Aventura", "%target_name%", "Console", target);
-                            messages.ConsoleMessage("simp.other-gm", "%target_name%", target.getName(), "%gamemode%", "Aventura");
+                            messages.sendConsole("simp.other-gm", "%target_name%", target.getName(), "%gamemode%", "Aventura");
                             break;
                         case "3":
                         case "sp":
@@ -175,17 +175,17 @@ public class Gamemode implements CommandExecutor {
                         case "spect":
                             target.setGameMode(GameMode.SPECTATOR);
                             messages.PlayerMessage("simp.gm-other", "%gamemode%", "Espectador", "%target_name%", "Console", target);
-                            messages.ConsoleMessage("simp.other-gm", "%target_name%", target.getName(), "%gamemode%", "Espectador");
+                            messages.sendConsole("simp.other-gm", "%target_name%", target.getName(), "%gamemode%", "Espectador");
                             break;
                         default:
-                            messages.ConsoleMessage("simp.gmuse");
+                            messages.sendConsole("simp.gmuse");
                             break;
                     }
                 } else {
-                    messages.ConsoleMessage("server.player-offline");
+                    messages.sendConsole("server.player-offline");
                 }
             } else {
-                messages.ConsoleMessage("simp.gmuse");
+                messages.sendConsole("simp.gmuse");
             }
         }
         return true;

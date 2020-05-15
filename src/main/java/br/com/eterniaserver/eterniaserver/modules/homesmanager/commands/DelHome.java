@@ -37,7 +37,7 @@ public class DelHome implements CommandExecutor {
                 messages.PlayerMessage("home.use3", player);
             }
         } else {
-            messages.ConsoleMessage("server.only-player");
+            messages.sendConsole("server.only-player");
         }
         return true;
     }

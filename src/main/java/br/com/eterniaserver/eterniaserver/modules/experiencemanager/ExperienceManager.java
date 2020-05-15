@@ -14,9 +14,9 @@ public class ExperienceManager {
             plugin.getCommand("withdrawlvl").setExecutor(new WithdrawLevel(checks, messages, exp));
             plugin.getCommand("bottlelvl").setExecutor(new BottleLevel(checks, messages));
             plugin.getCommand("checklvl").setExecutor(new CheckLevel(messages, exp));
-            messages.ConsoleMessage("modules.enable", "%module%", "Teleports");
+            messages.sendConsole("modules.enable", "%module%", "Teleports");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Teleports");
+            messages.sendConsole("modules.disable", "%module%", "Teleports");
         }
     }
 

@@ -21,6 +21,7 @@ public class PlayerTeleport {
     }
 
     public boolean hasMoved() {
+        if (first_location.getWorld() != player.getLocation().getWorld()) return true;
         return first_location.distanceSquared(player.getLocation()) != 0;
     }
 

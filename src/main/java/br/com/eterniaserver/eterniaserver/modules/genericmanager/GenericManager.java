@@ -34,9 +34,9 @@ public class GenericManager {
             plugin.getCommand("enderchest").setExecutor(new EnderChest(messages));
             plugin.getCommand("openinventory").setExecutor(new OpenInventory(messages));
             plugin.getCommand("workbench").setExecutor(new Workbench(messages));
-            messages.ConsoleMessage("modules.enable", "%module%", "Generic");
+            messages.sendConsole("modules.enable", "%module%", "Generic");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Generic");
+            messages.sendConsole("modules.disable", "%module%", "Generic");
         }
     }
 

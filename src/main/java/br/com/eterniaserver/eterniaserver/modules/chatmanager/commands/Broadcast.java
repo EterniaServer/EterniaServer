@@ -45,7 +45,7 @@ public class Broadcast implements CommandExecutor {
                 sb.substring(0, sb.length() - 1);
                 messages.BroadcastMessage("chat.global-advice", "%advice%", strings.getColor(sb.toString()));
             } else {
-                messages.ConsoleMessage("chat.use");
+                messages.sendConsole("chat.use");
             }
         }
         return true;

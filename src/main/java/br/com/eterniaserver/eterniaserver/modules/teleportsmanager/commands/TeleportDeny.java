@@ -38,7 +38,7 @@ public class TeleportDeny implements CommandExecutor {
                 messages.PlayerMessage("server.no-perm", player);
             }
         } else {
-            messages.ConsoleMessage("server.only-player");
+            messages.sendConsole("server.only-player");
         }
         return true;
     }

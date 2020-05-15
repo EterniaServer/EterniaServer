@@ -42,8 +42,8 @@ public class Mem implements CommandExecutor {
             int seconds = (int) (milliseconds / 1000) % 60 ;
             int minutes = (int) ((milliseconds / (1000*60)) % 60);
             int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
-            messages.ConsoleMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
-            messages.ConsoleMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
+            messages.sendConsole("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
+            messages.sendConsole("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
         }
         return true;
     }

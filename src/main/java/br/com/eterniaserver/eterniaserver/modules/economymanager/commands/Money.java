@@ -41,7 +41,7 @@ public class Money implements CommandExecutor {
             DecimalFormat df2 = new DecimalFormat(".##");
             if (args.length == 1) {
                 double money = moneyx.getMoney(args[0]);
-                messages.ConsoleMessage("eco.money-other", "%money%", df2.format(money));
+                messages.sendConsole("eco.money-other", "%money%", df2.format(money));
             }
         }
         return true;

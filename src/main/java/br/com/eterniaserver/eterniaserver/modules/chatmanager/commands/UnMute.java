@@ -83,10 +83,10 @@ public class UnMute implements CommandExecutor {
                         }, true);
                     }
                 } else {
-                    messages.ConsoleMessage("server.player-offline");
+                    messages.sendConsole("server.player-offline");
                 }
             } else {
-                messages.ConsoleMessage("chat.useunm");
+                messages.sendConsole("chat.useunm");
             }
         }
         return true;

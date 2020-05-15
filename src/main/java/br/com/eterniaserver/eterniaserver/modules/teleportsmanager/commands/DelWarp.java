@@ -37,7 +37,7 @@ public class DelWarp implements CommandExecutor {
                 messages.PlayerMessage("warps.deluse", player);
             }
         } else {
-            messages.ConsoleMessage("server.only-player");
+            messages.sendConsole("server.only-player");
         }
         return true;
     }

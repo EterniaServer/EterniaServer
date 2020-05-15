@@ -103,10 +103,10 @@ public class Mute implements CommandExecutor {
                         }, true);
                     }
                 } else {
-                    messages.ConsoleMessage("server.player-offline");
+                    messages.sendConsole("server.player-offline");
                 }
             } else {
-                messages.ConsoleMessage("chat.muteuse");
+                messages.sendConsole("chat.muteuse");
             }
         }
         return true;

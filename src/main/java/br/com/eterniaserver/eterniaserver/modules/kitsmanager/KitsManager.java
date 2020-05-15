@@ -42,9 +42,9 @@ public class KitsManager {
             }
             plugin.getCommand("kit").setExecutor(new Kit(plugin, this, messages, strings));
             plugin.getCommand("kits").setExecutor(new Kits(plugin, messages, strings));
-            messages.ConsoleMessage("modules.enable", "%module%", "Kits");
+            messages.sendConsole("modules.enable", "%module%", "Kits");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Kits");
+            messages.sendConsole("modules.disable", "%module%", "Kits");
         }
     }
 

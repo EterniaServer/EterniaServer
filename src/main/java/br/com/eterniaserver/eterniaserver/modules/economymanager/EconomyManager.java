@@ -12,9 +12,9 @@ public class EconomyManager {
             plugin.getCommand("money").setExecutor(new Money(messages, money));
             plugin.getCommand("baltop").setExecutor(new Baltop(plugin, messages, money));
             plugin.getCommand("eco").setExecutor(new Eco(messages, money));
-            messages.ConsoleMessage("modules.enable", "%module%", "Economy");
+            messages.sendConsole("modules.enable", "%module%", "Economy");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Economy");
+            messages.sendConsole("modules.disable", "%module%", "Economy");
         }
     }
 

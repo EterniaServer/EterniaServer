@@ -26,12 +26,10 @@ import br.com.eterniaserver.eterniaserver.modules.spawnermanager.SpawnersManager
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
-import br.com.eterniaserver.eterniaserver.storages.Configs;
-import br.com.eterniaserver.eterniaserver.storages.MessagesConfig;
-import br.com.eterniaserver.eterniaserver.storages.DatabaseType;
+import br.com.eterniaserver.eterniaserver.storages.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultUnHook;
-import br.com.eterniaserver.eterniaserver.storages.sql.Connections;
+import br.com.eterniaserver.eterniaserver.storages.database.Connections;
 
 import io.papermc.lib.PaperLib;
 
@@ -52,6 +50,8 @@ public class EterniaServer extends JavaPlugin {
 
     private final Strings strings = new Strings(this);
     private final Messages messages = new Messages(strings);
+    private final Files files = new Files(this, messages);
+
     private final Checks checks = new Checks(this, vars);
     private final PlayerManager playerManager = new PlayerManager(this, vars);
     private final Local local = new Local(this, messages, strings, vars);
@@ -74,10 +74,9 @@ public class EterniaServer extends JavaPlugin {
 
         PaperLib.suggestPaper(this);
 
-        saveDefaultConfigs();
-        saveDefaultMessages();
-
-        databaseType();
+        files.loadConfigs();
+        files.loadMessages();
+        files.loadDatabase();
 
         bedManager();
         blockRewardManager();
@@ -105,7 +104,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this, messages, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(this, messages, checks, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(this, playerManager, messages, checks, vars), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(this, playerManager, messages, checks,  vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(this, messages, vars), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerSignChange(strings), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(this, vars), this);
@@ -173,7 +172,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void chatManager() {
-        new ChatManager(this, messages, strings, vars, playerManager);
+        new ChatManager(this, messages, strings, vars, playerManager, files);
     }
 
     private void blockRewardManager(){
@@ -182,18 +181,6 @@ public class EterniaServer extends JavaPlugin {
 
     private void bedManager() {
         new BedManager(this, messages, checks, vars);
-    }
-
-    private void databaseType() {
-        new DatabaseType(this, messages);
-    }
-
-    private void saveDefaultMessages() {
-        new MessagesConfig(this);
-    }
-
-    private void saveDefaultConfigs() {
-        new Configs(this);
     }
 
 }

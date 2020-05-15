@@ -37,9 +37,9 @@ public class TeleportsManager {
             plugin.getCommand("teleportdeny").setExecutor(new TeleportDeny(messages, vars));
             plugin.getCommand("teleporttoplayer").setExecutor(new TeleportToPlayer(messages, vars));
             plugin.getCommand("teleportall").setExecutor(new TeleportAll(messages));
-            messages.ConsoleMessage("modules.enable", "%module%", "Teleports");
+            messages.sendConsole("modules.enable", "%module%", "Teleports");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Teleports");
+            messages.sendConsole("modules.disable", "%module%", "Teleports");
         }
     }
 
@@ -153,6 +153,7 @@ public class TeleportsManager {
                 vars.shops.put(shop, loc);
             }
         }
+
         return loc;
     }
 

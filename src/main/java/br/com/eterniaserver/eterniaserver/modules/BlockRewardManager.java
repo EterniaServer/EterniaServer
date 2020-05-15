@@ -22,9 +22,9 @@ public class BlockRewardManager {
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            messages.ConsoleMessage("modules.enable", "%module%", "Block-Reward");
+            messages.sendConsole("modules.enable", "%module%", "Block-Reward");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Block-Reward");
+            messages.sendConsole("modules.disable", "%module%", "Block-Reward");
         }
     }
 

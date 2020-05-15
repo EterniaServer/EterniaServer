@@ -26,9 +26,9 @@ public class HomesManager {
             plugin.getCommand("house").setExecutor(new Home(plugin, messages, this, vars));
             plugin.getCommand("houses").setExecutor(new Homes(plugin, messages, this, strings));
             plugin.getCommand("sethouse").setExecutor(new SetHome(messages, this));
-            messages.ConsoleMessage("modules.enable", "%module%", "Homes");
+            messages.sendConsole("modules.enable", "%module%", "Homes");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Homes");
+            messages.sendConsole("modules.disable", "%module%", "Homes");
         }
     }
 

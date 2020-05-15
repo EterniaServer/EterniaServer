@@ -37,7 +37,7 @@ public class Speed implements CommandExecutor {
                 }
             }
         } else {
-            messages.ConsoleMessage("server.only-player");
+            messages.sendConsole("server.only-player");
         }
         return true;
     }

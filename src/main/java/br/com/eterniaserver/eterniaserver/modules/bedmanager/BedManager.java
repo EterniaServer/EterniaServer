@@ -19,9 +19,9 @@ public class BedManager {
             }
             plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(messages, checks, vars), plugin);
             plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(messages, checks, vars), plugin);
-            messages.ConsoleMessage("modules.enable", "%module%", "Bed");
+            messages.sendConsole("modules.enable", "%module%", "Bed");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Bed");
+            messages.sendConsole("modules.disable", "%module%", "Bed");
         }
     }
 

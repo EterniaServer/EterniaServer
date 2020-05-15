@@ -16,7 +16,7 @@ public class VaultHook {
             ServicesManager servicesManager = plugin.getServer().getServicesManager();
             servicesManager.register(Economy.class, new VaultMethods(plugin, playerManager, moneyx), plugin, ServicePriority.High);
         } else {
-            messages.ConsoleMessage("server.no-vault");
+            messages.sendConsole("server.no-vault");
         }
     }
 

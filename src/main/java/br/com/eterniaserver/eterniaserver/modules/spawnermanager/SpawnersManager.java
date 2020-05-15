@@ -9,10 +9,10 @@ public class SpawnersManager {
 
     public SpawnersManager(EterniaServer plugin, Messages messages, Strings strings) {
         if (plugin.serverConfig.getBoolean("modules.spawners")) {
-           plugin.getCommand("spawnergive").setExecutor(new SpawnerGive(plugin, messages, strings));
-            messages.ConsoleMessage("modules.enable", "%module%", "Spawners");
+            plugin.getCommand("spawnergive").setExecutor(new SpawnerGive(plugin, messages, strings));
+            messages.sendConsole("modules.enable", "%module%", "Spawners");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Spawners");
+            messages.sendConsole("modules.disable", "%module%", "Spawners");
         }
     }
 

@@ -35,7 +35,7 @@ public class OnInventoryClick implements Listener {
                 Player player = (Player) e.getWhoClicked();
                 e.setCancelled(true);
                 messages.PlayerMessage("spawners.anvil", player);
-                messages.ConsoleMessage("spawners.anvil-try", "%player_name%", player.getName());
+                messages.sendConsole("spawners.anvil-try", "%player_name%", player.getName());
             }
         }
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {

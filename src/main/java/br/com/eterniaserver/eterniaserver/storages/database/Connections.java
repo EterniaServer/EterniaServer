@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.storages.sql;
+package br.com.eterniaserver.eterniaserver.storages.database;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
@@ -33,13 +33,13 @@ public class Connections {
             hikari.addDataSourceProperty("user", plugin.serverConfig.getString("sql.user"));
             hikari.addDataSourceProperty("password", plugin.serverConfig.getString("sql.password"));
             hikari.setMaximumPoolSize(50);
-            messages.ConsoleMessage("server.mysql-ok");
+            messages.sendConsole("server.mysql-ok");
         } else {
             hikari.setPoolName("EterniaServer SQLite Pool");
             hikari.setDriverClassName("org.sqlite.JDBC");
             hikari.setJdbcUrl("jdbc:sqlite:" + new File(plugin.getDataFolder(), "eternia.db"));
             hikari.setMaximumPoolSize(50);
-            messages.ConsoleMessage("server.sql-ok");
+            messages.sendConsole("server.sql-ok");
         }
     }
 
@@ -50,9 +50,9 @@ public class Connections {
     public void Close() {
         hikari.close();
         if (mysql) {
-            messages.ConsoleMessage("server.mysql-finish");
+            messages.sendConsole("server.mysql-finish");
         } else {
-            messages.ConsoleMessage("server.sql-finish");
+            messages.sendConsole("server.sql-finish");
         }
     }
 

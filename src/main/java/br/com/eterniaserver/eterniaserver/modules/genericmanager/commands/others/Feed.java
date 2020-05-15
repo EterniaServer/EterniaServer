@@ -45,10 +45,10 @@ public class Feed implements CommandExecutor {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && target.isOnline()) {
                 target.setFoodLevel(20);
-                messages.ConsoleMessage("other.feed-other", "%target_name%", target.getName());
+                messages.sendConsole("other.feed-other", "%target_name%", target.getName());
                 messages.PlayerMessage("other.other-feed", "%target_name%", "console", target);
             } else {
-                messages.ConsoleMessage("server.player-offline");
+                messages.sendConsole("server.player-offline");
             }
         }
         return true;

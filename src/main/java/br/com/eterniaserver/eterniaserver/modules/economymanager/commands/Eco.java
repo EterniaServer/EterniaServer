@@ -79,33 +79,33 @@ public class Eco implements CommandExecutor {
                                 switch (fun) {
                                     case "set":
                                         moneyx.setMoney(target.getName(), money);
-                                        messages.ConsoleMessage("eco.eco-set", "%money%", money, "%target_name%", target.getName());
+                                        messages.sendConsole("eco.eco-set", "%money%", money, "%target_name%", target.getName());
                                         messages.PlayerMessage("eco.eco-rset", "%money%", money, "%target_name%", "console", target);
                                     case "remove":
                                         moneyx.removeMoney(target.getName(), money);
-                                        messages.ConsoleMessage("eco.eco-remove", "%money%", money, "%target_name%", target.getName());
+                                        messages.sendConsole("eco.eco-remove", "%money%", money, "%target_name%", target.getName());
                                         messages.PlayerMessage("eco.eco-rremove", "%money%", money, "%target_name%", "console", target);
                                     case "give":
                                         moneyx.addMoney(target.getName(), money);
-                                        messages.ConsoleMessage("eco.eco-give", "%money%", money, "%target_name%", target.getName());
+                                        messages.sendConsole("eco.eco-give", "%money%", money, "%target_name%", target.getName());
                                         messages.PlayerMessage("eco.eco-receive", "%money%", money, "%target_name%", "console", target);
                                     default:
-                                        messages.ConsoleMessage("eco.eco");
+                                        messages.sendConsole("eco.eco");
                                 }
                             } else {
-                                messages.ConsoleMessage("server.no-negative");
+                                messages.sendConsole("server.no-negative");
                             }
                         } catch (NumberFormatException e) {
-                            messages.ConsoleMessage("server.no-number");
+                            messages.sendConsole("server.no-number");
                         }
                     } else {
-                        messages.ConsoleMessage("server.player-offline");
+                        messages.sendConsole("server.player-offline");
                     }
                 } catch (Exception e) {
-                    messages.ConsoleMessage("server.player-offline");
+                    messages.sendConsole("server.player-offline");
                 }
             } else {
-                messages.ConsoleMessage("eco.eco");
+                messages.sendConsole("eco.eco");
             }
         }
         return true;

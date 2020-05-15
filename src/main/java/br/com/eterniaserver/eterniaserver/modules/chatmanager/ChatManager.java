@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.AdvancedChatTorch;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.*;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
+import br.com.eterniaserver.eterniaserver.storages.Files;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -16,38 +17,9 @@ import java.io.IOException;
 
 public class ChatManager {
 
-    public ChatManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars, PlayerManager playerManager) {
+    public ChatManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars, PlayerManager playerManager, Files files) {
         if (plugin.serverConfig.getBoolean("modules.chat")) {
-            File chatFile = new File(plugin.getDataFolder(), "chat.yml");
-            if (!chatFile.exists()) {
-                plugin.saveResource("chat.yml", false);
-            }
-            plugin.chatConfig = new YamlConfiguration();
-            try {
-                plugin.chatConfig.load(chatFile);
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
-            File fileGroups = new File(plugin.getDataFolder(), "groups.yml");
-            if (!fileGroups.exists()) {
-                plugin.saveResource("groups.yml", false);
-            }
-            plugin.groupConfig = new YamlConfiguration();
-            try {
-                plugin.groupConfig.load(fileGroups);
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
-            File placeholdersFile = new File(plugin.getDataFolder(), "customplaceholders.yml");
-            if (!placeholdersFile.exists()) {
-                plugin.saveResource("customplaceholders.yml", false);
-            }
-            plugin.placeholderConfig = new YamlConfiguration();
-            try {
-                plugin.placeholderConfig.load(placeholdersFile);
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
+            files.loadChat();
             plugin.getCommand("global").setExecutor(new Global(messages, vars));
             plugin.getCommand("local").setExecutor(new Local(messages, vars));
             plugin.getCommand("staff").setExecutor(new Staff(messages, vars));
@@ -62,9 +34,9 @@ public class ChatManager {
             plugin.getCommand("mutechannels").setExecutor(new MuteChannels(plugin, messages));
             plugin.getCommand("clearchat").setExecutor(new ClearChat(messages));
             new AdvancedChatTorch(plugin, messages, vars);
-            messages.ConsoleMessage("modules.enable", "%module%", "Chat");
+            messages.sendConsole("modules.enable", "%module%", "Chat");
         } else {
-            messages.ConsoleMessage("modules.disable", "%module%", "Chat");
+            messages.sendConsole("modules.disable", "%module%", "Chat");
         }
     }
 

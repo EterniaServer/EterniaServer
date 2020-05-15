@@ -57,7 +57,7 @@ public class Fly implements CommandExecutor {
             if (target != null && target.isOnline()) {
                 playerFlyState.changeFlyState(target);
             } else {
-                messages.ConsoleMessage("server.player-offline");
+                messages.sendConsole("server.player-offline");
             }
         }
         return true;
