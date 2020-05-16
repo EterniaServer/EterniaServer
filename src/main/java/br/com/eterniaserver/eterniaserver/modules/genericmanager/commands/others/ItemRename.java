@@ -25,48 +25,50 @@ public class ItemRename implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, java.lang.String label, java.lang.String[] args) {
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.renameitem")) {
-                if (args.length == 2) {
-                    player.getInventory().getItemInMainHand();
-                    if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
-                        if (args[0].equals("name")) {
-                            ItemStack item = player.getInventory().getItemInMainHand();
-                            ItemMeta meta = item.getItemMeta();
-                            if (meta != null) {
-                                meta.setDisplayName(strings.getColor(args[1]));
-                                item.setItemMeta(meta);
-                                player.getInventory().setItemInMainHand(item);
-                            } else {
-                                messages.PlayerMessage("other.noitem", player);
-                            }
-                        } else if (args[0].equals("lore")) {
-                            ItemStack item = player.getInventory().getItemInMainHand();
-                            ItemMeta meta = item.getItemMeta();
-                            if (meta != null) {
-                                meta.setLore(Collections.singletonList(strings.getColor(args[1])));
-                                item.setItemMeta(meta);
-                                player.getInventory().setItemInMainHand(item);
-                            } else {
-                                messages.PlayerMessage("other.noitem", player);
-                            }
+            if (!player.hasPermission("eternia.renameitem")) {
+                messages.PlayerMessage("server.no-perm", player);
+                return false;
+            }
+            if (args.length == 2) {
+                player.getInventory().getItemInMainHand();
+                if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+                    if (args[0].equals("name")) {
+                        ItemStack item = player.getInventory().getItemInMainHand();
+                        ItemMeta meta = item.getItemMeta();
+                        if (meta != null) {
+                            meta.setDisplayName(strings.getColor(args[1]));
+                            item.setItemMeta(meta);
+                            player.getInventory().setItemInMainHand(item);
                         } else {
-                            messages.PlayerMessage("other.rename", player);
+                            messages.PlayerMessage("other.noitem", player);
+                        }
+                    } else if (args[0].equals("lore")) {
+                        ItemStack item = player.getInventory().getItemInMainHand();
+                        ItemMeta meta = item.getItemMeta();
+                        if (meta != null) {
+                            meta.setLore(Collections.singletonList(strings.getColor(args[1])));
+                            item.setItemMeta(meta);
+                            player.getInventory().setItemInMainHand(item);
+                        } else {
+                            messages.PlayerMessage("other.noitem", player);
                         }
                     } else {
-                        messages.PlayerMessage("other.noitem", player);
+                        messages.PlayerMessage("other.rename", player);
                     }
                 } else {
-                    messages.PlayerMessage("other.rename", player);
+                    messages.PlayerMessage("other.noitem", player);
                 }
             } else {
-                messages.PlayerMessage("server.no-perm", player);
+                messages.PlayerMessage("other.rename", player);
             }
         } else {
             messages.sendConsole("server.only-player");
         }
         return true;
+
     }
 
 }

@@ -20,20 +20,24 @@ public class AFK implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (player.hasPermission("eternia.afk")) {
-                if (vars.afk.contains(player.getName())) {
-                    messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
-                    vars.afk.remove(player.getName());
-                } else {
-                    vars.afk.add(player.getName());
-                    messages.BroadcastMessage("text.afke", "%player_name%", player.getName());
-                }
-            } else {
-                messages.PlayerMessage("server.no-perm", player);
+            if (!sender.hasPermission("eternia.afk")) {
+                messages.sendMessage("server.no-perm", sender);
+                return false;
             }
+
+            if (vars.afk.contains(sender.getName())) {
+                messages.BroadcastMessage("text.afkd", "%player_name%", sender.getName());
+                vars.afk.remove(sender.getName());
+            } else {
+                vars.afk.add(sender.getName());
+                messages.BroadcastMessage("text.afke", "%player_name%", sender.getName());
+            }
+        } else {
+            messages.sendMessage("server.only-player", sender);
         }
         return true;
+
     }
 }

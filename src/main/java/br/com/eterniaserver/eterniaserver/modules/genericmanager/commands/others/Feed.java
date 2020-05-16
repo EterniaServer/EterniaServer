@@ -18,39 +18,23 @@ public class Feed implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (player.hasPermission("eternia.feed")) {
-                if (args.length == 0) {
-                    player.setFoodLevel(20);
-                    messages.PlayerMessage("other.feed", player);
-                } else if (args.length == 1) {
-                    if (player.hasPermission("eternia.feed.other")) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        if (target != null && target.isOnline()) {
-                            target.setFoodLevel(20);
-                            messages.PlayerMessage("other.feed-other", "%target_name%", target.getName(), player);
-                            messages.PlayerMessage("other.other-feed", "%target_name%", player.getName(), target);
-                        } else {
-                            messages.PlayerMessage("server.player-offline", player);
-                        }
-                    } else {
-                        messages.PlayerMessage("server.no-perm", player);
-                    }
-                }
-            } else {
-                messages.PlayerMessage("server.no-perm", player);
-            }
-        } else if (args.length == 1) {
+
+        if (sender instanceof Player && args.length == 0 && sender.hasPermission("eternia.feed")) {
+            ((Player) sender).setFoodLevel(20);
+            messages.sendMessage("other.feed", sender);
+        } else if (args.length == 1 && sender.hasPermission("eternia.feed.other")) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null && target.isOnline()) {
                 target.setFoodLevel(20);
-                messages.sendConsole("other.feed-other", "%target_name%", target.getName());
-                messages.PlayerMessage("other.other-feed", "%target_name%", "console", target);
+                messages.sendMessage("other.feed-other", "%target_name%", target.getName(), sender);
+                messages.sendMessage("other.other-feed", "%target_name%", sender.getName(), target);
             } else {
-                messages.sendConsole("server.player-offline");
+                messages.sendMessage("server.player-offline", sender);
             }
+        } else {
+            messages.sendMessage("server.no-perm", sender);
         }
         return true;
+
     }
 }

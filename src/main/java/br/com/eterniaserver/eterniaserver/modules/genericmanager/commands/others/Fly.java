@@ -21,45 +21,24 @@ public class Fly implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
+
+        if (sender instanceof Player && args.length == 0 && sender.hasPermission("eternia.fly")) {
             Player player = (Player) sender;
-            if (player.hasPermission("eternia.fly")) {
-                if (args.length == 0) {
-                    if (player.getWorld() == Bukkit.getWorld("evento")) {
-                        if (player.hasPermission("eternia.fly.evento")) {
-                            playerFlyState.changeFlyState(player);
-                        } else {
-                            messages.PlayerMessage("server.no-perm", player);
-                        }
-                    } else {
-                        playerFlyState.changeFlyState(player);
-                    }
-                    return true;
-                } else if (args.length == 1) {
-                    if (player.hasPermission("eternia.fly.other")) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        if (target != null && target.isOnline()) {
-                            playerFlyState.changeFlyState(target);
-                        } else {
-                            messages.PlayerMessage("server.player-offline", player);
-                        }
-                    } else {
-                        messages.PlayerMessage("server.no-perm", player);
-                    }
-                } else {
-                    messages.PlayerMessage("fly.use", player);
-                }
+            if (player.getWorld() == Bukkit.getWorld("evento") && !player.hasPermission("eternia.fly.evento")) {
+                messages.sendMessage("server.no-perm", sender);
             } else {
-                messages.PlayerMessage("server.no-perm", player);
+                playerFlyState.changeFlyState(player);
             }
-        } else if (args.length == 1) {
+        } else if (args.length == 1 && sender.hasPermission("eternia.fly.other")) {
             Player target = Bukkit.getPlayer(args[0]);
-            if (target != null && target.isOnline()) {
-                playerFlyState.changeFlyState(target);
-            } else {
-                messages.sendConsole("server.player-offline");
-            }
+            if (target != null && target.isOnline()) playerFlyState.changeFlyState(target);
+            else messages.sendMessage("server.player-offline", sender);
+        } else if (args.length >= 2) {
+            messages.sendMessage("fly.use", sender);
+        } else {
+            messages.sendMessage("server.no-perm", sender);
         }
         return true;
+
     }
 }

@@ -18,23 +18,25 @@ public class EnderChest implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (args.length == 1 && player.hasPermission("eternia.enderchest.other")) {
+            if (sender.hasPermission("eternia.enderchest") && args.length == 0) {
+                player.openInventory(player.getEnderChest());
+            } else if (player.hasPermission("eternia.enderchest.other") && args.length == 1) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null && target.isOnline()) {
                     player.openInventory(target.getEnderChest());
                 } else {
-                    messages.PlayerMessage("server.player-offline", player);
+                    messages.sendMessage("server.player-offline", sender);
                 }
-            } else if (args.length == 0 && player.hasPermission("eternia.enderchest")) {
-                player.openInventory(player.getEnderChest());
-            } else {
-                messages.PlayerMessage("server.no-perm", player);
+            }else {
+                messages.sendMessage("server.no-perm", sender);
             }
         } else {
-            messages.sendConsole("server.only-player");
+            messages.sendMessage("server.only-player", sender);
         }
         return true;
+
     }
 }

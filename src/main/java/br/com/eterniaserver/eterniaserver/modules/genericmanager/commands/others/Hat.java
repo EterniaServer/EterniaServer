@@ -19,26 +19,33 @@ public class Hat implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.hat")) {
-                ItemStack capacete = player.getInventory().getHelmet();
-                if (capacete != null) {
-                    player.getWorld().dropItem(player.getLocation().add(0, 1, 0), capacete);
-                }
-                set_capacete(player);
-                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                messages.PlayerMessage("other.helmet", player);
+                dropHelmet(player);
+                setHelmet(player);
+                messages.sendMessage("other.helmet", sender);
             } else {
-                messages.PlayerMessage("server.no-perm", player);
+                messages.sendMessage("server.no-perm", sender);
             }
         } else {
-            messages.sendConsole("server.only-player");
+            messages.sendMessage("server.only-player", sender);
         }
         return true;
+
     }
 
-    private void set_capacete(Player player) {
-        player.getInventory().setHelmet(player.getInventory().getItemInMainHand());
+    private void dropHelmet(Player player) {
+        ItemStack capacete = player.getInventory().getHelmet();
+        if (capacete != null) {
+            player.getWorld().dropItem(player.getLocation().add(0, 1, 0), capacete);
+        }
     }
+
+    private void setHelmet(Player player) {
+        player.getInventory().setHelmet(player.getInventory().getItemInMainHand());
+        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+    }
+
 }

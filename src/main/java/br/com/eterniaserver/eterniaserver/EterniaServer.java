@@ -18,7 +18,6 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.events.ChatEvent;
 import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import br.com.eterniaserver.eterniaserver.modules.experiencemanager.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.modules.genericmanager.GenericManager;
-import br.com.eterniaserver.eterniaserver.modules.genericmanager.Reload;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.KitsManager;
 import br.com.eterniaserver.eterniaserver.modules.playerchecksmanager.PlayerChecksManager;
@@ -57,7 +56,6 @@ public class EterniaServer extends JavaPlugin {
     private final Local local = new Local(this, messages, strings, vars);
     private final Staff staff = new Staff(this, strings);
     private final ChatEvent chatEvent = new ChatEvent(this, local, staff, vars);
-    private final Reload reload = new Reload(this, messages, placeHolders);
     private final PlayerFlyState playerFlyState = new PlayerFlyState(messages);
     private final Exp exp = new Exp(this, vars);
     private final Money money = new Money(this, playerManager, vars);
@@ -152,7 +150,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void genericManager() {
-        new GenericManager(this, messages, strings, playerFlyState, reload, vars);
+        new GenericManager(this, messages, strings, playerFlyState, files, vars, placeHolders);
     }
 
     private void experienceManager() {

@@ -17,16 +17,18 @@ public class Workbench implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("eternia.workbench")) {
                 player.openWorkbench(null, true);
             } else {
-                messages.PlayerMessage("server.no-perm", player);
+                messages.sendMessage("server.no-perm", sender);
             }
         } else {
-            messages.sendConsole("server.only-player");
+            messages.sendMessage("server.only-player", sender);
         }
         return true;
+
     }
 }

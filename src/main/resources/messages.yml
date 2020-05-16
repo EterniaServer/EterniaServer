@@ -28,6 +28,8 @@ server:
   afk-kick: '&7Você foi kickado por está afk&8.'
   reload: '&7Configurações reiniciadas&8.'
   telep: '&7Você já está em um teleporte&8, &7espere acabar&8.'
+  reload-s: '&7Reiniciando EterniaServer plugin&8.'
+  reload-f: '&7EterniaServer plugin reiniciado com sucesso&8'
 chat:
   use: '&7Use &6/broadcast &3<mensagem>&8.'
   global-advice: '&7%advice%'

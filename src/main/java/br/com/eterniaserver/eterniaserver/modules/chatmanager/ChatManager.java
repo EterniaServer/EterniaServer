@@ -9,11 +9,6 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.AdvancedChatTo
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.*;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
 import br.com.eterniaserver.eterniaserver.storages.Files;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.io.IOException;
 
 public class ChatManager {
 

@@ -18,23 +18,23 @@ public class OpenInventory implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (args.length == 1 && player.hasPermission("eternia.openinv")) {
+            if (player.hasPermission("eternia.openinv.other") && args.length == 1) {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null && target.isOnline()) {
                     player.openInventory(target.getInventory());
                 } else {
-                    messages.PlayerMessage("server.player-offline", player);
+                    messages.sendMessage("server.player-offline", sender);
                 }
-            } else if (args.length == 0 && player.hasPermission("eternia.openinv")) {
-                messages.PlayerMessage("simp.inv", player);
             } else {
-                messages.PlayerMessage("server.no-perm", player);
+                messages.sendMessage("simp.inv", sender);
             }
         } else {
-            messages.sendConsole("server.only-player");
+            messages.sendMessage("server.only-player", sender);
         }
         return true;
+
     }
 }
