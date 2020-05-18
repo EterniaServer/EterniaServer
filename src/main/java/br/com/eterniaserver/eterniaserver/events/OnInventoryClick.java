@@ -34,7 +34,7 @@ public class OnInventoryClick implements Listener {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
                 Player player = (Player) e.getWhoClicked();
                 e.setCancelled(true);
-                messages.PlayerMessage("spawners.anvil", player);
+                messages.sendMessage("spawners.anvil", player);
                 messages.sendConsole("spawners.anvil-try", "%player_name%", player.getName());
             }
         }

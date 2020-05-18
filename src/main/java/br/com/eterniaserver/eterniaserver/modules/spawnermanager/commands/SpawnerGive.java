@@ -2,153 +2,74 @@ package br.com.eterniaserver.eterniaserver.modules.spawnermanager.commands;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
 
-import org.bukkit.Bukkit;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpawnerGive implements CommandExecutor {
+public class SpawnerGive extends BaseCommand {
 
     private final EterniaServer plugin;
     private final Messages messages;
-    private final Strings strings;
 
-    public SpawnerGive(EterniaServer plugin, Messages messages, Strings strings) {
+    public SpawnerGive(EterniaServer plugin, Messages messages) {
         this.plugin = plugin;
         this.messages = messages;
-        this.strings = strings;
     }
 
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, java.lang.String label, java.lang.String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (sender.hasPermission("eternia.spawnergive")) {
-                if (args.length == 3) {
-                    Player target = Bukkit.getPlayer(args[0]);
-                    if (target == null) {
-                        messages.PlayerMessage("server.player-offline", player);
-                        return true;
-                    }
-                    int amount;
-                    try {
-                        amount = Integer.parseInt(args[2]);
-                    } catch (NumberFormatException e) {
-                        messages.PlayerMessage("server.no-number", player);
-                        return true;
-                    }
-                    try {
-                        java.lang.String type = args[1];
-                        EntityType.valueOf(type.toUpperCase());
-                        if (amount > 0) {
-                            if (target.getInventory().firstEmpty() == -1) {
-                                messages.PlayerMessage("spawners.invfull", player);
-                            } else {
-                                ItemStack item = new ItemStack(Material.SPAWNER);
-                                ItemMeta meta = item.getItemMeta();
-                                item.setAmount(amount);
-                                java.lang.String mobFormatted = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
-                                assert meta != null;
-                                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + plugin.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
-                                List<java.lang.String> newLore = new ArrayList<>();
-                                plugin.serverConfig.getStringList("spawners.lore");
-                                if (plugin.serverConfig.getBoolean("spawners.enable-lore")) {
-                                    for (java.lang.String line : plugin.serverConfig.getStringList("spawners.lore")) {
-                                        newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
-                                    }
-                                    meta.setLore(newLore);
-                                }
-                                item.setItemMeta(meta);
-                                target.getInventory().addItem(item);
-                                messages.PlayerMessage("spawners.send", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%", target.getName(), player);
-                                messages.PlayerMessage("spawners.receive", "amount%", amount, "%mob_type%", mobFormatted, "%target_name%", player.getName(), target);
-                            }
-                        } else {
-                            messages.PlayerMessage("server.no-negative", player);
-                        }
-                    } catch (IllegalArgumentException e) {
-                        StringBuilder str = new StringBuilder();
-                        for (EntityType entity : EntityType.values()) {
-                            str.append(entity.name().toLowerCase());
-                            str.append(", ");
-                        }
-                        str.append("&7algumas entidades não funcionam");
-                        messages.PlayerMessage("spawners.types", "%types%", str.toString(), player);
-                    }
+    @CommandAlias("spawnergive|givespawner")
+    @Syntax("<mob> <quantia> <jogador>")
+    @CommandCompletion("@mobs 1 @players")
+    @CommandPermission("eternia.spawnergive")
+    public void onSpawnerGive(CommandSender player, String spawner, Integer value, OnlinePlayer target) {
+        try {
+            EntityType.valueOf(spawner.toUpperCase());
+            if (value > 0) {
+                if (target.getPlayer().getInventory().firstEmpty() == -1) {
+                    messages.sendMessage("spawners.invfull", player);
                 } else {
-                    messages.PlayerMessage("spawners.use", player);
-                }
-            } else {
-                messages.PlayerMessage("server.no-perm", player);
-            }
-        } else {
-            if (args.length == 3) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target == null) {
-                    messages.sendConsole("server.player-offline");
-                    return true;
-                }
-                int amount;
-                try {
-                    amount = Integer.parseInt(args[2]);
-                } catch (NumberFormatException e) {
-                    messages.sendConsole("server.no-number");
-                    return true;
-                }
-                try {
-                    java.lang.String type = args[1];
-                    EntityType.valueOf(type.toUpperCase());
-                    if (amount > 0) {
-                        if (target.getInventory().firstEmpty() == -1) {
-                            messages.sendConsole("spawners.invfull");
-                        } else {
-                            ItemStack item = new ItemStack(Material.SPAWNER);
-                            ItemMeta meta = item.getItemMeta();
-                            item.setAmount(amount);
-                            java.lang.String mobFormatted = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
-                            assert meta != null;
-                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + plugin.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
-                            List<java.lang.String> newLore = new ArrayList<>();
-                            plugin.serverConfig.getStringList("spawners.lore");
-                            if (plugin.serverConfig.getBoolean("spawners.enable-lore")) {
-                                for (java.lang.String line : plugin.serverConfig.getStringList("spawners.lore")) {
-                                    newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
-                                }
-                                meta.setLore(newLore);
+                    ItemStack item = new ItemStack(Material.SPAWNER);
+                    ItemMeta meta = item.getItemMeta();
+                    item.setAmount(value);
+                    java.lang.String mobFormatted = spawner.substring(0, 1).toUpperCase() + spawner.substring(1).toLowerCase();
+                    if (meta != null) {
+                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + plugin.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
+                        List<java.lang.String> newLore = new ArrayList<>();
+                        plugin.serverConfig.getStringList("spawners.lore");
+                        if (plugin.serverConfig.getBoolean("spawners.enable-lore")) {
+                            for (java.lang.String line : plugin.serverConfig.getStringList("spawners.lore")) {
+                                newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
                             }
-                            item.setItemMeta(meta);
-                            target.getInventory().addItem(item);
-                            messages.sendConsole("spawners.send", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%",target.getName());
-                            messages.PlayerMessage("spawners.receive", "%amount%", amount, "%mob_type%", mobFormatted, "%target_name%", "console", target);
+                            meta.setLore(newLore);
                         }
-                    } else {
-                        messages.sendConsole("server.no-negative");
+                        item.setItemMeta(meta);
+                        target.getPlayer().getInventory().addItem(item);
+                        messages.sendMessage("spawners.send", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", target.getPlayer().getName(), player);
+                        messages.sendMessage("spawners.receive", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", player.getName(), target.getPlayer());
                     }
-                } catch (IllegalArgumentException e) {
-                    StringBuilder str = new StringBuilder();
-                    for (EntityType entity : EntityType.values()) {
-                        str.append(entity.name().toLowerCase());
-                        str.append("&8, &3");
-                    }
-                    str.append("&7algumas entidades não funcionam");
-                    messages.sendConsole("spawners.types", "%types%", strings.getColor(str.toString()));
                 }
             } else {
-                messages.sendConsole("spawners.use");
+                messages.sendMessage("server.no-negative", player);
             }
+        } catch (IllegalArgumentException e) {
+            StringBuilder str = new StringBuilder();
+            for (EntityType entity : EntityType.values()) {
+                str.append(entity.name().toLowerCase());
+                str.append(", ");
+            }
+            str.append("&7algumas entidades não funcionam");
+            messages.sendMessage("spawners.types", "%types%", str.toString(), player);
         }
-        return true;
     }
+
 }

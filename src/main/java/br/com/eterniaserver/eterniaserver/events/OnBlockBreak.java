@@ -43,7 +43,7 @@ public class OnBlockBreak implements Listener {
                 Material material = block.getType();
                 Player player = breakEvent.getPlayer();
                 if (plugin.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
-                    messages.PlayerMessage("spawners.block", player);
+                    messages.sendMessage("spawners.block", player);
                     breakEvent.setCancelled(true);
                     return;
                 }
@@ -70,14 +70,14 @@ public class OnBlockBreak implements Listener {
                         if (plugin.serverConfig.getDouble("spawners.drop-chance") != 1) {
                             double random = Math.random();
                             if (random >= plugin.serverConfig.getDouble("spawners.drop-chance")) {
-                                messages.PlayerMessage("spawners.no-drop", player);
+                                messages.sendMessage("spawners.no-drop", player);
                                 return;
                             }
                         }
                         if (plugin.serverConfig.getBoolean("spawners.drop-in-inventory")) {
                             if (player.getInventory().firstEmpty() == -1) {
                                 breakEvent.setCancelled(true);
-                                messages.PlayerMessage("spawners.invfull", player);
+                                messages.sendMessage("spawners.invfull", player);
                                 return;
                             }
                             player.getInventory().addItem(item);
@@ -90,11 +90,11 @@ public class OnBlockBreak implements Listener {
                         breakEvent.setExpToDrop(0);
                     } else {
                         breakEvent.setCancelled(true);
-                        messages.PlayerMessage("spawners.no-silktouch", player);
+                        messages.sendMessage("spawners.no-silktouch", player);
                     }
                 } else {
                     breakEvent.setCancelled(true);
-                    messages.PlayerMessage("server.no-perm", player);
+                    messages.sendMessage("server.no-perm", player);
                 }
             }
         }
@@ -114,13 +114,13 @@ public class OnBlockBreak implements Listener {
                     if (lowestNumberAboveRandom <= 1) {
                         List<String> stringList = plugin.blockConfig.getStringList("Blocks." + breakEvent.getBlock().getType() + "." + lowestNumberAboveRandom);
                         for (String command : stringList) {
+                            String modifiedCommand;
                             if (plugin.hasPlaceholderAPI) {
-                                String modifiedCommand = messages.putPAPI(breakEvent.getPlayer(), command);
-                                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+                                modifiedCommand = messages.putPAPI(breakEvent.getPlayer(), command);
                             } else {
-                                String modifiedCommand = command.replace("%player_name%", breakEvent.getPlayer().getPlayerListName());
-                                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+                                modifiedCommand = command.replace("%player_name%", breakEvent.getPlayer().getPlayerListName());
                             }
+                            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                         }
                     }
                 }

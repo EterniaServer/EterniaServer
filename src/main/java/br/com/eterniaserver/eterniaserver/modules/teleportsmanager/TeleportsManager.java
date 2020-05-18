@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands.*;
 
+import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -20,23 +21,12 @@ public class TeleportsManager {
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public TeleportsManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars, Money moneyx) {
+    public TeleportsManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars, Money moneyx, PaperCommandManager manager) {
         this.plugin = plugin;
         this.vars = vars;
         if (plugin.serverConfig.getBoolean("modules.teleports")) {
-            plugin.getCommand("back").setExecutor(new Back(plugin, messages, moneyx, vars));
-            plugin.getCommand("spawn").setExecutor(new Spawn(plugin, messages, this, vars));
-            plugin.getCommand("setspawn").setExecutor(new SetSpawn(this, messages));
-            plugin.getCommand("warp").setExecutor(new Warp(plugin, this, messages, vars));
-            plugin.getCommand("setwarp").setExecutor(new SetWarp(this, messages));
-            plugin.getCommand("delwarp").setExecutor(new DelWarp(this, messages));
-            plugin.getCommand("listwarp").setExecutor(new ListWarp(plugin, messages, strings));
-            plugin.getCommand("shop").setExecutor(new Shop(plugin, messages, this, vars));
-            plugin.getCommand("setshop").setExecutor(new SetShop(this, messages));
-            plugin.getCommand("teleportaccept").setExecutor(new TeleportAccept(plugin, messages, vars));
-            plugin.getCommand("teleportdeny").setExecutor(new TeleportDeny(messages, vars));
-            plugin.getCommand("teleporttoplayer").setExecutor(new TeleportToPlayer(messages, vars));
-            plugin.getCommand("teleportall").setExecutor(new TeleportAll(messages));
+            manager.registerCommand(new WarpSystem(plugin, messages, this, vars, strings));
+            manager.registerCommand(new TeleportSystem(plugin, messages, moneyx, vars));
             messages.sendConsole("modules.enable", "%module%", "Teleports");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Teleports");

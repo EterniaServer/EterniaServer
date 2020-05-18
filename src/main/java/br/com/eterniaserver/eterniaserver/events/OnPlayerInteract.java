@@ -37,7 +37,7 @@ public class OnPlayerInteract implements Listener {
                     String[] isso = values.split(":");
                     final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
                     if (vars.teleports.containsKey(player)) {
-                        messages.PlayerMessage("server.telep", player);
+                        messages.sendMessage("server.telep", player);
                     } else {
                         vars.teleports.put(player, new PlayerTeleport(player, location, "home.suc", plugin));
                     }

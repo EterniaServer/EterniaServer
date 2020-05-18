@@ -5,17 +5,17 @@ import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
+
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Mute implements CommandExecutor {
+public class Mute extends BaseCommand {
 
     private final EterniaServer plugin;
     private final Messages messages;
@@ -29,86 +29,105 @@ public class Mute implements CommandExecutor {
         this.playerManager = playerManager;
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, java.lang.String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (player.hasPermission("eternia.mute")) {
-                if (args.length >= 2) {
-                    Player target = Bukkit.getPlayer(args[0]);
-                    if (target != null && target.isOnline()) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(new Date());
-                        cal.add(Calendar.YEAR, 20);
-                        Date dataa = cal.getTime();
-                        final String date = plugin.sdf.format(dataa);
-                        StringBuilder sb = new StringBuilder();
-                        for (String arg : args) {
-                            sb.append(arg).append(" ");
-                        }
-                        messages.BroadcastMessage("chat.mutebroad", "%player_name%", target.getName(), "%message%", sb.substring(2, sb.length() - 1));
-                        if (playerManager.registerMuted(target.getName())) {
-                            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getName() + "';";
-                            plugin.connections.executeSQLQuery(connection -> {
-                                PreparedStatement putMuted = connection.prepareStatement(querie);
-                                putMuted.execute();
-                                putMuted.close();
-                            }, true);
-                        } else {
-                            final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getName() + "', '" + date + "');";
-                            plugin.connections.executeSQLQuery(connection -> {
-                                PreparedStatement putMuted = connection.prepareStatement(querie);
-                                putMuted.execute();
-                                putMuted.close();
-                            }, true);
-                        }
-                        vars.player_muted.put(target.getName(), cal.getTimeInMillis());
-                    } else {
-                        messages.PlayerMessage("server.player-offline", player);
-                    }
-                } else {
-                    messages.PlayerMessage("chat.muteuse", player);
-                }
-            } else {
-                messages.PlayerMessage("server.no-perm", player);
-            }
+    @CommandAlias("mutechannels|muteall")
+    @CommandPermission("eternia.mute.channels")
+    public void muteChannels(CommandSender sender) {
+        if (plugin.chatMuted) {
+            plugin.chatMuted = false;
+            messages.BroadcastMessage("chat.cm-d", "%player_name%", sender.getName());
         } else {
-            if (args.length >= 2) {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null && target.isOnline()) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(new Date());
-                    cal.add(Calendar.YEAR, 10);
-                    Date dataa = cal.getTime();
-                    final String date = plugin.sdf.format(dataa);
-                    vars.player_muted.put(target.getName(), cal.getTimeInMillis());
-                    StringBuilder sb = new StringBuilder();
-                    for (String arg : args) {
-                        sb.append(arg).append(" ");
-                    }
-                    messages.BroadcastMessage("chat.mutebroad", "%player_name%", target.getName(), "%message%", sb.substring(2, sb.length() - 1));
-                    if (playerManager.registerMuted(target.getName())) {
-                        final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getName() + "';";
-                        plugin.connections.executeSQLQuery(connection -> {
-                            PreparedStatement putMuted = connection.prepareStatement(querie);
-                            putMuted.execute();
-                            putMuted.close();
-                        }, true);
-                    } else {
-                        final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getName() + "', '" + date + "');";
-                        plugin.connections.executeSQLQuery(connection -> {
-                            PreparedStatement putMuted = connection.prepareStatement(querie);
-                            putMuted.execute();
-                            putMuted.close();
-                        }, true);
-                    }
-                } else {
-                    messages.sendConsole("server.player-offline");
-                }
-            } else {
-                messages.sendConsole("chat.muteuse");
-            }
+            plugin.chatMuted = true;
+            messages.BroadcastMessage("chat.cm-e", "%player_name%", sender.getName());
         }
-        return true;
     }
+
+    @CommandAlias("mute|silenciar")
+    @CommandCompletion("@players Mensagem")
+    @Syntax("<jogador> <mensagem>")
+    @CommandPermission("eternia.mute")
+    public void onMute(CommandSender player, OnlinePlayer target, @Optional String[] message) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.YEAR, 20);
+        Date dataa = cal.getTime();
+        final String date = plugin.sdf.format(dataa);
+        StringBuilder sb = new StringBuilder();
+        for (String arg : message) {
+            sb.append(arg).append(" ");
+        }
+        messages.BroadcastMessage("chat.mutebroad", "%player_name%", player.getName(), "%message%", sb);
+        if (playerManager.registerMuted(target.getPlayer().getName())) {
+            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';";
+            plugin.connections.executeSQLQuery(connection -> {
+                PreparedStatement putMuted = connection.prepareStatement(querie);
+                putMuted.execute();
+                putMuted.close();
+            }, true);
+        } else {
+            final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');";
+            plugin.connections.executeSQLQuery(connection -> {
+                PreparedStatement putMuted = connection.prepareStatement(querie);
+                putMuted.execute();
+                putMuted.close();
+            }, true);
+        }
+        vars.player_muted.put(target.getPlayer().getName(), cal.getTimeInMillis());
+    }
+
+    @CommandAlias("unmute|desilenciar")
+    @CommandCompletion("@players")
+    @Syntax("<jogador>")
+    @CommandPermission("eternia.unmute")
+    public void onUnMute(OnlinePlayer target) {
+        vars.player_muted.put(target.getPlayer().getName(), System.currentTimeMillis());
+        messages.BroadcastMessage("chat.unmutebroad", "%player_name%", target.getPlayer().getName());
+        if (playerManager.registerMuted(target.getPlayer().getName())) {
+            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';";
+            plugin.connections.executeSQLQuery(connection -> {
+                PreparedStatement putMuted = connection.prepareStatement(querie);
+                putMuted.execute();
+                putMuted.close();
+            }, true);
+        } else {
+            final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + "2020/01/01 00:00" + "');";
+            plugin.connections.executeSQLQuery(connection -> {
+                PreparedStatement putMuted = connection.prepareStatement(querie);
+                putMuted.execute();
+                putMuted.close();
+            }, true);
+        }
+    }
+
+    @CommandAlias("tempmute|mutetemporario")
+    @Syntax("<jogador> <tempo> <mensagem>")
+    @CommandCompletion("@players 15 Mensagem")
+    @CommandPermission("eternia.tempmute")
+    public void onTempMute(OnlinePlayer target, Integer time, @Optional String[] message) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, time);
+        final String date = plugin.sdf.format(cal.getTime());
+        StringBuilder sb = new StringBuilder();
+        for (String arg : message) {
+            sb.append(arg).append(" ");
+        }
+        messages.BroadcastMessage("chat.mutetbroad", "%player_name%", target.getPlayer().getName(), "%time%", time, "%message%", sb);
+        if (vars.player_muted.containsKey(target.getPlayer().getName())) {
+            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';";
+            plugin.connections.executeSQLQuery(connection -> {
+                PreparedStatement putMuted = connection.prepareStatement(querie);
+                putMuted.execute();
+                putMuted.close();
+            }, true);
+        } else {
+            final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');";
+            plugin.connections.executeSQLQuery(connection -> {
+                PreparedStatement putMuted = connection.prepareStatement(querie);
+                putMuted.execute();
+                putMuted.close();
+            }, true);
+        }
+        vars.player_muted.put(target.getPlayer().getName(), cal.getTimeInMillis());
+    }
+
 }

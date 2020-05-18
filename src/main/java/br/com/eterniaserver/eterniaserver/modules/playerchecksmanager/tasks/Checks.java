@@ -41,12 +41,12 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                     Location player_location = player.getLocation();
                     if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
                         PaperLib.teleportAsync(player, teleportsManager.getWarp("spawn"));
-                        messages.PlayerMessage("warps.warp", player);
+                        messages.sendMessage("warps.warp", player);
                     }
                 } else {
                     vars.playersInPortal.put(player.getName(), vars.playersInPortal.get(player.getName()) - 1);
                     if (vars.playersInPortal.get(player.getName()) < 5) {
-                        messages.PlayerMessage("server.nether-trap", "%cooldown%", vars.playersInPortal.get(player.getName()), player);
+                        messages.sendMessage("server.nether-trap", "%cooldown%", vars.playersInPortal.get(player.getName()), player);
                     }
                 }
             } else vars.playersInPortal.remove(player.getName());
@@ -67,19 +67,19 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                     if (!playerTeleport.hasMoved()) {
                         if (playerTeleport.getCountdown() == 0) {
                             PaperLib.teleportAsync(player, playerTeleport.getWantLocation());
-                            messages.PlayerMessage(playerTeleport.getMessage(), player);
+                            messages.sendMessage(playerTeleport.getMessage(), player);
                             vars.teleports.remove(player);
                         } else {
-                            messages.PlayerMessage("teleport.timing", "%cooldown%", playerTeleport.getCountdown(), player);
+                            messages.sendMessage("teleport.timing", "%cooldown%", playerTeleport.getCountdown(), player);
                             playerTeleport.decreaseCountdown();
                         }
                     } else {
-                        messages.PlayerMessage("warps.move", player);
+                        messages.sendMessage("warps.move", player);
                         vars.teleports.remove(player);
                     }
                 } else {
                     PaperLib.teleportAsync(player, playerTeleport.getWantLocation());
-                    messages.PlayerMessage(playerTeleport.getMessage(), player);
+                    messages.sendMessage(playerTeleport.getMessage(), player);
                     vars.teleports.remove(player);
                 }
             }

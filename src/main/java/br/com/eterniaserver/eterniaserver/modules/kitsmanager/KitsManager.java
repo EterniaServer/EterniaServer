@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.commands.*;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
 
+import co.aikar.commands.PaperCommandManager;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -25,7 +26,7 @@ public class KitsManager {
     private final Vars vars;
 
 
-    public KitsManager(EterniaServer plugin, Messages messages, PlayerManager playerManager, Strings strings, Vars vars) {
+    public KitsManager(EterniaServer plugin, Messages messages, PlayerManager playerManager, Strings strings, Vars vars, PaperCommandManager manager) {
         this.plugin = plugin;
         this.playerManager = playerManager;
         this.vars = vars;
@@ -40,8 +41,7 @@ public class KitsManager {
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            plugin.getCommand("kit").setExecutor(new Kit(plugin, this, messages, strings));
-            plugin.getCommand("kits").setExecutor(new Kits(plugin, messages, strings));
+            manager.registerCommand(new KitSystem(plugin, messages, strings, this));
             messages.sendConsole("modules.enable", "%module%", "Kits");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Kits");

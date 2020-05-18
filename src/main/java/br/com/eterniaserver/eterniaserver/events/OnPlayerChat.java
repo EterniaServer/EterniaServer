@@ -62,12 +62,12 @@ public class OnPlayerChat implements Listener {
         }
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             if (plugin.chatMuted && !e.getPlayer().hasPermission("eternia.mute.bypass")) {
-                messages.PlayerMessage("chat.chatmuted", e.getPlayer());
+                messages.sendMessage("chat.chatmuted", e.getPlayer());
                 e.setCancelled(true);
                 return;
             }
             if (vars.player_muted.get(e.getPlayer().getName()) - System.currentTimeMillis() > 0) {
-                messages.PlayerMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(vars.player_muted.get(e.getPlayer().getName()) - System.currentTimeMillis()), e.getPlayer());
+                messages.sendMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(vars.player_muted.get(e.getPlayer().getName()) - System.currentTimeMillis()), e.getPlayer());
                 e.setCancelled(true);
                 return;
             }

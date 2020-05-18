@@ -30,6 +30,8 @@ import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultUnHook;
 import br.com.eterniaserver.eterniaserver.storages.database.Connections;
 
+import co.aikar.commands.PaperCommandManager;
+
 import io.papermc.lib.PaperLib;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,6 +40,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.text.SimpleDateFormat;
 
 public class EterniaServer extends JavaPlugin {
+
+    public PaperCommandManager manager;
 
     public boolean chatMuted = false;
     public boolean hasPlaceholderAPI = true;
@@ -49,7 +53,7 @@ public class EterniaServer extends JavaPlugin {
 
     private final Strings strings = new Strings(this);
     private final Messages messages = new Messages(strings);
-    private final Files files = new Files(this, messages);
+    private Files files;
 
     private final Checks checks = new Checks(this, vars);
     private final PlayerManager playerManager = new PlayerManager(this, vars);
@@ -69,6 +73,10 @@ public class EterniaServer extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        manager = new PaperCommandManager(this);
+
+        files = new Files(this, messages, manager);
 
         PaperLib.suggestPaper(this);
 
@@ -130,7 +138,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void spawnersManager() {
-        new SpawnersManager(this, messages, strings);
+        new SpawnersManager(this, messages, manager);
     }
 
     private void playerChecksManager() {
@@ -138,23 +146,23 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void teleportsManager() {
-        teleportsManager = new TeleportsManager(this, messages, strings, vars, money);
+        teleportsManager = new TeleportsManager(this, messages, strings, vars, money, manager);
     }
 
     private void kitsManager() {
-        new KitsManager(this, messages, playerManager, strings, vars);
+        new KitsManager(this, messages, playerManager, strings, vars, manager);
     }
 
     private void homesManager() {
-        new HomesManager(this, messages, strings, vars);
+        new HomesManager(this, messages, strings, vars, manager);
     }
 
     private void genericManager() {
-        new GenericManager(this, messages, strings, playerFlyState, files, vars, placeHolders);
+        new GenericManager(this, messages, strings, playerFlyState, files, vars, placeHolders, manager);
     }
 
     private void experienceManager() {
-        new ExperienceManager(this, messages, checks, exp);
+        new ExperienceManager(this, messages, checks, exp, manager);
     }
 
     private void elevatorManager() {
@@ -162,7 +170,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void economyManager() {
-        new EconomyManager(this, messages, money);
+        new EconomyManager(this, messages, money, manager);
     }
 
     private void commandsManager() {
@@ -170,7 +178,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     private void chatManager() {
-        new ChatManager(this, messages, strings, vars, playerManager, files);
+        new ChatManager(this, messages, strings, vars, playerManager, files, manager);
     }
 
     private void blockRewardManager(){

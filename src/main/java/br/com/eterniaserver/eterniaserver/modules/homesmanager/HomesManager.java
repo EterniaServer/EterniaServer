@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.commands.*;
 
+import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -18,14 +19,11 @@ public class HomesManager {
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public HomesManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars) {
+    public HomesManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars, PaperCommandManager manager) {
         this.plugin = plugin;
         this.vars = vars;
         if (plugin.serverConfig.getBoolean("modules.home")) {
-            plugin.getCommand("delhouse").setExecutor(new DelHome(this, messages));
-            plugin.getCommand("house").setExecutor(new Home(plugin, messages, this, vars));
-            plugin.getCommand("houses").setExecutor(new Homes(plugin, messages, this, strings));
-            plugin.getCommand("sethouse").setExecutor(new SetHome(messages, this));
+            manager.registerCommand(new HomeSystem(plugin, messages, this, strings, vars));
             messages.sendConsole("modules.enable", "%module%", "Homes");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Homes");

@@ -54,7 +54,7 @@ public class Local {
             }
         }
         if (pes <= 1) {
-            messages.PlayerMessage("chat.noone", player);
+            messages.sendMessage("chat.noone", player);
         }
     }
 

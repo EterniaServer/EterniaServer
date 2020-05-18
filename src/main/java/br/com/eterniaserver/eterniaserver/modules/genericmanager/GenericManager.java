@@ -5,37 +5,20 @@ import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
-import br.com.eterniaserver.eterniaserver.modules.genericmanager.commands.messages.*;
-import br.com.eterniaserver.eterniaserver.modules.genericmanager.commands.others.*;
-import br.com.eterniaserver.eterniaserver.modules.genericmanager.commands.replaces.*;
-import br.com.eterniaserver.eterniaserver.modules.genericmanager.commands.simplifications.*;
+import br.com.eterniaserver.eterniaserver.modules.genericmanager.commands.*;
 import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
 import br.com.eterniaserver.eterniaserver.storages.Files;
+import co.aikar.commands.PaperCommandManager;
 
 public class GenericManager {
 
-    public GenericManager(EterniaServer plugin, Messages messages, Strings strings, PlayerFlyState playerFlyState, Files files, Vars vars, PlaceHolders placeHolders) {
+    public GenericManager(EterniaServer plugin, Messages messages, Strings strings, PlayerFlyState playerFlyState, Files files, Vars vars, PlaceHolders placeHolders, PaperCommandManager manager) {
         if (plugin.serverConfig.getBoolean("modules.generic")) {
-            plugin.getCommand("suicide").setExecutor(new Suicide(messages));
-            plugin.getCommand("feed").setExecutor(new Feed(messages));
-            plugin.getCommand("hat").setExecutor(new Hat(messages));
-            plugin.getCommand("fly").setExecutor(new Fly(messages, playerFlyState));
-            plugin.getCommand("blocks").setExecutor(new Blocks(messages));
-            plugin.getCommand("mem").setExecutor(new Mem(messages));
-            plugin.getCommand("memall").setExecutor(new MemAll(messages));
-            plugin.getCommand("gamemode").setExecutor(new Gamemode(messages));
-            plugin.getCommand("profile").setExecutor(new Profile(plugin, messages, strings, vars));
-            plugin.getCommand("speed").setExecutor(new Speed(messages));
-            plugin.getCommand("sun").setExecutor(new Sun(messages));
-            plugin.getCommand("rain").setExecutor(new Rain(messages));
-            plugin.getCommand("god").setExecutor(new God(messages, vars));
-            plugin.getCommand("thor").setExecutor(new Thor(messages));
-            plugin.getCommand("afk").setExecutor(new AFK(messages, vars));
-            plugin.getCommand("itemrename").setExecutor(new ItemRename(messages, strings));
-            plugin.getCommand("reloadeternia").setExecutor(new ReloadEternia(messages, files, placeHolders));
-            plugin.getCommand("enderchest").setExecutor(new EnderChest(messages));
-            plugin.getCommand("openinventory").setExecutor(new OpenInventory(messages));
-            plugin.getCommand("workbench").setExecutor(new Workbench(messages));
+            manager.registerCommand(new Gamemode(messages));
+            manager.registerCommand(new Inventory(messages));
+            manager.registerCommand(new Others(messages, files, placeHolders, strings, vars, playerFlyState));
+            manager.registerCommand(new Replaces(plugin, messages, strings, vars));
+            manager.registerCommand(new Simplifications(messages));
             messages.sendConsole("modules.enable", "%module%", "Generic");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Generic");

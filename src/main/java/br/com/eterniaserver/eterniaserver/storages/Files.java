@@ -5,29 +5,35 @@ import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.storages.database.Connections;
 import br.com.eterniaserver.eterniaserver.storages.database.Table;
 
+import co.aikar.commands.PaperCommandManager;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 public class Files {
 
     private final EterniaServer plugin;
     private final Messages messages;
+    private final PaperCommandManager manager;
 
-    public Files(EterniaServer plugin, Messages messages) {
+    public Files(EterniaServer plugin, Messages messages, PaperCommandManager manager) {
         this.plugin = plugin;
         this.messages = messages;
+        this.manager = manager;
     }
 
     public void loadConfigs() {
 
         File messagesConfigFile = new File(plugin.getDataFolder(), "config.yml");
-        if (!messagesConfigFile.exists()) plugin.saveResource("config.yml", false);
+        plugin.saveResource("config.yml", false);
+        plugin.saveResource("acf_messages.yml", false);
 
         plugin.serverConfig = new YamlConfiguration();
         try {
+            manager.getLocales().loadYamlLanguageFile("acf_messages.yml", Locale.ENGLISH);
             plugin.serverConfig.load(messagesConfigFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
