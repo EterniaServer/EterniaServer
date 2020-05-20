@@ -80,6 +80,13 @@ public class Table {
             mutedsql.close();
         });
 
+        final String rewards = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-rewards") + " (code varchar(16), lalalala varchar(16));";
+        plugin.connections.executeSQLQuery(connection -> {
+            PreparedStatement rewardsql = connection.prepareStatement(rewards);
+            rewardsql.execute();
+            rewardsql.close();
+        });
+
     }
 
 }

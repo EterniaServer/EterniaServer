@@ -21,7 +21,7 @@ public class Channels extends BaseCommand {
     }
 
     @Subcommand("local")
-    @CommandAlias("l")
+    @CommandAlias("l|local")
     public void toLocal(Player player, @Optional String[] messages) {
         if (messages.length == 0) {
             vars.global.put(player.getName(), 0);
@@ -37,7 +37,7 @@ public class Channels extends BaseCommand {
     }
 
     @Subcommand("global")
-    @CommandAlias("g")
+    @CommandAlias("g|global")
     public void toGlobal(Player player, @Optional String[] messages) {
         if (messages.length == 0) {
             vars.global.put(player.getName(), 1);
@@ -53,7 +53,7 @@ public class Channels extends BaseCommand {
     }
 
     @Subcommand("staff")
-    @CommandAlias("s|a")
+    @CommandAlias("s|a|staff")
     @CommandPermission("eternia.chat.staff")
     public void toStaff(Player player, @Optional String[] messages) {
         if (messages.length == 0) {

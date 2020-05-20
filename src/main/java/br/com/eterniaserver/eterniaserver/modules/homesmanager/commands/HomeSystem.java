@@ -52,7 +52,7 @@ public class HomeSystem extends BaseCommand {
         }
     }
 
-    @CommandAlias("home|house|casa")
+    @CommandAlias("home|house|casa|h")
     @Syntax("<home> <jogador>")
     @CommandPermission("eternia.home")
     public void onHome(Player player, String nome, @Optional OnlinePlayer target) {

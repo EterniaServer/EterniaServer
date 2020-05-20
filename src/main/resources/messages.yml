@@ -43,6 +43,10 @@ chat:
   chatmuted: '&7O chat está mutado&8!'
   cm-e: '&7Todos os canais foram mutados por &3%player_name%&8!'
   cm-d: '&7Todos os canais foram desmutados por &3%player_name%&8!'
+rewards:
+  invalid: '&7Chave inexistente&8.'
+  keys: '&7Criou a chave&8: &3%key%&8.'
+  no-reward: '&7Nenhum reward com o nome de &3%group% &7encontrado&8.'
 profile:
   data: '&7Data de registro&8: &3%player_register_data%&8.'
   hours: '&7Horas de conta&8: &3%hours%&8.'

@@ -28,8 +28,10 @@ public class Files {
     public void loadConfigs() {
 
         File messagesConfigFile = new File(plugin.getDataFolder(), "config.yml");
-        plugin.saveResource("config.yml", false);
-        plugin.saveResource("acf_messages.yml", false);
+        File acfmsg = new File(plugin.getDataFolder(), "acf_messages.yml");
+
+        if (!messagesConfigFile.exists()) plugin.saveResource("config.yml", false);
+        if (!acfmsg.exists()) plugin.saveResource("acf_messages.yml", false);
 
         plugin.serverConfig = new YamlConfiguration();
         try {

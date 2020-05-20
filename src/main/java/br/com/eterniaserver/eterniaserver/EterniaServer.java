@@ -21,6 +21,7 @@ import br.com.eterniaserver.eterniaserver.modules.genericmanager.GenericManager;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.KitsManager;
 import br.com.eterniaserver.eterniaserver.modules.playerchecksmanager.PlayerChecksManager;
+import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.RewardsManager;
 import br.com.eterniaserver.eterniaserver.modules.spawnermanager.SpawnersManager;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
@@ -68,7 +69,7 @@ public class EterniaServer extends JavaPlugin {
 
     public Connections connections;
 
-    public FileConfiguration serverConfig, msgConfig, cmdConfig;
+    public FileConfiguration serverConfig, msgConfig, cmdConfig, rewardsConfig;
     public FileConfiguration blockConfig, kitConfig, chatConfig, placeholderConfig, groupConfig;
 
     @Override
@@ -97,6 +98,7 @@ public class EterniaServer extends JavaPlugin {
         teleportsManager();
         playerChecksManager();
         spawnersManager();
+        rewardsManager();
 
         placeholderAPIHook();
         vaultHook();
@@ -131,6 +133,10 @@ public class EterniaServer extends JavaPlugin {
 
     private void vaultHook() {
         new VaultHook(this, messages, playerManager, money);
+    }
+
+    public void rewardsManager() {
+        new RewardsManager(this, messages, manager);
     }
 
     private void placeholderAPIHook() {

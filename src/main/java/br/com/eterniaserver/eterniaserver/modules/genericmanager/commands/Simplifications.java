@@ -3,10 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.genericmanager.commands;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.entity.Player;
@@ -35,6 +32,7 @@ public class Simplifications extends BaseCommand {
 
     @CommandAlias("thor|lightning")
     @Syntax("<jogador>")
+    @CommandCompletion("@players")
     @CommandPermission("eternia.thor")
     public void onThor(Player player, @Optional OnlinePlayer target) {
         if (target != null) {

@@ -30,6 +30,7 @@ modules:
   kits: true
   spawners: true
   teleports: true
+  rewards: true
 
 # Placeholders for PlaceholderAPI.
 placeholders:
@@ -78,6 +79,7 @@ sql:
   table-kits: 'es_kits'
   table-player: 'es_player'
   table-muted: 'es_muted'
+  table-rewards: 'es_rewards'
 
 # speed is how faster the night will pass (this will be divided by the (players
 # online divided by the players sleeping))
