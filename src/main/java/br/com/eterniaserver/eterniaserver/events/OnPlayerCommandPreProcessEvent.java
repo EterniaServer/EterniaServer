@@ -25,35 +25,37 @@ public class OnPlayerCommandPreProcessEvent implements Listener {
 
     @EventHandler
     public void onPlayerCommandPreProcessEvent(PlayerCommandPreprocessEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        if (event.getMessage().equalsIgnoreCase("/tps") && plugin.hasPlaceholderAPI) {
-            Player player = event.getPlayer();
+        if (event.isCancelled()) return;
+
+        final Player player = event.getPlayer();
+        final String playerName = player.getName();
+        final String message = event.getMessage().toLowerCase();
+
+        if (message.equalsIgnoreCase("/tps") && plugin.hasPlaceholderAPI) {
             String s = PlaceholderAPI.setPlaceholders(player, "%server_tps%");
             messages.sendMessage("replaces.tps", "%tps%", s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
+            return;
         }
         if (plugin.serverConfig.getBoolean("modules.commands")) {
-            Player player = event.getPlayer();
-            if (plugin.cmdConfig.contains("commands." + event.getMessage().toLowerCase())) {
-                final String cmd = event.getMessage().toLowerCase().replace("/", "");
+            if (plugin.cmdConfig.contains("commands." + message)) {
+                final String cmd = message.replace("/", "");
                 if (player.hasPermission("eternia." + cmd)) {
-                    for (String line : plugin.cmdConfig.getStringList("commands." + event.getMessage() + ".command")) {
+                    for (String line : plugin.cmdConfig.getStringList("commands." + message + ".command")) {
                         String modifiedCommand;
                         if (plugin.hasPlaceholderAPI) {
                             modifiedCommand = messages.putPAPI(player, line);
                         } else {
-                            modifiedCommand = line.replace("%player_name%", player.getName());
+                            modifiedCommand = line.replace("%player_name%", playerName);
                         }
                         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                     }
-                    for (String line : plugin.cmdConfig.getStringList("commands." + event.getMessage() + ".text")) {
+                    for (String line : plugin.cmdConfig.getStringList("commands." + playerName + ".text")) {
                         String modifiedText;
                         if (plugin.hasPlaceholderAPI) {
                             modifiedText = messages.putPAPI(player, line);
                         } else {
-                            modifiedText = line.replace("%player_name%", player.getName());
+                            modifiedText = line.replace("%player_name%", playerName);
                         }
                         player.sendMessage(strings.getColor(modifiedText));
                     }

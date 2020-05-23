@@ -29,36 +29,37 @@ public class OnPlayerJoin implements Listener {
 
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
+        final String playerName = player.getName();
         if (plugin.serverConfig.getBoolean("modules.experience")) {
-            if (!playerManager.playerXPExist(player.getName())) {
-                playerManager.playerXPCreate(player.getName());
+            if (!playerManager.playerXPExist(playerName)) {
+                playerManager.playerXPCreate(playerName);
             }
         }
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.put(player.getName(), System.currentTimeMillis());
-            if (!playerManager.playerProfileExist(player.getName())) {
-                playerManager.playerProfileCreate(player.getName());
+            vars.afktime.put(playerName, System.currentTimeMillis());
+            if (!playerManager.playerProfileExist(playerName)) {
+                playerManager.playerProfileCreate(playerName);
             }
         }
         if (plugin.serverConfig.getBoolean("modules.home")) {
-            if (!playerManager.playerHomeExist(player.getName())) {
-                playerManager.playerHomeCreate(player.getName());
+            if (!playerManager.playerHomeExist(playerName)) {
+                playerManager.playerHomeCreate(playerName);
             }
         }
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             checks.addUUIF(player);
-            vars.global.put(player.getName(), 0);
+            vars.global.put(playerName, 0);
             if (player.hasPermission("eternia.spy")) {
                 vars.spy.put(player, true);
             }
-            if (!vars.player_muted.containsKey(player.getName())) {
-                playerManager.checkMuted(player.getName());
+            if (!vars.player_muted.containsKey(playerName)) {
+                playerManager.checkMuted(playerName);
             }
 
         }
         event.setJoinMessage(null);
-        messages.BroadcastMessage("server.join", "%player_name%", player.getName());
+        messages.BroadcastMessage("server.join", "%player_name%", playerName);
     }
 
 }

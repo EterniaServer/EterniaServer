@@ -76,7 +76,7 @@ public class Others extends BaseCommand {
     @CommandAlias("resp|r|w|reply")
     @Syntax("<mensagem>")
     @CommandPermission("eternia.tell")
-    public void onResp(CommandSender sender, String[] msg) {
+    public void onResp(Player sender, String[] msg) {
         Player target = Bukkit.getPlayer(vars.tell.get(sender.getName()));
         if (target != null && target.isOnline()) {
             StringBuilder sb = new StringBuilder();

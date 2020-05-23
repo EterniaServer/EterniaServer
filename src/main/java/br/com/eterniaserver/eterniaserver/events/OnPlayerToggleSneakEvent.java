@@ -23,10 +23,9 @@ public class OnPlayerToggleSneakEvent implements Listener {
 
     @EventHandler
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        Player player = event.getPlayer();
+        if (event.isCancelled()) return;
+
+        final Player player = event.getPlayer();
         if (player.hasPermission("eternia.elevator") && plugin.serverConfig.getBoolean("modules.elevator") && !player.isSneaking()) {
             Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();

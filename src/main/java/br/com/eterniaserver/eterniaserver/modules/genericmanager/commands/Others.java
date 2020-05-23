@@ -158,7 +158,7 @@ public class Others extends BaseCommand {
         }
     }
 
-    @CommandAlias("blocks")
+    @CommandAlias("blocks|condenser")
     @CommandPermission("eternia.blocks")
     public void onBlocks(Player player) {
         int coal = 0, lapiz = 0, redstone = 0, iron = 0, gold = 0, diamond = 0, esmeralda = 0;

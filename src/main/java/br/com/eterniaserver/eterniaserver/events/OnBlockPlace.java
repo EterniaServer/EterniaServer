@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -25,19 +26,19 @@ public class OnBlockPlace implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        if (event.getBlock().getType() == Material.SPAWNER) {
+        if (event.isCancelled()) return;
+
+        final Block block = event.getBlock();
+        if (block.getType() == Material.SPAWNER) {
             if (plugin.serverConfig.getBoolean("modules.spawners")) {
-                ItemStack placed = event.getItemInHand();
-                ItemMeta meta = placed.getItemMeta();
+                final String name = event.getItemInHand().getI18NDisplayName();
                 EntityType entity;
+
                 try {
-                    if (meta != null) {
-                        String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
+                    if (name != null) {
+                        String entityName = ChatColor.stripColor(name).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
                         entity = EntityType.valueOf(entityName);
-                        CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
+                        CreatureSpawner spawner = (CreatureSpawner) block.getState();
                         spawner.setSpawnedType(entity);
                         spawner.update();
                         messages.sendConsole("spawners.log", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
@@ -47,6 +48,7 @@ public class OnBlockPlace implements Listener {
                 }
             }
         }
+
     }
 
 }

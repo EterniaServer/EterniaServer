@@ -33,16 +33,16 @@ public class OnPlayerMove implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        if (Objects.requireNonNull(event.getTo()).distanceSquared(event.getFrom()) != 0) {
-            Player player = event.getPlayer();
+        if (event.isCancelled()) return;
+
+        if (event.getTo().distanceSquared(event.getFrom()) != 0) {
+            final Player player = event.getPlayer();
+            final String playerName = player.getName();
             if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-                vars.afktime.put(player.getName(), System.currentTimeMillis());
-                if (vars.afk.contains(player.getName())) {
-                    vars.afk.remove(player.getName());
-                    messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
+                vars.afktime.put(playerName, System.currentTimeMillis());
+                if (vars.afk.contains(playerName)) {
+                    vars.afk.remove(playerName);
+                    messages.BroadcastMessage("text.afkd", "%player_name%", playerName);
                 }
             }
             if (event.getTo().getY() > event.getFrom().getY() && plugin.serverConfig.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {

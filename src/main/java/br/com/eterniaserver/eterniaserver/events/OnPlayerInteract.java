@@ -14,6 +14,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public class OnPlayerInteract implements Listener {
 
     private final EterniaServer plugin;
@@ -28,36 +30,32 @@ public class OnPlayerInteract implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (plugin.serverConfig.getBoolean("modules.home")) {
-            if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-                ItemStack is = e.getPlayer().getInventory().getItemInMainHand();
-                if (is.getType().equals(Material.COMPASS) && is.getItemMeta() != null && is.getItemMeta().getLore() != null) {
-                    Player player = e.getPlayer();
-                    String values = is.getItemMeta().getLore().get(0);
-                    String[] isso = values.split(":");
+        final Player player = e.getPlayer();
+        final Action action = e.getAction();
+
+        if (action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+            final ItemStack is = player.getInventory().getItemInMainHand();
+            final List<String> lore = is.getLore();
+
+            if (plugin.serverConfig.getBoolean("modules.home")) {
+                if (is.getType().equals(Material.COMPASS) && lore != null) {
+                    final String[] isso = lore.get(0).split(":");
                     final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
-                    if (vars.teleports.containsKey(player)) {
-                        messages.sendMessage("server.telep", player);
-                    } else {
-                        vars.teleports.put(player, new PlayerTeleport(player, location, "home.suc", plugin));
-                    }
+
+                    if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
+                    else vars.teleports.put(player, new PlayerTeleport(player, location, "home.suc", plugin));
                 }
             }
-        }
-        if (plugin.serverConfig.getBoolean("modules.experience")) {
-            if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-                ItemStack is = e.getPlayer().getInventory().getItemInMainHand();
-                if (is.getType().equals(Material.EXPERIENCE_BOTTLE) && is.getItemMeta() != null && is.getItemMeta().getLore() != null) {
-                    e.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                    e.getPlayer().giveExp(Integer.parseInt(is.getItemMeta().getLore().get(0)));
+            if (plugin.serverConfig.getBoolean("modules.experience")) {
+                if (is.getType().equals(Material.EXPERIENCE_BOTTLE) && lore != null) {
+                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                    player.giveExp(Integer.parseInt(lore.get(0)));
                 }
             }
         }
         if (plugin.serverConfig.getBoolean("modules.spawners")) {
-            if (e.getClickedBlock() != null && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getItem() != null && e.getClickedBlock().getType() == Material.SPAWNER) {
-                if (!e.getPlayer().hasPermission("eternia.change-spawner")) {
-                    e.setCancelled(true);
-                }
+            if (e.getClickedBlock() != null && action.equals(Action.RIGHT_CLICK_BLOCK) && e.getItem() != null && e.getClickedBlock().getType() == Material.SPAWNER) {
+                if (!player.hasPermission("eternia.change-spawner")) e.setCancelled(true);
             }
         }
     }

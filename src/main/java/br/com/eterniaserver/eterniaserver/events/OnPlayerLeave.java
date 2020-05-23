@@ -26,18 +26,21 @@ public class OnPlayerLeave implements Listener {
 
     @EventHandler
     public void OnLeave(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+
+        final Player player = event.getPlayer();
+        final String playerName = player.getName();
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.remove(player.getName());
+            vars.afktime.remove(playerName);
         }
         if (plugin.serverConfig.getBoolean("modules.chat")) {
-            checks.removeUUIF(event.getPlayer());
+            checks.removeUUIF(player);
             if (player.hasPermission("eternia.spy")) {
                 vars.spy.remove(player);
             }
         }
         event.setQuitMessage(null);
-        messages.BroadcastMessage("server.leave", "%player_name%", player.getName());
+        messages.BroadcastMessage("server.leave", "%player_name%", playerName);
+
     }
 
 }

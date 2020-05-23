@@ -29,10 +29,10 @@ public class OnBedEnter implements Listener {
             return;
         }
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
-            Player player = event.getPlayer();
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - checks.getCooldown(player.getName())) > 6) {
-                vars.bed_cooldown.put(player.getName(), System.currentTimeMillis());
-                messages.BroadcastMessage("bed.player-s", "%player_name%", player.getName());
+            final String playerName = event.getPlayer().getName();
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - checks.getCooldown(playerName)) > 6) {
+                vars.bed_cooldown.put(playerName, System.currentTimeMillis());
+                messages.BroadcastMessage("bed.player-s", "%player_name%", playerName);
             }
         }
     }

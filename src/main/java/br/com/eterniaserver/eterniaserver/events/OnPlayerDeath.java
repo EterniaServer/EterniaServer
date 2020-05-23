@@ -21,7 +21,7 @@ public class OnPlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (plugin.serverConfig.getBoolean("modules.teleports")) {
-            Player player = event.getEntity();
+            final Player player = event.getEntity();
             vars.back.put(player.getName(), player.getLocation());
         }
     }

@@ -27,19 +27,19 @@ public class OnInventoryClick implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.isCancelled()) {
-            return;
-        }
+        if (e.isCancelled()) return;
+
+        final Player player = (Player) e.getWhoClicked();
+        final String playerName = player.getName();
         if (plugin.serverConfig.getBoolean("spawners.prevent-anvil") && plugin.serverConfig.getBoolean("modules.spawners")) {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
-                Player player = (Player) e.getWhoClicked();
                 e.setCancelled(true);
                 messages.sendMessage("spawners.anvil", player);
-                messages.sendConsole("spawners.anvil-try", "%player_name%", player.getName());
+                messages.sendConsole("spawners.anvil-try", "%player_name%", playerName);
             }
         }
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.put(e.getWhoClicked().getName(), System.currentTimeMillis());
+            vars.afktime.put(playerName, System.currentTimeMillis());
         }
     }
 

@@ -12,7 +12,7 @@
 # for the player username.
 
 # IF YOU USE PlaceholderAPI you can set placeholders here.
-Blocks:
+blocks:
   "STONE":
     "0.1":
       - 'say Oi %player_name%!'

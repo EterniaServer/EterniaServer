@@ -14,6 +14,7 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.events.ChatEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -45,36 +46,28 @@ public class OnPlayerChat implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        if (e.isCancelled()) {
-            return;
-        }
-        if (e.getMessage().contains("yurinogueira")) {
-            Bukkit.getOnlinePlayers().forEach(player -> player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.A)));
-        }
-        if (e.getMessage().contains("Cobra")) {
-            Bukkit.getOnlinePlayers().forEach(player -> player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.B)));
-        }
-        if (e.getMessage().contains("Mates_CZ")) {
-            Bukkit.getOnlinePlayers().forEach(player -> player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G)));
-        }
+        if (e.isCancelled()) return;
+
+        final Player player = e.getPlayer();
+        final String playerName = player.getName();
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.put(e.getPlayer().getName(), System.currentTimeMillis());
+            vars.afktime.put(playerName, System.currentTimeMillis());
         }
         if (plugin.serverConfig.getBoolean("modules.chat")) {
-            if (plugin.chatMuted && !e.getPlayer().hasPermission("eternia.mute.bypass")) {
-                messages.sendMessage("chat.chatmuted", e.getPlayer());
+            if (plugin.chatMuted && !player.hasPermission("eternia.mute.bypass")) {
+                messages.sendMessage("chat.chatmuted", player);
                 e.setCancelled(true);
                 return;
             }
-            if (vars.player_muted.get(e.getPlayer().getName()) - System.currentTimeMillis() > 0) {
-                messages.sendMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(vars.player_muted.get(e.getPlayer().getName()) - System.currentTimeMillis()), e.getPlayer());
+            if (vars.player_muted.get(playerName) - System.currentTimeMillis() > 0) {
+                messages.sendMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(vars.player_muted.get(playerName) - System.currentTimeMillis()), player);
                 e.setCancelled(true);
                 return;
             }
             chatEvent.onPlayerChat(e);
-            if (e.isCancelled()) {
-                return;
-            }
+
+            if (e.isCancelled()) return;
+
             ChatMessage message = new ChatMessage(e.getMessage());
             cf.filter(e, message);
             c.filter(e, message);
