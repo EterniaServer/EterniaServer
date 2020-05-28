@@ -49,7 +49,9 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                         messages.sendMessage("server.nether-trap", "%cooldown%", vars.playersInPortal.get(player.getName()), player);
                     }
                 }
-            } else vars.playersInPortal.remove(player.getName());
+            } else {
+                vars.playersInPortal.remove(player.getName());
+            }
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - vars.afktime.get(player.getName())) >= plugin.serverConfig.getInt("server.afk-timer")) {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
                     if (!vars.afk.contains(player.getName()) && !player.hasPermission("eternia.nokickbyafksorrymates")) {

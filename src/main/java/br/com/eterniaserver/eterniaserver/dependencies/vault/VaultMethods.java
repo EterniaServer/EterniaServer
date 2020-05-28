@@ -237,18 +237,14 @@ public class VaultMethods implements Economy {
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        if (this.hasAccount(playerName)) {
-            return false;
-        }
+        if (this.hasAccount(playerName)) return false;
         playerManager.playerXPCreate(playerName);
         return true;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
-        if (this.hasAccount(player)) {
-            return false;
-        }
+        if (this.hasAccount(player)) return false;
         playerManager.playerXPCreate(player.getName());
         return true;
     }

@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.PlaceholderAPIIntegrator;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatObject;
@@ -28,9 +28,9 @@ public class ChatFormatter {
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
 		if (!vars.uufi.containsKey(p.getName())) return;
-		if(plugin.chatConfig.getBoolean("chat.autoUpdateGroups", false)) checks.addUUIF(p);
+		if (plugin.chatConfig.getBoolean("chat.autoUpdateGroups", false)) checks.addUUIF(p);
 		FormatInfo fi = vars.uufi.get(p.getName());
-		if(plugin.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
+		if (plugin.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
 			ChatObject msg = new ChatObject("%message%");
 			msg.setColor(ChatColor.getByChar(plugin.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));
 			String total = parse(p, plugin.groupConfig.getString(fi.getName() + ".format"));

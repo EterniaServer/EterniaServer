@@ -28,17 +28,16 @@ public class OnBlockPlace implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled()) return;
 
-        final Block block = event.getBlock();
-        if (block.getType() == Material.SPAWNER) {
+        if (event.getBlock().getType() == Material.SPAWNER) {
             if (plugin.serverConfig.getBoolean("modules.spawners")) {
-                final String name = event.getItemInHand().getI18NDisplayName();
+                ItemStack placed = event.getItemInHand();
+                ItemMeta meta = placed.getItemMeta();
                 EntityType entity;
-
                 try {
-                    if (name != null) {
-                        String entityName = ChatColor.stripColor(name).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
+                    if (meta != null) {
+                        String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
                         entity = EntityType.valueOf(entityName);
-                        CreatureSpawner spawner = (CreatureSpawner) block.getState();
+                        CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
                         spawner.setSpawnedType(entity);
                         spawner.update();
                         messages.sendConsole("spawners.log", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
@@ -48,7 +47,6 @@ public class OnBlockPlace implements Listener {
                 }
             }
         }
-
     }
 
 }

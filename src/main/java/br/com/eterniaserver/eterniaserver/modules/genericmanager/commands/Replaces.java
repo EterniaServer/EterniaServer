@@ -42,15 +42,14 @@ public class Replaces extends BaseCommand {
     @CommandAlias("profile|perfil")
     @CommandPermission("eternia.profile")
     public void onProfile(Player player) throws ParseException {
-        Date date = plugin.sdf.parse(vars.player_login.get(player.getName()));
+        final String playerName = player.getName();
+
+        Date date = plugin.sdf.parse(vars.player_login.get(playerName));
         messages.sendMessage("profile.data", "%player_register_data%", plugin.sdf.format(date), player);
         for (String line : plugin.msgConfig.getStringList("profile.custom")) {
             String modifiedText;
-            if (plugin.hasPlaceholderAPI) {
-                modifiedText = messages.putPAPI(player, line);
-            } else {
-                modifiedText = line.replace("%player_name%", player.getName());
-            }
+            if (plugin.hasPlaceholderAPI) modifiedText = messages.putPAPI(player, line);
+            else modifiedText = line.replace("%player_name%", playerName);
             player.sendMessage(strings.getColor(modifiedText));
         }
     }

@@ -3,3 +3,5 @@ target/
 .settings/
 .idea/
 .git/
+dependency-reduced-pom.xml
+renovate.json

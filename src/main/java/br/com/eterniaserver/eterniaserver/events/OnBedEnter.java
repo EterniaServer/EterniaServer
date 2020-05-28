@@ -2,9 +2,8 @@ package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -25,9 +24,8 @@ public class OnBedEnter implements Listener {
 
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
+        if (event.isCancelled()) return;
+
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             final String playerName = event.getPlayer().getName();
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - checks.getCooldown(playerName)) > 6) {

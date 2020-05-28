@@ -43,11 +43,8 @@ public class WarpSystem extends BaseCommand {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final Location location = teleportsManager.getWarp("spawn");
             if (target == null) {
-                if (vars.teleports.containsKey(player)) {
-                    messages.sendMessage("server.telep", player);
-                } else {
-                    vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
-                }
+                if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
+                else vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
             } else {
                 if (player.hasPermission("eternia.spawn.other")) {
                     PaperLib.teleportAsync(target.getPlayer(), location);
@@ -69,11 +66,8 @@ public class WarpSystem extends BaseCommand {
                final Location location = teleportsManager.getWarp("shop");
                if (player.hasPermission("eternia.warp.shop")) {
                    if (location != vars.error) {
-                       if (vars.teleports.containsKey(player)) {
-                           messages.sendMessage("server.telep", player);
-                       } else {
-                           vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
-                       }
+                       if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
+                       else vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
                    } else {
                        messages.sendMessage("warps.noexist", "%warp_name%", "shop", player);
                    }
@@ -83,11 +77,8 @@ public class WarpSystem extends BaseCommand {
            } else {
                final Location location = teleportsManager.getShop(target);
                if (location != vars.error) {
-                   if (vars.teleports.containsKey(player)) {
-                       messages.sendMessage("server.telep", player);
-                   } else {
-                       vars.teleports.put(player, new PlayerTeleport(player, location, "warps.shopp", plugin));
-                   }
+                   if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
+                   else vars.teleports.put(player, new PlayerTeleport(player, location, "warps.shopp", plugin));
                } else {
                    messages.sendMessage("warps.shopno", player);
                }
@@ -157,11 +148,8 @@ public class WarpSystem extends BaseCommand {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 final Location location = teleportsManager.getWarp(nome.toLowerCase());
                 if (location != vars.error) {
-                    if (vars.teleports.containsKey(player)) {
-                        messages.sendMessage("server.telep", player);
-                    } else {
-                        vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
-                    }
+                    if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
+                    else vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
                 } else {
                     messages.sendMessage("warps.noexist", "%warp_name%", nome, player);
                 }

@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.experiencemanager;
 import br.com.eterniaserver.eterniaserver.API.Exp;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands.*;
 import co.aikar.commands.PaperCommandManager;
 

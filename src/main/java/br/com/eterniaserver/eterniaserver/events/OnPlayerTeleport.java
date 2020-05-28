@@ -22,13 +22,12 @@ public class OnPlayerTeleport implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
+
         final Player player = event.getPlayer();
-        if (plugin.serverConfig.getBoolean("modules.teleports")) {
-            vars.back.put(player.getName(), player.getLocation());
-        }
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.put(player.getName(), System.currentTimeMillis());
-        }
+        if (plugin.serverConfig.getBoolean("modules.teleports")) vars.back.put(player.getName(), player.getLocation());
+
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) vars.afktime.put(player.getName(), System.currentTimeMillis());
+
     }
 
 }

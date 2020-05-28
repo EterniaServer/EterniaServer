@@ -29,7 +29,9 @@ public class RewardsManager {
         if (plugin.serverConfig.getBoolean("modules.rewards")) {
             File rwConfig = new File(plugin.getDataFolder(), "rewards.yml");
             if (!rwConfig.exists()) plugin.saveResource("rewards.yml", false);
+
             plugin.rewardsConfig = new YamlConfiguration();
+
             try {
                 plugin.rewardsConfig.load(rwConfig);
             } catch (IOException | InvalidConfigurationException e) {

@@ -4,16 +4,13 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.ChatFormatter;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.Colors;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.CustomPlaceholdersFilter;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.JsonSender;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.events.ChatEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.Instrument;
-import org.bukkit.Note;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -50,9 +47,9 @@ public class OnPlayerChat implements Listener {
 
         final Player player = e.getPlayer();
         final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.put(playerName, System.currentTimeMillis());
-        }
+
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) vars.afktime.put(playerName, System.currentTimeMillis());
+
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             if (plugin.chatMuted && !player.hasPermission("eternia.mute.bypass")) {
                 messages.sendMessage("chat.chatmuted", player);

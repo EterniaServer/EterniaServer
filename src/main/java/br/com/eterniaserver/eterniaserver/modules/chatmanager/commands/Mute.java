@@ -52,9 +52,7 @@ public class Mute extends BaseCommand {
         Date dataa = cal.getTime();
         final String date = plugin.sdf.format(dataa);
         StringBuilder sb = new StringBuilder();
-        for (String arg : message) {
-            sb.append(arg).append(" ");
-        }
+        for (String arg : message) sb.append(arg).append(" ");
         messages.BroadcastMessage("chat.mutebroad", "%player_name%", player.getName(), "%message%", sb);
         if (playerManager.registerMuted(target.getPlayer().getName())) {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';";
@@ -108,9 +106,7 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.MINUTE, time);
         final String date = plugin.sdf.format(cal.getTime());
         StringBuilder sb = new StringBuilder();
-        for (String arg : message) {
-            sb.append(arg).append(" ");
-        }
+        for (String arg : message) sb.append(arg).append(" ");
         messages.BroadcastMessage("chat.mutetbroad", "%player_name%", target.getPlayer().getName(), "%time%", time, "%message%", sb);
         if (vars.player_muted.containsKey(target.getPlayer().getName())) {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';";

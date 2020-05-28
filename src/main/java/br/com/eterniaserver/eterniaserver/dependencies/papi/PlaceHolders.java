@@ -50,17 +50,11 @@ public class PlaceHolders extends PlaceholderExpansion {
                 case 1:
                     return vars.player_login.getOrDefault(p.getName(), "Sem registro");
                 case 2:
-                    if (vars.afk.contains(p.getName())) {
-                        return plugin.serverConfig.getString("placeholders.afk");
-                    } else {
-                        return "";
-                    }
+                    if (vars.afk.contains(p.getName())) return plugin.serverConfig.getString("placeholders.afk");
+                    else return "";
                 case 3:
-                    if (vars.god.contains(p.getName())) {
-                        return plugin.serverConfig.getString("placeholders.godmode");
-                    } else {
-                        return "";
-                    }
+                    if (vars.god.contains(p.getName())) return plugin.serverConfig.getString("placeholders.godmode");
+                    else return "";
                 default:
                     return null;
             }

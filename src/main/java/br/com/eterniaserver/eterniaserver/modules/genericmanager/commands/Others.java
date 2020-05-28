@@ -72,9 +72,7 @@ public class Others extends BaseCommand {
                     ItemMeta meta = item.getItemMeta();
                     if (meta != null) {
                         StringBuilder sb = new StringBuilder();
-                        for (java.lang.String arg : nome) {
-                            sb.append(arg).append(" ");
-                        }
+                        for (java.lang.String arg : nome) sb.append(arg).append(" ");
                         meta.setDisplayName(strings.getColor(sb.toString()));
                         item.setItemMeta(meta);
                         player.getInventory().setItemInMainHand(item);
@@ -83,14 +81,10 @@ public class Others extends BaseCommand {
                     }
                 } else if (func.equals("lore")) {
                     ItemStack item = player.getInventory().getItemInMainHand();
-                    ItemMeta meta = item.getItemMeta();
-                    if (meta != null) {
+                    if (!item.isSimilar(new ItemStack(Material.AIR))) {
                         StringBuilder sb = new StringBuilder();
-                        for (java.lang.String arg : nome) {
-                            sb.append(arg).append(" ");
-                        }
-                        meta.setLore(Collections.singletonList(strings.getColor(sb.toString())));
-                        item.setItemMeta(meta);
+                        for (java.lang.String arg : nome) sb.append(arg).append(" ");
+                        item.setLore(Collections.singletonList(strings.getColor(sb.toString())));
                         player.getInventory().setItemInMainHand(item);
                     } else {
                         messages.sendMessage("other.noitem", player);
@@ -107,21 +101,26 @@ public class Others extends BaseCommand {
     @Syntax("<jogador>")
     @CommandPermission("eternia.god")
     public void onGod(Player player, @Optional OnlinePlayer target) {
+        final String playerName = player.getName();
+
         if (target != null) {
-            if (vars.god.contains(target.getPlayer().getName())) {
-                messages.sendMessage("simp.godd", target.getPlayer());
-                vars.god.remove(target.getPlayer().getName());
+            final Player targetP = target.getPlayer();
+            final String targetName = targetP.getName();
+
+            if (vars.god.contains(targetName)) {
+                messages.sendMessage("simp.godd", targetP);
+                vars.god.remove(targetName);
             } else {
-                messages.sendMessage("simp.gode", target.getPlayer());
-                vars.god.add(target.getPlayer().getName());
+                messages.sendMessage("simp.gode", targetP);
+                vars.god.add(targetName);
             }
         } else {
-            if (vars.god.contains(player.getName())) {
+            if (vars.god.contains(playerName)) {
                 messages.sendMessage("simp.godd", player);
-                vars.god.remove(player.getName());
+                vars.god.remove(playerName);
             } else {
                 messages.sendMessage("simp.gode", player);
-                vars.god.add(player.getName());
+                vars.god.add(playerName);
             }
         }
     }
@@ -148,10 +147,12 @@ public class Others extends BaseCommand {
             player.setFoodLevel(20);
             messages.sendMessage("other.feed", player);
         } else {
+            final Player targetP = target.getPlayer();
+
             if (player.hasPermission("eternia.feed.other")) {
-                target.getPlayer().setFoodLevel(20);
-                messages.sendMessage("other.feed-other", "%target_name%", target.getPlayer().getName(), player);
-                messages.sendMessage("other.other-feed", "%target_name%", player.getName(), target.getPlayer());
+                targetP.setFoodLevel(20);
+                messages.sendMessage("other.feed-other", "%target_name%", targetP.getName(), player);
+                messages.sendMessage("other.other-feed", "%target_name%", player.getName(), targetP);
             } else {
                 messages.sendMessage("server.no-perm", player);
             }
@@ -186,22 +187,22 @@ public class Others extends BaseCommand {
     @CommandAlias("afk")
     @CommandPermission("eternia.afk")
     public void onAFK(Player player) {
-        if (vars.afk.contains(player.getName())) {
-            messages.BroadcastMessage("text.afkd", "%player_name%", player.getName());
-            vars.afk.remove(player.getName());
+        final String playerName = player.getName();
+
+        if (vars.afk.contains(playerName)) {
+            messages.BroadcastMessage("text.afkd", "%player_name%", playerName);
+            vars.afk.remove(playerName);
         } else {
-            vars.afk.add(player.getName());
-            messages.BroadcastMessage("text.afke", "%player_name%", player.getName());
+            vars.afk.add(playerName);
+            messages.BroadcastMessage("text.afke", "%player_name%", playerName);
         }
     }
 
 
 
     private int checkItems(ItemStack item1, ItemStack item2) {
-        if (item1.isSimilar(item2) && item1.getItemMeta().getDisplayName().equals(item2.getItemMeta().getDisplayName())) {
-            return item1.getAmount();
-        }
-        return 0;
+        if (item1.isSimilar(item2) && item1.getItemMeta().getDisplayName().equals(item2.getItemMeta().getDisplayName())) return item1.getAmount();
+        else return 0;
     }
 
     private void convertItems(int items, Material material, Material block, Player player) {

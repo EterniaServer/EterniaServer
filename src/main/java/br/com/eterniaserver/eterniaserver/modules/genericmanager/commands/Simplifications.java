@@ -36,9 +36,11 @@ public class Simplifications extends BaseCommand {
     @CommandPermission("eternia.thor")
     public void onThor(Player player, @Optional OnlinePlayer target) {
         if (target != null) {
-            target.getPlayer().getWorld().strikeLightning(target.getPlayer().getLocation());
-            messages.sendMessage("simp.thor-other", "%target_name%", target.getPlayer().getName(), player);
-            messages.sendMessage("simp.other-thor", "%target_name%", player.getName(), target.getPlayer());
+            final Player targetP = target.getPlayer();
+
+            targetP.getWorld().strikeLightning(targetP.getLocation());
+            messages.sendMessage("simp.thor-other", "%target_name%", targetP.getName(), player);
+            messages.sendMessage("simp.other-thor", "%target_name%", player.getName(), targetP);
         } else {
             player.getWorld().strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
@@ -50,9 +52,7 @@ public class Simplifications extends BaseCommand {
     public void onSuicide(Player player, String[] args) {
         if (args.length >= 1) {
             StringBuilder sb = new StringBuilder();
-            for (java.lang.String arg : args) {
-                sb.append(arg).append(" ");
-            }
+            for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
             messages.BroadcastMessage("text.suicide", "%message%", sb.toString(), "%player_name%", player.getName());
         } else {

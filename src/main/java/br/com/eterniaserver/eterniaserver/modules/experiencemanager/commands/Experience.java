@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands;
 
 import br.com.eterniaserver.eterniaserver.API.Exp;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -50,9 +50,9 @@ public class Experience extends BaseCommand {
             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                meta.setLore(Collections.singletonList(String.valueOf(xp_want)));
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&eGarrafa de EXP&8]"));
                 item.setItemMeta(meta);
+                item.setLore(Collections.singletonList(String.valueOf(xp_want)));
             }
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
@@ -69,9 +69,11 @@ public class Experience extends BaseCommand {
     @Syntax("<level>")
     @CommandPermission("eternia.withdrawlvl")
     public void onWithdrawLevel(Player player, Integer level) {
+        final String playerName = player.getName();
+
         int xpla = checks.getXPForLevel(level);
-        if (expx.getExp(player.getName()) >= xpla) {
-            expx.removeExp(player.getName(), xpla);
+        if (expx.getExp(playerName) >= xpla) {
+            expx.removeExp(playerName, xpla);
             player.giveExp(xpla);
             messages.sendMessage("xp.withdraw", "%level%", player.getLevel(), player);
         } else {

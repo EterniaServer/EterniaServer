@@ -30,11 +30,7 @@ public class TeleportSystem extends BaseCommand {
     @CommandAlias("tpall|teleportall")
     @CommandPermission("eternia.tpall")
     public void onTeleportAll(Player player) {
-        for (Player other : Bukkit.getOnlinePlayers()) {
-            if (other != player) {
-                other.teleport(player);
-            }
-        }
+        for (Player other : Bukkit.getOnlinePlayers()) if (other != player) other.teleport(player);
         messages.sendMessage("teleport.all", player);
     }
 
@@ -60,9 +56,7 @@ public class TeleportSystem extends BaseCommand {
             messages.sendMessage("teleport.auto-deny", "%target_name%", vars.tpa_requests.get(player.getName()), player);
             Player target = Bukkit.getPlayer(vars.tpa_requests.get(player.getName()));
             vars.tpa_requests.remove(player.getName());
-            if (target != null && target.isOnline()) {
-                messages.sendMessage("teleport.deny", target);
-            }
+            if (target != null && target.isOnline()) messages.sendMessage("teleport.deny", target);
         } else {
             messages.sendMessage("teleport.noask", player);
         }
@@ -97,18 +91,12 @@ public class TeleportSystem extends BaseCommand {
             double money = moneyx.getMoney(player.getName());
             double valor = plugin.serverConfig.getInt("money.back");
             if (player.hasPermission("eternia.backfree") || !(plugin.serverConfig.getBoolean("modules.economy"))) {
-                if (vars.teleports.containsKey(player)) {
-                    messages.sendMessage("server.telep", player);
-                } else {
-                    vars.teleports.put(player, new PlayerTeleport(player, vars.back.get(player.getName()), "back.free", plugin));
-                }
+                if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
+                else vars.teleports.put(player, new PlayerTeleport(player, vars.back.get(player.getName()), "back.free", plugin));
             } else {
                 if (money >= valor) {
-                    if (vars.teleports.containsKey(player)) {
-                        messages.sendMessage("server.telep", player);
-                    } else {
-                        vars.teleports.put(player, new PlayerTeleport(player, vars.back.get(player.getName()), "back.nofree", plugin));
-                    }
+                    if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
+                    else vars.teleports.put(player, new PlayerTeleport(player, vars.back.get(player.getName()), "back.nofree", plugin));
                 } else {
                     messages.sendMessage("back.nomoney", "%money%", valor, player);
                 }

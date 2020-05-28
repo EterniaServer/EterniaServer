@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class Others extends BaseCommand {
 
     private final Messages messages;
@@ -77,23 +79,23 @@ public class Others extends BaseCommand {
     @Syntax("<mensagem>")
     @CommandPermission("eternia.tell")
     public void onResp(Player sender, String[] msg) {
-        Player target = Bukkit.getPlayer(vars.tell.get(sender.getName()));
-        if (target != null && target.isOnline()) {
-            StringBuilder sb = new StringBuilder();
-            for (String arg : msg) {
-                sb.append(arg).append(" ");
+        try {
+            Player target = Bukkit.getPlayer(vars.tell.get(sender.getName()));
+            if (target != null && target.isOnline()) {
+                StringBuilder sb = new StringBuilder();
+                for (String arg : msg) sb.append(arg).append(" ");
+                sb.substring(0, sb.length() - 1);
+                String s = sb.toString();
+                vars.tell.put(target.getName(), sender.getName());
+                messages.sendMessage("chat.toplayer", "%player_name%", sender.getName(), "%target_name%", target.getName(), "%message%", s, sender);
+                messages.sendMessage("chat.fromplayer", "%player_name%", target.getName(), "%target_name%", sender.getName(), "%message%", s, target);
+                for (Player p : vars.spy.keySet())
+                    if (vars.spy.get(p) && p != sender && p != target)
+                        p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &8" + sender.getName() + "->" + target.getName() + ": " + s));
+            } else {
+                messages.sendMessage("chat.rnaote", sender);
             }
-            sb.substring(0, sb.length() - 1);
-            String s = sb.toString();
-            vars.tell.put(target.getName(), sender.getName());
-            messages.sendMessage("chat.toplayer", "%player_name%", sender.getName(), "%target_name%", target.getName(), "%message%", s, sender);
-            messages.sendMessage("chat.fromplayer", "%player_name%", target.getName(), "%target_name%", sender.getName(), "%message%", s, target);
-            for (Player p : vars.spy.keySet()) {
-                if (vars.spy.get(p) && p != sender && p != target) {
-                    p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &7" + sender.getName() + "->" + target.getName() + ": " + s));
-                }
-            }
-        } else {
+        } catch (Exception e) {
             messages.sendMessage("chat.rnaote", sender);
         }
     }

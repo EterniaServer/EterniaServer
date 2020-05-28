@@ -53,7 +53,7 @@ public class OnBlockBreak implements Listener {
                         ItemStack item = new ItemStack(material);
                         ItemMeta meta = item.getItemMeta();
                         String mob = spawner.getSpawnedType().toString().replace("_", " ");
-                        final String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
+                        String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
                         if (meta != null) {
                             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + plugin.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
                             List<String> newLore = new ArrayList<>();
@@ -98,19 +98,17 @@ public class OnBlockBreak implements Listener {
             }
         }
         if (plugin.serverConfig.getBoolean("modules.block-reward")) {
-            if (plugin.serverConfig.contains("blocks." + material)) {
-                final ConfigurationSection cs = plugin.serverConfig.getConfigurationSection("blocks." + material);
+            if (plugin.serverConfig.contains("blocks." + material.name())) {
+                ConfigurationSection cs = plugin.serverConfig.getConfigurationSection("blocks." + material.name());
                 if (cs == null) return;
 
                 double choice = 1.1, current;
                 for (String chance : cs.getKeys(true)) {
                     current = Double.parseDouble(chance);
-                    if (current > new Random().nextDouble() && current < choice) {
-                        choice = current;
-                    }
+                    if (current > new Random().nextDouble() && current < choice) choice = current;
                 }
                 if (choice <= 1) {
-                    for (String command : plugin.blockConfig.getStringList("blocks." + material + "." + choice)) {
+                    for (String command : plugin.blockConfig.getStringList("blocks." + material.name() + "." + choice)) {
                         String modifiedCommand;
 
                         if (plugin.hasPlaceholderAPI) modifiedCommand = messages.putPAPI(player, command);

@@ -26,52 +26,72 @@ public class Gamemode extends BaseCommand {
     @Subcommand("survival|s|0|sobrevivencia")
     @Syntax("<jogador>")
     public void onSurvival(Player player, @Optional OnlinePlayer target) {
+        final String playerName = player.getName();
+
         if (target == null) {
             player.setGameMode(GameMode.SURVIVAL);
             messages.sendMessage("simp.gm","%gamemode%", "Sobrevivência", player);
         } else {
-            target.getPlayer().setGameMode(GameMode.SURVIVAL);
-            messages.sendMessage("simp.gm-other", "%gamemode%", "Sobrevivência", "%target_name%", player.getName(), target.getPlayer());
-            messages.sendMessage("simp.other-gm", "%target_name%", target.getPlayer().getName(), "%gamemode%", "Sobrevivência", player);
+            final Player targetP = target.getPlayer();
+            final String targetName = targetP.getName();
+
+            targetP.setGameMode(GameMode.SURVIVAL);
+            messages.sendMessage("simp.gm-other", "%gamemode%", "Sobrevivência", "%target_name%", playerName, targetP);
+            messages.sendMessage("simp.other-gm", "%target_name%", targetName, "%gamemode%", "Sobrevivência", player);
         }
     }
 
     @Subcommand("creative|c|1|criativo")
     @Syntax("<jogador>")
     public void onCreative(Player player, @Optional OnlinePlayer target) {
+        final String playerName = player.getName();
+
         if (target == null) {
             player.setGameMode(GameMode.CREATIVE);
             messages.sendMessage("simp.gm", "%gamemode%", "Criativo", player);
         } else {
-            target.getPlayer().setGameMode(GameMode.CREATIVE);
-            messages.sendMessage("simp.gm-other", "%gamemode%", "Criativo", "%target_name%", player.getName(), target.getPlayer());
-            messages.sendMessage("simp.other-gm", "%target_name%", target.getPlayer().getName(), "%gamemode%", "Criativo", player);
+            final Player targetP = target.getPlayer();
+            final String targetName = targetP.getName();
+
+            targetP.setGameMode(GameMode.CREATIVE);
+            messages.sendMessage("simp.gm-other", "%gamemode%", "Criativo", "%target_name%", playerName, targetP);
+            messages.sendMessage("simp.other-gm", "%target_name%", targetName, "%gamemode%", "Criativo", player);
         }
     }
 
     @Subcommand("adventure|a|2|aventura")
     @Syntax("<jogador>")
     public void onAdventure(Player player, @Optional OnlinePlayer target) {
+        final String playerName = player.getName();
+
         if (target == null) {
             player.setGameMode(GameMode.ADVENTURE);
             messages.sendMessage("simp.gm", "%gamemode%", "Aventura", player);
         } else {
-            target.getPlayer().setGameMode(GameMode.ADVENTURE);
-            messages.sendMessage("simp.gm-other", "%gamemode%", "Aventura", "%target_name%", player.getName(), target.getPlayer());
-            messages.sendMessage("simp.other-gm", "%target_name%", target.getPlayer().getName(), "%gamemode%", "Aventura", player);
+            final Player targetP = target.getPlayer();
+            final String targetName = targetP.getName();
+
+            targetP.setGameMode(GameMode.ADVENTURE);
+            messages.sendMessage("simp.gm-other", "%gamemode%", "Aventura", "%target_name%", playerName, targetP);
+            messages.sendMessage("simp.other-gm", "%target_name%", targetName, "%gamemode%", "Aventura", player);
         }
     }
 
     @Subcommand("spectator|spect|3|espectador")
     @Syntax("<jogador>")
     public void onSpectator(Player player, @Optional OnlinePlayer target) {
+        final String playerName = player.getName();
+
         if (target == null) {
             player.setGameMode(GameMode.SPECTATOR);
             messages.sendMessage("simp.gm", "%gamemode%", "Espectador", player);
         } else {
-            target.getPlayer().setGameMode(GameMode.SPECTATOR);
-            messages.sendMessage("simp.gm-other", "%gamemode%", "Espectador", "%target_name%", player.getName(), target.getPlayer());
-            messages.sendMessage("simp.other-gm", "%target_name%", target.getPlayer().getName(), "%gamemode%", "Espectador", player);
+            final Player targetP = target.getPlayer();
+            final String targetName = targetP.getName();
+
+            targetP.setGameMode(GameMode.SPECTATOR);
+            messages.sendMessage("simp.gm-other", "%gamemode%", "Espectador", "%target_name%", playerName, targetP);
+            messages.sendMessage("simp.other-gm", "%target_name%", targetName, "%gamemode%", "Espectador", player);
         }
     }
 

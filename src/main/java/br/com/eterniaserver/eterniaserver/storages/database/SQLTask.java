@@ -17,9 +17,7 @@ class SQLTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if(connections.isClosed()) {
-            return;
-        }
+        if(connections.isClosed()) return;
 
         try (Connection connection = connections.getConnection()){
             sqlCallBack.call(connection);

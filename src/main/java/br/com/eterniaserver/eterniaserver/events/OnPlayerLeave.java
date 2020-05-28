@@ -4,7 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,15 +29,13 @@ public class OnPlayerLeave implements Listener {
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.remove(playerName);
-        }
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) vars.afktime.remove(playerName);
+
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             checks.removeUUIF(player);
-            if (player.hasPermission("eternia.spy")) {
-                vars.spy.remove(player);
-            }
+            if (player.hasPermission("eternia.spy")) vars.spy.remove(player);
         }
+
         event.setQuitMessage(null);
         messages.BroadcastMessage("server.leave", "%player_name%", playerName);
 

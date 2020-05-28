@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
 
 import org.bukkit.entity.Player;
@@ -32,30 +32,20 @@ public class OnPlayerJoin implements Listener {
         final Player player = event.getPlayer();
         final String playerName = player.getName();
         if (plugin.serverConfig.getBoolean("modules.experience")) {
-            if (!playerManager.playerXPExist(playerName)) {
-                playerManager.playerXPCreate(playerName);
-            }
+            if (!playerManager.playerXPExist(playerName)) playerManager.playerXPCreate(playerName);
         }
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
             vars.afktime.put(playerName, System.currentTimeMillis());
-            if (!playerManager.playerProfileExist(playerName)) {
-                playerManager.playerProfileCreate(playerName);
-            }
+            if (!playerManager.playerProfileExist(playerName)) playerManager.playerProfileCreate(playerName);
         }
         if (plugin.serverConfig.getBoolean("modules.home")) {
-            if (!playerManager.playerHomeExist(playerName)) {
-                playerManager.playerHomeCreate(playerName);
-            }
+            if (!playerManager.playerHomeExist(playerName)) playerManager.playerHomeCreate(playerName);
         }
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             checks.addUUIF(player);
             vars.global.put(playerName, 0);
-            if (player.hasPermission("eternia.spy")) {
-                vars.spy.put(player, true);
-            }
-            if (!vars.player_muted.containsKey(playerName)) {
-                playerManager.checkMuted(playerName);
-            }
+            if (player.hasPermission("eternia.spy")) vars.spy.put(player, true);
+            if (!vars.player_muted.containsKey(playerName)) playerManager.checkMuted(playerName);
 
         }
         event.setJoinMessage(null);

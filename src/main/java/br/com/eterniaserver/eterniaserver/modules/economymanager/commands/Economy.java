@@ -52,12 +52,16 @@ public class Economy extends BaseCommand {
     @Syntax("<nome> <quantia>")
     @CommandPermission("eternia.pay")
     public void onPay(Player player, OnlinePlayer target, Double value) {
+        final String playerName = player.getName();
+        final Player targetP = target.getPlayer();
+        final String targetName = targetP.getName();
+
         if (!(target.getPlayer().equals(player))) {
-            if (moneyx.getMoney(player.getName()) >= value) {
-                moneyx.addMoney(target.getPlayer().getName(), value);
-                moneyx.removeMoney(player.getName(), value);
-                messages.sendMessage("eco.pay", "%amount%", value, "%target_name%", target.getPlayer().getName(), player);
-                messages.sendMessage("eco.pay-me", "%amount%", value, "%target_name%", player.getName(), target.getPlayer());
+            if (moneyx.getMoney(playerName) >= value) {
+                moneyx.addMoney(targetName, value);
+                moneyx.removeMoney(playerName, value);
+                messages.sendMessage("eco.pay", "%amount%", value, "%target_name%", targetName, player);
+                messages.sendMessage("eco.pay-me", "%amount%", value, "%target_name%", playerName, targetP);
             } else {
                 messages.sendMessage("eco.pay-nomoney", player);
             }

@@ -44,8 +44,10 @@ public class HomeSystem extends BaseCommand {
     @Syntax("<home>")
     @CommandPermission("eternia.delhome")
     public void onDelHome(Player player, String nome) {
-        if (homesManager.existHome(nome.toLowerCase(), player.getName())) {
-            homesManager.delHome(nome.toLowerCase(), player.getName());
+        final String playerName = player.getName();
+
+        if (homesManager.existHome(nome.toLowerCase(), playerName)) {
+            homesManager.delHome(nome.toLowerCase(), playerName);
             messages.sendMessage("home.del", player);
         } else {
             messages.sendMessage("home.no", player);

@@ -5,7 +5,7 @@ import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PAPI;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.events.*;

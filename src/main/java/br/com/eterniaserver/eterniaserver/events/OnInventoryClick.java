@@ -38,9 +38,7 @@ public class OnInventoryClick implements Listener {
                 messages.sendConsole("spawners.anvil-try", "%player_name%", playerName);
             }
         }
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.put(playerName, System.currentTimeMillis());
-        }
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) vars.afktime.put(playerName, System.currentTimeMillis());
     }
 
 }

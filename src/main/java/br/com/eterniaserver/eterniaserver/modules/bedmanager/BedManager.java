@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.bedmanager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.configs.methods.Checks;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.events.OnBedEnter;
 import br.com.eterniaserver.eterniaserver.events.OnBedLeave;
 import br.com.eterniaserver.eterniaserver.modules.bedmanager.tasks.AccelerateWorld;

@@ -34,10 +34,10 @@ public class OnPlayerToggleSneakEvent implements Listener {
                     final int max = plugin.serverConfig.getInt("elevator.max");
                     final int min = plugin.serverConfig.getInt("elevator.min");
                     block = block.getRelative(BlockFace.DOWN, min);
+
                     int i;
-                    for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.DOWN)) {
-                        --i;
-                    }
+                    for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.DOWN)) --i;
+
                     if (i > 0) {
                         Location location = player.getLocation();
                         location.setY((location.getY() - (double) max - 3.0D + (double) i) + 1);
