@@ -49,7 +49,7 @@ public class OnPlayerCommandPreProcessEvent implements Listener {
 
                         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                     }
-                    for (String line : plugin.cmdConfig.getStringList("commands." + playerName + ".text")) {
+                    for (String line : plugin.cmdConfig.getStringList("commands." + message + ".text")) {
                         String modifiedText;
 
                         if (plugin.hasPlaceholderAPI) modifiedText = messages.putPAPI(player, line);

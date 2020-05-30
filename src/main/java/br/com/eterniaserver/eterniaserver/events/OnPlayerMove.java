@@ -17,8 +17,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.Objects;
-
 public class OnPlayerMove implements Listener {
 
     private final EterniaServer plugin;

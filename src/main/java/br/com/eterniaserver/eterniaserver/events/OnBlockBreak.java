@@ -19,7 +19,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class OnBlockBreak implements Listener {
@@ -98,23 +97,28 @@ public class OnBlockBreak implements Listener {
             }
         }
         if (plugin.serverConfig.getBoolean("modules.block-reward")) {
-            if (plugin.serverConfig.contains("blocks." + material.name())) {
-                ConfigurationSection cs = plugin.serverConfig.getConfigurationSection("blocks." + material.name());
-                if (cs == null) return;
-
-                double choice = 1.1, current;
-                for (String chance : cs.getKeys(true)) {
-                    current = Double.parseDouble(chance);
-                    if (current > new Random().nextDouble() && current < choice) choice = current;
-                }
-                if (choice <= 1) {
-                    for (String command : plugin.blockConfig.getStringList("blocks." + material.name() + "." + choice)) {
-                        String modifiedCommand;
-
-                        if (plugin.hasPlaceholderAPI) modifiedCommand = messages.putPAPI(player, command);
-                        else modifiedCommand = command.replace("%player_name%", player.getName());
-
-                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+            if (plugin.blockConfig.contains("blocks." + material.name().toUpperCase())) {
+                ConfigurationSection cs = plugin.blockConfig.getConfigurationSection("blocks." + material.name().toUpperCase());
+                double randomNumber = new Random().nextDouble();
+                if (cs != null) {
+                    List<String> mainList = new ArrayList<>(cs.getKeys(true));
+                    double lowestNumberAboveRandom = 1.1;
+                    for (int i = 1; i < cs.getKeys(true).size(); i++) {
+                        double current = Double.parseDouble(mainList.get(i));
+                        if (current < lowestNumberAboveRandom && current > randomNumber) {
+                            lowestNumberAboveRandom = current;
+                        }
+                    }
+                    if (lowestNumberAboveRandom <= 1) {
+                        for (String command : plugin.blockConfig.getStringList("blocks." + material.name().toUpperCase() + "." + lowestNumberAboveRandom)) {
+                            String modifiedCommand;
+                            if (plugin.hasPlaceholderAPI) {
+                                modifiedCommand = messages.putPAPI(breakEvent.getPlayer(), command);
+                            } else {
+                                modifiedCommand = command.replace("%player_name%", breakEvent.getPlayer().getPlayerListName());
+                            }
+                            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+                        }
                     }
                 }
             }

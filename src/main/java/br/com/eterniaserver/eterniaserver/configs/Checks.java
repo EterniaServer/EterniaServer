@@ -32,12 +32,15 @@ public class Checks {
     public void addUUIF(Player p) {
         for (String s : plugin.groupConfig.getKeys(false)) {
             if(s.equals("groups")) continue;
-
             int priority = plugin.groupConfig.getInt(s + ".priority");
-
-            if (plugin.groupConfig.getString(s + ".perm").equals("") || p.hasPermission(plugin.groupConfig.getString(s + ".perm"))) {
-                if(vars.uufi.containsKey(p.getName())) if (vars.uufi.get(p.getName()).getPriority() < priority) vars.uufi.put(p.getName(), new FormatInfo(priority, s));
-                else vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+            if(Objects.requireNonNull(plugin.groupConfig.getString(s + ".perm")).equals("") || p.hasPermission(Objects.requireNonNull(plugin.groupConfig.getString(s + ".perm")))) {
+                if(vars.uufi.containsKey(p.getName())) {
+                    if(vars.uufi.get(p.getName()).getPriority() < priority) {
+                        vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+                    }
+                } else {
+                    vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+                }
             }
         }
     }
