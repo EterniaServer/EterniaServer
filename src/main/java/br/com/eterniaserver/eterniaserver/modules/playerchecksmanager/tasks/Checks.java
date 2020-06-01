@@ -72,7 +72,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                             messages.sendMessage(playerTeleport.getMessage(), player);
                             vars.teleports.remove(player);
                         } else {
-                            messages.sendMessage("teleport.timing", "%cooldown%", playerTeleport.getCountdown(), player);
+                            messages.sendMessage("teleport.tp-timing", "%cooldown%", playerTeleport.getCountdown(), player);
                             playerTeleport.decreaseCountdown();
                         }
                     } else {
