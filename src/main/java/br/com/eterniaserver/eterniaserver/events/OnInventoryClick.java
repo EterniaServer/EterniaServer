@@ -17,12 +17,10 @@ public class OnInventoryClick implements Listener {
 
     private final EterniaServer plugin;
     private final Messages messages;
-    private final Vars vars;
 
     public OnInventoryClick(EterniaServer plugin, Messages messages, Vars vars) {
         this.plugin = plugin;
         this.messages = messages;
-        this.vars = vars;
     }
 
     @EventHandler
