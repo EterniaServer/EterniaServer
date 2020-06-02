@@ -48,9 +48,9 @@ public class HomeSystem extends BaseCommand {
 
         if (homesManager.existHome(nome.toLowerCase(), playerName)) {
             homesManager.delHome(nome.toLowerCase(), playerName);
-            messages.sendMessage("home.del", player);
+            messages.sendMessage("home.deleted", player);
         } else {
-            messages.sendMessage("home.no", player);
+            messages.sendMessage("home.no-exists", player);
         }
     }
 
@@ -65,19 +65,19 @@ public class HomeSystem extends BaseCommand {
                     if (vars.teleports.containsKey(player)) {
                         messages.sendMessage("server.telep", player);
                     } else {
-                        vars.teleports.put(player, new PlayerTeleport(player, location, "home.suc", plugin));
+                        vars.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
                     }
                 } else {
-                    messages.sendMessage("home.noex", player);
+                    messages.sendMessage("home.no-exists", player);
                 }
             } else {
                 if (player.hasPermission("eternia.home.other")) {
                     Location location = homesManager.getHome(nome.toLowerCase(), target.getPlayer().getName());
                     if (location != vars.error) {
                         PaperLib.teleportAsync(player, location);
-                        messages.sendMessage("home.suc", player);
+                        messages.sendMessage("home.done", player);
                     } else {
-                        messages.sendMessage("home.noex", player);
+                        messages.sendMessage("home.no-exists", player);
                     }
                 } else {
                     messages.sendMessage("server.no-perm", player);
@@ -127,29 +127,33 @@ public class HomeSystem extends BaseCommand {
         if (nome.length() <= 8) {
             if (homesManager.canHome(player.getName()) < i) {
                 homesManager.setHome(player.getLocation(), nome.toLowerCase(), player.getName());
-                messages.sendMessage("home.def", player);
+                messages.sendMessage("home.created", player);
             } else {
                 if (homesManager.existHome(nome.toLowerCase(), player.getName())) {
                     homesManager.setHome(player.getLocation(), nome.toLowerCase(), player.getName());
-                    messages.sendMessage("home.def", player);
+                    messages.sendMessage("home.created", player);
                 } else {
                     ItemStack item = new ItemStack(Material.COMPASS);
                     ItemMeta meta = item.getItemMeta();
                     if (meta != null) {
                         final Location loc = player.getLocation();
-                        final String saveloc = loc.getWorld().getName() + ":" + ((int) loc.getX()) + ":" +
-                                ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
+                        final String saveloc = loc.getWorld().getName() +
+                                ":" + ((int) loc.getX()) +
+                                ":" + ((int) loc.getY()) +
+                                ":" + ((int) loc.getZ()) +
+                                ":" + ((int) loc.getYaw()) +
+                                ":" + ((int) loc.getPitch());
                         meta.setLore(Collections.singletonList(saveloc));
                         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&e" + nome.toLowerCase() + "&8]"));
                         item.setItemMeta(meta);
                     }
                     PlayerInventory inventory = player.getInventory();
                     inventory.addItem(item);
-                    messages.sendMessage("home.max", player);
+                    messages.sendMessage("home.limit", player);
                 }
             }
         } else {
-            messages.sendMessage("home.grand", player);
+            messages.sendMessage("home.exceeded", player);
         }
     }
 

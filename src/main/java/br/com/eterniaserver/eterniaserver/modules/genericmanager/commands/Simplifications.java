@@ -20,14 +20,14 @@ public class Simplifications extends BaseCommand {
     @CommandPermission("eternia.rain")
     public void onRain(Player player) {
         player.getWorld().setStorm(true);
-        messages.sendMessage("simp.weather", player);
+        messages.sendMessage("generic.simp.weather-changed", player);
     }
 
     @CommandAlias("sun|sol")
     @CommandPermission("eternia.sun")
     public void onSun(Player player) {
         player.getWorld().setStorm(false);
-        messages.sendMessage("simp.weather", player);
+        messages.sendMessage("generic.simp.weather-changed", player);
     }
 
     @CommandAlias("thor|lightning")
@@ -39,8 +39,8 @@ public class Simplifications extends BaseCommand {
             final Player targetP = target.getPlayer();
 
             targetP.getWorld().strikeLightning(targetP.getLocation());
-            messages.sendMessage("simp.thor-other", "%target_name%", targetP.getName(), player);
-            messages.sendMessage("simp.other-thor", "%target_name%", player.getName(), targetP);
+            messages.sendMessage("generic.simp.sent-lightning", "%target_name%", targetP.getName(), player);
+            messages.sendMessage("generic.simp.received-lightning", "%target_name%", player.getName(), targetP);
         } else {
             player.getWorld().strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
@@ -54,7 +54,7 @@ public class Simplifications extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            messages.BroadcastMessage("text.suicide", "%message%", sb.toString(), "%player_name%", player.getName());
+            messages.BroadcastMessage("generic.simp.suicide", "%message%", sb.toString(), "%player_name%", player.getName());
         } else {
             player.setHealth(0);
         }

@@ -46,21 +46,11 @@ public class RewardsManager {
 
 
     public void createKey(final String grupo, String key) {
-        final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement createKey = connection.prepareStatement(querie);
-            createKey.execute();
-            createKey.close();
-        }, true);
+        plugin.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
     }
 
     public void deleteKey(final String key) {
-        final String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement delKey = connection.prepareStatement(querie);
-            delKey.execute();
-            delKey.close();
-        }, true);
+        plugin.executeQuery("DELETE FROM " + plugin.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';");
     }
 
     public String existKey(final String key) {

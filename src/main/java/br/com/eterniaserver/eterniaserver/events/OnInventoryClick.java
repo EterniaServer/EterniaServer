@@ -32,8 +32,8 @@ public class OnInventoryClick implements Listener {
         if (plugin.serverConfig.getBoolean("spawners.prevent-anvil") && plugin.serverConfig.getBoolean("modules.spawners")) {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
                 e.setCancelled(true);
-                messages.sendMessage("spawners.anvil", player);
-                messages.sendConsole("spawners.anvil-try", "%player_name%", playerName);
+                messages.sendMessage("spawner.others.change-name", player);
+                messages.sendConsole("spawner.log.change-name", "%player_name%", playerName);
             }
         }
     }

@@ -8,84 +8,21 @@ public class Table {
 
     public Table(EterniaServer plugin) {
 
-        final String xp = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-xp") + " (player_name varchar(32), xp int(11));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement xpsql = connection.prepareStatement(xp);
-            xpsql.execute();
-            xpsql.close();
-        });
-
         if (plugin.serverConfig.getBoolean("sql.mysql")) {
-            final String money = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-money") + " (player_name varchar(32), balance double(22,4));";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement moneysql = connection.prepareStatement(money);
-                moneysql.execute();
-                moneysql.close();
-            });
+            plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-money") + " (player_name varchar(32), balance double(22,4));");
         } else {
-            final String money = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-money") + " (player_name varchar(32), balance double(22));";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement moneysql = connection.prepareStatement(money);
-                moneysql.execute();
-                moneysql.close();
-            });
+            plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-money") + " (player_name varchar(32), balance double(22));");
         }
 
-        final String warp = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-warp") + " (name varchar(16), location varchar(128));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement warpsql = connection.prepareStatement(warp);
-            warpsql.execute();
-            warpsql.close();
-        });
-
-        final String shop = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-shop") + " (name varchar(16), location varchar(128));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement shopsql = connection.prepareStatement(shop);
-            shopsql.execute();
-            shopsql.close();
-        });
-
-        final String home = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-home") + " (player_name varchar(16), homes varchar(255));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement homesql = connection.prepareStatement(home);
-            homesql.execute();
-            homesql.close();
-        });
-
-        final String homes = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-homes") + " (name varchar(32), location varchar(128));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement homessql = connection.prepareStatement(homes);
-            homessql.execute();
-            homessql.close();
-        });
-
-        final String kits = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-kits") + " (name varchar(32), cooldown varchar(16));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement kitssql = connection.prepareStatement(kits);
-            kitssql.execute();
-            kitssql.close();
-        });
-
-        final String player = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-player") + " (player_name varchar(16), time varchar(16));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement playersql = connection.prepareStatement(player);
-            playersql.execute();
-            playersql.close();
-        });
-
-        final String muted = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-muted") + " (player_name varchar(16), time varchar(16));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement mutedsql = connection.prepareStatement(muted);
-            mutedsql.execute();
-            mutedsql.close();
-        });
-
-        final String rewards = "CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-rewards") + " (code varchar(16), lalalala varchar(16));";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement rewardsql = connection.prepareStatement(rewards);
-            rewardsql.execute();
-            rewardsql.close();
-        });
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-xp") + " (player_name varchar(32), xp int(11));");
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-warp") + " (name varchar(16), location varchar(128));");
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-shop") + " (name varchar(16), location varchar(128));");
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-home") + " (player_name varchar(16), homes varchar(255));");
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-homes") + " (name varchar(32), location varchar(128));");
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-kits") + " (name varchar(32), cooldown varchar(16));");
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-player") + " (player_name varchar(16), time varchar(16));");
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-muted") + " (player_name varchar(16), time varchar(16));");
+        plugin.executeQuery("CREATE TABLE IF NOT EXISTS " + plugin.serverConfig.getString("sql.table-rewards") + " (code varchar(16), lalalala varchar(16));");
 
     }
 

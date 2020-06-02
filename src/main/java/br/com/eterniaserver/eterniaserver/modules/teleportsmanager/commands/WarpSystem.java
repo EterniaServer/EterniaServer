@@ -43,13 +43,21 @@ public class WarpSystem extends BaseCommand {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final Location location = teleportsManager.getWarp("spawn");
             if (target == null) {
-                if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
-                else vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
+                if (vars.teleports.containsKey(player)) {
+                    messages.sendMessage("server.telep", player);
+                } else {
+                    if (location != vars.error) vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
+                    else messages.sendMessage("teleport.spawn.no-exists", player);
+                }
             } else {
                 if (player.hasPermission("eternia.spawn.other")) {
-                    PaperLib.teleportAsync(target.getPlayer(), location);
-                    messages.sendMessage("warps.warp", "%warp_name%", "Spawn", player);
-                    messages.sendMessage("warps.spawn-other", "%target_name%", target.getPlayer().getName(), player);
+                    if (location != vars.error) {
+                        PaperLib.teleportAsync(target.getPlayer(), location);
+                        messages.sendMessage("teleport.warp.done", "%warp_name%", "Spawn", player);
+                        messages.sendMessage("teleport.spawn.tp-target", "%target_name%", target.getPlayer().getName(), player);
+                    } else {
+                        messages.sendMessage("teleport.spawn.no-exists", player);
+                    }
                 } else {
                     messages.sendMessage("server.no-perm", player);
                 }
@@ -67,9 +75,9 @@ public class WarpSystem extends BaseCommand {
                if (player.hasPermission("eternia.warp.shop")) {
                    if (location != vars.error) {
                        if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
-                       else vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
+                       else vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
                    } else {
-                       messages.sendMessage("warps.noexist", "%warp_name%", "shop", player);
+                       messages.sendMessage("teleport.warp.no-exists", "%warp_name%", "shop", player);
                    }
                } else {
                    messages.sendMessage("server.no-perm", player);
@@ -78,9 +86,9 @@ public class WarpSystem extends BaseCommand {
                final Location location = teleportsManager.getShop(target);
                if (location != vars.error) {
                    if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
-                   else vars.teleports.put(player, new PlayerTeleport(player, location, "warps.shopp", plugin));
+                   else vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.shop.done", plugin));
                } else {
-                   messages.sendMessage("warps.shopno", player);
+                   messages.sendMessage("teleport.shop.no-exists", player);
                }
            }
         });
@@ -90,14 +98,14 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.setspawn")
     public void onSetSpawn(Player player) {
         teleportsManager.setWarp(player.getLocation(), "spawn");
-        messages.sendMessage("warps.spawn-set", player);
+        messages.sendMessage("teleport.spawn.created", player);
     }
 
     @CommandAlias("setshop|setloja")
     @CommandPermission("eternia.setshop")
     public void onSetShop(Player player) {
         teleportsManager.setShop(player.getLocation(), player.getName().toLowerCase());
-        messages.sendMessage("warps.shopd", player);
+        messages.sendMessage("teleport.shop.created", player);
     }
 
     @CommandAlias("setwarp")
@@ -105,7 +113,7 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.setwarp")
     public void onSetWarp(Player player, String nome) {
         teleportsManager.setWarp(player.getLocation(), nome.toLowerCase());
-        messages.sendMessage("warps.createwarp", "%warp_name%", nome, player);
+        messages.sendMessage("teleport.warp.created", "%warp_name%", nome, player);
     }
 
     @CommandAlias("delwarp")
@@ -114,9 +122,9 @@ public class WarpSystem extends BaseCommand {
     public void onDelWarp(Player player, String nome) {
         if (teleportsManager.existWarp(nome.toLowerCase())) {
             teleportsManager.delWarp(nome.toLowerCase());
-            messages.sendMessage("warps.delwarp", player);
+            messages.sendMessage("teleport.warp.deleted", player);
         } else {
-            messages.sendMessage("warps.noexist", "%warp_name%", nome.toLowerCase(), player);
+            messages.sendMessage("teleport.warp.no-exists", "%warp_name%", nome.toLowerCase(), player);
         }
     }
 
@@ -136,7 +144,7 @@ public class WarpSystem extends BaseCommand {
                 resultSet.close();
                 getHome.close();
             });
-            messages.sendMessage("warps.list", "%warps%", strings.getColor(accounts.toString()), player);
+            messages.sendMessage("teleport.warp.list", "%warps%", strings.getColor(accounts.toString()), player);
         });
     }
 
@@ -149,9 +157,9 @@ public class WarpSystem extends BaseCommand {
                 final Location location = teleportsManager.getWarp(nome.toLowerCase());
                 if (location != vars.error) {
                     if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
-                    else vars.teleports.put(player, new PlayerTeleport(player, location, "warps.warp", plugin));
+                    else vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
                 } else {
-                    messages.sendMessage("warps.noexist", "%warp_name%", nome, player);
+                    messages.sendMessage("teleport.warp.no-exists", "%warp_name%", nome, player);
                 }
             });
         } else {

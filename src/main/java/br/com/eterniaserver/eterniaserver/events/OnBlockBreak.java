@@ -41,7 +41,7 @@ public class OnBlockBreak implements Listener {
         if (plugin.serverConfig.getBoolean("modules.spawners")) {
             if (material == Material.SPAWNER) {
                 if (plugin.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
-                    messages.sendMessage("spawners.block", player);
+                    messages.sendMessage("spawner.others.blocked", player);
                     breakEvent.setCancelled(true);
                     return;
                 }
@@ -68,14 +68,14 @@ public class OnBlockBreak implements Listener {
                         if (plugin.serverConfig.getDouble("spawners.drop-chance") != 1) {
                             double random = Math.random();
                             if (random >= plugin.serverConfig.getDouble("spawners.drop-chance")) {
-                                messages.sendMessage("spawners.no-drop", player);
+                                messages.sendMessage("spawner.others.failed", player);
                                 return;
                             }
                         }
                         if (plugin.serverConfig.getBoolean("spawners.drop-in-inventory")) {
                             if (player.getInventory().firstEmpty() == -1) {
                                 breakEvent.setCancelled(true);
-                                messages.sendMessage("spawners.invfull", player);
+                                messages.sendMessage("spawner.others.inv-full", player);
                                 return;
                             }
                             player.getInventory().addItem(item);
@@ -88,7 +88,7 @@ public class OnBlockBreak implements Listener {
                         breakEvent.setExpToDrop(0);
                     } else {
                         breakEvent.setCancelled(true);
-                        messages.sendMessage("spawners.no-silktouch", player);
+                        messages.sendMessage("spawner.others.need-silktouch", player);
                     }
                 } else {
                     breakEvent.setCancelled(true);

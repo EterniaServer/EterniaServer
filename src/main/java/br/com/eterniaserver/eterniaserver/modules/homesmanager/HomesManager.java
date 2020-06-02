@@ -10,10 +10,6 @@ import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.concurrent.atomic.AtomicReference;
-
 public class HomesManager {
 
     private final EterniaServer plugin;
@@ -46,30 +42,26 @@ public class HomesManager {
         if (!t) {
             result.append(home).append(":");
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement sethome = connection.prepareStatement(querie);
-                sethome.execute();
-                sethome.close();
-            }, true);
+            plugin.executeQuery(querie);
             values = result.toString().split(":");
             vars.home.put(jogador, values);
-            String saveloc = loc.getWorld().getName() + ":" + ((int) loc.getX()) + ":" +
-                    ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
+            String saveloc = loc.getWorld().getName() +
+                    ":" + ((int) loc.getX()) +
+                    ":" + ((int) loc.getY()) +
+                    ":" + ((int) loc.getZ()) +
+                    ":" + ((int) loc.getYaw()) +
+                    ":" + ((int) loc.getPitch());
             final String querie2 = "INSERT INTO " + plugin.serverConfig.getString("sql.table-homes") + " (name, location) VALUES ('" + home + "." + jogador + "', '" + saveloc + "')";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement sethome = connection.prepareStatement(querie2);
-                sethome.execute();
-                sethome.close();
-            }, true);
+            plugin.executeQuery(querie2);
         } else {
-            String saveloc = loc.getWorld().getName() + ":" + ((int) loc.getX()) + ":" +
-                    ((int) loc.getY()) + ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
+            String saveloc = loc.getWorld().getName() +
+                    ":" + ((int) loc.getX()) +
+                    ":" + ((int) loc.getY()) +
+                    ":" + ((int) loc.getZ()) +
+                    ":" + ((int) loc.getYaw()) +
+                    ":" + ((int) loc.getPitch());
             final String querie3 = "UPDATE " + plugin.serverConfig.getString("sql.table-homes") + " SET location='" + saveloc + "' WHERE name='" + home + "." + jogador + "';";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement sethome = connection.prepareStatement(querie3);
-                sethome.execute();
-                sethome.close();
-            }, true);
+            plugin.executeQuery(querie3);
         }
     }
 
@@ -86,27 +78,15 @@ public class HomesManager {
         }
         values = nova.toString().split(":");
         vars.home.put(jogador, values);
+        String querie;
         if (t) {
-            String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement delhome = connection.prepareStatement(querie);
-                delhome.execute();
-                delhome.close();
-            }, true);
+            querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
         } else {
-            String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement delhome = connection.prepareStatement(querie);
-                delhome.execute();
-                delhome.close();
-            }, true);
+            querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
         }
-        String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement delhome = connection.prepareStatement(querie);
-            delhome.execute();
-            delhome.close();
-        }, true);
+        plugin.executeQuery(querie);
+        querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
+        plugin.executeQuery(querie);
     }
 
     public Location getHome(String home, String jogador) {
@@ -115,17 +95,14 @@ public class HomesManager {
             loc = vars.homes.get(home + "." + jogador);
         } else {
             if (existHome(home, jogador)) {
-                AtomicReference<String> string = new AtomicReference<>("");
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
-                plugin.connections.executeSQLQuery(connection -> {
-                    PreparedStatement gethome = connection.prepareStatement(querie);
-                    ResultSet resultSet = gethome.executeQuery();
-                    if (resultSet.next() && resultSet.getString("location") != null) {
-                        string.set(resultSet.getString("location"));
-                    }
-                });
-                String[] values = string.toString().split(":");
-                loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), (Double.parseDouble(values[2]) + 1), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
+                String[] values = plugin.executeQueryString(querie, "location").get().split(":");
+                loc = new Location(Bukkit.getWorld(values[0]),
+                        Double.parseDouble(values[1]),
+                        (Double.parseDouble(values[2]) + 1),
+                        Double.parseDouble(values[3]),
+                        Float.parseFloat(values[4]),
+                        Float.parseFloat(values[5]));
                 vars.homes.put(home + "." + jogador, loc);
             }
         }
@@ -152,16 +129,7 @@ public class HomesManager {
         }
 
         final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + " WHERE player_name='" + jogador + "';";
-        AtomicReference<String> string = new AtomicReference<>("");
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement gethomes = connection.prepareStatement(querie);
-            ResultSet resultSet = gethomes.executeQuery();
-            if (resultSet.next() && resultSet.getString("homes") != null) {
-                string.set(resultSet.getString("homes"));
-            }
-        });
-
-        String[] homess = string.toString().split(":");
+        String[] homess = plugin.executeQueryString(querie, "homes").get().split(":");
         vars.home.put(jogador, homess);
         return homess;
     }

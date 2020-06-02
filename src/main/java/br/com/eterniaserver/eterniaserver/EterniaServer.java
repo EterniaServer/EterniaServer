@@ -38,7 +38,11 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class EterniaServer extends JavaPlugin {
 
@@ -193,6 +197,42 @@ public class EterniaServer extends JavaPlugin {
 
     private void bedManager() {
         new BedManager(this, messages, checks, vars);
+    }
+
+    public void executeQuery(final String query) {
+        connections.executeSQLQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.execute();
+            statement.close();
+        }, true);
+    }
+
+    public AtomicReference<String> executeQueryString(final String query, final String value) {
+        AtomicReference<String> result = new AtomicReference<>("");
+        connections.executeSQLQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next() && resultSet.getString(value) != null) {
+                result.set(resultSet.getString(value));
+            }
+            resultSet.close();
+            statement.close();
+        });
+        return result;
+    }
+
+    public AtomicBoolean executeQueryBoolean(final String query, final String value) {
+        AtomicBoolean result = new AtomicBoolean(false);
+        connections.executeSQLQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next() && resultSet.getString(value) != null) {
+                result.set(true);
+            }
+            resultSet.close();
+            statement.close();
+        });
+        return result;
     }
 
 }
