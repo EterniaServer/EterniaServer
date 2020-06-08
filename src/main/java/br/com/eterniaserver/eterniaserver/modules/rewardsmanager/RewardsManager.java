@@ -13,10 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class RewardsManager {
 
@@ -54,18 +51,8 @@ public class RewardsManager {
     }
 
     public String existKey(final String key) {
-        AtomicReference<String> grupo = new AtomicReference<>("no");
         final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-rewards")+ " WHERE code='" + key + "';";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement getKey = connection.prepareStatement(querie);
-            ResultSet resultSet = getKey.executeQuery();
-            if (resultSet.next() && resultSet.getString("code") != null) {
-                grupo.set(resultSet.getString("lalalala"));
-            }
-            resultSet.close();
-            getKey.close();
-        });
-        return grupo.get();
+        return plugin.executeQueryString(querie, "code", "lalalala").toString();
     }
 
     public void giveReward(String group, Player player) {

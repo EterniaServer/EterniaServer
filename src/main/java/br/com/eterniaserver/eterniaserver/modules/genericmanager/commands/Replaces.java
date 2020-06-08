@@ -68,8 +68,8 @@ public class Replaces extends BaseCommand {
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
-        messages.BroadcastMessage("replaces.mem", "%use_memory%", getRuntime.freemem, "%max_memory%", getRuntime.totalmem);
-        messages.BroadcastMessage("replaces.online", "%hours%", getRuntime.hours, "%minutes%", getRuntime.minutes, "%seconds%", getRuntime.seconds);
+        messages.broadcastMessage("replaces.mem", "%use_memory%", getRuntime.freemem, "%max_memory%", getRuntime.totalmem);
+        messages.broadcastMessage("replaces.online", "%hours%", getRuntime.hours, "%minutes%", getRuntime.minutes, "%seconds%", getRuntime.seconds);
     }
 
 } class GetRuntime {

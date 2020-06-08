@@ -18,7 +18,7 @@ public class BedManager {
                 plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin, messages, vars), 0L, plugin.serverConfig.getInt("server.checks") * 40);
             }
             plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(messages, checks, vars), plugin);
-            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(messages, checks, vars), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(checks, vars), plugin);
             messages.sendConsole("modules.enable", "%module%", "Bed");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Bed");

@@ -18,7 +18,7 @@ public class OnInventoryClick implements Listener {
     private final EterniaServer plugin;
     private final Messages messages;
 
-    public OnInventoryClick(EterniaServer plugin, Messages messages, Vars vars) {
+    public OnInventoryClick(EterniaServer plugin, Messages messages) {
         this.plugin = plugin;
         this.messages = messages;
     }
