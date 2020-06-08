@@ -5,8 +5,6 @@ import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class Checks {
 
     private final EterniaServer plugin;
@@ -33,7 +31,7 @@ public class Checks {
         for (String s : plugin.groupConfig.getKeys(false)) {
             if(s.equals("groups")) continue;
             int priority = plugin.groupConfig.getInt(s + ".priority");
-            if(Objects.requireNonNull(plugin.groupConfig.getString(s + ".perm")).equals("") || p.hasPermission(Objects.requireNonNull(plugin.groupConfig.getString(s + ".perm")))) {
+            if(plugin.groupConfig.getString(s + ".perm").equals("") || p.hasPermission(plugin.groupConfig.getString(s + ".perm"))) {
                 if(vars.uufi.containsKey(p.getName())) {
                     if(vars.uufi.get(p.getName()).getPriority() < priority) {
                         vars.uufi.put(p.getName(), new FormatInfo(priority, s));

@@ -13,10 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class RewardsManager {
 
@@ -46,36 +43,16 @@ public class RewardsManager {
 
 
     public void createKey(final String grupo, String key) {
-        final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement createKey = connection.prepareStatement(querie);
-            createKey.execute();
-            createKey.close();
-        }, true);
+        plugin.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
     }
 
     public void deleteKey(final String key) {
-        final String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement delKey = connection.prepareStatement(querie);
-            delKey.execute();
-            delKey.close();
-        }, true);
+        plugin.executeQuery("DELETE FROM " + plugin.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';");
     }
 
     public String existKey(final String key) {
-        AtomicReference<String> grupo = new AtomicReference<>("no");
         final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-rewards")+ " WHERE code='" + key + "';";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement getKey = connection.prepareStatement(querie);
-            ResultSet resultSet = getKey.executeQuery();
-            if (resultSet.next() && resultSet.getString("code") != null) {
-                grupo.set(resultSet.getString("lalalala"));
-            }
-            resultSet.close();
-            getKey.close();
-        });
-        return grupo.get();
+        return plugin.executeQueryString(querie, "code", "lalalala").toString();
     }
 
     public void giveReward(String group, Player player) {

@@ -41,7 +41,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                     Location player_location = player.getLocation();
                     if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
                         PaperLib.teleportAsync(player, teleportsManager.getWarp("spawn"));
-                        messages.sendMessage("warps.warp", player);
+                        messages.sendMessage("teleport.warp.done", player);
                     }
                 } else {
                     vars.playersInPortal.put(player.getName(), vars.playersInPortal.get(player.getName()) - 1);
@@ -55,11 +55,11 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - vars.afktime.get(player.getName())) >= plugin.serverConfig.getInt("server.afk-timer")) {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
                     if (!vars.afk.contains(player.getName()) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                        messages.BroadcastMessage("text.afkkick", "%player_name%", player.getName());
-                        Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer(strings.getMessage("server.afk-kick")));
+                        messages.broadcastMessage("generic.afk.broadcast-kicked", "%player_name%", player.getName());
+                        Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer(strings.getMessage("generic.afk.kicked")));
                     }
                 } else {
-                    messages.BroadcastMessage("text.afke", "%player_name%", player.getName());
+                    messages.broadcastMessage("generic.afk.enabled", "%player_name%", player.getName());
                     vars.afk.add(player.getName());
                 }
             }
@@ -72,11 +72,11 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                             messages.sendMessage(playerTeleport.getMessage(), player);
                             vars.teleports.remove(player);
                         } else {
-                            messages.sendMessage("teleport.timing", "%cooldown%", playerTeleport.getCountdown(), player);
+                            messages.sendMessage("teleport.tp.timing", "%cooldown%", playerTeleport.getCountdown(), player);
                             playerTeleport.decreaseCountdown();
                         }
                     } else {
-                        messages.sendMessage("warps.move", player);
+                        messages.sendMessage("teleport.tp.move", player);
                         vars.teleports.remove(player);
                     }
                 } else {

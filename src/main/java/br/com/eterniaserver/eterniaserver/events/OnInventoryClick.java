@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import org.bukkit.Material;
@@ -17,12 +16,10 @@ public class OnInventoryClick implements Listener {
 
     private final EterniaServer plugin;
     private final Messages messages;
-    private final Vars vars;
 
-    public OnInventoryClick(EterniaServer plugin, Messages messages, Vars vars) {
+    public OnInventoryClick(EterniaServer plugin, Messages messages) {
         this.plugin = plugin;
         this.messages = messages;
-        this.vars = vars;
     }
 
     @EventHandler
@@ -34,11 +31,10 @@ public class OnInventoryClick implements Listener {
         if (plugin.serverConfig.getBoolean("spawners.prevent-anvil") && plugin.serverConfig.getBoolean("modules.spawners")) {
             if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
                 e.setCancelled(true);
-                messages.sendMessage("spawners.anvil", player);
-                messages.sendConsole("spawners.anvil-try", "%player_name%", playerName);
+                messages.sendMessage("spawner.others.change-name", player);
+                messages.sendConsole("spawner.log.change-name", "%player_name%", playerName);
             }
         }
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) vars.afktime.put(playerName, System.currentTimeMillis());
     }
 
 }

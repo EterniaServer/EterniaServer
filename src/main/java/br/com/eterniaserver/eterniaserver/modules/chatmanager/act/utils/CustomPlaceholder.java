@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.configuration.ConfigurationSection;
 
 
+@SuppressWarnings("ALL")
 public class CustomPlaceholder {
 
 	final String id;

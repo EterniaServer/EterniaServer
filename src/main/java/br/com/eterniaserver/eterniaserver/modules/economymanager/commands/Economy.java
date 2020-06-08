@@ -10,10 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Economy extends BaseCommand {
@@ -75,17 +72,7 @@ public class Economy extends BaseCommand {
     public void onBaltop(CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
-            List<String> accounts = new ArrayList<>();
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement getbaltop = connection.prepareStatement(querie);
-                ResultSet resultSet = getbaltop.executeQuery();
-                while (resultSet.next()) {
-                    final String warpname = resultSet.getString("player_name");
-                    accounts.add(warpname);
-                }
-                resultSet.close();
-                getbaltop.close();
-            });
+            final List<String> accounts = plugin.executeQueryList(querie, "player_name");
             DecimalFormat df2 = new DecimalFormat(".##");
             messages.sendMessage("eco.baltop", sender);
             accounts.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));

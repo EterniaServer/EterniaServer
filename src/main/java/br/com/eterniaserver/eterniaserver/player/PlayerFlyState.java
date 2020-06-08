@@ -15,10 +15,10 @@ public class PlayerFlyState {
     public void changeFlyState(Player player) {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
-            messages.sendMessage("fly.disable", player);
+            messages.sendMessage("generic.others.fly-disabled", player);
         } else {
             player.setAllowFlight(true);
-            messages.sendMessage("fly.enable", player);
+            messages.sendMessage("generic.others.fly-enabled", player);
         }
     }
 

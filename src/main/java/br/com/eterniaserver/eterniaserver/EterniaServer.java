@@ -38,7 +38,13 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class EterniaServer extends JavaPlugin {
 
@@ -106,7 +112,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnBlockPlace(this, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnDamage(this, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnInventoryClick(this, messages, vars), this);
+        this.getServer().getPluginManager().registerEvents(new OnInventoryClick(this, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this, chatEvent, checks, vars, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this, messages, strings), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this, vars), this);
@@ -193,6 +199,61 @@ public class EterniaServer extends JavaPlugin {
 
     private void bedManager() {
         new BedManager(this, messages, checks, vars);
+    }
+
+    public List<String> executeQueryList(final String query, final String value) {
+        List<String> accounts = new ArrayList<>();
+        connections.executeSQLQuery(connection -> {
+            PreparedStatement getbaltop = connection.prepareStatement(query);
+            ResultSet resultSet = getbaltop.executeQuery();
+            while (resultSet.next()) {
+                final String warpname = resultSet.getString(value);
+                accounts.add(warpname);
+            }
+            resultSet.close();
+            getbaltop.close();
+        });
+        return accounts;
+    }
+
+    public void executeQuery(final String query) {
+        connections.executeSQLQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.execute();
+            statement.close();
+        }, true);
+    }
+
+    public AtomicReference<String> executeQueryString(final String query, final String value) {
+        return executeQueryString(query, value, value);
+    }
+
+    public AtomicReference<String> executeQueryString(final String query, final String value, final String value2) {
+        AtomicReference<String> result = new AtomicReference<>("");
+        connections.executeSQLQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next() && resultSet.getString(value) != null) {
+                result.set(resultSet.getString(value2));
+            }
+            resultSet.close();
+            statement.close();
+        });
+        return result;
+    }
+
+    public AtomicBoolean executeQueryBoolean(final String query, final String value) {
+        AtomicBoolean result = new AtomicBoolean(false);
+        connections.executeSQLQuery(connection -> {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next() && resultSet.getString(value) != null) {
+                result.set(true);
+            }
+            resultSet.close();
+            statement.close();
+        });
+        return result;
     }
 
 }

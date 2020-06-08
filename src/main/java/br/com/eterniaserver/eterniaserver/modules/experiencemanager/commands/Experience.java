@@ -36,7 +36,7 @@ public class Experience extends BaseCommand {
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(expx.getExp(player.getName()));
-        messages.sendMessage("xp.getxp", "%amount%", player.getLevel(), player);
+        messages.sendMessage("experience.check", "%amount%", player.getLevel(), player);
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -56,12 +56,12 @@ public class Experience extends BaseCommand {
             }
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
-            messages.sendMessage("xp.bottlexp", player);
+            messages.sendMessage("experience.bottleexp", player);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xp_real - xp_want);
         } else {
-            messages.sendMessage("xp.noxp", player);
+            messages.sendMessage("experience.insufficient", player);
         }
     }
 
@@ -75,9 +75,9 @@ public class Experience extends BaseCommand {
         if (expx.getExp(playerName) >= xpla) {
             expx.removeExp(playerName, xpla);
             player.giveExp(xpla);
-            messages.sendMessage("xp.withdraw", "%level%", player.getLevel(), player);
+            messages.sendMessage("experience.withdraw", "%level%", player.getLevel(), player);
         } else {
-            messages.sendMessage("xp.noxp", player);
+            messages.sendMessage("experience.insufficient", player);
         }
     }
 
@@ -90,12 +90,12 @@ public class Experience extends BaseCommand {
             int xp = checks.getXPForLevel(xpla);
             int xpto = checks.getXPForLevel(xp_atual);
             expx.addExp(player.getName(), xp);
-            messages.sendMessage("xp.deposit", "%amount%", xpla, player);
+            messages.sendMessage("experience.deposit", "%amount%", xpla, player);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);
         } else {
-            messages.sendMessage("xp.noxp", player);
+            messages.sendMessage("experience.insufficient", player);
         }
     }
 

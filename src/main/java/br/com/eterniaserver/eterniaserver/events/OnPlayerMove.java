@@ -40,7 +40,7 @@ public class OnPlayerMove implements Listener {
                 vars.afktime.put(playerName, System.currentTimeMillis());
                 if (vars.afk.contains(playerName)) {
                     vars.afk.remove(playerName);
-                    messages.BroadcastMessage("text.afkd", "%player_name%", playerName);
+                    messages.broadcastMessage("generic.afk.disabled", "%player_name%", playerName);
                 }
             }
             if (event.getTo().getY() > event.getFrom().getY() && plugin.serverConfig.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {

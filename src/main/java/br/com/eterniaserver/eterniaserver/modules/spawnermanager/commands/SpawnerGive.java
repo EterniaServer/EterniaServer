@@ -54,8 +54,8 @@ public class SpawnerGive extends BaseCommand {
                         }
                         item.setItemMeta(meta);
                         target.getPlayer().getInventory().addItem(item);
-                        messages.sendMessage("spawners.send", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", target.getPlayer().getName(), player);
-                        messages.sendMessage("spawners.receive", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", player.getName(), target.getPlayer());
+                        messages.sendMessage("spawner.give.sent", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", target.getPlayer().getName(), player);
+                        messages.sendMessage("spawner.give.received", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", player.getName(), target.getPlayer());
                     }
                 }
             } else {
@@ -68,7 +68,7 @@ public class SpawnerGive extends BaseCommand {
                 str.append(", ");
             }
             str.append("&7algumas entidades não funcionam");
-            messages.sendMessage("spawners.types", "%types%", str.toString(), player);
+            messages.sendMessage("spawner.give.types", "%types%", str.toString(), player);
         }
     }
 

@@ -4,10 +4,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.concurrent.atomic.AtomicReference;
-
 public class Money {
 
     private final EterniaServer plugin;
@@ -30,23 +26,18 @@ public class Money {
             return vars.balances.get(playerName);
         }
 
-        AtomicReference<Double> value = new AtomicReference<>(0.0);
+        double value;
+
         if (playerManager.playerMoneyExist(playerName)) {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " WHERE player_name='" + playerName + "';";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement get_balance = connection.prepareStatement(querie);
-                ResultSet resultSet = get_balance.executeQuery();
-                if (resultSet.next() && resultSet.getDouble("balance") != 0) {
-                    value.set(resultSet.getDouble("balance"));
-                }
-            });
+            value = Double.parseDouble(plugin.executeQueryString(querie, "balance").toString());
         } else {
             playerManager.playerMoneyCreate(playerName);
-            value.set(300.0);
+            value = 300.0;
         }
 
-        vars.balances.put(playerName, value.get());
-        return value.get();
+        vars.balances.put(playerName, value);
+        return value;
     }
 
     /**
@@ -67,12 +58,7 @@ public class Money {
     public void setMoney(String playerName, double amount) {
         if (playerManager.playerMoneyExist(playerName)) {
             vars.balances.put(playerName, amount);
-            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement setmoney = connection.prepareStatement(querie);
-                setmoney.execute();
-                setmoney.close();
-            }, true);
+            plugin.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
         } else {
             playerManager.playerMoneyCreate(playerName);
             setMoney(playerName, amount);

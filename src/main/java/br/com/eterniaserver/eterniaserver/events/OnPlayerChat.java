@@ -48,8 +48,6 @@ public class OnPlayerChat implements Listener {
         final Player player = e.getPlayer();
         final String playerName = player.getName();
 
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) vars.afktime.put(playerName, System.currentTimeMillis());
-
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             if (plugin.chatMuted && !player.hasPermission("eternia.mute.bypass")) {
                 messages.sendMessage("chat.chatmuted", player);

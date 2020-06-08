@@ -53,7 +53,7 @@ public class Inventory extends BaseCommand {
     public void onHat(Player player) {
         dropHelmet(player);
         setHelmet(player);
-        messages.sendMessage("other.helmet", player);
+        messages.sendMessage("generic.items.helmet", player);
     }
 
 

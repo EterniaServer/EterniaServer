@@ -30,7 +30,7 @@ public class OnBedEnter implements Listener {
             final String playerName = event.getPlayer().getName();
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - checks.getCooldown(playerName)) > 6) {
                 vars.bed_cooldown.put(playerName, System.currentTimeMillis());
-                messages.BroadcastMessage("bed.player-s", "%player_name%", playerName);
+                messages.broadcastMessage("bed.player-s", "%player_name%", playerName);
             }
         }
     }

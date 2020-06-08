@@ -8,16 +8,14 @@ import br.com.eterniaserver.eterniaserver.modules.kitsmanager.commands.*;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
 
 import co.aikar.commands.PaperCommandManager;
+
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class KitsManager {
 
@@ -55,19 +53,11 @@ public class KitsManager {
         if (playerManager.playerCooldownExist(jogador, kit)) {
             vars.kits_cooldown.put(kit + "." + jogador, data);
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-kits") + " SET cooldown='" + data + "' WHERE name='" + kit + "." + jogador + "';";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement putkit = connection.prepareStatement(querie);
-                putkit.execute();
-                putkit.close();
-            }, true);
+            plugin.executeQuery(querie);
         } else {
             vars.kits_cooldown.put(kit + "." + jogador, data);
             final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES ('" + kit + "." + jogador + "', '" + data + "');";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement putkit = connection.prepareStatement(querie);
-                putkit.execute();
-                putkit.close();
-            }, true);
+            plugin.executeQuery(querie);
         }
     }
 
@@ -76,22 +66,16 @@ public class KitsManager {
             return vars.kits_cooldown.get(kit + "." + jogador);
         }
 
-        AtomicReference<String> cooldown = new AtomicReference<>("");
+        String cooldown;
         if (playerManager.playerCooldownExist(jogador, kit)) {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement getkit = connection.prepareStatement(querie);
-                ResultSet resultSet = getkit.executeQuery();
-                if (resultSet.next() && resultSet.getString("cooldown") != null) {
-                    cooldown.set(resultSet.getString("cooldown"));
-                }
-            });
+            cooldown = plugin.executeQueryString(querie, "cooldown").get();
         } else {
-            cooldown.set("2020/01/01 00:00");
+            cooldown = "2020/01/01 00:00";
         }
 
-        vars.kits_cooldown.put(kit + "." + jogador, cooldown.get());
-        return cooldown.get();
+        vars.kits_cooldown.put(kit + "." + jogador, cooldown);
+        return cooldown;
     }
 
 }

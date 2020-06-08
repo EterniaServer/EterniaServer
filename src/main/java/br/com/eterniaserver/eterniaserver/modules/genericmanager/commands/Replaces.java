@@ -20,12 +20,14 @@ public class Replaces extends BaseCommand {
     private final Messages messages;
     private final Strings strings;
     private final Vars vars;
+    private final GetRuntime getRuntime;
 
     public Replaces(EterniaServer plugin, Messages messages, Strings strings, Vars vars) {
         this.plugin = plugin;
         this.messages = messages;
         this.strings = strings;
         this.vars = vars;
+        this.getRuntime = new GetRuntime();
     }
 
     @CommandAlias("speed")
@@ -35,7 +37,7 @@ public class Replaces extends BaseCommand {
             player.setFlySpeed((float) speed / 10);
             player.setWalkSpeed((float) speed / 10);
         } else {
-            messages.sendMessage("other.speed-no", player);
+            messages.sendMessage("generic.others.invalid", player);
         }
     }
 
@@ -45,8 +47,8 @@ public class Replaces extends BaseCommand {
         final String playerName = player.getName();
 
         Date date = plugin.sdf.parse(vars.player_login.get(playerName));
-        messages.sendMessage("profile.data", "%player_register_data%", plugin.sdf.format(date), player);
-        for (String line : plugin.msgConfig.getStringList("profile.custom")) {
+        messages.sendMessage("generic.profile.register", "%player_register_data%", plugin.sdf.format(date), player);
+        for (String line : plugin.msgConfig.getStringList("generic.profile.custom")) {
             String modifiedText;
             if (plugin.hasPlaceholderAPI) modifiedText = messages.putPAPI(player, line);
             else modifiedText = line.replace("%player_name%", playerName);
@@ -57,29 +59,35 @@ public class Replaces extends BaseCommand {
     @CommandAlias("mem|memory")
     @CommandPermission("eternia.mem")
     public void onMem(CommandSender player) {
-        Runtime r = Runtime.getRuntime();
-        long milliseconds = ManagementFactory.getRuntimeMXBean().getUptime();
-        long totalmem = r.totalMemory() / 1048576;
-        long freemem = totalmem - (r.freeMemory() / 1048576);
-        int seconds = (int) (milliseconds / 1000) % 60;
-        int minutes = (int) ((milliseconds / (1000*60)) % 60);
-        int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
-        messages.sendMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem, player);
-        messages.sendMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds, player);
+        getRuntime.recalculateRuntime();
+        messages.sendMessage("replaces.mem", "%use_memory%", getRuntime.freemem, "%max_memory%", getRuntime.totalmem, player);
+        messages.sendMessage("replaces.online", "%hours%", getRuntime.hours, "%minutes%", getRuntime.minutes, "%seconds%", getRuntime.seconds, player);
     }
 
     @CommandAlias("memall|memoryall")
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
-        Runtime r = Runtime.getRuntime();
+        getRuntime.recalculateRuntime();
+        messages.broadcastMessage("replaces.mem", "%use_memory%", getRuntime.freemem, "%max_memory%", getRuntime.totalmem);
+        messages.broadcastMessage("replaces.online", "%hours%", getRuntime.hours, "%minutes%", getRuntime.minutes, "%seconds%", getRuntime.seconds);
+    }
+
+} class GetRuntime {
+
+    public long freemem;
+    public long totalmem;
+    public int seconds;
+    public int minutes;
+    public int hours;
+
+    public void recalculateRuntime() {
+        Runtime runtime = Runtime.getRuntime();
         long milliseconds = ManagementFactory.getRuntimeMXBean().getUptime();
-        long totalmem = r.totalMemory() / 1048576;
-        long freemem = totalmem - (r.freeMemory() / 1048576);
-        int seconds = (int) (milliseconds / 1000) % 60;
-        int minutes = (int) ((milliseconds / (1000*60)) % 60);
-        int hours   = (int) ((milliseconds / (1000*60*60)) % 24);
-        messages.BroadcastMessage("replaces.mem", "%use_memory%", freemem, "%max_memory%", totalmem);
-        messages.BroadcastMessage("replaces.online", "%hours%", hours, "%minutes%", minutes, "%seconds%", seconds);
+        totalmem = runtime.totalMemory() / 1048576;
+        freemem = totalmem - (runtime.freeMemory() / 1048576);
+        seconds = (int) (milliseconds / 1000) % 60;
+        minutes = (int) ((milliseconds / (1000*60)) % 60);
+        hours   = (int) ((milliseconds / (1000*60*60)) % 24);
     }
 
 }

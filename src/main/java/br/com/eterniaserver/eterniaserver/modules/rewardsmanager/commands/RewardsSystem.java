@@ -33,7 +33,7 @@ public class RewardsSystem extends BaseCommand {
             rewardsManager.giveReward(grupo, player);
             rewardsManager.deleteKey(key);
         } else {
-            messages.sendMessage("rewards.invalid", player);
+            messages.sendMessage("reward.invalid", player);
         }
     }
 
@@ -45,9 +45,9 @@ public class RewardsSystem extends BaseCommand {
             Random rand = new Random();
             final String key = Long.toHexString(rand.nextLong());
             rewardsManager.createKey(reward, key);
-            messages.sendMessage("rewards.keys", "%key%", key, sender);
+            messages.sendMessage("reward.created", "%key%", key, sender);
         } else {
-            messages.sendMessage("rewards.no-reward", "%group%", reward, sender);
+            messages.sendMessage("reward.no-exists", "%group%", reward, sender);
         }
     }
 

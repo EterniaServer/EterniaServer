@@ -39,7 +39,7 @@ public class OnBlockPlace implements Listener {
                         CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
                         spawner.setSpawnedType(entity);
                         spawner.update();
-                        messages.sendConsole("spawners.log", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
+                        messages.sendConsole("spawner.log.placed", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
                     }
                 } catch (NullPointerException|IllegalArgumentException e) {
                     e.printStackTrace();

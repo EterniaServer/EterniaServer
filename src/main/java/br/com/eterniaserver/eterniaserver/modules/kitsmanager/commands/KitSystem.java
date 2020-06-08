@@ -33,7 +33,7 @@ public class KitSystem extends BaseCommand {
     @CommandAlias("kits")
     @CommandPermission("eternia.kits")
     public void onKits(Player player) {
-        messages.sendMessage("kits.kits", "%kits%", strings.getColor(plugin.kitConfig.getString("kits.nameofkits")), player);
+        messages.sendMessage("kit.list", "%kits%", strings.getColor(plugin.kitConfig.getString("kits.nameofkits")), player);
     }
 
     @CommandAlias("kit")
@@ -69,16 +69,16 @@ public class KitSystem extends BaseCommand {
                         }
                         kitsManager.setKitCooldown(player.getName(), kit);
                     } else {
-                        messages.sendMessage("kits.cooldown", "%cooldown%", (((millis / 1000) + plugin.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
+                        messages.sendMessage("server.timing", "%cooldown%", (((millis / 1000) + plugin.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             } else {
-                messages.sendMessage("kits.no-perm", "%kit_name%", kit, player);
+                messages.sendMessage("server.no-perm", "%kit_name%", kit, player);
             }
         } else {
-            messages.sendMessage("kits.noexist", "%kit_name%", kit, player);
+            messages.sendMessage("kit.no-exists", "%kit_name%", kit, player);
         }
     }
 
