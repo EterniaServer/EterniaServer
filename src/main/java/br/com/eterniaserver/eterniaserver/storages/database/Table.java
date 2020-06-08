@@ -2,8 +2,6 @@ package br.com.eterniaserver.eterniaserver.storages.database;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import java.sql.PreparedStatement;
-
 public class Table {
 
     public Table(EterniaServer plugin) {

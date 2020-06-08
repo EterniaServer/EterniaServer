@@ -37,7 +37,7 @@ public class OnPlayerLeave implements Listener {
         }
 
         event.setQuitMessage(null);
-        messages.BroadcastMessage("server.leave", "%player_name%", playerName);
+        messages.broadcastMessage("server.leave", "%player_name%", playerName);
 
     }
 

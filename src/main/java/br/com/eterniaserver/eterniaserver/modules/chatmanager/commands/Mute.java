@@ -34,10 +34,10 @@ public class Mute extends BaseCommand {
     public void muteChannels(CommandSender sender) {
         if (plugin.chatMuted) {
             plugin.chatMuted = false;
-            messages.BroadcastMessage("chat.cm-d", "%player_name%", sender.getName());
+            messages.broadcastMessage("chat.cm-d", "%player_name%", sender.getName());
         } else {
             plugin.chatMuted = true;
-            messages.BroadcastMessage("chat.cm-e", "%player_name%", sender.getName());
+            messages.broadcastMessage("chat.cm-e", "%player_name%", sender.getName());
         }
     }
 
@@ -53,7 +53,7 @@ public class Mute extends BaseCommand {
         final String date = plugin.sdf.format(dataa);
         StringBuilder sb = new StringBuilder();
         for (String arg : message) sb.append(arg).append(" ");
-        messages.BroadcastMessage("chat.mutebroad", "%player_name%", player.getName(), "%message%", sb);
+        messages.broadcastMessage("chat.mutebroad", "%player_name%", player.getName(), "%message%", sb);
         if (playerManager.registerMuted(target.getPlayer().getName())) {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';";
             plugin.connections.executeSQLQuery(connection -> {
@@ -78,7 +78,7 @@ public class Mute extends BaseCommand {
     @CommandPermission("eternia.unmute")
     public void onUnMute(OnlinePlayer target) {
         vars.player_muted.put(target.getPlayer().getName(), System.currentTimeMillis());
-        messages.BroadcastMessage("chat.unmutebroad", "%player_name%", target.getPlayer().getName());
+        messages.broadcastMessage("chat.unmutebroad", "%player_name%", target.getPlayer().getName());
         if (playerManager.registerMuted(target.getPlayer().getName())) {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';";
             plugin.connections.executeSQLQuery(connection -> {
@@ -107,7 +107,7 @@ public class Mute extends BaseCommand {
         final String date = plugin.sdf.format(cal.getTime());
         StringBuilder sb = new StringBuilder();
         for (String arg : message) sb.append(arg).append(" ");
-        messages.BroadcastMessage("chat.mutetbroad", "%player_name%", target.getPlayer().getName(), "%time%", time, "%message%", sb);
+        messages.broadcastMessage("chat.mutetbroad", "%player_name%", target.getPlayer().getName(), "%time%", time, "%message%", sb);
         if (vars.player_muted.containsKey(target.getPlayer().getName())) {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';";
             plugin.connections.executeSQLQuery(connection -> {

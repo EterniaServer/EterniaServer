@@ -54,7 +54,7 @@ public class Simplifications extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            messages.BroadcastMessage("generic.simp.suicide", "%message%", sb.toString(), "%player_name%", player.getName());
+            messages.broadcastMessage("generic.simp.suicide", "%message%", sb.toString(), "%player_name%", player.getName());
         } else {
             player.setHealth(0);
         }

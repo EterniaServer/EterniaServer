@@ -110,7 +110,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnBlockPlace(this, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnDamage(this, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnInventoryClick(this, messages, vars), this);
+        this.getServer().getPluginManager().registerEvents(new OnInventoryClick(this, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this, chatEvent, checks, vars, messages), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this, messages, strings), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this, vars), this);
@@ -208,12 +208,16 @@ public class EterniaServer extends JavaPlugin {
     }
 
     public AtomicReference<String> executeQueryString(final String query, final String value) {
+        return executeQueryString(query, value, value);
+    }
+
+    public AtomicReference<String> executeQueryString(final String query, final String value, final String value2) {
         AtomicReference<String> result = new AtomicReference<>("");
         connections.executeSQLQuery(connection -> {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next() && resultSet.getString(value) != null) {
-                result.set(resultSet.getString(value));
+                result.set(resultSet.getString(value2));
             }
             resultSet.close();
             statement.close();

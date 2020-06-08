@@ -49,7 +49,7 @@ public class OnPlayerJoin implements Listener {
 
         }
         event.setJoinMessage(null);
-        messages.BroadcastMessage("server.join", "%player_name%", playerName);
+        messages.broadcastMessage("server.join", "%player_name%", playerName);
     }
 
 }

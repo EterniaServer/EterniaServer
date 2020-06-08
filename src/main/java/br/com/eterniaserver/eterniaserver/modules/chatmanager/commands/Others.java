@@ -31,9 +31,7 @@ public class Others extends BaseCommand {
     @CommandAlias("broadcast|advice|aviso")
     @CommandPermission("eternia.advice")
     public void onBroadcast(String[] message) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : message) sb.append(arg).append(" ");
-        messages.BroadcastMessage("chat.global-advice", "%advice%", strings.getColor(sb.substring(0, sb.length() - 1)));
+        messages.broadcastMessage("chat.global-advice", "%advice%", strings.getColor(getMessage(message)));
     }
 
     @CommandAlias("spy|socialspy")
@@ -77,23 +75,10 @@ public class Others extends BaseCommand {
     @Syntax("<mensagem>")
     @CommandPermission("eternia.tell")
     public void onResp(Player sender, String[] msg) {
-        try {
-            Player target = Bukkit.getPlayer(vars.tell.get(sender.getName()));
-            if (target != null && target.isOnline()) {
-                StringBuilder sb = new StringBuilder();
-                for (String arg : msg) sb.append(arg).append(" ");
-                sb.substring(0, sb.length() - 1);
-                String s = sb.toString();
-                vars.tell.put(target.getName(), sender.getName());
-                messages.sendMessage("chat.toplayer", "%player_name%", sender.getName(), "%target_name%", target.getName(), "%message%", s, sender);
-                messages.sendMessage("chat.fromplayer", "%player_name%", target.getName(), "%target_name%", sender.getName(), "%message%", s, target);
-                for (Player p : vars.spy.keySet())
-                    if (vars.spy.get(p) && p != sender && p != target)
-                        p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &8" + sender.getName() + "->" + target.getName() + ": " + s));
-            } else {
-                messages.sendMessage("chat.rnaote", sender);
-            }
-        } catch (Exception e) {
+        final Player target = Bukkit.getPlayer(vars.tell.get(sender.getName()));
+        if (target != null && target.isOnline()) {
+            sendPrivate(sender, target.getPlayer(), getMessage(msg));
+        } else {
             messages.sendMessage("chat.rnaote", sender);
         }
     }
@@ -103,20 +88,26 @@ public class Others extends BaseCommand {
     @CommandCompletion("@players Oi.")
     @CommandPermission("eternia.tell")
     public void onTell(CommandSender player, OnlinePlayer target, String[] msg) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : msg) {
-            sb.append(arg).append(" ");
-        }
-        sb.substring(0, sb.length() - 1);
-        String s = sb.toString();
-        vars.tell.put(target.getPlayer().getName(), player.getName());
-        messages.sendMessage("chat.toplayer", "%player_name%", player.getName(), "%target_name%", target.getPlayer().getName(), "%message%", s, player);
-        messages.sendMessage("chat.fromplayer", "%player_name%", target.getPlayer().getName(), "%target_name%", player.getName(), "%message%", s, target.getPlayer());
+        sendPrivate(player, target.getPlayer(), getMessage(msg));
+    }
+
+    private void sendPrivate(final CommandSender player, final Player target, final String s) {
+        final String targetName = target.getName();
+        final String playerName = player.getName();
+        vars.tell.put(targetName, playerName);
+        messages.sendMessage("chat.toplayer", "%player_name%", playerName, "%target_name%", targetName, "%message%", s, player);
+        messages.sendMessage("chat.fromplayer", "%player_name%", targetName, "%target_name%", playerName, "%message%", s, target);
         for (Player p : vars.spy.keySet()) {
-            if (vars.spy.get(p) && p != player && p != target.getPlayer()) {
-                p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &8" + player.getName() + "->" + target.getPlayer().getName() + ": " + s));
+            if (vars.spy.get(p) && p != player && p != target) {
+                p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &8" + playerName + "->" + targetName + ": " + s));
             }
         }
+    }
+
+    private String getMessage(String[] message) {
+        StringBuilder sb = new StringBuilder();
+        for (String arg : message) sb.append(arg).append(" ");
+        return sb.substring(0, sb.length() - 1);
     }
 
 }
