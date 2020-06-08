@@ -10,19 +10,12 @@ import br.com.eterniaserver.eterniaserver.dependencies.papi.PAPI;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.events.*;
 import br.com.eterniaserver.eterniaserver.modules.*;
-import br.com.eterniaserver.eterniaserver.modules.bedmanager.BedManager;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.ChatManager;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.Local;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.Staff;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.events.ChatEvent;
-import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
-import br.com.eterniaserver.eterniaserver.modules.experiencemanager.ExperienceManager;
-import br.com.eterniaserver.eterniaserver.modules.genericmanager.GenericManager;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.KitsManager;
-import br.com.eterniaserver.eterniaserver.modules.playerchecksmanager.PlayerChecksManager;
 import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.RewardsManager;
-import br.com.eterniaserver.eterniaserver.modules.spawnermanager.SpawnersManager;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
@@ -91,19 +84,10 @@ public class EterniaServer extends JavaPlugin {
         files.loadMessages();
         files.loadDatabase();
 
-        bedManager();
-        blockRewardManager();
-        chatManager();
-        commandsManager();
-        economyManager();
-        elevatorManager();
-        experienceManager();
-        genericManager();
+        loadManagers();
         homesManager();
         kitsManager();
         teleportsManager();
-        playerChecksManager();
-        spawnersManager();
         rewardsManager();
 
         placeholderAPIHook();
@@ -149,14 +133,6 @@ public class EterniaServer extends JavaPlugin {
         new PAPI(this, messages, placeHolders);
     }
 
-    private void spawnersManager() {
-        new SpawnersManager(this, messages, manager);
-    }
-
-    private void playerChecksManager() {
-        new PlayerChecksManager(this, messages, strings, teleportsManager, vars);
-    }
-
     private void teleportsManager() {
         teleportsManager = new TeleportsManager(this, messages, strings, vars, money, manager);
     }
@@ -169,36 +145,9 @@ public class EterniaServer extends JavaPlugin {
         new HomesManager(this, messages, strings, vars, manager);
     }
 
-    private void genericManager() {
-        new GenericManager(this, messages, strings, playerFlyState, files, vars, placeHolders, manager);
-    }
-
-    private void experienceManager() {
-        new ExperienceManager(this, messages, checks, exp, manager);
-    }
-
-    private void elevatorManager() {
-        new ElevatorManager(this, messages);
-    }
-
-    private void economyManager() {
-        new EconomyManager(this, messages, money, manager);
-    }
-
-    private void commandsManager() {
-        new CommandsManager(this, messages);
-    }
-
-    private void chatManager() {
-        new ChatManager(this, messages, strings, vars, playerManager, files, manager);
-    }
-
-    private void blockRewardManager(){
-        new BlockRewardManager(this, messages);
-    }
-
-    private void bedManager() {
-        new BedManager(this, messages, checks, vars);
+    private void loadManagers() {
+        new Managers(this, messages, manager, strings, vars, teleportsManager, files,
+                placeHolders, playerFlyState, checks, exp, money, playerManager);
     }
 
     public List<String> executeQueryList(final String query, final String value) {

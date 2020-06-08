@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.playerchecksmanager.tasks;
+package br.com.eterniaserver.eterniaserver.modules.tasks;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
@@ -34,33 +34,39 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
 
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getLocation().getBlock().getType() == Material.NETHER_PORTAL) {
-                if (!vars.playersInPortal.containsKey(player.getName())) {
-                    vars.playersInPortal.put(player.getName(), 7);
-                } else if (vars.playersInPortal.get(player.getName()) <= 1) {
-                    Location player_location = player.getLocation();
-                    if (player_location.getBlock().getType() == Material.NETHER_PORTAL) {
+            Location location = player.getLocation();
+            final String playerName = player.getName();
+
+            if (plugin.serverConfig.getBoolean("server.void-tp") && location.getY() < -10) {
+                location.setY(location.getWorld().getHighestBlockYAt(location));
+                PaperLib.teleportAsync(player, location);
+            }
+            if (location.getBlock().getType() == Material.NETHER_PORTAL) {
+                if (!vars.playersInPortal.containsKey(playerName)) {
+                    vars.playersInPortal.put(playerName, 7);
+                } else if (vars.playersInPortal.get(playerName) <= 1) {
+                    if (location.getBlock().getType() == Material.NETHER_PORTAL) {
                         PaperLib.teleportAsync(player, teleportsManager.getWarp("spawn"));
                         messages.sendMessage("teleport.warp.done", player);
                     }
                 } else {
-                    vars.playersInPortal.put(player.getName(), vars.playersInPortal.get(player.getName()) - 1);
-                    if (vars.playersInPortal.get(player.getName()) < 5) {
-                        messages.sendMessage("server.nether-trap", "%cooldown%", vars.playersInPortal.get(player.getName()), player);
+                    vars.playersInPortal.put(playerName, vars.playersInPortal.get(playerName) - 1);
+                    if (vars.playersInPortal.get(playerName) < 5) {
+                        messages.sendMessage("server.nether-trap", "%cooldown%", vars.playersInPortal.get(playerName), player);
                     }
                 }
             } else {
-                vars.playersInPortal.remove(player.getName());
+                vars.playersInPortal.remove(playerName);
             }
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - vars.afktime.get(player.getName())) >= plugin.serverConfig.getInt("server.afk-timer")) {
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - vars.afktime.get(playerName)) >= plugin.serverConfig.getInt("server.afk-timer")) {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
-                    if (!vars.afk.contains(player.getName()) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                        messages.broadcastMessage("generic.afk.broadcast-kicked", "%player_name%", player.getName());
+                    if (!vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
+                        messages.broadcastMessage("generic.afk.broadcast-kicked", "%player_name%", playerName);
                         Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer(strings.getMessage("generic.afk.kicked")));
                     }
                 } else {
-                    messages.broadcastMessage("generic.afk.enabled", "%player_name%", player.getName());
-                    vars.afk.add(player.getName());
+                    messages.broadcastMessage("generic.afk.enabled", "%player_name%", playerName);
+                    vars.afk.add(playerName);
                 }
             }
             if (vars.teleports.containsKey(player)) {

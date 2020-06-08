@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.economymanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.EterniaServer;

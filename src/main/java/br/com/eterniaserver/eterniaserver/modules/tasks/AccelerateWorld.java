@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.bedmanager.tasks;
+package br.com.eterniaserver.eterniaserver.modules.tasks;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eterniaserver.API.Exp;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
