@@ -11,6 +11,7 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.CustomP
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.JsonSender;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.events.ChatEvent;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

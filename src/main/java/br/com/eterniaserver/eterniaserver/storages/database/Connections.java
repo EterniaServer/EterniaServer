@@ -6,7 +6,8 @@ import br.com.eterniaserver.eterniaserver.configs.Messages;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Connections {
 

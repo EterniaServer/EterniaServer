@@ -3,8 +3,8 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
-
 import br.com.eterniaserver.eterniaserver.configs.Checks;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

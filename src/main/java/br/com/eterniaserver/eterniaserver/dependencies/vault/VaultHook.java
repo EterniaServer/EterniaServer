@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
+
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.plugin.ServicePriority;

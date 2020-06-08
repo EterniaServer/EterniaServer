@@ -9,7 +9,7 @@ import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PAPI;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.events.*;
-import br.com.eterniaserver.eterniaserver.modules.*;
+import br.com.eterniaserver.eterniaserver.modules.Managers;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.Local;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.Staff;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.events.ChatEvent;
@@ -42,6 +42,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class EterniaServer extends JavaPlugin {
 
     public PaperCommandManager manager;
+    public Connections connections;
 
     public boolean chatMuted = false;
     public boolean hasPlaceholderAPI = true;
@@ -53,7 +54,6 @@ public class EterniaServer extends JavaPlugin {
 
     private final Strings strings = new Strings(this);
     private final Messages messages = new Messages(strings);
-    private Files files;
 
     private final Checks checks = new Checks(this, vars);
     private final PlayerManager playerManager = new PlayerManager(this, vars);
@@ -65,8 +65,7 @@ public class EterniaServer extends JavaPlugin {
     private final Money money = new Money(this, playerManager, vars);
 
     private TeleportsManager teleportsManager;
-
-    public Connections connections;
+    private Files files;
 
     public FileConfiguration serverConfig, msgConfig, cmdConfig, rewardsConfig;
     public FileConfiguration blockConfig, kitConfig, chatConfig, placeholderConfig, groupConfig;

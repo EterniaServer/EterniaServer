@@ -6,7 +6,6 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.*;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-
 public class ChatEvent {
 
     private final EterniaServer plugin;

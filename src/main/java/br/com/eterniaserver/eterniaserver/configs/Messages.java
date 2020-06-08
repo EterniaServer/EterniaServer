@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configs;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

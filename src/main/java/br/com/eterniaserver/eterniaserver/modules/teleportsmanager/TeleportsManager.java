@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands.*;
 
 import co.aikar.commands.PaperCommandManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

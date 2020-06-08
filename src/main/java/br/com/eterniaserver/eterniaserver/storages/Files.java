@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.storages.database.Connections;
 import br.com.eterniaserver.eterniaserver.storages.database.Table;
 
 import co.aikar.commands.PaperCommandManager;
+
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 

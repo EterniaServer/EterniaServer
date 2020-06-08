@@ -5,7 +5,6 @@ import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
-
 public class PAPI {
     public PAPI(EterniaServer plugin, Messages messages, PlaceHolders placeHolders) {
         if (plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {

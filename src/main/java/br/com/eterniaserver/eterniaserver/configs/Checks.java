@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.configs;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
+
 import org.bukkit.entity.Player;
 
 public class Checks {
