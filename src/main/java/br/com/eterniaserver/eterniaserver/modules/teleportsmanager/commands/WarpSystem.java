@@ -17,8 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.List;
 
 public class WarpSystem extends BaseCommand {
 
@@ -133,18 +132,10 @@ public class WarpSystem extends BaseCommand {
     public void onListWarp(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
-            StringBuilder accounts = new StringBuilder();
-            plugin.connections.executeSQLQuery(connection -> {
-                PreparedStatement getHome = connection.prepareStatement(querie);
-                ResultSet resultSet = getHome.executeQuery();
-                while (resultSet.next()) {
-                    final String warpname = resultSet.getString("name");
-                    accounts.append(warpname).append("&8, &3");
-                }
-                resultSet.close();
-                getHome.close();
-            });
-            messages.sendMessage("teleport.warp.list", "%warps%", strings.getColor(accounts.toString()), player);
+            final List<String> lista = plugin.executeQueryList(querie, "name");
+            StringBuilder string = new StringBuilder();
+            for (String home : lista) string.append(home).append("&8").append(", &3");
+            messages.sendMessage("teleport.warp.list", "%warps%", strings.getColor(string.substring(0, string.length() - 1)), player);
         });
     }
 

@@ -3,10 +3,6 @@ package br.com.eterniaserver.eterniaserver.API;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.concurrent.atomic.AtomicReference;
-
 public class Exp {
 
     private final EterniaServer plugin;
@@ -27,18 +23,8 @@ public class Exp {
             return vars.xp.get(playerName);
         }
 
-        AtomicReference<Integer> xp = new AtomicReference<>(0);
         final String querie = "SELECT xp FROM " + plugin.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement getshop = connection.prepareStatement(querie);
-            ResultSet resultSet = getshop.executeQuery();
-            if (resultSet.next() && resultSet.getInt("xp") != 0) {
-                xp.set(resultSet.getInt("xp"));
-            }
-        });
-
-        vars.xp.put(playerName, xp.get());
-        return xp.get();
+        return Integer.parseInt(plugin.executeQueryString(querie, "xp").toString());
     }
 
     /**
@@ -48,12 +34,7 @@ public class Exp {
      */
     public void setExp(String playerName, int amount) {
         vars.xp.put(playerName, amount);
-        final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';";
-        plugin.connections.executeSQLQuery(connection -> {
-            PreparedStatement setexp = connection.prepareStatement(querie);
-            setexp.execute();
-            setexp.close();
-        }, true);
+        plugin.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
     }
 
     /**

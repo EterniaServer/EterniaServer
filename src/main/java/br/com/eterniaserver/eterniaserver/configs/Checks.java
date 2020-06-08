@@ -5,8 +5,6 @@ import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public class Checks {
 
     private final EterniaServer plugin;

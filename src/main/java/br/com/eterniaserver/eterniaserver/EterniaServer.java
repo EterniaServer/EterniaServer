@@ -41,6 +41,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -197,6 +199,21 @@ public class EterniaServer extends JavaPlugin {
 
     private void bedManager() {
         new BedManager(this, messages, checks, vars);
+    }
+
+    public List<String> executeQueryList(final String query, final String value) {
+        List<String> accounts = new ArrayList<>();
+        connections.executeSQLQuery(connection -> {
+            PreparedStatement getbaltop = connection.prepareStatement(query);
+            ResultSet resultSet = getbaltop.executeQuery();
+            while (resultSet.next()) {
+                final String warpname = resultSet.getString(value);
+                accounts.add(warpname);
+            }
+            resultSet.close();
+            getbaltop.close();
+        });
+        return accounts;
     }
 
     public void executeQuery(final String query) {
