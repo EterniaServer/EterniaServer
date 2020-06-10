@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.rewardsmanager;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.commands.RewardsSystem;
@@ -43,16 +44,16 @@ public class RewardsManager {
 
 
     public void createKey(final String grupo, String key) {
-        plugin.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
+        Queries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
     }
 
     public void deleteKey(final String key) {
-        plugin.executeQuery("DELETE FROM " + plugin.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';");
+        Queries.executeQuery("DELETE FROM " + plugin.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';");
     }
 
     public String existKey(final String key) {
         final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-rewards")+ " WHERE code='" + key + "';";
-        return plugin.executeQueryString(querie, "code", "lalalala").toString();
+        return Queries.queryString(querie, "code", "lalalala");
     }
 
     public void giveReward(String group, Player player) {

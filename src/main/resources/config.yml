@@ -50,6 +50,7 @@ server:
   afk-timer: 900
   afk-kick: true
   cooldown: 4
+  void-tp: false
 
 # The blocks you choose will be able to be elevators if have another of the
 # same type above or bellow.
@@ -64,12 +65,6 @@ elevator:
 # With this you can choose between using MySQL or SQLite and
 # define the name of each table.
 sql:
-  mysql: false
-  host: '127.0.0.1'
-  port: '3306'
-  database: 'admin'
-  user: 'admin'
-  password: 'admin'
   table-xp: 'es_xp'
   table-money: 'es_economy'
   table-warp: 'es_warp'

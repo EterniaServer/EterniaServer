@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.kitsmanager;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
@@ -53,11 +54,11 @@ public class KitsManager {
         if (playerManager.playerCooldownExist(jogador, kit)) {
             vars.kits_cooldown.put(kit + "." + jogador, data);
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-kits") + " SET cooldown='" + data + "' WHERE name='" + kit + "." + jogador + "';";
-            plugin.executeQuery(querie);
+            Queries.executeQuery(querie);
         } else {
             vars.kits_cooldown.put(kit + "." + jogador, data);
             final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES ('" + kit + "." + jogador + "', '" + data + "');";
-            plugin.executeQuery(querie);
+            Queries.executeQuery(querie);
         }
     }
 
@@ -69,7 +70,7 @@ public class KitsManager {
         String cooldown;
         if (playerManager.playerCooldownExist(jogador, kit)) {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
-            cooldown = plugin.executeQueryString(querie, "cooldown").get();
+            cooldown = Queries.queryString(querie, "cooldown");
         } else {
             cooldown = "2020/01/01 00:00";
         }

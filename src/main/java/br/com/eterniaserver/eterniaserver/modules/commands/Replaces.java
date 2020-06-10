@@ -1,12 +1,14 @@
-package br.com.eterniaserver.eterniaserver.modules.genericmanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

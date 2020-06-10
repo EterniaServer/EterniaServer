@@ -7,7 +7,6 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.entity.Player;
 
-
 public class PlaceHolders extends PlaceholderExpansion {
 
     private final String VERSION = this.getClass().getPackage().getImplementationVersion();

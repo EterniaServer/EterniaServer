@@ -9,7 +9,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Vars {
 
@@ -25,6 +27,7 @@ public class Vars {
     public final List<String> player_homes = new ArrayList<>();
     public final List<String> player_cooldown = new ArrayList<>();
 
+    public final HashMap<String, Long> tpa_time = new HashMap<>();
     public final HashMap<String, Long> player_muted = new HashMap<>();
     public final HashMap<String, Long> bed_cooldown = new HashMap<>();
     public final HashMap<String, Long> afktime = new HashMap<>();

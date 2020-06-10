@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.eterniaserver</groupId>
     <artifactId>EterniaServer</artifactId>
-    <version>3-Stable</version>
+    <version>4.0-Staging</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -32,10 +32,6 @@
                                 <relocation>
                                     <pattern>io.papermc.lib</pattern>
                                     <shadedPattern>br.com.eterniaserver.eterniaserver.paperlib</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.zaxxer.hikari</pattern>
-                                    <shadedPattern>br.com.eterniaserver.eterniaserver.hikaricp</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>co.aikar.commands</pattern>
@@ -99,6 +95,10 @@
     </build>
     <repositories>
         <repository>
+            <id>EterniaLib</id>
+            <url>https://raw.github.com/yurinogueira/EterniaLib/repository</url>
+        </repository>
+        <repository>
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
@@ -117,6 +117,12 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>br.com.eterniaserver</groupId>
+            <artifactId>EterniaLib</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
@@ -139,12 +145,6 @@
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
             <version>1.0.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>3.4.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -1,11 +1,14 @@
-package br.com.eterniaserver.eterniaserver.modules.economymanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.commands;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -53,12 +56,16 @@ public class Economy extends BaseCommand {
         final Player targetP = target.getPlayer();
         final String targetName = targetP.getName();
 
-        if (!(target.getPlayer().equals(player))) {
-            if (moneyx.getMoney(playerName) >= value) {
-                moneyx.addMoney(targetName, value);
-                moneyx.removeMoney(playerName, value);
-                messages.sendMessage("eco.pay", "%amount%", value, "%target_name%", targetName, player);
-                messages.sendMessage("eco.pay-me", "%amount%", value, "%target_name%", playerName, targetP);
+        if (!(targetP.equals(player))) {
+            if (value > 0) {
+                if (moneyx.getMoney(playerName) >= value) {
+                    moneyx.addMoney(targetName, value);
+                    moneyx.removeMoney(playerName, value);
+                    messages.sendMessage("eco.pay", "%amount%", value, "%target_name%", targetName, player);
+                    messages.sendMessage("eco.pay-me", "%amount%", value, "%target_name%", playerName, targetP);
+                } else {
+                    messages.sendMessage("eco.pay-nomoney", player);
+                }
             } else {
                 messages.sendMessage("eco.pay-nomoney", player);
             }
@@ -72,7 +79,7 @@ public class Economy extends BaseCommand {
     public void onBaltop(CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
-            final List<String> accounts = plugin.executeQueryList(querie, "player_name");
+            final List<String> accounts = Queries.queryStringList(querie, "player_name");
             DecimalFormat df2 = new DecimalFormat(".##");
             messages.sendMessage("eco.baltop", sender);
             accounts.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));

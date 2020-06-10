@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.API;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
@@ -30,7 +31,7 @@ public class Money {
 
         if (playerManager.playerMoneyExist(playerName)) {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " WHERE player_name='" + playerName + "';";
-            value = Double.parseDouble(plugin.executeQueryString(querie, "balance").toString());
+            value = Queries.queryDouble(querie, "balance");
         } else {
             playerManager.playerMoneyCreate(playerName);
             value = 300.0;
@@ -58,7 +59,7 @@ public class Money {
     public void setMoney(String playerName, double amount) {
         if (playerManager.playerMoneyExist(playerName)) {
             vars.balances.put(playerName, amount);
-            plugin.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
+            Queries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
         } else {
             playerManager.playerMoneyCreate(playerName);
             setMoney(playerName, amount);

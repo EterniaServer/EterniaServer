@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.API;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 
@@ -24,7 +25,7 @@ public class Exp {
         }
 
         final String querie = "SELECT xp FROM " + plugin.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
-        return Integer.parseInt(plugin.executeQueryString(querie, "xp").toString());
+        return Queries.queryInteger(querie, "xp");
     }
 
     /**
@@ -34,7 +35,7 @@ public class Exp {
      */
     public void setExp(String playerName, int amount) {
         vars.xp.put(playerName, amount);
-        plugin.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
+        Queries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
     }
 
     /**
