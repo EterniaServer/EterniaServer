@@ -2,6 +2,7 @@ rewards:
   "cliente":
     commands:
       "1.0":
+        - 'lp user %player_name% parent removetemp cliente'
         - 'lp user %player_name% parent addtemp cliente 30d'
         - 'broadcast &3%player_name% &7virou um cliente pelos próximos &330 &7dias&8.'
         - 'spawnergive Sheep 1 %player_name%'
@@ -9,21 +10,23 @@ rewards:
   "cliente20":
     commands:
       "1.0":
+        - 'lp user %player_name% parent removetemp cliente20'
         - 'lp user %player_name% parent addtemp cliente20 30d'
         - 'broadcast &3%player_name% &7virou um cliente pelos próximos &330 &7dias&8.'
         - 'spawnergive Sheep 1 %player_name%'
         - 'spawnergive Cow 1 %player_name%'
         - 'spawnergive Rabbit 1 %player_name%'
         - 'xp set %player_name% 60 Levels'
-        - 'give %player_name% minecraft:diamond_helmet{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s}{id:"minecraft:mending",lvl:1s}]} 1'
-        - 'give %player_name% minecraft:diamond_boots{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s}{id:"minecraft:mending",lvl:1s}]} 1'
-        - 'give %player_name% minecraft:diamond_chestplate{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s}{id:"minecraft:mending",lvl:1s}]} 1'
-        - 'give %player_name% minecraft:diamond_leggings{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s}{id:"minecraft:mending",lvl:1s}]} 1'
+        - 'give %player_name% minecraft:diamond_helmet{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+        - 'give %player_name% minecraft:diamond_boots{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+        - 'give %player_name% minecraft:diamond_chestplate{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+        - 'give %player_name% minecraft:diamond_leggings{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
         - 'give %player_name% minecraft:bee_nest 1'
         - 'give %player_name% minecraft:bee_spawn_egg 2'
   "cliente40":
     commands:
       "1.0":
+        - 'lp user %player_name% parent removetemp cliente40'
         - 'lp user %player_name% parent addtemp cliente40 30d'
         - 'broadcast &3%player_name% &7virou um cliente pelos próximos &330 &7dias&8.'
         - 'spawnergive Sheep 1 %player_name%'
@@ -31,9 +34,9 @@ rewards:
         - 'spawnergive Rabbit 1 %player_name%'
         - 'spawnergive Iron_Golem 1 %player_name%'
         - 'xp set %player_name% 60 Levels'
-        - 'give %player_name% minecraft:diamond_helmet{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s}{id:"minecraft:mending",lvl:1s}]} 1'
-        - 'give %player_name% minecraft:diamond_boots{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s}{id:"minecraft:mending",lvl:1s}]} 1'
-        - 'give %player_name% minecraft:diamond_chestplate{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s}{id:"minecraft:mending",lvl:1s}]} 1'
-        - 'give %player_name% minecraft:diamond_leggings{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s}{id:"minecraft:mending",lvl:1s}]} 1'
+        - 'give %player_name% minecraft:diamond_helmet{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+        - 'give %player_name% minecraft:diamond_boots{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+        - 'give %player_name% minecraft:diamond_chestplate{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+        - 'give %player_name% minecraft:diamond_leggings{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
         - 'give %player_name% minecraft:bee_nest 1'
         - 'give %player_name% minecraft:bee_spawn_egg 2'

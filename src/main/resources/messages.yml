@@ -16,10 +16,6 @@ server:
   no-papi: '&3PlaceholderAPI &7não encontrado&8, &7iniciando no modo sem &3PAPI&8.'
   no-vault: '&3Vault&7 não encontrado&8, &7iniciando no modo sem &3Vault&8.'
   no-discordsrv: '&3DiscordSRV &7não encontrado&8, &7iniciando no modo sem &3DiscordSRV&8.'
-  mysql-ok: '&7Conectado com sucesso a database &3MySQL&8.'
-  sql-ok: '&7Conectado com sucesso a database &3SQLite&8.'
-  sql-finish: '&7Conexão &3SQLite &7finalizada&8.'
-  mysql-finish: '&7Conexão &3MySQL &7finalizada&8.'
   timing: '&7Você deve esperar &3%cooldown &7segundos para poder usar esse comando novamente&8.'
   telep: '&7Você já está em um teleporte&8, &7espere acabar&8.'
 chat:

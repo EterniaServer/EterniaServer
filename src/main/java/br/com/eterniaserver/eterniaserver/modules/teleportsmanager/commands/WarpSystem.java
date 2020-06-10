@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
@@ -130,12 +131,12 @@ public class WarpSystem extends BaseCommand {
         }
     }
 
-    @CommandAlias("listwarp|warplist")
+    @CommandAlias("listwarp|warplist|warps")
     @CommandPermission("eternia.listwarp")
     public void onListWarp(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
-            final List<String> lista = plugin.executeQueryList(querie, "name");
+            final List<String> lista = Queries.queryStringList(querie, "name");
             StringBuilder string = new StringBuilder();
             for (String home : lista) string.append(home).append("&8").append(", &3");
             messages.sendMessage("teleport.warp.list", "%warps%", strings.getColor(string.substring(0, string.length() - 1)), player);

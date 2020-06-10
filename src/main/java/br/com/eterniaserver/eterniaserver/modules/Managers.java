@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules;
 
+import br.com.eterniaserver.eternialib.configs.FileCreator;
 import br.com.eterniaserver.eterniaserver.API.Exp;
 import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -18,7 +19,7 @@ import br.com.eterniaserver.eterniaserver.modules.tasks.Checks;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
-import br.com.eterniaserver.eterniaserver.storages.Files;
+import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 
 import co.aikar.commands.PaperCommandManager;
 
@@ -27,7 +28,6 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
 import java.io.IOException;
 
 public class Managers {
@@ -52,12 +52,10 @@ public class Managers {
         }
 
         if (plugin.serverConfig.getBoolean("modules.block-reward")) {
-            File blocksFile = new File(plugin.getDataFolder(), "blocks.yml");
-            if (!blocksFile.exists()) plugin.saveResource("blocks.yml", false);
-
             plugin.blockConfig = new YamlConfiguration();
+
             try {
-                plugin.blockConfig.load(blocksFile);
+                plugin.blockConfig.load(FileCreator.fileLoad(plugin, "blocks.yml"));
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
@@ -78,12 +76,10 @@ public class Managers {
         }
 
         if (plugin.serverConfig.getBoolean("modules.commands")) {
-            File commandsConfigFile = new File(plugin.getDataFolder(), "commands.yml");
-            if (!commandsConfigFile.exists()) plugin.saveResource("commands.yml", false);
-
             plugin.cmdConfig = new YamlConfiguration();
+
             try {
-                plugin.cmdConfig.load(commandsConfigFile);
+                plugin.cmdConfig.load(FileCreator.fileLoad(plugin, "commands.yml"));
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }

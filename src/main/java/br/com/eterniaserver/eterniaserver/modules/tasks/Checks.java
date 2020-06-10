@@ -37,6 +37,13 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
             Location location = player.getLocation();
             final String playerName = player.getName();
 
+            if (vars.tpa_requests.containsKey(playerName)) {
+                if (vars.tpa_time.containsKey(playerName) &&
+                        TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - vars.tpa_time.get(playerName)) >= 25) {
+                    vars.tpa_requests.remove(playerName);
+                    vars.tpa_time.remove(playerName);
+                }
+            }
             if (plugin.serverConfig.getBoolean("server.void-tp") && location.getY() < -10) {
                 location.setY(location.getWorld().getHighestBlockYAt(location));
                 PaperLib.teleportAsync(player, location);

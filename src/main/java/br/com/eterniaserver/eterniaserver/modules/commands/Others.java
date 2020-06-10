@@ -5,7 +5,7 @@ import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
-import br.com.eterniaserver.eterniaserver.storages.Files;
+import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
