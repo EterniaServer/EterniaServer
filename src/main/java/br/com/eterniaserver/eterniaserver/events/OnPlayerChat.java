@@ -4,13 +4,12 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 
-import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.ChatFormatter;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.Colors;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.CustomPlaceholdersFilter;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.JsonSender;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.events.ChatEvent;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 public class OnPlayerChat implements Listener {
 
     private final EterniaServer plugin;
-    private final ChatEvent chatEvent;
     private final ChatFormatter cf;
     private final JsonSender js;
     private final Vars vars;
@@ -30,14 +28,13 @@ public class OnPlayerChat implements Listener {
     private final Messages messages;
     private final Colors c = new Colors();
 
-    public OnPlayerChat(EterniaServer plugin, ChatEvent chatEvent, Checks checks, Vars vars, Messages messages) {
+    public OnPlayerChat(EterniaServer plugin) {
         this.plugin = plugin;
-        this.chatEvent = chatEvent;
-        this.vars = vars;
-        this.cp = new CustomPlaceholdersFilter(vars);
-        this.js = new JsonSender(plugin, vars);
-        this.cf = new ChatFormatter(plugin, checks, vars);
-        this.messages = messages;
+        this.vars = plugin.getVars();
+        this.messages = plugin.getMessages();
+        this.cp = new CustomPlaceholdersFilter(plugin);
+        this.js = new JsonSender(plugin);
+        this.cf = new ChatFormatter(plugin);
     }
 
 
@@ -47,6 +44,7 @@ public class OnPlayerChat implements Listener {
 
         final Player player = e.getPlayer();
         final String playerName = player.getName();
+        String message = e.getMessage();
 
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             if (plugin.chatMuted && !player.hasPermission("eternia.mute.bypass")) {
@@ -59,15 +57,27 @@ public class OnPlayerChat implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            chatEvent.onPlayerChat(e);
+
+            switch (vars.global.getOrDefault(playerName, 0)) {
+                case 0:
+                    plugin.local.SendMessage(message, player, plugin.chatConfig.getInt("local.range"));
+                    e.setCancelled(true);
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    plugin.staff.SendMessage(message, player);
+                    e.setCancelled(true);
+                    break;
+            }
 
             if (e.isCancelled()) return;
 
-            ChatMessage message = new ChatMessage(e.getMessage());
-            cf.filter(e, message);
-            c.filter(e, message);
-            cp.filter(e, message);
-            js.filter(e, message);
+            ChatMessage messagex = new ChatMessage(message);
+            cf.filter(e, messagex);
+            c.filter(e, messagex);
+            cp.filter(e, messagex);
+            js.filter(e, messagex);
         }
     }
 

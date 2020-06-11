@@ -3,8 +3,10 @@ package br.com.eterniaserver.eterniaserver.dependencies.vault;
 import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+
 import org.bukkit.OfflinePlayer;
 
 import java.text.DecimalFormat;
@@ -18,10 +20,10 @@ public class VaultMethods implements Economy {
     private final PlayerManager playerManager;
     private final Money moneyx;
 
-    public VaultMethods(EterniaServer plugin, PlayerManager playerManager, Money moneyx) {
+    public VaultMethods(EterniaServer plugin) {
         this.plugin = plugin;
-        this.playerManager = playerManager;
-        this.moneyx = moneyx;
+        this.playerManager = plugin.getPlayerManager();
+        this.moneyx = plugin.getMoney();
     }
 
     @Override

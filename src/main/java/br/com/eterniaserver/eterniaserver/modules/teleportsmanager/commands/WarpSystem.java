@@ -1,18 +1,19 @@
 package br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
+
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+
 import io.papermc.lib.PaperLib;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -27,12 +28,12 @@ public class WarpSystem extends BaseCommand {
     private final Vars vars;
     private final Strings strings;
 
-    public WarpSystem(EterniaServer plugin, Messages messages, TeleportsManager teleportsManager, Vars vars, Strings strings) {
+    public WarpSystem(EterniaServer plugin, TeleportsManager teleportsManager) {
         this.plugin = plugin;
-        this.messages = messages;
+        this.messages = plugin.getMessages();
         this.teleportsManager = teleportsManager;
-        this.vars = vars;
-        this.strings = strings;
+        this.vars = plugin.getVars();
+        this.strings = plugin.getStrings();
     }
 
     @CommandAlias("spawn")
@@ -66,6 +67,7 @@ public class WarpSystem extends BaseCommand {
 
     @CommandAlias("shop|loja")
     @Syntax("<jogador>")
+    @CommandCompletion("@players")
     @CommandPermission("eternia.shop.player")
     public void onShop(Player player, @Optional String target) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -127,12 +129,12 @@ public class WarpSystem extends BaseCommand {
         }
     }
 
-    @CommandAlias("listwarp|warplist")
+    @CommandAlias("listwarp|warplist|warps")
     @CommandPermission("eternia.listwarp")
     public void onListWarp(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
-            final List<String> lista = plugin.executeQueryList(querie, "name");
+            final List<String> lista = Queries.queryStringList(querie, "name");
             StringBuilder string = new StringBuilder();
             for (String home : lista) string.append(home).append("&8").append(", &3");
             messages.sendMessage("teleport.warp.list", "%warps%", strings.getColor(string.substring(0, string.length() - 1)), player);

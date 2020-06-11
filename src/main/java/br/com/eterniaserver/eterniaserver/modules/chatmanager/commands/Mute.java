@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.commands;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
@@ -21,11 +22,11 @@ public class Mute extends BaseCommand {
     private final Vars vars;
     private final PlayerManager playerManager;
 
-    public Mute(EterniaServer plugin, Messages messages, Vars vars, PlayerManager playerManager) {
+    public Mute(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.vars = vars;
-        this.playerManager = playerManager;
+        this.messages = plugin.getMessages();
+        this.vars = plugin.getVars();
+        this.playerManager = plugin.getPlayerManager();
     }
 
     @CommandAlias("mutechannels|muteall")
@@ -52,9 +53,9 @@ public class Mute extends BaseCommand {
         final String date = plugin.sdf.format(dataa);
         messages.broadcastMessage("chat.mutebroad", "%player_name%", player.getName(), "%message%", messageFull(message));
         if (playerManager.registerMuted(target.getPlayer().getName())) {
-            plugin.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
+            Queries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
-            plugin.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
+            Queries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
         }
         vars.player_muted.put(target.getPlayer().getName(), cal.getTimeInMillis());
     }
@@ -67,9 +68,9 @@ public class Mute extends BaseCommand {
         vars.player_muted.put(target.getPlayer().getName(), System.currentTimeMillis());
         messages.broadcastMessage("chat.unmutebroad", "%player_name%", target.getPlayer().getName());
         if (playerManager.registerMuted(target.getPlayer().getName())) {
-            plugin.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';");
+            Queries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
-            plugin.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + "2020/01/01 00:00" + "');");
+            Queries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + "2020/01/01 00:00" + "');");
         }
     }
 
@@ -84,9 +85,9 @@ public class Mute extends BaseCommand {
         final String date = plugin.sdf.format(cal.getTime());
         messages.broadcastMessage("chat.mutetbroad", "%player_name%", target.getPlayer().getName(), "%time%", time, "%message%", messageFull(message));
         if (vars.player_muted.containsKey(target.getPlayer().getName())) {
-            plugin.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
+            Queries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
-            plugin.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
+            Queries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
         }
         vars.player_muted.put(target.getPlayer().getName(), cal.getTimeInMillis());
     }

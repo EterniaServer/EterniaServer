@@ -1,8 +1,8 @@
-package br.com.eterniaserver.eterniaserver.modules.bedmanager.tasks;
+package br.com.eterniaserver.eterniaserver.modules.tasks;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -14,13 +14,11 @@ import static java.util.stream.Collectors.toList;
 public class AccelerateWorld implements Runnable {
 
     private final EterniaServer plugin;
-    private final Messages messages;
     private final Vars vars;
 
-    public AccelerateWorld(EterniaServer plugin, Messages messages, Vars vars) {
+    public AccelerateWorld(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.vars = vars;
+        this.vars = plugin.getVars();
     }
 
 
@@ -33,7 +31,7 @@ public class AccelerateWorld implements Runnable {
         final int sleeping = getSleeping(world).size();
         if (sleeping > 0) {
             vars.skipping_worlds.add(world);
-            new AccelerateNight(world, plugin, messages, vars).runTaskTimer(plugin, 1, 1);
+            new AccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }
 

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,11 +10,9 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class OnPlayerTeleport implements Listener {
 
     private final EterniaServer plugin;
-    private final Vars vars;
 
-    public OnPlayerTeleport(EterniaServer plugin, Vars vars) {
+    public OnPlayerTeleport(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = vars;
     }
 
 
@@ -23,7 +20,7 @@ public class OnPlayerTeleport implements Listener {
     public void onTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
         final Player player = event.getPlayer();
-        if (plugin.serverConfig.getBoolean("modules.teleports")) vars.back.put(player.getName(), player.getLocation());
+        if (plugin.serverConfig.getBoolean("modules.teleports")) plugin.getVars().back.put(player.getName(), player.getLocation());
     }
 
 }

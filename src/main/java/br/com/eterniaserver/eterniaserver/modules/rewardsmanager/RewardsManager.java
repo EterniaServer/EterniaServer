@@ -1,10 +1,9 @@
 package br.com.eterniaserver.eterniaserver.modules.rewardsmanager;
 
+import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.commands.RewardsSystem;
-
-import co.aikar.commands.PaperCommandManager;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -20,9 +19,10 @@ public class RewardsManager {
     private final EterniaServer plugin;
     private final Messages messages;
 
-    public RewardsManager(EterniaServer plugin, Messages messages, PaperCommandManager manager) {
+    public RewardsManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
+        this.messages = plugin.getMessages();
+
         if (plugin.serverConfig.getBoolean("modules.rewards")) {
             File rwConfig = new File(plugin.getDataFolder(), "rewards.yml");
             if (!rwConfig.exists()) plugin.saveResource("rewards.yml", false);
@@ -34,7 +34,7 @@ public class RewardsManager {
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            manager.registerCommand(new RewardsSystem(this, messages, plugin));
+            plugin.getManager().registerCommand(new RewardsSystem(this, plugin));
             messages.sendConsole("modules.enable", "%module%", "Rewards");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Rewards");
@@ -43,16 +43,16 @@ public class RewardsManager {
 
 
     public void createKey(final String grupo, String key) {
-        plugin.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
+        Queries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
     }
 
     public void deleteKey(final String key) {
-        plugin.executeQuery("DELETE FROM " + plugin.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';");
+        Queries.executeQuery("DELETE FROM " + plugin.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';");
     }
 
     public String existKey(final String key) {
         final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-rewards")+ " WHERE code='" + key + "';";
-        return plugin.executeQueryString(querie, "code", "lalalala").toString();
+        return Queries.queryString(querie, "code", "lalalala");
     }
 
     public void giveReward(String group, Player player) {

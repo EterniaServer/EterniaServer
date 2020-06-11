@@ -3,8 +3,8 @@ package br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils;
 import java.util.ArrayList;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.configs.Checks;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.PlaceholderAPIIntegrator;
 
 import org.bukkit.entity.Player;
 
@@ -16,33 +16,34 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 public class TextMaker {
 
-	private final ChatMessage message;
 	public TextComponent text;
+	private final ChatMessage message;
 	private final Player p;
 	private final EterniaServer plugin;
 	private final Vars vars;
+	private final Checks checks;
 
-	public TextMaker(ChatMessage message, Player p, EterniaServer plugin, Vars vars) {
+	public TextMaker(ChatMessage message, Player p, EterniaServer plugin) {
 		this.p = p;
 		this.message = message;
 		this.plugin = plugin;
-		this.vars = vars;
+		this.vars = plugin.getVars();
+		checks = plugin.getChecks();
 	}
 
-	// Only used whenever relational placeholders is disabled
 	public void convertMessageToComponents() {
 		BaseComponent[] baseComp = new BaseComponent[message.size()];
 		for(int i = 0; i < message.size(); i++) {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
-			msg = PlaceholderAPIIntegrator.setPlaceholders(p, msg);
+			msg = checks.setPlaceholders(p, msg);
 			if(msg.contains("%message%")) {
 				msg = msg.replace("%message%", message.messageSent);
 			}
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();
-				tcs.add(new TextComponent(PlaceholderAPIIntegrator.setPlaceholders(p, StringHelper.cc(chatObject.getHover()))));
+				tcs.add(new TextComponent(checks.setPlaceholders(p, StringHelper.cc(chatObject.getHover()))));
 				TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
 				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, bc));
 			}
@@ -50,10 +51,10 @@ public class TextMaker {
 				textComp.setColor(chatObject.getColor().asBungee());
 			}
 			if(chatObject.getSuggest() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, PlaceholderAPIIntegrator.setPlaceholders(p, StringHelper.cc(chatObject.getSuggest()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, checks.setPlaceholders(p, StringHelper.cc(chatObject.getSuggest()))));
 			}
 			if(chatObject.getRun() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, PlaceholderAPIIntegrator.setPlaceholders(p, StringHelper.cc(chatObject.getRun()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, checks.setPlaceholders(p, StringHelper.cc(chatObject.getRun()))));
 			}
 			if(chatObject.isText()) {
 				setTextAttr(textComp, p);
@@ -103,13 +104,13 @@ public class TextMaker {
 		for(int i = 0; i < message.size(); i++) {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
-			msg = PlaceholderAPIIntegrator.setBothPlaceholders(p, to, msg);
+			msg = checks.setBothPlaceholders(p, to, msg);
 			if(msg.contains("%message%"))
 				msg = msg.replace("%message%", message.messageSent);
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();
-				tcs.add(new TextComponent(PlaceholderAPIIntegrator.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getHover()))));
+				tcs.add(new TextComponent(checks.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getHover()))));
 				TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
 				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, bc));
 			}
@@ -117,10 +118,10 @@ public class TextMaker {
 				textComp.setColor(chatObject.getColor().asBungee());
 			}
 			if(chatObject.getSuggest() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, PlaceholderAPIIntegrator.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getSuggest()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, checks.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getSuggest()))));
 			}
 			if(chatObject.getRun() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, PlaceholderAPIIntegrator.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getRun()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, checks.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getRun()))));
 			}
 			if(chatObject.isText()) {
 				setTextAttr(textComp, p);
@@ -165,7 +166,7 @@ public class TextMaker {
 			}
 		}
 		s2 = message;
-		return PlaceholderAPIIntegrator.setPlaceholders(p, s2);
+		return checks.setPlaceholders(p, s2);
 	}
 
 }

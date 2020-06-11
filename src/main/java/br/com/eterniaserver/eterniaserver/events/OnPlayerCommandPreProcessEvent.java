@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -15,12 +14,10 @@ public class OnPlayerCommandPreProcessEvent implements Listener {
 
     private final EterniaServer plugin;
     private final Messages messages;
-    private final Strings strings;
 
-    public OnPlayerCommandPreProcessEvent(EterniaServer plugin, Messages messages, Strings strings) {
+    public OnPlayerCommandPreProcessEvent(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.strings = strings;
+        this.messages = plugin.getMessages();
     }
 
     @EventHandler
@@ -55,7 +52,7 @@ public class OnPlayerCommandPreProcessEvent implements Listener {
                         if (plugin.hasPlaceholderAPI) modifiedText = messages.putPAPI(player, line);
                         else modifiedText = line.replace("%player_name%", playerName);
 
-                        player.sendMessage(strings.getColor(modifiedText));
+                        player.sendMessage(plugin.getStrings().getColor(modifiedText));
                     }
                 } else {
                     messages.sendMessage("server.no-perm", player);

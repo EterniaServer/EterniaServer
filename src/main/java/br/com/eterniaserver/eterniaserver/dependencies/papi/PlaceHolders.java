@@ -7,16 +7,15 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.entity.Player;
 
-
 public class PlaceHolders extends PlaceholderExpansion {
 
     private final String VERSION = this.getClass().getPackage().getImplementationVersion();
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public PlaceHolders(EterniaServer plugin, Vars vars) {
+    public PlaceHolders(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = vars;
+        this.vars = plugin.getVars();
     }
 
     public String getAuthor() {

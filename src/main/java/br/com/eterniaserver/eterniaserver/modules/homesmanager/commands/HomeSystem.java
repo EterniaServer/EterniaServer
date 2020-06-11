@@ -6,13 +6,16 @@ import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
 import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+
 import io.papermc.lib.PaperLib;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -32,12 +35,12 @@ public class HomeSystem extends BaseCommand {
     private final Strings strings;
     private final Vars vars;
 
-    public HomeSystem(EterniaServer plugin, Messages messages, HomesManager homesManager, Strings strings, Vars vars) {
+    public HomeSystem(EterniaServer plugin, HomesManager homesManager) {
         this.plugin = plugin;
-        this.messages = messages;
+        this.messages = plugin.getMessages();
         this.homesManager = homesManager;
-        this.strings = strings;
-        this.vars = vars;
+        this.strings = plugin.getStrings();
+        this.vars = plugin.getVars();
     }
 
     @CommandAlias("delhome|delhouse|delcasa")

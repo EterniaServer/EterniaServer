@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.spawnermanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
@@ -22,9 +22,9 @@ public class SpawnerGive extends BaseCommand {
     private final EterniaServer plugin;
     private final Messages messages;
 
-    public SpawnerGive(EterniaServer plugin, Messages messages) {
+    public SpawnerGive(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
+        this.messages = plugin.getMessages();
     }
 
     @CommandAlias("spawnergive|givespawner")

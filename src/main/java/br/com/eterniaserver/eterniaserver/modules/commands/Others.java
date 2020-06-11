@@ -1,18 +1,20 @@
-package br.com.eterniaserver.eterniaserver.modules.genericmanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.commands;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
-import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
-import br.com.eterniaserver.eterniaserver.storages.Files;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -24,12 +26,11 @@ import java.util.Collections;
 
 public class Others extends BaseCommand {
 
+    private final EterniaServer plugin;
     private final Messages messages;
-    private final Files files;
     private final PlaceHolders placeHolders;
     private final Strings strings;
     private final Vars vars;
-    private final PlayerFlyState playerFlyState;
 
     private final ItemStack coali = new ItemStack(Material.COAL);
     private final ItemStack lapizi = new ItemStack(Material.LAPIS_LAZULI);
@@ -39,23 +40,22 @@ public class Others extends BaseCommand {
     private final ItemStack diamondi = new ItemStack(Material.DIAMOND);
     private final ItemStack esmeraldai = new ItemStack(Material.EMERALD);
 
-    public Others(Messages messages, Files files, PlaceHolders placeHolders, Strings strings, Vars vars, PlayerFlyState playerFlyState) {
-        this.messages = messages;
-        this.files = files;
-        this.placeHolders = placeHolders;
-        this.strings = strings;
-        this.vars = vars;
-        this.playerFlyState = playerFlyState;
+    public Others(EterniaServer plugin) {
+        this.plugin = plugin;
+        this.messages = plugin.getMessages();
+        this.placeHolders = plugin.getPlaceHolders();
+        this.strings = plugin.getStrings();
+        this.vars = plugin.getVars();
     }
 
     @CommandAlias("reloadeternia|eterniareload")
     @CommandPermission("eternia.reload")
     public void onReload(CommandSender sender) {
         messages.sendMessage("generic.others.reload-start", sender);
-        files.loadConfigs();
-        files.loadMessages();
-        files.loadChat();
-        files.loadDatabase();
+        plugin.files.loadConfigs();
+        plugin.files.loadMessages();
+        plugin.files.loadChat();
+        plugin.files.loadDatabase();
         PlaceholderAPI.unregisterPlaceholderHook("eterniaserver");
         PlaceholderAPI.registerPlaceholderHook("eterniaserver", placeHolders);
         messages.sendMessage("generic.others.reload-finish", sender);
@@ -132,10 +132,10 @@ public class Others extends BaseCommand {
             if (player.getWorld() == Bukkit.getWorld("evento") && !player.hasPermission("eternia.fly.evento")) {
                 messages.sendMessage("server.no-perm", player);
             } else {
-                playerFlyState.changeFlyState(player);
+                changeFlyState(player);
             }
         } else {
-            playerFlyState.changeFlyState(target.getPlayer());
+            changeFlyState(target.getPlayer());
         }
     }
 
@@ -198,8 +198,6 @@ public class Others extends BaseCommand {
         }
     }
 
-
-
     private int checkItems(ItemStack item1, ItemStack item2) {
         if (item1.isSimilar(item2) && item1.getItemMeta().getDisplayName().equals(item2.getItemMeta().getDisplayName())) return item1.getAmount();
         else return 0;
@@ -210,6 +208,16 @@ public class Others extends BaseCommand {
         if (amount != 0) {
             player.getInventory().removeItem(new ItemStack(material, amount * 9));
             player.getInventory().addItem(new ItemStack(block, amount));
+        }
+    }
+
+    public void changeFlyState(Player player) {
+        if (player.getAllowFlight()) {
+            player.setAllowFlight(false);
+            messages.sendMessage("generic.others.fly-disabled", player);
+        } else {
+            player.setAllowFlight(true);
+            messages.sendMessage("generic.others.fly-enabled", player);
         }
     }
 

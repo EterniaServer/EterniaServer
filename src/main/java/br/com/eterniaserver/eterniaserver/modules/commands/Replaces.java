@@ -1,12 +1,12 @@
-package br.com.eterniaserver.eterniaserver.modules.genericmanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,15 +18,11 @@ public class Replaces extends BaseCommand {
 
     private final EterniaServer plugin;
     private final Messages messages;
-    private final Strings strings;
-    private final Vars vars;
     private final GetRuntime getRuntime;
 
-    public Replaces(EterniaServer plugin, Messages messages, Strings strings, Vars vars) {
+    public Replaces(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.strings = strings;
-        this.vars = vars;
+        this.messages = plugin.getMessages();
         this.getRuntime = new GetRuntime();
     }
 
@@ -46,13 +42,13 @@ public class Replaces extends BaseCommand {
     public void onProfile(Player player) throws ParseException {
         final String playerName = player.getName();
 
-        Date date = plugin.sdf.parse(vars.player_login.get(playerName));
+        Date date = plugin.sdf.parse(plugin.getVars().player_login.get(playerName));
         messages.sendMessage("generic.profile.register", "%player_register_data%", plugin.sdf.format(date), player);
         for (String line : plugin.msgConfig.getStringList("generic.profile.custom")) {
             String modifiedText;
             if (plugin.hasPlaceholderAPI) modifiedText = messages.putPAPI(player, line);
             else modifiedText = line.replace("%player_name%", playerName);
-            player.sendMessage(strings.getColor(modifiedText));
+            player.sendMessage(plugin.getStrings().getColor(modifiedText));
         }
     }
 

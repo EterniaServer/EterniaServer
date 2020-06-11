@@ -26,9 +26,9 @@ public class OnBlockBreak implements Listener {
     private final EterniaServer plugin;
     private final Messages messages;
 
-    public OnBlockBreak(EterniaServer plugin, Messages messages) {
+    public OnBlockBreak(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
+        this.messages = plugin.getMessages();
     }
 
     @EventHandler

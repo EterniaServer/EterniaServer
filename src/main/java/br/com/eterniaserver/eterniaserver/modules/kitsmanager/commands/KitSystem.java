@@ -23,10 +23,10 @@ public class KitSystem extends BaseCommand {
     private final Strings strings;
     private final KitsManager kitsManager;
 
-    public KitSystem(EterniaServer plugin, Messages messages, Strings strings, KitsManager kitsManager) {
+    public KitSystem(EterniaServer plugin, KitsManager kitsManager) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.strings = strings;
+        this.messages = plugin.getMessages();
+        this.strings = plugin.getStrings();
         this.kitsManager = kitsManager;
     }
 

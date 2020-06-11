@@ -1,10 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.chats;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
-
-import br.com.eterniaserver.eterniaserver.configs.Vars;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -14,15 +11,11 @@ import org.bukkit.entity.Player;
 public class Local {
 
     private final EterniaServer plugin;
-    private final Messages messages;
     private final Strings strings;
-    private final Vars vars;
 
-    public Local(EterniaServer plugin, Messages messages, Strings strings, Vars vars) {
+    public Local(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.strings = strings;
-        this.vars = vars;
+        this.strings = plugin.getStrings();
     }
 
     public void SendMessage(String message, Player player, int radius) {
@@ -38,7 +31,7 @@ public class Local {
                 } else {
                     if (player.getWorld() == p.getWorld()) {
                         double distance = p.getLocation().distanceSquared(player.getLocation());
-                        if (p.hasPermission("eternia.spy") && p != player && !(distance <= Math.pow(radius, 2) && vars.spy.getOrDefault(p, false))) {
+                        if (p.hasPermission("eternia.spy") && p != player && !(distance <= Math.pow(radius, 2) && plugin.getVars().spy.getOrDefault(p, false))) {
                             p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getName() + ": " + message));
                         }
                         if (distance <= Math.pow(radius, 2)) {
@@ -46,7 +39,7 @@ public class Local {
                             p.sendMessage(format);
                         }
                     } else {
-                        if (p.hasPermission("eternia.spy") && p != player  && vars.spy.getOrDefault(p, false)) {
+                        if (p.hasPermission("eternia.spy") && p != player  && plugin.getVars().spy.getOrDefault(p, false)) {
                             p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getName() + ": " + message));
                         }
                     }
@@ -54,7 +47,7 @@ public class Local {
             }
         }
         if (pes <= 1) {
-            messages.sendMessage("chat.noone", player);
+            plugin.getMessages().sendMessage("chat.noone", player);
         }
     }
 

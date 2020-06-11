@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.commands;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 
@@ -15,9 +16,9 @@ public class Channels extends BaseCommand {
     private final Vars vars;
     private final Messages messages;
 
-    public Channels(Vars vars, Messages messages) {
-        this.vars = vars;
-        this.messages = messages;
+    public Channels(EterniaServer plugin) {
+        this.vars = plugin.getVars();
+        this.messages = plugin.getMessages();
     }
 
     @Subcommand("local")

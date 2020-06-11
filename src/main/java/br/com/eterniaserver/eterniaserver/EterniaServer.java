@@ -1,35 +1,18 @@
 package br.com.eterniaserver.eterniaserver;
 
-import br.com.eterniaserver.eterniaserver.API.Exp;
-import br.com.eterniaserver.eterniaserver.API.Money;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.configs.Checks;
-import br.com.eterniaserver.eterniaserver.dependencies.papi.PAPI;
-import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
+import br.com.eterniaserver.eterniaserver.API.*;
+import br.com.eterniaserver.eterniaserver.configs.*;
+import br.com.eterniaserver.eterniaserver.dependencies.papi.*;
 import br.com.eterniaserver.eterniaserver.events.*;
-import br.com.eterniaserver.eterniaserver.modules.*;
-import br.com.eterniaserver.eterniaserver.modules.bedmanager.BedManager;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.ChatManager;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.Local;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.Staff;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.events.ChatEvent;
-import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
-import br.com.eterniaserver.eterniaserver.modules.experiencemanager.ExperienceManager;
-import br.com.eterniaserver.eterniaserver.modules.genericmanager.GenericManager;
+import br.com.eterniaserver.eterniaserver.modules.Managers;
+import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.*;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.KitsManager;
-import br.com.eterniaserver.eterniaserver.modules.playerchecksmanager.PlayerChecksManager;
 import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.RewardsManager;
-import br.com.eterniaserver.eterniaserver.modules.spawnermanager.SpawnersManager;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
-import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
-import br.com.eterniaserver.eterniaserver.storages.Files;
+import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
-import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultUnHook;
-import br.com.eterniaserver.eterniaserver.storages.database.Connections;
 
 import co.aikar.commands.PaperCommandManager;
 
@@ -38,17 +21,9 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class EterniaServer extends JavaPlugin {
-
-    public PaperCommandManager manager;
 
     public boolean chatMuted = false;
     public boolean hasPlaceholderAPI = true;
@@ -56,24 +31,24 @@ public class EterniaServer extends JavaPlugin {
     public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
     private final Vars vars = new Vars();
-    private final PlaceHolders placeHolders = new PlaceHolders(this, vars);
-
     private final Strings strings = new Strings(this);
-    private final Messages messages = new Messages(strings);
-    private Files files;
+    private final Messages messages = new Messages(this);
+    private final Checks checks = new Checks(this);
 
-    private final Checks checks = new Checks(this, vars);
-    private final PlayerManager playerManager = new PlayerManager(this, vars);
-    private final Local local = new Local(this, messages, strings, vars);
-    private final Staff staff = new Staff(this, strings);
-    private final ChatEvent chatEvent = new ChatEvent(this, local, staff, vars);
-    private final PlayerFlyState playerFlyState = new PlayerFlyState(messages);
-    private final Exp exp = new Exp(this, vars);
-    private final Money money = new Money(this, playerManager, vars);
+    private final PlaceHolders placeHolders = new PlaceHolders(this);
 
-    private TeleportsManager teleportsManager;
+    private final PlayerManager playerManager = new PlayerManager(this);
 
-    public Connections connections;
+    private final Money money = new Money(this);
+    private final Exp exp = new Exp(this);
+
+    public final Local local = new Local(this);
+    public final Staff staff = new Staff(this);
+
+    private PaperCommandManager manager;
+
+    public TeleportsManager teleportsManager;
+    public Files files;
 
     public FileConfiguration serverConfig, msgConfig, cmdConfig, rewardsConfig;
     public FileConfiguration blockConfig, kitConfig, chatConfig, placeholderConfig, groupConfig;
@@ -81,179 +56,103 @@ public class EterniaServer extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        manager = new PaperCommandManager(this);
-
-        files = new Files(this, messages, manager);
-
         PaperLib.suggestPaper(this);
+
+        manager = new PaperCommandManager(this);
+        files = new Files(this);
 
         files.loadConfigs();
         files.loadMessages();
         files.loadDatabase();
 
-        bedManager();
-        blockRewardManager();
-        chatManager();
-        commandsManager();
-        economyManager();
-        elevatorManager();
-        experienceManager();
-        genericManager();
+        loadManagers();
         homesManager();
         kitsManager();
-        teleportsManager();
-        playerChecksManager();
-        spawnersManager();
         rewardsManager();
+        loadTeleportsManager();
 
         placeholderAPIHook();
         vaultHook();
 
-        this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this, messages), this);
-        this.getServer().getPluginManager().registerEvents(new OnBlockPlace(this, messages), this);
-        this.getServer().getPluginManager().registerEvents(new OnDamage(this, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnInventoryClick(this, messages), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this, chatEvent, checks, vars, messages), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this, messages, strings), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this, messages, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(this, messages, checks, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(this, playerManager, messages, checks,  vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerMove(this, messages, vars), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerSignChange(strings), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(this, vars), this);
+        this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnBlockPlace(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnDamage(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnInventoryClick(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerMove(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerSignChange(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneakEvent(this), this);
 
     }
 
-    @Override
-    public void onDisable() {
-
-        vaultUnHook();
-
-    }
-
-    private void vaultUnHook() {
-        new VaultUnHook(this);
-    }
-
     private void vaultHook() {
-        new VaultHook(this, messages, playerManager, money);
+        new VaultHook(this);
     }
 
     public void rewardsManager() {
-        new RewardsManager(this, messages, manager);
+        new RewardsManager(this);
     }
 
     private void placeholderAPIHook() {
-        new PAPI(this, messages, placeHolders);
-    }
-
-    private void spawnersManager() {
-        new SpawnersManager(this, messages, manager);
-    }
-
-    private void playerChecksManager() {
-        new PlayerChecksManager(this, messages, strings, teleportsManager, vars);
-    }
-
-    private void teleportsManager() {
-        teleportsManager = new TeleportsManager(this, messages, strings, vars, money, manager);
+        new PAPI(this);
     }
 
     private void kitsManager() {
-        new KitsManager(this, messages, playerManager, strings, vars, manager);
+        new KitsManager(this);
     }
 
     private void homesManager() {
-        new HomesManager(this, messages, strings, vars, manager);
+        new HomesManager(this);
     }
 
-    private void genericManager() {
-        new GenericManager(this, messages, strings, playerFlyState, files, vars, placeHolders, manager);
+    private void loadTeleportsManager() {
+        teleportsManager = new TeleportsManager(this);
     }
 
-    private void experienceManager() {
-        new ExperienceManager(this, messages, checks, exp, manager);
+    private void loadManagers() {
+        new Managers(this);
     }
 
-    private void elevatorManager() {
-        new ElevatorManager(this, messages);
+    public Checks getChecks() {
+        return checks;
     }
 
-    private void economyManager() {
-        new EconomyManager(this, messages, money, manager);
+    public Exp getExp() {
+        return exp;
     }
 
-    private void commandsManager() {
-        new CommandsManager(this, messages);
+    public PaperCommandManager getManager() {
+        return manager;
     }
 
-    private void chatManager() {
-        new ChatManager(this, messages, strings, vars, playerManager, files, manager);
+    public Messages getMessages() {
+        return messages;
     }
 
-    private void blockRewardManager(){
-        new BlockRewardManager(this, messages);
+    public Money getMoney() {
+        return money;
     }
 
-    private void bedManager() {
-        new BedManager(this, messages, checks, vars);
+    public PlayerManager getPlayerManager() {
+        return playerManager;
     }
 
-    public List<String> executeQueryList(final String query, final String value) {
-        List<String> accounts = new ArrayList<>();
-        connections.executeSQLQuery(connection -> {
-            PreparedStatement getbaltop = connection.prepareStatement(query);
-            ResultSet resultSet = getbaltop.executeQuery();
-            while (resultSet.next()) {
-                final String warpname = resultSet.getString(value);
-                accounts.add(warpname);
-            }
-            resultSet.close();
-            getbaltop.close();
-        });
-        return accounts;
+    public PlaceHolders getPlaceHolders() {
+        return placeHolders;
     }
 
-    public void executeQuery(final String query) {
-        connections.executeSQLQuery(connection -> {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.execute();
-            statement.close();
-        }, true);
+    public Strings getStrings() {
+        return strings;
     }
 
-    public AtomicReference<String> executeQueryString(final String query, final String value) {
-        return executeQueryString(query, value, value);
-    }
-
-    public AtomicReference<String> executeQueryString(final String query, final String value, final String value2) {
-        AtomicReference<String> result = new AtomicReference<>("");
-        connections.executeSQLQuery(connection -> {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next() && resultSet.getString(value) != null) {
-                result.set(resultSet.getString(value2));
-            }
-            resultSet.close();
-            statement.close();
-        });
-        return result;
-    }
-
-    public AtomicBoolean executeQueryBoolean(final String query, final String value) {
-        AtomicBoolean result = new AtomicBoolean(false);
-        connections.executeSQLQuery(connection -> {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next() && resultSet.getString(value) != null) {
-                result.set(true);
-            }
-            resultSet.close();
-            statement.close();
-        });
-        return result;
+    public Vars getVars() {
+        return vars;
     }
 
 }
