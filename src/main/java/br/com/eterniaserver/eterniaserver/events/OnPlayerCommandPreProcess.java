@@ -10,18 +10,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class OnPlayerCommandPreProcessEvent implements Listener {
+public class OnPlayerCommandPreProcess implements Listener {
 
     private final EterniaServer plugin;
     private final Messages messages;
 
-    public OnPlayerCommandPreProcessEvent(EterniaServer plugin) {
+    public OnPlayerCommandPreProcess(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getMessages();
     }
 
     @EventHandler
-    public void onPlayerCommandPreProcessEvent(PlayerCommandPreprocessEvent event) {
+    public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
         if (event.isCancelled()) return;
 
         final Player player = event.getPlayer();

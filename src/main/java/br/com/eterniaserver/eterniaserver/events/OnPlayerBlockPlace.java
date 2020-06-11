@@ -12,16 +12,16 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class OnBlockPlace implements Listener {
+public class OnPlayerBlockPlace implements Listener {
 
     private final EterniaServer plugin;
 
-    public OnBlockPlace(EterniaServer plugin) {
+    public OnPlayerBlockPlace(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public void onPlayerBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled()) return;
 
         if (event.getBlock().getType() == Material.SPAWNER) {

@@ -19,7 +19,7 @@ public class OnPlayerLeave implements Listener {
     }
 
     @EventHandler
-    public void OnLeave(PlayerQuitEvent event) {
+    public void onPlayerLeave(PlayerQuitEvent event) {
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();

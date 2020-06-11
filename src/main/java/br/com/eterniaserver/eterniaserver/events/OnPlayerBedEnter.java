@@ -8,16 +8,16 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 
 import java.util.concurrent.TimeUnit;
 
-public class OnBedEnter implements Listener {
+public class OnPlayerBedEnter implements Listener {
 
     private final EterniaServer plugin;
 
-    public OnBedEnter(EterniaServer plugin) {
+    public OnPlayerBedEnter(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onBedEnter(PlayerBedEnterEvent event) {
+    public void onPlayerBedEnter(PlayerBedEnterEvent event) {
         if (event.isCancelled()) return;
 
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {

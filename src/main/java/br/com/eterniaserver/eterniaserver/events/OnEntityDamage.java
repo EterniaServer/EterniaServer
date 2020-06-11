@@ -8,16 +8,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class OnDamage implements Listener {
+public class OnEntityDamage implements Listener {
 
     private final EterniaServer plugin;
 
-    public OnDamage(EterniaServer plugin) {
+    public OnEntityDamage(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onDamage(EntityDamageEvent event) {
+    public void onEntityDamage(EntityDamageEvent event) {
         if (event.isCancelled()) return;
         final Entity entity = event.getEntity();
         if (entity instanceof Player) {

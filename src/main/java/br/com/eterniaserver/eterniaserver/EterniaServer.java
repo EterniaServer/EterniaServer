@@ -74,12 +74,12 @@ public class EterniaServer extends JavaPlugin {
         placeholderAPIHook();
         vaultHook();
 
-        this.getServer().getPluginManager().registerEvents(new OnBlockBreak(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnBlockPlace(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnDamage(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnInventoryClick(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerBlockPlace(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnEntityDamage(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnEntityInventoryClick(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcessEvent(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcess(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(this), this);
@@ -87,7 +87,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerSignChange(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneakEvent(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneak(this), this);
 
     }
 

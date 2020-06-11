@@ -17,7 +17,7 @@ public class OnPlayerTeleport implements Listener {
 
 
     @EventHandler
-    public void onTeleport(PlayerTeleportEvent event) {
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
         final Player player = event.getPlayer();
         if (plugin.serverConfig.getBoolean("modules.teleports")) plugin.getVars().back.put(player.getName(), player.getLocation());

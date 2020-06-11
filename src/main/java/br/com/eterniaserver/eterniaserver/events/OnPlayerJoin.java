@@ -22,7 +22,7 @@ public class OnPlayerJoin implements Listener {
     }
 
     @EventHandler
-    public void OnJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final String playerName = player.getName();
         if (plugin.serverConfig.getBoolean("modules.experience")) {

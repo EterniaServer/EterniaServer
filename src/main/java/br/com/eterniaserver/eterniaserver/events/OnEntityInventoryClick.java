@@ -12,18 +12,18 @@ import org.bukkit.event.inventory.InventoryType;
 
 import java.util.Objects;
 
-public class OnInventoryClick implements Listener {
+public class OnEntityInventoryClick implements Listener {
 
     private final EterniaServer plugin;
     private final Messages messages;
 
-    public OnInventoryClick(EterniaServer plugin) {
+    public OnEntityInventoryClick(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getMessages();
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
+    public void onEntityInventoryClick(InventoryClickEvent e) {
         if (e.isCancelled()) return;
 
         final Player player = (Player) e.getWhoClicked();

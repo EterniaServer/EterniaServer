@@ -9,16 +9,16 @@ import org.bukkit.event.player.PlayerBedLeaveEvent;
 
 import java.util.concurrent.TimeUnit;
 
-public class OnBedLeave implements Listener {
+public class OnPlayerBedLeave implements Listener {
 
     private final EterniaServer plugin;
 
-    public OnBedLeave(EterniaServer plugin) {
+    public OnPlayerBedLeave(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onBedLeave(PlayerBedLeaveEvent event) {
+    public void onPlayerBedLeave(PlayerBedLeaveEvent event) {
         final Player player = event.getPlayer();
         final String playerName = player.getName();
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.getChecks().getCooldown(playerName)) > 6) {

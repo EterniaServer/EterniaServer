@@ -3,8 +3,8 @@ package br.com.eterniaserver.eterniaserver.modules;
 import br.com.eterniaserver.eternialib.configs.FileCreator;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.events.OnBedEnter;
-import br.com.eterniaserver.eterniaserver.events.OnBedLeave;
+import br.com.eterniaserver.eterniaserver.events.OnPlayerBedEnter;
+import br.com.eterniaserver.eterniaserver.events.OnPlayerBedLeave;
 import br.com.eterniaserver.eterniaserver.modules.commands.*;
 import br.com.eterniaserver.eterniaserver.modules.tasks.AccelerateWorld;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.AdvancedChatTorch;
@@ -34,8 +34,8 @@ public class Managers {
             } else {
                 plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, plugin.serverConfig.getInt("server.checks") * 40);
             }
-            plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(plugin), plugin);
-            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(plugin), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedEnter(plugin), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedLeave(plugin), plugin);
             messages.sendConsole("modules.enable", "%module%", "Bed");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Bed");

@@ -21,28 +21,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class OnBlockBreak implements Listener {
+public class OnPlayerBlockBreak implements Listener {
 
     private final EterniaServer plugin;
     private final Messages messages;
 
-    public OnBlockBreak(EterniaServer plugin) {
+    public OnPlayerBlockBreak(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getMessages();
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent breakEvent) {
-        if (breakEvent.isCancelled()) return;
+    public void onPlayerBlockBreak(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
 
-        final Player player = breakEvent.getPlayer();
-        final Block block = breakEvent.getBlock();
+        final Player player = event.getPlayer();
+        final Block block = event.getBlock();
         final Material material = block.getType();
         if (plugin.serverConfig.getBoolean("modules.spawners")) {
             if (material == Material.SPAWNER) {
                 if (plugin.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
                     messages.sendMessage("spawner.others.blocked", player);
-                    breakEvent.setCancelled(true);
+                    event.setCancelled(true);
                     return;
                 }
                 if (player.hasPermission("eternia.spawners.break")) {
@@ -74,24 +74,24 @@ public class OnBlockBreak implements Listener {
                         }
                         if (plugin.serverConfig.getBoolean("spawners.drop-in-inventory")) {
                             if (player.getInventory().firstEmpty() == -1) {
-                                breakEvent.setCancelled(true);
+                                event.setCancelled(true);
                                 messages.sendMessage("spawner.others.inv-full", player);
                                 return;
                             }
                             player.getInventory().addItem(item);
                             block.getDrops().clear();
-                            breakEvent.setExpToDrop(0);
+                            event.setExpToDrop(0);
                             return;
                         }
                         final Location loc = block.getLocation();
                         loc.getWorld().dropItemNaturally(loc, item);
-                        breakEvent.setExpToDrop(0);
+                        event.setExpToDrop(0);
                     } else {
-                        breakEvent.setCancelled(true);
+                        event.setCancelled(true);
                         messages.sendMessage("spawner.others.need-silktouch", player);
                     }
                 } else {
-                    breakEvent.setCancelled(true);
+                    event.setCancelled(true);
                     messages.sendMessage("server.no-perm", player);
                 }
             }
@@ -113,9 +113,9 @@ public class OnBlockBreak implements Listener {
                         for (String command : plugin.blockConfig.getStringList("blocks." + material.name().toUpperCase() + "." + lowestNumberAboveRandom)) {
                             String modifiedCommand;
                             if (plugin.hasPlaceholderAPI) {
-                                modifiedCommand = messages.putPAPI(breakEvent.getPlayer(), command);
+                                modifiedCommand = messages.putPAPI(event.getPlayer(), command);
                             } else {
-                                modifiedCommand = command.replace("%player_name%", breakEvent.getPlayer().getPlayerListName());
+                                modifiedCommand = command.replace("%player_name%", event.getPlayer().getPlayerListName());
                             }
                             plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                         }

@@ -15,16 +15,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-public class OnPlayerToggleSneakEvent implements Listener {
+public class OnPlayerToggleSneak implements Listener {
 
     private final EterniaServer plugin;
 
-    public OnPlayerToggleSneakEvent(EterniaServer plugin) {
+    public OnPlayerToggleSneak(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler
-    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
+    public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         if (event.isCancelled()) return;
 
         final Player player = event.getPlayer();
