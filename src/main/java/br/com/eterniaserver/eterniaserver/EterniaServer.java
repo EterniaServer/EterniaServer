@@ -60,7 +60,6 @@ public class EterniaServer extends JavaPlugin {
 
         manager = new PaperCommandManager(this);
         files = new Files(this);
-        teleportsManager = new TeleportsManager(this);
 
         files.loadConfigs();
         files.loadMessages();
@@ -70,6 +69,7 @@ public class EterniaServer extends JavaPlugin {
         homesManager();
         kitsManager();
         rewardsManager();
+        loadTeleportsManager();
 
         placeholderAPIHook();
         vaultHook();
@@ -109,6 +109,10 @@ public class EterniaServer extends JavaPlugin {
 
     private void homesManager() {
         new HomesManager(this);
+    }
+
+    private void loadTeleportsManager() {
+        teleportsManager = new TeleportsManager(this);
     }
 
     private void loadManagers() {

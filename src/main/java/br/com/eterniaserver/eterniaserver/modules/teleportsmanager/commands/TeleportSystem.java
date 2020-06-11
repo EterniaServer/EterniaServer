@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -70,6 +71,7 @@ public class TeleportSystem extends BaseCommand {
 
     @CommandAlias("tpa|teleportoplayer")
     @Syntax("<jogador>")
+    @CommandCompletion("@players")
     @CommandPermission("eternia.tpa")
     public void onTeleportToPlayer(Player player, OnlinePlayer target) {
         final Player targetP = target.getPlayer();

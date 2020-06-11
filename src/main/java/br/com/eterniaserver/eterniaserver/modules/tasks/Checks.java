@@ -12,6 +12,7 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
@@ -45,8 +46,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                 }
             }
             if (plugin.serverConfig.getBoolean("server.void-tp") && location.getY() < -10) {
-                location.setY(location.getWorld().getHighestBlockYAt(location));
-                PaperLib.teleportAsync(player, location);
+                PaperLib.teleportAsync(player, teleportsManager.getWarp("spawn"));
             }
             if (location.getBlock().getType() == Material.NETHER_PORTAL) {
                 if (!vars.playersInPortal.containsKey(playerName)) {

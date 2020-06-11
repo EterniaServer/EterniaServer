@@ -9,10 +9,7 @@ import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsMana
 import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.Syntax;
+import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
 import io.papermc.lib.PaperLib;
@@ -70,6 +67,7 @@ public class WarpSystem extends BaseCommand {
 
     @CommandAlias("shop|loja")
     @Syntax("<jogador>")
+    @CommandCompletion("@players")
     @CommandPermission("eternia.shop.player")
     public void onShop(Player player, @Optional String target) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
