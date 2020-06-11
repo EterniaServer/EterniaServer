@@ -13,9 +13,9 @@ public class PlayerManager {
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public PlayerManager(EterniaServer plugin, Vars vars) {
+    public PlayerManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = vars;
+        vars = plugin.getVars();
     }
 
     public void playerHomeCreate(String playerName) {

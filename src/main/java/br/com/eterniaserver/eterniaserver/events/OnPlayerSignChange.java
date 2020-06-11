@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.events;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 
 import org.bukkit.event.EventHandler;
@@ -10,8 +11,8 @@ public class OnPlayerSignChange implements Listener {
 
     private final Strings strings;
 
-    public OnPlayerSignChange(Strings strings) {
-        this.strings = strings;
+    public OnPlayerSignChange(EterniaServer plugin) {
+        this.strings = plugin.getStrings();
     }
 
     @EventHandler

@@ -45,6 +45,7 @@ placeholders:
 # cooldown is the interval between the player being teleported when using a
 # command that teleports him.
 server:
+  online-mode: true
   async-check: true
   checks: 1
   afk-timer: 900

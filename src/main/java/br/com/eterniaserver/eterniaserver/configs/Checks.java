@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.configs;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
 public class Checks {
@@ -10,9 +11,9 @@ public class Checks {
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public Checks(EterniaServer plugin, Vars vars) {
+    public Checks(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = vars;
+        this.vars = plugin.getVars();
     }
 
     public int getXPForLevel(int lvl) {
@@ -45,6 +46,20 @@ public class Checks {
 
     public void removeUUIF(Player p) {
         vars.uufi.remove(p.getName());
+    }
+
+    public String setPlaceholders(Player p, String s) {
+        s = s.contains("%player_name%") ? s.replace("%player_name%", p.getName()) : s;
+        s = s.contains("%display_name%") ? s.replace("%display_name%", p.getDisplayName()) : s;
+        return PlaceholderAPI.setPlaceholders(p, s);
+    }
+
+    public String setRelationalPlaceholders(Player p, Player p2, String s) {
+        return PlaceholderAPI.setRelationalPlaceholders(p, p2, s);
+    }
+
+    public String setBothPlaceholders(Player p, Player to, String cc) {
+        return setRelationalPlaceholders(p, to, setPlaceholders(p, cc));
     }
 
 }

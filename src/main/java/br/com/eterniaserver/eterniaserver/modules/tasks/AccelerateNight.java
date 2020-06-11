@@ -16,11 +16,11 @@ public class AccelerateNight extends BukkitRunnable {
     private final Messages messages;
     private final Vars vars;
 
-    public AccelerateNight(final World world, EterniaServer plugin, Messages messages, Vars vars) {
+    public AccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        this.messages = messages;
-        this.vars = vars;
+        this.messages = plugin.getMessages();
+        this.vars = plugin.getVars();
         messages.broadcastMessage("bed.night-skipping", "%world_name%", world.getName());
     }
 

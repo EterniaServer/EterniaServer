@@ -20,10 +20,10 @@ public class VaultMethods implements Economy {
     private final PlayerManager playerManager;
     private final Money moneyx;
 
-    public VaultMethods(EterniaServer plugin, PlayerManager playerManager, Money moneyx) {
+    public VaultMethods(EterniaServer plugin) {
         this.plugin = plugin;
-        this.playerManager = playerManager;
-        this.moneyx = moneyx;
+        this.playerManager = plugin.getPlayerManager();
+        this.moneyx = plugin.getMoney();
     }
 
     @Override

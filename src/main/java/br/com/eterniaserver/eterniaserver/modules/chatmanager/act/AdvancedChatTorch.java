@@ -11,10 +11,10 @@ public class AdvancedChatTorch {
 	private final Messages messages;
 	private final Vars vars;
 
-	public AdvancedChatTorch(EterniaServer plugin, Messages messages, Vars vars) {
+	public AdvancedChatTorch(EterniaServer plugin) {
 		this.plugin = plugin;
-		this.messages = messages;
-		this.vars = vars;
+		this.messages = plugin.getMessages();
+		this.vars = plugin.getVars();
 		registerCustomPlaceholders();
 		checkGroups();
 	}

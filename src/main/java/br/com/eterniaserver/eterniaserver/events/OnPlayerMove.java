@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 
 import io.papermc.lib.PaperLib;
@@ -20,13 +19,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class OnPlayerMove implements Listener {
 
     private final EterniaServer plugin;
-    private final Messages messages;
     private final Vars vars;
 
-    public OnPlayerMove(EterniaServer plugin, Messages messages, Vars vars) {
+    public OnPlayerMove(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.vars = vars;
+        this.vars = plugin.getVars();
     }
 
     @EventHandler
@@ -40,7 +37,7 @@ public class OnPlayerMove implements Listener {
                 vars.afktime.put(playerName, System.currentTimeMillis());
                 if (vars.afk.contains(playerName)) {
                     vars.afk.remove(playerName);
-                    messages.broadcastMessage("generic.afk.disabled", "%player_name%", playerName);
+                    plugin.getMessages().broadcastMessage("generic.afk.disabled", "%player_name%", playerName);
                 }
             }
             if (event.getTo().getY() > event.getFrom().getY() && plugin.serverConfig.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {

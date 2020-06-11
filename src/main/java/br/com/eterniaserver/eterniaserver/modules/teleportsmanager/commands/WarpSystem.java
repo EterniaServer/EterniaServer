@@ -31,12 +31,12 @@ public class WarpSystem extends BaseCommand {
     private final Vars vars;
     private final Strings strings;
 
-    public WarpSystem(EterniaServer plugin, Messages messages, TeleportsManager teleportsManager, Vars vars, Strings strings) {
+    public WarpSystem(EterniaServer plugin, TeleportsManager teleportsManager) {
         this.plugin = plugin;
-        this.messages = messages;
+        this.messages = plugin.getMessages();
         this.teleportsManager = teleportsManager;
-        this.vars = vars;
-        this.strings = strings;
+        this.vars = plugin.getVars();
+        this.strings = plugin.getStrings();
     }
 
     @CommandAlias("spawn")

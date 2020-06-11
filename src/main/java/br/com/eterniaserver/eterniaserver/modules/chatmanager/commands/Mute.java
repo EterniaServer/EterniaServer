@@ -22,11 +22,11 @@ public class Mute extends BaseCommand {
     private final Vars vars;
     private final PlayerManager playerManager;
 
-    public Mute(EterniaServer plugin, Messages messages, Vars vars, PlayerManager playerManager) {
+    public Mute(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.vars = vars;
-        this.playerManager = playerManager;
+        this.messages = plugin.getMessages();
+        this.vars = plugin.getVars();
+        this.playerManager = plugin.getPlayerManager();
     }
 
     @CommandAlias("mutechannels|muteall")

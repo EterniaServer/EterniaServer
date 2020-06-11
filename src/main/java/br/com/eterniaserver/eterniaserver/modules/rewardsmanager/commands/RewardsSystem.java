@@ -20,9 +20,9 @@ public class RewardsSystem extends BaseCommand {
     private final Messages messages;
     private final EterniaServer plugin;
 
-    public RewardsSystem(RewardsManager rewardsManager, Messages messages, EterniaServer plugin) {
+    public RewardsSystem(RewardsManager rewardsManager, EterniaServer plugin) {
         this.rewardsManager = rewardsManager;
-        this.messages = messages;
+        this.messages = plugin.getMessages();
         this.plugin = plugin;
     }
 

@@ -24,11 +24,11 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
     private final Vars vars;
     private final TeleportsManager teleportsManager;
 
-    public Checks(EterniaServer plugin, Messages messages, Strings strings, Vars vars, TeleportsManager teleportsManager) {
+    public Checks(EterniaServer plugin, TeleportsManager teleportsManager) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.strings = strings;
-        this.vars = vars;
+        this.messages = plugin.getMessages();
+        this.strings = plugin.getStrings();
+        this.vars = plugin.getVars();
         this.teleportsManager = teleportsManager;
     }
 

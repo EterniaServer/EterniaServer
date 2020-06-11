@@ -35,12 +35,12 @@ public class HomeSystem extends BaseCommand {
     private final Strings strings;
     private final Vars vars;
 
-    public HomeSystem(EterniaServer plugin, Messages messages, HomesManager homesManager, Strings strings, Vars vars) {
+    public HomeSystem(EterniaServer plugin, HomesManager homesManager) {
         this.plugin = plugin;
-        this.messages = messages;
+        this.messages = plugin.getMessages();
         this.homesManager = homesManager;
-        this.strings = strings;
-        this.vars = vars;
+        this.strings = plugin.getStrings();
+        this.vars = plugin.getVars();
     }
 
     @CommandAlias("delhome|delhouse|delcasa")

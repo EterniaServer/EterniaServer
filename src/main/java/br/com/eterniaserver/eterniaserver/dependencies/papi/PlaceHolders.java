@@ -13,9 +13,9 @@ public class PlaceHolders extends PlaceholderExpansion {
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public PlaceHolders(EterniaServer plugin, Vars vars) {
+    public PlaceHolders(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = vars;
+        this.vars = plugin.getVars();
     }
 
     public String getAuthor() {

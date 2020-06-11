@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eternialib.sql.Queries;
-import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 
@@ -22,10 +21,10 @@ public class Economy extends BaseCommand {
     private final Messages messages;
     private final br.com.eterniaserver.eterniaserver.API.Money moneyx;
 
-    public Economy(EterniaServer plugin, Messages messages, Money moneyx) {
+    public Economy(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.moneyx = moneyx;
+        this.messages = plugin.getMessages();
+        this.moneyx = plugin.getMoney();
     }
 
     @CommandAlias("money|economy|balance|bal")

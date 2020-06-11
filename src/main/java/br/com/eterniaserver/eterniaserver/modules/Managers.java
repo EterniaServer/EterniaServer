@@ -1,13 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules;
 
 import br.com.eterniaserver.eternialib.configs.FileCreator;
-import br.com.eterniaserver.eterniaserver.API.Exp;
-import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.events.OnBedEnter;
 import br.com.eterniaserver.eterniaserver.events.OnBedLeave;
 import br.com.eterniaserver.eterniaserver.modules.commands.*;
@@ -16,10 +11,6 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.AdvancedChatTo
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Channels;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Mute;
 import br.com.eterniaserver.eterniaserver.modules.tasks.Checks;
-import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
-import br.com.eterniaserver.eterniaserver.player.PlayerFlyState;
-import br.com.eterniaserver.eterniaserver.player.PlayerManager;
-import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 
 import co.aikar.commands.PaperCommandManager;
 
@@ -32,20 +23,19 @@ import java.io.IOException;
 
 public class Managers {
 
-    public Managers(EterniaServer plugin, Messages messages, PaperCommandManager manager,
-                    Strings strings, Vars vars, TeleportsManager teleportsManager,
-                    Files files, PlaceHolders placeHolders, PlayerFlyState playerFlyState,
-                    br.com.eterniaserver.eterniaserver.configs.Checks checks, Exp exp,
-                    Money money, PlayerManager playerManager) {
+    public Managers(EterniaServer plugin) {
+
+        final PaperCommandManager manager = plugin.getManager();
+        final Messages messages = plugin.getMessages();
 
         if (plugin.serverConfig.getBoolean("modules.bed")) {
             if (plugin.serverConfig.getBoolean("server.async-check")) {
-                plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new AccelerateWorld(plugin, messages, vars), 0L, plugin.serverConfig.getInt("server.checks") * 40);
+                plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new AccelerateWorld(plugin), 0L, plugin.serverConfig.getInt("server.checks") * 40);
             } else {
-                plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin, messages, vars), 0L, plugin.serverConfig.getInt("server.checks") * 40);
+                plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, plugin.serverConfig.getInt("server.checks") * 40);
             }
-            plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(messages, checks, vars), plugin);
-            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(checks, vars), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnBedEnter(plugin), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnBedLeave(plugin), plugin);
             messages.sendConsole("modules.enable", "%module%", "Bed");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Bed");
@@ -65,11 +55,11 @@ public class Managers {
         }
 
         if (plugin.serverConfig.getBoolean("modules.chat")) {
-            files.loadChat();
-            manager.registerCommand(new Channels(vars, messages));
-            manager.registerCommand(new Mute(plugin, messages, vars, playerManager));
-            manager.registerCommand(new br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Others(messages, strings, vars));
-            new AdvancedChatTorch(plugin, messages, vars);
+            plugin.files.loadChat();
+            manager.registerCommand(new Channels(plugin));
+            manager.registerCommand(new Mute(plugin));
+            manager.registerCommand(new br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Others(plugin));
+            new AdvancedChatTorch(plugin);
             messages.sendConsole("modules.enable", "%module%", "Chat");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Chat");
@@ -89,8 +79,8 @@ public class Managers {
         }
 
         if (plugin.serverConfig.getBoolean("modules.economy")) {
-            manager.registerCommand(new Economy(plugin, messages, money));
-            manager.registerCommand(new EcoChange(messages, money));
+            manager.registerCommand(new Economy(plugin));
+            manager.registerCommand(new EcoChange(plugin));
             messages.sendConsole("modules.enable", "%module%", "Economy");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Economy");
@@ -103,7 +93,7 @@ public class Managers {
         }
 
         if (plugin.serverConfig.getBoolean("modules.experience")) {
-            manager.registerCommand(new Experience(checks, messages, exp));
+            manager.registerCommand(new Experience(plugin));
             messages.sendConsole("modules.enable", "%module%", "Teleports");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Teleports");
@@ -112,8 +102,8 @@ public class Managers {
         if (plugin.serverConfig.getBoolean("modules.generic")) {
             manager.registerCommand(new Gamemode(messages));
             manager.registerCommand(new Inventory(messages));
-            manager.registerCommand(new Others(messages, files, placeHolders, strings, vars, playerFlyState));
-            manager.registerCommand(new Replaces(plugin, messages, strings, vars));
+            manager.registerCommand(new Others(plugin));
+            manager.registerCommand(new Replaces(plugin));
             manager.registerCommand(new Simplifications(messages));
             messages.sendConsole("modules.enable", "%module%", "Generic");
         } else {
@@ -123,12 +113,12 @@ public class Managers {
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
             if (PaperLib.isPaper()) {
                 if (plugin.serverConfig.getBoolean("server.async-check")) {
-                    new Checks(plugin, messages, strings, vars, teleportsManager).runTaskTimerAsynchronously(plugin, 20L, plugin.serverConfig.getInt("server.checks") * 20);
+                    new Checks(plugin, plugin.teleportsManager).runTaskTimerAsynchronously(plugin, 20L, plugin.serverConfig.getInt("server.checks") * 20);
                 } else {
-                    new Checks(plugin, messages, strings, vars, teleportsManager).runTaskTimer(plugin, 20L, plugin.serverConfig.getInt("server.checks") * 20);
+                    new Checks(plugin, plugin.teleportsManager).runTaskTimer(plugin, 20L, plugin.serverConfig.getInt("server.checks") * 20);
                 }
             } else {
-                new Checks(plugin, messages, strings, vars, teleportsManager).runTaskTimer(plugin, 20L, plugin.serverConfig.getInt("server.checks") * 20);
+                new Checks(plugin, plugin.teleportsManager).runTaskTimer(plugin, 20L, plugin.serverConfig.getInt("server.checks") * 20);
             }
             messages.sendConsole("modules.enable", "%module%", "Player-Checks");
         } else {
@@ -136,7 +126,7 @@ public class Managers {
         }
 
         if (plugin.serverConfig.getBoolean("modules.spawners")) {
-            manager.registerCommand(new SpawnerGive(plugin, messages));
+            manager.registerCommand(new SpawnerGive(plugin));
             messages.sendConsole("modules.enable", "%module%", "Spawners");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Spawners");

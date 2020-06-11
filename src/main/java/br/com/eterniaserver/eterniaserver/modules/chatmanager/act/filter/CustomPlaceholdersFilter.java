@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter;
 
-import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.PlaceholderAPIIntegrator;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.*;
 
 import org.bukkit.entity.Player;
@@ -9,15 +8,15 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class CustomPlaceholdersFilter {
 
-	private final Vars vars;
+	private final EterniaServer plugin;
 
-	public CustomPlaceholdersFilter(Vars vars) {
-		this.vars = vars;
+	public CustomPlaceholdersFilter(EterniaServer plugin) {
+		this.plugin = plugin;
 	}
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		for(CustomPlaceholder cp: vars.customPlaceholders) {
+		for(CustomPlaceholder cp: plugin.getVars().customPlaceholders) {
 			for(int i = 0; i < message.size(); i++) {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();
@@ -39,7 +38,7 @@ public class CustomPlaceholdersFilter {
 					e1.printStackTrace();
 				}
 				if(cp.isNotIndependent() && bestPlaceholder != null) {
-					chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", StringHelper.cc(PlaceholderAPIIntegrator.setPlaceholders(p, bestPlaceholder.getValue()))));
+					chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", StringHelper.cc(plugin.getChecks().setPlaceholders(p, bestPlaceholder.getValue()))));
 				} else {
 					int i2 = objMsg.indexOf("{" + cp.getId() + "}");
 					int i3 = i2 + ("{" + cp.getId() + "}").length();
@@ -48,7 +47,7 @@ public class CustomPlaceholdersFilter {
 						String hover = bestPlaceholder.getHover();
 						String suggest = bestPlaceholder.getSuggest();
 						String run = bestPlaceholder.getRun();
-						message.getChatObjects().add(i+1, new ChatObject(StringHelper.cc(PlaceholderAPIIntegrator.setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
+						message.getChatObjects().add(i+1, new ChatObject(StringHelper.cc(plugin.getChecks().setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
 						if(bestPlaceholder.isText()) {
 							message.getChatObjects().get(i+1).setIsText(true);
 						}

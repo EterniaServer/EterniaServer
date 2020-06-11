@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eterniaserver.API.Money;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import co.aikar.commands.BaseCommand;
@@ -17,9 +18,9 @@ public class EcoChange extends BaseCommand {
     private final Messages messages;
     private final Money moneyx;
 
-    public EcoChange(Messages messages, Money moneyx) {
-        this.messages = messages;
-        this.moneyx = moneyx;
+    public EcoChange(EterniaServer plugin) {
+        this.messages = plugin.getMessages();
+        this.moneyx = plugin.getMoney();
     }
 
     @Subcommand("set|definir")

@@ -1,10 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.teleportsmanager;
 
 import br.com.eterniaserver.eternialib.sql.Queries;
-import br.com.eterniaserver.eterniaserver.API.Money;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands.*;
 
@@ -18,12 +16,16 @@ public class TeleportsManager {
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public TeleportsManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars, Money moneyx, PaperCommandManager manager) {
+    public TeleportsManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = vars;
+        this.vars = plugin.getVars();
+
+        final PaperCommandManager manager = plugin.getManager();
+        final Messages messages = plugin.getMessages();
+
         if (plugin.serverConfig.getBoolean("modules.teleports")) {
-            manager.registerCommand(new WarpSystem(plugin, messages, this, vars, strings));
-            manager.registerCommand(new TeleportSystem(plugin, messages, moneyx, vars));
+            manager.registerCommand(new WarpSystem(plugin, this));
+            manager.registerCommand(new TeleportSystem(plugin));
             messages.sendConsole("modules.enable", "%module%", "Teleports");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Teleports");

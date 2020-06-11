@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.TextMaker;
 
@@ -12,17 +11,15 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class JsonSender {
 
 	private final EterniaServer plugin;
-	private final Vars vars;
 
-	public JsonSender(EterniaServer plugin, Vars vars) {
+	public JsonSender(EterniaServer plugin) {
 		this.plugin = plugin;
-		this.vars = vars;
 	}
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		if(e.isCancelled()) return;
-		if(!vars.uufi.containsKey(e.getPlayer().getName())) return;
-		TextMaker tm = new TextMaker(message, e.getPlayer(), plugin, vars);
+		if(!plugin.getVars().uufi.containsKey(e.getPlayer().getName())) return;
+		TextMaker tm = new TextMaker(message, e.getPlayer(), plugin);
 		boolean relationalPlaceholders = plugin.chatConfig.getBoolean("chat.enableRelationalPlaceholders");
 		if(!relationalPlaceholders) {
 			tm.convertMessageToComponents();

@@ -9,9 +9,9 @@ public class Exp {
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public Exp(EterniaServer plugin, Vars vars) {
+    public Exp(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = vars;
+        this.vars = plugin.getVars();
     }
 
     /**

@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.homesmanager;
 import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.commands.*;
 
@@ -17,11 +16,15 @@ public class HomesManager {
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public HomesManager(EterniaServer plugin, Messages messages, Strings strings, Vars vars, PaperCommandManager manager) {
+    public HomesManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = vars;
+        this.vars = plugin.getVars();
+
+        final Messages messages = plugin.getMessages();
+        final PaperCommandManager manager = plugin.getManager();
+
         if (plugin.serverConfig.getBoolean("modules.home")) {
-            manager.registerCommand(new HomeSystem(plugin, messages, this, strings, vars));
+            manager.registerCommand(new HomeSystem(plugin, this));
             messages.sendConsole("modules.enable", "%module%", "Homes");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Homes");

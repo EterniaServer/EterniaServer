@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.kitsmanager;
 import br.com.eterniaserver.eternialib.sql.Queries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.commands.*;
 import br.com.eterniaserver.eterniaserver.player.PlayerManager;
@@ -25,10 +24,14 @@ public class KitsManager {
     private final Vars vars;
 
 
-    public KitsManager(EterniaServer plugin, Messages messages, PlayerManager playerManager, Strings strings, Vars vars, PaperCommandManager manager) {
+    public KitsManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.playerManager = playerManager;
-        this.vars = vars;
+        this.playerManager = plugin.getPlayerManager();
+        this.vars = plugin.getVars();
+
+        final Messages messages = plugin.getMessages();
+        final PaperCommandManager manager = plugin.getManager();
+
         if (plugin.serverConfig.getBoolean("modules.kits")) {
             File commandsConfigFile = new File(plugin.getDataFolder(), "kits.yml");
             if (!commandsConfigFile.exists()) {
@@ -40,7 +43,7 @@ public class KitsManager {
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
-            manager.registerCommand(new KitSystem(plugin, messages, strings, this));
+            manager.registerCommand(new KitSystem(plugin, this));
             messages.sendConsole("modules.enable", "%module%", "Kits");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Kits");

@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.configs;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
@@ -10,8 +11,8 @@ public class Messages {
 
     private final Strings strings;
 
-    public Messages(Strings strings) {
-        this.strings = strings;
+    public Messages(EterniaServer plugin) {
+        this.strings = plugin.getStrings();
     }
 
     public String putPAPI(Player player, String message) {

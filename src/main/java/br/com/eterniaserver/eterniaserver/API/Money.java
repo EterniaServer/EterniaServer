@@ -11,10 +11,10 @@ public class Money {
     private final PlayerManager playerManager;
     private final Vars vars;
 
-    public Money(EterniaServer plugin, PlayerManager playerManager, Vars vars) {
+    public Money(EterniaServer plugin) {
         this.plugin = plugin;
-        this.playerManager = playerManager;
-        this.vars = vars;
+        this.playerManager = plugin.getPlayerManager();
+        this.vars = plugin.getVars();
     }
 
     /**

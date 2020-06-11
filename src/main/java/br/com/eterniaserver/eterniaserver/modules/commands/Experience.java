@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eterniaserver.API.Exp;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Checks;
 
@@ -22,12 +23,12 @@ public class Experience extends BaseCommand {
 
     private final Checks checks;
     private final Messages messages;
-    private final Exp expx;
+    private final Exp exp;
 
-    public Experience(Checks checks, Messages messages, Exp expx) {
-        this.checks = checks;
-        this.messages = messages;
-        this.expx = expx;
+    public Experience(EterniaServer plugin) {
+        this.checks = plugin.getChecks();
+        this.messages = plugin.getMessages();
+        this.exp = plugin.getExp();
     }
 
     @CommandAlias("checklevel|verlevel")
@@ -37,7 +38,7 @@ public class Experience extends BaseCommand {
         float xp = player.getExp();
         player.setLevel(0);
         player.setExp(0);
-        player.giveExp(expx.getExp(player.getName()));
+        player.giveExp(exp.getExp(player.getName()));
         messages.sendMessage("experience.check", "%amount%", player.getLevel(), player);
         player.setLevel(lvl);
         player.setExp(xp);
@@ -74,8 +75,8 @@ public class Experience extends BaseCommand {
         final String playerName = player.getName();
 
         int xpla = checks.getXPForLevel(level);
-        if (expx.getExp(playerName) >= xpla) {
-            expx.removeExp(playerName, xpla);
+        if (exp.getExp(playerName) >= xpla) {
+            exp.removeExp(playerName, xpla);
             player.giveExp(xpla);
             messages.sendMessage("experience.withdraw", "%level%", player.getLevel(), player);
         } else {
@@ -91,7 +92,7 @@ public class Experience extends BaseCommand {
         if (xp_atual >= xpla) {
             int xp = checks.getXPForLevel(xpla);
             int xpto = checks.getXPForLevel(xp_atual);
-            expx.addExp(player.getName(), xp);
+            exp.addExp(player.getName(), xp);
             messages.sendMessage("experience.deposit", "%amount%", xpla, player);
             player.setLevel(0);
             player.setExp(0);

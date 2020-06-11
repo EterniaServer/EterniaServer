@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.commands;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.configs.Vars;
@@ -18,10 +19,10 @@ public class Others extends BaseCommand {
     private final Strings strings;
     private final Vars vars;
 
-    public Others(Messages messages, Strings strings, Vars vars) {
-        this.messages = messages;
-        this.strings = strings;
-        this.vars = vars;
+    public Others(EterniaServer plugin) {
+        this.messages = plugin.getMessages();
+        this.strings = plugin.getStrings();
+        this.vars = plugin.getVars();
     }
 
     @CommandAlias("limparchat|chatclear|clearchat")

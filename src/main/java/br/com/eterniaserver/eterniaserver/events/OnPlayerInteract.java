@@ -1,8 +1,6 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
 
 import org.bukkit.Bukkit;
@@ -20,13 +18,9 @@ import java.util.List;
 public class OnPlayerInteract implements Listener {
 
     private final EterniaServer plugin;
-    private final Messages messages;
-    private final Vars vars;
 
-    public OnPlayerInteract(EterniaServer plugin, Messages messages, Vars vars) {
+    public OnPlayerInteract(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.vars = vars;
     }
 
     @EventHandler
@@ -43,8 +37,12 @@ public class OnPlayerInteract implements Listener {
                     final String[] isso = lore.get(0).split(":");
                     final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
 
-                    if (vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
-                    else vars.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
+                    if (plugin.getVars().teleports.containsKey(player)) {
+                        plugin.getMessages().sendMessage("server.telep", player);
+                    }
+                    else {
+                        plugin.getVars().teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
+                    }
                 }
             }
             if (plugin.serverConfig.getBoolean("modules.experience")) {

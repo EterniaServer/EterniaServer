@@ -22,11 +22,11 @@ public class TeleportSystem extends BaseCommand {
     private final Vars vars;
     private final Money moneyx;
 
-    public TeleportSystem(EterniaServer plugin, Messages messages, Money moneyx, Vars vars) {
+    public TeleportSystem(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = messages;
-        this.moneyx = moneyx;
-        this.vars = vars;
+        this.messages = plugin.getMessages();
+        this.moneyx = plugin.getMoney();
+        this.vars = plugin.getVars();
     }
 
     @CommandAlias("tpall|teleportall")

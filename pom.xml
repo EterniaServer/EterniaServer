@@ -42,8 +42,7 @@
                                     <shadedPattern>br.com.eterniaserver.eterniaserver.locales</shadedPattern> <!-- Replace this -->
                                 </relocation>
                             </relocations>
-                            <outputDirectory>${basedir}/target/classes</outputDirectory>
-                            <minimizeJar>true</minimizeJar>
+                            <outputDirectory>${basedir}/target/classes/</outputDirectory>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
