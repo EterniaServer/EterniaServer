@@ -9,11 +9,20 @@
 # independentTextComponent will separate this json from others.
 # default and next is the groups of this json object.
 prefix:
+  independentTextComponent: false
+  default:
+    priority: 1
+    perm: eternia.membro
+    value: '%vault_prefix%'
+    useGroupEvents: false
+    hoverText: ''
+    suggestCmd: ''
+sufix:
   independentTextComponent: true
   default:
     priority: 1
     perm: eternia.membro
-    value: '&8[%vault_prefix%&8]'
+    value: '%vault_suffix% '
     useGroupEvents: false
     hoverText: '&7Clique para enviar uma mensagem&8.'
     suggestCmd: '/msg %player_name% '
@@ -30,7 +39,7 @@ canal:
   default:
     priority: 1
     perm: eternia.chat.global
-    value: '&8[&fG&8]'
+    value: '&8[&fG&8] '
     useGroupEvents: false
     hoverText: '&7Clique para entrar no &fGlobal&8.'
     suggestCmd: '/global '

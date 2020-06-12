@@ -14,7 +14,7 @@
 default:
   priority: 1
   perm: eternia.chat.default
-  format: '{canal} {clan}{prefix} &f%player_name%&8: %message%'
+  format: '{canal}{clan}{sufix}{prefix}%player_name%&8 ➤&r %message%'
   useChatColor: true
   chatColor: f
   on_click:

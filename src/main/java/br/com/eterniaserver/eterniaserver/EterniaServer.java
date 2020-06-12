@@ -74,10 +74,10 @@ public class EterniaServer extends JavaPlugin {
         placeholderAPIHook();
         vaultHook();
 
-        this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerBlockPlace(this), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityDamage(this), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityInventoryClick(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerBlockPlace(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcess(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this), this);

@@ -15,7 +15,7 @@ chat:
 # format is the format of chat.
 local:
   range: 100
-  format: '&8[&eL&8] %simpleclans_tag_label%&8[%vault_prefix%&8] &e%player_name%&8: &e%message%'
+  format: '&8[&eL&8] %vault_suffix% &e%player_name%&8 ➤&r &e%message%'
 # format is the format of chat.
 staff:
-  format: '&8[&aS&8] &8[%vault_prefix%&8] &a%player_name%&8: &a%message%'
+  format: '&8[&bS&8] %vault_prefix%%player_name%&8 ➤&r &b%message%'
