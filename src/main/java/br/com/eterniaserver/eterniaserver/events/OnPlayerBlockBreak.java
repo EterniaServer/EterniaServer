@@ -79,16 +79,7 @@ public class OnPlayerBlockBreak implements Listener {
         ItemMeta meta = item.getItemMeta();
         String mob = spawner.getSpawnedType().toString().replace("_", " ");
         String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + plugin.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
-        List<String> newLore = new ArrayList<>();
-        if (plugin.serverConfig.getBoolean("spawners.enable-lore")) {
-            for (String line : plugin.serverConfig.getStringList("spawners.lore")) {
-                newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
-            }
-            meta.setLore(newLore);
-        }
-        item.setItemMeta(meta);
-        return item;
+        return plugin.getChecks().getSpawner(meta, item, mobFormatted);
     }
 
     private void dropSpawner(BlockBreakEvent event, Player player, Block block, ItemStack item) {

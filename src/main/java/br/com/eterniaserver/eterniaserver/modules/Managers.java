@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.events.OnPlayerBedEnter;
 import br.com.eterniaserver.eterniaserver.events.OnPlayerBedLeave;
 import br.com.eterniaserver.eterniaserver.modules.commands.*;
+import br.com.eterniaserver.eterniaserver.modules.economymanager.commands.EcoChange;
 import br.com.eterniaserver.eterniaserver.modules.economymanager.commands.Economy;
 import br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands.Experience;
 import br.com.eterniaserver.eterniaserver.modules.tasks.AccelerateWorld;

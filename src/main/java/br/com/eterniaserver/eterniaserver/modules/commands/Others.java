@@ -36,6 +36,8 @@ public class Others extends BaseCommand {
     private final ItemStack diamondi = new ItemStack(Material.DIAMOND);
     private final ItemStack esmeraldai = new ItemStack(Material.EMERALD);
 
+    private final String strGNoItem = "generic.items.no-item";
+
     public Others(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
@@ -62,32 +64,40 @@ public class Others extends BaseCommand {
         player.getInventory().getItemInMainHand();
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
                 if (func.equals("name")) {
-                    ItemStack item = player.getInventory().getItemInMainHand();
-                    ItemMeta meta = item.getItemMeta();
-                    if (meta != null) {
-                        StringBuilder sb = new StringBuilder();
-                        for (java.lang.String arg : nome) sb.append(arg).append(" ");
-                        meta.setDisplayName(messages.getColor(sb.toString()));
-                        item.setItemMeta(meta);
-                        player.getInventory().setItemInMainHand(item);
-                    } else {
-                        messages.sendMessage("generic.items.no-item", player);
-                    }
+                    changeName(player, nome);
                 } else if (func.equals("lore")) {
-                    ItemStack item = player.getInventory().getItemInMainHand();
-                    if (!item.isSimilar(new ItemStack(Material.AIR))) {
-                        StringBuilder sb = new StringBuilder();
-                        for (java.lang.String arg : nome) sb.append(arg).append(" ");
-                        item.setLore(Collections.singletonList(messages.getColor(sb.toString())));
-                        player.getInventory().setItemInMainHand(item);
-                    } else {
-                        messages.sendMessage("generic.items.no-item", player);
-                    }
+                    changeLore(player, nome);
                 } else {
                     messages.sendMessage("generic.items.rename", player);
                 }
             } else {
-            messages.sendMessage("generic.items.no-item", player);
+            messages.sendMessage(strGNoItem, player);
+        }
+    }
+
+    private void changeName(Player player, String[] nome) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            StringBuilder sb = new StringBuilder();
+            for (java.lang.String arg : nome) sb.append(arg).append(" ");
+            meta.setDisplayName(messages.getColor(sb.toString()));
+            item.setItemMeta(meta);
+            player.getInventory().setItemInMainHand(item);
+        } else {
+            messages.sendMessage(strGNoItem, player);
+        }
+    }
+
+    private void changeLore(Player player, String[] nome) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (!item.isSimilar(new ItemStack(Material.AIR))) {
+            StringBuilder sb = new StringBuilder();
+            for (java.lang.String arg : nome) sb.append(arg).append(" ");
+            item.setLore(Collections.singletonList(messages.getColor(sb.toString())));
+            player.getInventory().setItemInMainHand(item);
+        } else {
+            messages.sendMessage(strGNoItem, player);
         }
     }
 

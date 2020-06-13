@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -32,31 +33,17 @@ public class SpawnerGive extends BaseCommand {
     @CommandCompletion("@mobs 1 @players")
     @CommandPermission("eternia.spawnergive")
     public void onSpawnerGive(CommandSender player, String spawner, Integer value, OnlinePlayer target) {
+        Player targetP = target.getPlayer();
         try {
             EntityType.valueOf(spawner.toUpperCase());
             if (value > 0) {
-                if (target.getPlayer().getInventory().firstEmpty() == -1) {
+                if (targetP.getInventory().firstEmpty() == -1) {
                     messages.sendMessage("spawners.invfull", player);
                 } else {
-                    ItemStack item = new ItemStack(Material.SPAWNER);
-                    ItemMeta meta = item.getItemMeta();
-                    item.setAmount(value);
-                    java.lang.String mobFormatted = spawner.substring(0, 1).toUpperCase() + spawner.substring(1).toLowerCase();
-                    if (meta != null) {
-                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + plugin.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
-                        List<java.lang.String> newLore = new ArrayList<>();
-                        plugin.serverConfig.getStringList("spawners.lore");
-                        if (plugin.serverConfig.getBoolean("spawners.enable-lore")) {
-                            for (java.lang.String line : plugin.serverConfig.getStringList("spawners.lore")) {
-                                newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
-                            }
-                            meta.setLore(newLore);
-                        }
-                        item.setItemMeta(meta);
-                        target.getPlayer().getInventory().addItem(item);
-                        messages.sendMessage("spawner.give.sent", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", target.getPlayer().getName(), player);
-                        messages.sendMessage("spawner.give.received", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", player.getName(), target.getPlayer());
-                    }
+                    String mobFormatted = spawner.substring(0, 1).toUpperCase() + spawner.substring(1).toLowerCase();
+                    giveSpawner(value, targetP, mobFormatted);
+                    messages.sendMessage("spawner.give.sent", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", targetP.getName(), player);
+                    messages.sendMessage("spawner.give.received", "%amount%", value, "%mob_type%", mobFormatted, "%target_name%", player.getName(), targetP);
                 }
             } else {
                 messages.sendMessage("server.no-negative", player);
@@ -70,6 +57,13 @@ public class SpawnerGive extends BaseCommand {
             str.append("&7algumas entidades não funcionam");
             messages.sendMessage("spawner.give.types", "%types%", str.toString(), player);
         }
+    }
+
+    private void giveSpawner(int value, Player target, String mobFormatted) {
+        ItemStack item = new ItemStack(Material.SPAWNER);
+        ItemMeta meta = item.getItemMeta();
+        item.setAmount(value);
+        target.getInventory().addItem(plugin.getChecks().getSpawner(meta, item, mobFormatted));
     }
 
 }

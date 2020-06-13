@@ -25,6 +25,8 @@ public class Experience extends BaseCommand {
     private final EFiles messages;
     private final ExperienceManager exp;
 
+    private final String expInsuStr = "experience.insufficient";
+
     public Experience(EterniaServer plugin) {
         this.checks = plugin.getChecks();
         this.messages = plugin.getEFiles();
@@ -64,7 +66,7 @@ public class Experience extends BaseCommand {
             player.setExp(0);
             player.giveExp(xp_real - xp_want);
         } else {
-            messages.sendMessage("experience.insufficient", player);
+            messages.sendMessage(expInsuStr, player);
         }
     }
 
@@ -80,7 +82,7 @@ public class Experience extends BaseCommand {
             player.giveExp(xpla);
             messages.sendMessage("experience.withdraw", "%level%", player.getLevel(), player);
         } else {
-            messages.sendMessage("experience.insufficient", player);
+            messages.sendMessage(expInsuStr, player);
         }
     }
 
@@ -98,7 +100,7 @@ public class Experience extends BaseCommand {
             player.setExp(0);
             player.giveExp(xpto - xp);
         } else {
-            messages.sendMessage("experience.insufficient", player);
+            messages.sendMessage(expInsuStr, player);
         }
     }
 
