@@ -24,23 +24,21 @@ public class OnPlayerBlockPlace implements Listener {
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled()) return;
 
-        if (event.getBlock().getType() == Material.SPAWNER) {
-            if (plugin.serverConfig.getBoolean("modules.spawners")) {
-                ItemStack placed = event.getItemInHand();
-                ItemMeta meta = placed.getItemMeta();
-                EntityType entity;
-                try {
-                    if (meta != null) {
-                        String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
-                        entity = EntityType.valueOf(entityName);
-                        CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
-                        spawner.setSpawnedType(entity);
-                        spawner.update();
-                        plugin.getEFiles().sendConsole("spawner.log.placed", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
-                    }
-                } catch (NullPointerException|IllegalArgumentException e) {
-                    e.printStackTrace();
+        if (event.getBlock().getType() == Material.SPAWNER && (plugin.serverConfig.getBoolean("modules.spawners"))) {
+            ItemStack placed = event.getItemInHand();
+            ItemMeta meta = placed.getItemMeta();
+            EntityType entity;
+            try {
+                if (meta != null) {
+                    String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
+                    entity = EntityType.valueOf(entityName);
+                    CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
+                    spawner.setSpawnedType(entity);
+                    spawner.update();
+                    plugin.getEFiles().sendConsole("spawner.log.placed", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
                 }
+            } catch (NullPointerException|IllegalArgumentException e) {
+                // Todo
             }
         }
     }

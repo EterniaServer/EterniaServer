@@ -13,14 +13,14 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class RewardsManager {
 
     private final EterniaServer plugin;
     private final String tableName = "sql.table-rewards";
 
-    public final Random random = new Random();
+    public final SecureRandom random = new SecureRandom();
     public final byte[] bytes = new byte[20];
 
     public RewardsManager(EterniaServer plugin) {
@@ -35,7 +35,10 @@ public class RewardsManager {
 
             try {
                 plugin.rewardsConfig.load(rwConfig);
-            } catch (IOException | InvalidConfigurationException ignored) { }
+            } catch (IOException | InvalidConfigurationException ignored) {
+                // Todo
+            }
+
             plugin.getManager().registerCommand(new RewardsSystem(this, plugin));
             messages.sendConsole("modules.enable", "%module%", "Rewards");
         } else {

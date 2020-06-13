@@ -114,13 +114,9 @@ public class HomeSystem extends BaseCommand {
     @Syntax("<nome>")
     @CommandPermission("eternia.sethome")
     public void onSetHome(Player player, String nome) {
-        int i = 4;
-        if (player.hasPermission("eternia.sethome.5")) i = 6;
-        if (player.hasPermission("eternia.sethome.10")) i = 11;
-        if (player.hasPermission("eternia.sethome.15")) i = 16;
-        if (player.hasPermission("eternia.sethome.20")) i = 21;
-        if (player.hasPermission("eternia.sethome.25")) i = 26;
-        if (player.hasPermission("eternia.sethome.30")) i = 31;
+        int i = 3;
+        for (int x = 4; x < 50; x++) if (player.hasPermission("eternia.sethome." + x)) i = x;
+
         if (nome.length() <= 8) {
             if (homesManager.canHome(player.getName()) < i) {
                 homesManager.setHome(player.getLocation(), nome.toLowerCase(), player.getName());
