@@ -8,6 +8,9 @@
     <version>4.0-Master</version>
 
     <properties>
+        <sonar.projectKey>yurinogueira_EterniaServer</sonar.projectKey>
+        <sonar.organization>yurinogueira</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
