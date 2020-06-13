@@ -1,9 +1,9 @@
 package br.com.eterniaserver.eterniaserver.modules.teleportsmanager;
 
-import br.com.eterniaserver.eternialib.sql.Queries;
+import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands.*;
 
 import co.aikar.commands.PaperCommandManager;
@@ -21,7 +21,7 @@ public class TeleportsManager {
         this.vars = plugin.getVars();
 
         final PaperCommandManager manager = plugin.getManager();
-        final Messages messages = plugin.getMessages();
+        final EFiles messages = plugin.getEFiles();
 
         if (plugin.serverConfig.getBoolean("modules.teleports")) {
             manager.registerCommand(new WarpSystem(plugin, this));
@@ -42,17 +42,17 @@ public class TeleportsManager {
                 ":" + ((int) loc.getPitch());
         if (existWarp(warp)) {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-warp") + " SET location='" + saveloc + "' WHERE name='" + warp + "';";
-            Queries.executeQuery(querie);
+            EQueries.executeQuery(querie);
         } else {
             final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-warp") + " (name, location) VALUES ('" + warp + "', '" + saveloc + "')";
-            Queries.executeQuery(querie);
+            EQueries.executeQuery(querie);
         }
     }
 
     public void delWarp(String warp) {
         vars.warps.remove(warp);
         final String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-        Queries.executeQuery(querie);
+        EQueries.executeQuery(querie);
     }
 
     public Location getWarp(String warp) {
@@ -62,7 +62,7 @@ public class TeleportsManager {
         } else {
             if (existWarp(warp)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-                String[] values = Queries.queryString(querie, "location").split(":");
+                String[] values = EQueries.queryString(querie, "location").split(":");
                 loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
                 vars.warps.put(warp, loc);
             }
@@ -73,7 +73,7 @@ public class TeleportsManager {
 
     public boolean existWarp(String warp) {
         final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-        return Queries.queryBoolean(querie, "name");
+        return EQueries.queryBoolean(querie, "name");
     }
 
     public void setShop(Location loc, String shop) {
@@ -86,10 +86,10 @@ public class TeleportsManager {
                 ":" + ((int) loc.getPitch());
         if (existShop(shop)) {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-shop") + " SET location='" + saveloc + "' WHERE name='" + shop + "';";
-            Queries.executeQuery(querie);
+            EQueries.executeQuery(querie);
         } else {
             final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-shop") + " (name, location) VALUES ('" + shop + "', '" + saveloc + "')";
-            Queries.executeQuery(querie);
+            EQueries.executeQuery(querie);
         }
     }
 
@@ -100,7 +100,7 @@ public class TeleportsManager {
         } else {
             if (existShop(shop)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-                String[] values = Queries.queryString(querie, "location").split(":");
+                String[] values = EQueries.queryString(querie, "location").split(":");
                 loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
                 vars.shops.put(shop, loc);
             }
@@ -111,7 +111,7 @@ public class TeleportsManager {
 
     public boolean existShop(String shop) {
         final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-        return Queries.queryBoolean(querie, "name");
+        return EQueries.queryBoolean(querie, "name");
     }
 
 }

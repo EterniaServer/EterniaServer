@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-
+import br.com.eterniaserver.eternialib.EFiles;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -15,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class Inventory extends BaseCommand {
 
-    private final Messages messages;
+    private final EFiles messages;
 
-    public Inventory(Messages messages) {
+    public Inventory(EFiles messages) {
         this.messages = messages;
     }
 

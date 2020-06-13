@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import io.papermc.lib.PaperLib;
 
@@ -37,7 +37,7 @@ public class OnPlayerMove implements Listener {
                 vars.afktime.put(playerName, System.currentTimeMillis());
                 if (vars.afk.contains(playerName)) {
                     vars.afk.remove(playerName);
-                    plugin.getMessages().broadcastMessage("generic.afk.disabled", "%player_name%", playerName);
+                    plugin.getEFiles().broadcastMessage("generic.afk.disabled", "%player_name%", playerName);
                 }
             }
             if (event.getTo().getY() > event.getFrom().getY() && plugin.serverConfig.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {

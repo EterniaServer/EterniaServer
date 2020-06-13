@@ -1,9 +1,9 @@
-package br.com.eterniaserver.eterniaserver.modules.commands;
+package br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands;
 
-import br.com.eterniaserver.eterniaserver.API.Exp;
+import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.modules.experiencemanager.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Checks;
+import br.com.eterniaserver.eterniaserver.objects.Checks;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -22,12 +22,12 @@ import java.util.Collections;
 public class Experience extends BaseCommand {
 
     private final Checks checks;
-    private final Messages messages;
-    private final Exp exp;
+    private final EFiles messages;
+    private final ExperienceManager exp;
 
     public Experience(EterniaServer plugin) {
         this.checks = plugin.getChecks();
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.exp = plugin.getExp();
     }
 

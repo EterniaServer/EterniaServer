@@ -1,19 +1,22 @@
 package br.com.eterniaserver.eterniaserver;
 
-import br.com.eterniaserver.eterniaserver.API.*;
-import br.com.eterniaserver.eterniaserver.configs.*;
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.*;
 import br.com.eterniaserver.eterniaserver.events.*;
 import br.com.eterniaserver.eterniaserver.modules.Managers;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.*;
+import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
+import br.com.eterniaserver.eterniaserver.modules.experiencemanager.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.KitsManager;
 import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.RewardsManager;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
-import br.com.eterniaserver.eterniaserver.player.PlayerManager;
+import br.com.eterniaserver.eterniaserver.objects.Checks;
+import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 import co.aikar.commands.PaperCommandManager;
 
 import io.papermc.lib.PaperLib;
@@ -30,23 +33,18 @@ public class EterniaServer extends JavaPlugin {
 
     public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
-    private final Vars vars = new Vars();
-    private final Strings strings = new Strings(this);
-    private final Messages messages = new Messages(this);
-    private final Checks checks = new Checks(this);
-
-    private final PlaceHolders placeHolders = new PlaceHolders(this);
-
-    private final PlayerManager playerManager = new PlayerManager(this);
-
-    private final Money money = new Money(this);
-    private final Exp exp = new Exp(this);
-
-    public final Local local = new Local(this);
-    public final Staff staff = new Staff(this);
-
     private PaperCommandManager manager;
+    private EFiles eFiles;
 
+    private final Vars vars = new Vars();
+    private final Checks checks = new Checks(this);
+    private final PlaceHolders placeHolders = new PlaceHolders(this);
+    private final PlayerManager playerManager = new PlayerManager(this);
+    private final EconomyManager money = new EconomyManager(this);
+    private final ExperienceManager exp = new ExperienceManager(this);
+
+    public Local local;
+    public Staff staff;
     public TeleportsManager teleportsManager;
     public Files files;
 
@@ -64,6 +62,11 @@ public class EterniaServer extends JavaPlugin {
         files.loadConfigs();
         files.loadMessages();
         files.loadDatabase();
+
+        eFiles = new EFiles(msgConfig);
+
+        local = new Local(this);
+        staff = new Staff(this);
 
         loadManagers();
         homesManager();
@@ -123,7 +126,11 @@ public class EterniaServer extends JavaPlugin {
         return checks;
     }
 
-    public Exp getExp() {
+    public EFiles getEFiles() {
+        return eFiles;
+    }
+
+    public ExperienceManager getExp() {
         return exp;
     }
 
@@ -131,11 +138,7 @@ public class EterniaServer extends JavaPlugin {
         return manager;
     }
 
-    public Messages getMessages() {
-        return messages;
-    }
-
-    public Money getMoney() {
+    public EconomyManager getMoney() {
         return money;
     }
 
@@ -145,10 +148,6 @@ public class EterniaServer extends JavaPlugin {
 
     public PlaceHolders getPlaceHolders() {
         return placeHolders;
-    }
-
-    public Strings getStrings() {
-        return strings;
     }
 
     public Vars getVars() {

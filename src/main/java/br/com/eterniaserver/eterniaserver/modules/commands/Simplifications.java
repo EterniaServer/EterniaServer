@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-
+import br.com.eterniaserver.eternialib.EFiles;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -10,9 +9,9 @@ import org.bukkit.entity.Player;
 
 public class Simplifications extends BaseCommand {
 
-    private final Messages messages;
+    private final EFiles messages;
 
-    public Simplifications(Messages messages) {
+    public Simplifications(EFiles messages) {
         this.messages = messages;
     }
 

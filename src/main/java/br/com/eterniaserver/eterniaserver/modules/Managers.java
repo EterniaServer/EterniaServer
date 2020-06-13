@@ -1,11 +1,12 @@
 package br.com.eterniaserver.eterniaserver.modules;
 
-import br.com.eterniaserver.eternialib.configs.FileCreator;
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.events.OnPlayerBedEnter;
 import br.com.eterniaserver.eterniaserver.events.OnPlayerBedLeave;
 import br.com.eterniaserver.eterniaserver.modules.commands.*;
+import br.com.eterniaserver.eterniaserver.modules.economymanager.commands.Economy;
+import br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands.Experience;
 import br.com.eterniaserver.eterniaserver.modules.tasks.AccelerateWorld;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.AdvancedChatTorch;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Channels;
@@ -26,7 +27,7 @@ public class Managers {
     public Managers(EterniaServer plugin) {
 
         final PaperCommandManager manager = plugin.getManager();
-        final Messages messages = plugin.getMessages();
+        final EFiles messages = plugin.getEFiles();
 
         if (plugin.serverConfig.getBoolean("modules.bed")) {
             if (plugin.serverConfig.getBoolean("server.async-check")) {
@@ -45,7 +46,7 @@ public class Managers {
             plugin.blockConfig = new YamlConfiguration();
 
             try {
-                plugin.blockConfig.load(FileCreator.fileLoad(plugin, "blocks.yml"));
+                plugin.blockConfig.load(EFiles.fileLoad(plugin, "blocks.yml"));
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
@@ -69,7 +70,7 @@ public class Managers {
             plugin.cmdConfig = new YamlConfiguration();
 
             try {
-                plugin.cmdConfig.load(FileCreator.fileLoad(plugin, "commands.yml"));
+                plugin.cmdConfig.load(EFiles.fileLoad(plugin, "commands.yml"));
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }

@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
-import br.com.eterniaserver.eterniaserver.API.Money;
+import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -15,11 +15,11 @@ import org.bukkit.entity.Player;
 @CommandPermission("eternia.eco")
 public class EcoChange extends BaseCommand {
 
-    private final Messages messages;
-    private final Money moneyx;
+    private final EFiles messages;
+    private final EconomyManager moneyx;
 
     public EcoChange(EterniaServer plugin) {
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
     }
 

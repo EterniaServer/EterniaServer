@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatObject;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;

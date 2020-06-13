@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.events;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,10 +9,10 @@ import org.bukkit.event.block.SignChangeEvent;
 
 public class OnPlayerSignChange implements Listener {
 
-    private final Strings strings;
+    private final EFiles strings;
 
     public OnPlayerSignChange(EterniaServer plugin) {
-        this.strings = plugin.getStrings();
+        this.strings = plugin.getEFiles();
     }
 
     @EventHandler

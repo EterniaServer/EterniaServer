@@ -21,7 +21,7 @@ public class Staff {
                 String format = plugin.chatConfig.getString("staff.format");
                 format = PlaceholderAPI.setPlaceholders(player, format);
                 if (format != null) {
-                    format = plugin.getStrings().getColor(format.replace("%message%", message));
+                    format = plugin.getEFiles().getColor(format.replace("%message%", message));
                     p.sendMessage(format);
                 }
             }

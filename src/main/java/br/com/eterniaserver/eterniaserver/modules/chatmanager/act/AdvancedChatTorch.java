@@ -1,19 +1,19 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.act;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.CustomPlaceholder;
 
 public class AdvancedChatTorch {
 
 	private final EterniaServer plugin;
-	private final Messages messages;
+	private final EFiles messages;
 	private final Vars vars;
 
 	public AdvancedChatTorch(EterniaServer plugin) {
 		this.plugin = plugin;
-		this.messages = plugin.getMessages();
+		this.messages = plugin.getEFiles();
 		this.vars = plugin.getVars();
 		registerCustomPlaceholders();
 		checkGroups();

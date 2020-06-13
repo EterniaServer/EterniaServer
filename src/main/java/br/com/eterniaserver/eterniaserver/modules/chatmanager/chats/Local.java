@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.chats;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 public class Local {
 
     private final EterniaServer plugin;
-    private final Strings strings;
+    private final EFiles strings;
 
     public Local(EterniaServer plugin) {
         this.plugin = plugin;
-        this.strings = plugin.getStrings();
+        this.strings = plugin.getEFiles();
     }
 
     public void SendMessage(String message, Player player, int radius) {
@@ -47,7 +47,7 @@ public class Local {
             }
         }
         if (pes <= 1) {
-            plugin.getMessages().sendMessage("chat.noone", player);
+            strings.sendMessage("chat.noone", player);
         }
     }
 

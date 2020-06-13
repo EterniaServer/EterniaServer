@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.dependencies.papi;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 

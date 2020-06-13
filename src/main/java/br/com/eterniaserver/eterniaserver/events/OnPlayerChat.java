@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.events;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.ChatFormatter;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.Colors;
@@ -25,13 +25,13 @@ public class OnPlayerChat implements Listener {
     private final JsonSender js;
     private final Vars vars;
     private final CustomPlaceholdersFilter cp;
-    private final Messages messages;
+    private final EFiles messages;
     private final Colors c = new Colors();
 
     public OnPlayerChat(EterniaServer plugin) {
         this.plugin = plugin;
         this.vars = plugin.getVars();
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.cp = new CustomPlaceholdersFilter(plugin);
         this.js = new JsonSender(plugin);
         this.cf = new ChatFormatter(plugin);

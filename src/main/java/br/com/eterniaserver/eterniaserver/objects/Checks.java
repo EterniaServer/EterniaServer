@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.configs;
+package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;

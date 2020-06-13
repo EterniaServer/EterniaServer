@@ -1,8 +1,9 @@
 package br.com.eterniaserver.eterniaserver.events;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,11 +25,11 @@ import java.util.Random;
 public class OnPlayerBlockBreak implements Listener {
 
     private final EterniaServer plugin;
-    private final Messages messages;
+    private final EFiles messages;
 
     public OnPlayerBlockBreak(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
     }
 
     @EventHandler
@@ -113,7 +114,7 @@ public class OnPlayerBlockBreak implements Listener {
                         for (String command : plugin.blockConfig.getStringList("blocks." + material.name().toUpperCase() + "." + lowestNumberAboveRandom)) {
                             String modifiedCommand;
                             if (plugin.hasPlaceholderAPI) {
-                                modifiedCommand = messages.putPAPI(event.getPlayer(), command);
+                                modifiedCommand = putPAPI(event.getPlayer(), command);
                             } else {
                                 modifiedCommand = command.replace("%player_name%", event.getPlayer().getPlayerListName());
                             }
@@ -123,6 +124,10 @@ public class OnPlayerBlockBreak implements Listener {
                 }
             }
         }
+    }
+
+    private String putPAPI(Player player, String message) {
+        return PlaceholderAPI.setPlaceholders(player, message);
     }
 
 }

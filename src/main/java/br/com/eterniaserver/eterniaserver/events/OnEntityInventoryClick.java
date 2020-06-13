@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.events;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,11 +15,11 @@ import java.util.Objects;
 public class OnEntityInventoryClick implements Listener {
 
     private final EterniaServer plugin;
-    private final Messages messages;
+    private final EFiles messages;
 
     public OnEntityInventoryClick(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
     }
 
     @EventHandler

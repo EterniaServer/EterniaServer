@@ -7,7 +7,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 public class PAPI {
     public PAPI(EterniaServer plugin) {
         if (plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            plugin.getMessages().sendConsole("server.no-papi");
+            plugin.getEFiles().sendConsole("server.no-papi");
             plugin.hasPlaceholderAPI = false;
         } else {
             PlaceholderAPI.registerPlaceholderHook("eterniaserver", plugin.getPlaceHolders());

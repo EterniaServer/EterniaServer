@@ -1,11 +1,10 @@
 package br.com.eterniaserver.eterniaserver.modules.homesmanager.commands;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
-import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -30,16 +29,14 @@ import java.util.Collections;
 public class HomeSystem extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final Messages messages;
+    private final EFiles messages;
     private final HomesManager homesManager;
-    private final Strings strings;
     private final Vars vars;
 
     public HomeSystem(EterniaServer plugin, HomesManager homesManager) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.homesManager = homesManager;
-        this.strings = plugin.getStrings();
         this.vars = plugin.getVars();
     }
 
@@ -102,7 +99,7 @@ public class HomeSystem extends BaseCommand {
                     for (String line : values) {
                         accounts.append(line).append("&8, &3");
                     }
-                    messages.sendMessage("home.list", "%homes%", strings.getColor(accounts.toString()), player);
+                    messages.sendMessage("home.list", "%homes%", messages.getColor(accounts.toString()), player);
                 } else {
                     messages.sendMessage("server.no-perm", player);
                 }
@@ -111,7 +108,7 @@ public class HomeSystem extends BaseCommand {
                 for (String line : values) {
                     accounts.append(line).append("&8, &3");
                 }
-                messages.sendMessage("home.list", "%homes%", strings.getColor(accounts.toString()), player);
+                messages.sendMessage("home.list", "%homes%", messages.getColor(accounts.toString()), player);
             }
         });
     }

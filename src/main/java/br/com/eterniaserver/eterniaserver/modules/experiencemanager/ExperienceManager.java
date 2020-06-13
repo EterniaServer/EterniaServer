@@ -1,15 +1,15 @@
-package br.com.eterniaserver.eterniaserver.API;
+package br.com.eterniaserver.eterniaserver.modules.experiencemanager;
 
-import br.com.eterniaserver.eternialib.sql.Queries;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
-public class Exp {
+public class ExperienceManager {
 
     private final EterniaServer plugin;
     private final Vars vars;
 
-    public Exp(EterniaServer plugin) {
+    public ExperienceManager(EterniaServer plugin) {
         this.plugin = plugin;
         this.vars = plugin.getVars();
     }
@@ -25,7 +25,7 @@ public class Exp {
         }
 
         final String querie = "SELECT xp FROM " + plugin.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
-        return Queries.queryInteger(querie, "xp");
+        return EQueries.queryInteger(querie, "xp");
     }
 
     /**
@@ -35,7 +35,7 @@ public class Exp {
      */
     public void setExp(String playerName, int amount) {
         vars.xp.put(playerName, amount);
-        Queries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
+        EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
     }
 
     /**

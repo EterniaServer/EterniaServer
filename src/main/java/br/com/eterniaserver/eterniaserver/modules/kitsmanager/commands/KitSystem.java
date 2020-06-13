@@ -1,8 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.kitsmanager.commands;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.KitsManager;
 
 import co.aikar.commands.BaseCommand;
@@ -10,6 +9,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Syntax;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
 import java.text.ParseException;
@@ -19,21 +19,19 @@ import java.util.Date;
 public class KitSystem extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final Messages messages;
-    private final Strings strings;
+    private final EFiles messages;
     private final KitsManager kitsManager;
 
     public KitSystem(EterniaServer plugin, KitsManager kitsManager) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
-        this.strings = plugin.getStrings();
+        this.messages = plugin.getEFiles();
         this.kitsManager = kitsManager;
     }
 
     @CommandAlias("kits")
     @CommandPermission("eternia.kits")
     public void onKits(Player player) {
-        messages.sendMessage("kit.list", "%kits%", strings.getColor(plugin.kitConfig.getString("kits.nameofkits")), player);
+        messages.sendMessage("kit.list", "%kits%", messages.getColor(plugin.kitConfig.getString("kits.nameofkits")), player);
     }
 
     @CommandAlias("kit")
@@ -52,7 +50,7 @@ public class KitSystem extends BaseCommand {
                         for (String line : plugin.kitConfig.getStringList("kits." + kit + ".command")) {
                             String modifiedCommand;
                             if (plugin.hasPlaceholderAPI) {
-                                modifiedCommand = messages.putPAPI(player, line);
+                                modifiedCommand = putPAPI(player, line);
                             } else {
                                 modifiedCommand = line.replace("%player_name%", player.getName());
                             }
@@ -61,11 +59,11 @@ public class KitSystem extends BaseCommand {
                         for (String line : plugin.kitConfig.getStringList("kits." + kit + ".text")) {
                             String modifiedText;
                             if (plugin.hasPlaceholderAPI) {
-                                modifiedText = messages.putPAPI(player, line);
+                                modifiedText = putPAPI(player, line);
                             } else {
                                 modifiedText = line.replace("%player_name%", player.getName());
                             }
-                            player.sendMessage(strings.getColor(modifiedText));
+                            player.sendMessage(messages.getColor(modifiedText));
                         }
                         kitsManager.setKitCooldown(player.getName(), kit);
                     } else {
@@ -80,6 +78,10 @@ public class KitSystem extends BaseCommand {
         } else {
             messages.sendMessage("kit.no-exists", "%kit_name%", kit, player);
         }
+    }
+
+    private String putPAPI(Player player, String message) {
+        return PlaceholderAPI.setPlaceholders(player, message);
     }
 
 }

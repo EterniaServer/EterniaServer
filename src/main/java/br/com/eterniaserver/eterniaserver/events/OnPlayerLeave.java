@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,7 +31,7 @@ public class OnPlayerLeave implements Listener {
         }
 
         event.setQuitMessage(null);
-        plugin.getMessages().broadcastMessage("server.leave", "%player_name%", playerName);
+        plugin.getEFiles().broadcastMessage("server.leave", "%player_name%", playerName);
 
     }
 

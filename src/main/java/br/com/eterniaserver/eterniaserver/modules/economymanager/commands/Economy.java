@@ -1,9 +1,10 @@
-package br.com.eterniaserver.eterniaserver.modules.commands;
+package br.com.eterniaserver.eterniaserver.modules.economymanager.commands;
 
-import br.com.eterniaserver.eternialib.sql.Queries;
+import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 
+import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -18,12 +19,12 @@ import java.util.List;
 public class Economy extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final Messages messages;
-    private final br.com.eterniaserver.eterniaserver.API.Money moneyx;
+    private final EFiles messages;
+    private final EconomyManager moneyx;
 
     public Economy(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
     }
 
@@ -78,7 +79,7 @@ public class Economy extends BaseCommand {
     public void onBaltop(CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
-            final List<String> accounts = Queries.queryStringList(querie, "player_name");
+            final List<String> accounts = EQueries.queryStringList(querie, "player_name");
             DecimalFormat df2 = new DecimalFormat(".##");
             messages.sendMessage("eco.baltop", sender);
             accounts.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));

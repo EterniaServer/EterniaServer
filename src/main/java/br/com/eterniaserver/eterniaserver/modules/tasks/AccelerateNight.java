@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.tasks;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
@@ -13,13 +13,13 @@ public class AccelerateNight extends BukkitRunnable {
 
     private final EterniaServer plugin;
     private final World world;
-    private final Messages messages;
+    private final EFiles messages;
     private final Vars vars;
 
     public AccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.vars = plugin.getVars();
         messages.broadcastMessage("bed.night-skipping", "%world_name%", world.getName());
     }

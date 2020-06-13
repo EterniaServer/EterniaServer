@@ -3,8 +3,8 @@ package br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils;
 import java.util.ArrayList;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Checks;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Checks;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import org.bukkit.entity.Player;
 

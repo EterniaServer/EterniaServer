@@ -1,11 +1,11 @@
 package br.com.eterniaserver.eterniaserver.modules.kitsmanager;
 
-import br.com.eterniaserver.eternialib.sql.Queries;
+import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.commands.*;
-import br.com.eterniaserver.eterniaserver.player.PlayerManager;
+import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 
 import co.aikar.commands.PaperCommandManager;
 
@@ -29,7 +29,7 @@ public class KitsManager {
         this.playerManager = plugin.getPlayerManager();
         this.vars = plugin.getVars();
 
-        final Messages messages = plugin.getMessages();
+        final EFiles messages = plugin.getEFiles();
         final PaperCommandManager manager = plugin.getManager();
 
         if (plugin.serverConfig.getBoolean("modules.kits")) {
@@ -57,11 +57,11 @@ public class KitsManager {
         if (playerManager.playerCooldownExist(jogador, kit)) {
             vars.kits_cooldown.put(kit + "." + jogador, data);
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-kits") + " SET cooldown='" + data + "' WHERE name='" + kit + "." + jogador + "';";
-            Queries.executeQuery(querie);
+            EQueries.executeQuery(querie);
         } else {
             vars.kits_cooldown.put(kit + "." + jogador, data);
             final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES ('" + kit + "." + jogador + "', '" + data + "');";
-            Queries.executeQuery(querie);
+            EQueries.executeQuery(querie);
         }
     }
 
@@ -73,7 +73,7 @@ public class KitsManager {
         String cooldown;
         if (playerManager.playerCooldownExist(jogador, kit)) {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
-            cooldown = Queries.queryString(querie, "cooldown");
+            cooldown = EQueries.queryString(querie, "cooldown");
         } else {
             cooldown = "2020/01/01 00:00";
         }

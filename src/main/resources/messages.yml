@@ -39,7 +39,7 @@ chat:
 replaces:
   mem: '&7Memória&8: &3%use_memory%MB&8/&3%max_memory%MB&8.'
   online: '&7Tempo online&8: &3%hours% horas %minutes% minutos %seconds% segundos&8.'
-  tps: '&7TPS&8: &3%tps%&8.'
+  tps: '&7TPS&8: &3%server_tps%&8.'
 modules:
   enable: '&7Modulo de &3%module% &7habilitado&8.'
   disable: '&7Modulo de &3%module% &7desabilitado&8.'

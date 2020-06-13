@@ -1,9 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.commands;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -15,13 +14,11 @@ import org.bukkit.entity.Player;
 
 public class Others extends BaseCommand {
 
-    private final Messages messages;
-    private final Strings strings;
+    private final EFiles messages;
     private final Vars vars;
 
     public Others(EterniaServer plugin) {
-        this.messages = plugin.getMessages();
-        this.strings = plugin.getStrings();
+        this.messages = plugin.getEFiles();
         this.vars = plugin.getVars();
     }
 
@@ -34,7 +31,7 @@ public class Others extends BaseCommand {
     @CommandAlias("broadcast|advice|aviso")
     @CommandPermission("eternia.advice")
     public void onBroadcast(String[] message) {
-        messages.broadcastMessage("chat.global-advice", "%advice%", strings.getColor(getMessage(message)));
+        messages.broadcastMessage("chat.global-advice", "%advice%", messages.getColor(getMessage(message)));
     }
 
     @CommandAlias("spy|socialspy")
@@ -59,17 +56,17 @@ public class Others extends BaseCommand {
                 messages.sendMessage("chat.remove-nick", target.getPlayer());
                 messages.sendMessage("chat.remove-nick", sender);
             } else {
-                target.getPlayer().setDisplayName(strings.getColor(string));
-                messages.sendMessage("chat.newnick", "%player_display_name%", strings.getColor(string), sender);
-                messages.sendMessage("chat.newnick", "%player_display_name%", strings.getColor(string), target.getPlayer());
+                target.getPlayer().setDisplayName(messages.getColor(string));
+                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), sender);
+                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), target.getPlayer());
             }
         } else {
             if (string.equalsIgnoreCase("clear")) {
                 sender.setDisplayName(sender.getName());
                 messages.sendMessage("chat.remove-nick", sender);
             } else {
-                sender.setDisplayName(strings.getColor(string));
-                messages.sendMessage("chat.newnick", "%player_display_name%", strings.getColor(string), sender);
+                sender.setDisplayName(messages.getColor(string));
+                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), sender);
             }
         }
     }
@@ -102,7 +99,7 @@ public class Others extends BaseCommand {
         messages.sendMessage("chat.fromplayer", "%player_name%", targetName, "%target_name%", playerName, "%message%", s, target);
         for (Player p : vars.spy.keySet()) {
             if (vars.spy.get(p) && p != player && p != target) {
-                p.sendMessage(strings.getColor("&8[&7SPY-&6P&8] &8" + playerName + "->" + targetName + ": " + s));
+                p.sendMessage(messages.getColor("&8[&7SPY-&6P&8] &8" + playerName + "->" + targetName + ": " + s));
             }
         }
     }

@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.rewardsmanager.commands;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.RewardsManager;
 
 import co.aikar.commands.BaseCommand;
@@ -17,12 +17,12 @@ import java.util.Random;
 public class RewardsSystem extends BaseCommand {
 
     private final RewardsManager rewardsManager;
-    private final Messages messages;
+    private final EFiles messages;
     private final EterniaServer plugin;
 
     public RewardsSystem(RewardsManager rewardsManager, EterniaServer plugin) {
         this.rewardsManager = rewardsManager;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.plugin = plugin;
     }
 

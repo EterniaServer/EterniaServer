@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.events;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -13,11 +13,11 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class OnPlayerCommandPreProcess implements Listener {
 
     private final EterniaServer plugin;
-    private final Messages messages;
+    private final EFiles messages;
 
     public OnPlayerCommandPreProcess(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
     }
 
     @EventHandler
@@ -30,7 +30,7 @@ public class OnPlayerCommandPreProcess implements Listener {
 
         if (message.equalsIgnoreCase("/tps") && plugin.hasPlaceholderAPI) {
             String s = PlaceholderAPI.setPlaceholders(player, "%server_tps%");
-            messages.sendMessage("replaces.tps", "%tps%", s.substring(0, s.length() - 2), player);
+            messages.sendMessage("replaces.tps", "%server_tps%", s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
             return;
         }
@@ -41,7 +41,7 @@ public class OnPlayerCommandPreProcess implements Listener {
                     for (String line : plugin.cmdConfig.getStringList("commands." + message + ".command")) {
                         String modifiedCommand;
 
-                        if (plugin.hasPlaceholderAPI) modifiedCommand = messages.putPAPI(player, line);
+                        if (plugin.hasPlaceholderAPI) modifiedCommand = PlaceholderAPI.setPlaceholders(player, line);
                         else modifiedCommand = line.replace("%player_name%", playerName);
 
                         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
@@ -49,10 +49,10 @@ public class OnPlayerCommandPreProcess implements Listener {
                     for (String line : plugin.cmdConfig.getStringList("commands." + message + ".text")) {
                         String modifiedText;
 
-                        if (plugin.hasPlaceholderAPI) modifiedText = messages.putPAPI(player, line);
+                        if (plugin.hasPlaceholderAPI) modifiedText =PlaceholderAPI.setPlaceholders(player, line);
                         else modifiedText = line.replace("%player_name%", playerName);
 
-                        player.sendMessage(plugin.getStrings().getColor(modifiedText));
+                        player.sendMessage(messages.getColor(modifiedText));
                     }
                 } else {
                     messages.sendMessage("server.no-perm", player);

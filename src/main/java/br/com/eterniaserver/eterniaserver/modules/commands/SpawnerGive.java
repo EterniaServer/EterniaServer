@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -20,11 +20,11 @@ import java.util.List;
 public class SpawnerGive extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final Messages messages;
+    private final EFiles messages;
 
     public SpawnerGive(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
     }
 
     @CommandAlias("spawnergive|givespawner")

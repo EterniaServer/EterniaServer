@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.player;
+package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 

@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.commands;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -14,11 +14,11 @@ import org.bukkit.entity.Player;
 public class Channels extends BaseCommand {
 
     private final Vars vars;
-    private final Messages messages;
+    private final EFiles messages;
 
     public Channels(EterniaServer plugin) {
         this.vars = plugin.getVars();
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
     }
 
     @Subcommand("local")

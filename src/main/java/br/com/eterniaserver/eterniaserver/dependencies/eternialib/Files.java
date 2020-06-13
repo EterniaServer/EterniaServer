@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
-import br.com.eterniaserver.eternialib.configs.FileCreator;
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -22,9 +22,9 @@ public class Files {
         plugin.serverConfig = new YamlConfiguration();
 
         try {
-            plugin.serverConfig.load(FileCreator.fileLoad(plugin, "config.yml"));
+            plugin.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
 
-            FileCreator.fileLoad(plugin, "acf_messages.yml");
+            EFiles.fileLoad(plugin, "acf_messages.yml");
             plugin.getManager().getLocales().loadYamlLanguageFile("acf_messages.yml", Locale.ENGLISH);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
@@ -37,7 +37,7 @@ public class Files {
         plugin.msgConfig = new YamlConfiguration();
 
         try {
-            plugin.msgConfig.load(FileCreator.fileLoad(plugin, "messages.yml"));
+            plugin.msgConfig.load(EFiles.fileLoad(plugin, "messages.yml"));
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -51,9 +51,9 @@ public class Files {
         plugin.placeholderConfig = new YamlConfiguration();
 
         try {
-            plugin.chatConfig.load(FileCreator.fileLoad(plugin, "chat.yml"));
-            plugin.groupConfig.load(FileCreator.fileLoad(plugin, "groups.yml"));
-            plugin.placeholderConfig.load(FileCreator.fileLoad(plugin, "customplaceholders.yml"));
+            plugin.chatConfig.load(EFiles.fileLoad(plugin, "chat.yml"));
+            plugin.groupConfig.load(EFiles.fileLoad(plugin, "groups.yml"));
+            plugin.placeholderConfig.load(EFiles.fileLoad(plugin, "customplaceholders.yml"));
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }

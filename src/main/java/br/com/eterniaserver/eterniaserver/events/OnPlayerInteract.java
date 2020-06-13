@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -38,7 +38,7 @@ public class OnPlayerInteract implements Listener {
                     final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
 
                     if (plugin.getVars().teleports.containsKey(player)) {
-                        plugin.getMessages().sendMessage("server.telep", player);
+                        plugin.getEFiles().sendMessage("server.telep", player);
                     }
                     else {
                         plugin.getVars().teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));

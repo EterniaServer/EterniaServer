@@ -1,17 +1,17 @@
-package br.com.eterniaserver.eterniaserver.API;
+package br.com.eterniaserver.eterniaserver.modules.economymanager;
 
-import br.com.eterniaserver.eternialib.sql.Queries;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
-import br.com.eterniaserver.eterniaserver.player.PlayerManager;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
+import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 
-public class Money {
+public class EconomyManager {
 
     private final EterniaServer plugin;
     private final PlayerManager playerManager;
     private final Vars vars;
 
-    public Money(EterniaServer plugin) {
+    public EconomyManager(EterniaServer plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getPlayerManager();
         this.vars = plugin.getVars();
@@ -31,7 +31,7 @@ public class Money {
 
         if (playerManager.playerMoneyExist(playerName)) {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " WHERE player_name='" + playerName + "';";
-            value = Queries.queryDouble(querie, "balance");
+            value = EQueries.queryDouble(querie, "balance");
         } else {
             playerManager.playerMoneyCreate(playerName);
             value = 300.0;
@@ -59,7 +59,7 @@ public class Money {
     public void setMoney(String playerName, double amount) {
         if (playerManager.playerMoneyExist(playerName)) {
             vars.balances.put(playerName, amount);
-            Queries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
+            EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
         } else {
             playerManager.playerMoneyCreate(playerName);
             setMoney(playerName, amount);

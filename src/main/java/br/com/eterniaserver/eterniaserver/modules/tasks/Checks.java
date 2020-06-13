@@ -1,18 +1,16 @@
 package br.com.eterniaserver.eterniaserver.modules.tasks;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
-import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import io.papermc.lib.PaperLib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
@@ -20,15 +18,13 @@ import java.util.concurrent.TimeUnit;
 public class Checks extends org.bukkit.scheduler.BukkitRunnable {
 
     private final EterniaServer plugin;
-    private final Messages messages;
-    private final Strings strings;
+    private final EFiles messages;
     private final Vars vars;
     private final TeleportsManager teleportsManager;
 
     public Checks(EterniaServer plugin, TeleportsManager teleportsManager) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
-        this.strings = plugin.getStrings();
+        this.messages = plugin.getEFiles();
         this.vars = plugin.getVars();
         this.teleportsManager = teleportsManager;
     }
@@ -69,7 +65,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
                     if (!vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                         messages.broadcastMessage("generic.afk.broadcast-kicked", "%player_name%", playerName);
-                        Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer(strings.getMessage("generic.afk.kicked")));
+                        Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer(messages.getMessage("generic.afk.kicked")));
                     }
                 } else {
                     messages.broadcastMessage("generic.afk.enabled", "%player_name%", playerName);

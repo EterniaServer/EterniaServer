@@ -1,9 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 
 import co.aikar.commands.BaseCommand;
@@ -27,9 +26,8 @@ import java.util.Collections;
 public class Others extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final Messages messages;
+    private final EFiles messages;
     private final PlaceHolders placeHolders;
-    private final Strings strings;
     private final Vars vars;
 
     private final ItemStack coali = new ItemStack(Material.COAL);
@@ -42,9 +40,8 @@ public class Others extends BaseCommand {
 
     public Others(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.placeHolders = plugin.getPlaceHolders();
-        this.strings = plugin.getStrings();
         this.vars = plugin.getVars();
     }
 
@@ -73,7 +70,7 @@ public class Others extends BaseCommand {
                     if (meta != null) {
                         StringBuilder sb = new StringBuilder();
                         for (java.lang.String arg : nome) sb.append(arg).append(" ");
-                        meta.setDisplayName(strings.getColor(sb.toString()));
+                        meta.setDisplayName(messages.getColor(sb.toString()));
                         item.setItemMeta(meta);
                         player.getInventory().setItemInMainHand(item);
                     } else {
@@ -84,7 +81,7 @@ public class Others extends BaseCommand {
                     if (!item.isSimilar(new ItemStack(Material.AIR))) {
                         StringBuilder sb = new StringBuilder();
                         for (java.lang.String arg : nome) sb.append(arg).append(" ");
-                        item.setLore(Collections.singletonList(strings.getColor(sb.toString())));
+                        item.setLore(Collections.singletonList(messages.getColor(sb.toString())));
                         player.getInventory().setItemInMainHand(item);
                     } else {
                         messages.sendMessage("generic.items.no-item", player);

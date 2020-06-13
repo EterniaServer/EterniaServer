@@ -1,12 +1,13 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
+import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Messages;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,12 +18,12 @@ import java.util.Date;
 public class Replaces extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final Messages messages;
+    private final EFiles messages;
     private final GetRuntime getRuntime;
 
     public Replaces(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getMessages();
+        this.messages = plugin.getEFiles();
         this.getRuntime = new GetRuntime();
     }
 
@@ -46,9 +47,9 @@ public class Replaces extends BaseCommand {
         messages.sendMessage("generic.profile.register", "%player_register_data%", plugin.sdf.format(date), player);
         for (String line : plugin.msgConfig.getStringList("generic.profile.custom")) {
             String modifiedText;
-            if (plugin.hasPlaceholderAPI) modifiedText = messages.putPAPI(player, line);
+            if (plugin.hasPlaceholderAPI) modifiedText = putPAPI(player, line);
             else modifiedText = line.replace("%player_name%", playerName);
-            player.sendMessage(plugin.getStrings().getColor(modifiedText));
+            player.sendMessage(messages.getColor(modifiedText));
         }
     }
 
@@ -66,6 +67,10 @@ public class Replaces extends BaseCommand {
         getRuntime.recalculateRuntime();
         messages.broadcastMessage("replaces.mem", "%use_memory%", getRuntime.freemem, "%max_memory%", getRuntime.totalmem);
         messages.broadcastMessage("replaces.online", "%hours%", getRuntime.hours, "%minutes%", getRuntime.minutes, "%seconds%", getRuntime.seconds);
+    }
+
+    private String putPAPI(Player player, String message) {
+        return PlaceholderAPI.setPlaceholders(player, message);
     }
 
 } class GetRuntime {

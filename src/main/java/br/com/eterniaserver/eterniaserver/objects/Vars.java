@@ -1,8 +1,8 @@
-package br.com.eterniaserver.eterniaserver.configs;
+package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
-import br.com.eterniaserver.eterniaserver.player.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

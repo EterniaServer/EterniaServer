@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.tasks;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Vars;
+import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
