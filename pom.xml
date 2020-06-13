@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.eterniaserver</groupId>
     <artifactId>EterniaServer</artifactId>
-    <version>4.0-Staging</version>
+    <version>4.0-Developer</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
