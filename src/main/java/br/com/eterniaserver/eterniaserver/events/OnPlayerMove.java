@@ -20,8 +20,7 @@ public class OnPlayerMove implements Listener {
         if (event.isCancelled()) return;
 
         if (event.getTo().distanceSquared(event.getFrom()) != 0) {
-            final Player player = event.getPlayer();
-            final String playerName = player.getName();
+            final String playerName = event.getPlayer().getName();
             if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
                 EterniaServer.afktime.put(playerName, System.currentTimeMillis());
                 if (EterniaServer.afk.contains(playerName)) {
