@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class PlaceHolders extends PlaceholderExpansion {
 
-    private final String VERSION = this.getClass().getPackage().getImplementationVersion();
+    private final String version = this.getClass().getPackage().getImplementationVersion();
     private final EterniaServer plugin;
 
     public PlaceHolders(EterniaServer plugin) {
@@ -24,14 +24,15 @@ public class PlaceHolders extends PlaceholderExpansion {
     }
 
     public String getVersion() {
-        return this.VERSION;
+        return this.version;
     }
 
+    @Override
     public String onPlaceholderRequest(Player p, String identifier) {
         if (p == null) {
             return "";
         } else {
-            byte var4 = -1;
+            byte var4;
             switch(identifier.hashCode()) {
                 case -690213213:
                     var4 = 1;
@@ -41,6 +42,9 @@ public class PlaceHolders extends PlaceholderExpansion {
                     break;
                 case 197143583:
                     var4 = 3;
+                    break;
+                default:
+                    var4 = 0;
             }
             switch (var4) {
                 case 1:
