@@ -40,9 +40,9 @@ public class OnPlayerBlockBreak implements Listener {
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
         final Material material = block.getType();
-        if ((plugin.serverConfig.getBoolean("modules.spawners") && (material == Material.SPAWNER)
-                && !(plugin.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName())))
-                || player.hasPermission("eternia.spawners.bypass")) {
+        if ((plugin.serverConfig.getBoolean("modules.spawners") && (material == Material.SPAWNER))
+                && (!(plugin.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()))
+                || player.hasPermission("eternia.spawners.bypass"))) {
             breakSpawner(event, player, block, material);
         } else {
             messages.sendMessage("spawner.others.blocked", player);

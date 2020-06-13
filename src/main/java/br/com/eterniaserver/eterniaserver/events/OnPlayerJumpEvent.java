@@ -34,20 +34,24 @@ public class OnPlayerJumpEvent implements Listener {
             Material material = block.getType();
             for (String value : plugin.serverConfig.getStringList("elevator.block")) {
                 if (value.equals(material.toString())) {
-                    block = block.getRelative(BlockFace.UP, min);
-
-                    int i;
-                    for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) --i;
-
-                    if (i > 0) {
-                        Location location = player.getLocation();
-                        location.setY((location.getY() + (double) max + 3.0D - (double) i) - 1);
-                        PaperLib.teleportAsync(player, location);
-                        player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-                    }
+                    findBlock(block, material, player);
                     break;
                 }
             }
+        }
+    }
+
+    private void findBlock(Block block, Material material, Player player) {
+        block = block.getRelative(BlockFace.UP, min);
+
+        int i;
+        for (i = max; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) --i;
+
+        if (i > 0) {
+            Location location = player.getLocation();
+            location.setY((location.getY() + (double) max + 3.0D - (double) i) - 1);
+            PaperLib.teleportAsync(player, location);
+            player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
         }
     }
 
