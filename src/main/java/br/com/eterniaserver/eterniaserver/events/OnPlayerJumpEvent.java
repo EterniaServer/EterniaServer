@@ -17,8 +17,13 @@ public class OnPlayerJumpEvent implements Listener {
 
     private final EterniaServer plugin;
 
+    final int max;
+    final int min ;
+
     public OnPlayerJumpEvent(EterniaServer plugin) {
         this.plugin = plugin;
+        max = plugin.serverConfig.getInt("elevator.max");
+        min = plugin.serverConfig.getInt("elevator.min");
     }
 
     @EventHandler
@@ -29,8 +34,6 @@ public class OnPlayerJumpEvent implements Listener {
             Material material = block.getType();
             for (String value : plugin.serverConfig.getStringList("elevator.block")) {
                 if (value.equals(material.toString())) {
-                    final int max = plugin.serverConfig.getInt("elevator.max");
-                    final int min = plugin.serverConfig.getInt("elevator.min");
                     block = block.getRelative(BlockFace.UP, min);
 
                     int i;

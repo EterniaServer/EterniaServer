@@ -33,13 +33,14 @@ public class OnPlayerCommandPreProcess implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (plugin.serverConfig.getBoolean("modules.commands") && (plugin.cmdConfig.contains("commands." + message))) {
+        final String cMessage = "command." + message;
+        if (plugin.serverConfig.getBoolean("modules.commands") && (plugin.cmdConfig.contains(cMessage))) {
             String cmd = message.replace("/", "");
             if (player.hasPermission("eternia." + cmd)) {
-                for (String line : plugin.cmdConfig.getStringList("commands." + message + ".command")) {
+                for (String line : plugin.cmdConfig.getStringList(cMessage + ".command")) {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
                 }
-                for (String line : plugin.cmdConfig.getStringList("commands." + message + ".text")) {
+                for (String line : plugin.cmdConfig.getStringList(cMessage + ".text")) {
                     player.sendMessage(messages.getColor(PlaceholderAPI.setPlaceholders(player, line)));
                 }
             } else {

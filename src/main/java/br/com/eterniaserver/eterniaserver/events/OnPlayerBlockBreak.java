@@ -26,6 +26,8 @@ public class OnPlayerBlockBreak implements Listener {
     private final EterniaServer plugin;
     private final EFiles messages;
 
+    private final String bString = "blocks.";
+
     public OnPlayerBlockBreak(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
@@ -41,29 +43,33 @@ public class OnPlayerBlockBreak implements Listener {
         if ((plugin.serverConfig.getBoolean("modules.spawners") && (material == Material.SPAWNER)
                 && !(plugin.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName())))
                 || player.hasPermission("eternia.spawners.bypass")) {
-            if (player.hasPermission("eternia.spawners.break")) {
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
-                if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("eternia.spawners.nosilk")) {
-                    if (Math.random() < plugin.serverConfig.getDouble("spawners.drop-chance")) {
-                        dropSpawner(event, player, block, getSpawner(block, material));
-                    } else {
-                        messages.sendMessage("spawner.others.failed", player);
-                    }
-                } else {
-                    event.setCancelled(true);
-                    messages.sendMessage("spawner.others.need-silktouch", player);
-                }
-            } else {
-                event.setCancelled(true);
-                messages.sendMessage("server.no-perm", player);
-            }
+            breakSpawner(event, player, block, material);
         } else {
             messages.sendMessage("spawner.others.blocked", player);
             event.setCancelled(true);
         }
 
-        if (plugin.serverConfig.getBoolean("modules.block-reward") && (plugin.blockConfig.contains("blocks." + material.name().toUpperCase()))) {
+        if (plugin.serverConfig.getBoolean("modules.block-reward") && (plugin.blockConfig.contains(bString + material.name().toUpperCase()))) {
             blockReward(event, material);
+        }
+    }
+
+    private void breakSpawner(BlockBreakEvent event, Player player, Block block, Material material) {
+        if (player.hasPermission("eternia.spawners.break")) {
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
+            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("eternia.spawners.nosilk")) {
+                if (Math.random() < plugin.serverConfig.getDouble("spawners.drop-chance")) {
+                    dropSpawner(event, player, block, getSpawner(block, material));
+                } else {
+                    messages.sendMessage("spawner.others.failed", player);
+                }
+            } else {
+                event.setCancelled(true);
+                messages.sendMessage("spawner.others.need-silktouch", player);
+            }
+        } else {
+            event.setCancelled(true);
+            messages.sendMessage("server.no-perm", player);
         }
     }
 
@@ -103,7 +109,7 @@ public class OnPlayerBlockBreak implements Listener {
     }
 
     private void blockReward(BlockBreakEvent event, Material material) {
-        ConfigurationSection cs = plugin.blockConfig.getConfigurationSection("blocks." + material.name().toUpperCase());
+        ConfigurationSection cs = plugin.blockConfig.getConfigurationSection(bString + material.name().toUpperCase());
         double randomNumber = Math.random();
         if (cs != null) {
             double lNumberAR = 1.1;
@@ -112,7 +118,7 @@ public class OnPlayerBlockBreak implements Listener {
                 if (current < lNumberAR && current > randomNumber) lNumberAR = current;
             }
             if (lNumberAR <= 1) {
-                for (String command : plugin.blockConfig.getStringList("blocks." + material.name().toUpperCase() + "." + lNumberAR)) {
+                for (String command : plugin.blockConfig.getStringList(bString + material.name().toUpperCase() + "." + lNumberAR)) {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(event.getPlayer(), command));
                 }
             }
