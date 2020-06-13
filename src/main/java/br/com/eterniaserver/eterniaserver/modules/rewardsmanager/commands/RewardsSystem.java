@@ -12,8 +12,6 @@ import co.aikar.commands.annotation.Syntax;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Random;
-
 public class RewardsSystem extends BaseCommand {
 
     private final RewardsManager rewardsManager;
@@ -44,8 +42,8 @@ public class RewardsSystem extends BaseCommand {
     @CommandPermission("eternia.genkey")
     public void onGenKey(CommandSender sender, String reward) {
         if (plugin.rewardsConfig.getConfigurationSection("rewards." + reward) != null) {
-            Random rand = new Random();
-            final String key = Long.toHexString(rand.nextLong());
+            rewardsManager.random.nextBytes(rewardsManager.bytes);
+            final String key = Long.toHexString(rewardsManager.random.nextLong());
             rewardsManager.createKey(reward, key);
             messages.sendMessage("reward.created", "%key%", key, sender);
         } else {
