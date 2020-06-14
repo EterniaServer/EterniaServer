@@ -1,6 +1,6 @@
-package br.com.eterniaserver.eterniaserver.objects;
+package br.com.eterniaserver.eterniaserver;
 
-public interface Str {
+interface Strings {
 
     // Placeholders
     String strPlayNamP = "%player_name%";

@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.objects.Str;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
@@ -36,7 +35,7 @@ public class OnPlayerBlockPlace implements Listener {
                     CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
                     spawner.setSpawnedType(entity);
                     spawner.update();
-                    plugin.getEFiles().sendConsole("spawner.log.placed", Str.strPlayNamP, event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
+                    plugin.getEFiles().sendConsole("spawner.log.placed", plugin.strPlayNamP, event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
                 }
             } catch (NullPointerException|IllegalArgumentException e) {
                 // Todo
