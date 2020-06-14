@@ -17,7 +17,7 @@ public class PlayerTeleport {
         this.first_location = player.getLocation();
         this.wantLocation = wantLocation;
         this.message = message;
-        this.cooldown = plugin.serverConfig.getInt("server.cooldown");
+        this.cooldown = plugin.serverConfig.getInt(plugin.getStrings().svCooldo);
     }
 
     public boolean hasMoved() {
