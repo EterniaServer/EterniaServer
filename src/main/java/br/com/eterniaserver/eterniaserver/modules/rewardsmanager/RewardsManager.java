@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.rewardsmanager;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.commands.RewardsSystem;
 
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -18,7 +19,6 @@ import java.security.SecureRandom;
 public class RewardsManager {
 
     private final EterniaServer plugin;
-    private final String tableName = "sql.table-rewards";
 
     public final SecureRandom random = new SecureRandom();
     public final byte[] bytes = new byte[20];
@@ -48,15 +48,15 @@ public class RewardsManager {
 
 
     public void createKey(final String grupo, String key) {
-        EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString(tableName) + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
+        EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString(Strings.TABLE_REWARDS) + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
     }
 
     public void deleteKey(final String key) {
-        EQueries.executeQuery("DELETE FROM " + plugin.serverConfig.getString(tableName) + " WHERE code='" + key + "';");
+        EQueries.executeQuery("DELETE FROM " + plugin.serverConfig.getString(Strings.TABLE_REWARDS) + " WHERE code='" + key + "';");
     }
 
     public String existKey(final String key) {
-        final String querie = "SELECT * FROM " + plugin.serverConfig.getString(tableName)+ " WHERE code='" + key + "';";
+        final String querie = "SELECT * FROM " + plugin.serverConfig.getString(Strings.TABLE_REWARDS)+ " WHERE code='" + key + "';";
         return EQueries.queryString(querie, "code", "lalalala");
     }
 

@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -14,12 +15,6 @@ import org.bukkit.entity.Player;
 public class Gamemode extends BaseCommand {
 
     private final EFiles messages;
-
-    private final String gmChanged = "generic.gm.changed";
-    private final String gmChangedT = "generic.gm.changed-target";
-
-    private final String gamemodeString = "%gamemode%";
-    private final String targetString = "%target_name%";
 
     public Gamemode(EFiles messages) {
         this.messages = messages;
@@ -37,14 +32,14 @@ public class Gamemode extends BaseCommand {
         String sobString = "Sobrevivência";
         if (target == null) {
             player.setGameMode(GameMode.SURVIVAL);
-            messages.sendMessage(gmChanged, gamemodeString, sobString, player);
+            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, sobString, player);
         } else {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
             targetP.setGameMode(GameMode.SURVIVAL);
-            messages.sendMessage(gmChanged, gamemodeString, sobString, targetP);
-            messages.sendMessage(gmChangedT, targetString, targetName, gamemodeString, sobString, player);
+            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, sobString, targetP);
+            messages.sendMessage(Strings.GM_CHANGED_TARGET, Strings.TARGET_NAME, targetName, Strings.GAMEMODE, sobString, player);
         }
     }
 
@@ -54,14 +49,14 @@ public class Gamemode extends BaseCommand {
         String creString = "Criativo";
         if (target == null) {
             player.setGameMode(GameMode.CREATIVE);
-            messages.sendMessage(gmChanged, gamemodeString, creString, player);
+            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, creString, player);
         } else {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
             targetP.setGameMode(GameMode.CREATIVE);
-            messages.sendMessage(gmChanged, gamemodeString, creString, targetP);
-            messages.sendMessage(gmChangedT, targetString, targetName, gamemodeString, creString, player);
+            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, creString, targetP);
+            messages.sendMessage(Strings.GM_CHANGED_TARGET, Strings.TARGET_NAME, targetName, Strings.GAMEMODE, creString, player);
         }
     }
 
@@ -71,14 +66,14 @@ public class Gamemode extends BaseCommand {
         String aveString = "Aventura";
         if (target == null) {
             player.setGameMode(GameMode.ADVENTURE);
-            messages.sendMessage(gmChanged, gamemodeString, aveString, player);
+            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, aveString, player);
         } else {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
             targetP.setGameMode(GameMode.ADVENTURE);
-            messages.sendMessage(gmChanged, gamemodeString, aveString, targetP);
-            messages.sendMessage(gmChangedT, targetString, targetName, gamemodeString, aveString, player);
+            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, aveString, targetP);
+            messages.sendMessage(Strings.GM_CHANGED_TARGET, Strings.TARGET_NAME, targetName, Strings.GAMEMODE, aveString, player);
         }
     }
 
@@ -88,14 +83,14 @@ public class Gamemode extends BaseCommand {
         String espString = "Espectador";
         if (target == null) {
             player.setGameMode(GameMode.SPECTATOR);
-            messages.sendMessage(gmChanged, gamemodeString, espString, player);
+            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, espString, player);
         } else {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
             targetP.setGameMode(GameMode.SPECTATOR);
-            messages.sendMessage(gmChanged, gamemodeString, espString, targetP);
-            messages.sendMessage(gmChangedT, targetString, targetName, gamemodeString, espString, player);
+            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, espString, targetP);
+            messages.sendMessage(Strings.GM_CHANGED_TARGET, Strings.TARGET_NAME, targetName, Strings.GAMEMODE, espString, player);
         }
     }
 

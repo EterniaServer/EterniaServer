@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.economymanager.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
@@ -18,9 +19,6 @@ public class EcoChange extends BaseCommand {
     private final EFiles messages;
     private final EconomyManager moneyx;
 
-    private final String strMoney = "%money%";
-    private final String strTarget = "%target_name%";
-
     public EcoChange(EterniaServer plugin) {
         this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
@@ -35,8 +33,8 @@ public class EcoChange extends BaseCommand {
         final String targetName = targetP.getName();
 
         moneyx.setMoney(targetName, money);
-        messages.sendMessage("eco.eco-set", strMoney, money, strTarget, targetName, sender);
-        messages.sendMessage("eco.eco-rset", strMoney, money, strTarget, senderName, targetP);
+        messages.sendMessage("eco.eco-set", Strings.MONEY, money, Strings.TARGET_NAME, targetName, sender);
+        messages.sendMessage("eco.eco-rset", Strings.MONEY, money, Strings.TARGET_NAME, senderName, targetP);
     }
 
     @Subcommand("remove|remover")
@@ -48,8 +46,8 @@ public class EcoChange extends BaseCommand {
         final String targetName = targetP.getName();
 
         moneyx.removeMoney(targetName, money);
-        messages.sendMessage("eco.eco-remove", strMoney,money, strTarget, targetName, sender);
-        messages.sendMessage("eco.eco-rremove", strMoney, money, strTarget, senderName, targetP);
+        messages.sendMessage("eco.eco-remove", Strings.MONEY, money, Strings.TARGET_NAME, targetName, sender);
+        messages.sendMessage("eco.eco-rremove", Strings.MONEY, money, Strings.TARGET_NAME, senderName, targetP);
     }
 
     @Subcommand("give|dar")
@@ -61,8 +59,8 @@ public class EcoChange extends BaseCommand {
         final String targetName = targetP.getName();
 
         moneyx.addMoney(targetName, money);
-        messages.sendMessage("eco.eco-give", strMoney, money, strTarget, targetName, sender);
-        messages.sendMessage("eco.eco-receive", strMoney, money, strTarget, senderName, targetP);
+        messages.sendMessage("eco.eco-give", Strings.MONEY, money, Strings.TARGET_NAME, targetName, sender);
+        messages.sendMessage("eco.eco-receive", Strings.MONEY, money, Strings.TARGET_NAME, senderName, targetP);
     }
 
 }

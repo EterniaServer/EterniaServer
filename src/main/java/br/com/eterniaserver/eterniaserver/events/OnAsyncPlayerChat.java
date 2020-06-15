@@ -57,7 +57,7 @@ public class OnAsyncPlayerChat implements Listener {
 
             switch (EterniaServer.global.getOrDefault(playerName, 0)) {
                 case 0:
-                    plugin.local.SendMessage(message, player, plugin.chatConfig.getInt("local.range"));
+                    plugin.local.sendMessage(message, player, plugin.chatConfig.getInt("local.range"));
                     e.setCancelled(true);
                     break;
                 case 1:

@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Location;
@@ -22,8 +23,6 @@ public class OnPlayerBlockBreak implements Listener {
 
     private final EterniaServer plugin;
     private final EFiles messages;
-
-    private final String bString = "blocks.";
 
     public OnPlayerBlockBreak(EterniaServer plugin) {
         this.plugin = plugin;
@@ -46,7 +45,7 @@ public class OnPlayerBlockBreak implements Listener {
             event.setCancelled(true);
         }
 
-        if (plugin.serverConfig.getBoolean("modules.block-reward") && (plugin.blockConfig.contains(bString + material.name().toUpperCase()))) {
+        if (plugin.serverConfig.getBoolean("modules.block-reward") && (plugin.blockConfig.contains(Strings.BLOCKS_GET + material.name().toUpperCase()))) {
             blockReward(event, material);
         }
     }
@@ -97,7 +96,7 @@ public class OnPlayerBlockBreak implements Listener {
     }
 
     private void blockReward(BlockBreakEvent event, Material material) {
-        ConfigurationSection cs = plugin.blockConfig.getConfigurationSection(bString + material.name().toUpperCase());
+        ConfigurationSection cs = plugin.blockConfig.getConfigurationSection(Strings.BLOCKS_GET + material.name().toUpperCase());
         double randomNumber = Math.random();
         if (cs != null) {
             double lNumberAR = 1.1;
@@ -106,7 +105,7 @@ public class OnPlayerBlockBreak implements Listener {
                 if (current < lNumberAR && current > randomNumber) lNumberAR = current;
             }
             if (lNumberAR <= 1) {
-                for (String command : plugin.blockConfig.getStringList(bString + material.name().toUpperCase() + "." + lNumberAR)) {
+                for (String command : plugin.blockConfig.getStringList(Strings.BLOCKS_GET + material.name().toUpperCase() + "." + lNumberAR)) {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(event.getPlayer(), command));
                 }
             }

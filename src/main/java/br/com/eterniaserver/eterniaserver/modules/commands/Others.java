@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 
 import co.aikar.commands.BaseCommand;
@@ -36,8 +37,6 @@ public class Others extends BaseCommand {
     private final ItemStack diamondi = new ItemStack(Material.DIAMOND);
     private final ItemStack esmeraldai = new ItemStack(Material.EMERALD);
 
-    private final String strGNoItem = "generic.items.no-item";
-
     public Others(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
@@ -71,7 +70,7 @@ public class Others extends BaseCommand {
                     messages.sendMessage("generic.items.rename", player);
                 }
             } else {
-            messages.sendMessage(strGNoItem, player);
+            messages.sendMessage(Strings.NO_ITEMS, player);
         }
     }
 
@@ -85,7 +84,7 @@ public class Others extends BaseCommand {
             item.setItemMeta(meta);
             player.getInventory().setItemInMainHand(item);
         } else {
-            messages.sendMessage(strGNoItem, player);
+            messages.sendMessage(Strings.NO_ITEMS, player);
         }
     }
 
@@ -97,7 +96,7 @@ public class Others extends BaseCommand {
             item.setLore(Collections.singletonList(messages.getColor(sb.toString())));
             player.getInventory().setItemInMainHand(item);
         } else {
-            messages.sendMessage(strGNoItem, player);
+            messages.sendMessage(Strings.NO_ITEMS, player);
         }
     }
 
@@ -166,7 +165,14 @@ public class Others extends BaseCommand {
     @CommandAlias("blocks|condenser")
     @CommandPermission("eternia.blocks")
     public void onBlocks(Player player) {
-        int coal = 0, lapiz = 0, redstone = 0, iron = 0, gold = 0, diamond = 0, esmeralda = 0;
+        int coal = 0;
+        int lapiz = 0;
+        int redstone = 0;
+        int iron = 0;
+        int gold = 0;
+        int diamond = 0;
+        int esmeralda = 0;
+
         for (ItemStack i : player.getInventory().getContents()) {
             if (i != null) {
                 coal += checkItems(i, coali);
