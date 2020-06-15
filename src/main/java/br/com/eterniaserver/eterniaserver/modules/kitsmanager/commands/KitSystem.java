@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.kitsmanager.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.KitsManager;
 
 import co.aikar.commands.BaseCommand;
@@ -38,39 +39,16 @@ public class KitSystem extends BaseCommand {
     @Syntax("<kit>")
     @CommandPermission("eternia.kit")
     public void onKit(Player player, String kit) {
-        if (plugin.kitConfig.contains("kits." + kit)) {
-            if (player.hasPermission("kits." + kit)) {
+        if (plugin.kitConfig.contains(Strings.KITS_GET + kit)) {
+            if (player.hasPermission(Strings.KITS_GET + kit)) {
                 String data = kitsManager.getKitCooldown(player.getName(), kit);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                 Date date;
                 try {
                     date = sdf.parse(data);
-                    long millis = date.getTime();
-                    if ((((millis / 1000) + plugin.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)) <= 0) {
-                        for (String line : plugin.kitConfig.getStringList("kits." + kit + ".command")) {
-                            String modifiedCommand;
-                            if (plugin.hasPlaceholderAPI) {
-                                modifiedCommand = putPAPI(player, line);
-                            } else {
-                                modifiedCommand = line.replace("%player_name%", player.getName());
-                            }
-                            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
-                        }
-                        for (String line : plugin.kitConfig.getStringList("kits." + kit + ".text")) {
-                            String modifiedText;
-                            if (plugin.hasPlaceholderAPI) {
-                                modifiedText = putPAPI(player, line);
-                            } else {
-                                modifiedText = line.replace("%player_name%", player.getName());
-                            }
-                            player.sendMessage(messages.getColor(modifiedText));
-                        }
-                        kitsManager.setKitCooldown(player.getName(), kit);
-                    } else {
-                        messages.sendMessage("server.timing", "%cooldown%", (((millis / 1000) + plugin.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
-                    }
+                    executeKit(player, date, kit);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    // todo
                 }
             } else {
                 messages.sendMessage("server.no-perm", "%kit_name%", kit, player);
@@ -80,8 +58,19 @@ public class KitSystem extends BaseCommand {
         }
     }
 
-    private String putPAPI(Player player, String message) {
-        return PlaceholderAPI.setPlaceholders(player, message);
+    private void executeKit(Player player, Date date, String kit) {
+        long millis = date.getTime();
+        if ((((millis / 1000) + plugin.kitConfig.getInt(Strings.KITS_GET + kit + ".delay")) - (System.currentTimeMillis() / 1000)) <= 0) {
+            for (String line : plugin.kitConfig.getStringList(Strings.KITS_GET + kit + ".command")) {
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
+            }
+            for (String line : plugin.kitConfig.getStringList(Strings.KITS_GET + kit + ".text")) {
+                player.sendMessage(messages.getColor(PlaceholderAPI.setPlaceholders(player, line)));
+            }
+            kitsManager.setKitCooldown(player.getName(), kit);
+        } else {
+            messages.sendMessage("server.timing", "%cooldown%", (((millis / 1000) + plugin.kitConfig.getInt(Strings.KITS_GET + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
+        }
     }
 
 }

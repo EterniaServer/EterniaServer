@@ -2,15 +2,28 @@ package br.com.eterniaserver.eterniaserver;
 
 public class Strings {
 
+    private Strings() {
+        throw new IllegalStateException("Utility class");
+    }
+
     // Placeholders
     public static final String PLAYER_NAME = "%player_name%";
     public static final String TIME = "%time%";
-    // Server
+
+    // Messages
     public static final String MODULES_CHAT = "modules.chat";
     public static final String SERVER_CHECKS = "server.checks";
     public static final String SERVER_COOLDOWN = "server.cooldown";
+    public static final String HOME_NO_EXIST = "home.no-exists";
+    public static final String KITS_GET = "kits.";
+
     // Tables
     public static final String TABLE_HOME = "sql.table-home";
+    public static final String TABLE_HOMES = "sql.table-homes";
+    public static final String TABLE_KITS = "sql.table-kits";
+    public static final String TABLE_WARP = "sql.table-warp";
+    public static final String TABLE_SHOP = "sql.table-shop";
+
     // SQL
     public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS ";
     public static final String INSERT_INTO = "INSERT INTO ";
