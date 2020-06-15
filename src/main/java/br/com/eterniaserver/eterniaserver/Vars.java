@@ -17,22 +17,6 @@ import java.util.Map;
 
 class Vars extends JavaPlugin {
 
-    // Placeholders
-    public static final String strPlayNamP = "%player_name%";
-    public static final String stringTimeP = "%time%";
-    // Server
-    public static final String mChatStr = "modules.chat";
-    public static final String svChecks = "server.checks";
-    public static final String svCooldo = "server.cooldown";
-    // Tables
-    public static final String tbHomeSt = "sql.table-home";
-    // SQL
-    public static final String tbCreate = "CREATE TABLE IF NOT EXISTS ";
-    public static final String qInsertI = "INSERT INTO ";
-    public static final String qSeleAll = "SELECT * FROM ";
-    public static final String qUpdateS = "UPDATE ";
-    public static final String qWhePlNa = " WHERE player_name='";
-
     public final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
 
     public final List<World> skippingWorlds = new ArrayList<>();
