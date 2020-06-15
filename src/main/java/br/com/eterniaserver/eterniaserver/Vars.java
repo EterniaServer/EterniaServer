@@ -34,24 +34,24 @@ class Vars extends JavaPlugin {
 
     public final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
 
-    public final List<World> skipping_worlds = new ArrayList<>();
+    public final List<World> skippingWorlds = new ArrayList<>();
     public final List<String> god = new ArrayList<>();
     public final List<String> afk = new ArrayList<>();
     public final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
 
-    public final List<String> player_bal = new ArrayList<>();
-    public final List<String> player_exp = new ArrayList<>();
-    public final List<String> player_homes = new ArrayList<>();
-    public final List<String> player_cooldown = new ArrayList<>();
+    public final List<String> playerBal = new ArrayList<>();
+    public final List<String> playerExp = new ArrayList<>();
+    public final List<String> playerHomes = new ArrayList<>();
+    public final List<String> playerCooldown = new ArrayList<>();
 
-    public final HashMap<String, Long> tpa_time = new HashMap<>();
-    public final HashMap<String, Long> player_muted = new HashMap<>();
-    public final HashMap<String, Long> bed_cooldown = new HashMap<>();
+    public final HashMap<String, Long> tpaTime = new HashMap<>();
+    public final HashMap<String, Long> playerMuted = new HashMap<>();
+    public final HashMap<String, Long> bedCooldown = new HashMap<>();
     public final HashMap<String, Long> afktime = new HashMap<>();
     public final HashMap<String, Double> balances = new HashMap<>();
-    public final HashMap<String, String> tpa_requests = new HashMap<>();
-    public final HashMap<String, String> kits_cooldown = new HashMap<>();
-    public final HashMap<String, String> player_login = new HashMap<>();
+    public final HashMap<String, String> tpaRequests = new HashMap<>();
+    public final HashMap<String, String> kitsCooldown = new HashMap<>();
+    public final HashMap<String, String> playerLogin = new HashMap<>();
     public final HashMap<String, String> tell = new HashMap<>();
     public final HashMap<Player, Boolean> spy = new HashMap<>();
     public final HashMap<String, Integer> global = new HashMap<>();
