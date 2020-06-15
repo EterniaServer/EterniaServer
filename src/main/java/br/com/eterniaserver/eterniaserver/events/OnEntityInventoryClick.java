@@ -34,7 +34,7 @@ public class OnEntityInventoryClick implements Listener {
                 Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
             e.setCancelled(true);
             messages.sendMessage("spawner.others.change-name", player);
-            messages.sendConsole("spawner.log.change-name", plugin.strPlayNamP, playerName);
+            messages.sendConsole("spawner.log.change-name", EterniaServer.strPlayNamP, playerName);
         }
     }
 
