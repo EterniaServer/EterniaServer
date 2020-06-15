@@ -1,10 +1,14 @@
 package br.com.eterniaserver.eterniaserver;
 
+import java.text.SimpleDateFormat;
+
 public class Strings {
 
     private Strings() {
         throw new IllegalStateException("Utility class");
     }
+
+    public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
     // Placeholders
     public static final String TARGET_NAME = "%target_name%";
@@ -29,16 +33,5 @@ public class Strings {
     public static final String TABLE_KITS = "sql.table-kits";
     public static final String TABLE_WARP = "sql.table-warp";
     public static final String TABLE_SHOP = "sql.table-shop";
-
-    // SQL
-    public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS ";
-    public static final String INSERT_INTO = "INSERT INTO ";
-    public static final String SELECT_FROM = "SELECT * FROM ";
-    public static final String UPDATE = "UPDATE ";
-    public static final String WHERE_PLAYER_NAME = " WHERE player_name='";
-    public static final String WHERE_NAME = " WHERE name='";
-
-    // String
-    public static final String PLAYER_NAME_STR = "player_name";
 
 }
