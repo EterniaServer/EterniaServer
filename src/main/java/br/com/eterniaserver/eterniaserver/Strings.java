@@ -7,6 +7,7 @@ public class Strings {
     }
 
     // Placeholders
+    public static final String TARGET_NAME = "%target_name%";
     public static final String PLAYER_NAME = "%player_name%";
     public static final String TIME = "%time%";
 
@@ -14,7 +15,9 @@ public class Strings {
     public static final String MODULES_CHAT = "modules.chat";
     public static final String SERVER_CHECKS = "server.checks";
     public static final String SERVER_COOLDOWN = "server.cooldown";
+    public static final String SERVER_TELEP = "server.telep";
     public static final String HOME_NO_EXIST = "home.no-exists";
+    public static final String WARP_DONE = "teleport.warp.done";
     public static final String KITS_GET = "kits.";
 
     // Tables
@@ -30,5 +33,6 @@ public class Strings {
     public static final String SELECT_FROM = "SELECT * FROM ";
     public static final String UPDATE = "UPDATE ";
     public static final String WHERE_PLAYER_NAME = " WHERE player_name='";
+    public static final String WHERE_NAME = " WHERE name='";
 
 }

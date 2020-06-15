@@ -104,7 +104,7 @@ public class PlayerManager {
             try {
                 EterniaServer.player_muted.put(playerName, plugin.sdf.parse(time).getTime());
             } catch (ParseException e) {
-                e.printStackTrace();
+                // todo
             }
         } else {
             EterniaServer.player_muted.put(playerName, System.currentTimeMillis());

@@ -38,7 +38,7 @@ public class KitsManager {
             try {
                 plugin.kitConfig.load(commandsConfigFile);
             } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
+                // todo
             }
             manager.registerCommand(new KitSystem(plugin, this));
             messages.sendConsole("modules.enable", "%module%", "Kits");
