@@ -9,6 +9,7 @@ import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.commands.Reward
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -19,15 +20,17 @@ import java.security.SecureRandom;
 public class RewardsManager {
 
     private final EterniaServer plugin;
+    private final FileConfiguration serverConfig;
 
     public final SecureRandom random = new SecureRandom();
     public final byte[] bytes = new byte[20];
 
     public RewardsManager(EterniaServer plugin) {
         this.plugin = plugin;
+        this.serverConfig = plugin.getServerConfig();
         EFiles messages = plugin.getEFiles();
 
-        if (plugin.serverConfig.getBoolean("modules.rewards")) {
+        if (serverConfig.getBoolean("modules.rewards")) {
             File rwConfig = new File(plugin.getDataFolder(), "rewards.yml");
             if (!rwConfig.exists()) plugin.saveResource("rewards.yml", false);
 
@@ -48,15 +51,15 @@ public class RewardsManager {
 
 
     public void createKey(final String grupo, String key) {
-        EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString(Strings.TABLE_REWARDS) + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
+        EQueries.executeQuery("INSERT INTO " + serverConfig.getString(Strings.TABLE_REWARDS) + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
     }
 
     public void deleteKey(final String key) {
-        EQueries.executeQuery("DELETE FROM " + plugin.serverConfig.getString(Strings.TABLE_REWARDS) + " WHERE code='" + key + "';");
+        EQueries.executeQuery("DELETE FROM " + serverConfig.getString(Strings.TABLE_REWARDS) + " WHERE code='" + key + "';");
     }
 
     public String existKey(final String key) {
-        final String querie = "SELECT * FROM " + plugin.serverConfig.getString(Strings.TABLE_REWARDS)+ " WHERE code='" + key + "';";
+        final String querie = "SELECT * FROM " + serverConfig.getString(Strings.TABLE_REWARDS)+ " WHERE code='" + key + "';";
         return EQueries.queryString(querie, "code", "lalalala");
     }
 

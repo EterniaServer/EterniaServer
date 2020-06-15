@@ -127,7 +127,7 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.listwarp")
     public void onListWarp(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
+            final String querie = "SELECT * FROM " + plugin.getServerConfig().getString("sql.table-warp") + ";";
             final List<String> lista = EQueries.queryStringList(querie, "name");
             StringBuilder string = new StringBuilder();
             for (String home : lista) string.append(home).append("&8").append(", &3");

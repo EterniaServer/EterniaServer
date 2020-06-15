@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,10 +24,12 @@ public class OnPlayerBlockBreak implements Listener {
 
     private final EterniaServer plugin;
     private final EFiles messages;
+    private final FileConfiguration serverConfig;
 
     public OnPlayerBlockBreak(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
+        this.serverConfig = plugin.getServerConfig();
     }
 
     @EventHandler
@@ -36,8 +39,8 @@ public class OnPlayerBlockBreak implements Listener {
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
         final Material material = block.getType();
-        if ((plugin.serverConfig.getBoolean("modules.spawners") && (material == Material.SPAWNER))
-                && (!(plugin.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()))
+        if ((serverConfig.getBoolean("modules.spawners") && (material == Material.SPAWNER))
+                && (!(serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()))
                 || player.hasPermission("eternia.spawners.bypass"))) {
             breakSpawner(event, player, block, material);
         } else {
@@ -45,7 +48,7 @@ public class OnPlayerBlockBreak implements Listener {
             event.setCancelled(true);
         }
 
-        if (plugin.serverConfig.getBoolean("modules.block-reward") && (plugin.blockConfig.contains(Strings.BLOCKS_GET + material.name().toUpperCase()))) {
+        if (serverConfig.getBoolean("modules.block-reward") && (plugin.blockConfig.contains(Strings.BLOCKS_GET + material.name().toUpperCase()))) {
             blockReward(event, material);
         }
     }
@@ -54,7 +57,7 @@ public class OnPlayerBlockBreak implements Listener {
         if (player.hasPermission("eternia.spawners.break")) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("eternia.spawners.nosilk")) {
-                if (Math.random() < plugin.serverConfig.getDouble("spawners.drop-chance")) {
+                if (Math.random() < serverConfig.getDouble("spawners.drop-chance")) {
                     dropSpawner(event, player, block, getSpawner(block, material));
                 } else {
                     messages.sendMessage("spawner.others.failed", player);
@@ -79,7 +82,7 @@ public class OnPlayerBlockBreak implements Listener {
     }
 
     private void dropSpawner(BlockBreakEvent event, Player player, Block block, ItemStack item) {
-        if (plugin.serverConfig.getBoolean("spawners.drop-in-inventory")) {
+        if (serverConfig.getBoolean("spawners.drop-in-inventory")) {
             if (player.getInventory().firstEmpty() == -1) {
                 event.setCancelled(true);
                 messages.sendMessage("spawner.others.inv-full", player);

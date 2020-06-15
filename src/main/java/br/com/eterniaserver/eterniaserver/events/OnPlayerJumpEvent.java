@@ -9,30 +9,31 @@ import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class OnPlayerJumpEvent implements Listener {
 
-    private final EterniaServer plugin;
+    private final FileConfiguration serverConfig;
 
     final int max;
     final int min ;
 
     public OnPlayerJumpEvent(EterniaServer plugin) {
-        this.plugin = plugin;
-        max = plugin.serverConfig.getInt("elevator.max");
-        min = plugin.serverConfig.getInt("elevator.min");
+        this.serverConfig = plugin.getServerConfig();
+        max = serverConfig.getInt("elevator.max");
+        min = serverConfig.getInt("elevator.min");
     }
 
     @EventHandler
     public void onPlayerJumpEvent(PlayerJumpEvent event) {
         final Player player = event.getPlayer();
-        if (plugin.serverConfig.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {
+        if (serverConfig.getBoolean("modules.elevator") && player.hasPermission("eternia.elevator")) {
             Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
-            for (String value : plugin.serverConfig.getStringList("elevator.block")) {
+            for (String value : serverConfig.getStringList("elevator.block")) {
                 if (value.equals(material.toString())) {
                     findBlock(block, material, player);
                     break;

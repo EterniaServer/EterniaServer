@@ -25,7 +25,7 @@ public class OnPlayerBlockPlace implements Listener {
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled()) return;
 
-        if (event.getBlock().getType() == Material.SPAWNER && (plugin.serverConfig.getBoolean("modules.spawners"))) {
+        if (event.getBlock().getType() == Material.SPAWNER && (plugin.getServerConfig().getBoolean("modules.spawners"))) {
             ItemStack placed = event.getItemInHand();
             ItemMeta meta = placed.getItemMeta();
             EntityType entity;

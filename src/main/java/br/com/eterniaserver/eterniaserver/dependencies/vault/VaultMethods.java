@@ -8,6 +8,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -16,14 +17,14 @@ import java.util.List;
 public class VaultMethods implements Economy {
 
     private final DecimalFormat df2 = new DecimalFormat(".##");
-    private final EterniaServer plugin;
     private final PlayerManager playerManager;
     private final EconomyManager moneyx;
+    private final FileConfiguration serverConfig;
 
     public VaultMethods(EterniaServer plugin) {
-        this.plugin = plugin;
         this.playerManager = plugin.getPlayerManager();
         this.moneyx = plugin.getMoney();
+        this.serverConfig = plugin.getServerConfig();
     }
 
     @Override
@@ -53,12 +54,12 @@ public class VaultMethods implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return plugin.serverConfig.getString("money.plural");
+        return serverConfig.getString("money.plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return plugin.serverConfig.getString("money.singular");
+        return serverConfig.getString("money.singular");
     }
 
     @Override

@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
@@ -19,10 +20,10 @@ public class Files {
 
     public void loadConfigs() {
 
-        plugin.serverConfig = new YamlConfiguration();
+        plugin.setServerConfig(new YamlConfiguration());
 
         try {
-            plugin.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
+            plugin.getServerConfig().load(EFiles.fileLoad(plugin, "config.yml"));
 
             EFiles.fileLoad(plugin, "acf_messages.yml");
             plugin.getManager().getLocales().loadYamlLanguageFile("acf_messages.yml", Locale.ENGLISH);

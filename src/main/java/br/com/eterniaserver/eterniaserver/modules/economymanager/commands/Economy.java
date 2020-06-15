@@ -79,7 +79,7 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.baltop")
     public void onBaltop(CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
+            final String querie = "SELECT * FROM " + plugin.getServerConfig().getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
             final List<String> accounts = EQueries.queryStringList(querie, "player_name");
             DecimalFormat df2 = new DecimalFormat(".##");
             messages.sendMessage("eco.baltop", sender);
