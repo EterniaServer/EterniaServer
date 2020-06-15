@@ -10,6 +10,7 @@ public class Strings {
     public static final String TARGET_NAME = "%target_name%";
     public static final String PLAYER_NAME = "%player_name%";
     public static final String TIME = "%time%";
+    public static final String WARP_NAME = "%warp_name%";
 
     // Messages
     public static final String MODULES_CHAT = "modules.chat";
@@ -19,6 +20,8 @@ public class Strings {
     public static final String HOME_NO_EXIST = "home.no-exists";
     public static final String WARP_DONE = "teleport.warp.done";
     public static final String KITS_GET = "kits.";
+    public static final String SERVER_NO_PERM = "server.no-perm";
+    public static final String WARP_NO_EXIST = "teleport.warp.no-exists";
 
     // Tables
     public static final String TABLE_HOME = "sql.table-home";
@@ -34,5 +37,8 @@ public class Strings {
     public static final String UPDATE = "UPDATE ";
     public static final String WHERE_PLAYER_NAME = " WHERE player_name='";
     public static final String WHERE_NAME = " WHERE name='";
+
+    // String
+    public static final String PLAYER_NAME_STR = "player_name";
 
 }
