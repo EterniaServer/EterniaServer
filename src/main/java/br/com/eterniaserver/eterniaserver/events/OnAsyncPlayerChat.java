@@ -9,6 +9,8 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.CustomP
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.JsonSender;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 
+import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.Local;
+import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.Staff;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,6 +26,8 @@ public class OnAsyncPlayerChat implements Listener {
     private final JsonSender js;
     private final CustomPlaceholdersFilter cp;
     private final EFiles messages;
+    private final Local local;
+    private final Staff staff;
     private final Colors c = new Colors();
 
     public OnAsyncPlayerChat(EterniaServer plugin) {
@@ -32,6 +36,8 @@ public class OnAsyncPlayerChat implements Listener {
         this.cp = new CustomPlaceholdersFilter(plugin);
         this.js = new JsonSender(plugin);
         this.cf = new ChatFormatter(plugin);
+        this.local = new Local(plugin);
+        this.staff = new Staff(plugin);
     }
 
 
@@ -57,13 +63,13 @@ public class OnAsyncPlayerChat implements Listener {
 
             switch (EterniaServer.global.getOrDefault(playerName, 0)) {
                 case 0:
-                    plugin.local.SendMessage(message, player, plugin.chatConfig.getInt("local.range"));
+                    local.SendMessage(message, player, plugin.chatConfig.getInt("local.range"));
                     e.setCancelled(true);
                     break;
                 case 1:
                     break;
                 case 2:
-                    plugin.staff.SendMessage(message, player);
+                    staff.SendMessage(message, player);
                     e.setCancelled(true);
                     break;
             }

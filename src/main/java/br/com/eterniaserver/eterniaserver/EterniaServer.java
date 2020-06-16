@@ -4,7 +4,6 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.*;
 import br.com.eterniaserver.eterniaserver.events.*;
 import br.com.eterniaserver.eterniaserver.modules.Managers;
-import br.com.eterniaserver.eterniaserver.modules.chatmanager.chats.*;
 import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import br.com.eterniaserver.eterniaserver.modules.experiencemanager.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
@@ -41,8 +40,6 @@ public class EterniaServer extends JavaPlugin implements Vars {
     private final EconomyManager money = new EconomyManager(this);
     private final ExperienceManager exp = new ExperienceManager(this);
 
-    public Local local;
-    public Staff staff;
     public TeleportsManager teleportsManager;
     public Files files;
 
@@ -62,9 +59,6 @@ public class EterniaServer extends JavaPlugin implements Vars {
         files.loadDatabase();
 
         eFiles = new EFiles(msgConfig);
-
-        local = new Local(this);
-        staff = new Staff(this);
 
         loadManagers();
         homesManager();
