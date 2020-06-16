@@ -8,46 +8,44 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-class Vars extends JavaPlugin {
+interface Vars {
 
-    public final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
+    Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
 
-    public final List<World> skippingWorlds = new ArrayList<>();
-    public final List<String> god = new ArrayList<>();
-    public final List<String> afk = new ArrayList<>();
-    public final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
+    List<World> skipping_worlds = new ArrayList<>();
+    List<String> god = new ArrayList<>();
+    List<String> afk = new ArrayList<>();
+    List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
 
-    public final List<String> playerBal = new ArrayList<>();
-    public final List<String> playerExp = new ArrayList<>();
-    public final List<String> playerHomes = new ArrayList<>();
-    public final List<String> playerCooldown = new ArrayList<>();
+    List<String> player_bal = new ArrayList<>();
+    List<String> player_exp = new ArrayList<>();
+    List<String> player_homes = new ArrayList<>();
+    List<String> player_cooldown = new ArrayList<>();
 
-    public final Map<String, Long> tpaTime = new HashMap<>();
-    public final Map<String, Long> playerMuted = new HashMap<>();
-    public final Map<String, Long> bedCooldown = new HashMap<>();
-    public final Map<String, Long> afktime = new HashMap<>();
-    public final Map<String, Double> balances = new HashMap<>();
-    public final Map<String, String> tpaRequests = new HashMap<>();
-    public final Map<String, String> kitsCooldown = new HashMap<>();
-    public final Map<String, String> playerLogin = new HashMap<>();
-    public final Map<String, String> tell = new HashMap<>();
-    public final Map<Player, Boolean> spy = new HashMap<>();
-    public final Map<String, Integer> global = new HashMap<>();
-    public final Map<String, Integer> xp = new HashMap<>();
-    public final Map<String, Integer> playersInPortal = new HashMap<>();
-    public final Map<String, String[]> home = new HashMap<>();
-    public final Map<String, Location> warps = new HashMap<>();
-    public final Map<String, Location> back = new HashMap<>();
-    public final Map<String, Location> shops = new HashMap<>();
-    public final Map<String, Location> homes = new HashMap<>();
-    public final Map<String, FormatInfo> uufi = new HashMap<>();
-    public final Map<Player, PlayerTeleport> teleports = new HashMap<>();
+    HashMap<String, Long> tpa_time = new HashMap<>();
+    HashMap<String, Long> player_muted = new HashMap<>();
+    HashMap<String, Long> bed_cooldown = new HashMap<>();
+    HashMap<String, Long> afktime = new HashMap<>();
+    HashMap<String, Double> balances = new HashMap<>();
+    HashMap<String, String> tpa_requests = new HashMap<>();
+    HashMap<String, String> kits_cooldown = new HashMap<>();
+    HashMap<String, String> player_login = new HashMap<>();
+    HashMap<String, String> tell = new HashMap<>();
+    HashMap<Player, Boolean> spy = new HashMap<>();
+    HashMap<String, Integer> global = new HashMap<>();
+    HashMap<String, Integer> xp = new HashMap<>();
+    HashMap<String, Integer> playersInPortal = new HashMap<>();
+    HashMap<String, String[]> home = new HashMap<>();
+    HashMap<String, Location> warps = new HashMap<>();
+    HashMap<String, Location> back = new HashMap<>();
+    HashMap<String, Location> shops = new HashMap<>();
+    HashMap<String, Location> homes = new HashMap<>();
+    HashMap<String, FormatInfo> uufi = new HashMap<>();
+    HashMap<Player, PlayerTeleport> teleports = new HashMap<>();
 
 }

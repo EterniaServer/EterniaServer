@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 
 import co.aikar.commands.BaseCommand;
@@ -63,40 +62,32 @@ public class Others extends BaseCommand {
         player.getInventory().getItemInMainHand();
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
                 if (func.equals("name")) {
-                    changeName(player, nome);
+                    ItemStack item = player.getInventory().getItemInMainHand();
+                    ItemMeta meta = item.getItemMeta();
+                    if (meta != null) {
+                        StringBuilder sb = new StringBuilder();
+                        for (java.lang.String arg : nome) sb.append(arg).append(" ");
+                        meta.setDisplayName(messages.getColor(sb.toString()));
+                        item.setItemMeta(meta);
+                        player.getInventory().setItemInMainHand(item);
+                    } else {
+                        messages.sendMessage("generic.items.no-item", player);
+                    }
                 } else if (func.equals("lore")) {
-                    changeLore(player, nome);
+                    ItemStack item = player.getInventory().getItemInMainHand();
+                    if (!item.isSimilar(new ItemStack(Material.AIR))) {
+                        StringBuilder sb = new StringBuilder();
+                        for (java.lang.String arg : nome) sb.append(arg).append(" ");
+                        item.setLore(Collections.singletonList(messages.getColor(sb.toString())));
+                        player.getInventory().setItemInMainHand(item);
+                    } else {
+                        messages.sendMessage("generic.items.no-item", player);
+                    }
                 } else {
                     messages.sendMessage("generic.items.rename", player);
                 }
             } else {
-            messages.sendMessage(Strings.NO_ITEMS, player);
-        }
-    }
-
-    private void changeName(Player player, String[] nome) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            StringBuilder sb = new StringBuilder();
-            for (java.lang.String arg : nome) sb.append(arg).append(" ");
-            meta.setDisplayName(messages.getColor(sb.toString()));
-            item.setItemMeta(meta);
-            player.getInventory().setItemInMainHand(item);
-        } else {
-            messages.sendMessage(Strings.NO_ITEMS, player);
-        }
-    }
-
-    private void changeLore(Player player, String[] nome) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (!item.isSimilar(new ItemStack(Material.AIR))) {
-            StringBuilder sb = new StringBuilder();
-            for (java.lang.String arg : nome) sb.append(arg).append(" ");
-            item.setLore(Collections.singletonList(messages.getColor(sb.toString())));
-            player.getInventory().setItemInMainHand(item);
-        } else {
-            messages.sendMessage(Strings.NO_ITEMS, player);
+            messages.sendMessage("generic.items.no-item", player);
         }
     }
 
@@ -165,14 +156,7 @@ public class Others extends BaseCommand {
     @CommandAlias("blocks|condenser")
     @CommandPermission("eternia.blocks")
     public void onBlocks(Player player) {
-        int coal = 0;
-        int lapiz = 0;
-        int redstone = 0;
-        int iron = 0;
-        int gold = 0;
-        int diamond = 0;
-        int esmeralda = 0;
-
+        int coal = 0, lapiz = 0, redstone = 0, iron = 0, gold = 0, diamond = 0, esmeralda = 0;
         for (ItemStack i : player.getInventory().getContents()) {
             if (i != null) {
                 coal += checkItems(i, coali);

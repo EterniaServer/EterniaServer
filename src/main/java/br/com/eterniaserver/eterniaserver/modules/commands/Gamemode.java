@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -13,7 +12,6 @@ import org.bukkit.entity.Player;
 @CommandAlias("gamemode|gm")
 @CommandPermission("eternia.gamemode")
 public class Gamemode extends BaseCommand {
-
     private final EFiles messages;
 
     public Gamemode(EFiles messages) {
@@ -29,68 +27,64 @@ public class Gamemode extends BaseCommand {
     @Subcommand("survival|s|0|sobrevivencia")
     @Syntax("<jogador>")
     public void onSurvival(Player player, @Optional OnlinePlayer target) {
-        String sobString = "Sobrevivência";
         if (target == null) {
             player.setGameMode(GameMode.SURVIVAL);
-            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, sobString, player);
+            messages.sendMessage("generic.gm.changed","%gamemode%", "Sobrevivência", player);
         } else {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
             targetP.setGameMode(GameMode.SURVIVAL);
-            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, sobString, targetP);
-            messages.sendMessage(Strings.GM_CHANGED_TARGET, Strings.TARGET_NAME, targetName, Strings.GAMEMODE, sobString, player);
+            messages.sendMessage("generic.gm.changed", "%gamemode%", "Sobrevivência", targetP);
+            messages.sendMessage("generic.gm.changed-target", "%target_name%", targetName, "%gamemode%", "Sobrevivência", player);
         }
     }
 
     @Subcommand("creative|c|1|criativo")
     @Syntax("<jogador>")
     public void onCreative(Player player, @Optional OnlinePlayer target) {
-        String creString = "Criativo";
         if (target == null) {
             player.setGameMode(GameMode.CREATIVE);
-            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, creString, player);
+            messages.sendMessage("generic.gm.changed", "%gamemode%", "Criativo", player);
         } else {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
             targetP.setGameMode(GameMode.CREATIVE);
-            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, creString, targetP);
-            messages.sendMessage(Strings.GM_CHANGED_TARGET, Strings.TARGET_NAME, targetName, Strings.GAMEMODE, creString, player);
+            messages.sendMessage("generic.gm.changed", "%gamemode%", "Criativo", targetP);
+            messages.sendMessage("generic.gm.changed-target", "%target_name%", targetName, "%gamemode%", "Criativo", player);
         }
     }
 
     @Subcommand("adventure|a|2|aventura")
     @Syntax("<jogador>")
     public void onAdventure(Player player, @Optional OnlinePlayer target) {
-        String aveString = "Aventura";
         if (target == null) {
             player.setGameMode(GameMode.ADVENTURE);
-            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, aveString, player);
+            messages.sendMessage("generic.gm.changed", "%gamemode%", "Aventura", player);
         } else {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
             targetP.setGameMode(GameMode.ADVENTURE);
-            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, aveString, targetP);
-            messages.sendMessage(Strings.GM_CHANGED_TARGET, Strings.TARGET_NAME, targetName, Strings.GAMEMODE, aveString, player);
+            messages.sendMessage("generic.gm.changed", "%gamemode%", "Aventura", targetP);
+            messages.sendMessage("generic.gm.changed-target", "%target_name%", targetName, "%gamemode%", "Aventura", player);
         }
     }
 
     @Subcommand("spectator|spect|3|espectador")
     @Syntax("<jogador>")
     public void onSpectator(Player player, @Optional OnlinePlayer target) {
-        String espString = "Espectador";
         if (target == null) {
             player.setGameMode(GameMode.SPECTATOR);
-            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, espString, player);
+            messages.sendMessage("generic.gm.changed", "%gamemode%", "Espectador", player);
         } else {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
             targetP.setGameMode(GameMode.SPECTATOR);
-            messages.sendMessage(Strings.GM_CHANGED, Strings.GAMEMODE, espString, targetP);
-            messages.sendMessage(Strings.GM_CHANGED_TARGET, Strings.TARGET_NAME, targetName, Strings.GAMEMODE, espString, player);
+            messages.sendMessage("generic.gm.changed", "%gamemode%", "Espectador", targetP);
+            messages.sendMessage("generic.gm.changed-target", "%target_name%", targetName, "%gamemode%", "Espectador", player);
         }
     }
 

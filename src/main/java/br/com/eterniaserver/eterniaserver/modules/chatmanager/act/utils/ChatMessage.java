@@ -6,7 +6,7 @@ import java.util.List;
 public class ChatMessage {
 
 	final List<ChatObject> chatObjects = new ArrayList<>();
-	private String messageSent;
+	public String messageSent;
 	
 	public ChatMessage(String msg) {
 		messageSent = msg;
@@ -24,13 +24,5 @@ public class ChatMessage {
 	public List<ChatObject> getChatObjects() {
 		return chatObjects;
 	}
-
-	public String getMessageSent() {
-		return messageSent;
-	}
-
-	public void setMessage(String message) {
-		messageSent = message;
-	}
-
+	
 }

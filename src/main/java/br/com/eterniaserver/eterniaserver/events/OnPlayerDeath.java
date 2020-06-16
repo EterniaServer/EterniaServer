@@ -17,7 +17,7 @@ public class OnPlayerDeath implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (plugin.getServerConfig().getBoolean("modules.teleports")) {
+        if (plugin.serverConfig.getBoolean("modules.teleports")) {
             final Player player = event.getEntity();
             EterniaServer.back.put(player.getName(), player.getLocation());
         }

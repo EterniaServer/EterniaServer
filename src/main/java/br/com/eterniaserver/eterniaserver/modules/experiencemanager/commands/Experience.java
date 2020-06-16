@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.modules.experiencemanager.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.Checks;
@@ -48,24 +47,24 @@ public class Experience extends BaseCommand {
     @CommandAlias("bottlelvl|bottleexp|gaffinhas")
     @Syntax("<level>")
     @CommandPermission("eternia.bottlexp")
-    public void onBottleLevel(Player player, Integer xpWant) {
-        int xpReal = checks.getXPForLevel(player.getLevel());
-        if (xpWant > 0 && xpReal > xpWant) {
+    public void onBottleLevel(Player player, Integer xp_want) {
+        int xp_real = checks.getXPForLevel(player.getLevel());
+        if (xp_want > 0 && xp_real > xp_want) {
             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&eGarrafa de EXP&8]"));
                 item.setItemMeta(meta);
-                item.setLore(Collections.singletonList(String.valueOf(xpWant)));
+                item.setLore(Collections.singletonList(String.valueOf(xp_want)));
             }
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
             messages.sendMessage("experience.bottleexp", player);
             player.setLevel(0);
             player.setExp(0);
-            player.giveExp(xpReal - xpWant);
+            player.giveExp(xp_real - xp_want);
         } else {
-            messages.sendMessage(Strings.EXP_INSUFFICIENT, player);
+            messages.sendMessage("experience.insufficient", player);
         }
     }
 
@@ -81,7 +80,7 @@ public class Experience extends BaseCommand {
             player.giveExp(xpla);
             messages.sendMessage("experience.withdraw", "%level%", player.getLevel(), player);
         } else {
-            messages.sendMessage(Strings.EXP_INSUFFICIENT, player);
+            messages.sendMessage("experience.insufficient", player);
         }
     }
 
@@ -89,17 +88,17 @@ public class Experience extends BaseCommand {
     @Syntax("<level>")
     @CommandPermission("eternia.depositlvl")
     public void onDepositLevel(Player player, Integer xpla) {
-        int xpAtual = player.getLevel();
-        if (xpAtual >= xpla) {
+        int xp_atual = player.getLevel();
+        if (xp_atual >= xpla) {
             int xp = checks.getXPForLevel(xpla);
-            int xpto = checks.getXPForLevel(xpAtual);
+            int xpto = checks.getXPForLevel(xp_atual);
             exp.addExp(player.getName(), xp);
             messages.sendMessage("experience.deposit", "%amount%", xpla, player);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);
         } else {
-            messages.sendMessage(Strings.EXP_INSUFFICIENT, player);
+            messages.sendMessage("experience.insufficient", player);
         }
     }
 

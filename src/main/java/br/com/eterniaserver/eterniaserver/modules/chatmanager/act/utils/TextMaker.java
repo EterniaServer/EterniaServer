@@ -15,7 +15,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 public class TextMaker {
 
-	private TextComponent text;
+	public TextComponent text;
 	private final ChatMessage message;
 	private final Player p;
 	private final EterniaServer plugin;

@@ -39,7 +39,7 @@ public class AccelerateWorld implements Runnable {
     }
 
     private boolean isBlacklisted(final World world) {
-        return plugin.getServerConfig().getList("bed.blacklisted-worlds").contains(world.getName());
+        return plugin.serverConfig.getList("bed.blacklisted-worlds").contains(world.getName());
     }
 
     private boolean isNight(final World world) {

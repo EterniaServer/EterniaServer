@@ -4,7 +4,6 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
@@ -20,15 +19,15 @@ public class Files {
 
     public void loadConfigs() {
 
-        plugin.setServerConfig(new YamlConfiguration());
+        plugin.serverConfig = new YamlConfiguration();
 
         try {
-            plugin.getServerConfig().load(EFiles.fileLoad(plugin, "config.yml"));
+            plugin.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
 
             EFiles.fileLoad(plugin, "acf_messages.yml");
             plugin.getManager().getLocales().loadYamlLanguageFile("acf_messages.yml", Locale.ENGLISH);
         } catch (IOException | InvalidConfigurationException e) {
-            // todo
+            e.printStackTrace();
         }
 
     }
@@ -40,7 +39,7 @@ public class Files {
         try {
             plugin.msgConfig.load(EFiles.fileLoad(plugin, "messages.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            // todo
+            e.printStackTrace();
         }
 
     }
@@ -56,7 +55,7 @@ public class Files {
             plugin.groupConfig.load(EFiles.fileLoad(plugin, "groups.yml"));
             plugin.placeholderConfig.load(EFiles.fileLoad(plugin, "customplaceholders.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            // todo
+            e.printStackTrace();
         }
 
     }

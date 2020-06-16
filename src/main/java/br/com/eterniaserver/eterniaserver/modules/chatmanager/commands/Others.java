@@ -47,27 +47,23 @@ public class Others extends BaseCommand {
     @Syntax("<jogador> <novo_nome> ou <novo_nome>")
     @CommandPermission("eternia.nickname")
     public void onNickname(Player sender, @Optional OnlinePlayer target, String string) {
-        final String chatRNick = "chat.remove-nick";
-        final String displayNameStr = "%player_display_name%";
-        final String chatNNick = "chat.newnick";
-
         if (target != null) {
             if (string.equalsIgnoreCase("clear")) {
                 target.getPlayer().setDisplayName(target.getPlayer().getName());
-                messages.sendMessage(chatRNick, target.getPlayer());
-                messages.sendMessage(chatRNick, sender);
+                messages.sendMessage("chat.remove-nick", target.getPlayer());
+                messages.sendMessage("chat.remove-nick", sender);
             } else {
                 target.getPlayer().setDisplayName(messages.getColor(string));
-                messages.sendMessage(chatNNick, displayNameStr, messages.getColor(string), sender);
-                messages.sendMessage(chatNNick, displayNameStr, messages.getColor(string), target.getPlayer());
+                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), sender);
+                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), target.getPlayer());
             }
         } else {
             if (string.equalsIgnoreCase("clear")) {
                 sender.setDisplayName(sender.getName());
-                messages.sendMessage(chatRNick, sender);
+                messages.sendMessage("chat.remove-nick", sender);
             } else {
                 sender.setDisplayName(messages.getColor(string));
-                messages.sendMessage(chatNNick, displayNameStr, messages.getColor(string), sender);
+                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), sender);
             }
         }
     }

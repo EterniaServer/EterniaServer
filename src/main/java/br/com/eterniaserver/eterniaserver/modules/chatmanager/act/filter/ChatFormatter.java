@@ -24,16 +24,15 @@ public class ChatFormatter {
 		if (plugin.chatConfig.getBoolean("chat.autoUpdateGroups", false)) plugin.getChecks().addUUIF(p);
 		FormatInfo fi = EterniaServer.uufi.get(p.getName());
 		if (plugin.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
-			String msgString = "%message%";
-			ChatObject msg = new ChatObject(msgString);
+			ChatObject msg = new ChatObject("%message%");
 			msg.setColor(ChatColor.getByChar(plugin.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));
 			String total = parse(p, plugin.groupConfig.getString(fi.getName() + ".format"));
-			int i = total.indexOf(msgString);
-			int i2 = i + msgString.length();
+			int i = total.indexOf("%message%");
+			int i2 = i+"%message%".length();
 			String prefix = total.substring(0, i);
 			message.get(0).setMessage(prefix);
 			message.getChatObjects().add(msg);
-			if (i2+1<=total.length()) {
+			if(i2+1<=total.length()) {
 				message.getChatObjects().add(new ChatObject(total.substring(i2+1)));
 			}
 		} else {

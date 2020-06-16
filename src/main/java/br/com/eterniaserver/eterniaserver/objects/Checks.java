@@ -4,23 +4,14 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Checks {
 
     private final EterniaServer plugin;
-    private final FileConfiguration serverConfig;
 
     public Checks(EterniaServer plugin) {
         this.plugin = plugin;
-        this.serverConfig = plugin.getServerConfig();
     }
 
     public int getXPForLevel(int lvl) {
@@ -49,19 +40,6 @@ public class Checks {
                 }
             }
         }
-    }
-
-    public ItemStack getSpawner(ItemMeta meta, ItemStack item, String mobFormatted) {
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
-        List<String> newLore = new ArrayList<>();
-        if (serverConfig.getBoolean("spawners.enable-lore")) {
-            for (String line : serverConfig.getStringList("spawners.lore")) {
-                newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
-            }
-            meta.setLore(newLore);
-        }
-        item.setItemMeta(meta);
-        return item;
     }
 
     public void removeUUIF(Player p) {

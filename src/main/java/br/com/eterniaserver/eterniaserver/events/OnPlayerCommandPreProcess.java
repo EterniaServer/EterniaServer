@@ -25,6 +25,7 @@ public class OnPlayerCommandPreProcess implements Listener {
         if (event.isCancelled()) return;
 
         final Player player = event.getPlayer();
+        final String playerName = player.getName();
         String message = event.getMessage().toLowerCase();
 
         if (message.equalsIgnoreCase("/tps") && plugin.hasPlaceholderAPI) {
@@ -33,20 +34,31 @@ public class OnPlayerCommandPreProcess implements Listener {
             event.setCancelled(true);
             return;
         }
-        final String cMessage = "command." + message;
-        if (plugin.getServerConfig().getBoolean("modules.commands") && (plugin.cmdConfig.contains(cMessage))) {
-            String cmd = message.replace("/", "");
-            if (player.hasPermission("eternia." + cmd)) {
-                for (String line : plugin.cmdConfig.getStringList(cMessage + ".command")) {
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
+        if (plugin.serverConfig.getBoolean("modules.commands")) {
+            if (plugin.cmdConfig.contains("commands." + message)) {
+                String cmd = message.replace("/", "");
+                if (player.hasPermission("eternia." + cmd)) {
+                    for (String line : plugin.cmdConfig.getStringList("commands." + message + ".command")) {
+                        String modifiedCommand;
+
+                        if (plugin.hasPlaceholderAPI) modifiedCommand = PlaceholderAPI.setPlaceholders(player, line);
+                        else modifiedCommand = line.replace("%player_name%", playerName);
+
+                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+                    }
+                    for (String line : plugin.cmdConfig.getStringList("commands." + message + ".text")) {
+                        String modifiedText;
+
+                        if (plugin.hasPlaceholderAPI) modifiedText =PlaceholderAPI.setPlaceholders(player, line);
+                        else modifiedText = line.replace("%player_name%", playerName);
+
+                        player.sendMessage(messages.getColor(modifiedText));
+                    }
+                } else {
+                    messages.sendMessage("server.no-perm", player);
                 }
-                for (String line : plugin.cmdConfig.getStringList(cMessage + ".text")) {
-                    player.sendMessage(messages.getColor(PlaceholderAPI.setPlaceholders(player, line)));
-                }
-            } else {
-                messages.sendMessage("server.no-perm", player);
+                event.setCancelled(true);
             }
-            event.setCancelled(true);
         }
     }
 
