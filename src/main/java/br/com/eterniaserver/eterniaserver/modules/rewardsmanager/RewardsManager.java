@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 public class RewardsManager {
 
@@ -58,9 +57,8 @@ public class RewardsManager {
     public void giveReward(String group, Player player) {
         ConfigurationSection cs = plugin.rewardsConfig.getConfigurationSection("rewards." + group + ".commands");
         if (cs != null) {
-            Random random = new Random();
             for (String percentage : cs.getKeys(true)) {
-                if (random.nextDouble() <= Double.parseDouble(percentage)) {
+                if (Math.random() <= Double.parseDouble(percentage)) {
                     for (String command : plugin.rewardsConfig.getStringList("rewards." + group + ".commands." + percentage)) {
                         String modifiedCommand;
                         if (plugin.hasPlaceholderAPI) {

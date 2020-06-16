@@ -15,8 +15,6 @@ import br.com.eterniaserver.eterniaserver.modules.tasks.Checks;
 
 import co.aikar.commands.PaperCommandManager;
 
-import io.papermc.lib.PaperLib;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -30,7 +28,7 @@ public class Managers {
         final EFiles messages = plugin.getEFiles();
 
         if (plugin.serverConfig.getBoolean("modules.bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, plugin.serverConfig.getInt("server.checks") * 40);
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) plugin.serverConfig.getInt("server.checks") * 40);
             plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedEnter(plugin), plugin);
             plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedLeave(plugin), plugin);
             messages.sendConsole("modules.enable", "%module%", "Bed");
@@ -108,7 +106,7 @@ public class Managers {
         }
 
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            new Checks(plugin, plugin.teleportsManager).runTaskTimer(plugin, 20L, plugin.serverConfig.getInt("server.checks") * 20);
+            new Checks(plugin, plugin.teleportsManager).runTaskTimer(plugin, 20L, (long) plugin.serverConfig.getInt("server.checks") * 20);
             messages.sendConsole("modules.enable", "%module%", "Player-Checks");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Player-Checks");
