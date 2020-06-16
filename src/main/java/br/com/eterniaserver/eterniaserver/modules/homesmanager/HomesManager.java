@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.homesmanager;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.commands.*;
 
 import co.aikar.commands.PaperCommandManager;
@@ -14,11 +13,9 @@ import org.bukkit.Location;
 public class HomesManager {
 
     private final EterniaServer plugin;
-    private final Vars vars;
 
     public HomesManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = plugin.getVars();
 
         final EFiles messages = plugin.getEFiles();
         final PaperCommandManager manager = plugin.getManager();
@@ -32,7 +29,7 @@ public class HomesManager {
     }
 
     public void setHome(Location loc, String home, String jogador) {
-        vars.homes.put(home, loc);
+        EterniaServer.homes.put(home, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
         String[] values = getHomes(jogador);
@@ -49,7 +46,7 @@ public class HomesManager {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
             EQueries.executeQuery(querie);
             values = result.toString().split(":");
-            vars.home.put(jogador, values);
+            EterniaServer.home.put(jogador, values);
             String saveloc = loc.getWorld().getName() +
                     ":" + ((int) loc.getX()) +
                     ":" + ((int) loc.getY()) +
@@ -71,7 +68,7 @@ public class HomesManager {
     }
 
     public void delHome(String home, String jogador) {
-        vars.homes.remove(home + "." + jogador);
+        EterniaServer.homes.remove(home + "." + jogador);
         StringBuilder nova = new StringBuilder();
         String[] values = getHomes(jogador);
         boolean t = true;
@@ -82,7 +79,7 @@ public class HomesManager {
             }
         }
         values = nova.toString().split(":");
-        vars.home.put(jogador, values);
+        EterniaServer.home.put(jogador, values);
         String querie;
         if (t) {
             querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
@@ -95,9 +92,9 @@ public class HomesManager {
     }
 
     public Location getHome(String home, String jogador) {
-        Location loc = vars.error;
-        if (vars.homes.containsKey(home + "." + jogador)) {
-            loc = vars.homes.get(home + "." + jogador);
+        Location loc = EterniaServer.error;
+        if (EterniaServer.homes.containsKey(home + "." + jogador)) {
+            loc = EterniaServer.homes.get(home + "." + jogador);
         } else {
             if (existHome(home, jogador)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
@@ -108,7 +105,7 @@ public class HomesManager {
                         Double.parseDouble(values[3]),
                         Float.parseFloat(values[4]),
                         Float.parseFloat(values[5]));
-                vars.homes.put(home + "." + jogador, loc);
+                EterniaServer.homes.put(home + "." + jogador, loc);
             }
         }
         return loc;
@@ -129,13 +126,13 @@ public class HomesManager {
     }
 
     public String[] getHomes(String jogador) {
-        if (vars.home.containsKey(jogador)) {
-            return vars.home.get(jogador);
+        if (EterniaServer.home.containsKey(jogador)) {
+            return EterniaServer.home.get(jogador);
         }
 
         final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + " WHERE player_name='" + jogador + "';";
         String[] homess = EQueries.queryString(querie, "homes").split(":");
-        vars.home.put(jogador, homess);
+        EterniaServer.home.put(jogador, homess);
         return homess;
     }
 }

@@ -10,11 +10,9 @@ import java.util.Date;
 public class PlayerManager {
 
     private final EterniaServer plugin;
-    private final Vars vars;
 
     public PlayerManager(EterniaServer plugin) {
         this.plugin = plugin;
-        vars = plugin.getVars();
     }
 
     public void playerHomeCreate(String playerName) {
@@ -27,21 +25,21 @@ public class PlayerManager {
 
     public void playerMoneyCreate(String playerName) {
         EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
-        vars.player_bal.add(playerName);
+        EterniaServer.player_bal.add(playerName);
     }
 
     public void playerProfileCreate(String playerName) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date = new Date();
         EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-player") + " (player_name, time) VALUES('" + playerName + "', '" + sdf.format(date) + "');");
-        vars.player_login.put(playerName, sdf.format(date));
+        EterniaServer.player_login.put(playerName, sdf.format(date));
     }
 
     public boolean playerXPExist(String playerName) {
-        if (vars.player_exp.contains(playerName)) return true;
+        if (EterniaServer.player_exp.contains(playerName)) return true;
 
         if (EQueries.queryBoolean("SELECT * FROM " + plugin.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';", "player_name")) {
-            vars.player_exp.add(playerName);
+            EterniaServer.player_exp.add(playerName);
             return true;
         } else {
             return false;
@@ -49,11 +47,11 @@ public class PlayerManager {
     }
 
     public boolean playerProfileExist(String playerName) {
-        if (vars.player_login.containsKey(playerName)) return true;
+        if (EterniaServer.player_login.containsKey(playerName)) return true;
 
         final String profile = EQueries.queryString("SELECT * FROM " + plugin.serverConfig.getString("sql.table-player")+ " WHERE player_name='" + playerName + "';", "time");
         if (!profile.equals("")) {
-            vars.player_login.put(playerName, profile);
+            EterniaServer.player_login.put(playerName, profile);
             return true;
         } else {
             return false;
@@ -62,10 +60,10 @@ public class PlayerManager {
 
 
     public boolean playerMoneyExist(String playerName) {
-        if (vars.player_bal.contains(playerName)) return true;
+        if (EterniaServer.player_bal.contains(playerName)) return true;
 
         if (EQueries.queryBoolean("SELECT * FROM " + plugin.serverConfig.getString("sql.table-money")+ " WHERE player_name='" + playerName + "';", "player_name")) {
-            vars.player_bal.add(playerName);
+            EterniaServer.player_bal.add(playerName);
             return true;
         } else {
             return false;
@@ -73,10 +71,10 @@ public class PlayerManager {
     }
 
     public boolean playerHomeExist(String playerName) {
-        if (vars.player_homes.contains(playerName)) return true;
+        if (EterniaServer.player_homes.contains(playerName)) return true;
 
         if (EQueries.queryBoolean("SELECT * FROM " + plugin.serverConfig.getString("sql.table-home")+ " WHERE player_name='" + playerName + "';", "player_name")) {
-            vars.player_homes.add(playerName);
+            EterniaServer.player_homes.add(playerName);
             return true;
         } else {
             return false;
@@ -84,12 +82,12 @@ public class PlayerManager {
     }
 
     public boolean playerCooldownExist(String jogador, String kit) {
-        if (vars.player_cooldown.contains(kit + "." + jogador)) {
+        if (EterniaServer.player_cooldown.contains(kit + "." + jogador)) {
             return true;
         }
 
         if (EQueries.queryBoolean("SELECT * FROM " + plugin.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';", "name")) {
-            vars.player_cooldown.add(kit + "." + jogador);
+            EterniaServer.player_cooldown.add(kit + "." + jogador);
             return true;
         } else {
             return false;
@@ -104,12 +102,12 @@ public class PlayerManager {
         final String time = EQueries.queryString("SELECT * FROM " + plugin.serverConfig.getString("sql.table-muted") + " WHERE player_name='" + playerName + "';", "time");
         if (!time.equals("")) {
             try {
-                vars.player_muted.put(playerName, plugin.sdf.parse(time).getTime());
+                EterniaServer.player_muted.put(playerName, plugin.sdf.parse(time).getTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
-            vars.player_muted.put(playerName, System.currentTimeMillis());
+            EterniaServer.player_muted.put(playerName, System.currentTimeMillis());
         }
     }
 }

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.tasks;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -14,11 +13,9 @@ import static java.util.stream.Collectors.toList;
 public class AccelerateWorld implements Runnable {
 
     private final EterniaServer plugin;
-    private final Vars vars;
 
     public AccelerateWorld(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = plugin.getVars();
     }
 
 
@@ -30,14 +27,14 @@ public class AccelerateWorld implements Runnable {
     private void checkWorld(final World world) {
         final int sleeping = getSleeping(world).size();
         if (sleeping > 0) {
-            vars.skipping_worlds.add(world);
+            EterniaServer.skipping_worlds.add(world);
             new AccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }
 
     private boolean validateWorld(final World world) {
         return !isBlacklisted(world)
-                && !vars.skipping_worlds.contains(world)
+                && !EterniaServer.skipping_worlds.contains(world)
                 && isNight(world);
     }
 

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.dependencies.papi;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
@@ -11,11 +10,9 @@ public class PlaceHolders extends PlaceholderExpansion {
 
     private final String VERSION = this.getClass().getPackage().getImplementationVersion();
     private final EterniaServer plugin;
-    private final Vars vars;
 
     public PlaceHolders(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = plugin.getVars();
     }
 
     public String getAuthor() {
@@ -47,12 +44,12 @@ public class PlaceHolders extends PlaceholderExpansion {
             }
             switch (var4) {
                 case 1:
-                    return vars.player_login.getOrDefault(p.getName(), "Sem registro");
+                    return EterniaServer.player_login.getOrDefault(p.getName(), "Sem registro");
                 case 2:
-                    if (vars.afk.contains(p.getName())) return plugin.serverConfig.getString("placeholders.afk");
+                    if (EterniaServer.afk.contains(p.getName())) return plugin.serverConfig.getString("placeholders.afk");
                     else return "";
                 case 3:
-                    if (vars.god.contains(p.getName())) return plugin.serverConfig.getString("placeholders.godmode");
+                    if (EterniaServer.god.contains(p.getName())) return plugin.serverConfig.getString("placeholders.godmode");
                     else return "";
                 default:
                     return null;

@@ -22,7 +22,7 @@ public class OnEntityDamage implements Listener {
         final Entity entity = event.getEntity();
         if (entity instanceof Player) {
             final Player player = (Player) entity;
-            if (plugin.getVars().god.contains(player.getName()) && plugin.serverConfig.getBoolean("modules.generic")) {
+            if (EterniaServer.god.contains(player.getName()) && plugin.serverConfig.getBoolean("modules.generic")) {
                 event.setCancelled(true);
             }
         }

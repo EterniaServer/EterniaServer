@@ -16,7 +16,6 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import co.aikar.commands.PaperCommandManager;
 
 import io.papermc.lib.PaperLib;
@@ -26,7 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.SimpleDateFormat;
 
-public class EterniaServer extends JavaPlugin {
+public class EterniaServer extends JavaPlugin implements Vars {
 
     public boolean chatMuted = false;
     public boolean hasPlaceholderAPI = true;
@@ -36,7 +35,6 @@ public class EterniaServer extends JavaPlugin {
     private PaperCommandManager manager;
     private EFiles eFiles;
 
-    private final Vars vars = new Vars();
     private final Checks checks = new Checks(this);
     private final PlaceHolders placeHolders = new PlaceHolders(this);
     private final PlayerManager playerManager = new PlayerManager(this);
@@ -77,11 +75,13 @@ public class EterniaServer extends JavaPlugin {
         placeholderAPIHook();
         vaultHook();
 
+        this.getServer().getPluginManager().registerEvents(new OnPlayerJump(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerPreLogin(this), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityDamage(this), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityInventoryClick(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockPlace(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerChat(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChat(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcess(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this), this);
@@ -148,10 +148,6 @@ public class EterniaServer extends JavaPlugin {
 
     public PlaceHolders getPlaceHolders() {
         return placeHolders;
-    }
-
-    public Vars getVars() {
-        return vars;
     }
 
 }

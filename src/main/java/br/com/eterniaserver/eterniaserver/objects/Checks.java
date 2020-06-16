@@ -9,11 +9,9 @@ import org.bukkit.entity.Player;
 public class Checks {
 
     private final EterniaServer plugin;
-    private final Vars vars;
 
     public Checks(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = plugin.getVars();
     }
 
     public int getXPForLevel(int lvl) {
@@ -24,8 +22,8 @@ public class Checks {
     }
 
     public long getCooldown(String name) {
-        if (!vars.bed_cooldown.containsKey(name)) return 0;
-        else return vars.bed_cooldown.get(name);
+        if (!EterniaServer.bed_cooldown.containsKey(name)) return 0;
+        else return EterniaServer.bed_cooldown.get(name);
     }
 
     public void addUUIF(Player p) {
@@ -33,19 +31,19 @@ public class Checks {
             if(s.equals("groups")) continue;
             int priority = plugin.groupConfig.getInt(s + ".priority");
             if(plugin.groupConfig.getString(s + ".perm").equals("") || p.hasPermission(plugin.groupConfig.getString(s + ".perm"))) {
-                if(vars.uufi.containsKey(p.getName())) {
-                    if(vars.uufi.get(p.getName()).getPriority() < priority) {
-                        vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+                if(EterniaServer.uufi.containsKey(p.getName())) {
+                    if(EterniaServer.uufi.get(p.getName()).getPriority() < priority) {
+                        EterniaServer.uufi.put(p.getName(), new FormatInfo(priority, s));
                     }
                 } else {
-                    vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+                    EterniaServer.uufi.put(p.getName(), new FormatInfo(priority, s));
                 }
             }
         }
     }
 
     public void removeUUIF(Player p) {
-        vars.uufi.remove(p.getName());
+        EterniaServer.uufi.remove(p.getName());
     }
 
     public String setPlaceholders(Player p, String s) {

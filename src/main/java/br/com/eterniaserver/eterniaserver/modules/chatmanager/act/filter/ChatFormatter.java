@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatObject;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
@@ -14,18 +13,16 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ChatFormatter {
 
 	private final EterniaServer plugin;
-	private final Vars vars;
 
 	public ChatFormatter(EterniaServer plugin) {
 		this.plugin = plugin;
-		this.vars = plugin.getVars();
 	}
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		if (!vars.uufi.containsKey(p.getName())) return;
+		if (!EterniaServer.uufi.containsKey(p.getName())) return;
 		if (plugin.chatConfig.getBoolean("chat.autoUpdateGroups", false)) plugin.getChecks().addUUIF(p);
-		FormatInfo fi = vars.uufi.get(p.getName());
+		FormatInfo fi = EterniaServer.uufi.get(p.getName());
 		if (plugin.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
 			ChatObject msg = new ChatObject("%message%");
 			msg.setColor(ChatColor.getByChar(plugin.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));

@@ -18,7 +18,7 @@ public class JsonSender {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		if(e.isCancelled()) return;
-		if(!plugin.getVars().uufi.containsKey(e.getPlayer().getName())) return;
+		if(!EterniaServer.uufi.containsKey(e.getPlayer().getName())) return;
 		TextMaker tm = new TextMaker(message, e.getPlayer(), plugin);
 		boolean relationalPlaceholders = plugin.chatConfig.getBoolean("chat.enableRelationalPlaceholders");
 		if(!relationalPlaceholders) {

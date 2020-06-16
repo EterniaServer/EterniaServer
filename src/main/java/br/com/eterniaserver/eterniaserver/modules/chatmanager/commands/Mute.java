@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.chatmanager.commands;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 
 import co.aikar.commands.BaseCommand;
@@ -19,13 +18,11 @@ public class Mute extends BaseCommand {
 
     private final EterniaServer plugin;
     private final EFiles messages;
-    private final Vars vars;
     private final PlayerManager playerManager;
 
     public Mute(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
-        this.vars = plugin.getVars();
         this.playerManager = plugin.getPlayerManager();
     }
 
@@ -57,7 +54,7 @@ public class Mute extends BaseCommand {
         } else {
             EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
         }
-        vars.player_muted.put(target.getPlayer().getName(), cal.getTimeInMillis());
+        EterniaServer.player_muted.put(target.getPlayer().getName(), cal.getTimeInMillis());
     }
 
     @CommandAlias("unmute|desilenciar")
@@ -65,7 +62,7 @@ public class Mute extends BaseCommand {
     @Syntax("<jogador>")
     @CommandPermission("eternia.unmute")
     public void onUnMute(OnlinePlayer target) {
-        vars.player_muted.put(target.getPlayer().getName(), System.currentTimeMillis());
+        EterniaServer.player_muted.put(target.getPlayer().getName(), System.currentTimeMillis());
         messages.broadcastMessage("chat.unmutebroad", "%player_name%", target.getPlayer().getName());
         if (playerManager.registerMuted(target.getPlayer().getName())) {
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';");
@@ -84,12 +81,12 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.MINUTE, time);
         final String date = plugin.sdf.format(cal.getTime());
         messages.broadcastMessage("chat.mutetbroad", "%player_name%", target.getPlayer().getName(), "%time%", time, "%message%", messageFull(message));
-        if (vars.player_muted.containsKey(target.getPlayer().getName())) {
+        if (EterniaServer.player_muted.containsKey(target.getPlayer().getName())) {
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
             EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
         }
-        vars.player_muted.put(target.getPlayer().getName(), cal.getTimeInMillis());
+        EterniaServer.player_muted.put(target.getPlayer().getName(), cal.getTimeInMillis());
     }
 
     private String messageFull(String[] message) {

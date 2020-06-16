@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.modules.tasks;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
@@ -14,13 +13,11 @@ public class AccelerateNight extends BukkitRunnable {
     private final EterniaServer plugin;
     private final World world;
     private final EFiles messages;
-    private final Vars vars;
 
     public AccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
         this.messages = plugin.getEFiles();
-        this.vars = plugin.getVars();
         messages.broadcastMessage("bed.night-skipping", "%world_name%", world.getName());
     }
 
@@ -38,14 +35,14 @@ public class AccelerateNight extends BukkitRunnable {
                 world.setStorm(false);
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
-                Bukkit.getScheduler().runTaskLater(plugin, () -> vars.skipping_worlds.remove(world), 20);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> EterniaServer.skipping_worlds.remove(world), 20);
                 messages.broadcastMessage("bed.skip-night");
                 this.cancel();
             } else {
                 world.setTime(time + (int) timeRate);
             }
-        } else if (vars.skipping_worlds.contains(world)) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> vars.skipping_worlds.remove(world), 20);
+        } else if (EterniaServer.skipping_worlds.contains(world)) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> EterniaServer.skipping_worlds.remove(world), 20);
             this.cancel();
         }
     }

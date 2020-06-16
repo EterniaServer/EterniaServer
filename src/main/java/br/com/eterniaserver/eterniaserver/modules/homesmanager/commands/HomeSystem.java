@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -31,13 +30,11 @@ public class HomeSystem extends BaseCommand {
     private final EterniaServer plugin;
     private final EFiles messages;
     private final HomesManager homesManager;
-    private final Vars vars;
 
     public HomeSystem(EterniaServer plugin, HomesManager homesManager) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
         this.homesManager = homesManager;
-        this.vars = plugin.getVars();
     }
 
     @CommandAlias("delhome|delhouse|delcasa")
@@ -61,11 +58,11 @@ public class HomeSystem extends BaseCommand {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             if (target == null) {
                 Location location = homesManager.getHome(nome.toLowerCase(), player.getName());
-                if (location != vars.error) {
-                    if (vars.teleports.containsKey(player)) {
+                if (location != EterniaServer.error) {
+                    if (EterniaServer.teleports.containsKey(player)) {
                         messages.sendMessage("server.telep", player);
                     } else {
-                        vars.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
+                        EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
                     }
                 } else {
                     messages.sendMessage("home.no-exists", player);
@@ -73,7 +70,7 @@ public class HomeSystem extends BaseCommand {
             } else {
                 if (player.hasPermission("eternia.home.other")) {
                     Location location = homesManager.getHome(nome.toLowerCase(), target.getPlayer().getName());
-                    if (location != vars.error) {
+                    if (location != EterniaServer.error) {
                         PaperLib.teleportAsync(player, location);
                         messages.sendMessage("home.done", player);
                     } else {

@@ -16,7 +16,7 @@ public class CustomPlaceholdersFilter {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		for(CustomPlaceholder cp: plugin.getVars().customPlaceholders) {
+		for(CustomPlaceholder cp: EterniaServer.customPlaceholders) {
 			for(int i = 0; i < message.size(); i++) {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();

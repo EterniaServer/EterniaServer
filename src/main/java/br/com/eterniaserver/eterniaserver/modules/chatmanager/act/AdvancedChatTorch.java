@@ -2,29 +2,26 @@ package br.com.eterniaserver.eterniaserver.modules.chatmanager.act;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.CustomPlaceholder;
 
 public class AdvancedChatTorch {
 
 	private final EterniaServer plugin;
 	private final EFiles messages;
-	private final Vars vars;
 
 	public AdvancedChatTorch(EterniaServer plugin) {
 		this.plugin = plugin;
 		this.messages = plugin.getEFiles();
-		this.vars = plugin.getVars();
 		registerCustomPlaceholders();
 		checkGroups();
 	}
 
 	public void registerCustomPlaceholders() {
-		vars.customPlaceholders.clear();
+		EterniaServer.customPlaceholders.clear();
 		for(String id: plugin.placeholderConfig.getKeys(false)) {
 			if(id.equals("customplaceholders")) continue;
 			CustomPlaceholder cp = new CustomPlaceholder(id, plugin);
-			vars.customPlaceholders.add(cp);
+			EterniaServer.customPlaceholders.add(cp);
 		}
 	}
 

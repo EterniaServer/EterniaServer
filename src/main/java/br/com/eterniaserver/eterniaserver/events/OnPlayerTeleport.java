@@ -20,7 +20,7 @@ public class OnPlayerTeleport implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
         final Player player = event.getPlayer();
-        if (plugin.serverConfig.getBoolean("modules.teleports")) plugin.getVars().back.put(player.getName(), player.getLocation());
+        if (plugin.serverConfig.getBoolean("modules.teleports")) EterniaServer.back.put(player.getName(), player.getLocation());
     }
 
 }

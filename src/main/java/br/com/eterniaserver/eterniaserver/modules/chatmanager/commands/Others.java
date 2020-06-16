@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.modules.chatmanager.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -15,11 +14,9 @@ import org.bukkit.entity.Player;
 public class Others extends BaseCommand {
 
     private final EFiles messages;
-    private final Vars vars;
 
     public Others(EterniaServer plugin) {
         this.messages = plugin.getEFiles();
-        this.vars = plugin.getVars();
     }
 
     @CommandAlias("limparchat|chatclear|clearchat")
@@ -37,11 +34,11 @@ public class Others extends BaseCommand {
     @CommandAlias("spy|socialspy")
     @CommandPermission("eternia.spy")
     public void onSpy(Player player) {
-        if (vars.spy.getOrDefault(player, false)) {
-            vars.spy.put(player, false);
+        if (EterniaServer.spy.getOrDefault(player, false)) {
+            EterniaServer.spy.put(player, false);
             messages.sendMessage("chat.spyd", player);
         } else {
-            vars.spy.put(player, true);
+            EterniaServer.spy.put(player, true);
             messages.sendMessage("chat.spye", player);
         }
     }
@@ -75,7 +72,7 @@ public class Others extends BaseCommand {
     @Syntax("<mensagem>")
     @CommandPermission("eternia.tell")
     public void onResp(Player sender, String[] msg) {
-        final Player target = Bukkit.getPlayer(vars.tell.get(sender.getName()));
+        final Player target = Bukkit.getPlayer(EterniaServer.tell.get(sender.getName()));
         if (target != null && target.isOnline()) {
             sendPrivate(sender, target.getPlayer(), getMessage(msg));
         } else {
@@ -94,11 +91,11 @@ public class Others extends BaseCommand {
     private void sendPrivate(final CommandSender player, final Player target, final String s) {
         final String targetName = target.getName();
         final String playerName = player.getName();
-        vars.tell.put(targetName, playerName);
+        EterniaServer.tell.put(targetName, playerName);
         messages.sendMessage("chat.toplayer", "%player_name%", playerName, "%target_name%", targetName, "%message%", s, player);
         messages.sendMessage("chat.fromplayer", "%player_name%", targetName, "%target_name%", playerName, "%message%", s, target);
-        for (Player p : vars.spy.keySet()) {
-            if (vars.spy.get(p) && p != player && p != target) {
+        for (Player p : EterniaServer.spy.keySet()) {
+            if (EterniaServer.spy.get(p) && p != player && p != target) {
                 p.sendMessage(messages.getColor("&8[&7SPY-&6P&8] &8" + playerName + "->" + targetName + ": " + s));
             }
         }

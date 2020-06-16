@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.teleportsmanager;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands.*;
 
 import co.aikar.commands.PaperCommandManager;
@@ -14,11 +13,9 @@ import org.bukkit.Location;
 public class TeleportsManager {
 
     private final EterniaServer plugin;
-    private final Vars vars;
 
     public TeleportsManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = plugin.getVars();
 
         final PaperCommandManager manager = plugin.getManager();
         final EFiles messages = plugin.getEFiles();
@@ -33,7 +30,7 @@ public class TeleportsManager {
     }
 
     public void setWarp(Location loc, String warp) {
-        vars.warps.put(warp, loc);
+        EterniaServer.warps.put(warp, loc);
         String saveloc = loc.getWorld().getName() +
                 ":" + ((int) loc.getX()) +
                 ":" + ((int) loc.getY()) +
@@ -50,21 +47,21 @@ public class TeleportsManager {
     }
 
     public void delWarp(String warp) {
-        vars.warps.remove(warp);
+        EterniaServer.warps.remove(warp);
         final String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
         EQueries.executeQuery(querie);
     }
 
     public Location getWarp(String warp) {
-        Location loc = vars.error;
-        if (vars.warps.containsKey(warp)) {
-            loc = vars.warps.get(warp);
+        Location loc = EterniaServer.error;
+        if (EterniaServer.warps.containsKey(warp)) {
+            loc = EterniaServer.warps.get(warp);
         } else {
             if (existWarp(warp)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
                 String[] values = EQueries.queryString(querie, "location").split(":");
                 loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                vars.warps.put(warp, loc);
+                EterniaServer.warps.put(warp, loc);
             }
         }
 
@@ -77,7 +74,7 @@ public class TeleportsManager {
     }
 
     public void setShop(Location loc, String shop) {
-        vars.shops.put(shop, loc);
+        EterniaServer.shops.put(shop, loc);
         String saveloc = loc.getWorld().getName() +
                 ":" + ((int) loc.getX()) +
                 ":" + ((int) loc.getY()) +
@@ -94,15 +91,15 @@ public class TeleportsManager {
     }
 
     public Location getShop(String shop) {
-        Location loc = vars.error;
-        if (vars.shops.containsKey(shop)) {
-            loc = vars.shops.get(shop);
+        Location loc = EterniaServer.error;
+        if (EterniaServer.shops.containsKey(shop)) {
+            loc = EterniaServer.shops.get(shop);
         } else {
             if (existShop(shop)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
                 String[] values = EQueries.queryString(querie, "location").split(":");
                 loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                vars.shops.put(shop, loc);
+                EterniaServer.shops.put(shop, loc);
             }
         }
 

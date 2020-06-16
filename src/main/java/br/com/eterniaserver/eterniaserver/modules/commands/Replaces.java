@@ -43,7 +43,7 @@ public class Replaces extends BaseCommand {
     public void onProfile(Player player) throws ParseException {
         final String playerName = player.getName();
 
-        Date date = plugin.sdf.parse(plugin.getVars().player_login.get(playerName));
+        Date date = plugin.sdf.parse(EterniaServer.player_login.get(playerName));
         messages.sendMessage("generic.profile.register", "%player_register_data%", plugin.sdf.format(date), player);
         for (String line : plugin.msgConfig.getStringList("generic.profile.custom")) {
             String modifiedText;

@@ -46,7 +46,6 @@ placeholders:
 # command that teleports him.
 server:
   online-mode: true
-  async-check: true
   checks: 1
   afk-timer: 900
   afk-kick: true

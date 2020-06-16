@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -24,13 +23,11 @@ public class WarpSystem extends BaseCommand {
     private final EterniaServer plugin;
     private final EFiles eFiles;
     private final TeleportsManager teleportsManager;
-    private final Vars vars;
 
     public WarpSystem(EterniaServer plugin, TeleportsManager teleportsManager) {
         this.plugin = plugin;
         this.eFiles = plugin.getEFiles();
         this.teleportsManager = teleportsManager;
-        this.vars = plugin.getVars();
     }
 
     @CommandAlias("spawn")
@@ -40,15 +37,15 @@ public class WarpSystem extends BaseCommand {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             final Location location = teleportsManager.getWarp("spawn");
             if (target == null) {
-                if (vars.teleports.containsKey(player)) {
+                if (EterniaServer.teleports.containsKey(player)) {
                     eFiles.sendMessage("server.telep", player);
                 } else {
-                    if (location != vars.error) vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
+                    if (location != EterniaServer.error) EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
                     else eFiles.sendMessage("teleport.spawn.no-exists", player);
                 }
             } else {
                 if (player.hasPermission("eternia.spawn.other")) {
-                    if (location != vars.error) {
+                    if (location != EterniaServer.error) {
                         PaperLib.teleportAsync(target.getPlayer(), location);
                         eFiles.sendMessage("teleport.warp.done", "%warp_name%", "Spawn", player);
                         eFiles.sendMessage("teleport.spawn.tp-target", "%target_name%", target.getPlayer().getName(), player);
@@ -71,9 +68,9 @@ public class WarpSystem extends BaseCommand {
            if (target == null) {
                final Location location = teleportsManager.getWarp("shop");
                if (player.hasPermission("eternia.warp.shop")) {
-                   if (location != vars.error) {
-                       if (vars.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
-                       else vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
+                   if (location != EterniaServer.error) {
+                       if (EterniaServer.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
+                       else EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
                    } else {
                        eFiles.sendMessage("teleport.warp.no-exists", "%warp_name%", "shop", player);
                    }
@@ -82,9 +79,9 @@ public class WarpSystem extends BaseCommand {
                }
            } else {
                final Location location = teleportsManager.getShop(target);
-               if (location != vars.error) {
-                   if (vars.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
-                   else vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.shop.done", plugin));
+               if (location != EterniaServer.error) {
+                   if (EterniaServer.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
+                   else EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "teleport.shop.done", plugin));
                } else {
                    eFiles.sendMessage("teleport.shop.no-exists", player);
                }
@@ -145,9 +142,9 @@ public class WarpSystem extends BaseCommand {
         if (player.hasPermission("eternia.warp." + nome.toLowerCase())) {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 final Location location = teleportsManager.getWarp(nome.toLowerCase());
-                if (location != vars.error) {
-                    if (vars.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
-                    else vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
+                if (location != EterniaServer.error) {
+                    if (EterniaServer.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
+                    else EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
                 } else {
                     eFiles.sendMessage("teleport.warp.no-exists", "%warp_name%", nome, player);
                 }

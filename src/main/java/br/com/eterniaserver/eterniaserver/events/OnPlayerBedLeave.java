@@ -22,7 +22,7 @@ public class OnPlayerBedLeave implements Listener {
         final Player player = event.getPlayer();
         final String playerName = player.getName();
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.getChecks().getCooldown(playerName)) > 6) {
-            plugin.getVars().bed_cooldown.put(playerName, System.currentTimeMillis());
+            EterniaServer.bed_cooldown.put(playerName, System.currentTimeMillis());
         }
     }
 

@@ -37,11 +37,11 @@ public class OnPlayerInteract implements Listener {
                     final String[] isso = lore.get(0).split(":");
                     final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
 
-                    if (plugin.getVars().teleports.containsKey(player)) {
+                    if (EterniaServer.teleports.containsKey(player)) {
                         plugin.getEFiles().sendMessage("server.telep", player);
                     }
                     else {
-                        plugin.getVars().teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
+                        EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
                     }
                 }
             }

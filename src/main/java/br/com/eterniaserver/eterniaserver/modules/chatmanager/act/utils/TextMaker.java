@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.Checks;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import org.bukkit.entity.Player;
 
@@ -20,14 +19,12 @@ public class TextMaker {
 	private final ChatMessage message;
 	private final Player p;
 	private final EterniaServer plugin;
-	private final Vars vars;
 	private final Checks checks;
 
 	public TextMaker(ChatMessage message, Player p, EterniaServer plugin) {
 		this.p = p;
 		this.message = message;
 		this.plugin = plugin;
-		this.vars = plugin.getVars();
 		checks = plugin.getChecks();
 	}
 
@@ -132,16 +129,16 @@ public class TextMaker {
 	}
 
 	public String getConfigString(Player p, String extra) {
-		return plugin.groupConfig.getString (vars.uufi.get(p.getName()).getName() + "." + extra);
+		return plugin.groupConfig.getString (EterniaServer.uufi.get(p.getName()).getName() + "." + extra);
 	}
 
 	public boolean getConfigBoolean(Player p, String extra) {
-		return plugin.groupConfig.getBoolean(vars.uufi.get(p.getName()).getName() + "." + extra);
+		return plugin.groupConfig.getBoolean(EterniaServer.uufi.get(p.getName()).getName() + "." + extra);
 	}
 
 	public String customPlaceholder(Player p, String s2) {
 		String message = s2;
-		for(CustomPlaceholder cp: vars.customPlaceholders) {
+		for(CustomPlaceholder cp: EterniaServer.customPlaceholders) {
 			String id = cp.getId();
 			if(!message.contains("{" + id + "}")) continue;
 			try {

@@ -23,7 +23,7 @@ public class OnPlayerBedEnter implements Listener {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             final String playerName = event.getPlayer().getName();
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.getChecks().getCooldown(playerName)) > 6) {
-                plugin.getVars().bed_cooldown.put(playerName, System.currentTimeMillis());
+                EterniaServer.bed_cooldown.put(playerName, System.currentTimeMillis());
                 plugin.getEFiles().broadcastMessage("bed.player-s", "%player_name%", playerName);
             }
         }

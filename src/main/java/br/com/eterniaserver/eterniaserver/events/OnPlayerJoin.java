@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 
 import org.bukkit.entity.Player;
@@ -13,33 +12,21 @@ public class OnPlayerJoin implements Listener {
 
     private final EterniaServer plugin;
     private final PlayerManager playerManager;
-    private final Vars vars;
 
     public OnPlayerJoin(EterniaServer plugin) {
         this.plugin = plugin;
         this.playerManager = plugin.getPlayerManager();
-        this.vars = plugin.getVars();
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("modules.experience")) {
-            if (!playerManager.playerXPExist(playerName)) playerManager.playerXPCreate(playerName);
-        }
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            vars.afktime.put(playerName, System.currentTimeMillis());
-            if (!playerManager.playerProfileExist(playerName)) playerManager.playerProfileCreate(playerName);
-        }
-        if (plugin.serverConfig.getBoolean("modules.home")) {
-            if (!playerManager.playerHomeExist(playerName)) playerManager.playerHomeCreate(playerName);
-        }
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             plugin.getChecks().addUUIF(player);
-            vars.global.put(playerName, 0);
-            if (player.hasPermission("eternia.spy")) vars.spy.put(player, true);
-            if (!vars.player_muted.containsKey(playerName)) playerManager.checkMuted(playerName);
+            EterniaServer.global.put(playerName, 0);
+            if (player.hasPermission("eternia.spy")) EterniaServer.spy.put(player, true);
+            if (!EterniaServer.player_muted.containsKey(playerName)) playerManager.checkMuted(playerName);
 
         }
         event.setJoinMessage(null);

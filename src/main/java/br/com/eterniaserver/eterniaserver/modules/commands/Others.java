@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.modules.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 
 import co.aikar.commands.BaseCommand;
@@ -28,7 +27,6 @@ public class Others extends BaseCommand {
     private final EterniaServer plugin;
     private final EFiles messages;
     private final PlaceHolders placeHolders;
-    private final Vars vars;
 
     private final ItemStack coali = new ItemStack(Material.COAL);
     private final ItemStack lapizi = new ItemStack(Material.LAPIS_LAZULI);
@@ -42,7 +40,6 @@ public class Others extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
         this.placeHolders = plugin.getPlaceHolders();
-        this.vars = plugin.getVars();
     }
 
     @CommandAlias("reloadeternia|eterniareload")
@@ -104,20 +101,20 @@ public class Others extends BaseCommand {
             final Player targetP = target.getPlayer();
             final String targetName = targetP.getName();
 
-            if (vars.god.contains(targetName)) {
+            if (EterniaServer.god.contains(targetName)) {
                 messages.sendMessage("generic.others.god-disabled", targetP);
-                vars.god.remove(targetName);
+                EterniaServer.god.remove(targetName);
             } else {
                 messages.sendMessage("generic.others.god-enabled", targetP);
-                vars.god.add(targetName);
+                EterniaServer.god.add(targetName);
             }
         } else {
-            if (vars.god.contains(playerName)) {
+            if (EterniaServer.god.contains(playerName)) {
                 messages.sendMessage("generic.others.god-disabled", player);
-                vars.god.remove(playerName);
+                EterniaServer.god.remove(playerName);
             } else {
                 messages.sendMessage("generic.others.god-enabled", player);
-                vars.god.add(playerName);
+                EterniaServer.god.add(playerName);
             }
         }
     }
@@ -186,11 +183,11 @@ public class Others extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
 
-        if (vars.afk.contains(playerName)) {
+        if (EterniaServer.afk.contains(playerName)) {
             messages.broadcastMessage("generic.afk.disabled", "%player_name%", playerName);
-            vars.afk.remove(playerName);
+            EterniaServer.afk.remove(playerName);
         } else {
-            vars.afk.add(playerName);
+            EterniaServer.afk.add(playerName);
             messages.broadcastMessage("generic.afk.enabled", "%player_name%", playerName);
         }
     }

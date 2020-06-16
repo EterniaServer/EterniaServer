@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.Vars;
 
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.ChatFormatter;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter.Colors;
@@ -18,19 +17,17 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.concurrent.TimeUnit;
 
-public class OnPlayerChat implements Listener {
+public class OnAsyncPlayerChat implements Listener {
 
     private final EterniaServer plugin;
     private final ChatFormatter cf;
     private final JsonSender js;
-    private final Vars vars;
     private final CustomPlaceholdersFilter cp;
     private final EFiles messages;
     private final Colors c = new Colors();
 
-    public OnPlayerChat(EterniaServer plugin) {
+    public OnAsyncPlayerChat(EterniaServer plugin) {
         this.plugin = plugin;
-        this.vars = plugin.getVars();
         this.messages = plugin.getEFiles();
         this.cp = new CustomPlaceholdersFilter(plugin);
         this.js = new JsonSender(plugin);
@@ -52,13 +49,13 @@ public class OnPlayerChat implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            if (vars.player_muted.get(playerName) - System.currentTimeMillis() > 0) {
-                messages.sendMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(vars.player_muted.get(playerName) - System.currentTimeMillis()), player);
+            if (EterniaServer.player_muted.get(playerName) - System.currentTimeMillis() > 0) {
+                messages.sendMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(EterniaServer.player_muted.get(playerName) - System.currentTimeMillis()), player);
                 e.setCancelled(true);
                 return;
             }
 
-            switch (vars.global.getOrDefault(playerName, 0)) {
+            switch (EterniaServer.global.getOrDefault(playerName, 0)) {
                 case 0:
                     plugin.local.SendMessage(message, player, plugin.chatConfig.getInt("local.range"));
                     e.setCancelled(true);
