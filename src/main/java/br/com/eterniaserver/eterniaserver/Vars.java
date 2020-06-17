@@ -16,8 +16,6 @@ import java.util.Map;
 
 interface Vars {
 
-    Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
-
     List<World> skipping_worlds = new ArrayList<>();
     List<String> god = new ArrayList<>();
     List<String> afk = new ArrayList<>();

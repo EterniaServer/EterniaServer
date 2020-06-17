@@ -58,7 +58,7 @@ public class HomeSystem extends BaseCommand {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             if (target == null) {
                 Location location = homesManager.getHome(nome.toLowerCase(), player.getName());
-                if (location != EterniaServer.error) {
+                if (location != plugin.error) {
                     if (EterniaServer.teleports.containsKey(player)) {
                         messages.sendMessage("server.telep", player);
                     } else {
@@ -70,7 +70,7 @@ public class HomeSystem extends BaseCommand {
             } else {
                 if (player.hasPermission("eternia.home.other")) {
                     Location location = homesManager.getHome(nome.toLowerCase(), target.getPlayer().getName());
-                    if (location != EterniaServer.error) {
+                    if (location != plugin.error) {
                         PaperLib.teleportAsync(player, location);
                         messages.sendMessage("home.done", player);
                     } else {

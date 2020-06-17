@@ -19,6 +19,8 @@ import co.aikar.commands.PaperCommandManager;
 
 import io.papermc.lib.PaperLib;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,6 +31,7 @@ public class EterniaServer extends JavaPlugin implements Vars {
     public boolean chatMuted = false;
     public boolean hasPlaceholderAPI = true;
 
+    public final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
     private PaperCommandManager manager;

@@ -92,7 +92,7 @@ public class HomesManager {
     }
 
     public Location getHome(String home, String jogador) {
-        Location loc = EterniaServer.error;
+        Location loc = plugin.error;
         if (EterniaServer.homes.containsKey(home + "." + jogador)) {
             loc = EterniaServer.homes.get(home + "." + jogador);
         } else {

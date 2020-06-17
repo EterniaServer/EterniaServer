@@ -53,7 +53,7 @@ public class TeleportsManager {
     }
 
     public Location getWarp(String warp) {
-        Location loc = EterniaServer.error;
+        Location loc = plugin.error;
         if (EterniaServer.warps.containsKey(warp)) {
             loc = EterniaServer.warps.get(warp);
         } else {
@@ -91,7 +91,7 @@ public class TeleportsManager {
     }
 
     public Location getShop(String shop) {
-        Location loc = EterniaServer.error;
+        Location loc = plugin.error;
         if (EterniaServer.shops.containsKey(shop)) {
             loc = EterniaServer.shops.get(shop);
         } else {
