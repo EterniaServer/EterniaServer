@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 interface Vars {
 
@@ -27,25 +28,25 @@ interface Vars {
     List<String> player_homes = new ArrayList<>();
     List<String> player_cooldown = new ArrayList<>();
 
-    HashMap<String, Long> tpa_time = new HashMap<>();
-    HashMap<String, Long> player_muted = new HashMap<>();
-    HashMap<String, Long> bed_cooldown = new HashMap<>();
-    HashMap<String, Long> afktime = new HashMap<>();
-    HashMap<String, Double> balances = new HashMap<>();
-    HashMap<String, String> tpa_requests = new HashMap<>();
-    HashMap<String, String> kits_cooldown = new HashMap<>();
-    HashMap<String, String> player_login = new HashMap<>();
-    HashMap<String, String> tell = new HashMap<>();
-    HashMap<Player, Boolean> spy = new HashMap<>();
-    HashMap<String, Integer> global = new HashMap<>();
-    HashMap<String, Integer> xp = new HashMap<>();
-    HashMap<String, Integer> playersInPortal = new HashMap<>();
-    HashMap<String, String[]> home = new HashMap<>();
-    HashMap<String, Location> warps = new HashMap<>();
-    HashMap<String, Location> back = new HashMap<>();
-    HashMap<String, Location> shops = new HashMap<>();
-    HashMap<String, Location> homes = new HashMap<>();
-    HashMap<String, FormatInfo> uufi = new HashMap<>();
-    HashMap<Player, PlayerTeleport> teleports = new HashMap<>();
+    Map<String, Long> tpa_time = new HashMap<>();
+    Map<String, Long> player_muted = new HashMap<>();
+    Map<String, Long> bed_cooldown = new HashMap<>();
+    Map<String, Long> afktime = new HashMap<>();
+    Map<String, Double> balances = new HashMap<>();
+    Map<String, String> tpa_requests = new HashMap<>();
+    Map<String, String> kits_cooldown = new HashMap<>();
+    Map<String, String> player_login = new HashMap<>();
+    Map<String, String> tell = new HashMap<>();
+    Map<Player, Boolean> spy = new HashMap<>();
+    Map<String, Integer> global = new HashMap<>();
+    Map<String, Integer> xp = new HashMap<>();
+    Map<String, Integer> playersInPortal = new HashMap<>();
+    Map<String, String[]> home = new HashMap<>();
+    Map<String, Location> warps = new HashMap<>();
+    Map<String, Location> back = new HashMap<>();
+    Map<String, Location> shops = new HashMap<>();
+    Map<String, Location> homes = new HashMap<>();
+    Map<String, FormatInfo> uufi = new HashMap<>();
+    Map<Player, PlayerTeleport> teleports = new HashMap<>();
 
 }
