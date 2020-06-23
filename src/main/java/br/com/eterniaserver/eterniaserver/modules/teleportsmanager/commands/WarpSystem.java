@@ -10,8 +10,6 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
-import io.papermc.lib.PaperLib;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -46,8 +44,7 @@ public class WarpSystem extends BaseCommand {
             } else {
                 if (player.hasPermission("eternia.spawn.other")) {
                     if (location != plugin.error) {
-                        PaperLib.teleportAsync(target.getPlayer(), location);
-                        eFiles.sendMessage("teleport.warp.done", "%warp_name%", "Spawn", player);
+                        EterniaServer.teleports.put(target.getPlayer(), new PlayerTeleport(target.getPlayer(), location, "teleport.warp.done", plugin));
                         eFiles.sendMessage("teleport.spawn.tp-target", "%target_name%", target.getPlayer().getName(), player);
                     } else {
                         eFiles.sendMessage("teleport.spawn.no-exists", player);

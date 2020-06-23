@@ -62,7 +62,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
                     if (!EterniaServer.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                         messages.broadcastMessage("generic.afk.broadcast-kicked", "%player_name%", playerName);
-                        Bukkit.getScheduler().runTask(plugin, () -> player.kickPlayer(messages.getMessage("generic.afk.kicked")));
+                        player.kickPlayer(messages.getMessage("generic.afk.kicked"));
                     }
                 } else {
                     messages.broadcastMessage("generic.afk.enabled", "%player_name%", playerName);

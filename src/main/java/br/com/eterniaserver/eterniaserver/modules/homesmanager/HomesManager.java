@@ -10,6 +10,8 @@ import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class HomesManager {
 
     private final EterniaServer plugin;
@@ -92,23 +94,23 @@ public class HomesManager {
     }
 
     public Location getHome(String home, String jogador) {
-        Location loc = plugin.error;
+        AtomicReference<Location> loc = new AtomicReference<>(plugin.error);
         if (EterniaServer.homes.containsKey(home + "." + jogador)) {
-            loc = EterniaServer.homes.get(home + "." + jogador);
+            loc.set(EterniaServer.homes.get(home + "." + jogador));
         } else {
             if (existHome(home, jogador)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
                 String[] values = EQueries.queryString(querie, "location").split(":");
-                loc = new Location(Bukkit.getWorld(values[0]),
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> loc.set(new Location(Bukkit.getWorld(values[0]),
                         Double.parseDouble(values[1]),
                         (Double.parseDouble(values[2]) + 1),
                         Double.parseDouble(values[3]),
                         Float.parseFloat(values[4]),
-                        Float.parseFloat(values[5]));
-                EterniaServer.homes.put(home + "." + jogador, loc);
+                        Float.parseFloat(values[5]))));
+                EterniaServer.homes.put(home + "." + jogador, loc.get());
             }
         }
-        return loc;
+        return loc.get();
     }
 
     public boolean existHome(String home, String jogador) {

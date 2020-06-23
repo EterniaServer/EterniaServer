@@ -12,8 +12,6 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
-import io.papermc.lib.PaperLib;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -55,6 +53,11 @@ public class HomeSystem extends BaseCommand {
     @Syntax("<home> <jogador>")
     @CommandPermission("eternia.home")
     public void onHome(Player player, String nome, @Optional OnlinePlayer target) {
+        if (target == null) {
+
+        } else {
+
+        }
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             if (target == null) {
                 Location location = homesManager.getHome(nome.toLowerCase(), player.getName());
@@ -71,8 +74,7 @@ public class HomeSystem extends BaseCommand {
                 if (player.hasPermission("eternia.home.other")) {
                     Location location = homesManager.getHome(nome.toLowerCase(), target.getPlayer().getName());
                     if (location != plugin.error) {
-                        PaperLib.teleportAsync(player, location);
-                        messages.sendMessage("home.done", player);
+                        EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
                     } else {
                         messages.sendMessage("home.no-exists", player);
                     }

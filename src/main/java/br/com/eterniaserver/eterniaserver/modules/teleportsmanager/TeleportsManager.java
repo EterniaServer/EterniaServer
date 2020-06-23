@@ -10,6 +10,8 @@ import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class TeleportsManager {
 
     private final EterniaServer plugin;
@@ -53,19 +55,24 @@ public class TeleportsManager {
     }
 
     public Location getWarp(String warp) {
-        Location loc = plugin.error;
+        AtomicReference<Location> loc = new AtomicReference<>(plugin.error);
         if (EterniaServer.warps.containsKey(warp)) {
-            loc = EterniaServer.warps.get(warp);
+            loc.set(EterniaServer.warps.get(warp));
         } else {
             if (existWarp(warp)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
                 String[] values = EQueries.queryString(querie, "location").split(":");
-                loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                EterniaServer.warps.put(warp, loc);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> loc.set(new Location(Bukkit.getWorld(values[0]),
+                        Double.parseDouble(values[1]),
+                        Double.parseDouble(values[2]),
+                        Double.parseDouble(values[3]),
+                        Float.parseFloat(values[4]),
+                        Float.parseFloat(values[5]))));
+                EterniaServer.warps.put(warp, loc.get());
             }
         }
 
-        return loc;
+        return loc.get();
     }
 
     public boolean existWarp(String warp) {
@@ -91,19 +98,24 @@ public class TeleportsManager {
     }
 
     public Location getShop(String shop) {
-        Location loc = plugin.error;
+        AtomicReference<Location> loc = new AtomicReference<>(plugin.error);
         if (EterniaServer.shops.containsKey(shop)) {
-            loc = EterniaServer.shops.get(shop);
+            loc.set(EterniaServer.shops.get(shop));
         } else {
             if (existShop(shop)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
                 String[] values = EQueries.queryString(querie, "location").split(":");
-                loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                EterniaServer.shops.put(shop, loc);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> loc.set(new Location(Bukkit.getWorld(values[0]),
+                        Double.parseDouble(values[1]),
+                        Double.parseDouble(values[2]),
+                        Double.parseDouble(values[3]),
+                        Float.parseFloat(values[4]),
+                        Float.parseFloat(values[5]))));
+                EterniaServer.shops.put(shop, loc.get());
             }
         }
 
-        return loc;
+        return loc.get();
     }
 
     public boolean existShop(String shop) {

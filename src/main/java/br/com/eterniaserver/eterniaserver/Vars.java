@@ -4,7 +4,6 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.CustomPl
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
