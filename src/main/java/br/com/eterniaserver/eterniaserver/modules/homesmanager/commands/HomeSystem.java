@@ -54,35 +54,28 @@ public class HomeSystem extends BaseCommand {
     @CommandPermission("eternia.home")
     public void onHome(Player player, String nome, @Optional OnlinePlayer target) {
         if (target == null) {
-
-        } else {
-
-        }
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (target == null) {
-                Location location = homesManager.getHome(nome.toLowerCase(), player.getName());
-                if (location != plugin.error) {
-                    if (EterniaServer.teleports.containsKey(player)) {
+            Location location = homesManager.getHome(nome.toLowerCase(), player.getName());
+            if (location != plugin.error) {
+                if (EterniaServer.teleports.containsKey(player)) {
                         messages.sendMessage("server.telep", player);
-                    } else {
+                } else {
                         EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
-                    }
+                }
+            } else {
+                messages.sendMessage("home.no-exists", player);
+            }
+        } else {
+            if (player.hasPermission("eternia.home.other")) {
+                Location location = homesManager.getHome(nome.toLowerCase(), target.getPlayer().getName());
+                if (location != plugin.error) {
+                    EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
                 } else {
                     messages.sendMessage("home.no-exists", player);
                 }
             } else {
-                if (player.hasPermission("eternia.home.other")) {
-                    Location location = homesManager.getHome(nome.toLowerCase(), target.getPlayer().getName());
-                    if (location != plugin.error) {
-                        EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
-                    } else {
-                        messages.sendMessage("home.no-exists", player);
-                    }
-                } else {
-                    messages.sendMessage("server.no-perm", player);
-                }
+                messages.sendMessage("server.no-perm", player);
             }
-        });
+        }
     }
 
     @CommandAlias("homes|houses|casas")

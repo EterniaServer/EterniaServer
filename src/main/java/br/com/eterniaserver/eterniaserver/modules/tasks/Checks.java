@@ -38,9 +38,6 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                     EterniaServer.tpa_time.remove(playerName);
                 }
             }
-            if (plugin.serverConfig.getBoolean("server.void-tp") && location.getY() < -10) {
-                PaperLib.teleportAsync(player, teleportsManager.getWarp("spawn"));
-            }
             if (location.getBlock().getType() == Material.NETHER_PORTAL) {
                 if (!EterniaServer.playersInPortal.containsKey(playerName)) {
                     EterniaServer.playersInPortal.put(playerName, 7);

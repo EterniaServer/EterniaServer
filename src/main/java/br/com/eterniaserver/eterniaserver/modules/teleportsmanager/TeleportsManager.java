@@ -55,24 +55,24 @@ public class TeleportsManager {
     }
 
     public Location getWarp(String warp) {
-        AtomicReference<Location> loc = new AtomicReference<>(plugin.error);
+        Location loc = plugin.error;
         if (EterniaServer.warps.containsKey(warp)) {
-            loc.set(EterniaServer.warps.get(warp));
+            loc = EterniaServer.warps.get(warp);
         } else {
             if (existWarp(warp)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
                 String[] values = EQueries.queryString(querie, "location").split(":");
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> loc.set(new Location(Bukkit.getWorld(values[0]),
+                loc = new Location(Bukkit.getWorld(values[0]),
                         Double.parseDouble(values[1]),
                         Double.parseDouble(values[2]),
                         Double.parseDouble(values[3]),
                         Float.parseFloat(values[4]),
-                        Float.parseFloat(values[5]))));
-                EterniaServer.warps.put(warp, loc.get());
+                        Float.parseFloat(values[5]));
+                EterniaServer.warps.put(warp, loc);
             }
         }
 
-        return loc.get();
+        return loc;
     }
 
     public boolean existWarp(String warp) {
@@ -98,24 +98,19 @@ public class TeleportsManager {
     }
 
     public Location getShop(String shop) {
-        AtomicReference<Location> loc = new AtomicReference<>(plugin.error);
+        Location loc = plugin.error;
         if (EterniaServer.shops.containsKey(shop)) {
-            loc.set(EterniaServer.shops.get(shop));
+            loc = EterniaServer.shops.get(shop);
         } else {
             if (existShop(shop)) {
                 final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
                 String[] values = EQueries.queryString(querie, "location").split(":");
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> loc.set(new Location(Bukkit.getWorld(values[0]),
-                        Double.parseDouble(values[1]),
-                        Double.parseDouble(values[2]),
-                        Double.parseDouble(values[3]),
-                        Float.parseFloat(values[4]),
-                        Float.parseFloat(values[5]))));
-                EterniaServer.shops.put(shop, loc.get());
+                loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
+                EterniaServer.shops.put(shop, loc);
             }
         }
 
-        return loc.get();
+        return loc;
     }
 
     public boolean existShop(String shop) {
