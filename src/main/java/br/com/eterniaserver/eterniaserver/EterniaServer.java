@@ -55,6 +55,9 @@ public class EterniaServer extends JavaPlugin implements Vars {
     private final HashMap<String, Location> warps = new HashMap<>();
     private final HashMap<String, String[]> home = new HashMap<>();
 
+    private final HashMap<String, Long> tpa_time = new HashMap<>();
+    private final HashMap<String, String> tpa_requests = new HashMap<>();
+
     @Override
     public void onEnable() {
 
@@ -101,7 +104,7 @@ public class EterniaServer extends JavaPlugin implements Vars {
         new VaultHook(this);
     }
 
-    public void rewardsManager() {
+    private void rewardsManager() {
         new RewardsManager(this);
     }
 
@@ -168,5 +171,12 @@ public class EterniaServer extends JavaPlugin implements Vars {
     public HashMap<String, Location> getWarps() {
         return warps;
     }
-    
+
+    public HashMap<String, Long> getTpa_time() {
+        return tpa_time;
+    }
+
+    public HashMap<String, String> getTpa_requests() {
+        return tpa_requests;
+    }
 }

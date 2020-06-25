@@ -25,12 +25,10 @@ interface Vars {
     List<String> player_homes = new ArrayList<>();
     List<String> player_cooldown = new ArrayList<>();
 
-    Map<String, Long> tpa_time = new HashMap<>();
     Map<String, Long> player_muted = new HashMap<>();
     Map<String, Long> bed_cooldown = new HashMap<>();
     Map<String, Long> afktime = new HashMap<>();
     Map<String, Double> balances = new HashMap<>();
-    Map<String, String> tpa_requests = new HashMap<>();
     Map<String, String> kits_cooldown = new HashMap<>();
     Map<String, String> player_login = new HashMap<>();
     Map<String, String> tell = new HashMap<>();
