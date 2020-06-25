@@ -24,7 +24,7 @@ public class LoadMaps {
                     Double.parseDouble(split[3]),
                     Float.parseFloat(split[4]),
                     Float.parseFloat(split[5]));
-            EterniaServer.homes.put(k, loc);
+            plugin.getHomes().put(k, loc);
         });
 
         query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + ";";
@@ -38,7 +38,7 @@ public class LoadMaps {
                     Double.parseDouble(split[3]),
                     Float.parseFloat(split[4]),
                     Float.parseFloat(split[5]));
-            EterniaServer.shops.put(k, loc);
+            plugin.getShops().put(k, loc);
         });
 
         query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
@@ -52,7 +52,7 @@ public class LoadMaps {
                     Double.parseDouble(split[3]),
                     Float.parseFloat(split[4]),
                     Float.parseFloat(split[5]));
-            EterniaServer.warps.put(k, loc);
+            plugin.getWarps().put(k, loc);
         });
 
         query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + ";";
@@ -60,7 +60,7 @@ public class LoadMaps {
 
         temp.forEach((k, v) -> {
             final String[] homess = v.split(":");
-            EterniaServer.home.put(k, homess);
+            plugin.getHome().put(k, homess);
         });
 
     }

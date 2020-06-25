@@ -9,12 +9,18 @@ import co.aikar.commands.PaperCommandManager;
 
 import org.bukkit.Location;
 
+import java.util.HashMap;
+
 public class TeleportsManager {
 
     private final EterniaServer plugin;
+    private final HashMap<String, Location> warps;
+    private final HashMap<String, Location> shops;
 
     public TeleportsManager(EterniaServer plugin) {
         this.plugin = plugin;
+        this.warps = plugin.getWarps();
+        this.shops = plugin.getShops();
 
         final PaperCommandManager manager = plugin.getManager();
         final EFiles messages = plugin.getEFiles();
@@ -29,7 +35,7 @@ public class TeleportsManager {
     }
 
     public void setWarp(Location loc, String warp) {
-        EterniaServer.warps.put(warp, loc);
+        warps.put(warp, loc);
         String saveloc = loc.getWorld().getName() +
                 ":" + ((int) loc.getX()) +
                 ":" + ((int) loc.getY()) +
@@ -46,14 +52,14 @@ public class TeleportsManager {
     }
 
     public void delWarp(String warp) {
-        EterniaServer.warps.remove(warp);
+        warps.remove(warp);
         final String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
         EQueries.executeQuery(querie);
     }
 
     public Location getWarp(String warp) {
-        if (EterniaServer.warps.containsKey(warp)) {
-            return EterniaServer.warps.get(warp);
+        if (warps.containsKey(warp)) {
+            return warps.get(warp);
         } else {
             return plugin.error;
         }
@@ -65,7 +71,7 @@ public class TeleportsManager {
     }
 
     public void setShop(Location loc, String shop) {
-        EterniaServer.shops.put(shop, loc);
+        shops.put(shop, loc);
         String saveloc = loc.getWorld().getName() +
                 ":" + ((int) loc.getX()) +
                 ":" + ((int) loc.getY()) +
@@ -82,8 +88,8 @@ public class TeleportsManager {
     }
 
     public Location getShop(String shop) {
-        if (EterniaServer.shops.containsKey(shop)) {
-            return EterniaServer.shops.get(shop);
+        if (shops.containsKey(shop)) {
+            return shops.get(shop);
         } else {
             return plugin.error;
         }

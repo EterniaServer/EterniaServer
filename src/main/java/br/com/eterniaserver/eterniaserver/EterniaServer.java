@@ -50,10 +50,10 @@ public class EterniaServer extends JavaPlugin implements Vars {
     public FileConfiguration serverConfig, msgConfig, cmdConfig, rewardsConfig;
     public FileConfiguration blockConfig, kitConfig, chatConfig, placeholderConfig, groupConfig;
 
-    public static HashMap<String, Location> homes = new HashMap<>();
-    public static HashMap<String, Location> shops = new HashMap<>();
-    public static HashMap<String, Location> warps = new HashMap<>();
-    public static HashMap<String, String[]> home = new HashMap<>();
+    private final HashMap<String, Location> homes = new HashMap<>();
+    private final HashMap<String, Location> shops = new HashMap<>();
+    private final HashMap<String, Location> warps = new HashMap<>();
+    private final HashMap<String, String[]> home = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -153,4 +153,20 @@ public class EterniaServer extends JavaPlugin implements Vars {
         return placeHolders;
     }
 
+    public HashMap<String, Location> getHomes() {
+        return homes;
+    }
+
+    public HashMap<String, String[]> getHome() {
+        return home;
+    }
+
+    public HashMap<String, Location> getShops() {
+        return shops;
+    }
+
+    public HashMap<String, Location> getWarps() {
+        return warps;
+    }
+    
 }

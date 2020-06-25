@@ -85,7 +85,7 @@ public class HomeSystem extends BaseCommand {
         String[] values;
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
-                values = EterniaServer.home.get(target.getPlayer().getName());
+                values = homesManager.getHomes(target.getPlayer().getName());
                 for (String line : values) {
                     accounts.append(line).append("&8, &3");
                 }
@@ -94,7 +94,7 @@ public class HomeSystem extends BaseCommand {
                 messages.sendMessage("server.no-perm", player);
             }
         } else {
-            values = EterniaServer.home.get(player.getName());
+            values = homesManager.getHomes(player.getName());
             for (String line : values) {
                 accounts.append(line).append("&8, &3");
             }
