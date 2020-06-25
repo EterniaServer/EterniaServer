@@ -7,10 +7,7 @@ import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands.*;
 
 import co.aikar.commands.PaperCommandManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class TeleportsManager {
 
@@ -55,24 +52,11 @@ public class TeleportsManager {
     }
 
     public Location getWarp(String warp) {
-        Location loc = plugin.error;
         if (EterniaServer.warps.containsKey(warp)) {
-            loc = EterniaServer.warps.get(warp);
+            return EterniaServer.warps.get(warp);
         } else {
-            if (existWarp(warp)) {
-                final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
-                String[] values = EQueries.queryString(querie, "location").split(":");
-                loc = new Location(Bukkit.getWorld(values[0]),
-                        Double.parseDouble(values[1]),
-                        Double.parseDouble(values[2]),
-                        Double.parseDouble(values[3]),
-                        Float.parseFloat(values[4]),
-                        Float.parseFloat(values[5]));
-                EterniaServer.warps.put(warp, loc);
-            }
+            return plugin.error;
         }
-
-        return loc;
     }
 
     public boolean existWarp(String warp) {
@@ -98,19 +82,11 @@ public class TeleportsManager {
     }
 
     public Location getShop(String shop) {
-        Location loc = plugin.error;
         if (EterniaServer.shops.containsKey(shop)) {
-            loc = EterniaServer.shops.get(shop);
+            return EterniaServer.shops.get(shop);
         } else {
-            if (existShop(shop)) {
-                final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
-                String[] values = EQueries.queryString(querie, "location").split(":");
-                loc = new Location(Bukkit.getWorld(values[0]), Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]), Float.parseFloat(values[4]), Float.parseFloat(values[5]));
-                EterniaServer.shops.put(shop, loc);
-            }
+            return plugin.error;
         }
-
-        return loc;
     }
 
     public boolean existShop(String shop) {

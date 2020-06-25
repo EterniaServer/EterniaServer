@@ -12,7 +12,6 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -82,27 +81,25 @@ public class HomeSystem extends BaseCommand {
     @Syntax("<jogador>")
     @CommandPermission("eternia.homes")
     public void onHomes(Player player, @Optional OnlinePlayer target) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            StringBuilder accounts = new StringBuilder();
-            String[] values;
-            if (target != null) {
-                if (player.hasPermission("eternia.homes.other")) {
-                    values = homesManager.getHomes(target.getPlayer().getName());
-                    for (String line : values) {
-                        accounts.append(line).append("&8, &3");
-                    }
-                    messages.sendMessage("home.list", "%homes%", messages.getColor(accounts.toString()), player);
-                } else {
-                    messages.sendMessage("server.no-perm", player);
-                }
-            } else {
-                values = homesManager.getHomes(player.getName());
+        StringBuilder accounts = new StringBuilder();
+        String[] values;
+        if (target != null) {
+            if (player.hasPermission("eternia.homes.other")) {
+                values = EterniaServer.home.get(target.getPlayer().getName());
                 for (String line : values) {
                     accounts.append(line).append("&8, &3");
                 }
                 messages.sendMessage("home.list", "%homes%", messages.getColor(accounts.toString()), player);
+            } else {
+                messages.sendMessage("server.no-perm", player);
             }
-        });
+        } else {
+            values = EterniaServer.home.get(player.getName());
+            for (String line : values) {
+                accounts.append(line).append("&8, &3");
+            }
+            messages.sendMessage("home.list", "%homes%", messages.getColor(accounts.toString()), player);
+        }
     }
 
     @CommandAlias("sethome|sethouse|setcasa")
@@ -110,12 +107,7 @@ public class HomeSystem extends BaseCommand {
     @CommandPermission("eternia.sethome")
     public void onSetHome(Player player, String nome) {
         int i = 4;
-        if (player.hasPermission("eternia.sethome.5")) i = 6;
-        if (player.hasPermission("eternia.sethome.10")) i = 11;
-        if (player.hasPermission("eternia.sethome.15")) i = 16;
-        if (player.hasPermission("eternia.sethome.20")) i = 21;
-        if (player.hasPermission("eternia.sethome.25")) i = 26;
-        if (player.hasPermission("eternia.sethome.30")) i = 31;
+        for (int v = 5; v <= 30; v++) if (player.hasPermission("eternia.sethome." + v)) i = v;
         if (nome.length() <= 8) {
             if (homesManager.canHome(player.getName()) < i) {
                 homesManager.setHome(player.getLocation(), nome.toLowerCase(), player.getName());

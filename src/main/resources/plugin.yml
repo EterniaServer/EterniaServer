@@ -6,4 +6,3 @@ author: Yuri Nogueira
 description: Blablabla
 api-version: '1.15'
 softdepend: [EterniaLib, Vault, PlaceholderAPI]
-load: STARTUP

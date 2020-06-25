@@ -134,15 +134,16 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.warp")
     public void onWarp(Player player, String nome) {
         if (player.hasPermission("eternia.warp." + nome.toLowerCase())) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                final Location location = teleportsManager.getWarp(nome.toLowerCase());
-                if (location != plugin.error) {
-                    if (EterniaServer.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
-                    else EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
+            final Location location = teleportsManager.getWarp(nome.toLowerCase());
+            if (location != plugin.error) {
+                if (EterniaServer.teleports.containsKey(player)) {
+                    eFiles.sendMessage("server.telep", player);
                 } else {
-                    eFiles.sendMessage("teleport.warp.no-exists", "%warp_name%", nome, player);
+                    EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
                 }
-            });
+            } else {
+                eFiles.sendMessage("teleport.warp.no-exists", "%warp_name%", nome, player);
+            }
         } else {
             eFiles.sendMessage("server.no-perm", player);
         }

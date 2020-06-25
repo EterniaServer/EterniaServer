@@ -7,7 +7,6 @@ import br.com.eterniaserver.eterniaserver.modules.homesmanager.commands.*;
 
 import co.aikar.commands.PaperCommandManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class HomesManager {
@@ -29,10 +28,10 @@ public class HomesManager {
     }
 
     public void setHome(Location loc, String home, String jogador) {
-        EterniaServer.homes.put(home, loc);
+        EterniaServer.homes.put(home + "." + jogador, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
-        String[] values = getHomes(jogador);
+        String[] values = EterniaServer.home.get(jogador);
         for (String line : values) {
             if (line.equals(home)) {
                 result.append(line).append(":");
@@ -70,7 +69,7 @@ public class HomesManager {
     public void delHome(String home, String jogador) {
         EterniaServer.homes.remove(home + "." + jogador);
         StringBuilder nova = new StringBuilder();
-        String[] values = getHomes(jogador);
+        String[] values = EterniaServer.home.get(jogador);
         boolean t = true;
         for (String line : values) {
             if (!line.equals(home)) {
@@ -92,27 +91,15 @@ public class HomesManager {
     }
 
     public Location getHome(String home, String jogador) {
-        Location loc = plugin.error;
         if (EterniaServer.homes.containsKey(home + "." + jogador)) {
-            loc = EterniaServer.homes.get(home + "." + jogador);
+            return EterniaServer.homes.get(home + "." + jogador);
         } else {
-            if (existHome(home, jogador)) {
-                final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
-                String[] values = EQueries.queryString(querie, "location").split(":");
-                loc = new Location(Bukkit.getWorld(values[0]),
-                        Double.parseDouble(values[1]),
-                        (Double.parseDouble(values[2]) + 1),
-                        Double.parseDouble(values[3]),
-                        Float.parseFloat(values[4]),
-                        Float.parseFloat(values[5]));
-                EterniaServer.homes.put(home + "." + jogador, loc);
-            }
+            return plugin.error;
         }
-        return loc;
     }
 
     public boolean existHome(String home, String jogador) {
-        String[] homes = getHomes(jogador);
+        String[] homes = EterniaServer.home.get(jogador);
         for (String line : homes) {
             if (line.equals(home)) {
                 return true;
@@ -122,17 +109,7 @@ public class HomesManager {
     }
 
     public int canHome(String jogador) {
-        return getHomes(jogador).length;
+        return EterniaServer.home.get(jogador).length;
     }
 
-    public String[] getHomes(String jogador) {
-        if (EterniaServer.home.containsKey(jogador)) {
-            return EterniaServer.home.get(jogador);
-        }
-
-        final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + " WHERE player_name='" + jogador + "';";
-        String[] homess = EQueries.queryString(querie, "homes").split(":");
-        EterniaServer.home.put(jogador, homess);
-        return homess;
-    }
 }

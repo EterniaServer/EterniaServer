@@ -25,6 +25,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 public class EterniaServer extends JavaPlugin implements Vars {
 
@@ -48,6 +49,11 @@ public class EterniaServer extends JavaPlugin implements Vars {
 
     public FileConfiguration serverConfig, msgConfig, cmdConfig, rewardsConfig;
     public FileConfiguration blockConfig, kitConfig, chatConfig, placeholderConfig, groupConfig;
+
+    public static HashMap<String, Location> homes = new HashMap<>();
+    public static HashMap<String, Location> shops = new HashMap<>();
+    public static HashMap<String, Location> warps = new HashMap<>();
+    public static HashMap<String, String[]> home = new HashMap<>();
 
     @Override
     public void onEnable() {

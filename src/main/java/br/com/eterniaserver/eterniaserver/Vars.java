@@ -38,11 +38,7 @@ interface Vars {
     Map<String, Integer> global = new HashMap<>();
     Map<String, Integer> xp = new HashMap<>();
     Map<String, Integer> playersInPortal = new HashMap<>();
-    Map<String, String[]> home = new HashMap<>();
-    Map<String, Location> warps = new HashMap<>();
     Map<String, Location> back = new HashMap<>();
-    Map<String, Location> shops = new HashMap<>();
-    Map<String, Location> homes = new HashMap<>();
     Map<String, FormatInfo> uufi = new HashMap<>();
     Map<Player, PlayerTeleport> teleports = new HashMap<>();
 
