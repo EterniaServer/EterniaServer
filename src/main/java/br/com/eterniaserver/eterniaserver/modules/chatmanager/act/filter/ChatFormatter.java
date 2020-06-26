@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class ChatFormatter {
+public class ChatFormatter extends StringHelper {
 
 	private final EterniaServer plugin;
 
@@ -42,7 +42,7 @@ public class ChatFormatter {
 
 	public String parse(Player p, String s) {
 		if (s.contains("&")) {
-			s = StringHelper.cc(s);
+			s = cc(s);
 		}
 		s = plugin.getChecks().setPlaceholders(p, s);
 		return s;

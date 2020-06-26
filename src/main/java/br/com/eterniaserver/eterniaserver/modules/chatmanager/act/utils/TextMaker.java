@@ -13,7 +13,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class TextMaker {
+public class TextMaker extends StringHelper {
 
 	public TextComponent text;
 	private final ChatMessage message;
@@ -40,7 +40,7 @@ public class TextMaker {
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();
-				tcs.add(new TextComponent(checks.setPlaceholders(p, StringHelper.cc(chatObject.getHover()))));
+				tcs.add(new TextComponent(checks.setPlaceholders(p, cc(chatObject.getHover()))));
 				TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
 				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, bc));
 			}
@@ -48,10 +48,10 @@ public class TextMaker {
 				textComp.setColor(chatObject.getColor().asBungee());
 			}
 			if(chatObject.getSuggest() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, checks.setPlaceholders(p, StringHelper.cc(chatObject.getSuggest()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, checks.setPlaceholders(p, cc(chatObject.getSuggest()))));
 			}
 			if(chatObject.getRun() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, checks.setPlaceholders(p, StringHelper.cc(chatObject.getRun()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, checks.setPlaceholders(p, cc(chatObject.getRun()))));
 			}
 			if(chatObject.isText()) {
 				setTextAttr(textComp, p);
@@ -76,7 +76,7 @@ public class TextMaker {
 	public void addHover(TextComponent text, String s) {
 		if(s == null) return;
 		ArrayList<TextComponent> tcs = new ArrayList<>();
-		tcs.add(new TextComponent(StringHelper.cc(s)));
+		tcs.add(new TextComponent(cc(s)));
 		TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
 		text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, bc));
 	}
@@ -107,7 +107,7 @@ public class TextMaker {
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();
-				tcs.add(new TextComponent(checks.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getHover()))));
+				tcs.add(new TextComponent(checks.setBothPlaceholders(p, to, cc(chatObject.getHover()))));
 				TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
 				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, bc));
 			}
@@ -115,10 +115,10 @@ public class TextMaker {
 				textComp.setColor(chatObject.getColor().asBungee());
 			}
 			if(chatObject.getSuggest() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, checks.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getSuggest()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, checks.setBothPlaceholders(p, to, cc(chatObject.getSuggest()))));
 			}
 			if(chatObject.getRun() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, checks.setBothPlaceholders(p, to, StringHelper.cc(chatObject.getRun()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, checks.setBothPlaceholders(p, to, cc(chatObject.getRun()))));
 			}
 			if(chatObject.isText()) {
 				setTextAttr(textComp, p);

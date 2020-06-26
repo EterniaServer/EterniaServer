@@ -6,7 +6,7 @@ import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class CustomPlaceholdersFilter {
+public class CustomPlaceholdersFilter extends StringHelper {
 
 	private final EterniaServer plugin;
 
@@ -38,7 +38,7 @@ public class CustomPlaceholdersFilter {
 					e1.printStackTrace();
 				}
 				if(cp.isNotIndependent() && bestPlaceholder != null) {
-					chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", StringHelper.cc(plugin.getChecks().setPlaceholders(p, bestPlaceholder.getValue()))));
+					chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", cc(plugin.getChecks().setPlaceholders(p, bestPlaceholder.getValue()))));
 				} else {
 					int i2 = objMsg.indexOf("{" + cp.getId() + "}");
 					int i3 = i2 + ("{" + cp.getId() + "}").length();
@@ -47,7 +47,7 @@ public class CustomPlaceholdersFilter {
 						String hover = bestPlaceholder.getHover();
 						String suggest = bestPlaceholder.getSuggest();
 						String run = bestPlaceholder.getRun();
-						message.getChatObjects().add(i+1, new ChatObject(StringHelper.cc(plugin.getChecks().setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
+						message.getChatObjects().add(i+1, new ChatObject(cc(plugin.getChecks().setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
 						if(bestPlaceholder.isText()) {
 							message.getChatObjects().get(i+1).setIsText(true);
 						}
