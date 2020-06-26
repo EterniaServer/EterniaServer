@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

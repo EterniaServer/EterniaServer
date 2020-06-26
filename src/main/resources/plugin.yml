@@ -4,5 +4,5 @@ name: EterniaServer
 version: '${project.version}'
 author: Yuri Nogueira
 description: Blablabla
-api-version: '1.16'
+api-version: '1.15'
 softdepend: [EterniaLib, Vault, PlaceholderAPI]

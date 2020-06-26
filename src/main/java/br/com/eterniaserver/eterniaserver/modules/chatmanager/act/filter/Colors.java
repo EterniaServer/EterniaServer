@@ -1,19 +1,14 @@
 package br.com.eterniaserver.eterniaserver.modules.chatmanager.act.filter;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.StringHelper;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class Colors extends StringHelper {
-
-	Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
 	
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
@@ -58,17 +53,6 @@ public class Colors extends StringHelper {
 			}
 		}
 
-		if (p.hasPermission("eternia.chat.color.hex")) {
-			Matcher matcher = colorPattern.matcher(m);
-			if (matcher.find()) {
-				StringBuffer buffer = new StringBuffer();
-				do {
-					matcher.appendReplacement(buffer, "" + ChatColor.of(matcher.group(1)));
-				} while (matcher.find());
-				matcher.appendTail(buffer);
-				m = buffer.toString();
-			}
-		}
 		message.messageSent = m;
 		perms.clear();
 	}
