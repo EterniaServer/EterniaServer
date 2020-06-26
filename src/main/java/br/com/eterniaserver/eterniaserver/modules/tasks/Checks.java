@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class Checks extends org.bukkit.scheduler.BukkitRunnable {
@@ -20,15 +19,11 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
     private final EterniaServer plugin;
     private final EFiles messages;
     private final TeleportsManager teleportsManager;
-    private final HashMap<String, Long> tpa_time;
-    private final HashMap<String, String> tpa_requests;
 
     public Checks(EterniaServer plugin, TeleportsManager teleportsManager) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
-        this.tpa_time = plugin.getTpa_time();
         this.teleportsManager = teleportsManager;
-        this.tpa_requests = plugin.getTpa_requests();
     }
 
     public void run() {
@@ -36,11 +31,11 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
             Location location = player.getLocation();
             final String playerName = player.getName();
 
-            if (tpa_requests.containsKey(playerName)) {
-                if (tpa_time.containsKey(playerName) &&
-                        TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - tpa_time.get(playerName)) >= 25) {
-                    tpa_requests.remove(playerName);
-                    tpa_time.remove(playerName);
+            if (plugin.getTpa_requests().containsKey(playerName)) {
+                if (plugin.getTpa_time().containsKey(playerName) &&
+                        TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.getTpa_time().get(playerName)) >= 25) {
+                    plugin.getTpa_requests().remove(playerName);
+                    plugin.getTpa_time().remove(playerName);
                 }
             }
             if (location.getBlock().getType() == Material.NETHER_PORTAL) {
@@ -60,7 +55,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
             } else {
                 EterniaServer.playersInPortal.remove(playerName);
             }
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EterniaServer.afktime.get(playerName)) >= plugin.serverConfig.getInt("server.afk-timer")) {
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.getAfktime().get(playerName)) >= plugin.serverConfig.getInt("server.afk-timer")) {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
                     if (!EterniaServer.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                         messages.broadcastMessage("generic.afk.broadcast-kicked", "%player_name%", playerName);

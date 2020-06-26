@@ -3,6 +3,8 @@ package br.com.eterniaserver.eterniaserver.modules.experiencemanager;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import java.util.Map;
+
 public class ExperienceManager {
 
     private final EterniaServer plugin;
@@ -17,8 +19,8 @@ public class ExperienceManager {
      * @return Amount currently held in player's database
      */
     public Integer getExp(String playerName) {
-        if (EterniaServer.xp.containsKey(playerName)) {
-            return EterniaServer.xp.get(playerName);
+        if (plugin.getXp().containsKey(playerName)) {
+            return plugin.getXp().get(playerName);
         }
 
         final String querie = "SELECT xp FROM " + plugin.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
@@ -31,7 +33,7 @@ public class ExperienceManager {
      * @param amount to set
      */
     public void setExp(String playerName, int amount) {
-        EterniaServer.xp.put(playerName, amount);
+        plugin.getXp().put(playerName, amount);
         EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
     }
 

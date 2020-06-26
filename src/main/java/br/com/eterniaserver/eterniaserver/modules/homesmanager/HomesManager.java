@@ -9,18 +9,14 @@ import co.aikar.commands.PaperCommandManager;
 
 import org.bukkit.Location;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class HomesManager {
 
     private final EterniaServer plugin;
-    private final HashMap<String, Location> homes;
-    private final HashMap<String, String[]> home;
 
     public HomesManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.home = plugin.getHome();
-        this.homes = plugin.getHomes();
 
         final EFiles messages = plugin.getEFiles();
         final PaperCommandManager manager = plugin.getManager();
@@ -34,7 +30,7 @@ public class HomesManager {
     }
 
     public void setHome(Location loc, String home, String jogador) {
-        homes.put(home + "." + jogador, loc);
+        plugin.getHomes().put(home + "." + jogador, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
         String[] values = getHomes(jogador);
@@ -51,7 +47,7 @@ public class HomesManager {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
             EQueries.executeQuery(querie);
             values = result.toString().split(":");
-            this.home.put(jogador, values);
+            plugin.getHome().put(jogador, values);
             String saveloc = loc.getWorld().getName() +
                     ":" + ((int) loc.getX()) +
                     ":" + ((int) loc.getY()) +
@@ -73,7 +69,7 @@ public class HomesManager {
     }
 
     public void delHome(String home, String jogador) {
-        homes.remove(home + "." + jogador);
+        plugin.getHomes().remove(home + "." + jogador);
         StringBuilder nova = new StringBuilder();
         String[] values = getHomes(jogador);
         boolean t = true;
@@ -84,7 +80,7 @@ public class HomesManager {
             }
         }
         values = nova.toString().split(":");
-        this.home.put(jogador, values);
+        plugin.getHome().put(jogador, values);
         String querie;
         if (t) {
             querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
@@ -97,8 +93,8 @@ public class HomesManager {
     }
 
     public Location getHome(String home, String jogador) {
-        if (homes.containsKey(home + "." + jogador)) {
-            return homes.get(home + "." + jogador);
+        if (plugin.getHomes().containsKey(home + "." + jogador)) {
+            return plugin.getHomes().get(home + "." + jogador);
         } else {
             return plugin.error;
         }
@@ -119,7 +115,7 @@ public class HomesManager {
     }
 
     public String[] getHomes(String jogador) {
-        return home.get(jogador);
+        return plugin.getHome().get(jogador);
     }
 
 }

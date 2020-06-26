@@ -63,6 +63,11 @@ public class LoadMaps {
             plugin.getHome().put(k, homess);
         });
 
+        query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + ";";
+        temp = EQueries.getMapString(query, "player_name", "balance");
+
+        temp.forEach((k, v) -> plugin.getBalances().put(k, Double.parseDouble(v)));
+
     }
 
 }

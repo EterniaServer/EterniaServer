@@ -2,16 +2,13 @@ package br.com.eterniaserver.eterniaserver.modules.economymanager;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 
 public class EconomyManager {
 
     private final EterniaServer plugin;
-    private final PlayerManager playerManager;
 
     public EconomyManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.playerManager = plugin.getPlayerManager();
     }
 
     /**
@@ -20,22 +17,13 @@ public class EconomyManager {
      * @return Amount currently held in player's account
      */
     public double getMoney(String playerName) {
-        if (EterniaServer.balances.containsKey(playerName)) {
-            return EterniaServer.balances.get(playerName);
-        }
-
-        double value;
-
-        if (playerManager.playerMoneyExist(playerName)) {
-            final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " WHERE player_name='" + playerName + "';";
-            value = EQueries.queryDouble(querie, "balance");
+        if (plugin.getBalances().containsKey(playerName)) {
+            return plugin.getBalances().get(playerName);
         } else {
-            playerManager.playerMoneyCreate(playerName);
-            value = 300.0;
+            EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
+            plugin.getBalances().put(playerName, 300.0);
+            return 300.0;
         }
-
-        EterniaServer.balances.put(playerName, value);
-        return value;
     }
 
     /**
@@ -54,11 +42,12 @@ public class EconomyManager {
      * @param amount to set
      */
     public void setMoney(String playerName, double amount) {
-        if (playerManager.playerMoneyExist(playerName)) {
-            EterniaServer.balances.put(playerName, amount);
+        if (plugin.getBalances().containsKey(playerName)) {
+            plugin.getBalances().put(playerName, amount);
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
         } else {
-            playerManager.playerMoneyCreate(playerName);
+            EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
+            plugin.getBalances().put(playerName, 300.0);
             setMoney(playerName, amount);
         }
     }

@@ -23,7 +23,7 @@ public class OnAsyncPlayerPreLogin implements Listener {
             if (!playerManager.playerXPExist(playerName)) playerManager.playerXPCreate(playerName);
         }
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            EterniaServer.afktime.put(playerName, System.currentTimeMillis());
+            plugin.getAfktime().put(playerName, System.currentTimeMillis());
             if (!playerManager.playerProfileExist(playerName)) playerManager.playerProfileCreate(playerName);
         }
         if (plugin.serverConfig.getBoolean("modules.home")) {

@@ -20,7 +20,7 @@ public class OnPlayerLeave implements Listener {
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) EterniaServer.afktime.remove(playerName);
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) plugin.getAfktime().remove(playerName);
 
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             plugin.getChecks().removeUUIF(player);
