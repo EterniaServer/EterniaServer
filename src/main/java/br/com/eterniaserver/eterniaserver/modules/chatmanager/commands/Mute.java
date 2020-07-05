@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.chatmanager.commands;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
@@ -18,12 +17,10 @@ public class Mute extends BaseCommand {
 
     private final EterniaServer plugin;
     private final EFiles messages;
-    private final PlayerManager playerManager;
 
     public Mute(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
-        this.playerManager = plugin.getPlayerManager();
     }
 
     @CommandAlias("mutechannels|muteall")
@@ -49,7 +46,7 @@ public class Mute extends BaseCommand {
         Date dataa = cal.getTime();
         final String date = plugin.sdf.format(dataa);
         messages.broadcastMessage("chat.mutebroad", "%player_name%", player.getName(), "%message%", messageFull(message));
-        if (playerManager.registerMuted(target.getPlayer().getName())) {
+        if (registerMuted(target.getPlayer().getName())) {
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
             EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
@@ -64,7 +61,7 @@ public class Mute extends BaseCommand {
     public void onUnMute(OnlinePlayer target) {
         EterniaServer.player_muted.put(target.getPlayer().getName(), System.currentTimeMillis());
         messages.broadcastMessage("chat.unmutebroad", "%player_name%", target.getPlayer().getName());
-        if (playerManager.registerMuted(target.getPlayer().getName())) {
+        if (registerMuted(target.getPlayer().getName())) {
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
             EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + "2020/01/01 00:00" + "');");
@@ -93,6 +90,10 @@ public class Mute extends BaseCommand {
         StringBuilder sb = new StringBuilder();
         for (String arg : message) sb.append(arg).append(" ");
         return sb.toString();
+    }
+
+    private boolean registerMuted(String playerName) {
+        return EQueries.queryBoolean("SELECT * FROM " + plugin.serverConfig.getString("sql.table-muted") + " WHERE player_name='" + playerName + "';", "player_name");
     }
 
 }

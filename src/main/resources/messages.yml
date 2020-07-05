@@ -8,6 +8,7 @@
 # Messages
 server:
   prefix: '&8[&aE&9S&8] '
+  motd: '#20C768E#1EC74Et#1FC742e#22C735r#2CC722n#40C724i#53C71Fa#1545C7S#185EC7e#1A6DC7r#1F8BC7v#229EC7e#18B6C7r #C746131#C7381A.#C722181#C7162E6 #BDC733S#C7C12Cu#C7B72Br#C7AD2Cv#C79D24i#C79424v#C78821a#C7791El'
   join: '&3%player_name% &8[&a+&8]'
   chat-error: '&7Erro no chat&8: &3%error%&8.'
   leave: '&3%player_name% &8[&c-&8]'

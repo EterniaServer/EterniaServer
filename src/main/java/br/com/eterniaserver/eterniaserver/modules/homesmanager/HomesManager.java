@@ -9,8 +9,6 @@ import co.aikar.commands.PaperCommandManager;
 
 import org.bukkit.Location;
 
-import java.util.Map;
-
 public class HomesManager {
 
     private final EterniaServer plugin;

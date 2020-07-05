@@ -11,7 +11,6 @@ import br.com.eterniaserver.eterniaserver.modules.kitsmanager.KitsManager;
 import br.com.eterniaserver.eterniaserver.modules.rewardsmanager.RewardsManager;
 import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.eterniaserver.objects.Checks;
-import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 
@@ -34,14 +33,13 @@ public class EterniaServer extends JavaPlugin implements Vars {
     public boolean hasPlaceholderAPI = true;
 
     public final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
-    public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+    public final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     private PaperCommandManager manager;
     private EFiles eFiles;
 
     private final Checks checks = new Checks(this);
     private final PlaceHolders placeHolders = new PlaceHolders(this);
-    private final PlayerManager playerManager = new PlayerManager(this);
     private final EconomyManager money = new EconomyManager(this);
     private final ExperienceManager exp = new ExperienceManager(this);
 
@@ -101,6 +99,7 @@ public class EterniaServer extends JavaPlugin implements Vars {
         this.getServer().getPluginManager().registerEvents(new OnPlayerSignChange(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneak(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnServerListPing(this), this);
 
     }
 
@@ -186,10 +185,6 @@ public class EterniaServer extends JavaPlugin implements Vars {
 
     public EconomyManager getMoney() {
         return money;
-    }
-
-    public PlayerManager getPlayerManager() {
-        return playerManager;
     }
 
     public PlaceHolders getPlaceHolders() {

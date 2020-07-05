@@ -4,7 +4,6 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.kitsmanager.commands.*;
-import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 
 import co.aikar.commands.PaperCommandManager;
 
@@ -19,12 +18,10 @@ import java.util.Date;
 public class KitsManager {
 
     private final EterniaServer plugin;
-    private final PlayerManager playerManager;
 
 
     public KitsManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.playerManager = plugin.getPlayerManager();
 
         final EFiles messages = plugin.getEFiles();
         final PaperCommandManager manager = plugin.getManager();
@@ -51,7 +48,7 @@ public class KitsManager {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         final String data = format.format(date);
-        if (playerManager.playerCooldownExist(jogador, kit)) {
+        if (playerCooldownExist(jogador, kit)) {
             EterniaServer.kits_cooldown.put(kit + "." + jogador, data);
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-kits") + " SET cooldown='" + data + "' WHERE name='" + kit + "." + jogador + "';";
             EQueries.executeQuery(querie);
@@ -68,7 +65,7 @@ public class KitsManager {
         }
 
         String cooldown;
-        if (playerManager.playerCooldownExist(jogador, kit)) {
+        if (playerCooldownExist(jogador, kit)) {
             final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
             cooldown = EQueries.queryString(querie, "cooldown");
         } else {
@@ -77,6 +74,19 @@ public class KitsManager {
 
         EterniaServer.kits_cooldown.put(kit + "." + jogador, cooldown);
         return cooldown;
+    }
+
+    private boolean playerCooldownExist(String jogador, String kit) {
+        if (EterniaServer.player_cooldown.contains(kit + "." + jogador)) {
+            return true;
+        }
+
+        if (EQueries.queryBoolean("SELECT * FROM " + plugin.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';", "name")) {
+            EterniaServer.player_cooldown.add(kit + "." + jogador);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

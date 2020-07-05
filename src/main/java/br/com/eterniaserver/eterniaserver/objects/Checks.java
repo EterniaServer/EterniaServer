@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.utils.FormatInfo;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.bukkit.entity.Player;
 
 public class Checks {

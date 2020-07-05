@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.dependencies.vault;
 
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.PlayerManager;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -17,12 +17,10 @@ public class VaultMethods implements Economy {
 
     private final DecimalFormat df2 = new DecimalFormat(".##");
     private final EterniaServer plugin;
-    private final PlayerManager playerManager;
     private final EconomyManager moneyx;
 
     public VaultMethods(EterniaServer plugin) {
         this.plugin = plugin;
-        this.playerManager = plugin.getPlayerManager();
         this.moneyx = plugin.getMoney();
     }
 
@@ -63,12 +61,12 @@ public class VaultMethods implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return playerManager.playerXPExist(playerName);
+        return playerMoneyExist(playerName);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return playerManager.playerXPExist(player.getName());
+        return playerMoneyExist(player.getName());
     }
 
     @Override
@@ -228,7 +226,7 @@ public class VaultMethods implements Economy {
         return createUnsupportedResponse();
     }
 
-    EconomyResponse createUnsupportedResponse() {
+    private EconomyResponse createUnsupportedResponse() {
         return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "Sem suporte para bancos");
     }
 
@@ -240,14 +238,14 @@ public class VaultMethods implements Economy {
     @Override
     public boolean createPlayerAccount(String playerName) {
         if (this.hasAccount(playerName)) return false;
-        playerManager.playerXPCreate(playerName);
+        playerMoneyCreate(playerName);
         return true;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
         if (this.hasAccount(player)) return false;
-        playerManager.playerXPCreate(player.getName());
+        playerMoneyCreate(player.getName());
         return true;
     }
 
@@ -259,6 +257,15 @@ public class VaultMethods implements Economy {
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
         return createPlayerAccount(player);
+    }
+
+    private boolean playerMoneyExist(String playerName) {
+        return plugin.getBalances().containsKey(playerName);
+    }
+
+    private void playerMoneyCreate(String playerName) {
+        EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
+        plugin.getBalances().put(playerName, 300.0);
     }
 
 }

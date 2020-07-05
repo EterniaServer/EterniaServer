@@ -1,8 +1,11 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+
 import io.papermc.lib.PaperLib;
+
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;

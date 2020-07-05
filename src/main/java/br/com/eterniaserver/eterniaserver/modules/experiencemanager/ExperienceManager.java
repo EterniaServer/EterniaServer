@@ -3,8 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.experiencemanager;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import java.util.Map;
-
 public class ExperienceManager {
 
     private final EterniaServer plugin;
