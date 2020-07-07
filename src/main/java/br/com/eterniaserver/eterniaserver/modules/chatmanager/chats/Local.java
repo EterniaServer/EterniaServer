@@ -39,7 +39,7 @@ public class Local {
                             p.sendMessage(format);
                         }
                     } else {
-                        if (p.hasPermission("eternia.spy") && p != player  && EterniaServer.spy.getOrDefault(p, false)) {
+                        if (p.hasPermission("eternia.spy") && p != player && EterniaServer.spy.getOrDefault(p, false)) {
                             p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getName() + ": " + message));
                         }
                     }

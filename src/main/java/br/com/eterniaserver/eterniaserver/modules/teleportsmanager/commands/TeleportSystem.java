@@ -15,16 +15,23 @@ import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class TeleportSystem extends BaseCommand {
 
     private final EterniaServer plugin;
     private final EFiles eFiles;
     private final EconomyManager moneyx;
 
+    private final Map<String, String> tpaRequests;
+    private final Map<String, Long> tpaTime;
+
     public TeleportSystem(EterniaServer plugin) {
         this.plugin = plugin;
         this.eFiles = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
+        this.tpaRequests = plugin.getTpa_requests();
+        this.tpaTime = plugin.getTpa_time();
     }
 
     @CommandAlias("tpall|teleportall")
@@ -38,14 +45,14 @@ public class TeleportSystem extends BaseCommand {
     @CommandPermission("eternia.tpa")
     public void onTeleportAccept(Player player) {
         final String playerName = player.getName();
-        if (plugin.getTpa_requests().containsKey(playerName)) {
-            final Player target = Bukkit.getPlayer(plugin.getTpa_requests().get(playerName));
+        if (tpaRequests.containsKey(playerName)) {
+            final Player target = Bukkit.getPlayer(tpaRequests.get(playerName));
             if (target != null) {
                 eFiles.sendMessage("teleport.tpa.accept", "%target_name%", playerName, target);
                 EterniaServer.teleports.put(target, new PlayerTeleport(target, player.getLocation(), "teleport.tpa.done", plugin));
             }
-            plugin.getTpa_time().remove(playerName);
-            plugin.getTpa_requests().remove(playerName);
+            tpaTime.remove(playerName);
+            tpaRequests.remove(playerName);
         } else {
             eFiles.sendMessage("teleport.tpa.no-request", player);
         }
@@ -55,11 +62,11 @@ public class TeleportSystem extends BaseCommand {
     @CommandPermission("eternia.tpa")
     public void onTeleportDeny(Player player) {
         final String playerName = player.getName();
-        if (plugin.getTpa_requests().containsKey(playerName)) {
-            eFiles.sendMessage("teleport.tpa.deny", "%target_name%", plugin.getTpa_requests().get(playerName), player);
-            final Player target = Bukkit.getPlayer(plugin.getTpa_requests().get(playerName));
-            plugin.getTpa_requests().remove(playerName);
-            plugin.getTpa_time().remove(playerName);
+        if (tpaRequests.containsKey(playerName)) {
+            eFiles.sendMessage("teleport.tpa.deny", "%target_name%", tpaRequests.get(playerName), player);
+            final Player target = Bukkit.getPlayer(tpaRequests.get(playerName));
+            tpaRequests.remove(playerName);
+            tpaTime.remove(playerName);
             if (target != null && target.isOnline()) eFiles.sendMessage("teleport.tpa.denied", target);
         } else {
             eFiles.sendMessage("teleport.tpa.no-request", player);
@@ -78,10 +85,10 @@ public class TeleportSystem extends BaseCommand {
             if (targetP != player) {
                 final String playerName = player.getName();
                 final String targetName = targetP.getName();
-                if (!plugin.getTpa_requests().containsKey(targetName)) {
-                    plugin.getTpa_requests().remove(targetName);
-                    plugin.getTpa_requests().put(targetName, playerName);
-                    plugin.getTpa_time().put(targetName, System.currentTimeMillis());
+                if (!tpaRequests.containsKey(targetName)) {
+                    tpaRequests.remove(targetName);
+                    tpaRequests.put(targetName, playerName);
+                    tpaTime.put(targetName, System.currentTimeMillis());
                     eFiles.sendMessage("teleport.tpa.received", "%target_name%", playerName, targetP);
                     eFiles.sendMessage("teleport.tpa.sent", "%target_name%", targetName, player);
                 } else {
@@ -105,8 +112,13 @@ public class TeleportSystem extends BaseCommand {
                 else EterniaServer.teleports.put(player, new PlayerTeleport(player, EterniaServer.back.get(playerName), "teleport.back.free", plugin));
             } else {
                 if (money >= valor) {
-                    if (EterniaServer.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
-                    else EterniaServer.teleports.put(player, new PlayerTeleport(player, EterniaServer.back.get(playerName), "teleport.back.no-free", plugin));
+                    if (EterniaServer.teleports.containsKey(player)) {
+                        eFiles.sendMessage("server.telep", player);
+                    }
+                    else {
+                        moneyx.removeMoney(playerName, valor);
+                        EterniaServer.teleports.put(player, new PlayerTeleport(player, EterniaServer.back.get(playerName), "teleport.back.no-free", plugin));
+                    }
                 } else {
                     eFiles.sendMessage("teleport.back.no-money", "%money%", valor, player);
                 }

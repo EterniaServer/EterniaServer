@@ -106,7 +106,7 @@ public class Managers {
         }
 
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            new Checks(plugin, plugin.teleportsManager).runTaskTimer(plugin, 20L, (long) plugin.serverConfig.getInt("server.checks") * 20);
+            new Checks(plugin).runTaskTimer(plugin, 20L, (long) plugin.serverConfig.getInt("server.checks") * 20);
             messages.sendConsole("modules.enable", "%module%", "Player-Checks");
         } else {
             messages.sendConsole("modules.disable", "%module%", "Player-Checks");

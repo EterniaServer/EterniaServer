@@ -69,7 +69,6 @@ public class OnAsyncPlayerPreLogin implements Listener {
 
     private void playerHomeCreate(String playerName) {
         EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');");
-        plugin.getHome().put(playerName, null);
     }
 
 }

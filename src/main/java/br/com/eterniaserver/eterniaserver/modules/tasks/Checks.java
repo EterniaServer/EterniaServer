@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.modules.tasks;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.modules.teleportsmanager.TeleportsManager;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import io.papermc.lib.PaperLib;
@@ -11,21 +10,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;
 
-public class Checks extends org.bukkit.scheduler.BukkitRunnable {
+public class Checks extends BukkitRunnable {
 
     private final EterniaServer plugin;
     private final EFiles messages;
-    private final TeleportsManager teleportsManager;
 
-    public Checks(EterniaServer plugin, TeleportsManager teleportsManager) {
+    public Checks(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
-        this.teleportsManager = teleportsManager;
     }
 
+    @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Location location = player.getLocation();
@@ -43,7 +42,7 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
                     EterniaServer.playersInPortal.put(playerName, 7);
                 } else if (EterniaServer.playersInPortal.get(playerName) <= 1) {
                     if (location.getBlock().getType() == Material.NETHER_PORTAL) {
-                        PaperLib.teleportAsync(player, teleportsManager.getWarp("spawn"));
+                        PaperLib.teleportAsync(player, getWarp("spawn"));
                         messages.sendMessage("teleport.warp.done", player);
                     }
                 } else {
@@ -90,4 +89,9 @@ public class Checks extends org.bukkit.scheduler.BukkitRunnable {
             }
         }
     }
+
+    private Location getWarp(final String warp) {
+        return plugin.getWarps().containsKey(warp) ? plugin.getWarps().get(warp) : plugin.error;
+    }
+
 }

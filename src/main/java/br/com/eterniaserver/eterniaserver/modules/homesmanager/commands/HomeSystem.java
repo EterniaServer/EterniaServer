@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.homesmanager.commands;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.modules.homesmanager.HomesManager;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import co.aikar.commands.BaseCommand;
@@ -21,17 +21,21 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
+import java.util.Map;
 
 public class HomeSystem extends BaseCommand {
 
     private final EterniaServer plugin;
     private final EFiles messages;
-    private final HomesManager homesManager;
 
-    public HomeSystem(EterniaServer plugin, HomesManager homesManager) {
+    private final Map<String, String[]> homesName;
+    private final Map<String, Location> homesLoc;
+
+    public HomeSystem(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
-        this.homesManager = homesManager;
+        this.homesName = plugin.getHome();
+        this.homesLoc = plugin.getHomes();
     }
 
     @CommandAlias("delhome|delhouse|delcasa")
@@ -40,8 +44,8 @@ public class HomeSystem extends BaseCommand {
     public void onDelHome(Player player, String nome) {
         final String playerName = player.getName();
 
-        if (homesManager.existHome(nome.toLowerCase(), playerName)) {
-            homesManager.delHome(nome.toLowerCase(), playerName);
+        if (existHome(nome.toLowerCase(), playerName)) {
+            delHome(nome.toLowerCase(), playerName);
             messages.sendMessage("home.deleted", player);
         } else {
             messages.sendMessage("home.no-exists", player);
@@ -53,7 +57,7 @@ public class HomeSystem extends BaseCommand {
     @CommandPermission("eternia.home")
     public void onHome(Player player, String nome, @Optional OnlinePlayer target) {
         if (target == null) {
-            Location location = homesManager.getHome(nome.toLowerCase(), player.getName());
+            Location location = getHome(nome.toLowerCase(), player.getName());
             if (location != plugin.error) {
                 if (EterniaServer.teleports.containsKey(player)) {
                         messages.sendMessage("server.telep", player);
@@ -65,7 +69,7 @@ public class HomeSystem extends BaseCommand {
             }
         } else {
             if (player.hasPermission("eternia.home.other")) {
-                Location location = homesManager.getHome(nome.toLowerCase(), target.getPlayer().getName());
+                Location location = getHome(nome.toLowerCase(), target.getPlayer().getName());
                 if (location != plugin.error) {
                     EterniaServer.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
                 } else {
@@ -85,7 +89,7 @@ public class HomeSystem extends BaseCommand {
         String[] values;
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
-                values = homesManager.getHomes(target.getPlayer().getName());
+                values = getHomes(target.getPlayer().getName());
                 for (String line : values) {
                     accounts.append(line).append("&8, &3");
                 }
@@ -94,7 +98,7 @@ public class HomeSystem extends BaseCommand {
                 messages.sendMessage("server.no-perm", player);
             }
         } else {
-            values = homesManager.getHomes(player.getName());
+            values = getHomes(player.getName());
             for (String line : values) {
                 accounts.append(line).append("&8, &3");
             }
@@ -108,13 +112,13 @@ public class HomeSystem extends BaseCommand {
     public void onSetHome(Player player, String nome) {
         int i = 4;
         for (int v = 5; v <= 30; v++) if (player.hasPermission("eternia.sethome." + v)) i = v;
-        if (nome.length() <= 8) {
-            if (homesManager.canHome(player.getName()) < i) {
-                homesManager.setHome(player.getLocation(), nome.toLowerCase(), player.getName());
+        if (nome.length() <= 12) {
+            if (canHome(player.getName()) < i) {
+                setHome(player.getLocation(), nome.toLowerCase(), player.getName());
                 messages.sendMessage("home.created", player);
             } else {
-                if (homesManager.existHome(nome.toLowerCase(), player.getName())) {
-                    homesManager.setHome(player.getLocation(), nome.toLowerCase(), player.getName());
+                if (existHome(nome.toLowerCase(), player.getName())) {
+                    setHome(player.getLocation(), nome.toLowerCase(), player.getName());
                     messages.sendMessage("home.created", player);
                 } else {
                     ItemStack item = new ItemStack(Material.COMPASS);
@@ -139,6 +143,95 @@ public class HomeSystem extends BaseCommand {
         } else {
             messages.sendMessage("home.exceeded", player);
         }
+    }
+
+    public void setHome(Location loc, String home, String jogador) {
+        homesLoc.put(home + "." + jogador, loc);
+        boolean t = false;
+        StringBuilder result = new StringBuilder();
+        String[] values = getHomes(jogador);
+        for (String line : values) {
+            if (line.equals(home)) {
+                result.append(line).append(":");
+                t = true;
+            } else {
+                result.append(line).append(":");
+            }
+        }
+        if (!t) {
+            result.append(home).append(":");
+            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
+            EQueries.executeQuery(querie);
+            values = result.toString().split(":");
+            homesName.put(jogador, values);
+            String saveloc = loc.getWorld().getName() +
+                    ":" + ((int) loc.getX()) +
+                    ":" + ((int) loc.getY()) +
+                    ":" + ((int) loc.getZ()) +
+                    ":" + ((int) loc.getYaw()) +
+                    ":" + ((int) loc.getPitch());
+            final String querie2 = "INSERT INTO " + plugin.serverConfig.getString("sql.table-homes") + " (name, location) VALUES ('" + home + "." + jogador + "', '" + saveloc + "')";
+            EQueries.executeQuery(querie2);
+        } else {
+            String saveloc = loc.getWorld().getName() +
+                    ":" + ((int) loc.getX()) +
+                    ":" + ((int) loc.getY()) +
+                    ":" + ((int) loc.getZ()) +
+                    ":" + ((int) loc.getYaw()) +
+                    ":" + ((int) loc.getPitch());
+            final String querie3 = "UPDATE " + plugin.serverConfig.getString("sql.table-homes") + " SET location='" + saveloc + "' WHERE name='" + home + "." + jogador + "';";
+            EQueries.executeQuery(querie3);
+        }
+    }
+
+    public void delHome(String home, String jogador) {
+        homesLoc.remove(home + "." + jogador);
+        StringBuilder nova = new StringBuilder();
+        String[] values = getHomes(jogador);
+        boolean t = true;
+        for (String line : values) {
+            if (!line.equals(home)) {
+                nova.append(line).append(":");
+                t = false;
+            }
+        }
+        values = nova.toString().split(":");
+        homesName.put(jogador, values);
+        String querie;
+        if (t) {
+            querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
+        } else {
+            querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
+        }
+        EQueries.executeQuery(querie);
+        querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
+        EQueries.executeQuery(querie);
+    }
+
+    public Location getHome(String home, String jogador) {
+        if (homesLoc.containsKey(home + "." + jogador)) {
+            return homesLoc.get(home + "." + jogador);
+        } else {
+            return plugin.error;
+        }
+    }
+
+    public boolean existHome(String home, String jogador) {
+        String[] homes = getHomes(jogador);
+        for (String line : homes) {
+            if (line.equals(home)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int canHome(String jogador) {
+        return getHomes(jogador) != null ? getHomes(jogador).length : 0;
+    }
+
+    public String[] getHomes(String jogador) {
+        return homesName.get(jogador) != null ? homesName.get(jogador) : "".split(":");
     }
 
 }
