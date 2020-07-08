@@ -4,3 +4,4 @@ target/
 .idea/
 .git/
 dependency-reduced-pom.xml
+/EterniaServer.iml

@@ -37,7 +37,11 @@ public class TeleportSystem extends BaseCommand {
     @CommandAlias("tpall|teleportall")
     @CommandPermission("eternia.tpall")
     public void onTeleportAll(Player player) {
-        for (Player other : Bukkit.getOnlinePlayers()) if (other != player) other.teleport(player);
+        for (Player other : Bukkit.getOnlinePlayers()) {
+            if (other != player) {
+                other.teleport(player);
+            }
+        }
         eFiles.sendMessage("teleport.tp.all", player);
     }
 
