@@ -14,6 +14,10 @@ import java.util.Map;
 
 public class Vars {
 
+    private Vars() {
+        throw new IllegalStateException("Utility class");
+    }
+
     protected static final Map<String, Location> homes = new HashMap<>();
     protected static final Map<String, Location> shops = new HashMap<>();
     protected static final Map<String, Location> warps = new HashMap<>();

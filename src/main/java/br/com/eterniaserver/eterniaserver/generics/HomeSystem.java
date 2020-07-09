@@ -39,7 +39,6 @@ public class HomeSystem extends BaseCommand {
 
         AtomicInteger x = new AtomicInteger(0);
         temp.forEach((k, v) -> {
-            System.out.println(k + "=" + v);
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
                     Double.parseDouble(split[1]),

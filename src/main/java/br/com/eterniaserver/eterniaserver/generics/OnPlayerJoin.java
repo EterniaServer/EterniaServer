@@ -28,11 +28,9 @@ public class OnPlayerJoin implements Listener {
             if (player.hasPermission("eternia.spy")) Vars.spy.put(player, true);
             if (!Vars.playerMuted.containsKey(playerName)) checkMuted(playerName);
         }
-        if (plugin.serverConfig.getBoolean("modules.economy")) {
-            if (!Vars.balances.containsKey(playerName)) {
-                Vars.balances.put(playerName, 300.0);
-                EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
-            }
+        if (plugin.serverConfig.getBoolean("modules.economy") && !Vars.balances.containsKey(playerName)) {
+            Vars.balances.put(playerName, 300.0);
+            EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
         }
         event.setJoinMessage(null);
         plugin.getEFiles().broadcastMessage("server.join", "%player_name%", playerName);

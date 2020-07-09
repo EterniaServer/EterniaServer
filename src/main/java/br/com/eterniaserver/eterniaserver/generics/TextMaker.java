@@ -140,10 +140,10 @@ public class TextMaker extends StringHelper {
 	}
 
 	public String customPlaceholder(Player p, String s2) {
-		String message = s2;
+		String stringMessage = s2;
 		for(CustomPlaceholder cp: Vars.customPlaceholders) {
 			String id = cp.getId();
-			if(!message.contains("{" + id + "}")) continue;
+			if(!stringMessage.contains("{" + id + "}")) continue;
 			try {
 				SubPlaceholder bestPlaceholder = null;
 				for(SubPlaceholder subPlaceholder: cp.getPlaceholders()) {
@@ -157,15 +157,13 @@ public class TextMaker extends StringHelper {
 					}
 				}
 				if(bestPlaceholder != null) {
-					message = message.replace("{" + id + "}", bestPlaceholder.getValue());
+					stringMessage = stringMessage.replace("{" + id + "}", bestPlaceholder.getValue());
 				} else {
-					message = message.replace("{" + id + "}", "");
+					stringMessage = stringMessage.replace("{" + id + "}", "");
 				}
-			}catch(Exception e1) {
-				e1.printStackTrace();
-			}
+			} catch(Exception ignored) { }
 		}
-		s2 = message;
+		s2 = stringMessage;
 		return internMethods.setPlaceholders(p, s2);
 	}
 

@@ -32,10 +32,8 @@ public class SubPlaceholder {
 		if(section.contains("runCmd")) {
 			run = section.getString("runCmd");
 		}
-		if(section.contains("useGroupEvents")) {
-			if(section.getBoolean("useGroupEvents")) {
-				isText = true;
-			}
+		if(section.contains("useGroupEvents") && section.getBoolean("useGroupEvents")) {
+			isText = true;
 		}
 	}
 

@@ -32,30 +32,28 @@ public class OnPlayerInteract implements Listener {
             final ItemStack is = player.getInventory().getItemInMainHand();
             final List<String> lore = is.getLore();
 
-            if (plugin.serverConfig.getBoolean("modules.home")) {
-                if (is.getType().equals(Material.COMPASS) && lore != null) {
-                    final String[] isso = lore.get(0).split(":");
-                    final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
+            if (plugin.serverConfig.getBoolean("modules.home") && is.getType().equals(Material.COMPASS)
+                    && lore != null) {
+                final String[] isso = lore.get(0).split(":");
+                final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
 
-                    if (Vars.teleports.containsKey(player)) {
-                        plugin.getEFiles().sendMessage("server.telep", player);
-                    }
-                    else {
-                        Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
-                    }
+                if (Vars.teleports.containsKey(player)) {
+                    plugin.getEFiles().sendMessage("server.telep", player);
+                } else {
+                    Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
                 }
             }
-            if (plugin.serverConfig.getBoolean("modules.experience")) {
-                if (is.getType().equals(Material.EXPERIENCE_BOTTLE) && lore != null) {
-                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                    player.giveExp(Integer.parseInt(lore.get(0)));
-                }
+            if (plugin.serverConfig.getBoolean("modules.experience") && is.getType().equals(Material.EXPERIENCE_BOTTLE)
+                    && lore != null) {
+                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                player.giveExp(Integer.parseInt(lore.get(0)));
             }
         }
-        if (plugin.serverConfig.getBoolean("modules.spawners")) {
-            if (e.getClickedBlock() != null && action.equals(Action.RIGHT_CLICK_BLOCK) && e.getItem() != null && e.getClickedBlock().getType() == Material.SPAWNER) {
-                if (!player.hasPermission("eternia.change-spawner")) e.setCancelled(true);
-            }
+        if (plugin.serverConfig.getBoolean("modules.spawners") && e.getClickedBlock() != null
+                && action.equals(Action.RIGHT_CLICK_BLOCK) && e.getItem() != null
+                && e.getClickedBlock().getType() == Material.SPAWNER
+                && !player.hasPermission("eternia.change-spawner")) {
+            e.setCancelled(true);
         }
     }
 }
