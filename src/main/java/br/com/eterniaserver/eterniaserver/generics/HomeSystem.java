@@ -48,9 +48,8 @@ public class HomeSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.homes.put(k, loc);
             x.getAndIncrement();
-            messages.sendConsole("server.load-data",  "%module%", "Home", "%amount%", x.get());
-
         });
+        messages.sendConsole("server.load-data",  "%module%", "Home", "%amount%", x.get());
 
         query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + ";";
         temp = EQueries.getMapString(query, "player_name", "homes");
@@ -59,8 +58,8 @@ public class HomeSystem extends BaseCommand {
             final String[] homess = v.split(":");
             Vars.home.put(k, homess);
             x.getAndIncrement();
-            messages.sendConsole("server.load-data",  "%module%", "PlayerHomes", "%amount%", x.get());
         });
+        messages.sendConsole("server.load-data",  "%module%", "PlayerHomes", "%amount%", x.get());
 
     }
 

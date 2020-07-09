@@ -13,9 +13,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Economy extends BaseCommand {
 
@@ -36,8 +39,8 @@ public class Economy extends BaseCommand {
         temp.forEach((k, v) -> {
             Vars.balances.put(k, Double.parseDouble(v));
             x.getAndIncrement();
-            messages.sendConsole("server.load-data",  "%module%", "Economy", "%amount%", x.get());
         });
+        messages.sendConsole("server.load-data",  "%module%", "Economy", "%amount%", x.get());
     }
 
     @CommandAlias("money|economy|balance|bal")
@@ -90,11 +93,17 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.baltop")
     public void onBaltop(CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + " ORDER BY balance DESC LIMIT " + 10 + ";";
-            final List<String> accounts = EQueries.queryStringList(querie, "player_name");
-            DecimalFormat df2 = new DecimalFormat(".##");
-            messages.sendMessage("eco.baltop", sender);
-            accounts.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (accounts.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));
+            final ArrayList<String> list = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                double maior = 0;
+                for (Map.Entry<String, Double> entry : Vars.balances.entrySet()) {
+                    if (entry.getValue() > maior && !list.contains(entry.getKey())) {
+                        list.add(entry.getKey());
+                    }
+                }
+                DecimalFormat df2 = new DecimalFormat(".##");
+                list.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (list.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));
+            }
         });
     }
 

@@ -38,8 +38,8 @@ public class Experience extends BaseCommand {
         temp.forEach((k, v) -> {
             Vars.xp.put(k, Integer.parseInt(v));
             x.getAndIncrement();
-            messages.sendConsole("server.load-data",  "%module%", "Experience", "%amount%", x.get());
         });
+        messages.sendConsole("server.load-data",  "%module%", "Experience", "%amount%", x.get());
     }
 
     @CommandAlias("checklevel|verlevel")
