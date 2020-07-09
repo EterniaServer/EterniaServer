@@ -19,6 +19,7 @@ server:
   no-discordsrv: '&3DiscordSRV &7não encontrado&8, &7iniciando no modo sem &3DiscordSRV&8.'
   timing: '&7Você deve esperar &3%cooldown &7segundos para poder usar esse comando novamente&8.'
   telep: '&7Você já está em um teleporte&8, &7espere acabar&8.'
+  load-data: '&3%module% &7carregados &3%amount% &7de arquivos&8.'
 chat:
   global-advice: '&7%advice%'
   rnaote: '&7Você não possui ninguém para responder&8.'

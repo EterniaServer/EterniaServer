@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Economy extends BaseCommand {
 
@@ -27,10 +28,16 @@ public class Economy extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
 
+        AtomicInteger x = new AtomicInteger(0);
+
         final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + ";";
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "balance");
 
-        temp.forEach((k, v) -> Vars.balances.put(k, Double.parseDouble(v)));
+        temp.forEach((k, v) -> {
+            Vars.balances.put(k, Double.parseDouble(v));
+            x.getAndIncrement();
+            messages.sendConsole("server.load-data",  "%module%", "Economy", "%amount%", x.get());
+        });
     }
 
     @CommandAlias("money|economy|balance|bal")

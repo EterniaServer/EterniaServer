@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class WarpSystem extends BaseCommand {
 
@@ -29,6 +30,7 @@ public class WarpSystem extends BaseCommand {
         String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + ";";
         HashMap<String, String> temp = EQueries.getMapString(query, "name", "location");
 
+        AtomicInteger x = new AtomicInteger(0);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -38,11 +40,14 @@ public class WarpSystem extends BaseCommand {
                     Float.parseFloat(split[4]),
                     Float.parseFloat(split[5]));
             Vars.shops.put(k, loc);
+            x.getAndIncrement();
+            eFiles.sendConsole("server.load-data",  "%module%", "Shops", "%amount%", x.get());
         });
 
         query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
         temp = EQueries.getMapString(query, "name", "location");
 
+        x.set(0);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -52,6 +57,8 @@ public class WarpSystem extends BaseCommand {
                     Float.parseFloat(split[4]),
                     Float.parseFloat(split[5]));
             Vars.warps.put(k, loc);
+            x.getAndIncrement();
+            eFiles.sendConsole("server.load-data",  "%module%", "Warps", "%amount%", x.get());
         });
 
     }
