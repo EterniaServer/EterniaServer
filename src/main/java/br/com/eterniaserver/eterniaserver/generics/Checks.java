@@ -40,7 +40,7 @@ public class Checks extends BukkitRunnable {
                     Vars.playersInPortal.put(playerName, 7);
                 } else if (Vars.playersInPortal.get(playerName) <= 1) {
                     if (location.getBlock().getType() == Material.NETHER_PORTAL) {
-                        PaperLib.teleportAsync(player, getWarp("spawn"));
+                        PaperLib.teleportAsync(player, getWarp());
                         messages.sendMessage("teleport.warp.done", player);
                     }
                 } else {
@@ -88,8 +88,8 @@ public class Checks extends BukkitRunnable {
         }
     }
 
-    private Location getWarp(final String warp) {
-        return Vars.warps.containsKey(warp) ? Vars.warps.get(warp) : plugin.error;
+    private Location getWarp() {
+        return Vars.warps.containsKey("spawn") ? Vars.warps.get("spawn") : plugin.error;
     }
 
 }

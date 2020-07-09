@@ -38,7 +38,9 @@ public class OnPlayerBlockPlace implements Listener {
                     spawner.update();
                     plugin.getEFiles().sendConsole("spawner.log.placed", "%player_name%", event.getPlayer().getName(), "%mob_type%", entity.name().toLowerCase());
                 }
-            } catch (NullPointerException|IllegalArgumentException ignored) { }
+            } catch (NullPointerException|IllegalArgumentException ignored) {
+                //todo
+            }
         }
     }
 

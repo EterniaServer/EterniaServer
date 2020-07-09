@@ -7,7 +7,6 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 
 import org.bukkit.entity.Player;
-import org.graalvm.compiler.graph.Node;
 
 @CommandAlias("ch|channels")
 @CommandPermission("eternia.chat.channels")

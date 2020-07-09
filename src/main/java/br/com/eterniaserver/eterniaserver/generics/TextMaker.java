@@ -161,7 +161,9 @@ public class TextMaker extends StringHelper {
 				} else {
 					stringMessage = stringMessage.replace("{" + id + "}", "");
 				}
-			} catch(Exception ignored) { }
+			} catch(Exception ignored) {
+				//todo
+			}
 		}
 		s2 = stringMessage;
 		return internMethods.setPlaceholders(p, s2);

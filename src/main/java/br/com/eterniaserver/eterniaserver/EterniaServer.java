@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.*;
 import br.com.eterniaserver.eterniaserver.generics.*;
-import br.com.eterniaserver.eterniaserver.generics.InternMethods;
 import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 

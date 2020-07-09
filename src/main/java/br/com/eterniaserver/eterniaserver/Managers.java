@@ -1,19 +1,7 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eterniaserver.generics.OnPlayerBedEnter;
-import br.com.eterniaserver.eterniaserver.generics.OnPlayerBedLeave;
-import br.com.eterniaserver.eterniaserver.generics.ChatCommands;
-import br.com.eterniaserver.eterniaserver.generics.Economy;
-import br.com.eterniaserver.eterniaserver.generics.Experience;
 import br.com.eterniaserver.eterniaserver.generics.*;
-import br.com.eterniaserver.eterniaserver.generics.KitSystem;
-import br.com.eterniaserver.eterniaserver.generics.RewardsSystem;
-import br.com.eterniaserver.eterniaserver.generics.AccelerateWorld;
-import br.com.eterniaserver.eterniaserver.generics.AdvancedChatTorch;
-import br.com.eterniaserver.eterniaserver.generics.Channels;
-import br.com.eterniaserver.eterniaserver.generics.Mute;
-import br.com.eterniaserver.eterniaserver.generics.Checks;
 
 import co.aikar.commands.PaperCommandManager;
 
