@@ -7,6 +7,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 
 import org.bukkit.entity.Player;
+import org.graalvm.compiler.graph.Node;
 
 @CommandAlias("ch|channels")
 @CommandPermission("eternia.chat.channels")
@@ -21,45 +22,29 @@ public class Channels extends BaseCommand {
     @Subcommand("local")
     @CommandAlias("l|local")
     public void toLocal(Player player, @Optional String[] messages) {
-        if (messages.length == 0) {
-            Vars.global.put(player.getName(), 0);
-            this.messages.sendMessage("chat.channelc", "%channel_name%", "Local", player);
-        } else {
-            int o = Vars.global.get(player.getName());
-            Vars.global.put(player.getName(), 0);
-            StringBuilder sb = new StringBuilder();
-            for (String arg : messages) sb.append(arg).append(" ");
-            player.chat(sb.substring(0, sb.length() - 1));
-            Vars.global.put(player.getName(), o);
-        }
+        changeChannel(0, "Local", player, messages);
     }
 
     @Subcommand("global")
     @CommandAlias("g|global")
     public void toGlobal(Player player, @Optional String[] messages) {
-        if (messages.length == 0) {
-            Vars.global.put(player.getName(), 1);
-            this.messages.sendMessage("chat.channelc", "%channel_name%", "Global", player);
-        } else {
-            int o = Vars.global.get(player.getName());
-            Vars.global.put(player.getName(), 1);
-            StringBuilder sb = new StringBuilder();
-            for (String arg : messages) sb.append(arg).append(" ");
-            player.chat(sb.substring(0, sb.length() - 1));
-            Vars.global.put(player.getName(), o);
-        }
+        changeChannel(1, "Global", player, messages);
     }
 
     @Subcommand("staff")
     @CommandAlias("s|a|staff")
     @CommandPermission("eternia.chat.staff")
     public void toStaff(Player player, @Optional String[] messages) {
-        if (messages.length == 0) {
-            Vars.global.put(player.getName(), 2);
-            this.messages.sendMessage("chat.channelc", "%channel_name%", "Staff", player);
+        changeChannel(2, "Staff", player, messages);
+    }
+
+    private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
+        if (messages != null && messages.length == 0) {
+            Vars.global.put(player.getName(), channel);
+            this.messages.sendMessage("chat.channelc", "%channel_name%", channelName, player);
         } else {
             int o = Vars.global.get(player.getName());
-            Vars.global.put(player.getName(), 2);
+            Vars.global.put(player.getName(), channel);
             StringBuilder sb = new StringBuilder();
             for (String arg : messages) sb.append(arg).append(" ");
             player.chat(sb.substring(0, sb.length() - 1));

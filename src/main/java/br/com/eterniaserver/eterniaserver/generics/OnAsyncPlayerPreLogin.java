@@ -20,10 +20,8 @@ public class OnAsyncPlayerPreLogin implements Listener {
     @EventHandler
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         final String playerName = event.getName();
-        if (plugin.serverConfig.getBoolean("modules.experience")) {
-            if (!playerXPExist(playerName)) {
-                playerXPCreate(playerName);
-            }
+        if (plugin.serverConfig.getBoolean("modules.experience") && !playerXPExist(playerName)) {
+            playerXPCreate(playerName);
         }
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
             Vars.afkTime.put(playerName, System.currentTimeMillis());
@@ -31,10 +29,8 @@ public class OnAsyncPlayerPreLogin implements Listener {
                 playerProfileCreate(playerName);
             }
         }
-        if (plugin.serverConfig.getBoolean("modules.home")) {
-            if (!playerHomeExist(playerName)) {
-                playerHomeCreate(playerName);
-            }
+        if (plugin.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
+            playerHomeCreate(playerName);
         }
     }
 

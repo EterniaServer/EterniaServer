@@ -30,12 +30,10 @@ public class Checks extends BukkitRunnable {
             Location location = player.getLocation();
             final String playerName = player.getName();
 
-            if (Vars.tpaRequests.containsKey(playerName)) {
-                if (Vars.tpaTime.containsKey(playerName) &&
-                        TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.tpaTime.get(playerName)) >= 25) {
-                    Vars.tpaRequests.remove(playerName);
-                    Vars.tpaTime.remove(playerName);
-                }
+            if (Vars.tpaRequests.containsKey(playerName) && Vars.tpaTime.containsKey(playerName) &&
+                    TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.tpaTime.get(playerName)) >= 25) {
+                Vars.tpaRequests.remove(playerName);
+                Vars.tpaTime.remove(playerName);
             }
             if (location.getBlock().getType() == Material.NETHER_PORTAL) {
                 if (!Vars.playersInPortal.containsKey(playerName)) {

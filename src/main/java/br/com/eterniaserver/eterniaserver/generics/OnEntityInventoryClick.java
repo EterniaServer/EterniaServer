@@ -28,12 +28,13 @@ public class OnEntityInventoryClick implements Listener {
 
         final Player player = (Player) e.getWhoClicked();
         final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("spawners.prevent-anvil") && plugin.serverConfig.getBoolean("modules.spawners")) {
-            if (e.getInventory().getType() == InventoryType.ANVIL && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
-                e.setCancelled(true);
-                messages.sendMessage("spawner.others.change-name", player);
-                messages.sendConsole("spawner.log.change-name", "%player_name%", playerName);
-            }
+        if (plugin.serverConfig.getBoolean("spawners.prevent-anvil") &&
+                plugin.serverConfig.getBoolean("modules.spawners") &&
+                e.getInventory().getType() == InventoryType.ANVIL &&
+                Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
+            e.setCancelled(true);
+            messages.sendMessage("spawner.others.change-name", player);
+            messages.sendConsole("spawner.log.change-name", "%player_name%", playerName);
         }
     }
 
