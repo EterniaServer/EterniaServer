@@ -2,10 +2,8 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.*;
-import br.com.eterniaserver.eterniaserver.events.*;
-import br.com.eterniaserver.eterniaserver.modules.Managers;
-import br.com.eterniaserver.eterniaserver.modules.generics.*;
-import br.com.eterniaserver.eterniaserver.objects.Checks;
+import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.generics.InternMethods;
 import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 
@@ -20,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.SimpleDateFormat;
 
-public class EterniaServer extends JavaPlugin implements Vars {
+public class EterniaServer extends JavaPlugin {
 
     public boolean chatMuted = false;
     public boolean hasPlaceholderAPI = true;
@@ -31,7 +29,7 @@ public class EterniaServer extends JavaPlugin implements Vars {
     private PaperCommandManager manager;
     private EFiles eFiles;
 
-    private final Checks checks = new Checks(this);
+    private final InternMethods internMethods = new InternMethods(this);
     private final PlaceHolders placeHolders = new PlaceHolders(this);
     private final EconomyManager money = new EconomyManager(this);
     private final ExperienceManager exp = new ExperienceManager(this);
@@ -92,8 +90,8 @@ public class EterniaServer extends JavaPlugin implements Vars {
         new Managers(this);
     }
 
-    public Checks getChecks() {
-        return checks;
+    public InternMethods getInternMethods() {
+        return internMethods;
     }
 
     public EFiles getEFiles() {

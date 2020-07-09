@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.dependencies.vault;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.modules.generics.VaultMethods;
+import br.com.eterniaserver.eterniaserver.generics.VaultMethods;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.plugin.ServicePriority;
