@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.homesmanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
@@ -12,6 +12,7 @@ import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.annotation.Syntax;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,21 +22,40 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
-import java.util.Map;
+import java.util.HashMap;
 
 public class HomeSystem extends BaseCommand {
 
     private final EterniaServer plugin;
     private final EFiles messages;
 
-    private final Map<String, String[]> homesName;
-    private final Map<String, Location> homesLoc;
-
     public HomeSystem(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
-        this.homesName = plugin.getHome();
-        this.homesLoc = plugin.getHomes();
+
+        String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-homes") + ";";
+        HashMap<String, String> temp = EQueries.getMapString(query, "name", "location");
+
+        temp.forEach((k, v) -> {
+            System.out.println(k + "=" + v);
+            final String[] split = v.split(":");
+            final Location loc = new Location(Bukkit.getWorld(split[0]),
+                    Double.parseDouble(split[1]),
+                    (Double.parseDouble(split[2]) + 1),
+                    Double.parseDouble(split[3]),
+                    Float.parseFloat(split[4]),
+                    Float.parseFloat(split[5]));
+            Vars.homes.put(k, loc);
+        });
+
+        query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + ";";
+        temp = EQueries.getMapString(query, "player_name", "homes");
+
+        temp.forEach((k, v) -> {
+            final String[] homess = v.split(":");
+            Vars.home.put(k, homess);
+        });
+
     }
 
     @CommandAlias("delhome|delhouse|delcasa")
@@ -146,7 +166,7 @@ public class HomeSystem extends BaseCommand {
     }
 
     public void setHome(Location loc, String home, String jogador) {
-        homesLoc.put(home + "." + jogador, loc);
+        Vars.homes.put(home + "." + jogador, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
         String[] values = getHomes(jogador);
@@ -163,7 +183,7 @@ public class HomeSystem extends BaseCommand {
             final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
             EQueries.executeQuery(querie);
             values = result.toString().split(":");
-            homesName.put(jogador, values);
+            Vars.home.put(jogador, values);
             String saveloc = loc.getWorld().getName() +
                     ":" + ((int) loc.getX()) +
                     ":" + ((int) loc.getY()) +
@@ -185,7 +205,7 @@ public class HomeSystem extends BaseCommand {
     }
 
     public void delHome(String home, String jogador) {
-        homesLoc.remove(home + "." + jogador);
+        Vars.homes.remove(home + "." + jogador);
         StringBuilder nova = new StringBuilder();
         String[] values = getHomes(jogador);
         boolean t = true;
@@ -196,7 +216,7 @@ public class HomeSystem extends BaseCommand {
             }
         }
         values = nova.toString().split(":");
-        homesName.put(jogador, values);
+        Vars.home.put(jogador, values);
         String querie;
         if (t) {
             querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
@@ -209,8 +229,8 @@ public class HomeSystem extends BaseCommand {
     }
 
     public Location getHome(String home, String jogador) {
-        if (homesLoc.containsKey(home + "." + jogador)) {
-            return homesLoc.get(home + "." + jogador);
+        if (Vars.homes.containsKey(home + "." + jogador)) {
+            return Vars.homes.get(home + "." + jogador);
         } else {
             return plugin.error;
         }
@@ -231,7 +251,7 @@ public class HomeSystem extends BaseCommand {
     }
 
     public String[] getHomes(String jogador) {
-        return homesName.get(jogador) != null ? homesName.get(jogador) : "".split(":");
+        return Vars.home.get(jogador) != null ? Vars.home.get(jogador) : "".split(":");
     }
 
 }

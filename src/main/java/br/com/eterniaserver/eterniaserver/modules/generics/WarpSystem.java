@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.teleportsmanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
@@ -13,8 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class WarpSystem extends BaseCommand {
@@ -22,14 +22,38 @@ public class WarpSystem extends BaseCommand {
     private final EterniaServer plugin;
     private final EFiles eFiles;
 
-    private final Map<String, Location> shops;
-    private final Map<String, Location> warps;
-
     public WarpSystem(EterniaServer plugin) {
         this.plugin = plugin;
         this.eFiles = plugin.getEFiles();
-        this.shops = plugin.getShops();
-        this.warps = plugin.getWarps();
+
+        String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + ";";
+        HashMap<String, String> temp = EQueries.getMapString(query, "name", "location");
+
+        temp.forEach((k, v) -> {
+            final String[] split = v.split(":");
+            final Location loc = new Location(Bukkit.getWorld(split[0]),
+                    Double.parseDouble(split[1]),
+                    (Double.parseDouble(split[2]) + 1),
+                    Double.parseDouble(split[3]),
+                    Float.parseFloat(split[4]),
+                    Float.parseFloat(split[5]));
+            Vars.shops.put(k, loc);
+        });
+
+        query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
+        temp = EQueries.getMapString(query, "name", "location");
+
+        temp.forEach((k, v) -> {
+            final String[] split = v.split(":");
+            final Location loc = new Location(Bukkit.getWorld(split[0]),
+                    Double.parseDouble(split[1]),
+                    (Double.parseDouble(split[2]) + 1),
+                    Double.parseDouble(split[3]),
+                    Float.parseFloat(split[4]),
+                    Float.parseFloat(split[5]));
+            Vars.warps.put(k, loc);
+        });
+
     }
 
     @CommandAlias("spawn")
@@ -157,7 +181,7 @@ public class WarpSystem extends BaseCommand {
     }
 
     public void setShop(Location loc, String shop) {
-        shops.put(shop, loc);
+        Vars.shops.put(shop, loc);
         String saveloc = loc.getWorld().getName() +
                 ":" + ((int) loc.getX()) +
                 ":" + ((int) loc.getY()) +
@@ -177,15 +201,15 @@ public class WarpSystem extends BaseCommand {
     }
 
     public Location getShop(String shop) {
-        if (shops.containsKey(shop)) {
-            return shops.get(shop);
+        if (Vars.shops.containsKey(shop)) {
+            return Vars.shops.get(shop);
         } else {
             return plugin.error;
         }
     }
 
     public void setWarp(Location loc, String warp) {
-        warps.put(warp, loc);
+        Vars.warps.put(warp, loc);
         String saveloc = loc.getWorld().getName() +
                 ":" + ((int) loc.getX()) +
                 ":" + ((int) loc.getY()) +
@@ -202,14 +226,14 @@ public class WarpSystem extends BaseCommand {
     }
 
     public void delWarp(String warp) {
-        warps.remove(warp);
+        Vars.warps.remove(warp);
         final String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
         EQueries.executeQuery(querie);
     }
 
     public Location getWarp(String warp) {
-        if (warps.containsKey(warp)) {
-            return warps.get(warp);
+        if (Vars.warps.containsKey(warp)) {
+            return Vars.warps.get(warp);
         } else {
             return plugin.error;
         }

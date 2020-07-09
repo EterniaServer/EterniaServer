@@ -1,7 +1,7 @@
-package br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eterniaserver.modules.experiencemanager.ExperienceManager;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.Checks;
 
@@ -18,6 +18,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
+import java.util.HashMap;
 
 public class Experience extends BaseCommand {
 
@@ -29,6 +30,11 @@ public class Experience extends BaseCommand {
         this.checks = plugin.getChecks();
         this.messages = plugin.getEFiles();
         this.exp = plugin.getExp();
+
+        final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-xp") + ";";
+        final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "xp");
+
+        temp.forEach((k, v) -> Vars.xp.put(k, Integer.parseInt(v)));
     }
 
     @CommandAlias("checklevel|verlevel")

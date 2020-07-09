@@ -1,7 +1,6 @@
-package br.com.eterniaserver.eterniaserver.modules.commands;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import co.aikar.commands.BaseCommand;

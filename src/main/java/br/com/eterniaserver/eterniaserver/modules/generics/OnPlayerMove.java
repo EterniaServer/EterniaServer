@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.events;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
@@ -23,7 +23,7 @@ public class OnPlayerMove implements Listener {
             final Player player = event.getPlayer();
             final String playerName = player.getName();
             if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-                plugin.getAfktime().put(playerName, System.currentTimeMillis());
+                Vars.afktime.put(playerName, System.currentTimeMillis());
                 if (EterniaServer.afk.contains(playerName)) {
                     EterniaServer.afk.remove(playerName);
                     plugin.getEFiles().broadcastMessage("generic.afk.disabled", "%player_name%", playerName);

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.tasks;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -30,11 +30,11 @@ public class Checks extends BukkitRunnable {
             Location location = player.getLocation();
             final String playerName = player.getName();
 
-            if (plugin.getTpa_requests().containsKey(playerName)) {
-                if (plugin.getTpa_time().containsKey(playerName) &&
-                        TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.getTpa_time().get(playerName)) >= 25) {
-                    plugin.getTpa_requests().remove(playerName);
-                    plugin.getTpa_time().remove(playerName);
+            if (Vars.tpa_requests.containsKey(playerName)) {
+                if (Vars.tpa_time.containsKey(playerName) &&
+                        TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.tpa_time.get(playerName)) >= 25) {
+                    Vars.tpa_requests.remove(playerName);
+                    Vars.tpa_time.remove(playerName);
                 }
             }
             if (location.getBlock().getType() == Material.NETHER_PORTAL) {
@@ -54,7 +54,7 @@ public class Checks extends BukkitRunnable {
             } else {
                 EterniaServer.playersInPortal.remove(playerName);
             }
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.getAfktime().get(playerName)) >= plugin.serverConfig.getInt("server.afk-timer")) {
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afktime.get(playerName)) >= plugin.serverConfig.getInt("server.afk-timer")) {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
                     if (!EterniaServer.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                         messages.broadcastMessage("generic.afk.broadcast-kicked", "%player_name%", playerName);
@@ -91,7 +91,7 @@ public class Checks extends BukkitRunnable {
     }
 
     private Location getWarp(final String warp) {
-        return plugin.getWarps().containsKey(warp) ? plugin.getWarps().get(warp) : plugin.error;
+        return Vars.warps.containsKey(warp) ? Vars.warps.get(warp) : plugin.error;
     }
 
 }

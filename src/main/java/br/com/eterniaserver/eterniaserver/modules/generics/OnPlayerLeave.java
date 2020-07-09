@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.events;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
@@ -20,7 +20,7 @@ public class OnPlayerLeave implements Listener {
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) plugin.getAfktime().remove(playerName);
+        if (plugin.serverConfig.getBoolean("modules.playerchecks")) Vars.afktime.remove(playerName);
 
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             plugin.getChecks().removeUUIF(player);

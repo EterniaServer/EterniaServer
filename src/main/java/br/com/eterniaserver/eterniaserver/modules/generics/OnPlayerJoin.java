@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.events;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -29,8 +29,8 @@ public class OnPlayerJoin implements Listener {
             if (!EterniaServer.player_muted.containsKey(playerName)) checkMuted(playerName);
         }
         if (plugin.serverConfig.getBoolean("modules.economy")) {
-            if (!plugin.getBalances().containsKey(playerName)) {
-                plugin.getBalances().put(playerName, 300.0);
+            if (!Vars.balances.containsKey(playerName)) {
+                Vars.balances.put(playerName, 300.0);
                 EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
             }
         }

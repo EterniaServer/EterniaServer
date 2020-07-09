@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.modules.LoadMaps;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -64,7 +63,6 @@ public class Files {
     public void loadDatabase() {
 
         new Table(plugin);
-        new LoadMaps(plugin);
 
     }
 

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.events;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -26,7 +26,7 @@ public class OnAsyncPlayerPreLogin implements Listener {
             }
         }
         if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
-            plugin.getAfktime().put(playerName, System.currentTimeMillis());
+            Vars.afktime.put(playerName, System.currentTimeMillis());
             if (!playerProfileExist(playerName)) {
                 playerProfileCreate(playerName);
             }
@@ -49,11 +49,11 @@ public class OnAsyncPlayerPreLogin implements Listener {
     }
 
     private boolean playerXPExist(String playerName) {
-        return plugin.getXp().containsKey(playerName);
+        return Vars.xp.containsKey(playerName);
     }
 
     private boolean playerHomeExist(String playerName) {
-        return plugin.getHome().containsKey(playerName);
+        return Vars.home.containsKey(playerName);
     }
 
     private void playerProfileCreate(String playerName) {
@@ -64,7 +64,7 @@ public class OnAsyncPlayerPreLogin implements Listener {
 
     private void playerXPCreate(String playerName) {
         EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-xp") + " (player_name, xp) VALUES ('" + playerName + "', '" + 0 + "');");
-        plugin.getXp().put(playerName, 0);
+        Vars.xp.put(playerName, 0);
     }
 
     private void playerHomeCreate(String playerName) {

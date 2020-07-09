@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.economymanager;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -17,11 +17,11 @@ public class EconomyManager {
      * @return Amount currently held in player's account
      */
     public double getMoney(String playerName) {
-        if (plugin.getBalances().containsKey(playerName)) {
-            return plugin.getBalances().get(playerName);
+        if (Vars.balances.containsKey(playerName)) {
+            return Vars.balances.get(playerName);
         } else {
             EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
-            plugin.getBalances().put(playerName, 300.0);
+            Vars.balances.put(playerName, 300.0);
             return 300.0;
         }
     }
@@ -42,12 +42,12 @@ public class EconomyManager {
      * @param amount to set
      */
     public void setMoney(String playerName, double amount) {
-        if (plugin.getBalances().containsKey(playerName)) {
-            plugin.getBalances().put(playerName, amount);
+        if (Vars.balances.containsKey(playerName)) {
+            Vars.balances.put(playerName, amount);
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
         } else {
             EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
-            plugin.getBalances().put(playerName, 300.0);
+            Vars.balances.put(playerName, 300.0);
             setMoney(playerName, amount);
         }
     }

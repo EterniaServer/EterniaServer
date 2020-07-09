@@ -4,28 +4,36 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.events.OnPlayerBedEnter;
 import br.com.eterniaserver.eterniaserver.events.OnPlayerBedLeave;
-import br.com.eterniaserver.eterniaserver.modules.commands.*;
-import br.com.eterniaserver.eterniaserver.modules.economymanager.commands.Economy;
-import br.com.eterniaserver.eterniaserver.modules.experiencemanager.commands.Experience;
+import br.com.eterniaserver.eterniaserver.modules.generics.Economy;
+import br.com.eterniaserver.eterniaserver.modules.generics.Experience;
+import br.com.eterniaserver.eterniaserver.modules.generics.*;
+import br.com.eterniaserver.eterniaserver.modules.generics.KitSystem;
+import br.com.eterniaserver.eterniaserver.modules.generics.RewardsSystem;
 import br.com.eterniaserver.eterniaserver.modules.tasks.AccelerateWorld;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.act.AdvancedChatTorch;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Channels;
 import br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Mute;
-import br.com.eterniaserver.eterniaserver.modules.tasks.Checks;
+import br.com.eterniaserver.eterniaserver.modules.generics.Checks;
 
 import co.aikar.commands.PaperCommandManager;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Managers {
 
+    private final EterniaServer plugin;
+    private final EFiles messages;
+    private final PaperCommandManager manager;
+
     public Managers(EterniaServer plugin) {
 
-        final PaperCommandManager manager = plugin.getManager();
-        final EFiles messages = plugin.getEFiles();
+        this.messages = plugin.getEFiles();
+        this.manager = plugin.getManager();
+        this.plugin = plugin;
 
         if (plugin.serverConfig.getBoolean("modules.bed")) {
             plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) plugin.serverConfig.getInt("server.checks") * 40);
@@ -38,7 +46,6 @@ public class Managers {
 
         if (plugin.serverConfig.getBoolean("modules.block-reward")) {
             plugin.blockConfig = new YamlConfiguration();
-
             try {
                 plugin.blockConfig.load(EFiles.fileLoad(plugin, "blocks.yml"));
             } catch (IOException | InvalidConfigurationException e) {
@@ -51,18 +58,10 @@ public class Managers {
 
         if (plugin.serverConfig.getBoolean("modules.chat")) {
             plugin.files.loadChat();
-            manager.registerCommand(new Channels(plugin));
-            manager.registerCommand(new Mute(plugin));
-            manager.registerCommand(new br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Others(plugin));
-            new AdvancedChatTorch(plugin);
-            messages.sendConsole("modules.enable", "%module%", "Chat");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Chat");
         }
 
         if (plugin.serverConfig.getBoolean("modules.commands")) {
             plugin.cmdConfig = new YamlConfiguration();
-
             try {
                 plugin.cmdConfig.load(EFiles.fileLoad(plugin, "commands.yml"));
             } catch (IOException | InvalidConfigurationException e) {
@@ -73,52 +72,121 @@ public class Managers {
             messages.sendConsole("modules.disable", "%module%", "Custom-Commands");
         }
 
-        if (plugin.serverConfig.getBoolean("modules.economy")) {
+        if (plugin.serverConfig.getBoolean("modules.kits")) {
+            File commandsConfigFile = new File(plugin.getDataFolder(), "kits.yml");
+            if (!commandsConfigFile.exists()) {
+                plugin.saveResource("kits.yml", false);
+            }
+            plugin.kitConfig = new YamlConfiguration();
+            try {
+                plugin.kitConfig.load(commandsConfigFile);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (plugin.serverConfig.getBoolean("modules.rewards")) {
+            File rwConfig = new File(plugin.getDataFolder(), "rewards.yml");
+            if (!rwConfig.exists()) plugin.saveResource("rewards.yml", false);
+            plugin.rewardsConfig = new YamlConfiguration();
+            try {
+                plugin.rewardsConfig.load(rwConfig);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+        }
+
+        loadChatManager();
+        loadEconomyManager();
+        loadElevatorManager();
+        loadExperienceManager();
+        loadGenericManager();
+        loadHomesManager();
+        loadKitManager();
+        loadPlayerChecks();
+        loadRewardsManager();
+        loadSpawnersManager();
+        loadTeleportsManager();
+
+    }
+
+    private void loadChatManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.chat"), "Chat")) {
+            manager.registerCommand(new Channels(plugin));
+            manager.registerCommand(new Mute(plugin));
+            manager.registerCommand(new br.com.eterniaserver.eterniaserver.modules.chatmanager.commands.Others(plugin));
+            new AdvancedChatTorch(plugin);
+        }
+    }
+
+    private void loadEconomyManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.economy"), "Economy")) {
             manager.registerCommand(new Economy(plugin));
             manager.registerCommand(new EcoChange(plugin));
-            messages.sendConsole("modules.enable", "%module%", "Economy");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Economy");
         }
+    }
 
-        if (plugin.serverConfig.getBoolean("modules.elevator")) {
-            messages.sendConsole("modules.enable", "%module%", "Elevator");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Elevator");
-        }
+    private void loadElevatorManager() {
+        sendModuleStatus(plugin.serverConfig.getBoolean("modules.elevator"), "Elevator");
+    }
 
-        if (plugin.serverConfig.getBoolean("modules.experience")) {
+    private void loadExperienceManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.experience"), "Experience")) {
             manager.registerCommand(new Experience(plugin));
-            messages.sendConsole("modules.enable", "%module%", "Teleports");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Teleports");
         }
+    }
 
-        if (plugin.serverConfig.getBoolean("modules.generic")) {
+    private void loadGenericManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.generic"), "Generic")) {
             manager.registerCommand(new Gamemode(messages));
             manager.registerCommand(new Inventory(messages));
             manager.registerCommand(new Others(plugin));
             manager.registerCommand(new Replaces(plugin));
             manager.registerCommand(new Simplifications(messages));
-            messages.sendConsole("modules.enable", "%module%", "Generic");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Generic");
         }
+    }
 
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
+    private void loadHomesManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.home"), "Homes")) {
+            manager.registerCommand(new HomeSystem(plugin));
+        }
+    }
+
+    private void loadKitManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.kits"), "Kits")) {
+            manager.registerCommand(new KitSystem(plugin));
+        }
+    }
+
+    private void loadPlayerChecks() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.playerchecks"), "PlayerChecks")) {
             new Checks(plugin).runTaskTimer(plugin, 20L, (long) plugin.serverConfig.getInt("server.checks") * 20);
-            messages.sendConsole("modules.enable", "%module%", "Player-Checks");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Player-Checks");
         }
+    }
 
-        if (plugin.serverConfig.getBoolean("modules.spawners")) {
+    private void loadRewardsManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
+            manager.registerCommand(new RewardsSystem(plugin));
+        }
+    }
+
+    private void loadSpawnersManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.spawners"), "Spawners")) {
             manager.registerCommand(new SpawnerGive(plugin));
-            messages.sendConsole("modules.enable", "%module%", "Spawners");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Spawners");
         }
+    }
 
+    private void loadTeleportsManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.teleports"), "Teleports")) {
+            manager.registerCommand(new WarpSystem(plugin));
+            manager.registerCommand(new TeleportSystem(plugin));
+        }
+    }
+
+    private boolean sendModuleStatus(final boolean enable, final String module) {
+        if (enable) messages.sendConsole("modules.enable", "%module%", module);
+        else messages.sendConsole("modules.disable", "%module%", module);
+        return enable;
     }
 
 }

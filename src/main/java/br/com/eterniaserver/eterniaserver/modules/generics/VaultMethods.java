@@ -1,7 +1,6 @@
-package br.com.eterniaserver.eterniaserver.dependencies.vault;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
-import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import net.milkbowl.vault.economy.Economy;
@@ -260,12 +259,12 @@ public class VaultMethods implements Economy {
     }
 
     private boolean playerMoneyExist(String playerName) {
-        return plugin.getBalances().containsKey(playerName);
+        return Vars.balances.containsKey(playerName);
     }
 
     private void playerMoneyCreate(String playerName) {
         EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
-        plugin.getBalances().put(playerName, 300.0);
+        Vars.balances.put(playerName, 300.0);
     }
 
 }

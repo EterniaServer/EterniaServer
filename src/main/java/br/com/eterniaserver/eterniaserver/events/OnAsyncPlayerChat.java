@@ -85,11 +85,11 @@ public class OnAsyncPlayerChat implements Listener {
                     local.SendMessage(message, player, plugin.chatConfig.getInt("local.range"));
                     e.setCancelled(true);
                     break;
-                case 1:
-                    break;
                 case 2:
                     staff.SendMessage(message, player);
                     e.setCancelled(true);
+                    break;
+                default:
                     break;
             }
 

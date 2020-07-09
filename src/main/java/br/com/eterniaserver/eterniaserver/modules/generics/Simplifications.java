@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.modules.commands;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import co.aikar.commands.BaseCommand;

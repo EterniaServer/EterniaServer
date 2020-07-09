@@ -1,10 +1,9 @@
-package br.com.eterniaserver.eterniaserver.modules.economymanager.commands;
+package br.com.eterniaserver.eterniaserver.modules.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.modules.economymanager.EconomyManager;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -14,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 
 public class Economy extends BaseCommand {
@@ -26,6 +26,11 @@ public class Economy extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
+
+        final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + ";";
+        final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "balance");
+
+        temp.forEach((k, v) -> Vars.balances.put(k, Double.parseDouble(v)));
     }
 
     @CommandAlias("money|economy|balance|bal")
