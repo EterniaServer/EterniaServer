@@ -47,7 +47,11 @@ public class Others extends BaseCommand {
         messages.sendMessage("generic.others.reload-start", sender);
         plugin.files.loadConfigs();
         plugin.files.loadMessages();
+        plugin.files.loadBlocksRewards();
+        plugin.files.loadCommands();
         plugin.files.loadChat();
+        plugin.files.loadKits();
+        plugin.files.loadRewards();
         plugin.files.loadDatabase();
         PlaceholderAPI.unregisterPlaceholderHook("eterniaserver");
         PlaceholderAPI.registerPlaceholderHook("eterniaserver", placeHolders);

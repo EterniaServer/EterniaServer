@@ -15,16 +15,18 @@ import org.bukkit.entity.Player;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Economy extends BaseCommand {
 
+    private final DecimalFormat df2 = new DecimalFormat(".##");
     private final EterniaServer plugin;
     private final EFiles messages;
     private final EconomyManager moneyx;
+    private long time = 0;
+    private ArrayList<String> lista;
 
     public Economy(EterniaServer plugin) {
         this.plugin = plugin;
@@ -92,19 +94,27 @@ public class Economy extends BaseCommand {
     @CommandAlias("baltop|balancetop|moneytop")
     @CommandPermission("eternia.baltop")
     public void onBaltop(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            final ArrayList<String> list = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                double maior = 0;
-                for (Map.Entry<String, Double> entry : Vars.balances.entrySet()) {
-                    if (entry.getValue() > maior && !list.contains(entry.getKey())) {
-                        list.add(entry.getKey());
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
+            lista.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (lista.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                final ArrayList<String> list = new ArrayList<>();
+                for (int i = 0; i < 10; i++) {
+                    double maior = 0;
+                    String name = "";
+                    for (Map.Entry<String, Double> entry : Vars.balances.entrySet()) {
+                        if (entry.getValue() > maior && !list.contains(entry.getKey())) {
+                            maior = entry.getValue();
+                            name = entry.getKey();
+                        }
                     }
+                    list.add(name);
                 }
-                DecimalFormat df2 = new DecimalFormat(".##");
+                lista = list;
+                time = System.currentTimeMillis();
                 list.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (list.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));
-            }
-        });
+            });
+        }
     }
 
 }

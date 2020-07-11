@@ -16,14 +16,14 @@ public class CustomPlaceholdersFilter extends StringHelper {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		for(CustomPlaceholder cp: Vars.customPlaceholders) {
-			for(int i = 0; i < message.size(); i++) {
+		for (CustomPlaceholder cp: Vars.customPlaceholders) {
+			for (int i = 0; i < message.size(); i++) {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();
-				if(!objMsg.contains("{" + cp.getId() + "}")) continue;
+				if (!objMsg.contains("{" + cp.getId() + "}")) continue;
 				SubPlaceholder bestPlaceholder = null;
 				try {
-					for(SubPlaceholder subPlaceholder: cp.getPlaceholders()) {
+					for (SubPlaceholder subPlaceholder: cp.getPlaceholders()) {
 						if(subPlaceholder.hasPerm(p)) {
 							if(bestPlaceholder == null) {
 								bestPlaceholder = subPlaceholder;
@@ -34,7 +34,7 @@ public class CustomPlaceholdersFilter extends StringHelper {
 							}
 						}
 					}
-				}catch(Exception e1) {
+				} catch(Exception e1) {
 					e1.printStackTrace();
 				}
 				if(cp.isNotIndependent() && bestPlaceholder != null) {

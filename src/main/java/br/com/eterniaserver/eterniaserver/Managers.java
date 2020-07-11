@@ -5,12 +5,6 @@ import br.com.eterniaserver.eterniaserver.generics.*;
 
 import co.aikar.commands.PaperCommandManager;
 
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.io.IOException;
-
 public class Managers {
 
     private final EterniaServer plugin;
@@ -23,67 +17,9 @@ public class Managers {
         this.manager = plugin.getManager();
         this.plugin = plugin;
 
-        if (plugin.serverConfig.getBoolean("modules.bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) plugin.serverConfig.getInt("server.checks") * 40);
-            plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedEnter(plugin), plugin);
-            plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedLeave(plugin), plugin);
-            messages.sendConsole("modules.enable", "%module%", "Bed");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Bed");
-        }
-
-        if (plugin.serverConfig.getBoolean("modules.block-reward")) {
-            plugin.blockConfig = new YamlConfiguration();
-            try {
-                plugin.blockConfig.load(EFiles.fileLoad(plugin, "blocks.yml"));
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
-            messages.sendConsole("modules.enable", "%module%", "Block-Reward");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Block-Reward");
-        }
-
-        if (plugin.serverConfig.getBoolean("modules.chat")) {
-            plugin.files.loadChat();
-        }
-
-        if (plugin.serverConfig.getBoolean("modules.commands")) {
-            plugin.cmdConfig = new YamlConfiguration();
-            try {
-                plugin.cmdConfig.load(EFiles.fileLoad(plugin, "commands.yml"));
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
-            messages.sendConsole("modules.enable", "%module%", "Custom-Commands");
-        } else {
-            messages.sendConsole("modules.disable", "%module%", "Custom-Commands");
-        }
-
-        if (plugin.serverConfig.getBoolean("modules.kits")) {
-            File commandsConfigFile = new File(plugin.getDataFolder(), "kits.yml");
-            if (!commandsConfigFile.exists()) {
-                plugin.saveResource("kits.yml", false);
-            }
-            plugin.kitConfig = new YamlConfiguration();
-            try {
-                plugin.kitConfig.load(commandsConfigFile);
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (plugin.serverConfig.getBoolean("modules.rewards")) {
-            File rwConfig = new File(plugin.getDataFolder(), "rewards.yml");
-            if (!rwConfig.exists()) plugin.saveResource("rewards.yml", false);
-            plugin.rewardsConfig = new YamlConfiguration();
-            try {
-                plugin.rewardsConfig.load(rwConfig);
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
-        }
-
+        loadBedManager();
+        loadBlockRewardsManager();
+        loadCommandsManager();
         loadChatManager();
         loadEconomyManager();
         loadElevatorManager();
@@ -98,8 +34,29 @@ public class Managers {
 
     }
 
+    private void loadBedManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.bed"), "Bed")) {
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) plugin.serverConfig.getInt("server.checks") * 40);
+            plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedEnter(plugin), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedLeave(plugin), plugin);
+        }
+    }
+
+    private void loadBlockRewardsManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.block-reward"), "Block-Reward")) {
+            plugin.files.loadBlocksRewards();
+        }
+    }
+
+    private void loadCommandsManager() {
+        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.commands"), "Commands")) {
+            plugin.files.loadCommands();
+        }
+    }
+
     private void loadChatManager() {
         if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.chat"), "Chat")) {
+            plugin.files.loadChat();
             manager.registerCommand(new Channels(plugin));
             manager.registerCommand(new Mute(plugin));
             manager.registerCommand(new ChatCommands(plugin));
@@ -142,6 +99,7 @@ public class Managers {
 
     private void loadKitManager() {
         if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.kits"), "Kits")) {
+            plugin.files.loadKits();
             manager.registerCommand(new KitSystem(plugin));
         }
     }
@@ -154,6 +112,7 @@ public class Managers {
 
     private void loadRewardsManager() {
         if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
+            plugin.files.loadRewards();
             manager.registerCommand(new RewardsSystem(plugin));
         }
     }

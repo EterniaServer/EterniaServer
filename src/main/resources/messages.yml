@@ -8,7 +8,9 @@
 # Messages
 server:
   prefix: '&8[&aE&9S&8] '
-  motd: '#20C768E#1EC74Et#1FC742e#22C735r#2CC722n#40C724i#53C71Fa#1545C7S#185EC7e#1A6DC7r#1F8BC7v#229EC7e#18B6C7r #C746131#C7381A.#C722181#C7162E6 #BDC733S#C7C12Cu#C7B72Br#C7AD2Cv#C79D24i#C79424v#C78821a#C7791El'
+  motd:
+    - '&l#333832◢◤◢◤◢◤ &l#a7d95b✙ &l#69de3bE&l#46e33dt&l#3ee66ee&l#46e89fr&l#50ebc4n&l#5bebedi&l#61b4f0a&l#677ff2S&l#7469f5e&l#825ff7r&l#ab5cfav&l#c962fce&l#f36affr &l#ff5cc9S&l#ff579a&l#ff4b6fu&l#ff454er&l#ff4b41v&l#ff583bi&l#ff8250v&l#ffa959a&l#ffcc4al &l#ffe77c✙ &l#333832◥◣◥◣◥◣'
+    - '&r#71b32aVanilla #b5ac2ecom #b8813eextras#74bdbb!!!'
   join: '&3%player_name% &8[&a+&8]'
   chat-error: '&7Erro no chat&8: &3%error%&8.'
   leave: '&3%player_name% &8[&c-&8]'
@@ -17,7 +19,7 @@ server:
   no-papi: '&3PlaceholderAPI &7não encontrado&8, &7iniciando no modo sem &3PAPI&8.'
   no-vault: '&3Vault&7 não encontrado&8, &7iniciando no modo sem &3Vault&8.'
   no-discordsrv: '&3DiscordSRV &7não encontrado&8, &7iniciando no modo sem &3DiscordSRV&8.'
-  timing: '&7Você deve esperar &3%cooldown &7segundos para poder usar esse comando novamente&8.'
+  timing: '&7Você deve esperar &3%cooldown% &7segundos para poder usar esse comando novamente&8.'
   telep: '&7Você já está em um teleporte&8, &7espere acabar&8.'
   load-data: '&3%module% &7carregados &3%amount% &7de arquivos&8.'
 chat:
