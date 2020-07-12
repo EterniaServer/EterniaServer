@@ -42,7 +42,7 @@ public class Colors extends StringHelper {
 
 		if(perms.isEmpty()) return;
 		
-		String m = message.messageSent;
+		String m = message.getMessageSent();
 		for(String s: perms) {
 			if(s.equals("&")) {
 				m = cc(m);
@@ -53,7 +53,7 @@ public class Colors extends StringHelper {
 			}
 		}
 
-		message.messageSent = m;
+		message.setMessageSent(m);
 		perms.clear();
 	}
 	

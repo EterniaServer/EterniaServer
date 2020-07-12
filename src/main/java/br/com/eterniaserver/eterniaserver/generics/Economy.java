@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Economy extends BaseCommand {
 
-    private final DecimalFormat df2 = new DecimalFormat(".##");
     private final EterniaServer plugin;
     private final EFiles messages;
     private final EconomyManager moneyx;
@@ -50,14 +48,13 @@ public class Economy extends BaseCommand {
     @Syntax("<quantia>")
     @CommandPermission("eternia.money")
     public void onMoney(Player player, @Optional OnlinePlayer target) {
-        DecimalFormat df2 = new DecimalFormat(".##");
         if (target == null) {
             double money = moneyx.getMoney(player.getName());
-            messages.sendMessage("eco.money", "%money%", df2.format(money), player);
+            messages.sendMessage("eco.money", "%money%", plugin.df2.format(money), player);
         } else {
             if (player.hasPermission("eternia.money.other")) {
                 double money = moneyx.getMoney(target.getPlayer().getName());
-                messages.sendMessage("eco.money-other", "%money%", df2.format(money), player);
+                messages.sendMessage("eco.money-other", "%money%", plugin.df2.format(money), player);
             } else {
                 messages.sendMessage("server.no-perm", player);
             }
@@ -95,7 +92,7 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.baltop")
     public void onBaltop(CommandSender sender) {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
-            lista.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (lista.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));
+            lista.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (lista.indexOf(name) + 1), "%player_name%", name, "%money%", plugin.df2.format(moneyx.getMoney(name)), sender));
         } else {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 final ArrayList<String> list = new ArrayList<>();
@@ -112,7 +109,7 @@ public class Economy extends BaseCommand {
                 }
                 lista = list;
                 time = System.currentTimeMillis();
-                list.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (list.indexOf(name) + 1), "%player_name%", name, "%money%", df2.format(moneyx.getMoney(name)), sender));
+                list.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (list.indexOf(name) + 1), "%player_name%", name, "%money%", plugin.df2.format(moneyx.getMoney(name)), sender));
             });
         }
     }

@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 public class EterniaServer extends JavaPlugin {
@@ -24,6 +25,7 @@ public class EterniaServer extends JavaPlugin {
 
     public final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     public final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    public final DecimalFormat df2 = new DecimalFormat(".##");
 
     private PaperCommandManager manager;
     private EFiles eFiles;
@@ -35,8 +37,15 @@ public class EterniaServer extends JavaPlugin {
 
     public Files files;
 
-    public FileConfiguration serverConfig, msgConfig, cmdConfig, rewardsConfig;
-    public FileConfiguration blockConfig, kitConfig, chatConfig, placeholderConfig, groupConfig;
+    public FileConfiguration serverConfig;
+    public FileConfiguration msgConfig;
+    public FileConfiguration cmdConfig;
+    public FileConfiguration rewardsConfig;
+    public FileConfiguration blockConfig;
+    public FileConfiguration kitConfig;
+    public FileConfiguration chatConfig;
+    public FileConfiguration placeholderConfig;
+    public FileConfiguration groupConfig;
 
     @Override
     public void onEnable() {

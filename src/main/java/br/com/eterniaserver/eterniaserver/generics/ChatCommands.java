@@ -38,7 +38,8 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("spy|socialspy")
     @CommandPermission("eternia.spy")
     public void onSpy(Player player) {
-        if (Vars.spy.getOrDefault(player, false)) {
+        final Boolean b = Vars.spy.getOrDefault(player, false);
+        if (Boolean.TRUE.equals(b)) {
             Vars.spy.put(player, false);
             messages.sendMessage("chat.spyd", player);
         } else {
@@ -149,7 +150,8 @@ public class ChatCommands extends BaseCommand {
         messages.sendMessage("chat.toplayer", "%player_name%", playerName, "%target_name%", targetName, "%message%", s, player);
         messages.sendMessage("chat.fromplayer", "%player_name%", targetName, "%target_name%", playerName, "%message%", s, target);
         for (Player p : Vars.spy.keySet()) {
-            if (Vars.spy.get(p) && p != player && p != target) {
+            final Boolean b = Vars.spy.getOrDefault(p, false);
+            if (Boolean.TRUE.equals(b) && p != player && p != target) {
                 p.sendMessage(messages.getColor("&8[&7SPY-&6P&8] &8" + playerName + "->" + targetName + ": " + s));
             }
         }

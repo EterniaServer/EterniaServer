@@ -75,11 +75,11 @@ public class Replaces extends BaseCommand {
 
 } class GetRuntime {
 
-    public long freemem;
-    public long totalmem;
-    public int seconds;
-    public int minutes;
-    public int hours;
+    long freemem;
+    long totalmem;
+    int seconds;
+    int minutes;
+    int hours;
 
     public void recalculateRuntime() {
         Runtime runtime = Runtime.getRuntime();
@@ -90,5 +90,7 @@ public class Replaces extends BaseCommand {
         minutes = (int) ((milliseconds / (1000*60)) % 60);
         hours   = (int) ((milliseconds / (1000*60*60)) % 24);
     }
+
+
 
 }

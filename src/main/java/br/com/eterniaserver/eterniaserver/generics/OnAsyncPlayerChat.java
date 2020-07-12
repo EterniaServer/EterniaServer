@@ -76,11 +76,11 @@ public class OnAsyncPlayerChat implements Listener {
 
             switch (Vars.global.getOrDefault(playerName, 0)) {
                 case 0:
-                    local.SendMessage(message, player, plugin.chatConfig.getInt("local.range"));
+                    local.sendChatMessage(message, player, plugin.chatConfig.getInt("local.range"));
                     e.setCancelled(true);
                     break;
                 case 2:
-                    staff.SendMessage(message, player);
+                    staff.sendChatMessage(message, player);
                     e.setCancelled(true);
                     break;
                 default:

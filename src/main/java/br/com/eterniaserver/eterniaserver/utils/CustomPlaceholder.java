@@ -24,11 +24,11 @@ public class CustomPlaceholder {
 		}
 		ConfigurationSection cpSection = plugin.placeholderConfig.getConfigurationSection(id);
 		for(String placeholder: cpSection.getKeys(false)) {
-			if(placeholder.equals("independentTextComponent")) continue;
-			if(placeholder.equals("list")) continue;
-			ConfigurationSection section = cpSection.getConfigurationSection(placeholder);
-			SubPlaceholder subPlaceholder = new SubPlaceholder(placeholder, section);
-			placeholders.add(subPlaceholder);
+			if(!placeholder.equals("independentTextComponent") && !placeholder.equals("list")) {
+				ConfigurationSection section = cpSection.getConfigurationSection(placeholder);
+				SubPlaceholder subPlaceholder = new SubPlaceholder(placeholder, section);
+				placeholders.add(subPlaceholder);
+			}
 		}
 	}
 

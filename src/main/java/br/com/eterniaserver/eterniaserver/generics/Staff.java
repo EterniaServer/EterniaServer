@@ -15,7 +15,7 @@ public class Staff {
         this.plugin = plugin;
     }
 
-    public void SendMessage(String message, Player player) {
+    public void sendChatMessage(String message, Player player) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission("eternia.chat.staff")) {
                 String format = plugin.chatConfig.getString("staff.format");

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class PlaceHolders extends PlaceholderExpansion {
 
-    private final String VERSION = this.getClass().getPackage().getImplementationVersion();
+    private final String version = this.getClass().getPackage().getImplementationVersion();
     private final EterniaServer plugin;
 
     public PlaceHolders(EterniaServer plugin) {
@@ -24,7 +24,7 @@ public class PlaceHolders extends PlaceholderExpansion {
     }
 
     public String getVersion() {
-        return this.VERSION;
+        return this.version;
     }
 
     @Override

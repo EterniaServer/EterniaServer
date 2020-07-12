@@ -159,7 +159,13 @@ public class Others extends BaseCommand {
     @CommandAlias("blocks|condenser")
     @CommandPermission("eternia.blocks")
     public void onBlocks(Player player) {
-        int coal = 0, lapiz = 0, redstone = 0, iron = 0, gold = 0, diamond = 0, esmeralda = 0;
+        int coal = 0;
+        int lapiz = 0;
+        int redstone = 0;
+        int iron = 0;
+        int gold = 0;
+        int diamond = 0;
+        int esmeralda = 0;
         for (ItemStack i : player.getInventory().getContents()) {
             if (i != null) {
                 coal += checkItems(i, coali);

@@ -58,22 +58,22 @@ public class Experience extends BaseCommand {
     @CommandAlias("bottlelvl|bottleexp|gaffinhas")
     @Syntax("<level>")
     @CommandPermission("eternia.bottlexp")
-    public void onBottleLevel(Player player, Integer xp_want) {
-        int xp_real = internMethods.getXPForLevel(player.getLevel());
-        if (xp_want > 0 && xp_real > xp_want) {
+    public void onBottleLevel(Player player, Integer xpWant) {
+        int xpReal = internMethods.getXPForLevel(player.getLevel());
+        if (xpWant > 0 && xpReal > xpWant) {
             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&eGarrafa de EXP&8]"));
                 item.setItemMeta(meta);
-                item.setLore(Collections.singletonList(String.valueOf(xp_want)));
+                item.setLore(Collections.singletonList(String.valueOf(xpWant)));
             }
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
             messages.sendMessage("experience.bottleexp", player);
             player.setLevel(0);
             player.setExp(0);
-            player.giveExp(xp_real - xp_want);
+            player.giveExp(xpReal - xpWant);
         } else {
             messages.sendMessage("experience.insufficient", player);
         }
@@ -99,10 +99,10 @@ public class Experience extends BaseCommand {
     @Syntax("<level>")
     @CommandPermission("eternia.depositlvl")
     public void onDepositLevel(Player player, Integer xpla) {
-        int xp_atual = player.getLevel();
-        if (xp_atual >= xpla) {
+        int xpAtual = player.getLevel();
+        if (xpAtual >= xpla) {
             int xp = internMethods.getXPForLevel(xpla);
-            int xpto = internMethods.getXPForLevel(xp_atual);
+            int xpto = internMethods.getXPForLevel(xpAtual);
             exp.addExp(player.getName(), xp);
             messages.sendMessage("experience.deposit", "%amount%", xpla, player);
             player.setLevel(0);

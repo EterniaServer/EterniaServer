@@ -18,7 +18,7 @@ public class Local {
         this.strings = plugin.getEFiles();
     }
 
-    public void SendMessage(String message, Player player, int radius) {
+    public void sendChatMessage(String message, Player player, int radius) {
         int pes = 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
             String format = plugin.chatConfig.getString("local.format");
@@ -39,7 +39,8 @@ public class Local {
                             p.sendMessage(format);
                         }
                     } else {
-                        if (p.hasPermission("eternia.spy") && p != player && Vars.spy.getOrDefault(p, false)) {
+                        final Boolean b = Vars.spy.getOrDefault(p, false);
+                        if (p.hasPermission("eternia.spy") && p != player && Boolean.TRUE.equals(b)) {
                             p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
                         }
                     }

@@ -18,7 +18,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 public class TextMaker extends StringHelper {
 
-	public TextComponent text;
+	protected TextComponent text;
 	private final ChatMessage message;
 	private final Player p;
 	private final EterniaServer plugin;
@@ -38,7 +38,7 @@ public class TextMaker extends StringHelper {
 			String msg = chatObject.message;
 			msg = internMethods.setPlaceholders(p, msg);
 			if(msg.contains("%message%")) {
-				msg = msg.replace("%message%", message.messageSent);
+				msg = msg.replace("%message%", message.getMessageSent());
 			}
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
@@ -106,7 +106,7 @@ public class TextMaker extends StringHelper {
 			String msg = chatObject.message;
 			msg = internMethods.setBothPlaceholders(p, to, msg);
 			if(msg.contains("%message%"))
-				msg = msg.replace("%message%", message.messageSent);
+				msg = msg.replace("%message%", message.getMessageSent());
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();

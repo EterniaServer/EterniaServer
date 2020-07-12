@@ -6,7 +6,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
