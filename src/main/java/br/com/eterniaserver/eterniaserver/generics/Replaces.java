@@ -46,10 +46,7 @@ public class Replaces extends BaseCommand {
         Date date = plugin.sdf.parse(Vars.playerLogin.get(playerName));
         messages.sendMessage("generic.profile.register", "%player_register_data%", plugin.sdf.format(date), player);
         for (String line : plugin.msgConfig.getStringList("generic.profile.custom")) {
-            String modifiedText;
-            if (plugin.hasPlaceholderAPI) modifiedText = putPAPI(player, line);
-            else modifiedText = line.replace("%player_name%", playerName);
-            player.sendMessage(messages.getColor(modifiedText));
+            player.sendMessage(messages.getColor(putPAPI(player, line)));
         }
     }
 

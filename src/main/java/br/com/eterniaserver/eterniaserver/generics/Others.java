@@ -45,14 +45,14 @@ public class Others extends BaseCommand {
     @CommandPermission("eternia.reload")
     public void onReload(CommandSender sender) {
         messages.sendMessage("generic.others.reload-start", sender);
-        plugin.files.loadConfigs();
-        plugin.files.loadMessages();
-        plugin.files.loadBlocksRewards();
-        plugin.files.loadCommands();
-        plugin.files.loadChat();
-        plugin.files.loadKits();
-        plugin.files.loadRewards();
-        plugin.files.loadDatabase();
+        plugin.getFiles().loadConfigs();
+        plugin.getFiles().loadMessages();
+        plugin.getFiles().loadBlocksRewards();
+        plugin.getFiles().loadCommands();
+        plugin.getFiles().loadChat();
+        plugin.getFiles().loadKits();
+        plugin.getFiles().loadRewards();
+        plugin.getFiles().loadDatabase();
         PlaceholderAPI.unregisterPlaceholderHook("eterniaserver");
         PlaceholderAPI.registerPlaceholderHook("eterniaserver", placeHolders);
         messages.sendMessage("generic.others.reload-finish", sender);
@@ -69,7 +69,7 @@ public class Others extends BaseCommand {
                     ItemMeta meta = item.getItemMeta();
                     if (meta != null) {
                         StringBuilder sb = new StringBuilder();
-                        for (java.lang.String arg : nome) sb.append(arg).append(" ");
+                        for (String arg : nome) sb.append(arg).append(" ");
                         meta.setDisplayName(messages.getColor(sb.toString()));
                         item.setItemMeta(meta);
                         player.getInventory().setItemInMainHand(item);
@@ -80,7 +80,7 @@ public class Others extends BaseCommand {
                     ItemStack item = player.getInventory().getItemInMainHand();
                     if (!item.isSimilar(new ItemStack(Material.AIR))) {
                         StringBuilder sb = new StringBuilder();
-                        for (java.lang.String arg : nome) sb.append(arg).append(" ");
+                        for (String arg : nome) sb.append(arg).append(" ");
                         item.setLore(Collections.singletonList(messages.getColor(sb.toString())));
                         player.getInventory().setItemInMainHand(item);
                     } else {

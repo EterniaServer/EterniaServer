@@ -27,7 +27,7 @@ public class OnPlayerCommandPreProcess implements Listener {
         final Player player = event.getPlayer();
         String message = event.getMessage().toLowerCase();
 
-        if (message.equalsIgnoreCase("/tps") && plugin.hasPlaceholderAPI) {
+        if (message.equalsIgnoreCase("/tps")) {
             String s = PlaceholderAPI.setPlaceholders(player, "%server_tps%");
             messages.sendMessage("replaces.tps", "%server_tps%", s.substring(0, s.length() - 2), player);
             event.setCancelled(true);

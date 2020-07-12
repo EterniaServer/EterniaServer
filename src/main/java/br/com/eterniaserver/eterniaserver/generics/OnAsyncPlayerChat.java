@@ -51,7 +51,7 @@ public class OnAsyncPlayerChat implements Listener {
         String message = e.getMessage();
 
         if (plugin.serverConfig.getBoolean("modules.chat")) {
-            if (plugin.chatMuted && !player.hasPermission("eternia.mute.bypass")) {
+            if (plugin.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
                 messages.sendMessage("chat.chatmuted", player);
                 e.setCancelled(true);
                 return;

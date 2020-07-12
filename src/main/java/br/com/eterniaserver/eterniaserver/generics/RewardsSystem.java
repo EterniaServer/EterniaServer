@@ -75,13 +75,7 @@ public class RewardsSystem extends BaseCommand {
             for (String percentage : cs.getKeys(true)) {
                 if (Math.random() <= Double.parseDouble(percentage)) {
                     for (String command : plugin.rewardsConfig.getStringList("rewards." + group + ".commands." + percentage)) {
-                        String modifiedCommand;
-                        if (plugin.hasPlaceholderAPI) {
-                            modifiedCommand = putPAPI(player, command);
-                        } else {
-                            modifiedCommand = command.replace("%player_name%", player.getName());
-                        }
-                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), putPAPI(player, command));
                     }
                 }
             }

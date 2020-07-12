@@ -8,7 +8,6 @@ public class PAPI {
     public PAPI(EterniaServer plugin) {
         if (plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
             plugin.getEFiles().sendConsole("server.no-papi");
-            plugin.hasPlaceholderAPI = false;
         } else {
             PlaceholderAPI.registerPlaceholderHook("eterniaserver", plugin.getPlaceHolders());
         }

@@ -102,13 +102,7 @@ public class OnPlayerBlockBreak implements Listener {
                 }
                 if (lowestNumberAboveRandom <= 1) {
                     for (String command : plugin.blockConfig.getStringList("blocks." + material.name().toUpperCase() + "." + lowestNumberAboveRandom)) {
-                        String modifiedCommand;
-                        if (plugin.hasPlaceholderAPI) {
-                            modifiedCommand = putPAPI(event.getPlayer(), command);
-                        } else {
-                            modifiedCommand = command.replace("%player_name%", event.getPlayer().getPlayerListName());
-                        }
-                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), putPAPI(event.getPlayer(), command));
                     }
                 }
             }

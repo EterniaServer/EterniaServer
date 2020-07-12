@@ -26,11 +26,11 @@ public class Mute extends BaseCommand {
     @CommandAlias("mutechannels|muteall")
     @CommandPermission("eternia.mute.channels")
     public void muteChannels(CommandSender sender) {
-        if (plugin.chatMuted) {
-            plugin.chatMuted = false;
+        if (plugin.isChatMuted()) {
+            plugin.setChatMuted(false);
             messages.broadcastMessage("chat.cm-d", "%player_name%", sender.getName());
         } else {
-            plugin.chatMuted = true;
+            plugin.setChatMuted(true);
             messages.broadcastMessage("chat.cm-e", "%player_name%", sender.getName());
         }
     }

@@ -44,19 +44,19 @@ public class Managers {
 
     private void loadBlockRewardsManager() {
         if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.block-reward"), "Block-Reward")) {
-            plugin.files.loadBlocksRewards();
+            plugin.getFiles().loadBlocksRewards();
         }
     }
 
     private void loadCommandsManager() {
         if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.commands"), "Commands")) {
-            plugin.files.loadCommands();
+            plugin.getFiles().loadCommands();
         }
     }
 
     private void loadChatManager() {
         if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.chat"), "Chat")) {
-            plugin.files.loadChat();
+            plugin.getFiles().loadChat();
             manager.registerCommand(new Channels(plugin));
             manager.registerCommand(new Mute(plugin));
             manager.registerCommand(new ChatCommands(plugin));
@@ -99,7 +99,7 @@ public class Managers {
 
     private void loadKitManager() {
         if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.kits"), "Kits")) {
-            plugin.files.loadKits();
+            plugin.getFiles().loadKits();
             manager.registerCommand(new KitSystem(plugin));
         }
     }
@@ -112,7 +112,7 @@ public class Managers {
 
     private void loadRewardsManager() {
         if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
-            plugin.files.loadRewards();
+            plugin.getFiles().loadRewards();
             manager.registerCommand(new RewardsSystem(plugin));
         }
     }

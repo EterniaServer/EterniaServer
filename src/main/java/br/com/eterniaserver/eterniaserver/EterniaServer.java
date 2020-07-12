@@ -8,8 +8,6 @@ import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 
 import co.aikar.commands.PaperCommandManager;
 
-import io.papermc.lib.PaperLib;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,22 +18,20 @@ import java.text.SimpleDateFormat;
 
 public class EterniaServer extends JavaPlugin {
 
-    public boolean chatMuted = false;
-    public boolean hasPlaceholderAPI = true;
+    private boolean chatMuted = false;
 
     public final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
-    public final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     public final DecimalFormat df2 = new DecimalFormat(".##");
-
-    private PaperCommandManager manager;
-    private EFiles eFiles;
+    public final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     private final InternMethods internMethods = new InternMethods(this);
     private final PlaceHolders placeHolders = new PlaceHolders(this);
     private final EconomyManager money = new EconomyManager(this);
     private final ExperienceManager exp = new ExperienceManager(this);
 
-    public Files files;
+    private PaperCommandManager manager;
+    private EFiles messages;
+    private Files files;
 
     public FileConfiguration serverConfig;
     public FileConfiguration msgConfig;
@@ -50,8 +46,6 @@ public class EterniaServer extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        PaperLib.suggestPaper(this);
-
         manager = new PaperCommandManager(this);
         files = new Files(this);
 
@@ -59,10 +53,9 @@ public class EterniaServer extends JavaPlugin {
         files.loadMessages();
         files.loadDatabase();
 
-        eFiles = new EFiles(msgConfig);
+        messages = new EFiles(msgConfig);
 
         loadManagers();
-
         placeholderAPIHook();
         vaultHook();
 
@@ -103,7 +96,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     public EFiles getEFiles() {
-        return eFiles;
+        return messages;
     }
 
     public ExperienceManager getExp() {
@@ -120,6 +113,18 @@ public class EterniaServer extends JavaPlugin {
 
     public PlaceHolders getPlaceHolders() {
         return placeHolders;
+    }
+
+    public boolean isChatMuted() {
+        return chatMuted;
+    }
+
+    public void setChatMuted(boolean chatMuted) {
+        this.chatMuted = chatMuted;
+    }
+
+    public Files getFiles() {
+        return files;
     }
 
 }

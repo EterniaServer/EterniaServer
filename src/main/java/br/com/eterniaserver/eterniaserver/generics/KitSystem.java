@@ -46,22 +46,10 @@ public class KitSystem extends BaseCommand {
                     long millis = date.getTime();
                     if ((((millis / 1000) + plugin.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)) <= 0) {
                         for (String line : plugin.kitConfig.getStringList("kits." + kit + ".command")) {
-                            String modifiedCommand;
-                            if (plugin.hasPlaceholderAPI) {
-                                modifiedCommand = putPAPI(player, line);
-                            } else {
-                                modifiedCommand = line.replace("%player_name%", player.getName());
-                            }
-                            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+                            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), putPAPI(player, line));
                         }
                         for (String line : plugin.kitConfig.getStringList("kits." + kit + ".text")) {
-                            String modifiedText;
-                            if (plugin.hasPlaceholderAPI) {
-                                modifiedText = putPAPI(player, line);
-                            } else {
-                                modifiedText = line.replace("%player_name%", player.getName());
-                            }
-                            player.sendMessage(messages.getColor(modifiedText));
+                            player.sendMessage(messages.getColor(putPAPI(player, line)));
                         }
                         setKitCooldown(player.getName(), kit);
                     } else {
