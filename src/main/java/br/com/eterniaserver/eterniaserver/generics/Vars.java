@@ -24,6 +24,7 @@ public class Vars {
     protected static final Map<String, String[]> home = new HashMap<>();
 
     protected static final Map<String, Long> tpaTime = new HashMap<>();
+    protected static final Map<String, String> nick = new HashMap<>();
     protected static final Map<String, String> tpaRequests = new HashMap<>();
     protected static final Map<String, Double> balances = new HashMap<>();
     protected static final Map<String, Integer> xp = new HashMap<>();
@@ -32,9 +33,8 @@ public class Vars {
     protected static final List<World> skippingWorlds = new ArrayList<>();
     protected static final List<String> god = new ArrayList<>();
     protected static final List<String> afk = new ArrayList<>();
-    protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
-
     protected static final List<String> playerCooldown = new ArrayList<>();
+    protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
 
     protected static final Map<String, Long> playerMuted = new HashMap<>();
     protected static final Map<String, Long> bedCooldown = new HashMap<>();

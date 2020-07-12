@@ -14,9 +14,13 @@ import org.bukkit.entity.Player;
 public class ChatCommands extends BaseCommand {
 
     private final EFiles messages;
+    private final EconomyManager moneyx;
+    private final int money;
 
     public ChatCommands(EterniaServer plugin) {
         this.messages = plugin.getEFiles();
+        this.moneyx = plugin.getMoney();
+        this.money = plugin.serverConfig.getInt("money.nick");
     }
 
     @CommandAlias("limparchat|chatclear|clearchat")
@@ -44,27 +48,77 @@ public class ChatCommands extends BaseCommand {
     }
 
     @CommandAlias("nickname|nick|name|apelido")
-    @Syntax("<jogador> <novo_nome> ou <novo_nome>")
+    @Syntax("<novo_nome> <jogador> ou <novo_nome>")
     @CommandPermission("eternia.nickname")
-    public void onNickname(Player sender, @Optional OnlinePlayer target, String string) {
-        if (target != null) {
-            if (string.equalsIgnoreCase("clear")) {
-                target.getPlayer().setDisplayName(target.getPlayer().getName());
-                messages.sendMessage("chat.remove-nick", target.getPlayer());
-                messages.sendMessage("chat.remove-nick", sender);
+    public void onNickname(Player player, String string, @Optional OnlinePlayer target) {
+        if (!player.hasPermission("eternia.nickname.others")) {
+            if (target == null) {
+                final String playerName = player.getName();
+                if (string.equals("clear")) {
+                    player.setDisplayName(playerName);
+                    messages.sendMessage("chat.remove-nick", player);
+                } else {
+                    Vars.nick.put(playerName, string);
+                    messages.sendMessage("chat.nick-money", "%new_name%", string, player);
+                    messages.sendMessage("chat.nick-money-2", player);
+                }
             } else {
-                target.getPlayer().setDisplayName(messages.getColor(string));
-                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), sender);
-                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), target.getPlayer());
+                messages.sendMessage("server.no-perm", player);
             }
         } else {
-            if (string.equalsIgnoreCase("clear")) {
-                sender.setDisplayName(sender.getName());
-                messages.sendMessage("chat.remove-nick", sender);
+            if (target == null) {
+                final String playerName = player.getName();
+                if (string.equals("clear")) {
+                    player.setDisplayName(playerName);
+                    messages.sendMessage("chat.remove-nick", player);
+                } else {
+                    player.setDisplayName(messages.getColor(string));
+                }
             } else {
-                sender.setDisplayName(messages.getColor(string));
-                messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), sender);
+                final Player targetP = target.getPlayer();
+                final String targetName = targetP.getName();
+                if (string.equals("clear")) {
+                    targetP.setDisplayName(targetName);
+                    messages.sendMessage("chat.remove-nick", targetP);
+                    messages.sendMessage("chat.remove-nick", player);
+                } else {
+                    targetP.setDisplayName(messages.getColor(string));
+                    messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), player);
+                    messages.sendMessage("chat.newnick", "%player_display_name%", messages.getColor(string), targetP);
+                }
             }
+        }
+    }
+
+    @CommandAlias("nickaccept")
+    @Syntax("<jogador> <novo_nome> ou <novo_nome>")
+    @CommandPermission("eternia.nickname")
+    public void onNickAccept(Player player) {
+        final String playerName = player.getName();
+        if (Vars.nick.containsKey(playerName)) {
+            if (moneyx.hasMoney(playerName, money)) {
+                moneyx.removeMoney(playerName, money);
+                player.setDisplayName(Vars.nick.get(playerName));
+                messages.sendMessage("chat.newnick", "%player_display_name%", player.getDisplayName(), player);
+            } else {
+                messages.sendMessage("no-money", player);
+            }
+            Vars.nick.remove(playerName);
+        } else {
+            messages.sendMessage("chat.no-change", player);
+        }
+    }
+
+    @CommandAlias("nickdeny")
+    @Syntax("<jogador> <novo_nome> ou <novo_nome>")
+    @CommandPermission("eternia.nickname")
+    public void onNickDeny(Player player) {
+        final String playerName = player.getName();
+        if (Vars.nick.containsKey(playerName)) {
+            Vars.nick.remove(playerName);
+            messages.sendMessage("chat.nick-deny", player);
+        } else {
+            messages.sendMessage("chat.no-change", player);
         }
     }
 

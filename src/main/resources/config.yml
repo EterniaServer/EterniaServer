@@ -45,7 +45,6 @@ placeholders:
 # cooldown is the interval between the player being teleported when using a
 # command that teleports him.
 server:
-  online-mode: true
   checks: 1
   afk-timer: 900
   afk-kick: true
@@ -90,6 +89,7 @@ bed:
 money:
   start: 300
   back: 2500
+  nick: 1500000
   singular: 'Eternia'
   plural: 'Eternias'
 
@@ -104,10 +104,6 @@ money:
 # log will report to console all mobspawners placed.
 spawners:
   mob-name-color: '&e'
-  enable-lore: false
-  lore:
-    - '&7Coloque isso no chão&8.'
-    - '&3%s &7spawner&8.'
   drop-in-inventory: true
   drop-chance: 1.0
   prevent-anvil: true

@@ -22,6 +22,7 @@ server:
   timing: '&7Você deve esperar &3%cooldown% &7segundos para poder usar esse comando novamente&8.'
   telep: '&7Você já está em um teleporte&8, &7espere acabar&8.'
   load-data: '&3%module% &7carregados &3%amount% &7de arquivos&8.'
+  no-money: '&7Você não possui todo esse dinheiro&8, &3%money%&8.'
 chat:
   global-advice: '&7%advice%'
   rnaote: '&7Você não possui ninguém para responder&8.'
@@ -40,6 +41,10 @@ chat:
   chatmuted: '&7O chat está mutado&8!'
   cm-e: '&7Todos os canais foram mutados por &3%player_name%&8!'
   cm-d: '&7Todos os canais foram desmutados por &3%player_name%&8!'
+  nick-money: '&7Você quer trocar seu nick para &3%new_name% &7isso irá custar &31.500.000,00 E$&8.'
+  nick-money-2: '&7Utilize &6/nickaccept &7para aceitar e &6/nickdeny &7para negar&8.'
+  no-change: '&7Você não tem nenhum pedido para mudança de nick&8.'
+  nick-deny: '&7Você negou alterar seu nick&8.'
 replaces:
   mem: '&7Memória&8: &3%use_memory%MB&8/&3%max_memory%MB&8.'
   online: '&7Tempo online&8: &3%hours% horas %minutes% minutos %seconds% segundos&8.'
