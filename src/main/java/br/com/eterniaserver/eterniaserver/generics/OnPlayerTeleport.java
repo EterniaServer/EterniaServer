@@ -15,7 +15,6 @@ public class OnPlayerTeleport implements Listener {
         this.plugin = plugin;
     }
 
-
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;

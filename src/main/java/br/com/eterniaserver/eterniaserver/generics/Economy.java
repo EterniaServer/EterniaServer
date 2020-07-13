@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Economy extends BaseCommand {
 
@@ -31,16 +30,11 @@ public class Economy extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
 
-        AtomicInteger x = new AtomicInteger(0);
-
         final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + ";";
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "balance");
 
-        temp.forEach((k, v) -> {
-            Vars.balances.put(k, Double.parseDouble(v));
-            x.getAndIncrement();
-        });
-        messages.sendConsole("server.load-data",  "%module%", "Economy", "%amount%", x.get());
+        temp.forEach((k, v) -> Vars.balances.put(k, Double.parseDouble(v)));
+        messages.sendConsole("server.load-data",  "%module%", "Economy", "%amount%", temp.size());
     }
 
     @CommandAlias("money|economy|balance|bal")

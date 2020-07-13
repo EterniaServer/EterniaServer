@@ -43,7 +43,7 @@ public class Checks extends BukkitRunnable {
                         PaperLib.teleportAsync(player, getWarp());
                         messages.sendMessage("teleport.warp.done", player);
                     }
-                } else {
+                } else if (Vars.playersInPortal.get(playerName) > 1) {
                     Vars.playersInPortal.put(playerName, Vars.playersInPortal.get(playerName) - 1);
                     if (Vars.playersInPortal.get(playerName) < 5) {
                         messages.sendMessage("server.nether-trap", "%cooldown%", Vars.playersInPortal.get(playerName), player);

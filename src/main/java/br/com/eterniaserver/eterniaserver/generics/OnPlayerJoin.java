@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,6 +28,9 @@ public class OnPlayerJoin implements Listener {
             Vars.global.put(playerName, 0);
             if (player.hasPermission("eternia.spy")) Vars.spy.put(player, true);
             if (!Vars.playerMuted.containsKey(playerName)) checkMuted(playerName);
+            if (Vars.nickname.containsKey(playerName)) {
+                player.setDisplayName(ChatColor.translateAlternateColorCodes('&', Vars.nickname.get(playerName)));
+            }
         }
         if (plugin.serverConfig.getBoolean("modules.economy") && !Vars.balances.containsKey(playerName)) {
             Vars.balances.put(playerName, 300.0);

@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +33,7 @@ public class OnPlayerBlockBreak implements Listener {
         this.messages = plugin.getEFiles();
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
 

@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import co.aikar.commands.BaseCommand;
@@ -8,11 +9,15 @@ import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class ChatCommands extends BaseCommand {
 
+    private final String tableName;
     private final EFiles messages;
     private final EconomyManager moneyx;
     private final int money;
@@ -21,6 +26,14 @@ public class ChatCommands extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
         this.money = plugin.serverConfig.getInt("money.nick");
+        this.tableName = plugin.serverConfig.getString("sql.table-nick");
+
+        final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-nick") + ";";
+        final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "player_display");
+
+        temp.forEach(Vars.nickname::put);
+        messages.sendConsole("server.load-data",  "%module%", "Nicks", "%amount%", temp.size());
+
     }
 
     @CommandAlias("limparchat|chatclear|clearchat")
@@ -60,7 +73,11 @@ public class ChatCommands extends BaseCommand {
                     messages.sendMessage("chat.remove-nick", player);
                 } else {
                     Vars.nick.put(playerName, string);
-                    messages.sendMessage("chat.nick-money", "%new_name%", string, player);
+                    if (player.hasPermission("eternia.chat.color")) {
+                        messages.sendMessage("chat.nick-money", "%new_name%", ChatColor.translateAlternateColorCodes('&', string), player);
+                    } else {
+                        messages.sendMessage("chat.nick-money", "%new_name%", string, player);
+                    }
                     messages.sendMessage("chat.nick-money-2", player);
                 }
             } else {
@@ -71,6 +88,12 @@ public class ChatCommands extends BaseCommand {
                 final String playerName = player.getName();
                 if (string.equals("clear")) {
                     player.setDisplayName(playerName);
+                    if (Vars.nickname.containsKey(playerName)) {
+                        EQueries.executeQuery("UPDATE " + tableName + " SET player_display='" + playerName + "' WHERE player_name='" + playerName + "';");
+                    } else {
+                        EQueries.executeQuery("INSERT INTO " + tableName + " (player_name, player_display) VALUES('" + playerName + "', '" + playerName + "');");
+                    }
+                    Vars.nickname.put(playerName, playerName);
                     messages.sendMessage("chat.remove-nick", player);
                 } else {
                     player.setDisplayName(messages.getColor(string));
@@ -101,6 +124,12 @@ public class ChatCommands extends BaseCommand {
                 moneyx.removeMoney(playerName, money);
                 player.setDisplayName(Vars.nick.get(playerName));
                 messages.sendMessage("chat.newnick", "%player_display_name%", player.getDisplayName(), player);
+                if (Vars.nickname.containsKey(playerName)) {
+                    EQueries.executeQuery("UPDATE " + tableName + " SET player_display='" + Vars.nick.get(playerName) + "' WHERE player_name='" + playerName + "';");
+                } else {
+                    EQueries.executeQuery("INSERT INTO " + tableName + " (player_name, player_display) VALUES('" + playerName + "', '" + Vars.nick.get(playerName) + "');");
+                }
+                Vars.nickname.put(playerName, Vars.nick.get(playerName));
             } else {
                 messages.sendMessage("no-money", player);
             }

@@ -1,11 +1,24 @@
 # EterniaServer
-Plugin brasileiro feito com o intuito de substituir a maioria dos plugins,
-com um foco em otimização.
-# HikariCP
-Para acelerar a velocidade de acesso ao MySQL e ao SQLite o plugin
-utiliza um sistema de filas com HikariCP.
-https://github.com/brettwooldridge/HikariCP
-# AdvancedChatTorch
-Para utilizar formato Json no chat global, o plugin utiliza do código
-feito pelo MCGamer00000.
-https://github.com/MCGamer00000/AdvancedChatTorch
+**Download**: Até o momento sem link para download disponível.
+### Sonarcloud:
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=security_rating)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=bugs)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=code_smells)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=sqale_index)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
+### Contribuindo:
+O EterniaServer é um projeto Open-Source e qualquer melhoria ou feacture extra será bem vinda. Agradeço
+a todos que ajudaram e irão ajudar contribuindo para o EterniaServer plugin, assim mantendo a manutenção dele.
+z
+## Códigos:
+- Foi utilizado parte do código do [AdvancedChatTorch](https://github.com/MCGamer00000/AdvancedChatTorch)
+para aplicar o formato Json no chat global.
+- A API [ACF](https://github.com/aikar/commands#annotation-command-framework-acf) foi utilizada
+para adicionar auto completação em certos comandos e para facilitar o modo de criação
+desses comandos.
+## Dependências:
+- [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
+- [Vault](https://www.spigotmc.org/resources/vault.34315/)
+- [EterniaLib](https://github.com/yurinogueira/EterniaLib)

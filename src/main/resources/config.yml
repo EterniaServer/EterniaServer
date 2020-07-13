@@ -73,12 +73,13 @@ sql:
   table-player: 'es_player'
   table-muted: 'es_muted'
   table-rewards: 'es_rewards'
+  table-nick: 'es_nick'
 
 # speed is how faster the night will pass (this will be divided by the (players
 # online divided by the players sleeping))
 # blacklisted-worlds will set which worlds could not skip the night sleeping.
 bed:
-  speed: 600
+  speed: 300
   blacklisted-worlds:
     - 'evento'
 

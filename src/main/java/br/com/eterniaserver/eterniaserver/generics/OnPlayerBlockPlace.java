@@ -21,7 +21,7 @@ public class OnPlayerBlockPlace implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
         if (event.getBlock().getType() == Material.SPAWNER && plugin.serverConfig.getBoolean("modules.spawners")) {
             final Block blockPlaced = event.getBlockPlaced();

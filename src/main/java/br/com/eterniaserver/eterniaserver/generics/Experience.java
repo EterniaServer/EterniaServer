@@ -18,7 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Experience extends BaseCommand {
 
@@ -34,12 +33,8 @@ public class Experience extends BaseCommand {
         final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-xp") + ";";
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "xp");
 
-        AtomicInteger x = new AtomicInteger(0);
-        temp.forEach((k, v) -> {
-            Vars.xp.put(k, Integer.parseInt(v));
-            x.getAndIncrement();
-        });
-        messages.sendConsole("server.load-data",  "%module%", "Experience", "%amount%", x.get());
+        temp.forEach((k, v) -> Vars.xp.put(k, Integer.parseInt(v)));
+        messages.sendConsole("server.load-data",  "%module%", "Experience", "%amount%", temp.size());
     }
 
     @CommandAlias("checklevel|verlevel")

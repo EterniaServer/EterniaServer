@@ -23,7 +23,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomeSystem extends BaseCommand {
 
@@ -37,7 +36,6 @@ public class HomeSystem extends BaseCommand {
         String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-homes") + ";";
         HashMap<String, String> temp = EQueries.getMapString(query, "name", "location");
 
-        AtomicInteger x = new AtomicInteger(0);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -47,19 +45,16 @@ public class HomeSystem extends BaseCommand {
                     Float.parseFloat(split[4]),
                     Float.parseFloat(split[5]));
             Vars.homes.put(k, loc);
-            x.getAndIncrement();
         });
-        messages.sendConsole("server.load-data",  "%module%", "Home", "%amount%", x.get());
+        messages.sendConsole("server.load-data",  "%module%", "Home", "%amount%", temp.size());
 
         query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + ";";
         temp = EQueries.getMapString(query, "player_name", "homes");
-        x.set(0);
         temp.forEach((k, v) -> {
             final String[] homess = v.split(":");
             Vars.home.put(k, homess);
-            x.getAndIncrement();
         });
-        messages.sendConsole("server.load-data",  "%module%", "PlayerHomes", "%amount%", x.get());
+        messages.sendConsole("server.load-data",  "%module%", "PlayerHomes", "%amount%", temp.size());
 
     }
 
