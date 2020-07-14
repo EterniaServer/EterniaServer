@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import co.aikar.commands.BaseCommand;
@@ -34,7 +35,7 @@ public class Experience extends BaseCommand {
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "xp");
 
         temp.forEach((k, v) -> Vars.xp.put(k, Integer.parseInt(v)));
-        messages.sendConsole("server.load-data",  "%module%", "Experience", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Experience", Constants.AMOUNT.get(), temp.size());
     }
 
     @CommandAlias("checklevel|verlevel")
@@ -45,7 +46,7 @@ public class Experience extends BaseCommand {
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(exp.getExp(player.getName()));
-        messages.sendMessage("experience.check", "%amount%", player.getLevel(), player);
+        messages.sendMessage("experience.check", Constants.AMOUNT.get(), player.getLevel(), player);
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -84,7 +85,7 @@ public class Experience extends BaseCommand {
         if (exp.getExp(playerName) >= xpla) {
             exp.removeExp(playerName, xpla);
             player.giveExp(xpla);
-            messages.sendMessage("experience.withdraw", "%level%", player.getLevel(), player);
+            messages.sendMessage("experience.withdraw", Constants.AMOUNT.get(), player.getLevel(), player);
         } else {
             messages.sendMessage("experience.insufficient", player);
         }
@@ -99,7 +100,7 @@ public class Experience extends BaseCommand {
             int xp = internMethods.getXPForLevel(xpla);
             int xpto = internMethods.getXPForLevel(xpAtual);
             exp.addExp(player.getName(), xp);
-            messages.sendMessage("experience.deposit", "%amount%", xpla, player);
+            messages.sendMessage("experience.deposit", Constants.AMOUNT.get(), xpla, player);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);

@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
 
@@ -55,11 +56,11 @@ public class Checks extends BukkitRunnable {
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afkTime.get(playerName)) >= plugin.serverConfig.getInt("server.afk-timer")) {
                 if (plugin.serverConfig.getBoolean("server.afk-kick")) {
                     if (!Vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                        messages.broadcastMessage("generic.afk.broadcast-kicked", "%player_name%", playerName);
+                        messages.broadcastMessage("generic.afk.broadcast-kicked", Constants.PLAYER.get(), player.getDisplayName());
                         player.kickPlayer(messages.getMessage("generic.afk.kicked"));
                     }
                 } else {
-                    messages.broadcastMessage("generic.afk.enabled", "%player_name%", playerName);
+                    messages.broadcastMessage("generic.afk.enabled", Constants.PLAYER.get(), player.getDisplayName());
                     Vars.afk.add(playerName);
                 }
             }

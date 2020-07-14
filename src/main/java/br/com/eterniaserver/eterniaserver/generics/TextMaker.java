@@ -144,25 +144,11 @@ public class TextMaker extends StringHelper {
 		for(CustomPlaceholder cp: Vars.customPlaceholders) {
 			String id = cp.getId();
 			if(!stringMessage.contains("{" + id + "}")) continue;
-			try {
-				SubPlaceholder bestPlaceholder = null;
-				for(SubPlaceholder subPlaceholder: cp.getPlaceholders()) {
-					if(subPlaceholder.hasPerm(p)) {
-						if(bestPlaceholder == null)
-							bestPlaceholder = subPlaceholder;
-						else {
-							if(bestPlaceholder.getPriority() < subPlaceholder.getPriority())
-								bestPlaceholder = subPlaceholder;
-						}
-					}
-				}
-				if(bestPlaceholder != null) {
-					stringMessage = stringMessage.replace("{" + id + "}", bestPlaceholder.getValue());
-				} else {
-					stringMessage = stringMessage.replace("{" + id + "}", "");
-				}
-			} catch(Exception ignored) {
-				//todo
+			SubPlaceholder bestPlaceholder = internMethods.getSubPlaceholder(p, cp);
+			if(bestPlaceholder != null) {
+				stringMessage = stringMessage.replace("{" + id + "}", bestPlaceholder.getValue());
+			} else {
+				stringMessage = stringMessage.replace("{" + id + "}", "");
 			}
 		}
 		s2 = stringMessage;

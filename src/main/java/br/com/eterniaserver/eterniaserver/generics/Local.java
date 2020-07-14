@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -24,7 +25,7 @@ public class Local {
             String format = plugin.chatConfig.getString("local.format");
             format = PlaceholderAPI.setPlaceholders(player, format);
             if (format != null) {
-                format = strings.getColor(format.replace("%message%", message));
+                format = strings.getColor(format.replace(Constants.MESSAGE.get(), message));
                 if (radius <= 0) {
                     pes += 1;
                     p.sendMessage(format);

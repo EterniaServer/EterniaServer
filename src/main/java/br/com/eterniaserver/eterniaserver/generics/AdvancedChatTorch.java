@@ -18,23 +18,24 @@ public class AdvancedChatTorch {
 
 	public void registerCustomPlaceholders() {
 		Vars.customPlaceholders.clear();
-		for(String id: plugin.placeholderConfig.getKeys(false)) {
-			if(id.equals("customplaceholders")) continue;
-			CustomPlaceholder cp = new CustomPlaceholder(id, plugin);
-			Vars.customPlaceholders.add(cp);
+		for (String id: plugin.placeholderConfig.getKeys(false)) {
+			if (!id.equals("customplaceholders")) {
+				CustomPlaceholder cp = new CustomPlaceholder(id, plugin);
+				Vars.customPlaceholders.add(cp);
+			}
 		}
 	}
 
 	public void checkGroups() {
 		for(Object s: plugin.groupConfig.getKeys(false)) {
-			if(s.equals("groups")) continue;
-			if(!plugin.groupConfig.contains(s.toString())) {
-				messages.sendConsole("server.chat-error", "%error%", "nenhum grupo encontrado");
+			if (!s.equals("groups")) {
+				if (!plugin.groupConfig.contains(s.toString())) {
+					messages.sendConsole("server.chat-error", "%error%", "nenhum grupo encontrado");
+				}
+				if (!plugin.groupConfig.contains(s.toString() + ".perm")) {
+					messages.sendConsole("server.chat-error", "%error%", "permissão para o grupo não encontrada");
+				}
 			}
-			if(!plugin.groupConfig.contains(s.toString() + ".perm")) {
-				messages.sendConsole("server.chat-error", "%error%", "permissão para o grupo não encontrada");
-			}
-
 		}
 	}
 

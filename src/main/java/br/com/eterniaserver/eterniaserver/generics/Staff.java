@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -21,7 +22,7 @@ public class Staff {
                 String format = plugin.chatConfig.getString("staff.format");
                 format = PlaceholderAPI.setPlaceholders(player, format);
                 if (format != null) {
-                    format = plugin.getEFiles().getColor(format.replace("%message%", message));
+                    format = plugin.getEFiles().getColor(format.replace(Constants.MESSAGE.get(), message));
                     p.sendMessage(format);
                 }
             }

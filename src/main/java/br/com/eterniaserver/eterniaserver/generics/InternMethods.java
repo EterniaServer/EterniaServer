@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
 
+import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.entity.Player;
@@ -59,6 +61,21 @@ public class InternMethods {
 
     public String setBothPlaceholders(Player p, Player to, String cc) {
         return setRelationalPlaceholders(p, to, setPlaceholders(p, cc));
+    }
+
+    public SubPlaceholder getSubPlaceholder(final Player player, final CustomPlaceholder cp) {
+        SubPlaceholder bestPlaceholder = null;
+        for (SubPlaceholder subPlaceholder : cp.getPlaceholders()) {
+            if (subPlaceholder.hasPerm(player)) {
+                if (bestPlaceholder == null)
+                    bestPlaceholder = subPlaceholder;
+                else {
+                    if (bestPlaceholder.getPriority() < subPlaceholder.getPriority())
+                        bestPlaceholder = subPlaceholder;
+                }
+            }
+        }
+        return bestPlaceholder;
     }
 
 }

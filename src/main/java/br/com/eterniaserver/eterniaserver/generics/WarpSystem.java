@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
 
@@ -37,7 +38,7 @@ public class WarpSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.shops.put(k, loc);
         });
-        messages.sendConsole("server.load-data",  "%module%", "Shops", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Shops", Constants.AMOUNT.get(), temp.size());
 
         query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
         temp = EQueries.getMapString(query, "name", "location");
@@ -52,7 +53,7 @@ public class WarpSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.warps.put(k, loc);
         });
-        messages.sendConsole("server.load-data",  "%module%", "Warps", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Warps", Constants.AMOUNT.get(), temp.size());
 
     }
 
@@ -69,10 +70,11 @@ public class WarpSystem extends BaseCommand {
                     else messages.sendMessage("teleport.spawn.no-exists", player);
                 }
         } else {
+            final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.spawn.other")) {
                 if (location != plugin.error) {
-                    Vars.teleports.put(target.getPlayer(), new PlayerTeleport(target.getPlayer(), location, "teleport.warp.done", plugin));
-                    messages.sendMessage("teleport.spawn.tp-target", "%target_name%", target.getPlayer().getName(), player);
+                    Vars.teleports.put(targetP, new PlayerTeleport(target.getPlayer(), location, "teleport.warp.done", plugin));
+                    messages.sendMessage("teleport.spawn.tp-target", Constants.TARGET.get(), targetP.getDisplayName(), player);
                 } else {
                     messages.sendMessage("teleport.spawn.no-exists", player);
                 }
@@ -94,7 +96,7 @@ public class WarpSystem extends BaseCommand {
                        if (Vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
                        else Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
                    } else {
-                       messages.sendMessage("teleport.warp.no-exists", "%warp_name%", "shop", player);
+                       messages.sendMessage("teleport.warp.no-exists", Constants.WARP.get(), "shop", player);
                    }
                } else {
                    messages.sendMessage("server.no-perm", player);
@@ -133,7 +135,7 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.setwarp")
     public void onSetWarp(Player player, String nome) {
         setWarp(player.getLocation(), nome.toLowerCase());
-        messages.sendMessage("teleport.warp.created", "%warp_name%", nome, player);
+        messages.sendMessage("teleport.warp.created", Constants.WARP.get(), nome, player);
     }
 
     @CommandAlias("delwarp")
@@ -144,7 +146,7 @@ public class WarpSystem extends BaseCommand {
             delWarp(nome.toLowerCase());
             messages.sendMessage("teleport.warp.deleted", player);
         } else {
-            messages.sendMessage("teleport.warp.no-exists", "%warp_name%", nome.toLowerCase(), player);
+            messages.sendMessage("teleport.warp.no-exists", Constants.WARP.get(), nome.toLowerCase(), player);
         }
     }
 
@@ -154,7 +156,7 @@ public class WarpSystem extends BaseCommand {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             StringBuilder string = new StringBuilder();
             for (String name : Vars.warps.keySet()) string.append(name).append("&8").append(", &3");
-            messages.sendMessage("teleport.warp.list", "%warps%", messages.getColor(string.substring(0, string.length() - 1)), player);
+            messages.sendMessage("teleport.warp.list", Constants.VALUE.get(), messages.getColor(string.substring(0, string.length() - 1)), player);
         });
     }
 
@@ -171,7 +173,7 @@ public class WarpSystem extends BaseCommand {
                     Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
                 }
             } else {
-                messages.sendMessage("teleport.warp.no-exists", "%warp_name%", nome, player);
+                messages.sendMessage("teleport.warp.no-exists", Constants.WARP.get(), nome, player);
             }
         } else {
             messages.sendMessage("server.no-perm", player);

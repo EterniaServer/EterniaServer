@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import co.aikar.commands.BaseCommand;
@@ -9,6 +10,7 @@ import co.aikar.commands.annotation.*;
 
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,13 +27,13 @@ public class Mute extends BaseCommand {
 
     @CommandAlias("mutechannels|muteall")
     @CommandPermission("eternia.mute.channels")
-    public void muteChannels(CommandSender sender) {
+    public void muteChannels(Player sender) {
         if (plugin.isChatMuted()) {
             plugin.setChatMuted(false);
-            messages.broadcastMessage("chat.cm-d", "%player_name%", sender.getName());
+            messages.broadcastMessage("chat.cm-d", Constants.PLAYER.get(), sender.getDisplayName());
         } else {
             plugin.setChatMuted(true);
-            messages.broadcastMessage("chat.cm-e", "%player_name%", sender.getName());
+            messages.broadcastMessage("chat.cm-e", Constants.PLAYER.get(), sender.getDisplayName());
         }
     }
 
@@ -39,13 +41,13 @@ public class Mute extends BaseCommand {
     @CommandCompletion("@players Mensagem")
     @Syntax("<jogador> <mensagem>")
     @CommandPermission("eternia.mute")
-    public void onMute(CommandSender player, OnlinePlayer target, @Optional String[] message) {
+    public void onMute(Player player, OnlinePlayer target, @Optional String[] message) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.YEAR, 20);
         Date dataa = cal.getTime();
         final String date = plugin.sdf.format(dataa);
-        messages.broadcastMessage("chat.mutebroad", "%player_name%", player.getName(), "%message%", messageFull(message));
+        messages.broadcastMessage("chat.mutebroad", Constants.PLAYER.get(), player.getDisplayName(), Constants.MESSAGE.get(), messageFull(message));
         if (registerMuted(target.getPlayer().getName())) {
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
@@ -60,7 +62,7 @@ public class Mute extends BaseCommand {
     @CommandPermission("eternia.unmute")
     public void onUnMute(OnlinePlayer target) {
         Vars.playerMuted.put(target.getPlayer().getName(), System.currentTimeMillis());
-        messages.broadcastMessage("chat.unmutebroad", "%player_name%", target.getPlayer().getName());
+        messages.broadcastMessage("chat.unmutebroad", Constants.PLAYER.get(), target.getPlayer().getDisplayName());
         if (registerMuted(target.getPlayer().getName())) {
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
@@ -77,7 +79,7 @@ public class Mute extends BaseCommand {
         cal.setTime(new Date());
         cal.add(Calendar.MINUTE, time);
         final String date = plugin.sdf.format(cal.getTime());
-        messages.broadcastMessage("chat.mutetbroad", "%player_name%", target.getPlayer().getName(), "%time%", time, "%message%", messageFull(message));
+        messages.broadcastMessage("chat.mutetbroad", Constants.PLAYER.get(), target.getPlayer().getDisplayName(), "%time%", time, Constants.MESSAGE.get(), messageFull(message));
         if (Vars.playerMuted.containsKey(target.getPlayer().getName())) {
             EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {

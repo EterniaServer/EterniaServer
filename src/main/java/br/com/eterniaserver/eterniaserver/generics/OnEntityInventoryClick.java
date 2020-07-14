@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import org.bukkit.Material;
@@ -34,7 +35,7 @@ public class OnEntityInventoryClick implements Listener {
                 Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
             e.setCancelled(true);
             messages.sendMessage("spawner.others.change-name", player);
-            messages.sendConsole("spawner.log.change-name", "%player_name%", playerName);
+            messages.sendConsole("spawner.log.change-name", Constants.PLAYER.get(), player.getDisplayName());
         }
     }
 

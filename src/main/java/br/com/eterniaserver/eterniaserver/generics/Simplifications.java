@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -38,8 +39,8 @@ public class Simplifications extends BaseCommand {
             final Player targetP = target.getPlayer();
 
             targetP.getWorld().strikeLightning(targetP.getLocation());
-            messages.sendMessage("generic.simp.sent-lightning", "%target_name%", targetP.getName(), player);
-            messages.sendMessage("generic.simp.received-lightning", "%target_name%", player.getName(), targetP);
+            messages.sendMessage("generic.simp.sent-lightning", Constants.TARGET.get(), targetP.getDisplayName(), player);
+            messages.sendMessage("generic.simp.received-lightning", Constants.TARGET.get(), player.getDisplayName(), targetP);
         } else {
             player.getWorld().strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
@@ -53,7 +54,7 @@ public class Simplifications extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            messages.broadcastMessage("generic.simp.suicide", "%message%", sb.toString(), "%player_name%", player.getName());
+            messages.broadcastMessage("generic.simp.suicide", Constants.MESSAGE.get(), sb.toString(), Constants.PLAYER.get(), player.getDisplayName());
         } else {
             player.setHealth(0);
         }

@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import org.bukkit.ChatColor;
@@ -37,7 +38,7 @@ public class OnPlayerJoin implements Listener {
             EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
         }
         event.setJoinMessage(null);
-        plugin.getEFiles().broadcastMessage("server.join", "%player_name%", playerName);
+        plugin.getEFiles().broadcastMessage("server.join", Constants.PLAYER.get(), player.getDisplayName());
     }
 
     private void checkMuted(String playerName) {

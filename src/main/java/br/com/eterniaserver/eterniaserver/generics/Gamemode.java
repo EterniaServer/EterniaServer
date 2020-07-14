@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -32,11 +33,9 @@ public class Gamemode extends BaseCommand {
             messages.sendMessage("generic.gm.changed","%gamemode%", "Sobrevivência", player);
         } else {
             final Player targetP = target.getPlayer();
-            final String targetName = targetP.getName();
-
             targetP.setGameMode(GameMode.SURVIVAL);
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Sobrevivência", targetP);
-            messages.sendMessage("generic.gm.changed-target", "%target_name%", targetName, "%gamemode%", "Sobrevivência", player);
+            messages.sendMessage("generic.gm.changed-target", Constants.TARGET.get(), targetP.getDisplayName(), "%gamemode%", "Sobrevivência", player);
         }
     }
 
@@ -48,11 +47,9 @@ public class Gamemode extends BaseCommand {
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Criativo", player);
         } else {
             final Player targetP = target.getPlayer();
-            final String targetName = targetP.getName();
-
             targetP.setGameMode(GameMode.CREATIVE);
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Criativo", targetP);
-            messages.sendMessage("generic.gm.changed-target", "%target_name%", targetName, "%gamemode%", "Criativo", player);
+            messages.sendMessage("generic.gm.changed-target", Constants.TARGET.get(), targetP.getDisplayName(), "%gamemode%", "Criativo", player);
         }
     }
 
@@ -64,11 +61,9 @@ public class Gamemode extends BaseCommand {
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Aventura", player);
         } else {
             final Player targetP = target.getPlayer();
-            final String targetName = targetP.getName();
-
             targetP.setGameMode(GameMode.ADVENTURE);
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Aventura", targetP);
-            messages.sendMessage("generic.gm.changed-target", "%target_name%", targetName, "%gamemode%", "Aventura", player);
+            messages.sendMessage("generic.gm.changed-target", Constants.TARGET.get(), targetP.getDisplayName(), "%gamemode%", "Aventura", player);
         }
     }
 
@@ -80,11 +75,9 @@ public class Gamemode extends BaseCommand {
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Espectador", player);
         } else {
             final Player targetP = target.getPlayer();
-            final String targetName = targetP.getName();
-
             targetP.setGameMode(GameMode.SPECTATOR);
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Espectador", targetP);
-            messages.sendMessage("generic.gm.changed-target", "%target_name%", targetName, "%gamemode%", "Espectador", player);
+            messages.sendMessage("generic.gm.changed-target", Constants.TARGET.get(), targetP.getDisplayName(), "%gamemode%", "Espectador", player);
         }
     }
 

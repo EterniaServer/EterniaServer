@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
 
@@ -46,7 +47,7 @@ public class HomeSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.homes.put(k, loc);
         });
-        messages.sendConsole("server.load-data",  "%module%", "Home", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Home", "%amount%", temp.size());
 
         query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + ";";
         temp = EQueries.getMapString(query, "player_name", "homes");
@@ -54,7 +55,7 @@ public class HomeSystem extends BaseCommand {
             final String[] homess = v.split(":");
             Vars.home.put(k, homess);
         });
-        messages.sendConsole("server.load-data",  "%module%", "PlayerHomes", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE.get(), "PlayerHomes", "%amount%", temp.size());
 
     }
 

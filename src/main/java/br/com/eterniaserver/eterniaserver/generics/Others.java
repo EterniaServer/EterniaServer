@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import co.aikar.commands.BaseCommand;
@@ -145,11 +146,10 @@ public class Others extends BaseCommand {
             messages.sendMessage("generic.others.feeded", player);
         } else {
             final Player targetP = target.getPlayer();
-
             if (player.hasPermission("eternia.feed.other")) {
                 targetP.setFoodLevel(20);
-                messages.sendMessage("generic.others.feeded-target", "%target_name%", targetP.getName(), player);
-                messages.sendMessage("generic.others.feeded", "%target_name%", player.getName(), targetP);
+                messages.sendMessage("generic.others.feeded-target", Constants.TARGET.get(), targetP.getDisplayName(), player);
+                messages.sendMessage("generic.others.feeded", Constants.TARGET.get(), player.getDisplayName(), targetP);
             } else {
                 messages.sendMessage("server.no-perm", player);
             }

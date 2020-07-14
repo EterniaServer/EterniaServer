@@ -38,7 +38,7 @@ public class Channels extends BaseCommand {
     }
 
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
-        if (messages != null && messages.length == 0) {
+        if (messages != null) {
             Vars.global.put(player.getName(), channel);
             this.messages.sendMessage("chat.channelc", "%channel_name%", channelName, player);
         } else {
