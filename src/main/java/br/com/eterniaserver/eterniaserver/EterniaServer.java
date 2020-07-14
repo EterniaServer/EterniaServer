@@ -11,6 +11,7 @@ import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.DecimalFormat;
@@ -24,24 +25,24 @@ public class EterniaServer extends JavaPlugin {
     public final DecimalFormat df2 = new DecimalFormat(".##");
     public final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-    private final InternMethods internMethods = new InternMethods(this);
-    private final PlaceHolders placeHolders = new PlaceHolders(this);
-    private final EconomyManager money = new EconomyManager(this);
-    private final ExperienceManager exp = new ExperienceManager(this);
+    private final InternMethods internMethods = new InternMethods();
+    private final PlaceHolders placeHolders = new PlaceHolders();
+    private final EconomyManager money = new EconomyManager();
+    private final ExperienceManager exp = new ExperienceManager();
 
     private PaperCommandManager manager;
     private EFiles messages;
     private Files files;
 
-    public FileConfiguration serverConfig;
-    public FileConfiguration msgConfig;
-    public FileConfiguration cmdConfig;
-    public FileConfiguration rewardsConfig;
-    public FileConfiguration blockConfig;
-    public FileConfiguration kitConfig;
-    public FileConfiguration chatConfig;
-    public FileConfiguration placeholderConfig;
-    public FileConfiguration groupConfig;
+    public static final FileConfiguration serverConfig = new YamlConfiguration();
+    public static final FileConfiguration msgConfig = new YamlConfiguration();
+    public static final FileConfiguration cmdConfig = new YamlConfiguration();
+    public static final FileConfiguration rewardsConfig = new YamlConfiguration();
+    public static final FileConfiguration blockConfig = new YamlConfiguration();
+    public static final FileConfiguration kitConfig = new YamlConfiguration();
+    public static final FileConfiguration chatConfig = new YamlConfiguration();
+    public static final FileConfiguration placeholderConfig = new YamlConfiguration();
+    public static final FileConfiguration groupConfig = new YamlConfiguration();
 
     @Override
     public void onEnable() {
@@ -59,23 +60,23 @@ public class EterniaServer extends JavaPlugin {
         placeholderAPIHook();
         vaultHook();
 
-        this.getServer().getPluginManager().registerEvents(new OnPlayerJump(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerJump(), this);
         this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerPreLogin(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnEntityDamage(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnEntityDamage(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityInventoryClick(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerBlockPlace(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerBlockPlace(), this);
         this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChat(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcess(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerSignChange(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneak(this), this);
-        this.getServer().getPluginManager().registerEvents(new OnServerListPing(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneak(), this);
+        this.getServer().getPluginManager().registerEvents(new OnServerListPing(), this);
 
     }
 

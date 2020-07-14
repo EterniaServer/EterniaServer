@@ -35,27 +35,27 @@ public class Managers {
     }
 
     private void loadBedManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.bed"), "Bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) plugin.serverConfig.getInt("server.checks") * 40);
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.bed"), "Bed")) {
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt("server.checks") * 40);
             plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedEnter(plugin), plugin);
             plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedLeave(plugin), plugin);
         }
     }
 
     private void loadBlockRewardsManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.block-reward"), "Block-Reward")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.block-reward"), "Block-Reward")) {
             plugin.getFiles().loadBlocksRewards();
         }
     }
 
     private void loadCommandsManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.commands"), "Commands")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.commands"), "Commands")) {
             plugin.getFiles().loadCommands();
         }
     }
 
     private void loadChatManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.chat"), "Chat")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.chat"), "Chat")) {
             plugin.getFiles().loadChat();
             manager.registerCommand(new Channels(plugin));
             manager.registerCommand(new Mute(plugin));
@@ -65,24 +65,24 @@ public class Managers {
     }
 
     private void loadEconomyManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.economy"), "Economy")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.economy"), "Economy")) {
             manager.registerCommand(new Economy(plugin));
             manager.registerCommand(new EcoChange(plugin));
         }
     }
 
     private void loadElevatorManager() {
-        sendModuleStatus(plugin.serverConfig.getBoolean("modules.elevator"), "Elevator");
+        sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.elevator"), "Elevator");
     }
 
     private void loadExperienceManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.experience"), "Experience")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.experience"), "Experience")) {
             manager.registerCommand(new Experience(plugin));
         }
     }
 
     private void loadGenericManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.generic"), "Generic")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.generic"), "Generic")) {
             manager.registerCommand(new Gamemode(messages));
             manager.registerCommand(new Inventory(messages));
             manager.registerCommand(new Others(plugin));
@@ -92,39 +92,39 @@ public class Managers {
     }
 
     private void loadHomesManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.home"), "Homes")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.home"), "Homes")) {
             manager.registerCommand(new HomeSystem(plugin));
         }
     }
 
     private void loadKitManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.kits"), "Kits")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.kits"), "Kits")) {
             plugin.getFiles().loadKits();
             manager.registerCommand(new KitSystem(plugin));
         }
     }
 
     private void loadPlayerChecks() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.playerchecks"), "PlayerChecks")) {
-            new Checks(plugin).runTaskTimer(plugin, 20L, (long) plugin.serverConfig.getInt("server.checks") * 20);
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.playerchecks"), "PlayerChecks")) {
+            new Checks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt("server.checks") * 20);
         }
     }
 
     private void loadRewardsManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
             plugin.getFiles().loadRewards();
             manager.registerCommand(new RewardsSystem(plugin));
         }
     }
 
     private void loadSpawnersManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.spawners"), "Spawners")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.spawners"), "Spawners")) {
             manager.registerCommand(new SpawnerGive(plugin));
         }
     }
 
     private void loadTeleportsManager() {
-        if (sendModuleStatus(plugin.serverConfig.getBoolean("modules.teleports"), "Teleports")) {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.teleports"), "Teleports")) {
             manager.registerCommand(new WarpSystem(plugin));
             manager.registerCommand(new TeleportSystem(plugin));
         }

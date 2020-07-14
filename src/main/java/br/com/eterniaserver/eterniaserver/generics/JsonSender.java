@@ -19,7 +19,7 @@ public class JsonSender {
 		if(e.isCancelled()) return;
 		if(!Vars.uufi.containsKey(e.getPlayer().getName())) return;
 		TextMaker tm = new TextMaker(message, e.getPlayer(), plugin);
-		boolean relationalPlaceholders = plugin.chatConfig.getBoolean("chat.enableRelationalPlaceholders");
+		boolean relationalPlaceholders = EterniaServer.chatConfig.getBoolean("chat.enableRelationalPlaceholders");
 		if(!relationalPlaceholders) {
 			tm.convertMessageToComponents();
 		}

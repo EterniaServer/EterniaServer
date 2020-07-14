@@ -101,6 +101,7 @@ generic:
     reload-start: '&7Reiniciando EterniaServer plugin&8.'
   profile:
     register: '&7Data de registro&8: &3%player_register_data%&8.'
+    # PAPI Supported for custom \/
     custom:
       - '&8[&aE&9S&8] &7Nome&8: &3%player_displayname%&8.'
       - '&8[&aE&9S&8] &7Nome Real&8: &3%player_name%&8.'

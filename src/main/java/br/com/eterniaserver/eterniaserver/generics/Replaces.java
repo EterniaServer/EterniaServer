@@ -45,7 +45,7 @@ public class Replaces extends BaseCommand {
 
         Date date = plugin.sdf.parse(Vars.playerLogin.get(playerName));
         messages.sendMessage("generic.profile.register", "%player_register_data%", plugin.sdf.format(date), player);
-        for (String line : plugin.msgConfig.getStringList("generic.profile.custom")) {
+        for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
             player.sendMessage(messages.getColor(putPAPI(player, line)));
         }
     }

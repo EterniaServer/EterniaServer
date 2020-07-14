@@ -15,9 +15,9 @@ public class OnServerListPing implements Listener {
     private String message;
     private String message2;
 
-    public OnServerListPing(EterniaServer plugin) {
+    public OnServerListPing() {
         final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
-        final List<String> list =  plugin.msgConfig.getStringList("server.motd");
+        final List<String> list =  EterniaServer.msgConfig.getStringList("server.motd");
         Matcher matcher = colorPattern.matcher(ChatColor.translateAlternateColorCodes('&', list.get(0)));
         if (matcher.find()) {
             StringBuffer buffer = new StringBuffer();

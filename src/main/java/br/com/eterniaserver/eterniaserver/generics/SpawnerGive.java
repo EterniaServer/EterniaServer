@@ -22,11 +22,9 @@ import java.util.List;
 
 public class SpawnerGive extends BaseCommand {
 
-    private final EterniaServer plugin;
     private final EFiles messages;
 
     public SpawnerGive(EterniaServer plugin) {
-        this.plugin = plugin;
         this.messages = plugin.getEFiles();
     }
 
@@ -48,11 +46,11 @@ public class SpawnerGive extends BaseCommand {
                     item.setAmount(value);
                     java.lang.String mobFormatted = spawner.substring(0, 1).toUpperCase() + spawner.substring(1).toLowerCase();
                     if (meta != null) {
-                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + plugin.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
+                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
                         List<String> newLore = new ArrayList<>();
-                        plugin.serverConfig.getStringList("spawners.lore");
-                        if (plugin.serverConfig.getBoolean("spawners.enable-lore")) {
-                            for (String line : plugin.serverConfig.getStringList("spawners.lore")) {
+                        EterniaServer.serverConfig.getStringList("spawners.lore");
+                        if (EterniaServer.serverConfig.getBoolean("spawners.enable-lore")) {
+                            for (String line : EterniaServer.serverConfig.getStringList("spawners.lore")) {
                                 newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
                             }
                             meta.setLore(newLore);

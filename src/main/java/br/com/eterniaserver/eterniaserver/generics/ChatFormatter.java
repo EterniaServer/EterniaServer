@@ -20,12 +20,12 @@ public class ChatFormatter extends StringHelper {
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
 		if (!Vars.uufi.containsKey(p.getName())) return;
-		if (plugin.chatConfig.getBoolean("chat.autoUpdateGroups", false)) plugin.getInternMethods().addUUIF(p);
+		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) plugin.getInternMethods().addUUIF(p);
 		FormatInfo fi = Vars.uufi.get(p.getName());
-		if (plugin.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
+		if (EterniaServer.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
 			ChatObject msg = new ChatObject("%message%");
-			msg.setColor(ChatColor.getByChar(plugin.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));
-			String total = parse(p, plugin.groupConfig.getString(fi.getName() + ".format"));
+			msg.setColor(ChatColor.getByChar(EterniaServer.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));
+			String total = parse(p, EterniaServer.groupConfig.getString(fi.getName() + ".format"));
 			int i = total.indexOf("%message%");
 			int i2 = i+"%message%".length();
 			String prefix = total.substring(0, i);
@@ -35,7 +35,7 @@ public class ChatFormatter extends StringHelper {
 				message.getChatObjects().add(new ChatObject(total.substring(i2+1)));
 			}
 		} else {
-			message.get(0).setMessage(parse(p, plugin.groupConfig.getString(fi.getName() + ".format")));
+			message.get(0).setMessage(parse(p, EterniaServer.groupConfig.getString(fi.getName() + ".format")));
 		}
 	}
 

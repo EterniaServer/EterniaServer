@@ -11,7 +11,6 @@ import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -26,10 +25,10 @@ public class ChatCommands extends BaseCommand {
     public ChatCommands(EterniaServer plugin) {
         this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
-        this.money = plugin.serverConfig.getInt("money.nick");
-        this.tableName = plugin.serverConfig.getString("sql.table-nick");
+        this.money = EterniaServer.serverConfig.getInt("money.nick");
+        this.tableName = EterniaServer.serverConfig.getString("sql.table-nick");
 
-        final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-nick") + ";";
+        final String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-nick") + ";";
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "player_display");
 
         temp.forEach(Vars.nickname::put);

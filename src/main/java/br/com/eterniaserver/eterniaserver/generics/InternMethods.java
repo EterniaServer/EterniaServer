@@ -11,12 +11,6 @@ import org.bukkit.entity.Player;
 
 public class InternMethods {
 
-    private final EterniaServer plugin;
-
-    public InternMethods(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
-
     public int getXPForLevel(int lvl) {
         if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
         else if (lvl > 15 && lvl < 31) return (int) ((2.5 * (lvl * lvl)) - (40.5 * lvl) + 360);
@@ -30,10 +24,10 @@ public class InternMethods {
     }
 
     public void addUUIF(Player p) {
-        for (String s : plugin.groupConfig.getKeys(false)) {
+        for (String s : EterniaServer.groupConfig.getKeys(false)) {
             if(s.equals("groups")) continue;
-            int priority = plugin.groupConfig.getInt(s + ".priority");
-            if(plugin.groupConfig.getString(s + ".perm").equals("") || p.hasPermission(plugin.groupConfig.getString(s + ".perm"))) {
+            int priority = EterniaServer.groupConfig.getInt(s + ".priority");
+            if(EterniaServer.groupConfig.getString(s + ".perm").equals("") || p.hasPermission(EterniaServer.groupConfig.getString(s + ".perm"))) {
                 if(Vars.uufi.containsKey(p.getName())) {
                     if(Vars.uufi.get(p.getName()).getPriority() < priority) {
                         Vars.uufi.put(p.getName(), new FormatInfo(priority, s));

@@ -9,11 +9,6 @@ import org.bukkit.entity.Player;
 public class PlaceHolders extends PlaceholderExpansion {
 
     private final String version = this.getClass().getPackage().getImplementationVersion();
-    private final EterniaServer plugin;
-
-    public PlaceHolders(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
 
     public String getAuthor() {
         return "yurinogueira";
@@ -47,10 +42,10 @@ public class PlaceHolders extends PlaceholderExpansion {
                 case 1:
                     return Vars.playerLogin.getOrDefault(p.getName(), "Sem registro");
                 case 2:
-                    if (Vars.afk.contains(p.getName())) return plugin.serverConfig.getString("placeholders.afk");
+                    if (Vars.afk.contains(p.getName())) return EterniaServer.serverConfig.getString("placeholders.afk");
                     else return "";
                 case 3:
-                    if (Vars.god.contains(p.getName())) return plugin.serverConfig.getString("placeholders.godmode");
+                    if (Vars.god.contains(p.getName())) return EterniaServer.serverConfig.getString("placeholders.godmode");
                     else return "";
                 default:
                     return null;

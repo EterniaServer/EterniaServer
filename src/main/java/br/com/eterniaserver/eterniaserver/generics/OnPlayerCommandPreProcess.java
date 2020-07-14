@@ -33,14 +33,14 @@ public class OnPlayerCommandPreProcess implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (plugin.serverConfig.getBoolean("modules.commands") && plugin.cmdConfig.contains("commands." + message)) {
+        if (EterniaServer.serverConfig.getBoolean("modules.commands") && EterniaServer.cmdConfig.contains("commands." + message)) {
             final String cmd = message.replace("/", "");
             if (player.hasPermission("eternia." + cmd)) {
-                for (String line : plugin.cmdConfig.getStringList("commands." + message + ".command")) {
+                for (String line : EterniaServer.cmdConfig.getStringList("commands." + message + ".command")) {
                     final String modifiedCommand = PlaceholderAPI.setPlaceholders(player, line);
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                 }
-                for (String line : plugin.cmdConfig.getStringList("commands." + message + ".text")) {
+                for (String line : EterniaServer.cmdConfig.getStringList("commands." + message + ".text")) {
                     final String modifiedText =PlaceholderAPI.setPlaceholders(player, line);
                     player.sendMessage(messages.getColor(modifiedText));
                 }

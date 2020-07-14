@@ -18,7 +18,7 @@ public class AdvancedChatTorch {
 
 	public void registerCustomPlaceholders() {
 		Vars.customPlaceholders.clear();
-		for (String id: plugin.placeholderConfig.getKeys(false)) {
+		for (String id: EterniaServer.placeholderConfig.getKeys(false)) {
 			if (!id.equals("customplaceholders")) {
 				CustomPlaceholder cp = new CustomPlaceholder(id, plugin);
 				Vars.customPlaceholders.add(cp);
@@ -27,12 +27,12 @@ public class AdvancedChatTorch {
 	}
 
 	public void checkGroups() {
-		for(Object s: plugin.groupConfig.getKeys(false)) {
+		for(Object s: EterniaServer.groupConfig.getKeys(false)) {
 			if (!s.equals("groups")) {
-				if (!plugin.groupConfig.contains(s.toString())) {
+				if (!EterniaServer.groupConfig.contains(s.toString())) {
 					messages.sendConsole("server.chat-error", "%error%", "nenhum grupo encontrado");
 				}
-				if (!plugin.groupConfig.contains(s.toString() + ".perm")) {
+				if (!EterniaServer.groupConfig.contains(s.toString() + ".perm")) {
 					messages.sendConsole("server.chat-error", "%error%", "permissão para o grupo não encontrada");
 				}
 			}

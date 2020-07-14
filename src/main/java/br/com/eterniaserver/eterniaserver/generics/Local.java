@@ -11,18 +11,16 @@ import org.bukkit.entity.Player;
 
 public class Local {
 
-    private final EterniaServer plugin;
     private final EFiles strings;
 
     public Local(EterniaServer plugin) {
-        this.plugin = plugin;
         this.strings = plugin.getEFiles();
     }
 
     public void sendChatMessage(String message, Player player, int radius) {
         int pes = 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
-            String format = plugin.chatConfig.getString("local.format");
+            String format = EterniaServer.chatConfig.getString("local.format");
             format = PlaceholderAPI.setPlaceholders(player, format);
             if (format != null) {
                 format = strings.getColor(format.replace(Constants.MESSAGE.get(), message));

@@ -31,7 +31,7 @@ public class Experience extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.exp = plugin.getExp();
 
-        final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-xp") + ";";
+        final String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-xp") + ";";
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "xp");
 
         temp.forEach((k, v) -> Vars.xp.put(k, Integer.parseInt(v)));

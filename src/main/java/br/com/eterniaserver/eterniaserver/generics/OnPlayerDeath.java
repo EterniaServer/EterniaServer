@@ -9,15 +9,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class OnPlayerDeath implements Listener {
 
-    private final EterniaServer plugin;
-
-    public OnPlayerDeath(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (plugin.serverConfig.getBoolean("modules.teleports")) {
+        if (EterniaServer.serverConfig.getBoolean("modules.teleports")) {
             final Player player = event.getEntity();
             Vars.back.put(player.getName(), player.getLocation());
         }

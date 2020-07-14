@@ -17,12 +17,10 @@ import org.bukkit.entity.Player;
 
 public class TeleportSystem extends BaseCommand {
 
-    private final EterniaServer plugin;
     private final EFiles eFiles;
     private final EconomyManager moneyx;
 
     public TeleportSystem(EterniaServer plugin) {
-        this.plugin = plugin;
         this.eFiles = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
     }
@@ -46,7 +44,7 @@ public class TeleportSystem extends BaseCommand {
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             if (target != null) {
                 eFiles.sendMessage("teleport.tpa.accept", Constants.TARGET.get(), player.getDisplayName(), target);
-                Vars.teleports.put(target, new PlayerTeleport(target, player.getLocation(), "teleport.tpa.done", plugin));
+                Vars.teleports.put(target, new PlayerTeleport(target, player.getLocation(), "teleport.tpa.done"));
             }
             Vars.tpaTime.remove(playerName);
             Vars.tpaRequests.remove(playerName);
@@ -103,10 +101,10 @@ public class TeleportSystem extends BaseCommand {
         final String playerName = player.getName();
         if (Vars.back.containsKey(playerName)) {
             double money = moneyx.getMoney(playerName);
-            double valor = plugin.serverConfig.getInt("money.back");
-            if (player.hasPermission("eternia.backfree") || !(plugin.serverConfig.getBoolean("modules.economy"))) {
+            double valor = EterniaServer.serverConfig.getInt("money.back");
+            if (player.hasPermission("eternia.backfree") || !(EterniaServer.serverConfig.getBoolean("modules.economy"))) {
                 if (Vars.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
-                else Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), "teleport.back.free", plugin));
+                else Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), "teleport.back.free"));
             } else {
                 if (money >= valor) {
                     if (Vars.teleports.containsKey(player)) {
@@ -114,7 +112,7 @@ public class TeleportSystem extends BaseCommand {
                     }
                     else {
                         moneyx.removeMoney(playerName, valor);
-                        Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), "teleport.back.no-free", plugin));
+                        Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), "teleport.back.no-free"));
                     }
                 } else {
                     eFiles.sendMessage("teleport.back.no-money", Constants.VALUE.get(), valor, player);

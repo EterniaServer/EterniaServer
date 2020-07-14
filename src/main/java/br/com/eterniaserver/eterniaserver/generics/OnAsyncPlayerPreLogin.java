@@ -20,16 +20,16 @@ public class OnAsyncPlayerPreLogin implements Listener {
     @EventHandler
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         final String playerName = event.getName();
-        if (plugin.serverConfig.getBoolean("modules.experience") && !playerXPExist(playerName)) {
+        if (EterniaServer.serverConfig.getBoolean("modules.experience") && !playerXPExist(playerName)) {
             playerXPCreate(playerName);
         }
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) {
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
             Vars.afkTime.put(playerName, System.currentTimeMillis());
             if (!playerProfileExist(playerName)) {
                 playerProfileCreate(playerName);
             }
         }
-        if (plugin.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
+        if (EterniaServer.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
             playerHomeCreate(playerName);
         }
     }
@@ -37,7 +37,7 @@ public class OnAsyncPlayerPreLogin implements Listener {
     private boolean playerProfileExist(String playerName) {
         if (Vars.playerLogin.containsKey(playerName)) return true;
 
-        final String profile = EQueries.queryString("SELECT * FROM " + plugin.serverConfig.getString("sql.table-player")+ " WHERE player_name='" + playerName + "';", "time");
+        final String profile = EQueries.queryString("SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-player")+ " WHERE player_name='" + playerName + "';", "time");
         if (profile.equals("")) return false;
 
         Vars.playerLogin.put(playerName, profile);
@@ -54,17 +54,17 @@ public class OnAsyncPlayerPreLogin implements Listener {
 
     private void playerProfileCreate(String playerName) {
         Date date = new Date();
-        EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-player") + " (player_name, time) VALUES('" + playerName + "', '" + plugin.sdf.format(date) + "');");
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-player") + " (player_name, time) VALUES('" + playerName + "', '" + plugin.sdf.format(date) + "');");
         Vars.playerLogin.put(playerName, plugin.sdf.format(date));
     }
 
     private void playerXPCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-xp") + " (player_name, xp) VALUES ('" + playerName + "', '" + 0 + "');");
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-xp") + " (player_name, xp) VALUES ('" + playerName + "', '" + 0 + "');");
         Vars.xp.put(playerName, 0);
     }
 
     private void playerHomeCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');");
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');");
     }
 
 }

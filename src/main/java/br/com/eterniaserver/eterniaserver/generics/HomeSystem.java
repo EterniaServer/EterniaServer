@@ -34,7 +34,7 @@ public class HomeSystem extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-homes") + ";";
+        String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-homes") + ";";
         HashMap<String, String> temp = EQueries.getMapString(query, "name", "location");
 
         temp.forEach((k, v) -> {
@@ -49,7 +49,7 @@ public class HomeSystem extends BaseCommand {
         });
         messages.sendConsole("server.load-data", Constants.MODULE.get(), "Home", "%amount%", temp.size());
 
-        query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-home") + ";";
+        query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-home") + ";";
         temp = EQueries.getMapString(query, "player_name", "homes");
         temp.forEach((k, v) -> {
             final String[] homess = v.split(":");
@@ -83,7 +83,7 @@ public class HomeSystem extends BaseCommand {
                 if (Vars.teleports.containsKey(player)) {
                         messages.sendMessage("server.telep", player);
                 } else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
+                    Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done"));
                 }
             } else {
                 messages.sendMessage("home.no-exists", player);
@@ -92,7 +92,7 @@ public class HomeSystem extends BaseCommand {
             if (player.hasPermission("eternia.home.other")) {
                 Location location = getHome(nome.toLowerCase(), target.getPlayer().getName());
                 if (location != plugin.error) {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done", plugin));
+                    Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done"));
                 } else {
                     messages.sendMessage("home.no-exists", player);
                 }
@@ -181,7 +181,7 @@ public class HomeSystem extends BaseCommand {
         }
         if (!t) {
             result.append(home).append(":");
-            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
+            final String querie = "UPDATE " + EterniaServer.serverConfig.getString("sql.table-home") + " SET homes='" + result + "' WHERE player_name='" + jogador + "';";
             EQueries.executeQuery(querie);
             values = result.toString().split(":");
             Vars.home.put(jogador, values);
@@ -191,7 +191,7 @@ public class HomeSystem extends BaseCommand {
                     ":" + ((int) loc.getZ()) +
                     ":" + ((int) loc.getYaw()) +
                     ":" + ((int) loc.getPitch());
-            final String querie2 = "INSERT INTO " + plugin.serverConfig.getString("sql.table-homes") + " (name, location) VALUES ('" + home + "." + jogador + "', '" + saveloc + "')";
+            final String querie2 = "INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-homes") + " (name, location) VALUES ('" + home + "." + jogador + "', '" + saveloc + "')";
             EQueries.executeQuery(querie2);
         } else {
             String saveloc = loc.getWorld().getName() +
@@ -200,7 +200,7 @@ public class HomeSystem extends BaseCommand {
                     ":" + ((int) loc.getZ()) +
                     ":" + ((int) loc.getYaw()) +
                     ":" + ((int) loc.getPitch());
-            final String querie3 = "UPDATE " + plugin.serverConfig.getString("sql.table-homes") + " SET location='" + saveloc + "' WHERE name='" + home + "." + jogador + "';";
+            final String querie3 = "UPDATE " + EterniaServer.serverConfig.getString("sql.table-homes") + " SET location='" + saveloc + "' WHERE name='" + home + "." + jogador + "';";
             EQueries.executeQuery(querie3);
         }
     }
@@ -220,12 +220,12 @@ public class HomeSystem extends BaseCommand {
         Vars.home.put(jogador, values);
         String querie;
         if (t) {
-            querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
+            querie = "UPDATE " + EterniaServer.serverConfig.getString("sql.table-home") + " SET homes=':' WHERE player_name='" + jogador + "';";
         } else {
-            querie = "UPDATE " + plugin.serverConfig.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
+            querie = "UPDATE " + EterniaServer.serverConfig.getString("sql.table-home") + " SET homes='" + nova + "' WHERE player_name='" + jogador + "';";
         }
         EQueries.executeQuery(querie);
-        querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
+        querie = "DELETE FROM " + EterniaServer.serverConfig.getString("sql.table-homes") + " WHERE name='" + home + "." + jogador + "';";
         EQueries.executeQuery(querie);
     }
 

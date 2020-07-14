@@ -4,8 +4,6 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.IOException;
 import java.util.Locale;
 
@@ -19,10 +17,8 @@ public class Files {
 
     public void loadConfigs() {
 
-        plugin.serverConfig = new YamlConfiguration();
-
         try {
-            plugin.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
+            EterniaServer.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
 
             EFiles.fileLoad(plugin, "acf_messages.yml");
             plugin.getManager().getLocales().loadYamlLanguageFile("acf_messages.yml", Locale.ENGLISH);
@@ -34,10 +30,8 @@ public class Files {
 
     public void loadMessages() {
 
-        plugin.msgConfig = new YamlConfiguration();
-
         try {
-            plugin.msgConfig.load(EFiles.fileLoad(plugin, "messages.yml"));
+            EterniaServer.msgConfig.load(EFiles.fileLoad(plugin, "messages.yml"));
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -46,14 +40,10 @@ public class Files {
 
     public void loadChat() {
 
-        plugin.chatConfig = new YamlConfiguration();
-        plugin.groupConfig = new YamlConfiguration();
-        plugin.placeholderConfig = new YamlConfiguration();
-
         try {
-            plugin.chatConfig.load(EFiles.fileLoad(plugin, "chat.yml"));
-            plugin.groupConfig.load(EFiles.fileLoad(plugin, "groups.yml"));
-            plugin.placeholderConfig.load(EFiles.fileLoad(plugin, "customplaceholders.yml"));
+            EterniaServer.chatConfig.load(EFiles.fileLoad(plugin, "chat.yml"));
+            EterniaServer.groupConfig.load(EFiles.fileLoad(plugin, "groups.yml"));
+            EterniaServer.placeholderConfig.load(EFiles.fileLoad(plugin, "customplaceholders.yml"));
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -62,10 +52,8 @@ public class Files {
 
     public void loadRewards() {
 
-        plugin.rewardsConfig = new YamlConfiguration();
-
         try {
-            plugin.rewardsConfig.load(EFiles.fileLoad(plugin, "rewards.yml"));
+            EterniaServer.rewardsConfig.load(EFiles.fileLoad(plugin, "rewards.yml"));
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -74,10 +62,8 @@ public class Files {
 
     public void loadKits() {
 
-        plugin.kitConfig = new YamlConfiguration();
-
         try {
-            plugin.kitConfig.load(EFiles.fileLoad(plugin, "kits.yml"));
+            EterniaServer.kitConfig.load(EFiles.fileLoad(plugin, "kits.yml"));
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -86,10 +72,8 @@ public class Files {
 
     public void loadCommands() {
 
-        plugin.cmdConfig = new YamlConfiguration();
-
         try {
-            plugin.cmdConfig.load(EFiles.fileLoad(plugin, "commands.yml"));
+            EterniaServer.cmdConfig.load(EFiles.fileLoad(plugin, "commands.yml"));
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -98,10 +82,8 @@ public class Files {
 
     public void loadBlocksRewards() {
 
-        plugin.blockConfig = new YamlConfiguration();
-
         try {
-            plugin.blockConfig.load(EFiles.fileLoad(plugin, "blocks.yml"));
+            EterniaServer.blockConfig.load(EFiles.fileLoad(plugin, "blocks.yml"));
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -110,7 +92,7 @@ public class Files {
 
     public void loadDatabase() {
 
-        new Table(plugin);
+        new Table();
 
     }
 

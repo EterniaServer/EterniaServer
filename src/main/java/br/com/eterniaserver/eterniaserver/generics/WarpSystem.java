@@ -25,7 +25,7 @@ public class WarpSystem extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + ";";
+        String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-shop") + ";";
         HashMap<String, String> temp = EQueries.getMapString(query, "name", "location");
 
         temp.forEach((k, v) -> {
@@ -40,7 +40,7 @@ public class WarpSystem extends BaseCommand {
         });
         messages.sendConsole("server.load-data", Constants.MODULE.get(), "Shops", Constants.AMOUNT.get(), temp.size());
 
-        query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + ";";
+        query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-warp") + ";";
         temp = EQueries.getMapString(query, "name", "location");
 
         temp.forEach((k, v) -> {
@@ -66,14 +66,14 @@ public class WarpSystem extends BaseCommand {
                 if (Vars.teleports.containsKey(player)) {
                     messages.sendMessage("server.telep", player);
                 } else {
-                    if (location != plugin.error) Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
+                    if (location != plugin.error) Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done"));
                     else messages.sendMessage("teleport.spawn.no-exists", player);
                 }
         } else {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.spawn.other")) {
                 if (location != plugin.error) {
-                    Vars.teleports.put(targetP, new PlayerTeleport(target.getPlayer(), location, "teleport.warp.done", plugin));
+                    Vars.teleports.put(targetP, new PlayerTeleport(target.getPlayer(), location, "teleport.warp.done"));
                     messages.sendMessage("teleport.spawn.tp-target", Constants.TARGET.get(), targetP.getDisplayName(), player);
                 } else {
                     messages.sendMessage("teleport.spawn.no-exists", player);
@@ -94,7 +94,7 @@ public class WarpSystem extends BaseCommand {
                if (player.hasPermission("eternia.warp.shop")) {
                    if (location != plugin.error) {
                        if (Vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
-                       else Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
+                       else Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done"));
                    } else {
                        messages.sendMessage("teleport.warp.no-exists", Constants.WARP.get(), "shop", player);
                    }
@@ -108,7 +108,7 @@ public class WarpSystem extends BaseCommand {
                     messages.sendMessage("server.telep", player);
                 }
                 else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.shop.done", plugin));
+                    Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.shop.done"));
                 }
             } else {
                 messages.sendMessage("teleport.shop.no-exists", player);
@@ -170,7 +170,7 @@ public class WarpSystem extends BaseCommand {
                 if (Vars.teleports.containsKey(player)) {
                     messages.sendMessage("server.telep", player);
                 } else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done", plugin));
+                    Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done"));
                 }
             } else {
                 messages.sendMessage("teleport.warp.no-exists", Constants.WARP.get(), nome, player);
@@ -189,12 +189,12 @@ public class WarpSystem extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
+            final String querie = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-shop") + " WHERE name='" + shop + "';";
             if (EQueries.queryBoolean(querie, "name")) {
-                final String querieSave = "UPDATE " + plugin.serverConfig.getString("sql.table-shop") + " SET location='" + saveloc + "' WHERE name='" + shop + "';";
+                final String querieSave = "UPDATE " + EterniaServer.serverConfig.getString("sql.table-shop") + " SET location='" + saveloc + "' WHERE name='" + shop + "';";
                 EQueries.executeQuery(querieSave, false);
             } else {
-                final String querieSave = "INSERT INTO " + plugin.serverConfig.getString("sql.table-shop") + " (name, location) VALUES ('" + shop + "', '" + saveloc + "')";
+                final String querieSave = "INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-shop") + " (name, location) VALUES ('" + shop + "', '" + saveloc + "')";
                 EQueries.executeQuery(querieSave, false);
             }
         });
@@ -217,17 +217,17 @@ public class WarpSystem extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (existWarp(warp)) {
-            final String querie = "UPDATE " + plugin.serverConfig.getString("sql.table-warp") + " SET location='" + saveloc + "' WHERE name='" + warp + "';";
+            final String querie = "UPDATE " + EterniaServer.serverConfig.getString("sql.table-warp") + " SET location='" + saveloc + "' WHERE name='" + warp + "';";
             EQueries.executeQuery(querie);
         } else {
-            final String querie = "INSERT INTO " + plugin.serverConfig.getString("sql.table-warp") + " (name, location) VALUES ('" + warp + "', '" + saveloc + "')";
+            final String querie = "INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-warp") + " (name, location) VALUES ('" + warp + "', '" + saveloc + "')";
             EQueries.executeQuery(querie);
         }
     }
 
     public void delWarp(String warp) {
         Vars.warps.remove(warp);
-        final String querie = "DELETE FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+        final String querie = "DELETE FROM " + EterniaServer.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
         EQueries.executeQuery(querie);
     }
 
@@ -240,7 +240,7 @@ public class WarpSystem extends BaseCommand {
     }
 
     public boolean existWarp(String warp) {
-        final String querie = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
+        final String querie = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-warp") + " WHERE name='" + warp + "';";
         return EQueries.queryBoolean(querie, "name");
     }
 

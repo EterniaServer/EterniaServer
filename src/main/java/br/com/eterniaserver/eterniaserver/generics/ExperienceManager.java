@@ -5,12 +5,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 public class ExperienceManager {
 
-    private final EterniaServer plugin;
-
-    public ExperienceManager(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
-
     /**
      * Gets experience of a player on a database.
      * @param playerName to check
@@ -21,7 +15,7 @@ public class ExperienceManager {
             return Vars.xp.get(playerName);
         }
 
-        final String querie = "SELECT xp FROM " + plugin.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
+        final String querie = "SELECT xp FROM " + EterniaServer.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
         return EQueries.queryInteger(querie, "xp");
     }
 
@@ -32,7 +26,7 @@ public class ExperienceManager {
      */
     public void setExp(String playerName, int amount) {
         Vars.xp.put(playerName, amount);
-        EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
+        EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
     }
 
     /**

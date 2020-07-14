@@ -17,24 +17,18 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class OnPlayerToggleSneak implements Listener {
 
-    private final EterniaServer plugin;
-
-    public OnPlayerToggleSneak(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         if (event.isCancelled()) return;
 
         final Player player = event.getPlayer();
-        if (player.hasPermission("eternia.elevator") && plugin.serverConfig.getBoolean("modules.elevator") && !player.isSneaking()) {
+        if (player.hasPermission("eternia.elevator") && EterniaServer.serverConfig.getBoolean("modules.elevator") && !player.isSneaking()) {
             Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
-            for (String value : plugin.serverConfig.getStringList("elevator.block")) {
+            for (String value : EterniaServer.serverConfig.getStringList("elevator.block")) {
                 if (value.equals(material.toString())) {
-                    final int max = plugin.serverConfig.getInt("elevator.max");
-                    final int min = plugin.serverConfig.getInt("elevator.min");
+                    final int max = EterniaServer.serverConfig.getInt("elevator.max");
+                    final int min = EterniaServer.serverConfig.getInt("elevator.min");
                     block = block.getRelative(BlockFace.DOWN, min);
 
                     int i;

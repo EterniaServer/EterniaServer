@@ -21,13 +21,11 @@ public class TextMaker extends StringHelper {
 	protected TextComponent text;
 	private final ChatMessage message;
 	private final Player p;
-	private final EterniaServer plugin;
 	private final InternMethods internMethods;
 
 	public TextMaker(ChatMessage message, Player p, EterniaServer plugin) {
 		this.p = p;
 		this.message = message;
-		this.plugin = plugin;
 		internMethods = plugin.getInternMethods();
 	}
 
@@ -132,11 +130,11 @@ public class TextMaker extends StringHelper {
 	}
 
 	public String getConfigString(Player p, String extra) {
-		return plugin.groupConfig.getString (Vars.uufi.get(p.getName()).getName() + "." + extra);
+		return EterniaServer.groupConfig.getString (Vars.uufi.get(p.getName()).getName() + "." + extra);
 	}
 
 	public boolean getConfigBoolean(Player p, String extra) {
-		return plugin.groupConfig.getBoolean(Vars.uufi.get(p.getName()).getName() + "." + extra);
+		return EterniaServer.groupConfig.getBoolean(Vars.uufi.get(p.getName()).getName() + "." + extra);
 	}
 
 	public String customPlaceholder(Player p, String s2) {

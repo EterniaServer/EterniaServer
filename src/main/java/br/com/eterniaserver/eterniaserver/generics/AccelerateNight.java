@@ -26,7 +26,7 @@ public class AccelerateNight extends BukkitRunnable {
         final long time = world.getTime();
         final int sleeping = AccelerateWorld.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
-        double base = plugin.serverConfig.getInt("bed.speed");
+        double base = EterniaServer.serverConfig.getInt("bed.speed");
         double timeRate;
         if (sleeping > (players / 100) * 15) {
             int x = players / sleeping;

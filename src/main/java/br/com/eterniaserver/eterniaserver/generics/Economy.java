@@ -31,7 +31,7 @@ public class Economy extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.moneyx = plugin.getMoney();
 
-        final String query = "SELECT * FROM " + plugin.serverConfig.getString("sql.table-money") + ";";
+        final String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-money") + ";";
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "balance");
 
         temp.forEach((k, v) -> Vars.balances.put(k, Double.parseDouble(v)));

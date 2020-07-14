@@ -50,7 +50,7 @@ public class OnAsyncPlayerChat implements Listener {
         final String playerName = player.getName();
         String message = e.getMessage();
 
-        if (plugin.serverConfig.getBoolean("modules.chat")) {
+        if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             if (plugin.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
                 messages.sendMessage("chat.chatmuted", player);
                 e.setCancelled(true);
@@ -76,7 +76,7 @@ public class OnAsyncPlayerChat implements Listener {
 
             switch (Vars.global.getOrDefault(playerName, 0)) {
                 case 0:
-                    local.sendChatMessage(message, player, plugin.chatConfig.getInt("local.range"));
+                    local.sendChatMessage(message, player, EterniaServer.chatConfig.getInt("local.range"));
                     e.setCancelled(true);
                     break;
                 case 2:

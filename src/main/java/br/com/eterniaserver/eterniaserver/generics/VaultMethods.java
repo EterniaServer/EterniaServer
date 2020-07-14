@@ -15,11 +15,9 @@ import java.util.List;
 public class VaultMethods implements Economy {
 
     private final DecimalFormat df2 = new DecimalFormat(".##");
-    private final EterniaServer plugin;
     private final EconomyManager moneyx;
 
     public VaultMethods(EterniaServer plugin) {
-        this.plugin = plugin;
         this.moneyx = plugin.getMoney();
     }
 
@@ -50,12 +48,12 @@ public class VaultMethods implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return plugin.serverConfig.getString("money.plural");
+        return EterniaServer.serverConfig.getString("money.plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return plugin.serverConfig.getString("money.singular");
+        return EterniaServer.serverConfig.getString("money.singular");
     }
 
     @Override
@@ -263,7 +261,7 @@ public class VaultMethods implements Economy {
     }
 
     private void playerMoneyCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "');");
         Vars.balances.put(playerName, 300.0);
     }
 

@@ -9,7 +9,6 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Calendar;
@@ -49,9 +48,9 @@ public class Mute extends BaseCommand {
         final String date = plugin.sdf.format(dataa);
         messages.broadcastMessage("chat.mutebroad", Constants.PLAYER.get(), player.getDisplayName(), Constants.MESSAGE.get(), messageFull(message));
         if (registerMuted(target.getPlayer().getName())) {
-            EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
+            EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
-            EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
+            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
         }
         Vars.playerMuted.put(target.getPlayer().getName(), cal.getTimeInMillis());
     }
@@ -64,9 +63,9 @@ public class Mute extends BaseCommand {
         Vars.playerMuted.put(target.getPlayer().getName(), System.currentTimeMillis());
         messages.broadcastMessage("chat.unmutebroad", Constants.PLAYER.get(), target.getPlayer().getDisplayName());
         if (registerMuted(target.getPlayer().getName())) {
-            EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';");
+            EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-muted") + " SET time='" + "2020/01/01 00:00" + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
-            EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + "2020/01/01 00:00" + "');");
+            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + "2020/01/01 00:00" + "');");
         }
     }
 
@@ -81,9 +80,9 @@ public class Mute extends BaseCommand {
         final String date = plugin.sdf.format(cal.getTime());
         messages.broadcastMessage("chat.mutetbroad", Constants.PLAYER.get(), target.getPlayer().getDisplayName(), "%time%", time, Constants.MESSAGE.get(), messageFull(message));
         if (Vars.playerMuted.containsKey(target.getPlayer().getName())) {
-            EQueries.executeQuery("UPDATE " + plugin.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
+            EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-muted") + " SET time='" + date + "' WHERE player_name='" + target.getPlayer().getName() + "';");
         } else {
-            EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
+            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES ('" + target.getPlayer().getName() + "', '" + date + "');");
         }
         Vars.playerMuted.put(target.getPlayer().getName(), cal.getTimeInMillis());
     }
@@ -95,7 +94,7 @@ public class Mute extends BaseCommand {
     }
 
     private boolean registerMuted(String playerName) {
-        return EQueries.queryBoolean("SELECT * FROM " + plugin.serverConfig.getString("sql.table-muted") + " WHERE player_name='" + playerName + "';", "player_name");
+        return EQueries.queryBoolean("SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-muted") + " WHERE player_name='" + playerName + "';", "player_name");
     }
 
 }

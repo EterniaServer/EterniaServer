@@ -24,7 +24,7 @@ public class OnPlayerJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("modules.chat")) {
+        if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             plugin.getInternMethods().addUUIF(player);
             Vars.global.put(playerName, 0);
             if (player.hasPermission("eternia.spy")) Vars.spy.put(player, true);
@@ -33,16 +33,16 @@ public class OnPlayerJoin implements Listener {
                 player.setDisplayName(ChatColor.translateAlternateColorCodes('&', Vars.nickname.get(playerName)));
             }
         }
-        if (plugin.serverConfig.getBoolean("modules.economy") && !Vars.balances.containsKey(playerName)) {
+        if (EterniaServer.serverConfig.getBoolean("modules.economy") && !Vars.balances.containsKey(playerName)) {
             Vars.balances.put(playerName, 300.0);
-            EQueries.executeQuery("INSERT INTO " + plugin.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + plugin.serverConfig.getDouble("money.start") + "');");
+            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "');");
         }
         event.setJoinMessage(null);
         plugin.getEFiles().broadcastMessage("server.join", Constants.PLAYER.get(), player.getDisplayName());
     }
 
     private void checkMuted(String playerName) {
-        final String time = EQueries.queryString("SELECT * FROM " + plugin.serverConfig.getString("sql.table-muted") + " WHERE player_name='" + playerName + "';", "time");
+        final String time = EQueries.queryString("SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-muted") + " WHERE player_name='" + playerName + "';", "time");
         if (!time.equals("")) {
             try {
                 Vars.playerMuted.put(playerName, plugin.sdf.parse(time).getTime());

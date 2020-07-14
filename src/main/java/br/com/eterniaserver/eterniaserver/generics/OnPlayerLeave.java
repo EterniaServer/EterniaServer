@@ -21,9 +21,9 @@ public class OnPlayerLeave implements Listener {
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("modules.playerchecks")) Vars.afkTime.remove(playerName);
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) Vars.afkTime.remove(playerName);
 
-        if (plugin.serverConfig.getBoolean("modules.chat")) {
+        if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             plugin.getInternMethods().removeUUIF(player);
             if (player.hasPermission("eternia.spy")) Vars.spy.remove(player);
         }

@@ -19,7 +19,7 @@ public class Staff {
     public void sendChatMessage(String message, Player player) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission("eternia.chat.staff")) {
-                String format = plugin.chatConfig.getString("staff.format");
+                String format = EterniaServer.chatConfig.getString("staff.format");
                 format = PlaceholderAPI.setPlaceholders(player, format);
                 if (format != null) {
                     format = plugin.getEFiles().getColor(format.replace(Constants.MESSAGE.get(), message));

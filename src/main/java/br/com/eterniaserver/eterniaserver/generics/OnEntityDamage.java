@@ -10,19 +10,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class OnEntityDamage implements Listener {
 
-    private final EterniaServer plugin;
-
-    public OnEntityDamage(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.isCancelled()) return;
         final Entity entity = event.getEntity();
         if (entity instanceof Player) {
             final Player player = (Player) entity;
-            if (Vars.god.contains(player.getName()) && plugin.serverConfig.getBoolean("modules.generic")) {
+            if (Vars.god.contains(player.getName()) && EterniaServer.serverConfig.getBoolean("modules.generic")) {
                 event.setCancelled(true);
             }
         }

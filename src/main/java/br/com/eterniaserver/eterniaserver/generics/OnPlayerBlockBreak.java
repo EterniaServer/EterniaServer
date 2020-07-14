@@ -40,8 +40,8 @@ public class OnPlayerBlockBreak implements Listener {
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
         final Material material = block.getType();
-        if (plugin.serverConfig.getBoolean("modules.spawners") && material == Material.SPAWNER) {
-            if (plugin.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
+        if (EterniaServer.serverConfig.getBoolean("modules.spawners") && material == Material.SPAWNER) {
+            if (EterniaServer.serverConfig.getStringList("spawners.blacklisted-worlds").contains(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass"))) {
                 messages.sendMessage("spawner.others.blocked", player);
                 event.setCancelled(true);
                 return;
@@ -55,17 +55,17 @@ public class OnPlayerBlockBreak implements Listener {
                     String mob = spawner.getSpawnedType().toString().replace("_", " ");
                     String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
                     if (meta != null) {
-                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + plugin.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
+                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
                     }
                     item.setItemMeta(meta);
-                    if (plugin.serverConfig.getDouble("spawners.drop-chance") != 1) {
+                    if (EterniaServer.serverConfig.getDouble("spawners.drop-chance") != 1) {
                         double random = Math.random();
-                        if (random >= plugin.serverConfig.getDouble("spawners.drop-chance")) {
+                        if (random >= EterniaServer.serverConfig.getDouble("spawners.drop-chance")) {
                             messages.sendMessage("spawner.others.failed", player);
                             return;
                         }
                     }
-                    if (plugin.serverConfig.getBoolean("spawners.drop-in-inventory")) {
+                    if (EterniaServer.serverConfig.getBoolean("spawners.drop-in-inventory")) {
                         if (player.getInventory().firstEmpty() == -1) {
                             event.setCancelled(true);
                             messages.sendMessage("spawner.others.inv-full", player);
@@ -88,9 +88,9 @@ public class OnPlayerBlockBreak implements Listener {
                 messages.sendMessage("server.no-perm", player);
             }
         }
-        if (plugin.serverConfig.getBoolean("modules.block-reward") &&
-                plugin.blockConfig.contains("blocks." + material.name().toUpperCase())) {
-            ConfigurationSection cs = plugin.blockConfig.getConfigurationSection("blocks." + material.name().toUpperCase());
+        if (EterniaServer.serverConfig.getBoolean("modules.block-reward") &&
+                EterniaServer.blockConfig.contains("blocks." + material.name().toUpperCase())) {
+            ConfigurationSection cs = EterniaServer.blockConfig.getConfigurationSection("blocks." + material.name().toUpperCase());
             double randomNumber = new Random().nextDouble();
             if (cs != null) {
                 List<String> mainList = new ArrayList<>(cs.getKeys(true));
@@ -102,7 +102,7 @@ public class OnPlayerBlockBreak implements Listener {
                     }
                 }
                 if (lowestNumberAboveRandom <= 1) {
-                    for (String command : plugin.blockConfig.getStringList("blocks." + material.name().toUpperCase() + "." + lowestNumberAboveRandom)) {
+                    for (String command : EterniaServer.blockConfig.getStringList("blocks." + material.name().toUpperCase() + "." + lowestNumberAboveRandom)) {
                         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), putPAPI(event.getPlayer(), command));
                     }
                 }

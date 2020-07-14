@@ -15,11 +15,9 @@ import java.util.Objects;
 
 public class OnEntityInventoryClick implements Listener {
 
-    private final EterniaServer plugin;
     private final EFiles messages;
 
     public OnEntityInventoryClick(EterniaServer plugin) {
-        this.plugin = plugin;
         this.messages = plugin.getEFiles();
     }
 
@@ -28,9 +26,8 @@ public class OnEntityInventoryClick implements Listener {
         if (e.isCancelled()) return;
 
         final Player player = (Player) e.getWhoClicked();
-        final String playerName = player.getName();
-        if (plugin.serverConfig.getBoolean("spawners.prevent-anvil") &&
-                plugin.serverConfig.getBoolean("modules.spawners") &&
+        if (EterniaServer.serverConfig.getBoolean("spawners.prevent-anvil") &&
+                EterniaServer.serverConfig.getBoolean("modules.spawners") &&
                 e.getInventory().getType() == InventoryType.ANVIL &&
                 Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
             e.setCancelled(true);
