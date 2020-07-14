@@ -7,8 +7,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-
-@SuppressWarnings("ALL")
 public class CustomPlaceholder {
 
 	final String id;
@@ -17,12 +15,12 @@ public class CustomPlaceholder {
 
 	public CustomPlaceholder(String id, EterniaServer plugin) {
 		this.id = id;
-		if(plugin.placeholderConfig.contains(id + ".independentTextComponent")) {
-			independentTextComponent = plugin.placeholderConfig.getBoolean(id + ".independentTextComponent");
+		if(EterniaServer.placeholderConfig.contains(id + ".independentTextComponent")) {
+			independentTextComponent = EterniaServer.placeholderConfig.getBoolean(id + ".independentTextComponent");
 		} else {
 			independentTextComponent = true;
 		}
-		ConfigurationSection cpSection = plugin.placeholderConfig.getConfigurationSection(id);
+		ConfigurationSection cpSection = EterniaServer.placeholderConfig.getConfigurationSection(id);
 		for(String placeholder: cpSection.getKeys(false)) {
 			if(!placeholder.equals("independentTextComponent") && !placeholder.equals("list")) {
 				ConfigurationSection section = cpSection.getConfigurationSection(placeholder);

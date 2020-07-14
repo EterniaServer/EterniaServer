@@ -8,13 +8,10 @@ import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.utils.StringHelper;
 import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
 
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.entity.Player;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class TextMaker extends StringHelper {
 

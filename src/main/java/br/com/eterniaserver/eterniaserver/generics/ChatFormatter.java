@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
@@ -23,11 +24,11 @@ public class ChatFormatter extends StringHelper {
 		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) plugin.getInternMethods().addUUIF(p);
 		FormatInfo fi = Vars.uufi.get(p.getName());
 		if (EterniaServer.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
-			ChatObject msg = new ChatObject("%message%");
+			ChatObject msg = new ChatObject(Constants.MESSAGE.get());
 			msg.setColor(ChatColor.getByChar(EterniaServer.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));
 			String total = parse(p, EterniaServer.groupConfig.getString(fi.getName() + ".format"));
-			int i = total.indexOf("%message%");
-			int i2 = i+"%message%".length();
+			int i = total.indexOf(Constants.MESSAGE.get());
+			int i2 = i + Constants.MESSAGE.get().length();
 			String prefix = total.substring(0, i);
 			message.get(0).setMessage(prefix);
 			message.getChatObjects().add(msg);

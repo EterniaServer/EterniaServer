@@ -88,6 +88,4 @@ public class Replaces extends BaseCommand {
         hours   = (int) ((milliseconds / (1000*60*60)) % 24);
     }
 
-
-
 }
