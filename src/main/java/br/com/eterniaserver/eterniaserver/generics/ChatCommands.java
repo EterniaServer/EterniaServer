@@ -19,12 +19,10 @@ public class ChatCommands extends BaseCommand {
 
     private final String tableName;
     private final EFiles messages;
-    private final EconomyManager moneyx;
     private final int money;
 
     public ChatCommands(EterniaServer plugin) {
         this.messages = plugin.getEFiles();
-        this.moneyx = plugin.getMoney();
         this.money = EterniaServer.serverConfig.getInt("money.nick");
         this.tableName = EterniaServer.serverConfig.getString("sql.table-nick");
 
@@ -73,7 +71,7 @@ public class ChatCommands extends BaseCommand {
                     messages.sendMessage("chat.remove-nick", player);
                 } else {
                     Vars.nick.put(playerName, string);
-                    if (player.hasPermission("eternia.chat.color")) {
+                    if (player.hasPermission("eternia.chat.color.nick")) {
                         messages.sendMessage("chat.nick-money", "%new_name%", ChatColor.translateAlternateColorCodes('&', string), player);
                     } else {
                         messages.sendMessage("chat.nick-money", "%new_name%", string, player);
@@ -120,8 +118,8 @@ public class ChatCommands extends BaseCommand {
     public void onNickAccept(Player player) {
         final String playerName = player.getName();
         if (Vars.nick.containsKey(playerName)) {
-            if (moneyx.hasMoney(playerName, money)) {
-                moneyx.removeMoney(playerName, money);
+            if (APIEconomy.hasMoney(playerName, money)) {
+                APIEconomy.removeMoney(playerName, money);
                 player.setDisplayName(Vars.nick.get(playerName));
                 messages.sendMessage("chat.newnick", Constants.PLAYER.get(), player.getDisplayName(), player);
                 if (Vars.nickname.containsKey(playerName)) {

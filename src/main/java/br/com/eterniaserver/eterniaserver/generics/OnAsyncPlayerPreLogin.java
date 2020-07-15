@@ -54,17 +54,17 @@ public class OnAsyncPlayerPreLogin implements Listener {
 
     private void playerProfileCreate(String playerName) {
         Date date = new Date();
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-player") + " (player_name, time) VALUES('" + playerName + "', '" + plugin.sdf.format(date) + "');");
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-player") + " (player_name, time) VALUES('" + playerName + "', '" + plugin.sdf.format(date) + "');", false);
         Vars.playerLogin.put(playerName, plugin.sdf.format(date));
     }
 
     private void playerXPCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-xp") + " (player_name, xp) VALUES ('" + playerName + "', '" + 0 + "');");
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-xp") + " (player_name, xp) VALUES ('" + playerName + "', '" + 0 + "');", false);
         Vars.xp.put(playerName, 0);
     }
 
     private void playerHomeCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');");
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');", false);
     }
 
 }

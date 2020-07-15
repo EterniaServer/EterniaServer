@@ -3,14 +3,14 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-public class EconomyManager {
+public class APIEconomy {
 
     /**
      * Gets the money in player account
      * @param playerName to check
      * @return Amount currently held in player's account
      */
-    public double getMoney(String playerName) {
+    public static double getMoney(String playerName) {
         if (Vars.balances.containsKey(playerName)) {
             return Vars.balances.get(playerName);
         } else {
@@ -26,7 +26,7 @@ public class EconomyManager {
      * @param amount to check
      * @return the boolean
      */
-    public boolean hasMoney(String playerName, double amount) {
+    public static boolean hasMoney(String playerName, double amount) {
         return getMoney(playerName) >= amount;
     }
 
@@ -35,7 +35,7 @@ public class EconomyManager {
      * @param playerName to check
      * @param amount to set
      */
-    public void setMoney(String playerName, double amount) {
+    public static void setMoney(String playerName, double amount) {
         if (Vars.balances.containsKey(playerName)) {
             Vars.balances.put(playerName, amount);
             EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-money") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
@@ -51,7 +51,7 @@ public class EconomyManager {
      * @param playerName to check
      * @param amount to add
      */
-    public void addMoney(String playerName, double amount) {
+    public static void addMoney(String playerName, double amount) {
         setMoney(playerName, getMoney(playerName) + amount);
     }
 
@@ -60,7 +60,7 @@ public class EconomyManager {
      * @param playerName to check
      * @param amount to remove
      */
-    public void removeMoney(String playerName, double amount) {
+    public static void removeMoney(String playerName, double amount) {
         setMoney(playerName, getMoney(playerName) - amount);
     }
 

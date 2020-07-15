@@ -13,7 +13,7 @@ public class VaultHook {
     public VaultHook(EterniaServer plugin) {
         if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && EterniaServer.serverConfig.getBoolean("modules.economy")) {
             ServicesManager servicesManager = plugin.getServer().getServicesManager();
-            servicesManager.register(Economy.class, new VaultMethods(plugin), plugin, ServicePriority.High);
+            servicesManager.register(Economy.class, new VaultMethods(), plugin, ServicePriority.High);
         } else {
             plugin.getEFiles().sendConsole("server.no-vault");
         }

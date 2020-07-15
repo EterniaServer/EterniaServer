@@ -15,15 +15,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class OnPlayerBlockPlace implements Listener {
 
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
-        if (event.getBlock().getType() == Material.SPAWNER && EterniaServer.serverConfig.getBoolean("modules.spawners")) {
-            final Block blockPlaced = event.getBlockPlaced();
+        final Block block = event.getBlockPlaced();
+        if (block.getType() == Material.SPAWNER && EterniaServer.serverConfig.getBoolean("modules.spawners")) {
             final ItemMeta meta = event.getItemInHand().getItemMeta();
             if (meta != null) {
                 final String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
                 final EntityType entity = EntityType.valueOf(entityName);
-                CreatureSpawner spawner = (CreatureSpawner) blockPlaced.getState();
+                CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 spawner.setSpawnedType(entity);
                 spawner.update();
             }

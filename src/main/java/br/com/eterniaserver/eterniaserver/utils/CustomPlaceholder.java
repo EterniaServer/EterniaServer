@@ -13,7 +13,7 @@ public class CustomPlaceholder {
 	final boolean independentTextComponent;
 	final List<SubPlaceholder> placeholders = new ArrayList<>();
 
-	public CustomPlaceholder(String id, EterniaServer plugin) {
+	public CustomPlaceholder(String id) {
 		this.id = id;
 		if(EterniaServer.placeholderConfig.contains(id + ".independentTextComponent")) {
 			independentTextComponent = EterniaServer.placeholderConfig.getBoolean(id + ".independentTextComponent");

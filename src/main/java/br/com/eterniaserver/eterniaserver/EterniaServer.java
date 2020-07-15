@@ -27,8 +27,6 @@ public class EterniaServer extends JavaPlugin {
 
     private final InternMethods internMethods = new InternMethods();
     private final PlaceHolders placeHolders = new PlaceHolders();
-    private final EconomyManager money = new EconomyManager();
-    private final ExperienceManager exp = new ExperienceManager();
 
     private PaperCommandManager manager;
     private EFiles messages;
@@ -100,16 +98,8 @@ public class EterniaServer extends JavaPlugin {
         return messages;
     }
 
-    public ExperienceManager getExp() {
-        return exp;
-    }
-
     public PaperCommandManager getManager() {
         return manager;
-    }
-
-    public EconomyManager getMoney() {
-        return money;
     }
 
     public PlaceHolders getPlaceHolders() {

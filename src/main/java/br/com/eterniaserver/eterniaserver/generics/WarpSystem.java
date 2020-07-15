@@ -102,7 +102,7 @@ public class WarpSystem extends BaseCommand {
                    messages.sendMessage("server.no-perm", player);
                }
         } else {
-            final Location location = getShop(target);
+            final Location location = getShop(target.toLowerCase());
             if (location != plugin.error) {
                 if (Vars.teleports.containsKey(player)) {
                     messages.sendMessage("server.telep", player);

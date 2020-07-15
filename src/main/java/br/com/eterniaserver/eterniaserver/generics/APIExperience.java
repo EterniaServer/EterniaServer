@@ -3,14 +3,14 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-public class ExperienceManager {
+public class APIExperience {
 
     /**
      * Gets experience of a player on a database.
      * @param playerName to check
      * @return Amount currently held in player's database
      */
-    public Integer getExp(String playerName) {
+    public static Integer getExp(String playerName) {
         if (Vars.xp.containsKey(playerName)) {
             return Vars.xp.get(playerName);
         }
@@ -24,7 +24,7 @@ public class ExperienceManager {
      * @param playerName to check
      * @param amount to set
      */
-    public void setExp(String playerName, int amount) {
+    public static void setExp(String playerName, int amount) {
         Vars.xp.put(playerName, amount);
         EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
     }
@@ -34,7 +34,7 @@ public class ExperienceManager {
      * @param playerName to check
      * @param amount to add
      */
-    public void addExp(String playerName, int amount) {
+    public static void addExp(String playerName, int amount) {
         setExp(playerName, getExp(playerName) + amount);
     }
 
@@ -43,7 +43,7 @@ public class ExperienceManager {
      * @param playerName to check
      * @param amount to remove
      */
-    public void removeExp(String playerName, int amount) {
+    public static void removeExp(String playerName, int amount) {
         setExp(playerName, getExp(playerName) - amount);
     }
 

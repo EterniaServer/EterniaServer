@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
@@ -32,8 +33,8 @@ public class TextMaker extends StringHelper {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
 			msg = internMethods.setPlaceholders(p, msg);
-			if(msg.contains("%message%")) {
-				msg = msg.replace("%message%", message.getMessageSent());
+			if(msg.contains(Constants.MESSAGE.get())) {
+				msg = msg.replace(Constants.MESSAGE.get(), message.getMessageSent());
 			}
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
@@ -100,8 +101,8 @@ public class TextMaker extends StringHelper {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
 			msg = internMethods.setBothPlaceholders(p, to, msg);
-			if(msg.contains("%message%"))
-				msg = msg.replace("%message%", message.getMessageSent());
+			if(msg.contains(Constants.MESSAGE.get()))
+				msg = msg.replace(Constants.MESSAGE.get(), message.getMessageSent());
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();

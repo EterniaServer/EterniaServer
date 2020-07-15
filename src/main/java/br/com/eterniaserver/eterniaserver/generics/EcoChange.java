@@ -15,11 +15,9 @@ import org.bukkit.entity.Player;
 public class EcoChange extends BaseCommand {
 
     private final EFiles messages;
-    private final EconomyManager moneyx;
 
     public EcoChange(EterniaServer plugin) {
         this.messages = plugin.getEFiles();
-        this.moneyx = plugin.getMoney();
     }
 
     @Subcommand("set|definir")
@@ -29,7 +27,7 @@ public class EcoChange extends BaseCommand {
         final Player targetP = target.getPlayer();
         final String targetName = targetP.getName();
 
-        moneyx.setMoney(targetName, money);
+        APIEconomy.setMoney(targetName, money);
         messages.sendMessage("eco.eco-set", Constants.AMOUNT.get(), money, Constants.TARGET.get(), targetP.getDisplayName(), sender);
         messages.sendMessage("eco.eco-rset", Constants.AMOUNT.get(), money, Constants.TARGET.get(), sender.getDisplayName(), targetP);
     }
@@ -41,7 +39,7 @@ public class EcoChange extends BaseCommand {
         final Player targetP = target.getPlayer();
         final String targetName = targetP.getName();
 
-        moneyx.removeMoney(targetName, money);
+        APIEconomy.removeMoney(targetName, money);
         messages.sendMessage("eco.eco-remove", Constants.AMOUNT.get() ,money, Constants.TARGET.get(), targetP.getDisplayName(), sender);
         messages.sendMessage("eco.eco-rremove", Constants.AMOUNT.get(), money, Constants.TARGET.get(), sender.getDisplayName(), targetP);
     }
@@ -53,7 +51,7 @@ public class EcoChange extends BaseCommand {
         final Player targetP = target.getPlayer();
         final String targetName = targetP.getName();
 
-        moneyx.addMoney(targetName, money);
+        APIEconomy.addMoney(targetName, money);
         messages.sendMessage("eco.eco-give", Constants.AMOUNT.get(), money, Constants.TARGET.get(), targetP.getDisplayName(), sender);
         messages.sendMessage("eco.eco-receive", Constants.AMOUNT.get(), money, Constants.PLAYER.get(), sender.getDisplayName(), targetP);
     }

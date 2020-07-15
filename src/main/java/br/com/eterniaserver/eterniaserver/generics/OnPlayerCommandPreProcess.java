@@ -41,7 +41,7 @@ public class OnPlayerCommandPreProcess implements Listener {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
                 }
                 for (String line : EterniaServer.cmdConfig.getStringList("commands." + message + ".text")) {
-                    final String modifiedText =PlaceholderAPI.setPlaceholders(player, line);
+                    final String modifiedText = PlaceholderAPI.setPlaceholders(player, line);
                     player.sendMessage(messages.getColor(modifiedText));
                 }
             } else {

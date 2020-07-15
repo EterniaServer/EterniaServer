@@ -3,6 +3,8 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
+import br.com.eterniaserver.eterniaserver.generics.Vars;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -15,11 +17,6 @@ import java.util.List;
 public class VaultMethods implements Economy {
 
     private final DecimalFormat df2 = new DecimalFormat(".##");
-    private final EconomyManager moneyx;
-
-    public VaultMethods(EterniaServer plugin) {
-        this.moneyx = plugin.getMoney();
-    }
 
     @Override
     public boolean isEnabled() {
@@ -78,12 +75,12 @@ public class VaultMethods implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return moneyx.getMoney(playerName);
+        return APIEconomy.getMoney(playerName);
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return moneyx.getMoney(player.getName());
+        return APIEconomy.getMoney(player.getName());
     }
 
     @Override
@@ -98,12 +95,12 @@ public class VaultMethods implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        return moneyx.hasMoney(playerName, amount);
+        return APIEconomy.hasMoney(playerName, amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return moneyx.hasMoney(player.getName(), amount);
+        return APIEconomy.hasMoney(player.getName(), amount);
     }
 
     @Override
@@ -119,20 +116,20 @@ public class VaultMethods implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         if (has(playerName, amount)) {
-            moneyx.removeMoney(playerName, amount);
-            return new EconomyResponse(amount, moneyx.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
+            APIEconomy.removeMoney(playerName, amount);
+            return new EconomyResponse(amount, APIEconomy.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
         } else {
-            return new EconomyResponse(amount, moneyx.getMoney(playerName), EconomyResponse.ResponseType.FAILURE, null);
+            return new EconomyResponse(amount, APIEconomy.getMoney(playerName), EconomyResponse.ResponseType.FAILURE, null);
         }
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
         if (has(player, amount)) {
-            moneyx.removeMoney(player.getName(), amount);
-            return new EconomyResponse(amount, moneyx.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
+            APIEconomy.removeMoney(player.getName(), amount);
+            return new EconomyResponse(amount, APIEconomy.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
         } else {
-            return new EconomyResponse(amount, moneyx.getMoney(player.getName()), EconomyResponse.ResponseType.FAILURE, null);
+            return new EconomyResponse(amount, APIEconomy.getMoney(player.getName()), EconomyResponse.ResponseType.FAILURE, null);
         }
     }
 
@@ -148,14 +145,14 @@ public class VaultMethods implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        moneyx.addMoney(playerName, amount);
-        return new EconomyResponse(amount, moneyx.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
+        APIEconomy.addMoney(playerName, amount);
+        return new EconomyResponse(amount, APIEconomy.getMoney(playerName), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        moneyx.addMoney(player.getName(), amount);
-        return new EconomyResponse(amount, moneyx.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
+        APIEconomy.addMoney(player.getName(), amount);
+        return new EconomyResponse(amount, APIEconomy.getMoney(player.getName()), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override

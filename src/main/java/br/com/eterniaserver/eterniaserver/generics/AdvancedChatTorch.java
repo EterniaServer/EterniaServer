@@ -6,11 +6,9 @@ import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 
 public class AdvancedChatTorch {
 
-	private final EterniaServer plugin;
 	private final EFiles messages;
 
 	public AdvancedChatTorch(EterniaServer plugin) {
-		this.plugin = plugin;
 		this.messages = plugin.getEFiles();
 		registerCustomPlaceholders();
 		checkGroups();
@@ -20,7 +18,7 @@ public class AdvancedChatTorch {
 		Vars.customPlaceholders.clear();
 		for (String id: EterniaServer.placeholderConfig.getKeys(false)) {
 			if (!id.equals("customplaceholders")) {
-				CustomPlaceholder cp = new CustomPlaceholder(id, plugin);
+				CustomPlaceholder cp = new CustomPlaceholder(id);
 				Vars.customPlaceholders.add(cp);
 			}
 		}

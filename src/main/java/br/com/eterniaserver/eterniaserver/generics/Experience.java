@@ -24,12 +24,10 @@ public class Experience extends BaseCommand {
 
     private final InternMethods internMethods;
     private final EFiles messages;
-    private final ExperienceManager exp;
 
     public Experience(EterniaServer plugin) {
         this.internMethods = plugin.getInternMethods();
         this.messages = plugin.getEFiles();
-        this.exp = plugin.getExp();
 
         final String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-xp") + ";";
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "xp");
@@ -45,7 +43,7 @@ public class Experience extends BaseCommand {
         float xp = player.getExp();
         player.setLevel(0);
         player.setExp(0);
-        player.giveExp(exp.getExp(player.getName()));
+        player.giveExp(APIExperience.getExp(player.getName()));
         messages.sendMessage("experience.check", Constants.AMOUNT.get(), player.getLevel(), player);
         player.setLevel(lvl);
         player.setExp(xp);
@@ -82,8 +80,8 @@ public class Experience extends BaseCommand {
         final String playerName = player.getName();
 
         int xpla = internMethods.getXPForLevel(level);
-        if (exp.getExp(playerName) >= xpla) {
-            exp.removeExp(playerName, xpla);
+        if (APIExperience.getExp(playerName) >= xpla) {
+            APIExperience.removeExp(playerName, xpla);
             player.giveExp(xpla);
             messages.sendMessage("experience.withdraw", Constants.AMOUNT.get(), player.getLevel(), player);
         } else {
@@ -99,7 +97,7 @@ public class Experience extends BaseCommand {
         if (xpAtual >= xpla) {
             int xp = internMethods.getXPForLevel(xpla);
             int xpto = internMethods.getXPForLevel(xpAtual);
-            exp.addExp(player.getName(), xp);
+            APIExperience.addExp(player.getName(), xp);
             messages.sendMessage("experience.deposit", Constants.AMOUNT.get(), xpla, player);
             player.setLevel(0);
             player.setExp(0);

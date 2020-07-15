@@ -22,14 +22,12 @@ public class Economy extends BaseCommand {
 
     private final EterniaServer plugin;
     private final EFiles messages;
-    private final EconomyManager moneyx;
     private long time = 0;
     private ArrayList<String> lista;
 
     public Economy(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
-        this.moneyx = plugin.getMoney();
 
         final String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-money") + ";";
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "balance");
@@ -44,11 +42,11 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.money")
     public void onMoney(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
-            double money = moneyx.getMoney(player.getName());
+            double money = APIEconomy.getMoney(player.getName());
             messages.sendMessage("eco.money", Constants.AMOUNT.get(), plugin.df2.format(money), player);
         } else {
             if (player.hasPermission("eternia.money.other")) {
-                double money = moneyx.getMoney(target.getPlayer().getName());
+                double money = APIEconomy.getMoney(target.getPlayer().getName());
                 messages.sendMessage("eco.money-other", Constants.AMOUNT.get(), plugin.df2.format(money), player);
             } else {
                 messages.sendMessage("server.no-perm", player);
@@ -67,9 +65,9 @@ public class Economy extends BaseCommand {
 
         if (!(targetP.equals(player))) {
             if (value > 0) {
-                if (moneyx.getMoney(playerName) >= value) {
-                    moneyx.addMoney(targetName, value);
-                    moneyx.removeMoney(playerName, value);
+                if (APIEconomy.getMoney(playerName) >= value) {
+                    APIEconomy.addMoney(targetName, value);
+                    APIEconomy.removeMoney(playerName, value);
                     messages.sendMessage("eco.pay", Constants.AMOUNT.get(), value, Constants.TARGET.get(), targetName, player);
                     messages.sendMessage("eco.pay-me", Constants.AMOUNT.get(), value, Constants.TARGET.get(), playerName, targetP);
                 } else {
@@ -87,7 +85,7 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.baltop")
     public void onBaltop(CommandSender sender) {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
-            lista.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (lista.indexOf(name) + 1), Constants.PLAYER.get(), name, Constants.AMOUNT.get(), plugin.df2.format(moneyx.getMoney(name)), sender));
+            lista.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (lista.indexOf(name) + 1), Constants.PLAYER.get(), name, Constants.AMOUNT.get(), plugin.df2.format(APIEconomy.getMoney(name)), sender));
         } else {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 final ArrayList<String> list = new ArrayList<>();
@@ -104,7 +102,7 @@ public class Economy extends BaseCommand {
                 }
                 lista = list;
                 time = System.currentTimeMillis();
-                list.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (list.indexOf(name) + 1), Constants.PLAYER.get(), name, Constants.AMOUNT.get(), plugin.df2.format(moneyx.getMoney(name)), sender));
+                list.forEach(name -> messages.sendMessage("eco.ballist", "%position%", (list.indexOf(name) + 1), Constants.PLAYER.get(), name, Constants.AMOUNT.get(), plugin.df2.format(APIEconomy.getMoney(name)), sender));
             });
         }
     }

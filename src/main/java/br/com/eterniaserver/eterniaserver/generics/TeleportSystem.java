@@ -18,11 +18,9 @@ import org.bukkit.entity.Player;
 public class TeleportSystem extends BaseCommand {
 
     private final EFiles eFiles;
-    private final EconomyManager moneyx;
 
     public TeleportSystem(EterniaServer plugin) {
         this.eFiles = plugin.getEFiles();
-        this.moneyx = plugin.getMoney();
     }
 
     @CommandAlias("tpall|teleportall")
@@ -100,7 +98,7 @@ public class TeleportSystem extends BaseCommand {
     public void onBack(Player player) {
         final String playerName = player.getName();
         if (Vars.back.containsKey(playerName)) {
-            double money = moneyx.getMoney(playerName);
+            double money = APIEconomy.getMoney(playerName);
             double valor = EterniaServer.serverConfig.getInt("money.back");
             if (player.hasPermission("eternia.backfree") || !(EterniaServer.serverConfig.getBoolean("modules.economy"))) {
                 if (Vars.teleports.containsKey(player)) eFiles.sendMessage("server.telep", player);
@@ -111,7 +109,7 @@ public class TeleportSystem extends BaseCommand {
                         eFiles.sendMessage("server.telep", player);
                     }
                     else {
-                        moneyx.removeMoney(playerName, valor);
+                        APIEconomy.removeMoney(playerName, valor);
                         Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), "teleport.back.no-free"));
                     }
                 } else {
