@@ -5,6 +5,10 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 public class APIEconomy {
 
+    private APIEconomy() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Gets the money in player account
      * @param playerName to check

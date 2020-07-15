@@ -1,13 +1,14 @@
 package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 public class Table {
 
     public Table() {
 
-        if (EterniaServer.serverConfig.getBoolean("sql.mysql")) {
+        if (EterniaLib.getMySQL()) {
             EQueries.executeQuery("CREATE TABLE IF NOT EXISTS " + EterniaServer.serverConfig.getString("sql.table-money") + " (player_name varchar(32), balance double(22,4));", false);
         } else {
             EQueries.executeQuery("CREATE TABLE IF NOT EXISTS " + EterniaServer.serverConfig.getString("sql.table-money") + " (player_name varchar(32), balance double(22));", false);

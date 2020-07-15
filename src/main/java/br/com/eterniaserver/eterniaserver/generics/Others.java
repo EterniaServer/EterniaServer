@@ -193,11 +193,11 @@ public class Others extends BaseCommand {
         final String playerName = player.getName();
 
         if (Vars.afk.contains(playerName)) {
-            messages.broadcastMessage("generic.afk.disabled", "%player_name%", playerName);
+            messages.broadcastMessage("generic.afk.disabled", Constants.PLAYER.get(), playerName);
             Vars.afk.remove(playerName);
         } else {
             Vars.afk.add(playerName);
-            messages.broadcastMessage("generic.afk.enabled", "%player_name%", playerName);
+            messages.broadcastMessage("generic.afk.enabled", Constants.PLAYER.get(), playerName);
         }
     }
 

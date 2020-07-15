@@ -3,8 +3,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
-import br.com.eterniaserver.eterniaserver.generics.Vars;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 

@@ -5,6 +5,10 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 public class APIExperience {
 
+    private APIExperience() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Gets experience of a player on a database.
      * @param playerName to check
