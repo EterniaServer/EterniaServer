@@ -8,6 +8,8 @@ import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.concurrent.TimeUnit;
+
 public class AccelerateNight extends BukkitRunnable {
 
     private final EterniaServer plugin;
@@ -18,7 +20,9 @@ public class AccelerateNight extends BukkitRunnable {
         this.plugin = plugin;
         this.world = world;
         this.messages = plugin.getEFiles();
-        messages.broadcastMessage("bed.night-skipping", "%world_name%", world.getName());
+        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
+            messages.broadcastMessage("bed.night-skipping", "%world_name%", world.getName());
+        }
     }
 
     @Override
@@ -37,6 +41,7 @@ public class AccelerateNight extends BukkitRunnable {
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
                 messages.broadcastMessage("bed.skip-night");
+                Vars.nightTime = System.currentTimeMillis();
                 this.cancel();
             } else {
                 world.setTime(time + (int) timeRate);

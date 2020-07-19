@@ -18,7 +18,6 @@ public class AccelerateWorld implements Runnable {
         this.plugin = plugin;
     }
 
-
     @Override
     public void run() {
         Bukkit.getWorlds().stream().filter(this::validateWorld).forEach(this::checkWorld);

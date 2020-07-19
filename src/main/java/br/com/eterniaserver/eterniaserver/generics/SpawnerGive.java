@@ -11,6 +11,7 @@ import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -32,7 +33,7 @@ public class SpawnerGive extends BaseCommand {
     @Syntax("<mob> <quantia> <jogador>")
     @CommandCompletion("@mobs 1 @players")
     @CommandPermission("eternia.spawnergive")
-    public void onSpawnerGive(Player player, String spawner, Integer value, OnlinePlayer target) {
+    public void onSpawnerGive(CommandSender player, String spawner, Integer value, OnlinePlayer target) {
         try {
             final Player targetP = target.getPlayer();
             final Inventory inventory = targetP.getInventory();
@@ -58,7 +59,7 @@ public class SpawnerGive extends BaseCommand {
                         item.setItemMeta(meta);
                         inventory.addItem(item);
                         messages.sendMessage("spawner.give.sent", Constants.VALUE.get(), value, Constants.TYPE.get(), mobFormatted, Constants.TARGET.get(), targetP.getDisplayName(), player);
-                        messages.sendMessage("spawner.give.received", Constants.VALUE.get(), value, Constants.TYPE.get(), mobFormatted, Constants.TARGET.get(), player.getDisplayName(), targetP);
+                        messages.sendMessage("spawner.give.received", Constants.VALUE.get(), value, Constants.TYPE.get(), mobFormatted, Constants.TARGET.get(), player.getName(), targetP);
                     }
                 }
             } else {

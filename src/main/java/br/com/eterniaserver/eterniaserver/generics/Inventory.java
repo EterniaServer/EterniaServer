@@ -55,7 +55,6 @@ public class Inventory extends BaseCommand {
         messages.sendMessage("generic.items.helmet", player);
     }
 
-
     private void dropHelmet(Player player) {
         ItemStack capacete = player.getInventory().getHelmet();
         if (capacete != null) {

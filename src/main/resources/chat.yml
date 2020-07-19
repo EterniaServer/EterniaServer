@@ -14,7 +14,7 @@ chat:
 # range is the distance for one player to be able to read the other's message.
 # format is the format of chat.
 local:
-  range: 100
+  range: 32
   format: '&8[&eL&8] %vault_suffix% &e%player_displayname%&8 ➤&r &e%message%'
 # format is the format of chat.
 staff:

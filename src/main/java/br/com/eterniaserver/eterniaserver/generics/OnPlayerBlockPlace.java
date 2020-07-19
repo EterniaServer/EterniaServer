@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class OnPlayerBlockPlace implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
         final Block block = event.getBlockPlaced();
         if (block.getType() == Material.SPAWNER && EterniaServer.serverConfig.getBoolean("modules.spawners")) {

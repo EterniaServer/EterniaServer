@@ -53,7 +53,7 @@ public class EcoChange extends BaseCommand {
 
         APIEconomy.addMoney(targetName, money);
         messages.sendMessage("eco.eco-give", Constants.AMOUNT.get(), money, Constants.TARGET.get(), targetP.getDisplayName(), sender);
-        messages.sendMessage("eco.eco-receive", Constants.AMOUNT.get(), money, Constants.PLAYER.get(), sender.getDisplayName(), targetP);
+        messages.sendMessage("eco.eco-receive", Constants.AMOUNT.get(), money, Constants.TARGET.get(), sender.getDisplayName(), targetP);
     }
 
 }

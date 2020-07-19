@@ -32,10 +32,6 @@ public class OnAsyncPlayerPreLogin implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
             playerHomeCreate(playerName);
         }
-        if (EterniaServer.serverConfig.getBoolean("modules.economy") && !Vars.balances.containsKey(playerName)) {
-            Vars.balances.put(playerName, 300.0);
-            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "');");
-        }
     }
 
     private boolean playerProfileExist(String playerName) {

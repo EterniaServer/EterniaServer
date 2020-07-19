@@ -65,7 +65,7 @@ eco:
   money-other: '&7O jogador possui &3%amount%&8.'
   money: '&7Você possui &3%amount%&8.'
   baltop: '&7Top Money&8:'
-  ballist: "&3%position% &8- &3%player_displayname% &8- &7Saldo&8 - &3%money%&8."
+  ballist: "&3%position% &8- &3%player_displayname% &8- &7Saldo&8 - &3%amount%&8."
   eco-give: '&7Você deu &3%amount%&7 para &3%target_displayname%&8.'
   eco-receive: '&7Você recebeu &3%amount%&7 de &3%target_displayname%&8.'
   eco-remove: '&7Você retirou &3%amount%&7 de &3%target_displayname%&8.'

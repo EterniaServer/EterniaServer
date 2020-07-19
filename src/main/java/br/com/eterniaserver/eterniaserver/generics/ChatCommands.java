@@ -176,11 +176,11 @@ public class ChatCommands extends BaseCommand {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();
         Vars.tell.put(target.getName(), player.getName());
-        player.sendMessage(messages.getString("chat.toplayer").
+        player.sendMessage(messages.getMessage("chat.toplayer").
                 replace(Constants.PLAYER.get(), playerDisplay).
                 replace(Constants.TARGET.get(), targetDisplay).
                 replace(Constants.MESSAGE.get(), s));
-        target.sendMessage(messages.getString("chat.fromplayer").
+        target.sendMessage(messages.getMessage("chat.fromplayer").
                 replace(Constants.PLAYER.get(), targetDisplay).
                 replace(Constants.TARGET.get(), playerDisplay).
                 replace(Constants.MESSAGE.get(), s));
