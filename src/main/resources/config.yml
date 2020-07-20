@@ -20,6 +20,7 @@ modules:
   playerchecks: true
   bed: true
   block-reward: true
+  cash: true
   chat: true
   commands: true
   economy: true
@@ -74,6 +75,7 @@ sql:
   table-muted: 'es_muted'
   table-rewards: 'es_rewards'
   table-nick: 'es_nick'
+  table-cash: 'es_cash'
 
 # speed is how faster the night will pass (this will be divided by the (players
 # online divided by the players sleeping))

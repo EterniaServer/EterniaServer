@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.generics.*;
 
 import co.aikar.commands.PaperCommandManager;
+import com.google.common.collect.ImmutableList;
 
 public class Managers {
 
@@ -19,6 +20,7 @@ public class Managers {
 
         loadBedManager();
         loadBlockRewardsManager();
+        loadCashManager();
         loadCommandsManager();
         loadChatManager();
         loadEconomyManager();
@@ -31,6 +33,8 @@ public class Managers {
         loadRewardsManager();
         loadSpawnersManager();
         loadTeleportsManager();
+
+        manager.getCommandCompletions().registerCompletion("colors", c -> ImmutableList.of("dark", "darkblue", "darkgreen", "darkaqua", "darkred", "darkpurple", "gold", "lightgray", "darkgray", "blue", "green", "aqua", "red", "purple", "yellow", "white"));
 
     }
 
@@ -51,6 +55,13 @@ public class Managers {
     private void loadCommandsManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.commands"), "Commands")) {
             plugin.getFiles().loadCommands();
+        }
+    }
+
+    private void loadCashManager() {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.cash"), "Cash")) {
+            plugin.getFiles().loadCashGui();
+            manager.registerCommand(new Cash(plugin));
         }
     }
 
@@ -88,6 +99,7 @@ public class Managers {
             manager.registerCommand(new Others(plugin));
             manager.registerCommand(new Replaces(plugin));
             manager.registerCommand(new Simplifications(messages));
+            manager.registerCommand(new Glow(messages));
         }
     }
 

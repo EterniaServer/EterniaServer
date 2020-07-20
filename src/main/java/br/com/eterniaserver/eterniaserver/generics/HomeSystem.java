@@ -133,7 +133,7 @@ public class HomeSystem extends BaseCommand {
     public void onSetHome(Player player, String nome) {
         int i = 4;
         for (int v = 5; v <= 30; v++) if (player.hasPermission("eternia.sethome." + v)) i = v;
-        if (nome.length() <= 12) {
+        if (nome.length() <= i) {
             if (canHome(player.getName()) < i) {
                 setHome(player.getLocation(), nome.toLowerCase(), player.getName());
                 messages.sendMessage("home.created", player);

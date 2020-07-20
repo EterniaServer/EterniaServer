@@ -27,6 +27,7 @@ public class PlaceHolders extends PlaceholderExpansion {
         if (p == null) {
             return "";
         } else {
+            final String playerName = p.getName();
             byte var4 = -1;
             switch(identifier.hashCode()) {
                 case -690213213:
@@ -35,17 +36,27 @@ public class PlaceHolders extends PlaceholderExpansion {
                 case 96486:
                     var4 = 2;
                     break;
-                case 197143583:
+                case 3046195:
                     var4 = 3;
+                    break;
+                case 3175821:
+                    var4 = 4;
+                    break;
+                case 197143583:
+                    var4 = 5;
             }
             switch (var4) {
                 case 1:
-                    return Vars.playerLogin.getOrDefault(p.getName(), "Sem registro");
+                    return Vars.playerLogin.getOrDefault(playerName, "Sem registro");
                 case 2:
-                    if (Vars.afk.contains(p.getName())) return EterniaServer.serverConfig.getString("placeholders.afk");
+                    if (Vars.afk.contains(playerName)) return EterniaServer.serverConfig.getString("placeholders.afk");
                     else return "";
                 case 3:
-                    if (Vars.god.contains(p.getName())) return EterniaServer.serverConfig.getString("placeholders.godmode");
+                    return String.valueOf(Vars.cash.getOrDefault(playerName, 0));
+                case 4:
+                    return Vars.glowingColor.getOrDefault(playerName, "");
+                case 5:
+                    if (Vars.god.contains(playerName)) return EterniaServer.serverConfig.getString("placeholders.godmode");
                     else return "";
                 default:
                     return null;

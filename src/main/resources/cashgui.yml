@@ -1,0 +1,257 @@
+gui:
+  0:
+    material: 'FEATHER'
+    cost: 150
+    name: '&6/fly'
+    lore:
+      - '&aVoe! Sim! Voe borboleta!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 150'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.fly 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  1:
+    material: 'SPECTRAL_ARROW'
+    cost: 50
+    name: '&6/glow &7e &6/glow color'
+    lore:
+      - '&aAgora você pode brilhar!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 50'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.glow 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  2:
+    material: 'STRUCTURE_VOID'
+    cost: 200
+    name: '&6/afk'
+    lore:
+      - '&aAFK liberado! Sem kick por inatividade!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 200'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.afk 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  3:
+    material: 'YELLOW_DYE'
+    cost: 30
+    name: '&aF&ba&cl&de &ec&fo&0l&1o&2r&3i&4d&5o&6!'
+    lore:
+      - '&aPode escrever colorido no chat ou em placas!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 30'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.chat.color 30d'
+      - 'lp user %player_name% permission settemp eternia.sign.color 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  4:
+    material: 'ENDER_PEARL'
+    cost: 20
+    name: '&6/back &7de graça!'
+    lore:
+      - '&aPode voltar na sua morte ou tp sem pagar!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 20'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.backfree 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  5:
+    material: 'ENDER_EYE'
+    cost: 50
+    name: '&7Sem tempo de espera para TPs!'
+    lore:
+      - '&aNão espere para se teleportar!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 50'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.timing.bypass 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  6:
+    material: 'EXPERIENCE_BOTTLE'
+    cost: 70
+    name: '&725% Bônus de XP no McMMO!'
+    lore:
+      - '&aUpe mais rápido na sua especialidade! Não acumlativos!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 70'
+    commands:
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  7:
+    material: 'EXPERIENCE_BOTTLE'
+    cost: 130
+    name: '&750% Bônus de XP no McMMO!'
+    lore:
+      - '&aUpe mais rápido na sua especialidade! Não acumlativos!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 130'
+    commands:
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.50percentboost.all 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  8:
+    material: 'EXPERIENCE_BOTTLE'
+    cost: 200
+    name: '&7100% Bônus de XP no McMMO!'
+    lore:
+      - '&aUpe mais rápido na sua especialidade! Não acumlativos!'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 200'
+    commands:
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.double.all 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  9:
+    material: 'NAME_TAG'
+    cost: 20
+    name: '&dTag Cliente (Rosa)!'
+    lore:
+      - '&aTenha uma tag de Cliente e mostre a todos que você'
+      - '&aé especial! &d(Tag rosa no tab)'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 20'
+    commands:
+      - 'lp user %player_name% parent addtemp cliente 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  10:
+    material: 'NAME_TAG'
+    cost: 20
+    name: '&7Tag Guerreiro (Cinza)!'
+    lore:
+      - '&aTenha uma tag de Guerreiro e mostre quem tem a força!'
+      - '&7(Tag cinza no tab)'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 20'
+    commands:
+      - 'lp user %player_name% parent addtemp guerreiro 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  11:
+    material: 'NAME_TAG'
+    cost: 20
+    name: '&6Tag Ladino (Laranja)!'
+    lore:
+      - '&aTenha uma tag de Ladino e mostre quem tem a agilidade!'
+      - '&6(Tag Laranja no tab)'
+      -
+      - '&230 dias de duração!'
+      - '&2Preço C$ 20'
+    commands:
+      - 'lp user %player_name% parent addtemp ladino 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  12:
+    material: 'DIAMOND_CHESTPLATE'
+    cost: 30
+    name: '&bSet de Batalha I!'
+    lore:
+      - '&aUm set de diamante P4 com o melhor Remendo da região!'
+      - ''
+      - '&bProteção IV'
+      - '&bInquebravel III'
+      - '&bRemendo'
+      - ''
+      - '&2Preço C$ 30'
+    commands:
+      - 'give %player_name% minecraft:diamond_helmet{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+      - 'give %player_name% minecraft:diamond_boots{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+      - 'give %player_name% minecraft:diamond_chestplate{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+      - 'give %player_name% minecraft:diamond_leggings{Enchantments:[{id:"minecraft:protection",lvl:4s},{id:"minecraft:unbreaking",lvl:3s},{id:"minecraft:mending",lvl:1s}]} 1'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  13:
+    material: 'GOLDEN_SWORD'
+    cost: 150
+    name: '&bPacote do Aprendiz!'
+    lore:
+      - '&aComece a aventura daquele jeito!'
+      - ''
+      - '&aContem:'
+      - '&7Chat colorido!'
+      - '&6/back &7sem custo!'
+      - '&7Sem tempo de espera para os TPs!'
+      - '&725% de bônus de XP no McMMO!'
+      - ''
+      - '&230 dias de duração!'
+      - '&2Preço C$ 150'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.chat.color 30d'
+      - 'lp user %player_name% permission settemp eternia.sign.color 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all 30d'
+      - 'lp user %player_name% permission settemp eternia.backfree 30d'
+      - 'lp user %player_name% permission settemp eternia.timing.bypass 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  14:
+    material: 'DIAMOND_SWORD'
+    cost: 220
+    name: '&bPacote do Mestre!'
+    lore:
+      - '&aUm verdadeiro mestre precisa de suas ferramentas!'
+      - ''
+      - '&aContem:'
+      - '&7Chat colorido!'
+      - '&6/back &7sem custo!'
+      - '&7Sem tempo de espera para os TPs!'
+      - '&725% de bônus de XP no McMMO!'
+      - '&6/fly &7para poder voar por ai!'
+      - ''
+      - '&230 dias de duração!'
+      - '&2Preço C$ 220'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.chat.color 30d'
+      - 'lp user %player_name% permission settemp eternia.sign.color 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all 30d'
+      - 'lp user %player_name% permission settemp eternia.backfree 30d'
+      - 'lp user %player_name% permission settemp eternia.timing.bypass 30d'
+      - 'lp user %player_name% permission settemp eternia.fly 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
+  15:
+    material: 'NETHERITE_SWORD'
+    cost: 400
+    name: '&bPacote do Sábio!'
+    lore:
+      - '&aCom grandes poderes, temos grandes vantagens! Hahahaha!'
+      - ''
+      - '&aContem:'
+      - '&7Chat colorido!'
+      - '&6/back &9sem custo!'
+      - '&7Sem tempo de espera para os TPs!'
+      - '&750% de bônus de XP no McMMO!'
+      - '&6/fly &7para poder voar por ai!'
+      - '&6/glow &7e &6/glow color&7 para brilhar por ai!'
+      - '&6/afk &7para poder dormir um pouco.'
+      - ''
+      - '&230 dias de duração!'
+      - '&2Preço C$ 400'
+    commands:
+      - 'lp user %player_name% permission settemp eternia.chat.color 30d'
+      - 'lp user %player_name% permission settemp eternia.sign.color 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.50percentboost.all 30d'
+      - 'lp user %player_name% permission settemp eternia.backfree 30d'
+      - 'lp user %player_name% permission settemp eternia.timing.bypass 30d'
+      - 'lp user %player_name% permission settemp eternia.fly 30d'
+      - 'lp user %player_name% permission settemp eternia.glow 30d'
+      - 'lp user %player_name% permission settemp eternia.afk 30d'
+    messages:
+      - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'

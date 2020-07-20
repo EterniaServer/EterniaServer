@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,18 +26,22 @@ public class Vars {
     protected static final Map<String, Location> warps = new HashMap<>();
     protected static final Map<String, String[]> home = new HashMap<>();
 
+    protected static final Map<String, Integer> cash = new HashMap<>();
     protected static final Map<String, Long> tpaTime = new HashMap<>();
     protected static final Map<String, String> nick = new HashMap<>();
     protected static final Map<String, String> nickname = new HashMap<>();
     protected static final Map<String, String> tpaRequests = new HashMap<>();
     protected static final Map<String, Double> balances = new HashMap<>();
     protected static final Map<String, Integer> xp = new HashMap<>();
+    protected static final Map<String, Integer> cashBuy = new HashMap<>();
     protected static final Map<String, Long> afkTime = new HashMap<>();
+    protected static final Map<String, String> glowingColor = new HashMap<>();
 
     protected static final List<World> skippingWorlds = new ArrayList<>();
     protected static final List<String> god = new ArrayList<>();
     protected static final List<String> afk = new ArrayList<>();
     protected static final List<String> playerCooldown = new ArrayList<>();
+    protected static final List<ItemStack> cashGui = new ArrayList<>();
     protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
 
     protected static final Map<String, Long> playerMuted = new HashMap<>();

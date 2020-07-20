@@ -25,23 +25,29 @@ public class OnAsyncPlayerPreLogin implements Listener {
         }
         if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
             Vars.afkTime.put(playerName, System.currentTimeMillis());
-            if (!playerProfileExist(playerName)) {
-                playerProfileCreate(playerName);
-            }
+            if (!playerProfileExist(playerName)) playerProfileCreate(playerName);
         }
         if (EterniaServer.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
             playerHomeCreate(playerName);
         }
+        if (EterniaServer.serverConfig.getBoolean("modules.economy") && !playerMoneyExist(playerName)) {
+            playerMoneyCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.cash") && !playerCashExist(playerName)) {
+            playerCashCreate(playerName);
+        }
     }
 
+    private boolean playerCashExist(String playerName) {
+        return Vars.cash.containsKey(playerName);
+    }
+
+    private boolean playerMoneyExist(String playerName) {
+        return Vars.balances.containsKey(playerName);
+   }
+
     private boolean playerProfileExist(String playerName) {
-        if (Vars.playerLogin.containsKey(playerName)) return true;
-
-        final String profile = EQueries.queryString("SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-player")+ " WHERE player_name='" + playerName + "';", "time");
-        if (profile.equals("")) return false;
-
-        Vars.playerLogin.put(playerName, profile);
-        return true;
+        return Vars.playerLogin.containsKey(playerName);
     }
 
     private boolean playerXPExist(String playerName) {
@@ -50,6 +56,16 @@ public class OnAsyncPlayerPreLogin implements Listener {
 
     private boolean playerHomeExist(String playerName) {
         return Vars.home.containsKey(playerName);
+    }
+
+    private void playerCashCreate(String playerName) {
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-cash") + " (player_name, balance) VALUES('" + playerName + "', '0');", false);
+        Vars.cash.put(playerName, 0);
+    }
+
+    private void playerMoneyCreate(String playerName) {
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "');", false);
+        Vars.balances.put(playerName, 300.0);
     }
 
     private void playerProfileCreate(String playerName) {

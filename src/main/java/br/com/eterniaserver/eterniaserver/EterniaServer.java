@@ -41,6 +41,7 @@ public class EterniaServer extends JavaPlugin {
     public static final FileConfiguration chatConfig = new YamlConfiguration();
     public static final FileConfiguration placeholderConfig = new YamlConfiguration();
     public static final FileConfiguration groupConfig = new YamlConfiguration();
+    public static final FileConfiguration cashConfig = new YamlConfiguration();
 
     @Override
     public void onEnable() {

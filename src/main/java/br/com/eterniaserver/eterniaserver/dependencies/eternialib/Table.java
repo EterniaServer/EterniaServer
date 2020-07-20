@@ -24,6 +24,7 @@ public class Table {
         EQueries.executeQuery("CREATE TABLE IF NOT EXISTS " + EterniaServer.serverConfig.getString("sql.table-muted") + " (player_name varchar(16), time varchar(16));", false);
         EQueries.executeQuery("CREATE TABLE IF NOT EXISTS " + EterniaServer.serverConfig.getString("sql.table-rewards") + " (code varchar(16), lalalala varchar(16));", false);
         EQueries.executeQuery("CREATE TABLE IF NOT EXISTS " + EterniaServer.serverConfig.getString("sql.table-nick") + " (player_name varchar(16), player_display varchar(16));", false);
+        EQueries.executeQuery("CREATE TABLE IF NOT EXISTS " + EterniaServer.serverConfig.getString("sql.table-cash") + " (player_name varchar(16), balance int(6));", false);
 
     }
 

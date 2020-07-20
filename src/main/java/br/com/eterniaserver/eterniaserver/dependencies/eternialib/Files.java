@@ -90,6 +90,16 @@ public class Files {
 
     }
 
+    public void loadCashGui() {
+
+        try {
+            EterniaServer.cashConfig.load(EFiles.fileLoad(plugin, "cashgui.yml"));
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void loadDatabase() {
 
         new Table();
