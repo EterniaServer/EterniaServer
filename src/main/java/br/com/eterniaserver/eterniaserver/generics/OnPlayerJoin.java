@@ -27,7 +27,7 @@ public class OnPlayerJoin implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             plugin.getInternMethods().addUUIF(player);
             Vars.global.put(playerName, 0);
-            if (player.hasPermission("eternia.spy")) Vars.spy.put(player, true);
+            if (player.hasPermission("eternia.spy")) Vars.spy.put(playerName, true);
             if (!Vars.playerMuted.containsKey(playerName)) checkMuted(playerName);
             if (Vars.nickname.containsKey(playerName)) {
                 player.setDisplayName(ChatColor.translateAlternateColorCodes('&', Vars.nickname.get(playerName)));
