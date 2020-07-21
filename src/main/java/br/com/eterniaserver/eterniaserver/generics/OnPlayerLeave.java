@@ -25,7 +25,7 @@ public class OnPlayerLeave implements Listener {
 
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             plugin.getInternMethods().removeUUIF(player);
-            if (player.hasPermission("eternia.spy")) Vars.spy.remove(player);
+            if (player.hasPermission("eternia.spy")) Vars.spy.remove(playerName);
         }
 
         event.setQuitMessage(null);
