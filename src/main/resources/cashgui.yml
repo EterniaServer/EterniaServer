@@ -9,7 +9,7 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 150'
     commands:
-      - 'lp user %player_name% permission settemp eternia.fly 30d'
+      - 'lp user %player_name% permission settemp eternia.fly true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   1:
@@ -22,7 +22,7 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 50'
     commands:
-      - 'lp user %player_name% permission settemp eternia.glow 30d'
+      - 'lp user %player_name% permission settemp eternia.glow true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   2:
@@ -35,7 +35,7 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 200'
     commands:
-      - 'lp user %player_name% permission settemp eternia.afk 30d'
+      - 'lp user %player_name% permission settemp eternia.afk true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   3:
@@ -48,8 +48,8 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 30'
     commands:
-      - 'lp user %player_name% permission settemp eternia.chat.color 30d'
-      - 'lp user %player_name% permission settemp eternia.sign.color 30d'
+      - 'lp user %player_name% permission settemp eternia.chat.color true 30d'
+      - 'lp user %player_name% permission settemp eternia.sign.color true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   4:
@@ -62,7 +62,7 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 20'
     commands:
-      - 'lp user %player_name% permission settemp eternia.backfree 30d'
+      - 'lp user %player_name% permission settemp eternia.backfree true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   5:
@@ -75,7 +75,7 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 50'
     commands:
-      - 'lp user %player_name% permission settemp eternia.timing.bypass 30d'
+      - 'lp user %player_name% permission settemp eternia.timing.bypass true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   6:
@@ -88,7 +88,7 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 70'
     commands:
-      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   7:
@@ -101,7 +101,7 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 130'
     commands:
-      - 'lp user %player_name% permission settemp mcmmo.perks.xp.50percentboost.all 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.50percentboost.all true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   8:
@@ -114,7 +114,7 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 200'
     commands:
-      - 'lp user %player_name% permission settemp mcmmo.perks.xp.double.all 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.double.all true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   9:
@@ -124,6 +124,7 @@ gui:
     lore:
       - '&aTenha uma tag de Cliente e mostre a todos que você'
       - '&aé especial! &d(Tag rosa no tab)'
+      - '&aPermite falar com o server pelo discord.'
       -
       - '&230 dias de duração!'
       - '&2Preço C$ 20'
@@ -138,6 +139,7 @@ gui:
     lore:
       - '&aTenha uma tag de Guerreiro e mostre quem tem a força!'
       - '&7(Tag cinza no tab)'
+      - '&aPermite falar com o server pelo discord.'
       -
       - '&230 dias de duração!'
       - '&2Preço C$ 20'
@@ -152,6 +154,7 @@ gui:
     lore:
       - '&aTenha uma tag de Ladino e mostre quem tem a agilidade!'
       - '&6(Tag Laranja no tab)'
+      - '&aPermite falar com o server pelo discord.'
       -
       - '&230 dias de duração!'
       - '&2Preço C$ 20'
@@ -194,11 +197,11 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 150'
     commands:
-      - 'lp user %player_name% permission settemp eternia.chat.color 30d'
-      - 'lp user %player_name% permission settemp eternia.sign.color 30d'
-      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all 30d'
-      - 'lp user %player_name% permission settemp eternia.backfree 30d'
-      - 'lp user %player_name% permission settemp eternia.timing.bypass 30d'
+      - 'lp user %player_name% permission settemp eternia.chat.color true 30d'
+      - 'lp user %player_name% permission settemp eternia.sign.color true 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all true 30d'
+      - 'lp user %player_name% permission settemp eternia.backfree true 30d'
+      - 'lp user %player_name% permission settemp eternia.timing.bypass true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   14:
@@ -218,12 +221,12 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 220'
     commands:
-      - 'lp user %player_name% permission settemp eternia.chat.color 30d'
-      - 'lp user %player_name% permission settemp eternia.sign.color 30d'
-      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all 30d'
-      - 'lp user %player_name% permission settemp eternia.backfree 30d'
-      - 'lp user %player_name% permission settemp eternia.timing.bypass 30d'
-      - 'lp user %player_name% permission settemp eternia.fly 30d'
+      - 'lp user %player_name% permission settemp eternia.chat.color true 30d'
+      - 'lp user %player_name% permission settemp eternia.sign.color true 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all true 30d'
+      - 'lp user %player_name% permission settemp eternia.backfree true 30d'
+      - 'lp user %player_name% permission settemp eternia.timing.bypass true 30d'
+      - 'lp user %player_name% permission settemp eternia.fly true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   15:
@@ -245,13 +248,13 @@ gui:
       - '&230 dias de duração!'
       - '&2Preço C$ 400'
     commands:
-      - 'lp user %player_name% permission settemp eternia.chat.color 30d'
-      - 'lp user %player_name% permission settemp eternia.sign.color 30d'
-      - 'lp user %player_name% permission settemp mcmmo.perks.xp.50percentboost.all 30d'
+      - 'lp user %player_name% permission settemp eternia.chat.color true 30d'
+      - 'lp user %player_name% permission settemp eternia.sign.color true 30d'
+      - 'lp user %player_name% permission settemp mcmmo.perks.xp.50percentboost.all true 30d'
       - 'lp user %player_name% permission settemp eternia.backfree 30d'
-      - 'lp user %player_name% permission settemp eternia.timing.bypass 30d'
-      - 'lp user %player_name% permission settemp eternia.fly 30d'
-      - 'lp user %player_name% permission settemp eternia.glow 30d'
-      - 'lp user %player_name% permission settemp eternia.afk 30d'
+      - 'lp user %player_name% permission settemp eternia.timing.bypass true 30d'
+      - 'lp user %player_name% permission settemp eternia.fly true 30d'
+      - 'lp user %player_name% permission settemp eternia.glow true 30d'
+      - 'lp user %player_name% permission settemp eternia.afk true 30d'
     messages:
       - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'

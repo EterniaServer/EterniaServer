@@ -28,9 +28,10 @@ public class Local {
                     pes += 1;
                     p.sendMessage(format);
                 } else {
+                    final String playerName = p.getName();
                     if (player.getWorld() == p.getWorld()) {
                         double distance = p.getLocation().distanceSquared(player.getLocation());
-                        if (p.hasPermission("eternia.spy") && p != player && !(distance <= Math.pow(radius, 2) && Vars.spy.getOrDefault(p, false))) {
+                        if (p.hasPermission("eternia.spy") && p != player && !(distance <= Math.pow(radius, 2) && Vars.spy.getOrDefault(playerName, false))) {
                             p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
                         }
                         if (distance <= Math.pow(radius, 2)) {
@@ -38,7 +39,7 @@ public class Local {
                             p.sendMessage(format);
                         }
                     } else {
-                        final Boolean b = Vars.spy.getOrDefault(p, false);
+                        final Boolean b = Vars.spy.getOrDefault(playerName, false);
                         if (p.hasPermission("eternia.spy") && p != player && Boolean.TRUE.equals(b)) {
                             p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
                         }

@@ -44,6 +44,9 @@ public class PlaceHolders extends PlaceholderExpansion {
                     break;
                 case 197143583:
                     var4 = 5;
+                    break;
+                default:
+                    var4 = 12;
             }
             switch (var4) {
                 case 1:

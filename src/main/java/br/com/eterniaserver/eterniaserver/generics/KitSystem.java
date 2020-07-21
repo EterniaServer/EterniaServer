@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import co.aikar.commands.BaseCommand;
@@ -15,6 +16,8 @@ import org.bukkit.entity.Player;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class KitSystem extends BaseCommand {
 
@@ -24,6 +27,13 @@ public class KitSystem extends BaseCommand {
     public KitSystem(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
+
+        String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-kits") + ";";
+        HashMap<String, String> temp = EQueries.getMapString(query, "name", "cooldown");
+
+        temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
+        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Kits", "%amount%", temp.size());
+
     }
 
     @CommandAlias("kits")
@@ -37,81 +47,28 @@ public class KitSystem extends BaseCommand {
     @CommandPermission("eternia.kit")
     public void onKit(Player player, String kit) {
         if (EterniaServer.kitConfig.contains("kits." + kit)) {
-            if (player.hasPermission("kits." + kit)) {
-                String data = getKitCooldown(player.getName(), kit);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                Date date;
-                try {
-                    date = sdf.parse(data);
-                    long millis = date.getTime();
-                    if ((((millis / 1000) + EterniaServer.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)) <= 0) {
-                        for (String line : EterniaServer.kitConfig.getStringList("kits." + kit + ".command")) {
-                            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), putPAPI(player, line));
-                        }
-                        for (String line : EterniaServer.kitConfig.getStringList("kits." + kit + ".text")) {
-                            player.sendMessage(messages.getColor(putPAPI(player, line)));
-                        }
-                        setKitCooldown(player.getName(), kit);
-                    } else {
-                        messages.sendMessage("server.timing", "%cooldown%", (((millis / 1000) + EterniaServer.kitConfig.getInt("kits." + kit + ".delay")) - (System.currentTimeMillis() / 1000)), player);
+            if (player.hasPermission("eternia.kit." + kit)) {
+                final String playerName = player.getName();
+                final long time = System.currentTimeMillis();
+                if (TimeUnit.MILLISECONDS.toSeconds(time - Vars.kitsCooldown.get(kit + "." + playerName)) <=
+                        EterniaServer.kitConfig.getInt("kits." + kit + ".delay")) {
+                    for (String line : EterniaServer.kitConfig.getStringList("kits." + kit + ".command")) {
+                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
                     }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    for (String line : EterniaServer.kitConfig.getStringList("kits." + kit + ".text")) {
+                        player.sendMessage(messages.getColor(PlaceholderAPI.setPlaceholders(player, line)));
+                    }
+                    Vars.kitsCooldown.put(kit + "." + playerName, System.currentTimeMillis());
+                    EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-kits") + " SET cooldown='" + time + "' WHERE name='" + kit + "." + playerName + "';");
+
+                } else {
+                    messages.sendMessage("server.timing", "%cooldown%", TimeUnit.MILLISECONDS.toSeconds(time - Vars.kitsCooldown.get(playerName)), player);
                 }
             } else {
                 messages.sendMessage("server.no-perm", "%kit_name%", kit, player);
             }
         } else {
             messages.sendMessage("kit.no-exists", "%kit_name%", kit, player);
-        }
-    }
-
-    private String putPAPI(Player player, String message) {
-        return PlaceholderAPI.setPlaceholders(player, message);
-    }
-
-    private void setKitCooldown(final String jogador, final String kit) {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        final String data = format.format(date);
-        if (playerCooldownExist(jogador, kit)) {
-            Vars.kitsCooldown.put(kit + "." + jogador, data);
-            final String querie = "UPDATE " + EterniaServer.serverConfig.getString("sql.table-kits") + " SET cooldown='" + data + "' WHERE name='" + kit + "." + jogador + "';";
-            EQueries.executeQuery(querie);
-        } else {
-            Vars.kitsCooldown.put(kit + "." + jogador, data);
-            final String querie = "INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES ('" + kit + "." + jogador + "', '" + data + "');";
-            EQueries.executeQuery(querie);
-        }
-    }
-
-    private String getKitCooldown(final String jogador, final String kit) {
-        if (Vars.kitsCooldown.containsKey(kit + "." + jogador)) {
-            return Vars.kitsCooldown.get(kit + "." + jogador);
-        }
-
-        String cooldown;
-        if (playerCooldownExist(jogador, kit)) {
-            final String querie = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';";
-            cooldown = EQueries.queryString(querie, "cooldown");
-        } else {
-            cooldown = "2020/01/01 00:00";
-        }
-
-        Vars.kitsCooldown.put(kit + "." + jogador, cooldown);
-        return cooldown;
-    }
-
-    private boolean playerCooldownExist(String jogador, String kit) {
-        if (Vars.playerCooldown.contains(kit + "." + jogador)) {
-            return true;
-        }
-
-        if (EQueries.queryBoolean("SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-kits") + " WHERE name='" + kit + "." + jogador + "';", "name")) {
-            Vars.playerCooldown.add(kit + "." + jogador);
-            return true;
-        } else {
-            return false;
         }
     }
 

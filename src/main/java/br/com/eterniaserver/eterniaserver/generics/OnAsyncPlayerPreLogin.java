@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -36,15 +37,22 @@ public class OnAsyncPlayerPreLogin implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.cash") && !playerCashExist(playerName)) {
             playerCashCreate(playerName);
         }
+        if (EterniaServer.serverConfig.getBoolean("modules.kits") && !playerKitsExist(playerName)) {
+            playerKitsCreate(playerName);
+        }
     }
 
     private boolean playerCashExist(String playerName) {
         return Vars.cash.containsKey(playerName);
     }
 
+    private boolean playerKitsExist(String playerName) {
+        return Vars.kitsCooldown.containsKey(playerName);
+    }
+
     private boolean playerMoneyExist(String playerName) {
         return Vars.balances.containsKey(playerName);
-   }
+    }
 
     private boolean playerProfileExist(String playerName) {
         return Vars.playerLogin.containsKey(playerName);
@@ -61,6 +69,14 @@ public class OnAsyncPlayerPreLogin implements Listener {
     private void playerCashCreate(String playerName) {
         EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-cash") + " (player_name, balance) VALUES('" + playerName + "', '0');", false);
         Vars.cash.put(playerName, 0);
+    }
+
+    private void playerKitsCreate(String playerName) {
+        final long time = System.currentTimeMillis();
+        for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(true)) {
+            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES('" + kit + "." + playerName + "', '0');", false);
+            Vars.kitsCooldown.put(kit + "." + playerName, time);
+        }
     }
 
     private void playerMoneyCreate(String playerName) {

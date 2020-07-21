@@ -49,12 +49,13 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("spy|socialspy")
     @CommandPermission("eternia.spy")
     public void onSpy(Player player) {
-        final Boolean b = Vars.spy.getOrDefault(player, false);
+        final String playerName = player.getName();
+        final Boolean b = Vars.spy.getOrDefault(playerName, false);
         if (Boolean.TRUE.equals(b)) {
-            Vars.spy.put(player, false);
+            Vars.spy.put(playerName, false);
             messages.sendMessage("chat.spyd", player);
         } else {
-            Vars.spy.put(player, true);
+            Vars.spy.put(playerName, true);
             messages.sendMessage("chat.spye", player);
         }
     }
@@ -184,10 +185,15 @@ public class ChatCommands extends BaseCommand {
                 replace(Constants.PLAYER.get(), targetDisplay).
                 replace(Constants.TARGET.get(), playerDisplay).
                 replace(Constants.MESSAGE.get(), s));
-        for (Player p : Vars.spy.keySet()) {
+        for (String p : Vars.spy.keySet()) {
             final Boolean b = Vars.spy.getOrDefault(p, false);
-            if (Boolean.TRUE.equals(b) && p != player && p != target) {
-                p.sendMessage(messages.getColor("&8[&7SPY-&6P&8] &8" + playerDisplay + " -> " + targetDisplay + ": " + s));
+            if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {
+                final Player spyPlayer = Bukkit.getPlayerExact(p);
+                if (spyPlayer != null && spyPlayer.isOnline()) {
+                    spyPlayer.sendMessage(messages.getColor("&8[&7SPY-&6P&8] &8" + playerDisplay + " -> " + targetDisplay + ": " + s));
+                } else {
+                    Vars.spy.remove(p);
+                }
             }
         }
     }
