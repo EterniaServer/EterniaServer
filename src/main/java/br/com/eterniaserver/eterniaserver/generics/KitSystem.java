@@ -13,9 +13,6 @@ import co.aikar.commands.annotation.Syntax;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +29,7 @@ public class KitSystem extends BaseCommand {
         HashMap<String, String> temp = EQueries.getMapString(query, "name", "cooldown");
 
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
-        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Kits", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Kits", Constants.AMOUNT.get(), temp.size());
 
     }
 
@@ -50,19 +47,19 @@ public class KitSystem extends BaseCommand {
             if (player.hasPermission("eternia.kit." + kit)) {
                 final String playerName = player.getName();
                 final long time = System.currentTimeMillis();
-                if (TimeUnit.MILLISECONDS.toSeconds(time - Vars.kitsCooldown.get(kit + "." + playerName)) <=
-                        EterniaServer.kitConfig.getInt("kits." + kit + ".delay")) {
+                final int cooldown = EterniaServer.kitConfig.getInt("kits." + kit + ".delay");
+                final long timeInSec = TimeUnit.MILLISECONDS.toSeconds(time - Vars.kitsCooldown.get(kit + "." + playerName));
+                if (timeInSec >= cooldown) {
                     for (String line : EterniaServer.kitConfig.getStringList("kits." + kit + ".command")) {
                         plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
                     }
                     for (String line : EterniaServer.kitConfig.getStringList("kits." + kit + ".text")) {
                         player.sendMessage(messages.getColor(PlaceholderAPI.setPlaceholders(player, line)));
                     }
-                    Vars.kitsCooldown.put(kit + "." + playerName, System.currentTimeMillis());
+                    Vars.kitsCooldown.put(kit + "." + playerName, time);
                     EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-kits") + " SET cooldown='" + time + "' WHERE name='" + kit + "." + playerName + "';");
-
                 } else {
-                    messages.sendMessage("server.timing", "%cooldown%", TimeUnit.MILLISECONDS.toSeconds(time - Vars.kitsCooldown.get(playerName)), player);
+                    messages.sendMessage("server.timing", "%cooldown%", cooldown - timeInSec, player);
                 }
             } else {
                 messages.sendMessage("server.no-perm", "%kit_name%", kit, player);

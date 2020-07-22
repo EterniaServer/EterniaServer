@@ -26,7 +26,7 @@ public class EterniaServer extends JavaPlugin {
     public final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     private final InternMethods internMethods = new InternMethods();
-    private final PlaceHolders placeHolders = new PlaceHolders();
+    private final PlaceHolders placeHolders = new PlaceHolders(sdf);
 
     private PaperCommandManager manager;
     private EFiles messages;
@@ -60,7 +60,7 @@ public class EterniaServer extends JavaPlugin {
         vaultHook();
 
         this.getServer().getPluginManager().registerEvents(new OnPlayerJump(), this);
-        this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerPreLogin(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerPreLogin(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityDamage(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityInventoryClick(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(this), this);

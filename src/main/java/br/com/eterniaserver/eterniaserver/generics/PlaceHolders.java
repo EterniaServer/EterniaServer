@@ -6,9 +6,17 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.entity.Player;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class PlaceHolders extends PlaceholderExpansion {
 
+    private final SimpleDateFormat sdf;
     private final String version = this.getClass().getPackage().getImplementationVersion();
+
+    public PlaceHolders(SimpleDateFormat sdf) {
+        this.sdf = sdf;
+    }
 
     public String getAuthor() {
         return "yurinogueira";
@@ -28,7 +36,7 @@ public class PlaceHolders extends PlaceholderExpansion {
             return "";
         } else {
             final String playerName = p.getName();
-            byte var4 = -1;
+            byte var4;
             switch(identifier.hashCode()) {
                 case -690213213:
                     var4 = 1;
@@ -50,7 +58,11 @@ public class PlaceHolders extends PlaceholderExpansion {
             }
             switch (var4) {
                 case 1:
-                    return Vars.playerLogin.getOrDefault(playerName, "Sem registro");
+                    if (Vars.playerLogin.containsKey(playerName)) {
+                        return sdf.format(new Date(Vars.playerLogin.get(playerName)));
+                    } else {
+                        return "Sem registro";
+                    }
                 case 2:
                     if (Vars.afk.contains(playerName)) return EterniaServer.serverConfig.getString("placeholders.afk");
                     else return "";

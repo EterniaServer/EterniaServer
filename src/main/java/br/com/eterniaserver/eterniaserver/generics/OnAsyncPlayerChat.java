@@ -56,8 +56,9 @@ public class OnAsyncPlayerChat implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            if (Vars.playerMuted.get(playerName) - System.currentTimeMillis() > 0) {
-                messages.sendMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(playerName) - System.currentTimeMillis()), player);
+            final long time = System.currentTimeMillis();
+            if (Vars.playerMuted.get(playerName) - time > 0) {
+                messages.sendMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(playerName) - time), player);
                 e.setCancelled(true);
                 return;
             }

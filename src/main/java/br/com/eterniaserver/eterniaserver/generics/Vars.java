@@ -51,12 +51,12 @@ public class Vars {
     protected static final Map<String, Long> playerMuted = new HashMap<>();
     protected static final Map<String, Long> bedCooldown = new HashMap<>();
     protected static final Map<String, Long> kitsCooldown = new HashMap<>();
+    protected static final Map<String, Long> playerLogin = new HashMap<>();
 
     protected static final Map<String, String> nick = new HashMap<>();
     protected static final Map<String, String> nickname = new HashMap<>();
     protected static final Map<String, String> tpaRequests = new HashMap<>();
     protected static final Map<String, String> glowingColor = new HashMap<>();
-    protected static final Map<String, String> playerLogin = new HashMap<>();
     protected static final Map<String, String> tell = new HashMap<>();
     protected static final Map<String, String[]> home = new HashMap<>();
 

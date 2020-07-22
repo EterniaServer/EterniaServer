@@ -3,20 +3,11 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
-import java.util.Date;
-
 public class OnAsyncPlayerPreLogin implements Listener {
-
-    private final EterniaServer plugin;
-
-    public OnAsyncPlayerPreLogin(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
@@ -24,9 +15,8 @@ public class OnAsyncPlayerPreLogin implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.experience") && !playerXPExist(playerName)) {
             playerXPCreate(playerName);
         }
-        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-            Vars.afkTime.put(playerName, System.currentTimeMillis());
-            if (!playerProfileExist(playerName)) playerProfileCreate(playerName);
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks") && !playerProfileExist(playerName)) {
+            playerProfileCreate(playerName);
         }
         if (EterniaServer.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
             playerHomeCreate(playerName);
@@ -37,17 +27,23 @@ public class OnAsyncPlayerPreLogin implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.cash") && !playerCashExist(playerName)) {
             playerCashCreate(playerName);
         }
-        if (EterniaServer.serverConfig.getBoolean("modules.kits") && !playerKitsExist(playerName)) {
+        if (EterniaServer.serverConfig.getBoolean("modules.chat") && !playerMutedExist(playerName)) {
+            playerMutedCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.kits")) {
             playerKitsCreate(playerName);
         }
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
+            Vars.afkTime.put(playerName, System.currentTimeMillis());
+        }
+    }
+
+    private boolean playerMutedExist(String playerName) {
+        return Vars.playerMuted.containsKey(playerName);
     }
 
     private boolean playerCashExist(String playerName) {
         return Vars.cash.containsKey(playerName);
-    }
-
-    private boolean playerKitsExist(String playerName) {
-        return Vars.kitsCooldown.containsKey(playerName);
     }
 
     private boolean playerMoneyExist(String playerName) {
@@ -66,6 +62,12 @@ public class OnAsyncPlayerPreLogin implements Listener {
         return Vars.home.containsKey(playerName);
     }
 
+    private void playerMutedCreate(String playerName) {
+        final long time = System.currentTimeMillis();
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-muted") + " (player_name, integer) VALUES('" + playerName + "', '" + time + "');", false);
+        Vars.playerMuted.put(playerName, time);
+    }
+
     private void playerCashCreate(String playerName) {
         EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-cash") + " (player_name, balance) VALUES('" + playerName + "', '0');", false);
         Vars.cash.put(playerName, 0);
@@ -74,8 +76,10 @@ public class OnAsyncPlayerPreLogin implements Listener {
     private void playerKitsCreate(String playerName) {
         final long time = System.currentTimeMillis();
         for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(true)) {
-            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES('" + kit + "." + playerName + "', '0');", false);
-            Vars.kitsCooldown.put(kit + "." + playerName, time);
+            if (!Vars.kitsCooldown.containsKey(kit + "." + playerName)) {
+                EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES('" + kit + "." + playerName + "', '" + time + "');", false);
+                Vars.kitsCooldown.put(kit + "." + playerName, time);
+            }
         }
     }
 
@@ -85,9 +89,9 @@ public class OnAsyncPlayerPreLogin implements Listener {
     }
 
     private void playerProfileCreate(String playerName) {
-        Date date = new Date();
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-player") + " (player_name, time) VALUES('" + playerName + "', '" + plugin.sdf.format(date) + "');", false);
-        Vars.playerLogin.put(playerName, plugin.sdf.format(date));
+        final long time = System.currentTimeMillis();
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-player") + " (player_name, time) VALUES('" + playerName + "', '" + time + "');", false);
+        Vars.playerLogin.put(playerName, time);
     }
 
     private void playerXPCreate(String playerName) {

@@ -1,6 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import co.aikar.commands.BaseCommand;
@@ -12,8 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.lang.management.ManagementFactory;
-import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Replaces extends BaseCommand {
 
@@ -25,6 +27,13 @@ public class Replaces extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
         this.getRuntime = new GetRuntime();
+
+        String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-player") + ";";
+        HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "time");
+
+        temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
+        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Profile", Constants.AMOUNT.get(), temp.size());
+
     }
 
     @CommandAlias("speed")
@@ -40,11 +49,10 @@ public class Replaces extends BaseCommand {
 
     @CommandAlias("profile|perfil")
     @CommandPermission("eternia.profile")
-    public void onProfile(Player player) throws ParseException {
+    public void onProfile(Player player) {
         final String playerName = player.getName();
 
-        Date date = plugin.sdf.parse(Vars.playerLogin.get(playerName));
-        messages.sendMessage("generic.profile.register", "%player_register_data%", plugin.sdf.format(date), player);
+        messages.sendMessage("generic.profile.register", "%player_register_data%", plugin.sdf.format(new Date(Vars.playerLogin.get(playerName))), player);
         for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
             player.sendMessage(messages.getColor(putPAPI(player, line)));
         }
