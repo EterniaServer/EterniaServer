@@ -91,6 +91,8 @@ public class Strings {
     public static final String M_ITEM_RENAME = "generic.items.rename";
     public static final String M_ITEM_NO = "generic.items.no-item";
 
+    public static final String M_BED_S = "bed.player-s";
+
     public static final String M_HOME_DONE = "home.done";
 
 }

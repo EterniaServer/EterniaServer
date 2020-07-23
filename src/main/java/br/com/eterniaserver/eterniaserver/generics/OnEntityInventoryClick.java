@@ -35,28 +35,32 @@ public class OnEntityInventoryClick implements Listener {
             messages.sendConsole("spawner.log.change-name", Constants.PLAYER, player.getDisplayName());
         }
 
-        if (EterniaServer.serverConfig.getBoolean("modules.spawners") && e.getView().getTitle().equals("Cash")) {
-            final String playerName = player.getName();
-            e.setCancelled(true);
-            if (!Vars.cashBuy.containsKey(playerName)) {
-                int slot = e.getSlot();
-                if (EterniaServer.cashConfig.contains("gui." + slot)) {
-                    final int cost = EterniaServer.cashConfig.getInt("gui." + slot + ".cost");
-                    if (APICash.hasCash(playerName, cost)) {
-                        messages.sendMessage("cash.cost", Constants.AMOUNT, cost, player);
-                        messages.sendMessage("cash.use", player);
-                        Vars.cashBuy.put(playerName, slot);
-                    } else {
-                        messages.sendMessage("cash.no-cash", player);
-                    }
-                }
-            } else {
-                messages.sendMessage("cash.already", player);
-                messages.sendMessage("cash.use", player);
-            }
-            player.closeInventory();
+        if (EterniaServer.serverConfig.getBoolean("modules.cash") && e.getView().getTitle().equals("Cash")) {
+            cashGui(player, e);
         }
 
+    }
+
+    private void cashGui(final Player player, InventoryClickEvent e) {
+        final String playerName = player.getName();
+        e.setCancelled(true);
+        if (!Vars.cashBuy.containsKey(playerName)) {
+            int slot = e.getSlot();
+            if (EterniaServer.cashConfig.contains("gui." + slot)) {
+                final int cost = EterniaServer.cashConfig.getInt("gui." + slot + ".cost");
+                if (APICash.hasCash(playerName, cost)) {
+                    messages.sendMessage("cash.cost", Constants.AMOUNT, cost, player);
+                    messages.sendMessage("cash.use", player);
+                    Vars.cashBuy.put(playerName, slot);
+                } else {
+                    messages.sendMessage("cash.no-cash", player);
+                }
+            }
+        } else {
+            messages.sendMessage("cash.already", player);
+            messages.sendMessage("cash.use", player);
+        }
+        player.closeInventory();
     }
 
 }
