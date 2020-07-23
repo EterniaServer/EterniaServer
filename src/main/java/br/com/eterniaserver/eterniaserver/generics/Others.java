@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -45,7 +46,7 @@ public class Others extends BaseCommand {
     @CommandAlias("reloadeternia|eterniareload")
     @CommandPermission("eternia.reload")
     public void onReload(CommandSender sender) {
-        messages.sendMessage("generic.others.reload-start", sender);
+        messages.sendMessage(Strings.M_RELOAD_S, sender);
         plugin.getFiles().loadConfigs();
         plugin.getFiles().loadMessages();
         plugin.getFiles().loadBlocksRewards();
@@ -56,42 +57,29 @@ public class Others extends BaseCommand {
         plugin.getFiles().loadDatabase();
         PlaceholderAPI.unregisterPlaceholderHook("eterniaserver");
         PlaceholderAPI.registerPlaceholderHook("eterniaserver", placeHolders);
-        messages.sendMessage("generic.others.reload-finish", sender);
+        messages.sendMessage(Strings.M_RELOAD_F, sender);
     }
 
     @CommandAlias("itemrename|renameitem")
     @Syntax("<name/lore> <nome>")
     @CommandPermission("eternia.renameitem")
     public void onItemRename(Player player, String func, String[] nome) {
-        player.getInventory().getItemInMainHand();
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
-                if (func.equals("name")) {
-                    ItemStack item = player.getInventory().getItemInMainHand();
-                    ItemMeta meta = item.getItemMeta();
-                    if (meta != null) {
-                        StringBuilder sb = new StringBuilder();
-                        for (String arg : nome) sb.append(arg).append(" ");
-                        meta.setDisplayName(messages.getColor(sb.toString()));
-                        item.setItemMeta(meta);
-                        player.getInventory().setItemInMainHand(item);
-                    } else {
-                        messages.sendMessage("generic.items.no-item", player);
-                    }
-                } else if (func.equals("lore")) {
-                    ItemStack item = player.getInventory().getItemInMainHand();
-                    if (!item.isSimilar(new ItemStack(Material.AIR))) {
-                        StringBuilder sb = new StringBuilder();
-                        for (String arg : nome) sb.append(arg).append(" ");
-                        item.setLore(Collections.singletonList(messages.getColor(sb.toString())));
-                        player.getInventory().setItemInMainHand(item);
-                    } else {
-                        messages.sendMessage("generic.items.no-item", player);
-                    }
-                } else {
-                    messages.sendMessage("generic.items.rename", player);
-                }
+            if (func.equals("name")) {
+                ItemStack item = player.getInventory().getItemInMainHand();
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName(transformToString(nome));
+                item.setItemMeta(meta);
+                player.getInventory().setItemInMainHand(item);
+            } else if (func.equals("lore")) {
+                ItemStack item = player.getInventory().getItemInMainHand();
+                item.setLore(Collections.singletonList(transformToString(nome)));
+                player.getInventory().setItemInMainHand(item);
             } else {
-            messages.sendMessage("generic.items.no-item", player);
+                messages.sendMessage(Strings.M_ITEM_RENAME, player);
+            }
+        } else {
+            messages.sendMessage(Strings.M_ITEM_NO, player);
         }
     }
 
@@ -99,27 +87,10 @@ public class Others extends BaseCommand {
     @Syntax("<jogador>")
     @CommandPermission("eternia.god")
     public void onGod(Player player, @Optional OnlinePlayer target) {
-        final String playerName = player.getName();
-
         if (target != null) {
-            final Player targetP = target.getPlayer();
-            final String targetName = targetP.getName();
-
-            if (Vars.god.contains(targetName)) {
-                messages.sendMessage("generic.others.god-disabled", targetP);
-                Vars.god.remove(targetName);
-            } else {
-                messages.sendMessage("generic.others.god-enabled", targetP);
-                Vars.god.add(targetName);
-            }
+            changeGod(target.getPlayer());
         } else {
-            if (Vars.god.contains(playerName)) {
-                messages.sendMessage("generic.others.god-disabled", player);
-                Vars.god.remove(playerName);
-            } else {
-                messages.sendMessage("generic.others.god-enabled", player);
-                Vars.god.add(playerName);
-            }
+            changeGod(player);
         }
     }
 
@@ -128,7 +99,7 @@ public class Others extends BaseCommand {
     public void onFly(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             if (player.getWorld() == Bukkit.getWorld("evento") && !player.hasPermission("eternia.fly.evento")) {
-                messages.sendMessage("server.no-perm", player);
+                messages.sendMessage(Strings.M_NO_PERM, player);
             } else {
                 changeFlyState(player);
             }
@@ -184,20 +155,36 @@ public class Others extends BaseCommand {
         convertItems(gold, Material.GOLD_INGOT, Material.GOLD_BLOCK, player);
         convertItems(diamond, Material.DIAMOND, Material.DIAMOND_BLOCK, player);
         convertItems(esmeralda, Material.EMERALD, Material.EMERALD_BLOCK, player);
-        messages.sendMessage("generic.others.condenser", player);
+        messages.sendMessage(Strings.M_CONDENSER, player);
     }
 
     @CommandAlias("afk")
     @CommandPermission("eternia.afk")
     public void onAFK(Player player) {
         final String playerName = player.getName();
-
         if (Vars.afk.contains(playerName)) {
-            messages.broadcastMessage("generic.afk.disabled", Constants.PLAYER, playerName);
+            messages.broadcastMessage(Strings.M_AFK_DISABLE, Constants.PLAYER, playerName);
             Vars.afk.remove(playerName);
         } else {
             Vars.afk.add(playerName);
-            messages.broadcastMessage("generic.afk.enabled", Constants.PLAYER, playerName);
+            messages.broadcastMessage(Strings.M_AFK_ENABLE, Constants.PLAYER, playerName);
+        }
+    }
+
+    private String transformToString(final String[] nome) {
+        StringBuilder sb = new StringBuilder();
+        for (String arg : nome) sb.append(arg).append(" ");
+        return messages.getColor(sb.toString());
+    }
+
+    private void changeGod(final Player player) {
+        final String playerName = player.getName();
+        if (Vars.god.contains(playerName)) {
+            messages.sendMessage(Strings.M_GOD_DISABLE, player);
+            Vars.god.remove(playerName);
+        } else {
+            messages.sendMessage(Strings.M_GOD_ENABLE, player);
+            Vars.god.add(playerName);
         }
     }
 
@@ -217,10 +204,10 @@ public class Others extends BaseCommand {
     public void changeFlyState(Player player) {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
-            messages.sendMessage("generic.others.fly-disabled", player);
+            messages.sendMessage(Strings.M_FLY_DISABLE, player);
         } else {
             player.setAllowFlight(true);
-            messages.sendMessage("generic.others.fly-enabled", player);
+            messages.sendMessage(Strings.M_FLY_ENABLE, player);
         }
     }
 
