@@ -9,13 +9,23 @@ public class Constants {
     public static final String MESSAGE = "%message%";
     public static final String PLAYER = "%player_displayname%";
     public static final String TARGET = "%target_displayname%";
+    public static final String PLAYER_DATA = "%player_register_data%";
     public static final String VALUE = "%value%";
     public static final String WARP = "%warp_name%";
     public static final String MODULE = "%module%";
     public static final String AMOUNT = "%amount%";
     public static final String TYPE = "%type%";
+    public static final String GROUP = "%group%";
+    public static final String KEY = "%key%";
+    public static final String MEM_USE = "%use_memory%";
+    public static final String MEM_MAX = "%max_memory%";
+    public static final String HOURS = "%hours%";
+    public static final String MINUTE = "%minutes%";
+    public static final String SECONDS = "%seconds%";
 
     public static final String TABLE_MONEY = EterniaServer.serverConfig.getString("sql.table-money");
+    public static final String TABLE_PLAYER = EterniaServer.serverConfig.getString("sql.table-player");
+    public static final String TABLE_REWARD = EterniaServer.serverConfig.getString("sql.table-rewards");
     public static final String TABLE_SHOP = EterniaServer.serverConfig.getString("sql.table-shop");
     public static final String TABLE_WARP = EterniaServer.serverConfig.getString("sql.table-warp");
 

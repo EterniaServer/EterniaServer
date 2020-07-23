@@ -64,7 +64,7 @@ public class OnAsyncPlayerPreLogin implements Listener {
 
     private void playerMutedCreate(String playerName) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-muted") + " (player_name, integer) VALUES('" + playerName + "', '" + time + "');", false);
+        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES('" + playerName + "', '" + time + "');", false);
         Vars.playerMuted.put(playerName, time);
     }
 

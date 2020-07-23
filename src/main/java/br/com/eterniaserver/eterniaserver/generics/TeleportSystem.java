@@ -105,7 +105,7 @@ public class TeleportSystem extends BaseCommand {
                 messages.sendMessage(Strings.M_NO_MONEY, Constants.VALUE, backMoney, player);
             }
         } else {
-            messages.sendMessage(Strings.M_NO_BACK, player);
+            messages.sendMessage(Strings.M_BACK_NO, player);
         }
     }
 

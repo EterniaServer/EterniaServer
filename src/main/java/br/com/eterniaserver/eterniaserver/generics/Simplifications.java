@@ -2,10 +2,12 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class Simplifications extends BaseCommand {
@@ -20,14 +22,14 @@ public class Simplifications extends BaseCommand {
     @CommandPermission("eternia.rain")
     public void onRain(Player player) {
         player.getWorld().setStorm(true);
-        messages.sendMessage("generic.simp.weather-changed", player);
+        messages.sendMessage(Strings.M_WEATHER, player);
     }
 
     @CommandAlias("sun|sol")
     @CommandPermission("eternia.sun")
     public void onSun(Player player) {
         player.getWorld().setStorm(false);
-        messages.sendMessage("generic.simp.weather-changed", player);
+        messages.sendMessage(Strings.M_WEATHER, player);
     }
 
     @CommandAlias("thor|lightning")
@@ -35,14 +37,14 @@ public class Simplifications extends BaseCommand {
     @CommandCompletion("@players")
     @CommandPermission("eternia.thor")
     public void onThor(Player player, @Optional OnlinePlayer target) {
+        final World world = player.getWorld();
         if (target != null) {
             final Player targetP = target.getPlayer();
-
-            targetP.getWorld().strikeLightning(targetP.getLocation());
-            messages.sendMessage("generic.simp.sent-lightning", Constants.TARGET, targetP.getDisplayName(), player);
-            messages.sendMessage("generic.simp.received-lightning", Constants.TARGET, player.getDisplayName(), targetP);
+            world.strikeLightning(targetP.getLocation());
+            messages.sendMessage(Strings.M_LIGHTNING_SENT, Constants.TARGET, targetP.getDisplayName(), player);
+            messages.sendMessage(Strings.M_LIGHTNING_RECEIVED, Constants.TARGET, player.getDisplayName(), targetP);
         } else {
-            player.getWorld().strikeLightning(player.getTargetBlock(null, 100).getLocation());
+            world.strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
     }
 
@@ -54,7 +56,7 @@ public class Simplifications extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            messages.broadcastMessage("generic.simp.suicide", Constants.MESSAGE, sb.toString(), Constants.PLAYER, player.getDisplayName());
+            messages.broadcastMessage(Strings.M_SUICIDE, Constants.MESSAGE, sb.toString(), Constants.PLAYER, player.getDisplayName());
         } else {
             player.setHealth(0);
         }

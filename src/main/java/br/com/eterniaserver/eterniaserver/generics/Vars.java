@@ -53,6 +53,7 @@ public class Vars {
     protected static final Map<String, Long> kitsCooldown = new HashMap<>();
     protected static final Map<String, Long> playerLogin = new HashMap<>();
 
+    protected static final Map<String, String> rewards = new HashMap<>();
     protected static final Map<String, String> nick = new HashMap<>();
     protected static final Map<String, String> nickname = new HashMap<>();
     protected static final Map<String, String> tpaRequests = new HashMap<>();

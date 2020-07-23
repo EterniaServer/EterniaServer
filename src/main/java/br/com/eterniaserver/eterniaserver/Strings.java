@@ -10,27 +10,30 @@ public class Strings {
     public static final String LOC = "location";
     public static final String PNAME = "player_name";
     public static final String BALANCE = "balance";
+    public static final String CODE = "code";
+    public static final String CODE_GROUP = "lalalala";
+    public static final String TIME = "time";
 
     public static final String M_NO_MONEY = "server.no-money";
     public static final String M_LOAD_DATA = "server.load-data";
     public static final String M_NO_PERM = "server.no-perm";
     public static final String M_TELEP = "server.telep";
 
-    public static final String M_NO_SPAWN = "teleport.spawn.no-exists";
-    public static final String M_CRE_SPAWN = "teleport.spawn.created";
-    public static final String M_TARGET_SPAWN = "teleport.spawn.tp-target";
+    public static final String M_SPAWN_NO = "teleport.spawn.no-exists";
+    public static final String M_SPAWN_CREATE = "teleport.spawn.created";
+    public static final String M_SPAWN_TARGET = "teleport.spawn.tp-target";
 
-    public static final String M_NO_SHOP = "teleport.shop.no-exists";
-    public static final String M_CRE_SHOP = "teleport.shop.created";
-    public static final String M_DONE_SHOP = "teleport.shop.done";
+    public static final String M_SHOP_NO = "teleport.shop.no-exists";
+    public static final String M_SHOP_CREATE = "teleport.shop.created";
+    public static final String M_SHOP_DONE = "teleport.shop.done";
 
-    public static final String M_NO_WARP = "teleport.warp.no-exists";
-    public static final String M_DEL_WARP = "teleport.warp.deleted";
-    public static final String M_CRE_WARP = "teleport.warp.created";
+    public static final String M_WARP_NO = "teleport.warp.no-exists";
+    public static final String M_WARP_DELETE = "teleport.warp.deleted";
+    public static final String M_WARP_CREATE = "teleport.warp.created";
     public static final String M_WARP_DONE = "teleport.warp.done";
     public static final String M_WARP_LIST = "teleport.warp.list";
 
-    public static final String M_NO_BACK = "teleport.back.no-tp";
+    public static final String M_BACK_NO = "teleport.back.no-tp";
     public static final String M_BACK = "teleport.back.no-free";
     public static final String M_BACK_FREE = "teleport.back.free";
 
@@ -49,5 +52,21 @@ public class Strings {
     public static final String M_SPAWNER_SENT = "spawner.give.sent";
     public static final String M_SPAWNER_RECEIVED = "spawner.give.received";
     public static final String M_SPAWNER_INVFULL = "spawners.invfull";
+
+    public static final String M_LIGHTNING_SENT = "generic.simp.sent-lightning";
+    public static final String M_LIGHTNING_RECEIVED = "generic.simp.received-lightning";
+
+    public static final String M_PROFILE_REGISTER = "generic.profile.register";
+
+    public static final String M_SUICIDE = "generic.simp.suicide";
+    public static final String M_WEATHER = "generic.simp.weather-changed";
+    public static final String M_SPEED = "generic.others.invalid";
+
+    public static final String M_REWARD_INVALID = "reward.invalid";
+    public static final String M_REWARD_NO = "reward.no-exists";
+    public static final String M_REWARD_CREATE = "reward.created";
+
+    public static final String M_MEM = "replaces.mem";
+    public static final String M_MEM_ONLINE = "replaces.online";
 
 }

@@ -2,7 +2,9 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -10,11 +12,12 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Syntax;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.security.SecureRandom;
+import java.util.HashMap;
 
 public class RewardsSystem extends BaseCommand {
 
@@ -27,18 +30,22 @@ public class RewardsSystem extends BaseCommand {
     public RewardsSystem(EterniaServer plugin) {
         this.messages = plugin.getEFiles();
         this.plugin = plugin;
+
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_REWARD), Strings.CODE, Strings.CODE_GROUP);
+        temp.forEach(Vars.rewards::put);
+        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Keys", Constants.AMOUNT, temp.size());
+
     }
 
     @CommandAlias("usekey|usarkey|usarchave")
     @Syntax("<chave>")
     @CommandPermission("eternia.usekey")
     public void onUseKey(Player player, String key) {
-        final String grupo = existKey(key);
-        if (!grupo.equals("no")) {
-            giveReward(grupo, player);
+        if (Vars.rewards.containsKey(key)) {
+            giveReward(Vars.rewards.get(key), player);
             deleteKey(key);
         } else {
-            messages.sendMessage("reward.invalid", player);
+            messages.sendMessage(Strings.M_REWARD_INVALID, player);
         }
     }
 
@@ -50,40 +57,28 @@ public class RewardsSystem extends BaseCommand {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
-            messages.sendMessage("reward.created", "%key%", key, sender);
+            messages.sendMessage(Strings.M_REWARD_CREATE, Constants.KEY, key, sender);
         } else {
-            messages.sendMessage("reward.no-exists", "%group%", reward, sender);
+            messages.sendMessage(Strings.M_REWARD_NO, Constants.GROUP, reward, sender);
         }
     }
 
     private void createKey(final String grupo, String key) {
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-rewards") + " (code, lalalala) VALUES('" + key + "', '" + grupo + "');");
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_REWARD, Strings.CODE, key, Strings.CODE_GROUP, grupo));
     }
 
     private void deleteKey(final String key) {
-        EQueries.executeQuery("DELETE FROM " + EterniaServer.serverConfig.getString("sql.table-rewards") + " WHERE code='" + key + "';");
-    }
-
-    private String existKey(final String key) {
-        final String querie = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-rewards")+ " WHERE code='" + key + "';";
-        return EQueries.queryString(querie, "code", "lalalala");
+        EQueries.executeQuery(Constants.getQueryDelete(Constants.TABLE_REWARD, Strings.CODE, key));
     }
 
     private void giveReward(String group, Player player) {
-        ConfigurationSection cs = EterniaServer.rewardsConfig.getConfigurationSection("rewards." + group + ".commands");
-        if (cs != null) {
-            for (String percentage : cs.getKeys(true)) {
-                if (Math.random() <= Double.parseDouble(percentage)) {
-                    for (String command : EterniaServer.rewardsConfig.getStringList("rewards." + group + ".commands." + percentage)) {
-                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), putPAPI(player, command));
-                    }
+        for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection("rewards." + group + ".commands").getKeys(true)) {
+            if (Math.random() <= Double.parseDouble(percentage)) {
+                for (String command : EterniaServer.rewardsConfig.getStringList("rewards." + group + ".commands." + percentage)) {
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
                 }
             }
         }
-    }
-
-    private String putPAPI(Player player, String message) {
-        return PlaceholderAPI.setPlaceholders(player, message);
     }
 
 }

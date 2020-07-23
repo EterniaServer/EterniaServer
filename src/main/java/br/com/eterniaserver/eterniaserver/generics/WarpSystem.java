@@ -69,7 +69,7 @@ public class WarpSystem extends BaseCommand {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.spawn.other") && spawnExists(location, player)) {
                 Vars.teleports.put(targetP, new PlayerTeleport(target.getPlayer(), location, Strings.M_WARP_DONE));
-                messages.sendMessage(Strings.M_TARGET_SPAWN, Constants.TARGET, targetP.getDisplayName(), player);
+                messages.sendMessage(Strings.M_SPAWN_TARGET, Constants.TARGET, targetP.getDisplayName(), player);
             } else if (!player.hasPermission("eternia.spawn.other")) {
                 messages.sendMessage(Strings.M_NO_PERM, player);
             }
@@ -95,7 +95,7 @@ public class WarpSystem extends BaseCommand {
         } else {
             final Location location = getShop(target.toLowerCase());
             if (shopExists(location, player) && !Vars.teleports.containsKey(player)) {
-                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_DONE_SHOP));
+                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_SHOP_DONE));
             } else if (Vars.teleports.containsKey(player)) {
                 messages.sendMessage(Strings.M_TELEP, player);
             }
@@ -106,14 +106,14 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.setspawn")
     public void onSetSpawn(Player player) {
         setWarp(player.getLocation(), "spawn");
-        messages.sendMessage(Strings.M_CRE_SPAWN, player);
+        messages.sendMessage(Strings.M_SPAWN_CREATE, player);
     }
 
     @CommandAlias("setshop|setloja")
     @CommandPermission("eternia.setshop")
     public void onSetShop(Player player) {
         setShop(player.getLocation(), player.getName().toLowerCase());
-        messages.sendMessage(Strings.M_CRE_SHOP, player);
+        messages.sendMessage(Strings.M_SHOP_CREATE, player);
     }
 
     @CommandAlias("setwarp")
@@ -121,7 +121,7 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.setwarp")
     public void onSetWarp(Player player, String nome) {
         setWarp(player.getLocation(), nome.toLowerCase());
-        messages.sendMessage(Strings.M_CRE_WARP, Constants.WARP, nome, player);
+        messages.sendMessage(Strings.M_WARP_CREATE, Constants.WARP, nome, player);
     }
 
     @CommandAlias("delwarp")
@@ -130,9 +130,9 @@ public class WarpSystem extends BaseCommand {
     public void onDelWarp(Player player, String nome) {
         if (Vars.warps.containsKey(nome.toLowerCase())) {
             delWarp(nome.toLowerCase());
-            messages.sendMessage(Strings.M_DEL_WARP, player);
+            messages.sendMessage(Strings.M_WARP_DELETE, player);
         } else {
-            messages.sendMessage(Strings.M_NO_WARP, Constants.WARP, nome.toLowerCase(), player);
+            messages.sendMessage(Strings.M_WARP_NO, Constants.WARP, nome.toLowerCase(), player);
         }
     }
 
@@ -150,14 +150,10 @@ public class WarpSystem extends BaseCommand {
     public void onWarp(Player player, String nome) {
         if (player.hasPermission("eternia.warp." + nome.toLowerCase())) {
             final Location location = getWarp(nome.toLowerCase());
-            if (location != plugin.error) {
-                if (Vars.teleports.containsKey(player)) {
-                    messages.sendMessage(Strings.M_TELEP, player);
-                } else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_WARP_DONE));
-                }
-            } else {
-                messages.sendMessage(Strings.M_NO_WARP, Constants.WARP, nome, player);
+            if (warpExists(location, player, nome) && !Vars.teleports.containsKey(player)) {
+                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_WARP_DONE));
+            } else if (Vars.teleports.containsKey(player)) {
+                messages.sendMessage(Strings.M_TELEP, player);
             }
         } else {
             messages.sendMessage(Strings.M_NO_PERM, player);
@@ -166,7 +162,15 @@ public class WarpSystem extends BaseCommand {
 
     private boolean shopExists(final Location location, final Player player) {
         if (location == plugin.error) {
-            messages.sendMessage(Strings.M_NO_SHOP, player);
+            messages.sendMessage(Strings.M_SHOP_NO, player);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean warpExists(final Location location, final Player player, final String nome) {
+        if (location == plugin.error) {
+            messages.sendMessage(Strings.M_WARP_NO, Constants.WARP, nome, player);
             return false;
         }
         return true;
@@ -174,7 +178,7 @@ public class WarpSystem extends BaseCommand {
 
     private boolean spawnExists(final Location location, final Player player) {
         if (location == plugin.error) {
-            messages.sendMessage(Strings.M_NO_SPAWN, player);
+            messages.sendMessage(Strings.M_SPAWN_NO, player);
             return false;
         }
         return true;
