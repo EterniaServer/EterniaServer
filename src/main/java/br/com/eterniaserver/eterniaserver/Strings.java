@@ -100,5 +100,10 @@ public class Strings {
 
     public static final String M_CHAT_MUTED = "chat.muted";
     public static final String M_CHATMUTED = "chat.chatmuted";
+    public static final String M_CHAT_D = "chat.cm-d";
+    public static final String M_CHAT_E = "chat.cm-e";
+    public static final String M_CHAT_MUTEBROAD = "chat.mutebroad";
+    public static final String M_CHAT_UNMUTEBROAD = "chat.unmutebroad";
+    public static final String M_CHAT_MUTET = "chat.mutetbroad";
 
 }

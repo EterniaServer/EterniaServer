@@ -38,8 +38,9 @@ public class OnPlayerBlockBreak implements Listener {
         final Block block = event.getBlock();
         final Material material = block.getType();
         final String materialName = material.name().toUpperCase();
+        final String worldName = player.getWorld().getName();
         if (EterniaServer.serverConfig.getBoolean("modules.spawners") && material == Material.SPAWNER &&
-                !isBlackListWorld(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass")) && player.hasPermission("eternia.spawners.break")) {
+                !isBlackListWorld(worldName) && (!player.hasPermission("eternia.spawners.bypass")) && player.hasPermission("eternia.spawners.break")) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("eternia.spawners.nosilk")) {
                 giveSpawner(player, material, block);
@@ -51,20 +52,20 @@ public class OnPlayerBlockBreak implements Listener {
         } else if (!player.hasPermission("eternia.spawners.break")) {
             messages.sendMessage(Strings.M_NO_PERM, player);
             event.setCancelled(true);
-        } else {
+        } else if (isBlackListWorld(worldName)) {
             messages.sendMessage(Strings.M_SPAWNER_BLOCKED, player);
             event.setCancelled(true);
         }
         final String blockConfig = "blocks.";
         if (EterniaServer.serverConfig.getBoolean("modules.block-reward") && EterniaServer.blockConfig.contains(blockConfig + materialName)) {
-            winReward(materialName, player, blockConfig);
+            winReward(materialName, player);
         }
     }
 
-    private void winReward(final String materialName, final Player player, final String blockConfig) {
+    private void winReward(final String materialName, final Player player) {
         double randomNumber = Math.random();
         double lowestNumberAboveRandom = 1.1;
-
+        final String blockConfig = "blocks.";
         for (String key : EterniaServer.blockConfig.getConfigurationSection(blockConfig + materialName).getKeys(true)) {
             double current = Double.parseDouble(key);
             if (current < lowestNumberAboveRandom && current > randomNumber) {
