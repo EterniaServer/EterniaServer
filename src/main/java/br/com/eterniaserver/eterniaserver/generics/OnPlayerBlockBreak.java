@@ -49,10 +49,10 @@ public class OnPlayerBlockBreak implements Listener {
                 event.setCancelled(true);
                 messages.sendMessage(Strings.M_SPAWNER_SILK, player);
             }
-        } else if (!player.hasPermission("eternia.spawners.break")) {
+        } else if (!player.hasPermission("eternia.spawners.break") && material == Material.SPAWNER) {
             messages.sendMessage(Strings.M_NO_PERM, player);
             event.setCancelled(true);
-        } else if (isBlackListWorld(worldName)) {
+        } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {
             messages.sendMessage(Strings.M_SPAWNER_BLOCKED, player);
             event.setCancelled(true);
         }

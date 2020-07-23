@@ -79,7 +79,7 @@ public class Strings {
     public static final String M_MEM_ONLINE = "replaces.online";
     public static final String M_TPS = "replaces.tps";
 
-    public static final String M_AFK_ENABLE = "generic.afk.disabled";
+    public static final String M_AFK_ENABLE = "generic.afk.enable";
     public static final String M_AFK_DISABLE = "generic.afk.disabled";
 
     public static final String M_FLY_ENABLE = "generic.others.fly-enabled";
