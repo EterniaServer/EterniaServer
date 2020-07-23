@@ -143,8 +143,8 @@ public class Managers {
     }
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
-        if (enable) messages.sendConsole("modules.enable", Constants.MODULE.get(), module);
-        else messages.sendConsole("modules.disable", Constants.MODULE.get(), module);
+        if (enable) messages.sendConsole("modules.enable", Constants.MODULE, module);
+        else messages.sendConsole("modules.disable", Constants.MODULE, module);
         return enable;
     }
 

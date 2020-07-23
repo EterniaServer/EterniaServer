@@ -41,7 +41,7 @@ public class TeleportSystem extends BaseCommand {
         if (Vars.tpaRequests.containsKey(playerName)) {
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             if (target != null) {
-                eFiles.sendMessage("teleport.tpa.accept", Constants.TARGET.get(), player.getDisplayName(), target);
+                eFiles.sendMessage("teleport.tpa.accept", Constants.TARGET, player.getDisplayName(), target);
                 Vars.teleports.put(target, new PlayerTeleport(target, player.getLocation(), "teleport.tpa.done"));
             }
             Vars.tpaTime.remove(playerName);
@@ -56,7 +56,7 @@ public class TeleportSystem extends BaseCommand {
     public void onTeleportDeny(Player player) {
         final String playerName = player.getName();
         if (Vars.tpaRequests.containsKey(playerName)) {
-            eFiles.sendMessage("teleport.tpa.deny", Constants.TARGET.get(), Vars.tpaRequests.get(playerName), player);
+            eFiles.sendMessage("teleport.tpa.deny", Constants.TARGET, Vars.tpaRequests.get(playerName), player);
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             Vars.tpaRequests.remove(playerName);
             Vars.tpaTime.remove(playerName);
@@ -82,8 +82,8 @@ public class TeleportSystem extends BaseCommand {
                     Vars.tpaRequests.remove(targetName);
                     Vars.tpaRequests.put(targetName, playerName);
                     Vars.tpaTime.put(targetName, System.currentTimeMillis());
-                    eFiles.sendMessage("teleport.tpa.received", Constants.TARGET.get(), player.getDisplayName(), targetP);
-                    eFiles.sendMessage("teleport.tpa.sent", Constants.TARGET.get(), targetP.getDisplayName(), player);
+                    eFiles.sendMessage("teleport.tpa.received", Constants.TARGET, player.getDisplayName(), targetP);
+                    eFiles.sendMessage("teleport.tpa.sent", Constants.TARGET, targetP.getDisplayName(), player);
                 } else {
                     eFiles.sendMessage("teleport.tpa.exists", player);
                 }
@@ -113,7 +113,7 @@ public class TeleportSystem extends BaseCommand {
                         Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), "teleport.back.no-free"));
                     }
                 } else {
-                    eFiles.sendMessage("teleport.back.no-money", Constants.VALUE.get(), valor, player);
+                    eFiles.sendMessage("teleport.back.no-money", Constants.VALUE, valor, player);
                 }
             }
         } else {

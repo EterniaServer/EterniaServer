@@ -32,7 +32,7 @@ public class OnPlayerJoin implements Listener {
             }
         }
         event.setJoinMessage(null);
-        plugin.getEFiles().broadcastMessage("server.join", Constants.PLAYER.get(), player.getDisplayName());
+        plugin.getEFiles().broadcastMessage("server.join", Constants.PLAYER, player.getDisplayName());
     }
 
 }

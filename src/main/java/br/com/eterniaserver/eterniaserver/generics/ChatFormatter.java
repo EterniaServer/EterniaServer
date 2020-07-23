@@ -24,11 +24,11 @@ public class ChatFormatter extends StringHelper {
 		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) plugin.getInternMethods().addUUIF(p);
 		FormatInfo fi = Vars.uufi.get(p.getName());
 		if (EterniaServer.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
-			ChatObject msg = new ChatObject(Constants.MESSAGE.get());
+			ChatObject msg = new ChatObject(Constants.MESSAGE);
 			msg.setColor(ChatColor.getByChar(EterniaServer.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));
 			String total = parse(p, EterniaServer.groupConfig.getString(fi.getName() + ".format"));
-			int i = total.indexOf(Constants.MESSAGE.get());
-			int i2 = i + Constants.MESSAGE.get().length();
+			int i = total.indexOf(Constants.MESSAGE);
+			int i2 = i + 9;
 			String prefix = total.substring(0, i);
 			message.get(0).setMessage(prefix);
 			message.getChatObjects().add(msg);

@@ -32,7 +32,7 @@ public class OnEntityInventoryClick implements Listener {
                 Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
             e.setCancelled(true);
             messages.sendMessage("spawner.others.change-name", player);
-            messages.sendConsole("spawner.log.change-name", Constants.PLAYER.get(), player.getDisplayName());
+            messages.sendConsole("spawner.log.change-name", Constants.PLAYER, player.getDisplayName());
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.spawners") && e.getView().getTitle().equals("Cash")) {
@@ -43,7 +43,7 @@ public class OnEntityInventoryClick implements Listener {
                 if (EterniaServer.cashConfig.contains("gui." + slot)) {
                     final int cost = EterniaServer.cashConfig.getInt("gui." + slot + ".cost");
                     if (APICash.hasCash(playerName, cost)) {
-                        messages.sendMessage("cash.cost", Constants.AMOUNT.get(), cost, player);
+                        messages.sendMessage("cash.cost", Constants.AMOUNT, cost, player);
                         messages.sendMessage("cash.use", player);
                         Vars.cashBuy.put(playerName, slot);
                     } else {

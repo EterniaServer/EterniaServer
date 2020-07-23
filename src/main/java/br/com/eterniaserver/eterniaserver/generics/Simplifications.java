@@ -39,8 +39,8 @@ public class Simplifications extends BaseCommand {
             final Player targetP = target.getPlayer();
 
             targetP.getWorld().strikeLightning(targetP.getLocation());
-            messages.sendMessage("generic.simp.sent-lightning", Constants.TARGET.get(), targetP.getDisplayName(), player);
-            messages.sendMessage("generic.simp.received-lightning", Constants.TARGET.get(), player.getDisplayName(), targetP);
+            messages.sendMessage("generic.simp.sent-lightning", Constants.TARGET, targetP.getDisplayName(), player);
+            messages.sendMessage("generic.simp.received-lightning", Constants.TARGET, player.getDisplayName(), targetP);
         } else {
             player.getWorld().strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
@@ -54,7 +54,7 @@ public class Simplifications extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            messages.broadcastMessage("generic.simp.suicide", Constants.MESSAGE.get(), sb.toString(), Constants.PLAYER.get(), player.getDisplayName());
+            messages.broadcastMessage("generic.simp.suicide", Constants.MESSAGE, sb.toString(), Constants.PLAYER, player.getDisplayName());
         } else {
             player.setHealth(0);
         }

@@ -27,7 +27,7 @@ public class OnPlayerBedEnter implements Listener {
             final String playerName = player.getName();
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - plugin.getInternMethods().getCooldown(playerName)) > 6) {
                 Vars.bedCooldown.put(playerName, System.currentTimeMillis());
-                plugin.getEFiles().broadcastMessage("bed.player-s", Constants.PLAYER.get(), player.getDisplayName());
+                plugin.getEFiles().broadcastMessage("bed.player-s", Constants.PLAYER, player.getDisplayName());
             }
         }
     }

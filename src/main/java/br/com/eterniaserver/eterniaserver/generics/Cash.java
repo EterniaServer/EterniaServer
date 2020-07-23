@@ -36,7 +36,7 @@ public class Cash extends BaseCommand {
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "balance");
 
         temp.forEach((k, v) -> Vars.cash.put(k, Integer.parseInt(v)));
-        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Cash", Constants.AMOUNT.get(), temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE, "Cash", Constants.AMOUNT, temp.size());
 
         loadGui();
 
@@ -57,12 +57,12 @@ public class Cash extends BaseCommand {
     public void onCashBalance(Player player, @Optional String playerName) {
         if (playerName != null) {
             if (Vars.cash.containsKey(playerName)) {
-                messages.sendMessage("cash.balance-other", Constants.AMOUNT.get(), Vars.cash.get(playerName), player);
+                messages.sendMessage("cash.balance-other", Constants.AMOUNT, Vars.cash.get(playerName), player);
             } else {
                 messages.sendMessage("cash.no-player", player);
             }
         } else {
-            messages.sendMessage("cash.balance", Constants.AMOUNT.get(), Vars.cash.get(player.getName()), player);
+            messages.sendMessage("cash.balance", Constants.AMOUNT, Vars.cash.get(player.getName()), player);
         }
     }
 
@@ -107,8 +107,8 @@ public class Cash extends BaseCommand {
         if (value > 0) {
             final String targetName = target.getName();
             APICash.addCash(targetName, value);
-            messages.sendMessage("cash.receive", Constants.AMOUNT.get(), value, target);
-            messages.sendMessage("cash.send", Constants.AMOUNT.get(), value, Constants.TARGET.get(), target.getDisplayName(), player);
+            messages.sendMessage("cash.receive", Constants.AMOUNT, value, target);
+            messages.sendMessage("cash.send", Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
         } else {
             messages.sendMessage("server.neg", player);
         }
@@ -123,8 +123,8 @@ public class Cash extends BaseCommand {
         if (value > 0) {
             final String targetName = target.getName();
             APICash.removeCash(targetName, value);
-            messages.sendMessage("cash.removed", Constants.AMOUNT.get(), value, target);
-            messages.sendMessage("cash.remove", Constants.AMOUNT.get(), value, Constants.TARGET.get(), target.getDisplayName(), player);
+            messages.sendMessage("cash.removed", Constants.AMOUNT, value, target);
+            messages.sendMessage("cash.remove", Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
         } else {
             messages.sendMessage("server.neg", player);
         }

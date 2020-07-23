@@ -32,7 +32,7 @@ public class Replaces extends BaseCommand {
         HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "time");
 
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
-        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Profile", Constants.AMOUNT.get(), temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE, "Profile", Constants.AMOUNT, temp.size());
 
     }
 

@@ -22,7 +22,7 @@ public class Staff {
                 String format = EterniaServer.chatConfig.getString("staff.format");
                 format = PlaceholderAPI.setPlaceholders(player, format);
                 if (format != null) {
-                    format = plugin.getEFiles().getColor(format.replace(Constants.MESSAGE.get(), message));
+                    format = plugin.getEFiles().getColor(format.replace(Constants.MESSAGE, message));
                     p.sendMessage(format);
                 }
             }

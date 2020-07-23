@@ -58,8 +58,8 @@ public class SpawnerGive extends BaseCommand {
                         }
                         item.setItemMeta(meta);
                         inventory.addItem(item);
-                        messages.sendMessage("spawner.give.sent", Constants.VALUE.get(), value, Constants.TYPE.get(), mobFormatted, Constants.TARGET.get(), targetP.getDisplayName(), player);
-                        messages.sendMessage("spawner.give.received", Constants.VALUE.get(), value, Constants.TYPE.get(), mobFormatted, Constants.TARGET.get(), player.getName(), targetP);
+                        messages.sendMessage("spawner.give.sent", Constants.VALUE, value, Constants.TYPE, mobFormatted, Constants.TARGET, targetP.getDisplayName(), player);
+                        messages.sendMessage("spawner.give.received", Constants.VALUE, value, Constants.TYPE, mobFormatted, Constants.TARGET, player.getName(), targetP);
                     }
                 }
             } else {
@@ -72,7 +72,7 @@ public class SpawnerGive extends BaseCommand {
                 str.append(", ");
             }
             str.append(ChatColor.GRAY).append("algumas entidades não funcionam");
-            messages.sendMessage("spawner.give.types", Constants.TYPE.get(), str.toString(), player);
+            messages.sendMessage("spawner.give.types", Constants.TYPE, str.toString(), player);
         }
     }
 

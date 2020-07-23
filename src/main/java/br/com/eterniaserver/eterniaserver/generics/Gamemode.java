@@ -35,7 +35,7 @@ public class Gamemode extends BaseCommand {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.SURVIVAL);
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Sobrevivência", targetP);
-            messages.sendMessage("generic.gm.changed-target", Constants.TARGET.get(), targetP.getDisplayName(), "%gamemode%", "Sobrevivência", player);
+            messages.sendMessage("generic.gm.changed-target", Constants.TARGET, targetP.getDisplayName(), "%gamemode%", "Sobrevivência", player);
         }
     }
 
@@ -49,7 +49,7 @@ public class Gamemode extends BaseCommand {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.CREATIVE);
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Criativo", targetP);
-            messages.sendMessage("generic.gm.changed-target", Constants.TARGET.get(), targetP.getDisplayName(), "%gamemode%", "Criativo", player);
+            messages.sendMessage("generic.gm.changed-target", Constants.TARGET, targetP.getDisplayName(), "%gamemode%", "Criativo", player);
         }
     }
 
@@ -63,7 +63,7 @@ public class Gamemode extends BaseCommand {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.ADVENTURE);
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Aventura", targetP);
-            messages.sendMessage("generic.gm.changed-target", Constants.TARGET.get(), targetP.getDisplayName(), "%gamemode%", "Aventura", player);
+            messages.sendMessage("generic.gm.changed-target", Constants.TARGET, targetP.getDisplayName(), "%gamemode%", "Aventura", player);
         }
     }
 
@@ -77,7 +77,7 @@ public class Gamemode extends BaseCommand {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.SPECTATOR);
             messages.sendMessage("generic.gm.changed", "%gamemode%", "Espectador", targetP);
-            messages.sendMessage("generic.gm.changed-target", Constants.TARGET.get(), targetP.getDisplayName(), "%gamemode%", "Espectador", player);
+            messages.sendMessage("generic.gm.changed-target", Constants.TARGET, targetP.getDisplayName(), "%gamemode%", "Espectador", player);
         }
     }
 

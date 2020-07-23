@@ -47,7 +47,7 @@ public class HomeSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.homes.put(k, loc);
         });
-        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Home", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE, "Home", "%amount%", temp.size());
 
         query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-home") + ";";
         temp = EQueries.getMapString(query, "player_name", "homes");
@@ -55,7 +55,7 @@ public class HomeSystem extends BaseCommand {
             final String[] homess = v.split(":");
             Vars.home.put(k, homess);
         });
-        messages.sendConsole("server.load-data", Constants.MODULE.get(), "PlayerHomes", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE, "PlayerHomes", "%amount%", temp.size());
 
     }
 

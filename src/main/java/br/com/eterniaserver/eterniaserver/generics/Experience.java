@@ -33,7 +33,7 @@ public class Experience extends BaseCommand {
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "xp");
 
         temp.forEach((k, v) -> Vars.xp.put(k, Integer.parseInt(v)));
-        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Experience", Constants.AMOUNT.get(), temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE, "Experience", Constants.AMOUNT, temp.size());
     }
 
     @CommandAlias("checklevel|verlevel")
@@ -44,7 +44,7 @@ public class Experience extends BaseCommand {
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(APIExperience.getExp(player.getName()));
-        messages.sendMessage("experience.check", Constants.AMOUNT.get(), player.getLevel(), player);
+        messages.sendMessage("experience.check", Constants.AMOUNT, player.getLevel(), player);
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -83,7 +83,7 @@ public class Experience extends BaseCommand {
         if (APIExperience.getExp(playerName) >= xpla) {
             APIExperience.removeExp(playerName, xpla);
             player.giveExp(xpla);
-            messages.sendMessage("experience.withdraw", Constants.AMOUNT.get(), player.getLevel(), player);
+            messages.sendMessage("experience.withdraw", Constants.AMOUNT, player.getLevel(), player);
         } else {
             messages.sendMessage("experience.insufficient", player);
         }
@@ -98,7 +98,7 @@ public class Experience extends BaseCommand {
             int xp = internMethods.getXPForLevel(xpla);
             int xpto = internMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(player.getName(), xp);
-            messages.sendMessage("experience.deposit", Constants.AMOUNT.get(), xpla, player);
+            messages.sendMessage("experience.deposit", Constants.AMOUNT, xpla, player);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);

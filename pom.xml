@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.eterniaserver</groupId>
     <artifactId>EterniaServer</artifactId>
-    <version>4.0-Master</version>
+    <version>4.1-Staging</version>
 
     <properties>
         <sonar.projectKey>yurinogueira_EterniaServer</sonar.projectKey>

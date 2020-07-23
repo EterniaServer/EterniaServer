@@ -29,7 +29,7 @@ public class KitSystem extends BaseCommand {
         HashMap<String, String> temp = EQueries.getMapString(query, "name", "cooldown");
 
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
-        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Kits", Constants.AMOUNT.get(), temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE, "Kits", Constants.AMOUNT, temp.size());
 
     }
 

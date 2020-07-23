@@ -30,7 +30,7 @@ public class ChatCommands extends BaseCommand {
         final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "player_display");
 
         temp.forEach(Vars.nickname::put);
-        messages.sendConsole("server.load-data", Constants.MODULE.get(), "Nicks", "%amount%", temp.size());
+        messages.sendConsole("server.load-data", Constants.MODULE, "Nicks", "%amount%", temp.size());
 
     }
 
@@ -106,8 +106,8 @@ public class ChatCommands extends BaseCommand {
                     messages.sendMessage("chat.remove-nick", player);
                 } else {
                     targetP.setDisplayName(messages.getColor(string));
-                    messages.sendMessage("chat.newnick", Constants.PLAYER.get(), messages.getColor(string), player);
-                    messages.sendMessage("chat.newnick", Constants.PLAYER.get(), messages.getColor(string), targetP);
+                    messages.sendMessage("chat.newnick", Constants.PLAYER, messages.getColor(string), player);
+                    messages.sendMessage("chat.newnick", Constants.PLAYER, messages.getColor(string), targetP);
                 }
             }
         }
@@ -122,7 +122,7 @@ public class ChatCommands extends BaseCommand {
             if (APIEconomy.hasMoney(playerName, money)) {
                 APIEconomy.removeMoney(playerName, money);
                 player.setDisplayName(Vars.nick.get(playerName));
-                messages.sendMessage("chat.newnick", Constants.PLAYER.get(), player.getDisplayName(), player);
+                messages.sendMessage("chat.newnick", Constants.PLAYER, player.getDisplayName(), player);
                 if (Vars.nickname.containsKey(playerName)) {
                     EQueries.executeQuery("UPDATE " + tableName + " SET player_display='" + Vars.nick.get(playerName) + "' WHERE player_name='" + playerName + "';");
                 } else {
@@ -178,13 +178,13 @@ public class ChatCommands extends BaseCommand {
         final String targetDisplay = target.getDisplayName();
         Vars.tell.put(target.getName(), player.getName());
         player.sendMessage(messages.getMessage("chat.toplayer").
-                replace(Constants.PLAYER.get(), playerDisplay).
-                replace(Constants.TARGET.get(), targetDisplay).
-                replace(Constants.MESSAGE.get(), s));
+                replace(Constants.PLAYER, playerDisplay).
+                replace(Constants.TARGET, targetDisplay).
+                replace(Constants.MESSAGE, s));
         target.sendMessage(messages.getMessage("chat.fromplayer").
-                replace(Constants.PLAYER.get(), targetDisplay).
-                replace(Constants.TARGET.get(), playerDisplay).
-                replace(Constants.MESSAGE.get(), s));
+                replace(Constants.PLAYER, targetDisplay).
+                replace(Constants.TARGET, playerDisplay).
+                replace(Constants.MESSAGE, s));
         for (String p : Vars.spy.keySet()) {
             final Boolean b = Vars.spy.getOrDefault(p, false);
             if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {

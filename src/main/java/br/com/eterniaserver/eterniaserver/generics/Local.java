@@ -23,7 +23,7 @@ public class Local {
             String format = EterniaServer.chatConfig.getString("local.format");
             format = PlaceholderAPI.setPlaceholders(player, format);
             if (format != null) {
-                format = strings.getColor(format.replace(Constants.MESSAGE.get(), message));
+                format = strings.getColor(format.replace(Constants.MESSAGE, message));
                 if (radius <= 0) {
                     pes += 1;
                     p.sendMessage(format);

@@ -27,7 +27,7 @@ public class OnPlayerMove implements Listener {
                 Vars.afkTime.put(playerName, System.currentTimeMillis());
                 if (Vars.afk.contains(playerName)) {
                     Vars.afk.remove(playerName);
-                    plugin.getEFiles().broadcastMessage("generic.afk.disabled", Constants.PLAYER.get(), player.getDisplayName());
+                    plugin.getEFiles().broadcastMessage("generic.afk.disabled", Constants.PLAYER, player.getDisplayName());
                 }
             }
         }
