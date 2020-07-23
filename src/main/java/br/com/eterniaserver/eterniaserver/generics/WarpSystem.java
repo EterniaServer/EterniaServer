@@ -26,9 +26,7 @@ public class WarpSystem extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-shop") + ";";
-        HashMap<String, String> temp = EQueries.getMapString(query, Strings.NAME, Strings.LOC);
-
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_SHOP), Strings.NAME, Strings.LOC);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -41,9 +39,7 @@ public class WarpSystem extends BaseCommand {
         });
         messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Shops", Constants.AMOUNT, temp.size());
 
-        query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-warp") + ";";
-        temp = EQueries.getMapString(query, Strings.NAME, Strings.LOC);
-
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_WARP), Strings.NAME, Strings.LOC);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),

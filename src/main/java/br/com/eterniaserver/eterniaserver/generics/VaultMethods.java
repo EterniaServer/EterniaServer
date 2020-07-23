@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -15,6 +17,7 @@ import java.util.List;
 public class VaultMethods implements Economy {
 
     private final DecimalFormat df2 = new DecimalFormat(".##");
+    private final double startMoney = EterniaServer.serverConfig.getDouble("money.start");
 
     @Override
     public boolean isEnabled() {
@@ -256,7 +259,7 @@ public class VaultMethods implements Economy {
     }
 
     private void playerMoneyCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "');");
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PNAME, playerName, Strings.BALANCE, startMoney));
         Vars.balances.put(playerName, 300.0);
     }
 
