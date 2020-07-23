@@ -45,4 +45,9 @@ public class Strings {
     public static final String M_TPA_DENY = "teleport.tpa.deny";
     public static final String M_TPA_DENIED = "teleport.tpa.denied";
 
+    public static final String M_SPAWNER_GIVE = "spawner.give.types";
+    public static final String M_SPAWNER_SENT = "spawner.give.sent";
+    public static final String M_SPAWNER_RECEIVED = "spawner.give.received";
+    public static final String M_SPAWNER_INVFULL = "spawners.invfull";
+
 }
