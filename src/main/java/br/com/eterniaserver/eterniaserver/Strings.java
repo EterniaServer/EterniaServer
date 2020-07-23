@@ -74,6 +74,7 @@ public class Strings {
 
     public static final String M_MEM = "replaces.mem";
     public static final String M_MEM_ONLINE = "replaces.online";
+    public static final String M_TPS = "replaces.tps";
 
     public static final String M_AFK_ENABLE = "generic.afk.disabled";
     public static final String M_AFK_DISABLE = "generic.afk.disabled";

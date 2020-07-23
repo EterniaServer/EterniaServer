@@ -22,6 +22,7 @@ public class Constants {
     public static final String HOURS = "%hours%";
     public static final String MINUTE = "%minutes%";
     public static final String SECONDS = "%seconds%";
+    public static final String TPS = "%server_tps_1%";
 
     public static final String TABLE_MONEY = EterniaServer.serverConfig.getString("sql.table-money");
     public static final String TABLE_PLAYER = EterniaServer.serverConfig.getString("sql.table-player");
