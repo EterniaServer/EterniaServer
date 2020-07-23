@@ -1,7 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 
 import net.md_5.bungee.api.ChatColor;
@@ -42,60 +44,57 @@ public class OnAsyncPlayerChat implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        if (e.isCancelled()) return;
-
-        final Player player = e.getPlayer();
-        final String playerName = player.getName();
-        String message = e.getMessage();
 
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
+            final Player player = e.getPlayer();
+            final String playerName = player.getName();
+            String message = e.getMessage();
             if (plugin.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
-                messages.sendMessage("chat.chatmuted", player);
+                messages.sendMessage(Strings.M_CHATMUTED, player);
                 e.setCancelled(true);
-                return;
-            }
-            final long time = System.currentTimeMillis();
-            if (Vars.playerMuted.get(playerName) - time > 0) {
-                messages.sendMessage("chat.muted", "%time%", TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(playerName) - time), player);
-                e.setCancelled(true);
-                return;
-            }
-
-            if (hexSupport && player.hasPermission("eternia.chat.color.hex")) {
-                Matcher matcher = colorPattern.matcher(message);
-                if (matcher.find()) {
-                    StringBuffer buffer = new StringBuffer();
-                    do {
-                        matcher.appendReplacement(buffer, "" + ChatColor.of(matcher.group(1)));
-                    } while (matcher.find());
-                    matcher.appendTail(buffer);
-                    message = buffer.toString();
+            } else {
+                final long time = System.currentTimeMillis();
+                if (Vars.playerMuted.get(playerName) - time > 0) {
+                    messages.sendMessage(Strings.M_CHAT_MUTED, Constants.TIME, TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(playerName) - time), player);
+                    e.setCancelled(true);
+                } else {
+                    message = canHex(player, message);
+                    switch (Vars.global.getOrDefault(playerName, 0)) {
+                        case 0:
+                            local.sendChatMessage(message, player, EterniaServer.chatConfig.getInt("local.range"));
+                            e.setCancelled(true);
+                            break;
+                        case 2:
+                            staff.sendChatMessage(message, player);
+                            e.setCancelled(true);
+                            break;
+                        default:
+                            ChatMessage messagex = new ChatMessage(message);
+                            cf.filter(e, messagex);
+                            c.filter(e, messagex);
+                            cp.filter(e, messagex);
+                            js.filter(e, messagex);
+                    }
                 }
             }
-
-            switch (Vars.global.getOrDefault(playerName, 0)) {
-                case 0:
-                    local.sendChatMessage(message, player, EterniaServer.chatConfig.getInt("local.range"));
-                    e.setCancelled(true);
-                    break;
-                case 2:
-                    staff.sendChatMessage(message, player);
-                    e.setCancelled(true);
-                    break;
-                default:
-                    break;
-            }
-
-            if (e.isCancelled()) return;
-
-            ChatMessage messagex = new ChatMessage(message);
-            cf.filter(e, messagex);
-            c.filter(e, messagex);
-            cp.filter(e, messagex);
-            js.filter(e, messagex);
         }
+    }
+
+    private String canHex(final Player player, String message) {
+        if (hexSupport && player.hasPermission("eternia.chat.color.hex")) {
+            Matcher matcher = colorPattern.matcher(message);
+            if (matcher.find()) {
+                StringBuffer buffer = new StringBuffer();
+                do {
+                    matcher.appendReplacement(buffer, "" + ChatColor.of(matcher.group(1)));
+                } while (matcher.find());
+                matcher.appendTail(buffer);
+                message = buffer.toString();
+            }
+        }
+        return message;
     }
 
 }

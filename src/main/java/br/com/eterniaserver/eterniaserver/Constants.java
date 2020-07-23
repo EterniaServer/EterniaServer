@@ -23,6 +23,7 @@ public class Constants {
     public static final String MINUTE = "%minutes%";
     public static final String SECONDS = "%seconds%";
     public static final String TPS = "%server_tps_1%";
+    public static final String TIME = "%time%";
 
     public static final String TABLE_CASH = EterniaServer.serverConfig.getString("sql.table-cash");
     public static final String TABLE_HOME = EterniaServer.serverConfig.getString("sql.table-home");

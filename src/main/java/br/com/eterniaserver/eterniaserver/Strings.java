@@ -98,4 +98,7 @@ public class Strings {
 
     public static final String M_HOME_DONE = "home.done";
 
+    public static final String M_CHAT_MUTED = "chat.muted";
+    public static final String M_CHATMUTED = "chat.chatmuted";
+
 }

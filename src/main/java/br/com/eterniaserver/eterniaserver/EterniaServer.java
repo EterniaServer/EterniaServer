@@ -27,13 +27,13 @@ public class EterniaServer extends JavaPlugin {
     public final DecimalFormat df2 = new DecimalFormat(".##");
     public final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     public final List<String> entityList = ImmutableList.of("BEE",
-            "BLAZE", "CAT", "CAVE_SPIDER", "CHICKEN", "COD", "COW", "CREEPER", "DOLPHIN", "DONKEY",
-            "DROWNED", "ELDER_GUARDIAN", "ENDER_DRAGON", "ENDERMAN", "ENDERMITE", "EVOKER", "FOX", "GHAST",
-            "GIANT", "GUARDIAN", "HOGLIN", "HORSE", "HUSK", "ILLUSIONER", "IRON_GOLEM", "MAGMA_CUBE", "MOOSHROOM",
-            "MULE", "PANDA", "PARROT", "PHANTOM", "PIG", "PIGLIN", "PILLAGER", "POLAR_BEAR", "PUFFERFISH", "RABBIT",
-            "RAVAGER", "SALMON", "SHEEP", "SILVERFISH", "SKELETON", "SKELETON_HORSE", "SLIME", "SNOW_GOLEM",
-            "SPIDER", "SQUID", "STRAY", "STRIDER", "TURTLE", "VEX", "VILLAGER", "VINDICATOR", "WITCH", "WITHER",
-            "WITHER_SKELETON", "WOLF", "ZOGLIN", "ZOMBIE", "ZOMBIE_HORSE", "ZOMBIFIED_PIGLIN", "ZOMBIE_VILLAGER");
+            "BLAZE", "CAT", "CAVE_SPIDER", "CHICKEN", "COD", "COW", "CREEPER", "DOLPHIN", "DONKEY", "DROWNED",
+            "ELDER_GUARDIAN", "ENDER_DRAGON", "ENDERMAN", "ENDERMITE", "EVOKER", "FOX", "GHAST", "GIANT", "GUARDIAN",
+            "HOGLIN", "HORSE", "HUSK", "ILLUSIONER", "IRON_GOLEM", "MAGMA_CUBE", "MULE", "PANDA", "PARROT", "PHANTOM",
+            "PIG", "PIGLIN", "PILLAGER", "POLAR_BEAR", "PUFFERFISH", "RABBIT", "RAVAGER", "SALMON", "SHEEP",
+            "SILVERFISH", "SKELETON", "SKELETON_HORSE", "SLIME", "SNOW_GOLEM", "SPIDER", "SQUID", "STRAY", "STRIDER",
+            "TURTLE", "VEX", "VILLAGER", "VINDICATOR", "WITCH", "WITHER", "WITHER_SKELETON", "WOLF", "ZOGLIN", "ZOMBIE",
+            "ZOMBIE_HORSE", "ZOMBIFIED_PIGLIN", "ZOMBIE_VILLAGER");
 
     private final InternMethods internMethods = new InternMethods();
     private final PlaceHolders placeHolders = new PlaceHolders(sdf);
