@@ -1,13 +1,18 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
 public class OnAsyncPlayerPreLogin implements Listener {
+
+    private final long time = System.currentTimeMillis();
+    private final double moneyStart = EterniaServer.serverConfig.getDouble("money.start");
 
     @EventHandler
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
@@ -34,7 +39,7 @@ public class OnAsyncPlayerPreLogin implements Listener {
             playerKitsCreate(playerName);
         }
         if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-            Vars.afkTime.put(playerName, System.currentTimeMillis());
+            Vars.afkTime.put(playerName, time);
         }
     }
 
@@ -63,44 +68,42 @@ public class OnAsyncPlayerPreLogin implements Listener {
     }
 
     private void playerMutedCreate(String playerName) {
-        final long time = System.currentTimeMillis();
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-muted") + " (player_name, time) VALUES('" + playerName + "', '" + time + "');", false);
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MUTED, Strings.PNAME, playerName, Strings.TIME, time), false);
         Vars.playerMuted.put(playerName, time);
     }
 
     private void playerCashCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-cash") + " (player_name, balance) VALUES('" + playerName + "', '0');", false);
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PNAME, playerName, Strings.BALANCE, 0), false);
         Vars.cash.put(playerName, 0);
     }
 
     private void playerKitsCreate(String playerName) {
-        final long time = System.currentTimeMillis();
         for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(true)) {
-            if (!Vars.kitsCooldown.containsKey(kit + "." + playerName)) {
-                EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-kits") + " (name, cooldown) VALUES('" + kit + "." + playerName + "', '" + time + "');", false);
-                Vars.kitsCooldown.put(kit + "." + playerName, time);
+            final String kitName = kit + "." + playerName;
+            if (!Vars.kitsCooldown.containsKey(kitName)) {
+                EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_KITS, Strings.NAME, kitName, Strings.COOLDOWN, time), false);
+                Vars.kitsCooldown.put(kitName, time);
             }
         }
     }
 
     private void playerMoneyCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-money") + " (player_name, balance) VALUES('" + playerName + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "');", false);
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PNAME, playerName, Strings.BALANCE, moneyStart), false);
         Vars.balances.put(playerName, 300.0);
     }
 
     private void playerProfileCreate(String playerName) {
-        final long time = System.currentTimeMillis();
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-player") + " (player_name, time) VALUES('" + playerName + "', '" + time + "');", false);
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, Strings.PNAME, playerName, Strings.TIME, time), false);
         Vars.playerLogin.put(playerName, time);
     }
 
     private void playerXPCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-xp") + " (player_name, xp) VALUES ('" + playerName + "', '" + 0 + "');", false);
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_XP, Strings.PNAME, playerName, Strings.XP, 0), false);
         Vars.xp.put(playerName, 0);
     }
 
     private void playerHomeCreate(String playerName) {
-        EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-home") + " (player_name, homes) VALUES('" + playerName + "', '" + "" + "');", false);
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOME, Strings.PNAME, playerName, Strings.HOMES, ""), false);
     }
 
 }

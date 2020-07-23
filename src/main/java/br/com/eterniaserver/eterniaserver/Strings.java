@@ -13,6 +13,9 @@ public class Strings {
     public static final String CODE = "code";
     public static final String CODE_GROUP = "lalalala";
     public static final String TIME = "time";
+    public static final String COOLDOWN = "cooldown";
+    public static final String XP = "xp";
+    public static final String HOMES = "homes";
 
     public static final String M_NO_MONEY = "server.no-money";
     public static final String M_LOAD_DATA = "server.load-data";

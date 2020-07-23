@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import br.com.eterniaserver.eterniaserver.Strings;
@@ -29,8 +30,8 @@ public class OnPlayerCommandPreProcess implements Listener {
         String message = event.getMessage().toLowerCase();
 
         if (message.equalsIgnoreCase("/tps")) {
-            String s = PlaceholderAPI.setPlaceholders(player, Strings.M_TPS);
-            messages.sendMessage(Strings.M_TPS, Strings.M_TPS, s.substring(0, s.length() - 2), player);
+            String s = PlaceholderAPI.setPlaceholders(player, Constants.TPS);
+            messages.sendMessage(Strings.M_TPS, Constants.TPS, s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
             return;
         }
