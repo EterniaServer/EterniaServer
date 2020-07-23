@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import org.bukkit.ChatColor;
 
-
 public class ChatObject {
 
 	String message;
