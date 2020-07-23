@@ -22,7 +22,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class OnPlayerBlockBreak implements Listener {
 
-    private final String blockConfig = "blocks.";
     private final EterniaServer plugin;
     private final EFiles messages;
 
@@ -56,12 +55,13 @@ public class OnPlayerBlockBreak implements Listener {
             messages.sendMessage(Strings.M_SPAWNER_BLOCKED, player);
             event.setCancelled(true);
         }
+        final String blockConfig = "blocks.";
         if (EterniaServer.serverConfig.getBoolean("modules.block-reward") && EterniaServer.blockConfig.contains(blockConfig + materialName)) {
-            winReward(materialName, player);
+            winReward(materialName, player, blockConfig);
         }
     }
 
-    private void winReward(final String materialName, final Player player) {
+    private void winReward(final String materialName, final Player player, final String blockConfig) {
         double randomNumber = Math.random();
         double lowestNumberAboveRandom = 1.1;
 
