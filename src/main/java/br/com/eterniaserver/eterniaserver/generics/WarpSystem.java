@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
 
 import co.aikar.commands.BaseCommand;
@@ -26,7 +27,7 @@ public class WarpSystem extends BaseCommand {
         this.messages = plugin.getEFiles();
 
         String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-shop") + ";";
-        HashMap<String, String> temp = EQueries.getMapString(query, "name", "location");
+        HashMap<String, String> temp = EQueries.getMapString(query, Strings.NAME, Strings.LOC);
 
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
@@ -38,10 +39,10 @@ public class WarpSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.shops.put(k, loc);
         });
-        messages.sendConsole("server.load-data", Constants.MODULE, "Shops", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Shops", Constants.AMOUNT, temp.size());
 
         query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-warp") + ";";
-        temp = EQueries.getMapString(query, "name", "location");
+        temp = EQueries.getMapString(query, Strings.NAME, Strings.LOC);
 
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
@@ -53,7 +54,7 @@ public class WarpSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.warps.put(k, loc);
         });
-        messages.sendConsole("server.load-data", Constants.MODULE, "Warps", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Warps", Constants.AMOUNT, temp.size());
 
     }
 
@@ -64,25 +65,17 @@ public class WarpSystem extends BaseCommand {
         final Location location = getWarp("spawn");
         if (target == null) {
             if (Vars.teleports.containsKey(player)) {
-                messages.sendMessage("server.telep", player);
-            } else {
-                if (location != plugin.error) {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done"));
-                } else {
-                    messages.sendMessage("teleport.spawn.no-exists", player);
-                }
+                messages.sendMessage(Strings.M_TELEP, player);
+            } else if (spawnExists(location, player)) {
+                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_WARP_DONE));
             }
         } else {
             final Player targetP = target.getPlayer();
-            if (player.hasPermission("eternia.spawn.other")) {
-                if (location != plugin.error) {
-                    Vars.teleports.put(targetP, new PlayerTeleport(target.getPlayer(), location, "teleport.warp.done"));
-                    messages.sendMessage("teleport.spawn.tp-target", Constants.TARGET, targetP.getDisplayName(), player);
-                } else {
-                    messages.sendMessage("teleport.spawn.no-exists", player);
-                }
-            } else {
-                messages.sendMessage("server.no-perm", player);
+            if (player.hasPermission("eternia.spawn.other") && spawnExists(location, player)) {
+                Vars.teleports.put(targetP, new PlayerTeleport(target.getPlayer(), location, Strings.M_WARP_DONE));
+                messages.sendMessage(Strings.M_TARGET_SPAWN, Constants.TARGET, targetP.getDisplayName(), player);
+            } else if (!player.hasPermission("eternia.spawn.other")) {
+                messages.sendMessage(Strings.M_NO_PERM, player);
             }
         }
     }
@@ -95,25 +88,20 @@ public class WarpSystem extends BaseCommand {
         if (target == null) {
                final Location location = getWarp("shop");
                if (player.hasPermission("eternia.warp.shop")) {
-                   if (location != plugin.error) {
-                       if (Vars.teleports.containsKey(player)) messages.sendMessage("server.telep", player);
-                       else Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done"));
-                   } else {
-                       messages.sendMessage("teleport.warp.no-exists", Constants.WARP, "shop", player);
+                   if (shopExists(location, player) && !Vars.teleports.containsKey(player)) {
+                       Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_WARP_DONE));
+                   } else if (Vars.teleports.containsKey(player)) {
+                       messages.sendMessage(Strings.M_TELEP, player);
                    }
                } else {
-                   messages.sendMessage("server.no-perm", player);
+                   messages.sendMessage(Strings.M_NO_PERM, player);
                }
         } else {
             final Location location = getShop(target.toLowerCase());
-            if (location != plugin.error) {
-                if (Vars.teleports.containsKey(player)) {
-                    messages.sendMessage("server.telep", player);
-                } else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.shop.done"));
-                }
-            } else {
-                messages.sendMessage("teleport.shop.no-exists", player);
+            if (shopExists(location, player) && !Vars.teleports.containsKey(player)) {
+                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_DONE_SHOP));
+            } else if (Vars.teleports.containsKey(player)) {
+                messages.sendMessage(Strings.M_TELEP, player);
             }
         }
     }
@@ -122,14 +110,14 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.setspawn")
     public void onSetSpawn(Player player) {
         setWarp(player.getLocation(), "spawn");
-        messages.sendMessage("teleport.spawn.created", player);
+        messages.sendMessage(Strings.M_CRE_SPAWN, player);
     }
 
     @CommandAlias("setshop|setloja")
     @CommandPermission("eternia.setshop")
     public void onSetShop(Player player) {
         setShop(player.getLocation(), player.getName().toLowerCase());
-        messages.sendMessage("teleport.shop.created", player);
+        messages.sendMessage(Strings.M_CRE_SHOP, player);
     }
 
     @CommandAlias("setwarp")
@@ -137,7 +125,7 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.setwarp")
     public void onSetWarp(Player player, String nome) {
         setWarp(player.getLocation(), nome.toLowerCase());
-        messages.sendMessage("teleport.warp.created", Constants.WARP, nome, player);
+        messages.sendMessage(Strings.M_CRE_WARP, Constants.WARP, nome, player);
     }
 
     @CommandAlias("delwarp")
@@ -146,9 +134,9 @@ public class WarpSystem extends BaseCommand {
     public void onDelWarp(Player player, String nome) {
         if (Vars.warps.containsKey(nome.toLowerCase())) {
             delWarp(nome.toLowerCase());
-            messages.sendMessage("teleport.warp.deleted", player);
+            messages.sendMessage(Strings.M_DEL_WARP, player);
         } else {
-            messages.sendMessage("teleport.warp.no-exists", Constants.WARP, nome.toLowerCase(), player);
+            messages.sendMessage(Strings.M_NO_WARP, Constants.WARP, nome.toLowerCase(), player);
         }
     }
 
@@ -157,7 +145,7 @@ public class WarpSystem extends BaseCommand {
     public void onListWarp(Player player) {
         StringBuilder string = new StringBuilder();
         for (String name : Vars.warps.keySet()) string.append(name).append("&8").append(", &3");
-        messages.sendMessage("teleport.warp.list", Constants.VALUE, messages.getColor(string.substring(0, string.length() - 1)), player);
+        messages.sendMessage(Strings.M_WARP_LIST, Constants.VALUE, messages.getColor(string.substring(0, string.length() - 1)), player);
     }
 
     @CommandAlias("warp")
@@ -168,16 +156,32 @@ public class WarpSystem extends BaseCommand {
             final Location location = getWarp(nome.toLowerCase());
             if (location != plugin.error) {
                 if (Vars.teleports.containsKey(player)) {
-                    messages.sendMessage("server.telep", player);
+                    messages.sendMessage(Strings.M_TELEP, player);
                 } else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "teleport.warp.done"));
+                    Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_WARP_DONE));
                 }
             } else {
-                messages.sendMessage("teleport.warp.no-exists", Constants.WARP, nome, player);
+                messages.sendMessage(Strings.M_NO_WARP, Constants.WARP, nome, player);
             }
         } else {
-            messages.sendMessage("server.no-perm", player);
+            messages.sendMessage(Strings.M_NO_PERM, player);
         }
+    }
+
+    private boolean shopExists(final Location location, final Player player) {
+        if (location == plugin.error) {
+            messages.sendMessage(Strings.M_NO_SHOP, player);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean spawnExists(final Location location, final Player player) {
+        if (location == plugin.error) {
+            messages.sendMessage(Strings.M_NO_SPAWN, player);
+            return false;
+        }
+        return true;
     }
 
     public void setShop(Location loc, String shop) {
@@ -189,9 +193,9 @@ public class WarpSystem extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (Vars.shops.containsKey(shop)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_SHOP, "location", saveloc, "name", shop));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_SHOP, Strings.LOC, saveloc, Strings.NAME, shop));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_SHOP, "name", shop, "location", saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_SHOP, Strings.NAME, shop, Strings.LOC, saveloc));
         }
     }
 
@@ -208,15 +212,15 @@ public class WarpSystem extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (Vars.warps.containsKey(warp)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_WARP, "location", saveloc, "name", warp));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_WARP, Strings.LOC, saveloc, Strings.NAME, warp));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_WARP, "name", warp, "location", saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_WARP, Strings.NAME, warp, Strings.LOC, saveloc));
         }
     }
 
     public void delWarp(String warp) {
         Vars.warps.remove(warp);
-        EQueries.executeQuery(Constants.getQueryDelete(Constants.TABLE_WARP, "name", warp));
+        EQueries.executeQuery(Constants.getQueryDelete(Constants.TABLE_WARP, Strings.NAME, warp));
     }
 
     public Location getWarp(String warp) {
