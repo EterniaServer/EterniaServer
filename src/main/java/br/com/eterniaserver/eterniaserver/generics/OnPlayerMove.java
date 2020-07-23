@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,7 +28,7 @@ public class OnPlayerMove implements Listener {
                 Vars.afkTime.put(playerName, System.currentTimeMillis());
                 if (Vars.afk.contains(playerName)) {
                     Vars.afk.remove(playerName);
-                    plugin.getEFiles().broadcastMessage("generic.afk.disabled", Constants.PLAYER, player.getDisplayName());
+                    plugin.getEFiles().broadcastMessage(Strings.M_AFK_DISABLE, Constants.PLAYER, player.getDisplayName());
                 }
             }
         }

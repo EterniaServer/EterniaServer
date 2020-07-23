@@ -18,6 +18,7 @@ public class Strings {
     public static final String M_LOAD_DATA = "server.load-data";
     public static final String M_NO_PERM = "server.no-perm";
     public static final String M_TELEP = "server.telep";
+    public static final String M_LEAVE = "server.leave";
 
     public static final String M_SPAWN_NO = "teleport.spawn.no-exists";
     public static final String M_SPAWN_CREATE = "teleport.spawn.created";

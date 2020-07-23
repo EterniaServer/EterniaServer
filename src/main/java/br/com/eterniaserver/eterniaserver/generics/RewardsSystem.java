@@ -24,7 +24,7 @@ public class RewardsSystem extends BaseCommand {
     private final EFiles messages;
     private final EterniaServer plugin;
 
-    private final String rew = "rewards.";
+    private final String rewardsConfig = "rewards.";
 
     private final SecureRandom random = new SecureRandom();
     private final byte[] bytes = new byte[20];
@@ -55,7 +55,7 @@ public class RewardsSystem extends BaseCommand {
     @Syntax("<reward>")
     @CommandPermission("eternia.genkey")
     public void onGenKey(CommandSender sender, String reward) {
-        if (EterniaServer.rewardsConfig.getConfigurationSection(rew + reward) != null) {
+        if (EterniaServer.rewardsConfig.getConfigurationSection(rewardsConfig + reward) != null) {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
@@ -74,9 +74,9 @@ public class RewardsSystem extends BaseCommand {
     }
 
     private void giveReward(String group, Player player) {
-        for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection(rew + group + ".commands").getKeys(true)) {
+        for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection(rewardsConfig + group + ".commands").getKeys(true)) {
             if (Math.random() <= Double.parseDouble(percentage)) {
-                for (String command : EterniaServer.rewardsConfig.getStringList(rew + group + ".commands." + percentage)) {
+                for (String command : EterniaServer.rewardsConfig.getStringList(rewardsConfig + group + ".commands." + percentage)) {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
                 }
             }

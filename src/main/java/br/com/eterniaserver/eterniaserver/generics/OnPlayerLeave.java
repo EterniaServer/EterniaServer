@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,7 +30,7 @@ public class OnPlayerLeave implements Listener {
         }
 
         event.setQuitMessage(null);
-        plugin.getEFiles().broadcastMessage("server.leave", Constants.PLAYER, player.getDisplayName());
+        plugin.getEFiles().broadcastMessage(Strings.M_LEAVE, Constants.PLAYER, player.getDisplayName());
 
     }
 
