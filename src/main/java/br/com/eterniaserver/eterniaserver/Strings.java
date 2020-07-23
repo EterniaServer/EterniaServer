@@ -18,6 +18,7 @@ public class Strings {
     public static final String M_LOAD_DATA = "server.load-data";
     public static final String M_NO_PERM = "server.no-perm";
     public static final String M_TELEP = "server.telep";
+    public static final String M_JOIN = "server.join";
     public static final String M_LEAVE = "server.leave";
 
     public static final String M_SPAWN_NO = "teleport.spawn.no-exists";
@@ -52,7 +53,10 @@ public class Strings {
     public static final String M_SPAWNER_GIVE = "spawner.give.types";
     public static final String M_SPAWNER_SENT = "spawner.give.sent";
     public static final String M_SPAWNER_RECEIVED = "spawner.give.received";
-    public static final String M_SPAWNER_INVFULL = "spawners.invfull";
+    public static final String M_SPAWNER_INVFULL = "spawners.others.inv-full";
+    public static final String M_SPAWNER_BLOCKED = "spawner.others.blocked";
+    public static final String M_SPAWNER_SILK = "spawner.others.need-silktouch";
+    public static final String M_SPAWNER_FAILED = "spawner.others.failed";
 
     public static final String M_LIGHTNING_SENT = "generic.simp.sent-lightning";
     public static final String M_LIGHTNING_RECEIVED = "generic.simp.received-lightning";
@@ -85,5 +89,7 @@ public class Strings {
 
     public static final String M_ITEM_RENAME = "generic.items.rename";
     public static final String M_ITEM_NO = "generic.items.no-item";
+
+    public static final String M_HOME_DONE = "home.done";
 
 }

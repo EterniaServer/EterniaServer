@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
 
 import org.bukkit.Bukkit;
@@ -40,7 +41,7 @@ public class OnPlayerInteract implements Listener {
                 if (Vars.teleports.containsKey(player)) {
                     plugin.getEFiles().sendMessage("server.telep", player);
                 } else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done"));
+                    Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
                 }
             }
             if (EterniaServer.serverConfig.getBoolean("modules.experience") && is.getType().equals(Material.EXPERIENCE_BOTTLE)

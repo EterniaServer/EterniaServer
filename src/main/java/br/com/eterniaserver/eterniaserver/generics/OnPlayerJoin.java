@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,7 +33,7 @@ public class OnPlayerJoin implements Listener {
             }
         }
         event.setJoinMessage(null);
-        plugin.getEFiles().broadcastMessage("server.join", Constants.PLAYER, player.getDisplayName());
+        plugin.getEFiles().broadcastMessage(Strings.M_JOIN, Constants.PLAYER, player.getDisplayName());
     }
 
 }
