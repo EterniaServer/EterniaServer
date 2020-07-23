@@ -13,7 +13,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class OnPlayerCommandPreProcess implements Listener {
 
-    private final String commandsConfig = "commands.";
     private final EterniaServer plugin;
     private final EFiles messages;
 
@@ -35,6 +34,7 @@ public class OnPlayerCommandPreProcess implements Listener {
             event.setCancelled(true);
             return;
         }
+        String commandsConfig = "commands.";
         if (EterniaServer.serverConfig.getBoolean("modules.commands") && EterniaServer.cmdConfig.contains(commandsConfig + message)) {
             final String cmd = message.replace("/", "");
             if (player.hasPermission("eternia." + cmd)) {

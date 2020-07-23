@@ -33,10 +33,6 @@ public class Constants {
         return "SELECT * FROM " + table + ";";
     }
 
-    public static String getQuerySelect(final String table, final String type, final String value) {
-        return "SELECT * FROM " + table + " WHERE " + type + "='" + value + "';";
-    }
-
     public static String getQueryDelete(final String table, final String type, final String value) {
         return "DELETE FROM " + table + " WHERE " + type + "='" + value + "';";
     }

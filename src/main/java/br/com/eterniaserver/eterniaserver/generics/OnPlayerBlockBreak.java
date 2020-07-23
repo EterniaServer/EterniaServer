@@ -10,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,9 +19,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class OnPlayerBlockBreak implements Listener {
 
@@ -47,24 +43,8 @@ public class OnPlayerBlockBreak implements Listener {
                 !isBlackListWorld(player.getWorld().getName()) && (!player.hasPermission("eternia.spawners.bypass")) && player.hasPermission("eternia.spawners.break")) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("eternia.spawners.nosilk")) {
-                double random = Math.random();
-                if (random < EterniaServer.serverConfig.getDouble("spawners.drop-chance")) {
-                    if (EterniaServer.serverConfig.getBoolean("spawners.drop-in-inventory")) {
-                        if (player.getInventory().firstEmpty() != -1) {
-                            player.getInventory().addItem(getSpawner(block, material));
-                            block.getDrops().clear();
-                        } else {
-                            event.setCancelled(true);
-                            messages.sendMessage(Strings.M_SPAWNER_INVFULL, player);
-                        }
-                    } else {
-                        final Location loc = block.getLocation();
-                        loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
-                    }
-                    event.setExpToDrop(0);
-                } else {
-                    messages.sendMessage(Strings.M_SPAWNER_FAILED, player);
-                }
+                giveSpawner(player, material, block);
+                event.setExpToDrop(0);
             } else {
                 event.setCancelled(true);
                 messages.sendMessage(Strings.M_SPAWNER_SILK, player);
@@ -98,7 +78,28 @@ public class OnPlayerBlockBreak implements Listener {
         }
     }
 
-    private ItemStack getSpawner(Block block, Material material) {
+    private void giveSpawner(final Player player, final Material material, Block block) {
+        double random = Math.random();
+        if (random < EterniaServer.serverConfig.getDouble("spawners.drop-chance")) {
+            if (EterniaServer.serverConfig.getBoolean("spawners.drop-in-inventory")) {
+                if (player.getInventory().firstEmpty() != -1) {
+                    player.getInventory().addItem(getSpawner(block, material));
+                    block.getDrops().clear();
+                } else {
+                    messages.sendMessage(Strings.M_SPAWNER_INVFULL, player);
+                    final Location loc = block.getLocation();
+                    loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
+                }
+            } else {
+                final Location loc = block.getLocation();
+                loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
+            }
+        } else {
+            messages.sendMessage(Strings.M_SPAWNER_FAILED, player);
+        }
+    }
+
+    private ItemStack getSpawner(final Block block, final Material material) {
         final CreatureSpawner spawner = (CreatureSpawner) block.getState();
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
