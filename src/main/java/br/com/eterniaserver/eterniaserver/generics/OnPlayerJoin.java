@@ -27,36 +27,36 @@ public class OnPlayerJoin implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             plugin.getInternMethods().addUUIF(player);
             Vars.global.put(playerName, 0);
-            if (player.hasPermission("eternia.spy")) {
-                Vars.spy.put(playerName, true);
-            }
-            if (Vars.nickname.containsKey(playerName)) {
-                player.setDisplayName(ChatColor.translateAlternateColorCodes('&', Vars.nickname.get(playerName)));
-            }
-            if (EterniaServer.serverConfig.getBoolean("modules.experience") && !playerXPExist(playerName)) {
-                playerXPCreate(playerName);
-            }
-            if (EterniaServer.serverConfig.getBoolean("modules.playerchecks") && !playerProfileExist(playerName)) {
-                playerProfileCreate(playerName);
-            }
-            if (EterniaServer.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
-                playerHomeCreate(playerName);
-            }
-            if (EterniaServer.serverConfig.getBoolean("modules.economy") && !playerMoneyExist(playerName)) {
-                playerMoneyCreate(playerName);
-            }
-            if (EterniaServer.serverConfig.getBoolean("modules.cash") && !playerCashExist(playerName)) {
-                playerCashCreate(playerName);
-            }
-            if (EterniaServer.serverConfig.getBoolean("modules.chat") && !playerMutedExist(playerName)) {
-                playerMutedCreate(playerName);
-            }
-            if (EterniaServer.serverConfig.getBoolean("modules.kits")) {
-                playerKitsCreate(playerName);
-            }
-            if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-                Vars.afkTime.put(playerName, System.currentTimeMillis());
-            }
+        }
+        if (player.hasPermission("eternia.spy")) {
+            Vars.spy.put(playerName, true);
+        }
+        if (Vars.nickname.containsKey(playerName)) {
+            player.setDisplayName(ChatColor.translateAlternateColorCodes('&', Vars.nickname.get(playerName)));
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.experience") && !playerXPExist(playerName)) {
+            playerXPCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks") && !playerProfileExist(playerName)) {
+            playerProfileCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
+            playerHomeCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.economy") && !playerMoneyExist(playerName)) {
+            playerMoneyCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.cash") && !playerCashExist(playerName)) {
+            playerCashCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.chat") && !playerMutedExist(playerName)) {
+            playerMutedCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.kits")) {
+            playerKitsCreate(playerName);
+        }
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
+            Vars.afkTime.put(playerName, System.currentTimeMillis());
         }
         event.setJoinMessage(null);
         plugin.getEFiles().broadcastMessage(Strings.M_JOIN, Constants.PLAYER, player.getDisplayName());

@@ -27,6 +27,7 @@ public class Constants {
     public static final String KITS = "%kits%";
     public static final String KIT_NAME = "%kit_name%";
     public static final String COOLDOWN = "%cooldown%";
+    public static final String HOMES = "%homes%";
 
     public static final String TABLE_CASH = EterniaServer.serverConfig.getString("sql.table-cash");
     public static final String TABLE_HOME = EterniaServer.serverConfig.getString("sql.table-home");

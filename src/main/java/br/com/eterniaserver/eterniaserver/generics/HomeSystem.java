@@ -62,12 +62,11 @@ public class HomeSystem extends BaseCommand {
     @CommandPermission("eternia.delhome")
     public void onDelHome(Player player, String nome) {
         final String playerName = player.getName();
-
         if (existHome(nome.toLowerCase(), playerName)) {
             delHome(nome.toLowerCase(), playerName);
-            messages.sendMessage("home.deleted", player);
+            messages.sendMessage(Strings.M_HOME_DELETED, player);
         } else {
-            messages.sendMessage("home.no-exists", player);
+            messages.sendMessage(Strings.M_HOME_NO, player);
         }
     }
 
@@ -77,26 +76,20 @@ public class HomeSystem extends BaseCommand {
     public void onHome(Player player, String nome, @Optional OnlinePlayer target) {
         if (target == null) {
             Location location = getHome(nome.toLowerCase(), player.getName());
-            if (location != plugin.error) {
-                if (Vars.teleports.containsKey(player)) {
-                        messages.sendMessage("server.telep", player);
-                } else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done"));
-                }
-            } else {
-                messages.sendMessage("home.no-exists", player);
+            if (locationExists(location, player) && !Vars.teleports.containsKey(player)) {
+                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
+            } else if (Vars.teleports.containsKey(player)) {
+                messages.sendMessage(Strings.M_TELEP, player);
+            }
+        } else if (player.hasPermission("eternia.home.other")) {
+            Location location = getHome(nome.toLowerCase(), target.getPlayer().getName());
+            if (locationExists(location, player) && !Vars.teleports.containsKey(player)) {
+                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
+            } else if (Vars.teleports.containsKey(player)) {
+                messages.sendMessage(Strings.M_TELEP, player);
             }
         } else {
-            if (player.hasPermission("eternia.home.other")) {
-                Location location = getHome(nome.toLowerCase(), target.getPlayer().getName());
-                if (location != plugin.error) {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, "home.done"));
-                } else {
-                    messages.sendMessage("home.no-exists", player);
-                }
-            } else {
-                messages.sendMessage("server.no-perm", player);
-            }
+            messages.sendMessage(Strings.M_NO_PERM, player);
         }
     }
 
@@ -105,23 +98,18 @@ public class HomeSystem extends BaseCommand {
     @CommandPermission("eternia.homes")
     public void onHomes(Player player, @Optional OnlinePlayer target) {
         StringBuilder accounts = new StringBuilder();
-        String[] values;
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
-                values = getHomes(target.getPlayer().getName());
-                for (String line : values) {
-                    accounts.append(line).append("&8, &3");
-                }
-                messages.sendMessage("home.list", "%homes%", messages.getColor(accounts.toString()), player);
+                final String[] values = getHomes(target.getPlayer().getName());
+                for (String line : values) accounts.append(line).append("&8, &3");
+                messages.sendMessage(Strings.M_HOME_LIST, Strings.HOMES, messages.getColor(accounts.toString()), player);
             } else {
-                messages.sendMessage("server.no-perm", player);
+                messages.sendMessage(Strings.M_NO_PERM, player);
             }
         } else {
-            values = getHomes(player.getName());
-            for (String line : values) {
-                accounts.append(line).append("&8, &3");
-            }
-            messages.sendMessage("home.list", "%homes%", messages.getColor(accounts.toString()), player);
+            final String[] values = getHomes(player.getName());
+            for (String line : values) accounts.append(line).append("&8, &3");
+            messages.sendMessage(Strings.M_HOME_LIST, Strings.HOMES, messages.getColor(accounts.toString()), player);
         }
     }
 
@@ -131,13 +119,11 @@ public class HomeSystem extends BaseCommand {
     public void onSetHome(Player player, String nome) {
         int i = 4;
         for (int v = 5; v <= 30; v++) if (player.hasPermission("eternia.sethome." + v)) i = v;
+        final String playerName = player.getName();
         if (nome.length() <= i) {
-            if (canHome(player.getName()) < i) {
-                setHome(player.getLocation(), nome.toLowerCase(), player.getName());
-                messages.sendMessage("home.created", player);
-            } else if (existHome(nome.toLowerCase(), player.getName())) {
-                setHome(player.getLocation(), nome.toLowerCase(), player.getName());
-                messages.sendMessage("home.created", player);
+            if (canHome(playerName) < i || (existHome(nome.toLowerCase(), playerName))) {
+                setHome(player.getLocation(), nome.toLowerCase(), playerName);
+                messages.sendMessage(Strings.M_HOME_CREATED, player);
             } else {
                 ItemStack item = new ItemStack(Material.COMPASS);
                 ItemMeta meta = item.getItemMeta();
@@ -149,11 +135,19 @@ public class HomeSystem extends BaseCommand {
                 item.setItemMeta(meta);
                 PlayerInventory inventory = player.getInventory();
                 inventory.addItem(item);
-                messages.sendMessage("home.limit", player);
+                messages.sendMessage(Strings.M_HOME_LIMIT, player);
             }
         } else {
-            messages.sendMessage("home.exceeded", player);
+            messages.sendMessage(Strings.M_HOME_EXCEEDED, player);
         }
+    }
+
+    private boolean locationExists(final Location location, final Player player) {
+        if (location == plugin.error) {
+            messages.sendMessage(Strings.M_HOME_NO, player);
+            return false;
+        }
+        return true;
     }
 
     public void setHome(Location loc, String home, String jogador) {

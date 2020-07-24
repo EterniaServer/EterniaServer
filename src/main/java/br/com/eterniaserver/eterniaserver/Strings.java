@@ -95,6 +95,12 @@ public class Strings {
     public static final String M_BED_S = "bed.player-s";
 
     public static final String M_HOME_DONE = "home.done";
+    public static final String M_HOME_DELETED = "home.deleted";
+    public static final String M_HOME_NO = "home.no-exists";
+    public static final String M_HOME_LIST = "home.list";
+    public static final String M_HOME_CREATED = "home.created";
+    public static final String M_HOME_LIMIT = "home.limit";
+    public static final String M_HOME_EXCEEDED = "home.exceeded";
 
     public static final String M_CHAT_MUTED = "chat.muted";
     public static final String M_CHATMUTED = "chat.chatmuted";
