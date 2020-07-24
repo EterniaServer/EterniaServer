@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
@@ -11,6 +12,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Syntax;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -25,48 +27,52 @@ public class KitSystem extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-kits") + ";";
-        HashMap<String, String> temp = EQueries.getMapString(query, "name", "cooldown");
-
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_KITS), Strings.NAME, Strings.COOLDOWN);
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
-        messages.sendConsole("server.load-data", Constants.MODULE, "Kits", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Kits", Constants.AMOUNT, temp.size());
 
     }
 
     @CommandAlias("kits")
     @CommandPermission("eternia.kits")
     public void onKits(Player player) {
-        messages.sendMessage("kit.list", "%kits%", messages.getColor(EterniaServer.kitConfig.getString("kits.nameofkits")), player);
+        messages.sendMessage(Strings.M_KIT_LIST, Constants.KITS, messages.getColor(EterniaServer.kitConfig.getString("kits.nameofkits")), player);
     }
 
     @CommandAlias("kit")
     @Syntax("<kit>")
     @CommandPermission("eternia.kit")
     public void onKit(Player player, String kit) {
-        if (EterniaServer.kitConfig.contains("kits." + kit)) {
+        final String kitString = "kits.";
+        if (EterniaServer.kitConfig.contains(kitString + kit)) {
             if (player.hasPermission("eternia.kit." + kit)) {
-                final String playerName = player.getName();
                 final long time = System.currentTimeMillis();
-                final int cooldown = EterniaServer.kitConfig.getInt("kits." + kit + ".delay");
-                final long timeInSec = TimeUnit.MILLISECONDS.toSeconds(time - Vars.kitsCooldown.get(kit + "." + playerName));
+                final String kitName = kit + "." + player.getName();
+                final int cooldown = EterniaServer.kitConfig.getInt(kitString + kit + ".delay");
+                final long timeInSec = TimeUnit.MILLISECONDS.toSeconds(time - Vars.kitsCooldown.get(kitName));
                 if (timeInSec >= cooldown) {
-                    for (String line : EterniaServer.kitConfig.getStringList("kits." + kit + ".command")) {
-                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
-                    }
-                    for (String line : EterniaServer.kitConfig.getStringList("kits." + kit + ".text")) {
-                        player.sendMessage(messages.getColor(PlaceholderAPI.setPlaceholders(player, line)));
-                    }
-                    Vars.kitsCooldown.put(kit + "." + playerName, time);
-                    EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-kits") + " SET cooldown='" + time + "' WHERE name='" + kit + "." + playerName + "';");
+                    giveKit(player, time, kitName, kit);
                 } else {
-                    messages.sendMessage("server.timing", "%cooldown%", cooldown - timeInSec, player);
+                    messages.sendMessage(Strings.M_TIMING, Constants.COOLDOWN, cooldown - timeInSec, player);
                 }
             } else {
-                messages.sendMessage("server.no-perm", "%kit_name%", kit, player);
+                messages.sendMessage(Strings.M_NO_PERM, Constants.KIT_NAME, kit, player);
             }
         } else {
-            messages.sendMessage("kit.no-exists", "%kit_name%", kit, player);
+            messages.sendMessage(Strings.M_KIT_NO_EXISTS, Constants.KIT_NAME, kit, player);
         }
+    }
+
+    private void giveKit(final Player player, final long time, final String kitName, final String kit) {
+        final String kitString = "kits.";
+        for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".command")) {
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
+        }
+        for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".text")) {
+            player.sendMessage(messages.getColor(PlaceholderAPI.setPlaceholders(player, line)));
+        }
+        Vars.kitsCooldown.put(kitName, time);
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_KITS, Strings.COOLDOWN, time, Strings.NAME, kitName));
     }
 
 }

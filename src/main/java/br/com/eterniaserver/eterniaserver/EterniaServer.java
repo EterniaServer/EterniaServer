@@ -70,7 +70,6 @@ public class EterniaServer extends JavaPlugin {
         vaultHook();
 
         this.getServer().getPluginManager().registerEvents(new OnPlayerJump(), this);
-        this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerPreLogin(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityDamage(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityInventoryClick(this), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(this), this);

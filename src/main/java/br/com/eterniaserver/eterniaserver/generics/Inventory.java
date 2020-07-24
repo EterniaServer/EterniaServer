@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -42,7 +43,7 @@ public class Inventory extends BaseCommand {
             if (player.hasPermission("eternia.enderchest.other")) {
                 player.openInventory(target.getPlayer().getEnderChest());
             } else {
-                messages.sendMessage("server.no-perm", player);
+                messages.sendMessage(Strings.M_NO_PERM, player);
             }
         }
     }
@@ -52,7 +53,7 @@ public class Inventory extends BaseCommand {
     public void onHat(Player player) {
         dropHelmet(player);
         setHelmet(player);
-        messages.sendMessage("generic.items.helmet", player);
+        messages.sendMessage(Strings.M_ITEM_HELMET, player);
     }
 
     private void dropHelmet(Player player) {

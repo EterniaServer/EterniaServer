@@ -24,9 +24,13 @@ public class Constants {
     public static final String SECONDS = "%seconds%";
     public static final String TPS = "%server_tps_1%";
     public static final String TIME = "%time%";
+    public static final String KITS = "%kits%";
+    public static final String KIT_NAME = "%kit_name%";
+    public static final String COOLDOWN = "%cooldown%";
 
     public static final String TABLE_CASH = EterniaServer.serverConfig.getString("sql.table-cash");
     public static final String TABLE_HOME = EterniaServer.serverConfig.getString("sql.table-home");
+    public static final String TABLE_HOMES = EterniaServer.serverConfig.getString("sql.table-homes");
     public static final String TABLE_KITS = EterniaServer.serverConfig.getString("sql.table-kits");
     public static final String TABLE_MONEY = EterniaServer.serverConfig.getString("sql.table-money");
     public static final String TABLE_MUTED = EterniaServer.serverConfig.getString("sql.table-muted");
