@@ -53,7 +53,7 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
         final String targetName = target.getPlayer().getName();
-        messages.broadcastMessage(Strings.M_CHAT_MUTEBROAD, Constants.PLAYER, player.getDisplayName(), Constants.MESSAGE, messageFull(message));
+        messages.broadcastMessage(Strings.M_CHAT_MUTEBROAD, Constants.PLAYER, targetName, Constants.MESSAGE, messageFull(message));
         EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.PNAME, targetName));
         Vars.playerMuted.put(targetName, cal.getTimeInMillis());
     }

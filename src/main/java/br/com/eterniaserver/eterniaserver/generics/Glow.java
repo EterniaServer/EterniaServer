@@ -56,7 +56,6 @@ public class Glow extends BaseCommand {
     @Subcommand("color")
     @CommandCompletion("@colors")
     public void onGlowColor(Player player, String color) {
-        final String playerName = player.getName();
         switch (color) {
             case "black":
                 changeColor(player, arrData[0], colors[0] + "", "preto");

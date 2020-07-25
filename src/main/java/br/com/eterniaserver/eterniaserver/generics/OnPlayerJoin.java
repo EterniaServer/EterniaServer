@@ -3,8 +3,8 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,71 +28,77 @@ public class OnPlayerJoin implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             plugin.getInternMethods().addUUIF(player);
             Vars.global.put(playerName, 0);
-            if (!playerMutedExist(playerName)) {
-                playerMutedCreate(playerName);
-                if (player.hasPermission("eternia.spy")) {
-                    Vars.spy.put(playerName, true);
-                }
+            playerMutedExist(playerName);
+            if (player.hasPermission("eternia.spy")) {
+                Vars.spy.put(playerName, true);
             }
             if (Vars.nickname.containsKey(playerName)) {
                 player.setDisplayName(ChatColor.translateAlternateColorCodes('&', Vars.nickname.get(playerName)));
             }
         }
 
-        if (EterniaServer.serverConfig.getBoolean("modules.experience") && !playerXPExist(playerName)) {
-            playerXPCreate(playerName);
-        }
-
-        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks") && !playerProfileExist(playerName)) {
-            playerProfileCreate(playerName);
-        }
-
-        if (EterniaServer.serverConfig.getBoolean("modules.home") && !playerHomeExist(playerName)) {
-            playerHomeCreate(playerName);
-        }
-
-        if (EterniaServer.serverConfig.getBoolean("modules.economy") && !playerMoneyExist(playerName)) {
-            playerMoneyCreate(playerName);
-        }
-
-        if (EterniaServer.serverConfig.getBoolean("modules.cash") && !playerCashExist(playerName)) {
-            playerCashCreate(playerName);
-        }
-
-        if (EterniaServer.serverConfig.getBoolean("modules.kits")) {
-            playerKitsCreate(playerName);
-        }
-
-        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-            Vars.afkTime.put(playerName, System.currentTimeMillis());
-        }
+        playerProfileExist(playerName);
+        playerXPExist(playerName);
+        playerHomeExist(playerName);
+        playerMoneyExist(playerName);
+        playerCashExist(playerName);
+        playerKitsCreate(playerName);
+        playerChecks(playerName);
 
         event.setJoinMessage(null);
         plugin.getEFiles().broadcastMessage(Strings.M_JOIN, Constants.PLAYER, player.getDisplayName());
     }
 
-    private boolean playerMutedExist(String playerName) {
-        return Vars.playerMuted.containsKey(playerName);
+    private void playerMutedExist(String playerName) {
+        if (!Vars.playerMuted.containsKey(playerName)) {
+            playerMutedCreate(playerName);
+        }
     }
 
-    private boolean playerCashExist(String playerName) {
-        return Vars.cash.containsKey(playerName);
+    private void playerChecks(String playerName) {
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
+            Vars.afkTime.put(playerName, System.currentTimeMillis());
+        }
     }
 
-    private boolean playerMoneyExist(String playerName) {
-        return Vars.balances.containsKey(playerName);
+    private void playerCashExist(String playerName) {
+        if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
+            if (!Vars.cash.containsKey(playerName)) {
+                playerCashCreate(playerName);
+            }
+        }
     }
 
-    private boolean playerProfileExist(String playerName) {
-        return Vars.playerLogin.containsKey(playerName);
+    private void playerMoneyExist(String playerName) {
+        if (EterniaServer.serverConfig.getBoolean("modules.economy")) {
+            if (!Vars.balances.containsKey(playerName)) {
+                playerMoneyCreate(playerName);
+            }
+        }
     }
 
-    private boolean playerXPExist(String playerName) {
-        return Vars.xp.containsKey(playerName);
+    private void playerProfileExist(String playerName) {
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
+            if (!Vars.playerLogin.containsKey(playerName)) {
+                playerProfileCreate(playerName);
+            }
+        }
     }
 
-    private boolean playerHomeExist(String playerName) {
-        return Vars.home.containsKey(playerName);
+    private void playerXPExist(String playerName) {
+        if (EterniaServer.serverConfig.getBoolean("modules.experience")) {
+            if (!Vars.xp.containsKey(playerName)) {
+                playerXPCreate(playerName);
+            }
+        }
+    }
+
+    private void playerHomeExist(String playerName) {
+        if (EterniaServer.serverConfig.getBoolean("modules.home")) {
+            if (!Vars.home.containsKey(playerName)) {
+                playerHomeCreate(playerName);
+            }
+        }
     }
 
     private void playerMutedCreate(String playerName) {
@@ -107,12 +113,14 @@ public class OnPlayerJoin implements Listener {
     }
 
     private void playerKitsCreate(String playerName) {
-        final long time = System.currentTimeMillis();
-        for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(true)) {
-            final String kitName = kit + "." + playerName;
-            if (!Vars.kitsCooldown.containsKey(kitName)) {
-                EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_KITS, Strings.NAME, kitName, Strings.COOLDOWN, time));
-                Vars.kitsCooldown.put(kitName, time);
+        if (EterniaServer.serverConfig.getBoolean("modules.kits")) {
+            final long time = System.currentTimeMillis();
+            for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(true)) {
+                final String kitName = kit + "." + playerName;
+                if (!Vars.kitsCooldown.containsKey(kitName)) {
+                    EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_KITS, Strings.NAME, kitName, Strings.COOLDOWN, time));
+                    Vars.kitsCooldown.put(kitName, time);
+                }
             }
         }
     }
