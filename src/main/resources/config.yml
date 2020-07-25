@@ -95,6 +95,8 @@ money:
   nick: 1500000
   singular: 'Eternia'
   plural: 'Eternias'
+  no-baltop:
+    - 'yurinogueira'
 
 # This commands will be blocked.
 blocked-commands:

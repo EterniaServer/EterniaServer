@@ -52,9 +52,7 @@ public class ChatCommands extends BaseCommand {
     @CommandPermission("eternia.vanish")
     public void onVanish(Player player) {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p != player) {
-                player.hidePlayer(plugin, p);
-            }
+            p.hidePlayer(plugin, player);
         }
     }
 
@@ -62,9 +60,7 @@ public class ChatCommands extends BaseCommand {
     @CommandPermission("eternia.vanish")
     public void onUnVanish(Player player) {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p != player) {
-                player.showPlayer(plugin, p);
-            }
+            p.showPlayer(plugin, player);
         }
     }
 
