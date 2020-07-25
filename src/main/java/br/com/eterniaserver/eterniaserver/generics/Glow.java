@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 @CommandAlias("glow")
 @CommandPermission("eternia.glow")
@@ -28,7 +27,7 @@ public class Glow extends BaseCommand {
         this.message = plugin.getEFiles();
         this.sc = Bukkit.getScoreboardManager().getMainScoreboard();
         for (int i = 0; i < 16; i++) {
-            if (getTeam(plugin.arrData.get(i)) == null) {
+            if (sc.getTeam(plugin.arrData.get(i)) == null) {
                 sc.registerNewTeam(plugin.arrData.get(i)).setColor(plugin.colors.get(i));
             }
         }
@@ -49,67 +48,99 @@ public class Glow extends BaseCommand {
     @Subcommand("color")
     @CommandCompletion("@colors")
     public void onGlowColor(Player player, String color) {
+        byte var;
+        String colorCode;
+        String colorName;
         switch (color.hashCode()) {
             case 1741606617:
-                changeColor(player, plugin.arrData.get(8), "&8", "cinza escuro");
+                var = 8;
+                colorCode = "&8";
+                colorName = "cinza escuro";
                 break;
             case 1741452496:
-                changeColor(player, plugin.arrData.get(1), "&1", "azul escuro");
+                var = 1;
+                colorCode = "&1";
+                colorName = "azul escuro";
                 break;
             case 1741427506:
-                changeColor(player, plugin.arrData.get(3), "&3", "ciano");
+                var = 3;
+                colorCode = "&3";
+                colorName = "ciano";
                 break;
             case 1441664347:
-                changeColor(player, plugin.arrData.get(4), "&4", "vermelho");
+                var = 4;
+                colorCode = "&4";
+                colorName = "vermelho";
                 break;
             case 686244985:
-                changeColor(player, plugin.arrData.get(7), "&7", "cinza claro");
+                var = 7;
+                colorCode = "&7";
+                colorName = "cinza claro";
                 break;
             case 93818879:
-                changeColor(player, plugin.arrData.get(0), "&0", "preto");
+                var = 0;
+                colorCode = "&0";
+                colorName = "preto";
                 break;
             case 9861939:
-                changeColor(player, plugin.arrData.get(10), "&a", "verde");
+                var = 10;
+                colorCode = "&a";
+                colorName = "verde";
                 break;
             case 3178592:
-                changeColor(player, plugin.arrData.get(6), "&6", "dourado");
+                var = 6;
+                colorCode = "&6";
+                colorName = "dourado";
                 break;
             case 3027034:
-                changeColor(player, plugin.arrData.get(9), "&9", "azul");
+                var = 9;
+                colorCode = "&9";
+                colorName = "azul";
                 break;
             case 3002044:
-                changeColor(player, plugin.arrData.get(11), "&b", "azul claro");
+                var = 11;
+                colorCode = "&b";
+                colorName = "azul claro";
                 break;
             case 112785:
-                changeColor(player, plugin.arrData.get(12), "&c", "tomate");
+                var = 12;
+                colorCode = "&c";
+                colorName = "tomate";
                 break;
             case -734239628:
-                changeColor(player, plugin.arrData.get(14), "&e", "amarelo");
+                var = 14;
+                colorCode = "&e";
+                colorName = "amarelo";
                 break;
             case -976943172:
-                changeColor(player, plugin.arrData.get(13), "&d", "rosa");
+                var = 13;
+                colorCode = "&d";
+                colorName = "rosa";
                 break;
             case -1092352334:
-                changeColor(player, plugin.arrData.get(5), "&5", "roxo");
+                var = 5;
+                colorCode = "&5";
+                colorName = "roxo";
                 break;
             case -1844766387:
-                changeColor(player, plugin.arrData.get(2), "&2", "verde escuro");
+                var = 2;
+                colorCode = "&2";
+                colorName = "verde escuro";
                 break;
             default:
-                changeColor(player, plugin.arrData.get(15), "&f", "branco");
+                var = 15;
+                colorCode = "&f";
+                colorName = "branco";
                 break;
         }
+        changeColor(player, plugin.arrData.get(var), colorCode, colorName);
     }
 
     public void changeColor(final Player player, final String team, final String nameColor, final String color) {
         final String playerName = player.getName();
         Vars.glowingColor.put(playerName, nameColor);
-        getTeam(team).addEntry(playerName);
+        sc.getTeam(team).addEntry(playerName);
         message.sendMessage(Strings.M_GLOW_COLOR, Constants.AMOUNT, color, player);
-    }
-
-    private Team getTeam(String team) {
-        return sc.getTeam(team);
     }
 
 }
