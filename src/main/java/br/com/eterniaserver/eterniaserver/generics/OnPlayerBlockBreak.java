@@ -2,9 +2,10 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
+
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 
 public class OnPlayerBlockBreak implements Listener {
 
@@ -40,7 +40,7 @@ public class OnPlayerBlockBreak implements Listener {
         final String materialName = material.name().toUpperCase();
         final String worldName = player.getWorld().getName();
         if (EterniaServer.serverConfig.getBoolean("modules.spawners") && material == Material.SPAWNER &&
-                !isBlackListWorld(worldName) && (!player.hasPermission("eternia.spawners.bypass")) && player.hasPermission("eternia.spawners.break")) {
+                !isBlackListWorld(worldName) && player.hasPermission("eternia.spawners.break")) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("eternia.spawners.nosilk")) {
                 giveSpawner(player, material, block);
@@ -106,9 +106,7 @@ public class OnPlayerBlockBreak implements Listener {
         ItemMeta meta = item.getItemMeta();
         String mob = spawner.getSpawnedType().toString().replace("_", " ");
         String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
-        }
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
         item.setItemMeta(meta);
         return item;
     }

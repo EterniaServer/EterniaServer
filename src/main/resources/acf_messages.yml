@@ -50,16 +50,14 @@ acf-core:
 acf-minecraft:
   invalid_world: '§8[§aE§9S§8] §7Esse mundo não existe§8.'
   you_must_be_holding_item: '§8[§aE§9S§8] §7Você precisa está segurando um item§8.'
-  player_is_vanished_confirm: '\
-    §8[§aE§9S§8] §3{vanished} §7está escondido§8, §7não o revele§8.\n\
-    §8[§aE§9S§8] §7Para confirmar sua ação coloque §3:confirm §7no fim do nome dele§8.\n\
-    §8[§aE§9S§8] §7Exemplo§8: §3{vanished}:confirm§8.'
+  player_is_vanished_confirm: '§8[§aE§9S§8] §3{vanished} §7está escondido§8, §7não o revele§8. §7Para confirmar sua ação
+    coloque §3:confirm §7no fim do nome dele§8. §7Exemplo§8: §3{vanished}:confirm§8.'
   username_too_short: '§8[§aE§9S§8] §7Nome muito curto§8.'
   is_not_a_valid_name: '§8[§aE§9S§8] §3{name} §7não é um nome válido§8.'
   multiple_players_match: '§8[§aE§9S§8] §7Multiplos nomes encontrados §3{search} <{all}>§8, §7seja mais especifico§8.'
   no_player_found_server: '§8[§aE§9S§8] §7O jogador §3{search}§7 não está conectado ao server§8.'
   no_player_found_offline: '§8[§aE§9S§8] §7O jogador §3{search}§7 não está conectado ao server§8.'
-  no_player_found: §8[§aE§9S§8] '§7O jogador §3{search}§7 não está conectado ao server§8.'
+  no_player_found: '§8[§aE§9S§8] §7O jogador §3{search}§7 não está conectado ao server§8.'
   location_please_specify_world: '§8[§aE§9S§8] §7Especifique um mundo§8. §7Example§8: §3world:x,y,z§8.'
   location_please_specify_xyz: '§8[§aE§9S§8] §7Especifique as coordenadas§8. §7Example§8: §3world:x,y,z§8.'
   location_console_not_relative: '§8[§aE§9S§8] §7O console não pode utilizar esse comando§8.'

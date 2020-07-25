@@ -140,8 +140,8 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.listwarp")
     public void onListWarp(Player player) {
         StringBuilder string = new StringBuilder();
-        for (String name : Vars.warps.keySet()) string.append(name).append("&8").append(", &3");
-        messages.sendMessage(Strings.M_WARP_LIST, Constants.VALUE, messages.getColor(string.substring(0, string.length() - 1)), player);
+        for (String name : Vars.warps.keySet()) string.append(name).append(plugin.colors.get(8)).append(", ").append(plugin.colors.get(3));
+        messages.sendMessage(Strings.M_WARP_LIST, Constants.VALUE, string.substring(0, string.length() - 1), player);
     }
 
     @CommandAlias("warp")
