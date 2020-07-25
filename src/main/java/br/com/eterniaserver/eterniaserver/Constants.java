@@ -12,6 +12,7 @@ public class Constants {
     public static final String PLAYER_DATA = "%player_register_data%";
     public static final String VALUE = "%value%";
     public static final String WARP = "%warp_name%";
+    public static final String WORLD = "%world_name%";
     public static final String MODULE = "%module%";
     public static final String AMOUNT = "%amount%";
     public static final String TYPE = "%type%";

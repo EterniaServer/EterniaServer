@@ -95,6 +95,8 @@ public class Strings {
     public static final String M_ITEM_HELMET = "generic.items.helmet";
 
     public static final String M_BED_S = "bed.player-s";
+    public static final String M_BED_SKIP = "bed.skip-night";
+    public static final String M_BED_NIGHT_SKIP = "bed.night-skipping";
 
     public static final String M_HOME_DONE = "home.done";
     public static final String M_HOME_DELETED = "home.deleted";

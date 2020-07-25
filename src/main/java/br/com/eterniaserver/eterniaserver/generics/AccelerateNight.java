@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
@@ -21,7 +23,7 @@ public class AccelerateNight extends BukkitRunnable {
         this.world = world;
         this.messages = plugin.getEFiles();
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
-            messages.broadcastMessage("bed.night-skipping", "%world_name%", world.getName());
+            messages.broadcastMessage(Strings.M_BED_NIGHT_SKIP, Constants.WORLD, world.getName());
         }
     }
 
@@ -31,16 +33,15 @@ public class AccelerateNight extends BukkitRunnable {
         final int sleeping = AccelerateWorld.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
         double base = EterniaServer.serverConfig.getInt("bed.speed");
-        double timeRate;
         if (sleeping > (players / 100) * 15) {
             int x = players / sleeping;
-            timeRate = base / x;
+            double timeRate = base / x;
             if (time >= (1200 - timeRate * 1.5) && time <= 1200) {
                 world.setStorm(false);
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
-                messages.broadcastMessage("bed.skip-night");
+                messages.broadcastMessage(Strings.M_BED_SKIP);
                 changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {
