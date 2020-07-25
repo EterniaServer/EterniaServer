@@ -6,6 +6,7 @@ import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 
@@ -34,7 +35,7 @@ public class OnServerListPing implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onServerListPing(ServerListPingEvent event) {
         if (!isNull) event.setMotd(message + "\n" + message2);
     }

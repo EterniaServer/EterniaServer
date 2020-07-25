@@ -9,6 +9,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -22,7 +23,7 @@ public class OnPlayerCommandPreProcess implements Listener {
         this.messages = plugin.getEFiles();
     }
 
-    @EventHandler
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
         if (event.isCancelled()) return;
 
@@ -35,6 +36,7 @@ public class OnPlayerCommandPreProcess implements Listener {
             event.setCancelled(true);
             return;
         }
+
         final String commandsConfig = "commands.";
         if (EterniaServer.serverConfig.getBoolean("modules.commands") && EterniaServer.cmdConfig.contains(commandsConfig + message)) {
             checkCommands(player, message.replace("/", ""), message);

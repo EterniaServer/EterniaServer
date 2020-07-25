@@ -61,6 +61,8 @@ public class Strings {
     public static final String M_SPAWNER_BLOCKED = "spawner.others.blocked";
     public static final String M_SPAWNER_SILK = "spawner.others.need-silktouch";
     public static final String M_SPAWNER_FAILED = "spawner.others.failed";
+    public static final String M_SPAWNER_NAME = "spawner.others.change-name";
+    public static final String M_SPAWNER_LOG = "spawner.log.change-name";
 
     public static final String M_LIGHTNING_SENT = "generic.simp.sent-lightning";
     public static final String M_LIGHTNING_RECEIVED = "generic.simp.received-lightning";
@@ -113,5 +115,11 @@ public class Strings {
 
     public static final String M_KIT_NO_EXISTS = "kit.no-exists";
     public static final String M_KIT_LIST = "kit.list";
+
+    public static final String M_CASH = "cash.use";
+    public static final String M_CASH_COST = "cash.cost";
+    public static final String M_CASH_USE = "cash.use";
+    public static final String M_CASH_NO = "cash.no-cash";
+    public static final String M_CASH_ALREADY = "cash.already";
 
 }

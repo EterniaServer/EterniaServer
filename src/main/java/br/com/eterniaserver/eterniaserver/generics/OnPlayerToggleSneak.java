@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
@@ -20,7 +21,7 @@ public class OnPlayerToggleSneak implements Listener {
     private final int max = EterniaServer.serverConfig.getInt("elevator.max");
     private final int min = EterniaServer.serverConfig.getInt("elevator.min");
 
-    @EventHandler
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         if (event.isCancelled()) return;
 

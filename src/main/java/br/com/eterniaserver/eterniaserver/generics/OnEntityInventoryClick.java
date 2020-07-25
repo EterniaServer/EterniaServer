@@ -4,9 +4,11 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -21,18 +23,18 @@ public class OnEntityInventoryClick implements Listener {
         this.messages = plugin.getEFiles();
     }
 
-    @EventHandler
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
         if (e.isCancelled()) return;
 
         final Player player = (Player) e.getWhoClicked();
-        if (EterniaServer.serverConfig.getBoolean("spawners.prevent-anvil") &&
-                EterniaServer.serverConfig.getBoolean("modules.spawners") &&
-                e.getInventory().getType() == InventoryType.ANVIL &&
-                Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
+        if (EterniaServer.serverConfig.getBoolean("spawners.prevent-anvil")
+                && EterniaServer.serverConfig.getBoolean("modules.spawners")
+                && e.getInventory().getType() == InventoryType.ANVIL
+                && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
             e.setCancelled(true);
-            messages.sendMessage("spawner.others.change-name", player);
-            messages.sendConsole("spawner.log.change-name", Constants.PLAYER, player.getDisplayName());
+            messages.sendMessage(Strings.M_SPAWNER_NAME, player);
+            messages.sendConsole(Strings.M_SPAWNER_LOG, Constants.PLAYER, player.getDisplayName());
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.cash") && e.getView().getTitle().equals("Cash")) {
@@ -46,19 +48,20 @@ public class OnEntityInventoryClick implements Listener {
         e.setCancelled(true);
         if (!Vars.cashBuy.containsKey(playerName)) {
             int slot = e.getSlot();
-            if (EterniaServer.cashConfig.contains("gui." + slot)) {
-                final int cost = EterniaServer.cashConfig.getInt("gui." + slot + ".cost");
+            final String guiString = "gui." + slot;
+            if (EterniaServer.cashConfig.contains(guiString)) {
+                final int cost = EterniaServer.cashConfig.getInt(guiString + ".cost");
                 if (APICash.hasCash(playerName, cost)) {
-                    messages.sendMessage("cash.cost", Constants.AMOUNT, cost, player);
-                    messages.sendMessage("cash.use", player);
+                    messages.sendMessage(Strings.M_CASH_COST, Constants.AMOUNT, cost, player);
+                    messages.sendMessage(Strings.M_CASH_USE, player);
                     Vars.cashBuy.put(playerName, slot);
                 } else {
-                    messages.sendMessage("cash.no-cash", player);
+                    messages.sendMessage(Strings.M_CASH_NO, player);
                 }
             }
         } else {
-            messages.sendMessage("cash.already", player);
-            messages.sendMessage("cash.use", player);
+            messages.sendMessage(Strings.M_CASH_ALREADY, player);
+            messages.sendMessage(Strings.M_CASH, player);
         }
         player.closeInventory();
     }

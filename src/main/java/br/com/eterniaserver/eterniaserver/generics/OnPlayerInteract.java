@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -24,7 +25,7 @@ public class OnPlayerInteract implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent e) {
         final Player player = e.getPlayer();
         final Action action = e.getAction();
@@ -44,12 +45,14 @@ public class OnPlayerInteract implements Listener {
                     Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
                 }
             }
+
             if (EterniaServer.serverConfig.getBoolean("modules.experience") && is.getType().equals(Material.EXPERIENCE_BOTTLE)
                     && lore != null) {
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                 player.giveExp(Integer.parseInt(lore.get(0)));
             }
         }
+
         if (EterniaServer.serverConfig.getBoolean("modules.spawners") && e.getClickedBlock() != null
                 && action.equals(Action.RIGHT_CLICK_BLOCK) && e.getItem() != null
                 && e.getClickedBlock().getType() == Material.SPAWNER

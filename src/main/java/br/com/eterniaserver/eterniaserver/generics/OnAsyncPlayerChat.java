@@ -44,7 +44,7 @@ public class OnAsyncPlayerChat implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
 
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
