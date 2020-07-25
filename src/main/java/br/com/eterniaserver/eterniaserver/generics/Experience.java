@@ -5,6 +5,7 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
@@ -29,11 +30,9 @@ public class Experience extends BaseCommand {
         this.internMethods = plugin.getInternMethods();
         this.messages = plugin.getEFiles();
 
-        final String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-xp") + ";";
-        final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "xp");
-
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_XP), Strings.PNAME, Strings.XP);
         temp.forEach((k, v) -> Vars.xp.put(k, Integer.parseInt(v)));
-        messages.sendConsole("server.load-data", Constants.MODULE, "Experience", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Experience", Constants.AMOUNT, temp.size());
     }
 
     @CommandAlias("checklevel|verlevel")
@@ -44,7 +43,7 @@ public class Experience extends BaseCommand {
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(APIExperience.getExp(player.getName()));
-        messages.sendMessage("experience.check", Constants.AMOUNT, player.getLevel(), player);
+        messages.sendMessage(Strings.M_XP_CHECK, Constants.AMOUNT, player.getLevel(), player);
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -57,19 +56,17 @@ public class Experience extends BaseCommand {
         if (xpWant > 0 && xpReal > xpWant) {
             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
             ItemMeta meta = item.getItemMeta();
-            if (meta != null) {
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&eGarrafa de EXP&8]"));
-                item.setItemMeta(meta);
-                item.setLore(Collections.singletonList(String.valueOf(xpWant)));
-            }
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&eGarrafa de EXP&8]"));
+            item.setItemMeta(meta);
+            item.setLore(Collections.singletonList(String.valueOf(xpWant)));
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
-            messages.sendMessage("experience.bottleexp", player);
+            messages.sendMessage(Strings.M_XP_BOTTLE, player);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpReal - xpWant);
         } else {
-            messages.sendMessage("experience.insufficient", player);
+            messages.sendMessage(Strings.M_XP_INSUFFICIENT, player);
         }
     }
 
@@ -83,9 +80,9 @@ public class Experience extends BaseCommand {
         if (APIExperience.getExp(playerName) >= xpla) {
             APIExperience.removeExp(playerName, xpla);
             player.giveExp(xpla);
-            messages.sendMessage("experience.withdraw", Constants.AMOUNT, player.getLevel(), player);
+            messages.sendMessage(Strings.M_XP_WITHDRAW, Constants.AMOUNT, player.getLevel(), player);
         } else {
-            messages.sendMessage("experience.insufficient", player);
+            messages.sendMessage(Strings.M_XP_INSUFFICIENT, player);
         }
     }
 
@@ -98,12 +95,12 @@ public class Experience extends BaseCommand {
             int xp = internMethods.getXPForLevel(xpla);
             int xpto = internMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(player.getName(), xp);
-            messages.sendMessage("experience.deposit", Constants.AMOUNT, xpla, player);
+            messages.sendMessage(Strings.M_XP_DEPOSIT, Constants.AMOUNT, xpla, player);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);
         } else {
-            messages.sendMessage("experience.insufficient", player);
+            messages.sendMessage(Strings.M_XP_INSUFFICIENT, player);
         }
     }
 

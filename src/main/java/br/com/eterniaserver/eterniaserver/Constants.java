@@ -27,12 +27,15 @@ public class Constants {
     public static final String KITS = "%kits%";
     public static final String KIT_NAME = "%kit_name%";
     public static final String COOLDOWN = "%cooldown%";
+    public static final String GM = "%gamemode%";
     public static final String HOMES = "%homes%";
+    public static final String POSITION = "%position%";
 
     public static final String TABLE_CASH = EterniaServer.serverConfig.getString("sql.table-cash");
     public static final String TABLE_HOME = EterniaServer.serverConfig.getString("sql.table-home");
     public static final String TABLE_HOMES = EterniaServer.serverConfig.getString("sql.table-homes");
     public static final String TABLE_KITS = EterniaServer.serverConfig.getString("sql.table-kits");
+    public static final String TABLE_NICK = EterniaServer.serverConfig.getString("sql.table-nick");
     public static final String TABLE_MONEY = EterniaServer.serverConfig.getString("sql.table-money");
     public static final String TABLE_MUTED = EterniaServer.serverConfig.getString("sql.table-muted");
     public static final String TABLE_PLAYER = EterniaServer.serverConfig.getString("sql.table-player");
@@ -40,6 +43,10 @@ public class Constants {
     public static final String TABLE_SHOP = EterniaServer.serverConfig.getString("sql.table-shop");
     public static final String TABLE_WARP = EterniaServer.serverConfig.getString("sql.table-warp");
     public static final String TABLE_XP = EterniaServer.serverConfig.getString("sql.table-xp");
+
+    public static String getQueryCreateTable(final String table, final String values) {
+        return "CREATE TABLE IF NOT EXISTS " + table + values + ";";
+    }
 
     public static String getQuerySelectAll(final String table) {
         return "SELECT * FROM " + table + ";";

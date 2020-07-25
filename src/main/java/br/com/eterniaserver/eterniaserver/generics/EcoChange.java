@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -28,8 +29,8 @@ public class EcoChange extends BaseCommand {
         final String targetName = targetP.getName();
 
         APIEconomy.setMoney(targetName, money);
-        messages.sendMessage("eco.eco-set", Constants.AMOUNT, money, Constants.TARGET, targetP.getDisplayName(), sender);
-        messages.sendMessage("eco.eco-rset", Constants.AMOUNT, money, Constants.TARGET, sender.getDisplayName(), targetP);
+        messages.sendMessage(Strings.M_ECO_SET, Constants.AMOUNT, money, Constants.TARGET, targetP.getDisplayName(), sender);
+        messages.sendMessage(Strings.M_ECO_RSET, Constants.AMOUNT, money, Constants.TARGET, sender.getDisplayName(), targetP);
     }
 
     @Subcommand("remove|remover")
@@ -40,8 +41,8 @@ public class EcoChange extends BaseCommand {
         final String targetName = targetP.getName();
 
         APIEconomy.removeMoney(targetName, money);
-        messages.sendMessage("eco.eco-remove", Constants.AMOUNT ,money, Constants.TARGET, targetP.getDisplayName(), sender);
-        messages.sendMessage("eco.eco-rremove", Constants.AMOUNT, money, Constants.TARGET, sender.getDisplayName(), targetP);
+        messages.sendMessage(Strings.M_ECO_REMOVE, Constants.AMOUNT ,money, Constants.TARGET, targetP.getDisplayName(), sender);
+        messages.sendMessage(Strings.M_ECO_RREMOVE, Constants.AMOUNT, money, Constants.TARGET, sender.getDisplayName(), targetP);
     }
 
     @Subcommand("give|dar")
@@ -52,8 +53,8 @@ public class EcoChange extends BaseCommand {
         final String targetName = targetP.getName();
 
         APIEconomy.addMoney(targetName, money);
-        messages.sendMessage("eco.eco-give", Constants.AMOUNT, money, Constants.TARGET, targetP.getDisplayName(), sender);
-        messages.sendMessage("eco.eco-receive", Constants.AMOUNT, money, Constants.TARGET, sender.getDisplayName(), targetP);
+        messages.sendMessage(Strings.M_ECO_GIVE, Constants.AMOUNT, money, Constants.TARGET, targetP.getDisplayName(), sender);
+        messages.sendMessage(Strings.M_ECO_RECEIVE, Constants.AMOUNT, money, Constants.TARGET, sender.getDisplayName(), targetP);
     }
 
 }

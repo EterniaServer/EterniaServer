@@ -126,4 +126,27 @@ public class Strings {
     public static final String M_GLOW_DISABLED = "glow.desbrilho";
     public static final String M_GLOW_COLOR = "glow.color";
 
+    public static final String M_GM_CHANGED = "generic.gm.changed";
+    public static final String M_GM_TARGET = "generic.gm.changed-target";
+
+    public static final String M_XP_CHECK = "experience.check";
+    public static final String M_XP_BOTTLE = "experience.bottleexp";
+    public static final String M_XP_INSUFFICIENT = "experience.insufficient";
+    public static final String M_XP_WITHDRAW = "experience.withdraw";
+    public static final String M_XP_DEPOSIT = "experience.deposit";
+
+    public static final String M_ECO_MONEY = "eco.money";
+    public static final String M_ECO_OTHER = "eternia.money.other";
+    public static final String M_ECO_PAY_NO = "eco.pay-nomoney";
+    public static final String M_ECO_AUTO = "eco.auto-pay";
+    public static final String M_ECO_PAY = "eco.pay";
+    public static final String M_ECO_PAY_ME = "eco.pay-me";
+    public static final String M_ECO_BALLIST = "eco.ballist";
+    public static final String M_ECO_SET = "eco.eco-set";
+    public static final String M_ECO_RSET = "eco.eco-rset";
+    public static final String M_ECO_REMOVE = "eco.eco-remove";
+    public static final String M_ECO_RREMOVE = "eco.eco-rremove";
+    public static final String M_ECO_GIVE = "eco.eco-give";
+    public static final String M_ECO_RECEIVE = "eco.eco-receive";
+
 }

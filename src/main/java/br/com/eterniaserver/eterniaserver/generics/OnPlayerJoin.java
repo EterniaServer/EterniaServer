@@ -62,42 +62,32 @@ public class OnPlayerJoin implements Listener {
     }
 
     private void playerCashExist(String playerName) {
-        if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
-            if (!Vars.cash.containsKey(playerName)) {
-                playerCashCreate(playerName);
-            }
+        if (EterniaServer.serverConfig.getBoolean("modules.cash") && !Vars.cash.containsKey(playerName)) {
+            playerCashCreate(playerName);
         }
     }
 
     private void playerMoneyExist(String playerName) {
-        if (EterniaServer.serverConfig.getBoolean("modules.economy")) {
-            if (!Vars.balances.containsKey(playerName)) {
-                playerMoneyCreate(playerName);
-            }
+        if (EterniaServer.serverConfig.getBoolean("modules.economy") && !Vars.balances.containsKey(playerName)) {
+            playerMoneyCreate(playerName);
         }
     }
 
     private void playerProfileExist(String playerName) {
-        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-            if (!Vars.playerLogin.containsKey(playerName)) {
-                playerProfileCreate(playerName);
-            }
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks") && !Vars.playerLogin.containsKey(playerName)) {
+            playerProfileCreate(playerName);
         }
     }
 
     private void playerXPExist(String playerName) {
-        if (EterniaServer.serverConfig.getBoolean("modules.experience")) {
-            if (!Vars.xp.containsKey(playerName)) {
-                playerXPCreate(playerName);
-            }
+        if (EterniaServer.serverConfig.getBoolean("modules.experience") && !Vars.xp.containsKey(playerName)) {
+            playerXPCreate(playerName);
         }
     }
 
     private void playerHomeExist(String playerName) {
-        if (EterniaServer.serverConfig.getBoolean("modules.home")) {
-            if (!Vars.home.containsKey(playerName)) {
-                playerHomeCreate(playerName);
-            }
+        if (EterniaServer.serverConfig.getBoolean("modules.home") && !Vars.home.containsKey(playerName)) {
+            playerHomeCreate(playerName);
         }
     }
 
