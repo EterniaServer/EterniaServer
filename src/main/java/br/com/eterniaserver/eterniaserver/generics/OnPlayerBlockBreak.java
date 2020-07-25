@@ -20,6 +20,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+@SuppressWarnings("squid:S2245")
 public class OnPlayerBlockBreak implements Listener {
 
     private final EterniaServer plugin;

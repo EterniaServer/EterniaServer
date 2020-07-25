@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import java.security.SecureRandom;
 import java.util.HashMap;
 
+@SuppressWarnings("squid:S2245")
 public class RewardsSystem extends BaseCommand {
 
     private final EFiles messages;
