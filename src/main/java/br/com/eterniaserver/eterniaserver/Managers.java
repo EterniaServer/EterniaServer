@@ -103,7 +103,7 @@ public class Managers {
             manager.registerCommand(new Others(plugin));
             manager.registerCommand(new Replaces(plugin));
             manager.registerCommand(new Simplifications(messages));
-            manager.registerCommand(new Glow(messages));
+            manager.registerCommand(new Glow(plugin));
         }
     }
 
