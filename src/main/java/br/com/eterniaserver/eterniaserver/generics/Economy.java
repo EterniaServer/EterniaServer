@@ -91,22 +91,23 @@ public class Economy extends BaseCommand {
                 final ArrayList<String> list = new ArrayList<>();
                 final ArrayList<String> no = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
-                    double maior = 0;
-                    String name = "";
+                    AtomicReference<Double> maior = new AtomicReference<>(0.0);
+                    AtomicReference<String> name = new AtomicReference<>("");
                     for (Map.Entry<String, Double> entry : Vars.balances.entrySet()) {
                         final String playerName = entry.getKey();
-                        if (entry.getValue() > maior && !list.contains(playerName) && !no.contains(playerName)) {
-                            AtomicReference<Player> player = new AtomicReference<>();
-                            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> player.set(Bukkit.getPlayer(playerName)));
-                            if (player.get() != null && player.get().hasPermission("eternia.staff.baltop")) {
-                                maior = entry.getValue();
-                                name = playerName;
-                            } else {
-                                no.add(playerName);
-                            }
+                        if (entry.getValue() > maior.get() && !list.contains(playerName) && !no.contains(playerName)) {
+                            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                                Player player = Bukkit.getPlayer(playerName);
+                                if (player != null && !player.hasPermission("eternia.staff.baltop")) {
+                                    maior.set(entry.getValue());
+                                    name.set(playerName);
+                                } else {
+                                    no.add(playerName);
+                                }
+                            });
                         }
                     }
-                    list.add(name);
+                    list.add(name.get());
                 }
                 lista = list;
                 time = System.currentTimeMillis();

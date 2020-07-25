@@ -51,15 +51,21 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("vanish|chupadadimensional")
     @CommandPermission("eternia.vanish")
     public void onVanish(Player player) {
-        // TODO
-        player.hidePlayer(plugin, player);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p != player) {
+                player.hidePlayer(plugin, p);
+            }
+        }
     }
 
     @CommandAlias("unvanish|chupadadimensionalreversa")
     @CommandPermission("eternia.vanish")
     public void onUnVanish(Player player) {
-        // TODO
-        player.showPlayer(plugin, player);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p != player) {
+                player.showPlayer(plugin, p);
+            }
+        }
     }
 
     @CommandAlias("spy|socialspy")
