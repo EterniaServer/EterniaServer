@@ -34,7 +34,7 @@ public class Managers {
         loadSpawnersManager();
         loadTeleportsManager();
 
-        manager.getCommandCompletions().registerCompletion("colors", c -> ImmutableList.of("dark", "darkblue",
+        manager.getCommandCompletions().registerCompletion("colors", c -> ImmutableList.of("black", "darkblue",
                 "darkgreen", "darkaqua", "darkred", "darkpurple", "gold", "lightgray", "darkgray", "blue", "green",
                 "aqua", "red", "purple", "yellow", "white"));
 

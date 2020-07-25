@@ -93,7 +93,7 @@ public class Economy extends BaseCommand {
                     String name = "";
                     for (Map.Entry<String, Double> entry : Vars.balances.entrySet()) {
                         final String playerName = entry.getKey();
-                        if (entry.getValue() > maior && !list.contains(playerName) && !EterniaServer.serverConfig.getStringList("no-baltop").contains(playerName)) {
+                        if (entry.getValue() > maior && !list.contains(playerName) && !EterniaServer.serverConfig.getStringList("money.no-baltop").contains(playerName)) {
                             maior = entry.getValue();
                             name = playerName;
                         }
