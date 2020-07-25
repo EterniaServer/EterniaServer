@@ -33,7 +33,7 @@ public class Constants {
     public static final String POSITION = "%position%";
     public static final String NEW_NAME = "%new_name%";
     public static final String ADVICE = "%advice%";
-    public static final String CHANNEl_NAME = "%channel_name%";
+    public static final String CHANNEL_NAME = "%channel_name%";
     public static final String ERROR = "%error%";
 
     public static final String TABLE_CASH = EterniaServer.serverConfig.getString("sql.table-cash");

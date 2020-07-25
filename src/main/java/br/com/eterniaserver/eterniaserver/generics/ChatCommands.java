@@ -90,38 +90,6 @@ public class ChatCommands extends BaseCommand {
         }
     }
 
-    private void playerNick(final Player player, final String string) {
-        final String playerName = player.getName();
-        if (string.equals("clear")) {
-            player.setDisplayName(playerName);
-            messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
-        } else {
-            Vars.nick.put(playerName, string);
-            if (player.hasPermission("eternia.chat.color.nick")) {
-                messages.sendMessage(Strings.M_CHAT_NICK_MONEY, Constants.NEW_NAME, ChatColor.translateAlternateColorCodes('&', string), player);
-            } else {
-                messages.sendMessage(Strings.M_CHAT_NICK_MONEY, Constants.NEW_NAME, string, player);
-            }
-            messages.sendMessage(Strings.M_CHAT_NICK_MONEY_2, player);
-        }
-    }
-
-    private void staffNick(final OnlinePlayer target, final Player player, final String string) {
-        if (target == null) {
-            final String playerName = player.getName();
-            if (string.equals("clear")) {
-                player.setDisplayName(playerName);
-                saveToSQL(playerName);
-                Vars.nickname.put(playerName, playerName);
-                messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
-            } else {
-                player.setDisplayName(messages.getColor(string));
-            }
-        } else {
-            changeNickName(target.getPlayer(), player, string);
-        }
-    }
-
     @CommandAlias("nickaccept")
     @Syntax("<jogador> <novo_nome> ou <novo_nome>")
     @CommandPermission("eternia.nickname")
@@ -178,9 +146,41 @@ public class ChatCommands extends BaseCommand {
         sendPrivate(player, target.getPlayer(), getMessage(msg));
     }
 
+    private void playerNick(final Player player, final String string) {
+        final String playerName = player.getName();
+        if (string.equals(Strings.CLEAR)) {
+            player.setDisplayName(playerName);
+            messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
+        } else {
+            Vars.nick.put(playerName, string);
+            if (player.hasPermission("eternia.chat.color.nick")) {
+                messages.sendMessage(Strings.M_CHAT_NICK_MONEY, Constants.NEW_NAME, ChatColor.translateAlternateColorCodes('&', string), player);
+            } else {
+                messages.sendMessage(Strings.M_CHAT_NICK_MONEY, Constants.NEW_NAME, string, player);
+            }
+            messages.sendMessage(Strings.M_CHAT_NICK_MONEY_2, player);
+        }
+    }
+
+    private void staffNick(final OnlinePlayer target, final Player player, final String string) {
+        if (target == null) {
+            final String playerName = player.getName();
+            if (string.equals(Strings.CLEAR)) {
+                player.setDisplayName(playerName);
+                saveToSQL(playerName);
+                Vars.nickname.put(playerName, playerName);
+                messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
+            } else {
+                player.setDisplayName(messages.getColor(string));
+            }
+        } else {
+            changeNickName(target.getPlayer(), player, string);
+        }
+    }
+
     private void changeNickName(final Player target, final Player player, final String string) {
         final String targetName = target.getName();
-        if (string.equals("clear")) {
+        if (string.equals(Strings.CLEAR)) {
             target.setDisplayName(targetName);
             messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, target);
             messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
