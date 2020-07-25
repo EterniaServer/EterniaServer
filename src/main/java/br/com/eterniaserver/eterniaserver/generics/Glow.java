@@ -36,104 +36,67 @@ public class Glow extends BaseCommand {
     @Default
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
-            player.setGlowing(true);
             message.sendMessage(Strings.M_GLOW_ENABLED, player);
         } else {
             player.removePotionEffect(PotionEffectType.GLOWING);
-            player.setGlowing(false);
             message.sendMessage(Strings.M_GLOW_DISABLED, player);
         }
+        player.setGlowing(!player.isOnline());
     }
 
     @Subcommand("color")
     @CommandCompletion("@colors")
     public void onGlowColor(Player player, String color) {
-        byte var;
-        String colorCode;
-        String colorName;
         switch (color.hashCode()) {
             case 1741606617:
-                var = 8;
-                colorCode = "&8";
-                colorName = "cinza escuro";
+                changeColor(player, plugin.arrData.get(8), "&8", "cinza escuro");
                 break;
             case 1741452496:
-                var = 1;
-                colorCode = "&1";
-                colorName = "azul escuro";
+                changeColor(player, plugin.arrData.get(1), "&1", "azul escuro");
                 break;
             case 1741427506:
-                var = 3;
-                colorCode = "&3";
-                colorName = "ciano";
+                changeColor(player, plugin.arrData.get(3), "&3", "ciano");
                 break;
             case 1441664347:
-                var = 4;
-                colorCode = "&4";
-                colorName = "vermelho";
+                changeColor(player, plugin.arrData.get(4), "&4", "vermelho");
                 break;
             case 686244985:
-                var = 7;
-                colorCode = "&7";
-                colorName = "cinza claro";
+                changeColor(player, plugin.arrData.get(7), "&7", "cinza claro");
                 break;
             case 93818879:
-                var = 0;
-                colorCode = "&0";
-                colorName = "preto";
+                changeColor(player, plugin.arrData.get(0), "&0", "preto");
                 break;
             case 9861939:
-                var = 10;
-                colorCode = "&a";
-                colorName = "verde";
+                changeColor(player, plugin.arrData.get(10), "&a", "verde");
                 break;
             case 3178592:
-                var = 6;
-                colorCode = "&6";
-                colorName = "dourado";
+                changeColor(player, plugin.arrData.get(6), "&6", "dourado");
                 break;
             case 3027034:
-                var = 9;
-                colorCode = "&9";
-                colorName = "azul";
+                changeColor(player, plugin.arrData.get(9), "&9", "azul");
                 break;
             case 3002044:
-                var = 11;
-                colorCode = "&b";
-                colorName = "azul claro";
+                changeColor(player, plugin.arrData.get(11), "&b", "azul claro");
                 break;
             case 112785:
-                var = 12;
-                colorCode = "&c";
-                colorName = "tomate";
+                changeColor(player, plugin.arrData.get(12), "&c", "tomate");
                 break;
             case -734239628:
-                var = 14;
-                colorCode = "&e";
-                colorName = "amarelo";
+                changeColor(player, plugin.arrData.get(14), "&e", "amarelo");
                 break;
             case -976943172:
-                var = 13;
-                colorCode = "&d";
-                colorName = "rosa";
+                changeColor(player, plugin.arrData.get(13), "&d", "rosa");
                 break;
             case -1092352334:
-                var = 5;
-                colorCode = "&5";
-                colorName = "roxo";
+                changeColor(player, plugin.arrData.get(5), "&5", "roxo");
                 break;
             case -1844766387:
-                var = 2;
-                colorCode = "&2";
-                colorName = "verde escuro";
+                changeColor(player, plugin.arrData.get(2), "&2", "verde escuro");
                 break;
             default:
-                var = 15;
-                colorCode = "&f";
-                colorName = "branco";
+                changeColor(player, plugin.arrData.get(15), "&f", "branco");
                 break;
         }
-        changeColor(player, plugin.arrData.get(var), colorCode, colorName);
     }
 
     public void changeColor(final Player player, final String team, final String nameColor, final String color) {
