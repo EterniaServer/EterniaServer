@@ -25,7 +25,9 @@ public class OnEntityInventoryClick implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
-        if (e.isCancelled()) return;
+        if (e.isCancelled()) {
+            return;
+        }
 
         final Player player = (Player) e.getWhoClicked();
         if (EterniaServer.serverConfig.getBoolean("spawners.prevent-anvil")
