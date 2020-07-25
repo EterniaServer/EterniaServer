@@ -9,6 +9,7 @@ public class Strings {
     public static final String NAME = "name";
     public static final String LOC = "location";
     public static final String PNAME = "player_name";
+    public static final String PDISPLAY = "player_display";
     public static final String BALANCE = "balance";
     public static final String CODE = "code";
     public static final String CODE_GROUP = "lalalala";
@@ -25,6 +26,8 @@ public class Strings {
     public static final String M_LEAVE = "server.leave";
     public static final String M_TIMING = "server.timing";
     public static final String M_NETHER_TRAP = "server.nether-trap";
+    public static final String M_NO_NEGATIVE = "server.neg";
+    public static final String M_ERROR = "server.chat-error";
 
     public static final String M_SPAWN_NO = "teleport.spawn.no-exists";
     public static final String M_SPAWN_CREATE = "teleport.spawn.created";
@@ -120,15 +123,37 @@ public class Strings {
     public static final String M_CHAT_UNMUTEBROAD = "chat.unmutebroad";
     public static final String M_CHAT_MUTET = "chat.mutetbroad";
     public static final String M_CHAT_NOONE = "chat.noone";
+    public static final String M_CHAT_TO = "chat.toplayer";
+    public static final String M_CHAT_FROM = "chat.fromplayer";
+    public static final String M_CHAT_R_NO = "chat.rnaote";
+    public static final String M_CHAT_NO_CHANGE = "chat.no-change";
+    public static final String M_CHAT_NICK_DENY = "chat.nick-deny";
+    public static final String M_CHAT_NEWNICK = "chat.newnick";
+    public static final String M_CHAT_REMOVE_NICK = "chat.remove-nick";
+    public static final String M_CHAT_NICK_MONEY = "chat.nick-money";
+    public static final String M_CHAT_NICK_MONEY_2 = "chat.nick-money-2";
+    public static final String M_CHAT_SPY_D = "chat.spyd";
+    public static final String M_CHAT_SPY_E = "chat.spye";
+    public static final String M_CHAT_ADVICE = "chat.global-advice";
+    public static final String M_CHAT_C = "chat.channelc";
+    public static final String M_CASH_REMOVED = "cash.removed";
+    public static final String M_CASH_REMOVE = "cash.remove";
 
     public static final String M_KIT_NO_EXISTS = "kit.no-exists";
     public static final String M_KIT_LIST = "kit.list";
 
     public static final String M_CASH = "cash.use";
     public static final String M_CASH_COST = "cash.cost";
-    public static final String M_CASH_USE = "cash.use";
     public static final String M_CASH_NO = "cash.no-cash";
     public static final String M_CASH_ALREADY = "cash.already";
+    public static final String M_CASH_BALANCE_OTHER = "cash.balance-other";
+    public static final String M_CASH_NO_PLAYER = "cash.no-player";
+    public static final String M_CASH_BALANCE = "cash.balance";
+    public static final String M_CASH_SUCESS = "cash.sucess";
+    public static final String M_CASH_NO_BUY = "cash.no-buy";
+    public static final String M_CASH_CANCEL = "cash.canc";
+    public static final String M_CASH_RECEIVED = "cash.receive";
+    public static final String M_CASH_SEND = "cash.send";
 
     public static final String M_GLOW_ENABLED = "glow.brilho";
     public static final String M_GLOW_DISABLED = "glow.desbrilho";

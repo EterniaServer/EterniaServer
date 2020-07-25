@@ -5,6 +5,7 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -32,11 +33,9 @@ public class Cash extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        final String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-cash") + ";";
-        final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "balance");
-
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_CASH), Strings.PNAME, Strings.BALANCE);
         temp.forEach((k, v) -> Vars.cash.put(k, Integer.parseInt(v)));
-        messages.sendConsole("server.load-data", Constants.MODULE, "Cash", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Cash", Constants.AMOUNT, temp.size());
 
         loadGui();
 
@@ -57,12 +56,12 @@ public class Cash extends BaseCommand {
     public void onCashBalance(Player player, @Optional String playerName) {
         if (playerName != null) {
             if (Vars.cash.containsKey(playerName)) {
-                messages.sendMessage("cash.balance-other", Constants.AMOUNT, Vars.cash.get(playerName), player);
+                messages.sendMessage(Strings.M_CASH_BALANCE_OTHER, Constants.AMOUNT, Vars.cash.get(playerName), player);
             } else {
-                messages.sendMessage("cash.no-player", player);
+                messages.sendMessage(Strings.M_CASH_NO_PLAYER, player);
             }
         } else {
-            messages.sendMessage("cash.balance", Constants.AMOUNT, Vars.cash.get(player.getName()), player);
+            messages.sendMessage(Strings.M_CASH_BALANCE, Constants.AMOUNT, Vars.cash.get(player.getName()), player);
         }
     }
 
@@ -80,10 +79,10 @@ public class Cash extends BaseCommand {
                 player.sendMessage(messages.getColor(modifiedText));
             }
             APICash.removeCash(playerName, EterniaServer.cashConfig.getInt("gui." + slot + ".cost"));
-            messages.sendMessage("cash.sucess", player);
+            messages.sendMessage(Strings.M_CASH_SUCESS, player);
             Vars.cashBuy.remove(playerName);
         } else {
-            messages.sendMessage("cash.no-buy", player);
+            messages.sendMessage(Strings.M_CASH_NO_BUY, player);
         }
     }
 
@@ -91,10 +90,10 @@ public class Cash extends BaseCommand {
     public void onCashDeny(Player player) {
         final String playerName = player.getName();
         if (Vars.cashBuy.containsKey(playerName)) {
-            messages.sendMessage("cash.canc", player);
+            messages.sendMessage(Strings.M_CASH_CANCEL, player);
             Vars.cashBuy.remove(playerName);
         } else {
-            messages.sendMessage("cash.no-buy", player);
+            messages.sendMessage(Strings.M_CASH_NO_BUY, player);
         }
     }
 
@@ -107,10 +106,10 @@ public class Cash extends BaseCommand {
         if (value > 0) {
             final String targetName = target.getName();
             APICash.addCash(targetName, value);
-            messages.sendMessage("cash.receive", Constants.AMOUNT, value, target);
-            messages.sendMessage("cash.send", Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
+            messages.sendMessage(Strings.M_CASH_RECEIVED, Constants.AMOUNT, value, target);
+            messages.sendMessage(Strings.M_CASH_SEND, Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
         } else {
-            messages.sendMessage("server.neg", player);
+            messages.sendMessage(Strings.M_NO_NEGATIVE, player);
         }
     }
 
@@ -123,10 +122,10 @@ public class Cash extends BaseCommand {
         if (value > 0) {
             final String targetName = target.getName();
             APICash.removeCash(targetName, value);
-            messages.sendMessage("cash.removed", Constants.AMOUNT, value, target);
-            messages.sendMessage("cash.remove", Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
+            messages.sendMessage(Strings.M_CASH_REMOVED, Constants.AMOUNT, value, target);
+            messages.sendMessage(Strings.M_CASH_REMOVE, Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
         } else {
-            messages.sendMessage("server.neg", player);
+            messages.sendMessage(Strings.M_NO_NEGATIVE, player);
         }
     }
 

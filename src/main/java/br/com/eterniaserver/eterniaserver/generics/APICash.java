@@ -1,7 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 
 public class APICash {
 
@@ -13,7 +15,7 @@ public class APICash {
         if (Vars.cash.containsKey(playerName)) {
             return Vars.cash.get(playerName);
         } else {
-            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-cash") + " (player_name, balance) VALUES('" + playerName + "', '" + 0 + "');");
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PNAME, playerName, Strings.BALANCE, 0));
             Vars.cash.put(playerName, 0);
             return 0;
         }
@@ -26,9 +28,9 @@ public class APICash {
     public static void setCash(String playerName, int amount) {
         if (Vars.cash.containsKey(playerName)) {
             Vars.cash.put(playerName, amount);
-            EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-cash") + " SET balance='" + amount + "' WHERE player_name='" + playerName + "';");
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_CASH, Strings.BALANCE, amount, Strings.PNAME, playerName));
         } else {
-            EQueries.executeQuery("INSERT INTO " + EterniaServer.serverConfig.getString("sql.table-cash") + " (player_name, balance) VALUES('" + playerName + "', '" + 0 + "');");
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PNAME, playerName, Strings.BALANCE, 0));
             Vars.cash.put(playerName, 0);
             setCash(playerName, amount);
         }

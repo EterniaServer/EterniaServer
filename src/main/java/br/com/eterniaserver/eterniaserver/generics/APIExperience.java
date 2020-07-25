@@ -1,7 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 
 public class APIExperience {
 
@@ -17,10 +19,11 @@ public class APIExperience {
     public static Integer getExp(String playerName) {
         if (Vars.xp.containsKey(playerName)) {
             return Vars.xp.get(playerName);
+        } else {
+            Vars.xp.put(playerName, 0);
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_XP, Strings.PNAME, playerName, Strings.XP, 0));
+            return 0;
         }
-
-        final String querie = "SELECT xp FROM " + EterniaServer.serverConfig.getString("sql.table-xp") + " WHERE player_name='" + playerName + "';";
-        return EQueries.queryInteger(querie, "xp");
     }
 
     /**
@@ -30,7 +33,7 @@ public class APIExperience {
      */
     public static void setExp(String playerName, int amount) {
         Vars.xp.put(playerName, amount);
-        EQueries.executeQuery("UPDATE " + EterniaServer.serverConfig.getString("sql.table-xp") + " SET xp='" + amount + "' WHERE player_name='" + playerName + "';");
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_XP, Strings.XP, amount, Strings.PNAME, playerName));
     }
 
     /**

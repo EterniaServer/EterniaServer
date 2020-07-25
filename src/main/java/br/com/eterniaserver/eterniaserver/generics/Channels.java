@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 
@@ -40,7 +42,7 @@ public class Channels extends BaseCommand {
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
         if (messages != null && messages.length == 0) {
             Vars.global.put(player.getName(), channel);
-            this.messages.sendMessage("chat.channelc", "%channel_name%", channelName, player);
+            this.messages.sendMessage(Strings.M_CHAT_C, Constants.CHANNEl_NAME, channelName, player);
         } else {
             int o = Vars.global.get(player.getName());
             Vars.global.put(player.getName(), channel);

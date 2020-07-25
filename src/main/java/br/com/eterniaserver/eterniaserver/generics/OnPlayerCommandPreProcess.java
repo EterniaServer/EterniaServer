@@ -40,7 +40,6 @@ public class OnPlayerCommandPreProcess implements Listener {
         for (String line : EterniaServer.serverConfig.getStringList("blocked-commands")) {
             if (message.startsWith(line)) {
                 event.setCancelled(true);
-                // TODO
                 return;
             }
         }

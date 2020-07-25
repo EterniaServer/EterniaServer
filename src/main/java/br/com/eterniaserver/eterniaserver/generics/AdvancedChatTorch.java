@@ -1,7 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 
 public class AdvancedChatTorch {
@@ -28,10 +30,10 @@ public class AdvancedChatTorch {
 		for(Object s: EterniaServer.groupConfig.getKeys(false)) {
 			if (!s.equals("groups")) {
 				if (!EterniaServer.groupConfig.contains(s.toString())) {
-					messages.sendConsole("server.chat-error", "%error%", "nenhum grupo encontrado");
+					messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "nenhum grupo encontrado");
 				}
 				if (!EterniaServer.groupConfig.contains(s.toString() + ".perm")) {
-					messages.sendConsole("server.chat-error", "%error%", "permissão para o grupo não encontrada");
+					messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "permissão para o grupo não encontrada");
 				}
 			}
 		}

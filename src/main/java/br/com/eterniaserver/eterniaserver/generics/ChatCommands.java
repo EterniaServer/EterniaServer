@@ -19,7 +19,6 @@ import java.util.HashMap;
 public class ChatCommands extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final String tableName;
     private final EFiles messages;
     private final int money;
 
@@ -27,13 +26,10 @@ public class ChatCommands extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
         this.money = EterniaServer.serverConfig.getInt("money.nick");
-        this.tableName = EterniaServer.serverConfig.getString("sql.table-nick");
 
-        final String query = "SELECT * FROM " + EterniaServer.serverConfig.getString("sql.table-nick") + ";";
-        final HashMap<String, String> temp = EQueries.getMapString(query, "player_name", "player_display");
-
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_NICK), Strings.PNAME, Strings.PDISPLAY);
         temp.forEach(Vars.nickname::put);
-        messages.sendConsole("server.load-data", Constants.MODULE, "Nicks", "%amount%", temp.size());
+        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Nicks", Constants.AMOUNT, temp.size());
 
     }
 
@@ -46,7 +42,7 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("broadcast|advice|aviso")
     @CommandPermission("eternia.advice")
     public void onBroadcast(String[] message) {
-        messages.broadcastMessage("chat.global-advice", "%advice%", messages.getColor(getMessage(message)));
+        messages.broadcastMessage(Strings.M_CHAT_ADVICE, Constants.ADVICE, messages.getColor(getMessage(message)));
     }
 
     @CommandAlias("vanish|chupadadimensional")
@@ -72,10 +68,10 @@ public class ChatCommands extends BaseCommand {
         final Boolean b = Vars.spy.getOrDefault(playerName, false);
         if (Boolean.TRUE.equals(b)) {
             Vars.spy.put(playerName, false);
-            messages.sendMessage("chat.spyd", player);
+            messages.sendMessage(Strings.M_CHAT_SPY_D, player);
         } else {
             Vars.spy.put(playerName, true);
-            messages.sendMessage("chat.spye", player);
+            messages.sendMessage(Strings.M_CHAT_SPY_E, player);
         }
     }
 
@@ -85,50 +81,44 @@ public class ChatCommands extends BaseCommand {
     public void onNickname(Player player, String string, @Optional OnlinePlayer target) {
         if (!player.hasPermission("eternia.nickname.others")) {
             if (target == null) {
-                final String playerName = player.getName();
-                if (string.equals("clear")) {
-                    player.setDisplayName(playerName);
-                    messages.sendMessage("chat.remove-nick", player);
-                } else {
-                    Vars.nick.put(playerName, string);
-                    if (player.hasPermission("eternia.chat.color.nick")) {
-                        messages.sendMessage("chat.nick-money", "%new_name%", ChatColor.translateAlternateColorCodes('&', string), player);
-                    } else {
-                        messages.sendMessage("chat.nick-money", "%new_name%", string, player);
-                    }
-                    messages.sendMessage("chat.nick-money-2", player);
-                }
+                playerNick(player, string);
             } else {
                 messages.sendMessage(Strings.M_NO_PERM, player);
             }
         } else {
-            if (target == null) {
-                final String playerName = player.getName();
-                if (string.equals("clear")) {
-                    player.setDisplayName(playerName);
-                    if (Vars.nickname.containsKey(playerName)) {
-                        EQueries.executeQuery("UPDATE " + tableName + " SET player_display='" + playerName + "' WHERE player_name='" + playerName + "';");
-                    } else {
-                        EQueries.executeQuery("INSERT INTO " + tableName + " (player_name, player_display) VALUES('" + playerName + "', '" + playerName + "');");
-                    }
-                    Vars.nickname.put(playerName, playerName);
-                    messages.sendMessage("chat.remove-nick", player);
-                } else {
-                    player.setDisplayName(messages.getColor(string));
-                }
+            staffNick(target, player, string);
+        }
+    }
+
+    private void playerNick(final Player player, final String string) {
+        final String playerName = player.getName();
+        if (string.equals("clear")) {
+            player.setDisplayName(playerName);
+            messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
+        } else {
+            Vars.nick.put(playerName, string);
+            if (player.hasPermission("eternia.chat.color.nick")) {
+                messages.sendMessage(Strings.M_CHAT_NICK_MONEY, Constants.NEW_NAME, ChatColor.translateAlternateColorCodes('&', string), player);
             } else {
-                final Player targetP = target.getPlayer();
-                final String targetName = targetP.getName();
-                if (string.equals("clear")) {
-                    targetP.setDisplayName(targetName);
-                    messages.sendMessage("chat.remove-nick", targetP);
-                    messages.sendMessage("chat.remove-nick", player);
-                } else {
-                    targetP.setDisplayName(messages.getColor(string));
-                    messages.sendMessage("chat.newnick", Constants.PLAYER, messages.getColor(string), player);
-                    messages.sendMessage("chat.newnick", Constants.PLAYER, messages.getColor(string), targetP);
-                }
+                messages.sendMessage(Strings.M_CHAT_NICK_MONEY, Constants.NEW_NAME, string, player);
             }
+            messages.sendMessage(Strings.M_CHAT_NICK_MONEY_2, player);
+        }
+    }
+
+    private void staffNick(final OnlinePlayer target, final Player player, final String string) {
+        if (target == null) {
+            final String playerName = player.getName();
+            if (string.equals("clear")) {
+                player.setDisplayName(playerName);
+                saveToSQL(playerName);
+                Vars.nickname.put(playerName, playerName);
+                messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
+            } else {
+                player.setDisplayName(messages.getColor(string));
+            }
+        } else {
+            changeNickName(target.getPlayer(), player, string);
         }
     }
 
@@ -141,19 +131,15 @@ public class ChatCommands extends BaseCommand {
             if (APIEconomy.hasMoney(playerName, money)) {
                 APIEconomy.removeMoney(playerName, money);
                 player.setDisplayName(Vars.nick.get(playerName));
-                messages.sendMessage("chat.newnick", Constants.PLAYER, player.getDisplayName(), player);
-                if (Vars.nickname.containsKey(playerName)) {
-                    EQueries.executeQuery("UPDATE " + tableName + " SET player_display='" + Vars.nick.get(playerName) + "' WHERE player_name='" + playerName + "';");
-                } else {
-                    EQueries.executeQuery("INSERT INTO " + tableName + " (player_name, player_display) VALUES('" + playerName + "', '" + Vars.nick.get(playerName) + "');");
-                }
+                messages.sendMessage(Strings.M_CHAT_NEWNICK, Constants.PLAYER, player.getDisplayName(), player);
+                saveToSQL(playerName);
                 Vars.nickname.put(playerName, Vars.nick.get(playerName));
             } else {
-                messages.sendMessage("no-money", player);
+                messages.sendMessage(Strings.M_NO_MONEY, player);
             }
             Vars.nick.remove(playerName);
         } else {
-            messages.sendMessage("chat.no-change", player);
+            messages.sendMessage(Strings.M_CHAT_NO_CHANGE, player);
         }
     }
 
@@ -164,9 +150,9 @@ public class ChatCommands extends BaseCommand {
         final String playerName = player.getName();
         if (Vars.nick.containsKey(playerName)) {
             Vars.nick.remove(playerName);
-            messages.sendMessage("chat.nick-deny", player);
+            messages.sendMessage(Strings.M_CHAT_NICK_DENY, player);
         } else {
-            messages.sendMessage("chat.no-change", player);
+            messages.sendMessage(Strings.M_CHAT_NO_CHANGE, player);
         }
     }
 
@@ -177,11 +163,11 @@ public class ChatCommands extends BaseCommand {
         if (Vars.tell.containsKey(sender.getName())) {
             final Player target = Bukkit.getPlayer(Vars.tell.get(sender.getName()));
             if (target != null && target.isOnline()) {
-                sendPrivate(sender, target.getPlayer(), getMessage(msg));
+                sendPrivate(sender, target, getMessage(msg));
                 return;
             }
         }
-        messages.sendMessage("chat.rnaote", sender);
+        messages.sendMessage(Strings.M_CHAT_R_NO, sender);
     }
 
     @CommandAlias("tell|msg|whisper|emsg")
@@ -192,15 +178,36 @@ public class ChatCommands extends BaseCommand {
         sendPrivate(player, target.getPlayer(), getMessage(msg));
     }
 
+    private void changeNickName(final Player target, final Player player, final String string) {
+        final String targetName = target.getName();
+        if (string.equals("clear")) {
+            target.setDisplayName(targetName);
+            messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, target);
+            messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
+        } else {
+            target.setDisplayName(messages.getColor(string));
+            messages.sendMessage(Strings.M_CHAT_NEWNICK, Constants.PLAYER, messages.getColor(string), player);
+            messages.sendMessage(Strings.M_CHAT_NEWNICK, Constants.PLAYER, messages.getColor(string), target);
+        }
+    }
+
+    private void saveToSQL(final String playerName) {
+        if (Vars.nickname.containsKey(playerName)) {
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_NICK, Strings.PDISPLAY, Vars.nick.get(playerName), Strings.PNAME, playerName));
+        } else {
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_NICK, Strings.PNAME, playerName, Strings.PDISPLAY, Vars.nick.get(playerName)));
+        }
+    }
+
     private void sendPrivate(final Player player, final Player target, final String s) {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();
         Vars.tell.put(target.getName(), player.getName());
-        player.sendMessage(messages.getMessage("chat.toplayer").
+        player.sendMessage(messages.getMessage(Strings.M_CHAT_TO).
                 replace(Constants.PLAYER, playerDisplay).
                 replace(Constants.TARGET, targetDisplay).
                 replace(Constants.MESSAGE, s));
-        target.sendMessage(messages.getMessage("chat.fromplayer").
+        target.sendMessage(messages.getMessage(Strings.M_CHAT_FROM).
                 replace(Constants.PLAYER, targetDisplay).
                 replace(Constants.TARGET, playerDisplay).
                 replace(Constants.MESSAGE, s));
