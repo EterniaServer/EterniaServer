@@ -13,6 +13,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.List;
+
 public class OnPlayerCommandPreProcess implements Listener {
 
     private final EterniaServer plugin;
@@ -35,6 +37,14 @@ public class OnPlayerCommandPreProcess implements Listener {
             messages.sendMessage(Strings.M_TPS, Constants.TPS, s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
             return;
+        }
+
+        for (String line : EterniaServer.serverConfig.getStringList("blocked-commands")) {
+            if (message.startsWith(line)) {
+                event.setCancelled(true);
+                // TODO
+                return;
+            }
         }
 
         final String commandsConfig = "commands.";

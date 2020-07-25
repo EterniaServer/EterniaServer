@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Economy extends BaseCommand {
 
@@ -88,13 +89,21 @@ public class Economy extends BaseCommand {
         } else {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 final ArrayList<String> list = new ArrayList<>();
+                final ArrayList<String> no = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
                     double maior = 0;
                     String name = "";
                     for (Map.Entry<String, Double> entry : Vars.balances.entrySet()) {
-                        if (entry.getValue() > maior && !list.contains(entry.getKey())) {
-                            maior = entry.getValue();
-                            name = entry.getKey();
+                        final String playerName = entry.getKey();
+                        if (entry.getValue() > maior && !list.contains(playerName) && !no.contains(playerName)) {
+                            AtomicReference<Player> player = new AtomicReference<>();
+                            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> player.set(Bukkit.getPlayer(playerName)));
+                            if (player.get() != null && player.get().hasPermission("eternia.staff.baltop")) {
+                                maior = entry.getValue();
+                                name = playerName;
+                            } else {
+                                no.add(playerName);
+                            }
                         }
                     }
                     list.add(name);

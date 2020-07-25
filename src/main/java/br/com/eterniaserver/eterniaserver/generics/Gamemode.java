@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.Strings;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -23,7 +24,7 @@ public class Gamemode extends BaseCommand {
     @Default
     @Subcommand("help")
     public void showGamemode(CommandSender sender) {
-        messages.sendMessage("generic.gm.use", sender);
+        messages.sendMessage(Strings.M_GM_USE, sender);
     }
 
     @Subcommand("survival|s|0|sobrevivencia")

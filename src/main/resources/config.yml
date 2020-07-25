@@ -96,6 +96,12 @@ money:
   singular: 'Eternia'
   plural: 'Eternias'
 
+# This commands will be blocked.
+blocked-commands:
+  - '/lp'
+  - '/op'
+  - '/deop'
+
 # mob-name-color is the color of the mobs name in the mobspawner.
 # enable-lore will enable or disable lore of mobspawners.
 # lore is the lore of mobspawner.

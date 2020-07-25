@@ -130,6 +130,7 @@ public class Strings {
 
     public static final String M_GM_CHANGED = "generic.gm.changed";
     public static final String M_GM_TARGET = "generic.gm.changed-target";
+    public static final String M_GM_USE = "generic.gm.use";
 
     public static final String M_XP_CHECK = "experience.check";
     public static final String M_XP_BOTTLE = "experience.bottleexp";

@@ -17,11 +17,13 @@ import java.util.HashMap;
 
 public class ChatCommands extends BaseCommand {
 
+    private final EterniaServer plugin;
     private final String tableName;
     private final EFiles messages;
     private final int money;
 
     public ChatCommands(EterniaServer plugin) {
+        this.plugin = plugin;
         this.messages = plugin.getEFiles();
         this.money = EterniaServer.serverConfig.getInt("money.nick");
         this.tableName = EterniaServer.serverConfig.getString("sql.table-nick");
@@ -44,6 +46,20 @@ public class ChatCommands extends BaseCommand {
     @CommandPermission("eternia.advice")
     public void onBroadcast(String[] message) {
         messages.broadcastMessage("chat.global-advice", "%advice%", messages.getColor(getMessage(message)));
+    }
+
+    @CommandAlias("vanish|chupadadimensional")
+    @CommandPermission("eternia.vanish")
+    public void onVanish(Player player) {
+        // TODO
+        player.hidePlayer(plugin, player);
+    }
+
+    @CommandAlias("unvanish|chupadadimensionalreversa")
+    @CommandPermission("eternia.vanish")
+    public void onUnVanish(Player player) {
+        // TODO
+        player.showPlayer(plugin, player);
     }
 
     @CommandAlias("spy|socialspy")
