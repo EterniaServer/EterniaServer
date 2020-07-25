@@ -2,13 +2,13 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import org.bukkit.potion.PotionEffectType;
@@ -18,22 +18,20 @@ import org.bukkit.scoreboard.Scoreboard;
 @CommandPermission("eternia.glow")
 public class Glow extends BaseCommand {
 
-    private final String[] arrData = new String[] {
-            "tblack", "tdarkblue", "tdarkgreen", "tdarkaqua", "tdarkred", "tdarkpurple", "tgold", "tlightgray",
-            "tdarkgray", "tblue", "tgreen", "taqua", "tred", "tpurple", "tyellow", "twhite"
-    };
+    private final EterniaServer plugin;
     private final EFiles message;
     private final Scoreboard sc;
 
-    public Glow(EFiles message) {
-        this.message = message;
+    public Glow(EterniaServer plugin) {
+        this.plugin = plugin;
+        this.message = plugin.getEFiles();
         this.sc = Bukkit.getScoreboardManager().getMainScoreboard();
-        final ChatColor[] colors = new ChatColor[] {
-                ChatColor.BLACK, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN, ChatColor.DARK_AQUA, ChatColor.DARK_RED,
-                ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GRAY, ChatColor.DARK_GRAY, ChatColor.BLUE, ChatColor.GREEN,
-                ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW, ChatColor.WHITE
-        };
-        for (int i = 0; i < arrData.length; i++) if (sc.getTeam(arrData[i]) == null) sc.registerNewTeam(arrData[i]).setColor(colors[i]);
+
+        for (int i = 0; i < 16; i++) {
+            if (sc.getTeam(plugin.arrData.get(i)) == null) {
+                sc.registerNewTeam(plugin.arrData.get(i)).setColor(plugin.colors.get(i));
+            }
+        }
     }
 
     @Default
@@ -51,54 +49,54 @@ public class Glow extends BaseCommand {
     @Subcommand("color")
     @CommandCompletion("@colors")
     public void onGlowColor(Player player, String color) {
-        switch (color) {
-            case "black":
-                changeColor(player, arrData[0], "&0", "preto");
+        switch (color.hashCode()) {
+            case 1741606617:
+                changeColor(player, plugin.arrData.get(8), "&8", "cinza escuro");
                 break;
-            case "darkblue":
-                changeColor(player, arrData[1], "&1", "azul escuro");
+            case 1741452496:
+                changeColor(player, plugin.arrData.get(1), "&1", "azul escuro");
                 break;
-            case "darkgreen":
-                changeColor(player, arrData[2], "&2", "verde escuro");
+            case 1741427506:
+                changeColor(player, plugin.arrData.get(3), "&3", "ciano");
                 break;
-            case "darkaqua":
-                changeColor(player, arrData[3], "&3", "ciano");
+            case 1441664347:
+                changeColor(player, plugin.arrData.get(4), "&4", "vermelho");
                 break;
-            case "darkred":
-                changeColor(player, arrData[4], "&4", "vermelho");
+            case 686244985:
+                changeColor(player, plugin.arrData.get(7), "&7", "cinza claro");
                 break;
-            case "darkpurple":
-                changeColor(player, arrData[5], "&5", "roxo");
+            case 93818879:
+                changeColor(player, plugin.arrData.get(0), "&0", "preto");
                 break;
-            case "gold":
-                changeColor(player, arrData[6], "&6", "dourado");
+            case 9861939:
+                changeColor(player, plugin.arrData.get(10), "&a", "verde");
                 break;
-            case "lightgray":
-                changeColor(player, arrData[7], "&7", "cinza claro");
+            case 3178592:
+                changeColor(player, plugin.arrData.get(6), "&6", "dourado");
                 break;
-            case "darkgray":
-                changeColor(player, arrData[8], "&8", "cinza escuro");
+            case 3027034:
+                changeColor(player, plugin.arrData.get(9), "&9", "azul");
                 break;
-            case "blue":
-                changeColor(player, arrData[9], "&9", "azul");
+            case 3002044:
+                changeColor(player, plugin.arrData.get(11), "&b", "azul claro");
                 break;
-            case "green":
-                changeColor(player, arrData[10], "&a", "verde");
+            case 112785:
+                changeColor(player, plugin.arrData.get(12), "&c", "tomate");
                 break;
-            case "aqua":
-                changeColor(player, arrData[11], "&b", "azul claro");
+            case -734239628:
+                changeColor(player, plugin.arrData.get(14), "&e", "amarelo");
                 break;
-            case "red":
-                changeColor(player, arrData[12], "&c", "tomate");
+            case -976943172:
+                changeColor(player, plugin.arrData.get(13), "&d", "rosa");
                 break;
-            case "purple":
-                changeColor(player, arrData[13], "&d", "rosa");
+            case -1092352334:
+                changeColor(player, plugin.arrData.get(5), "&5", "roxo");
                 break;
-            case "yellow":
-                changeColor(player, arrData[14], "&e", "amarelo");
+            case -1844766387:
+                changeColor(player, plugin.arrData.get(2), "&2", "verde escuro");
                 break;
             default:
-                changeColor(player, arrData[15], "&f", "branco");
+                changeColor(player, plugin.arrData.get(15), "&f", "branco");
                 break;
         }
     }
