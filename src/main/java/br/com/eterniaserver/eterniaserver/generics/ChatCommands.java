@@ -5,6 +5,7 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
@@ -98,7 +99,7 @@ public class ChatCommands extends BaseCommand {
                     messages.sendMessage("chat.nick-money-2", player);
                 }
             } else {
-                messages.sendMessage("server.no-perm", player);
+                messages.sendMessage(Strings.M_NO_PERM, player);
             }
         } else {
             if (target == null) {

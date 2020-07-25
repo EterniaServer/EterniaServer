@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
 
 import io.papermc.lib.PaperLib;
@@ -31,60 +32,77 @@ public class Checks extends BukkitRunnable {
             Location location = player.getLocation();
             final String playerName = player.getName();
 
-            if (Vars.tpaRequests.containsKey(playerName) && Vars.tpaTime.containsKey(playerName) &&
-                    TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.tpaTime.get(playerName)) >= 25) {
-                Vars.tpaRequests.remove(playerName);
-                Vars.tpaTime.remove(playerName);
+            tpaTime(playerName);
+            checkNetherTrap(player, location, playerName);
+            checkAFK(player, playerName);
+            getPlayersInTp(player);
+
+        }
+    }
+
+    private void tpaTime(final String playerName) {
+        if (Vars.tpaRequests.containsKey(playerName) && Vars.tpaTime.containsKey(playerName) &&
+                TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.tpaTime.get(playerName)) >= 25) {
+            Vars.tpaRequests.remove(playerName);
+            Vars.tpaTime.remove(playerName);
+        }
+    }
+
+    private void checkNetherTrap(final Player player, final Location location, final String playerName) {
+        if (location.getBlock().getType() == Material.NETHER_PORTAL) {
+            if (!Vars.playersInPortal.containsKey(playerName)) {
+                Vars.playersInPortal.put(playerName, 7);
+            } else if (Vars.playersInPortal.get(playerName) <= 1) {
+                if (location.getBlock().getType() == Material.NETHER_PORTAL) {
+                    PaperLib.teleportAsync(player, getWarp());
+                    messages.sendMessage(Strings.M_WARP_DONE, player);
+                }
+            } else if (Vars.playersInPortal.get(playerName) > 1) {
+                Vars.playersInPortal.put(playerName, Vars.playersInPortal.get(playerName) - 1);
+                if (Vars.playersInPortal.get(playerName) < 5) {
+                    messages.sendMessage(Strings.M_NETHER_TRAP, Constants.COOLDOWN, Vars.playersInPortal.get(playerName), player);
+                }
             }
-            if (location.getBlock().getType() == Material.NETHER_PORTAL) {
-                if (!Vars.playersInPortal.containsKey(playerName)) {
-                    Vars.playersInPortal.put(playerName, 7);
-                } else if (Vars.playersInPortal.get(playerName) <= 1) {
-                    if (location.getBlock().getType() == Material.NETHER_PORTAL) {
-                        PaperLib.teleportAsync(player, getWarp());
-                        messages.sendMessage("teleport.warp.done", player);
-                    }
-                } else if (Vars.playersInPortal.get(playerName) > 1) {
-                    Vars.playersInPortal.put(playerName, Vars.playersInPortal.get(playerName) - 1);
-                    if (Vars.playersInPortal.get(playerName) < 5) {
-                        messages.sendMessage("server.nether-trap", "%cooldown%", Vars.playersInPortal.get(playerName), player);
-                    }
+        } else {
+            Vars.playersInPortal.remove(playerName);
+        }
+    }
+
+    private void checkAFK(final Player player, final String playerName) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afkTime.get(playerName)) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
+            if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
+                if (!Vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
+                    messages.broadcastMessage(Strings.M_AFK_BROAD, Constants.PLAYER, player.getDisplayName());
+                    player.kickPlayer(messages.getMessage(Strings.M_AFK_KICKED));
                 }
             } else {
-                Vars.playersInPortal.remove(playerName);
+                messages.broadcastMessage(Strings.M_AFK_ENABLE, Constants.PLAYER, player.getDisplayName());
+                Vars.afk.add(playerName);
             }
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afkTime.get(playerName)) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
-                if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
-                    if (!Vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                        messages.broadcastMessage("generic.afk.broadcast-kicked", Constants.PLAYER, player.getDisplayName());
-                        player.kickPlayer(messages.getMessage("generic.afk.kicked"));
-                    }
-                } else {
-                    messages.broadcastMessage("generic.afk.enabled", Constants.PLAYER, player.getDisplayName());
-                    Vars.afk.add(playerName);
-                }
-            }
-            if (Vars.teleports.containsKey(player)) {
-                final PlayerTeleport playerTeleport = Vars.teleports.get(player);
-                if (!player.hasPermission("eternia.timing.bypass")) {
-                    if (!playerTeleport.hasMoved()) {
-                        if (playerTeleport.getCountdown() == 0) {
-                            PaperLib.teleportAsync(player, playerTeleport.getWantLocation());
-                            messages.sendMessage(playerTeleport.getMessage(), player);
-                            Vars.teleports.remove(player);
-                        } else {
-                            messages.sendMessage("teleport.tp.timing", "%cooldown%", playerTeleport.getCountdown(), player);
-                            playerTeleport.decreaseCountdown();
-                        }
-                    } else {
-                        messages.sendMessage("teleport.tp.move", player);
+        }
+    }
+
+    private void getPlayersInTp(final Player player) {
+        if (Vars.teleports.containsKey(player)) {
+            final PlayerTeleport playerTeleport = Vars.teleports.get(player);
+            if (!player.hasPermission("eternia.timing.bypass")) {
+                if (!playerTeleport.hasMoved()) {
+                    if (playerTeleport.getCountdown() == 0) {
+                        PaperLib.teleportAsync(player, playerTeleport.getWantLocation());
+                        messages.sendMessage(playerTeleport.getMessage(), player);
                         Vars.teleports.remove(player);
+                    } else {
+                        messages.sendMessage(Strings.M_TP_TIMING, Constants.COOLDOWN, playerTeleport.getCountdown(), player);
+                        playerTeleport.decreaseCountdown();
                     }
                 } else {
-                    PaperLib.teleportAsync(player, playerTeleport.getWantLocation());
-                    messages.sendMessage(playerTeleport.getMessage(), player);
+                    messages.sendMessage(Strings.M_TP_MOVE, player);
                     Vars.teleports.remove(player);
                 }
+            } else {
+                PaperLib.teleportAsync(player, playerTeleport.getWantLocation());
+                messages.sendMessage(playerTeleport.getMessage(), player);
+                Vars.teleports.remove(player);
             }
         }
     }

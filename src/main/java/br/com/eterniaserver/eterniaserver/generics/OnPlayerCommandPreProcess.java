@@ -13,8 +13,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.List;
-
 public class OnPlayerCommandPreProcess implements Listener {
 
     private final EterniaServer plugin;

@@ -24,6 +24,7 @@ public class Strings {
     public static final String M_JOIN = "server.join";
     public static final String M_LEAVE = "server.leave";
     public static final String M_TIMING = "server.timing";
+    public static final String M_NETHER_TRAP = "server.nether-trap";
 
     public static final String M_SPAWN_NO = "teleport.spawn.no-exists";
     public static final String M_SPAWN_CREATE = "teleport.spawn.created";
@@ -44,6 +45,8 @@ public class Strings {
     public static final String M_BACK_FREE = "teleport.back.free";
 
     public static final String M_TPALL = "teleport.tp.all";
+    public static final String M_TP_MOVE = "teleport.tp.move";
+    public static final String M_TP_TIMING = "teleport.tp.timing";
     public static final String M_TPA_YOU = "teleport.tpa.yourself";
     public static final String M_TPA_EXISTS = "teleport.tpa.exists";
     public static final String M_TPA_SENT = "teleport.tpa.sent";
@@ -84,6 +87,9 @@ public class Strings {
 
     public static final String M_AFK_ENABLE = "generic.afk.enabled";
     public static final String M_AFK_DISABLE = "generic.afk.disabled";
+    public static final String M_AFK_KICKED = "generic.afk.kicked";
+    public static final String M_AFK_BROAD = "generic.afk.broadcast-kicked";
+
     public static final String M_FLY_ENABLE = "generic.others.fly-enabled";
     public static final String M_FLY_DISABLE = "generic.others.fly-disabled";
     public static final String M_GOD_ENABLE = "generic.others.god-enabled";
