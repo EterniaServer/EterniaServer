@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 @CommandAlias("glow")
 @CommandPermission("eternia.glow")
@@ -27,7 +28,7 @@ public class Glow extends BaseCommand {
         this.message = plugin.getEFiles();
         this.sc = Bukkit.getScoreboardManager().getMainScoreboard();
         for (int i = 0; i < 16; i++) {
-            if (sc.getTeam(plugin.arrData.get(i)) == null) {
+            if (getTeam(plugin.arrData.get(i)) == null) {
                 sc.registerNewTeam(plugin.arrData.get(i)).setColor(plugin.colors.get(i));
             }
         }
@@ -103,8 +104,12 @@ public class Glow extends BaseCommand {
     public void changeColor(final Player player, final String team, final String nameColor, final String color) {
         final String playerName = player.getName();
         Vars.glowingColor.put(playerName, nameColor);
-        sc.getTeam(team).addEntry(playerName);
+        getTeam(team).addEntry(playerName);
         message.sendMessage(Strings.M_GLOW_COLOR, Constants.AMOUNT, color, player);
+    }
+
+    private Team getTeam(String team) {
+        return sc.getTeam(team);
     }
 
 }
