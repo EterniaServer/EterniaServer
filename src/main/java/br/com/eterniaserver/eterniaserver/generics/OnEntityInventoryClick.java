@@ -55,7 +55,7 @@ public class OnEntityInventoryClick implements Listener {
                 final int cost = EterniaServer.cashConfig.getInt(guiString + ".cost");
                 if (APICash.hasCash(playerName, cost)) {
                     messages.sendMessage(Strings.M_CASH_COST, Constants.AMOUNT, cost, player);
-                    messages.sendMessage(Strings.M_CASH_USE, player);
+                    messages.sendMessage(Strings.M_CASH, player);
                     Vars.cashBuy.put(playerName, slot);
                 } else {
                     messages.sendMessage(Strings.M_CASH_NO, player);
