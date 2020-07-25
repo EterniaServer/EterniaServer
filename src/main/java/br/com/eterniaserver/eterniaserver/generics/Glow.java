@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 @CommandAlias("glow")
 @CommandPermission("eternia.glow")
@@ -23,29 +22,15 @@ public class Glow extends BaseCommand {
     private final EFiles message;
     private final Scoreboard sc;
 
-    private Team tBlack;
-    private Team tDarkBlue;
-    private Team tDarkGreen;
-    private Team tDarkAqua;
-    private Team tDarkRed;
-    private Team tDarkPurple;
-    private Team tGold;
-    private Team tGray;
-    private Team tDarkGray;
-    private Team tBlue;
-    private Team tGreen;
-    private Team tAqua;
-    private Team tRed;
-    private Team tLightPurple;
-    private Team tYellow;
-    private Team tWhite;
-
     public Glow(EterniaServer plugin) {
         this.plugin = plugin;
         this.message = plugin.getEFiles();
         this.sc = Bukkit.getScoreboardManager().getMainScoreboard();
-        setTeams();
-        setColors();
+        for (int i = 0; i < 16; i++) {
+            if (sc.getTeam(plugin.arrData.get(i)) == null) {
+                sc.registerNewTeam(plugin.arrData.get(i)).setColor(plugin.colors.get(i));
+            }
+        }
     }
 
     @Default
@@ -63,127 +48,63 @@ public class Glow extends BaseCommand {
     @Subcommand("color")
     @CommandCompletion("@colors")
     public void onGlowColor(Player player, String color) {
-        final String playerName = player.getName();
         switch (color.hashCode()) {
             case 1741606617:
-                Vars.glowingColor.put(playerName, "&8");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(8), Constants.AMOUNT, "cinza escuro", player);
+                changeColor(player, plugin.arrData.get(8), "&8", "cinza escuro");
                 break;
             case 1741452496:
-                Vars.glowingColor.put(playerName, "&1");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(1), Constants.AMOUNT, "azul escuro", player);
+                changeColor(player, plugin.arrData.get(1), "&1", "azul escuro");
                 break;
             case 1741427506:
-                Vars.glowingColor.put(playerName, "&3");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(3), Constants.AMOUNT, "ciano", player);
+                changeColor(player, plugin.arrData.get(3), "&3", "ciano");
                 break;
             case 1441664347:
-                Vars.glowingColor.put(playerName, "&4");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(4), Constants.AMOUNT, "vermelho", player);
+                changeColor(player, plugin.arrData.get(4), "&4", "vermelho");
                 break;
             case 686244985:
-                Vars.glowingColor.put(playerName, "&7");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(7), Constants.AMOUNT, "cinza claro", player);
+                changeColor(player, plugin.arrData.get(7), "&7", "cinza claro");
                 break;
             case 93818879:
-                Vars.glowingColor.put(playerName, "&0");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(0), Constants.AMOUNT, "preto", player);
+                changeColor(player, plugin.arrData.get(0), "&0", "preto");
                 break;
             case 9861939:
-                Vars.glowingColor.put(playerName, "&a");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(10), Constants.AMOUNT, "verde", player);
+                changeColor(player, plugin.arrData.get(10), "&a", "verde");
                 break;
             case 3178592:
-                Vars.glowingColor.put(playerName, "&6");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(6), Constants.AMOUNT, "dourado", player);
+                changeColor(player, plugin.arrData.get(6), "&6", "dourado");
                 break;
             case 3027034:
-                Vars.glowingColor.put(playerName, "&9");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(9), Constants.AMOUNT, "azul", player);
+                changeColor(player, plugin.arrData.get(9), "&9", "azul");
                 break;
             case 3002044:
-                Vars.glowingColor.put(playerName, "&b");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(11), Constants.AMOUNT, "azul claro", player);
+                changeColor(player, plugin.arrData.get(11), "&b", "azul claro");
                 break;
             case 112785:
-                Vars.glowingColor.put(playerName, "&c");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(12), Constants.AMOUNT, "tomate", player);
+                changeColor(player, plugin.arrData.get(12), "&c", "tomate");
                 break;
             case -734239628:
-                Vars.glowingColor.put(playerName, "&e");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(14), Constants.AMOUNT, "amarelo", player);
+                changeColor(player, plugin.arrData.get(14), "&e", "amarelo");
                 break;
             case -976943172:
-                Vars.glowingColor.put(playerName, "&d");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(13), Constants.AMOUNT, "rosa", player);
+                changeColor(player, plugin.arrData.get(13), "&d", "rosa");
                 break;
             case -1092352334:
-                Vars.glowingColor.put(playerName, "&5");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(5), Constants.AMOUNT, "roxo", player);
+                changeColor(player, plugin.arrData.get(5), "&5", "roxo");
                 break;
             case -1844766387:
-                Vars.glowingColor.put(playerName, "&2");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(2), Constants.AMOUNT, "verde escuro", player);
+                changeColor(player, plugin.arrData.get(2), "&2", "verde escuro");
                 break;
             default:
-                Vars.glowingColor.put(playerName, "&f");
-                tWhite.addEntry(playerName);
-                message.sendMessage(plugin.arrData.get(15), Constants.AMOUNT, "branco", player);
+                changeColor(player, plugin.arrData.get(15), "&f", "branco");
                 break;
         }
     }
 
-    private void setTeams() {
-        tBlack = sc.registerNewTeam(plugin.arrData.get(0));
-        tDarkBlue = sc.registerNewTeam(plugin.arrData.get(1));
-        tDarkGreen = sc.registerNewTeam(plugin.arrData.get(2));
-        tDarkAqua = sc.registerNewTeam(plugin.arrData.get(3));
-        tDarkRed = sc.registerNewTeam(plugin.arrData.get(4));
-        tDarkPurple = sc.registerNewTeam(plugin.arrData.get(5));
-        tGold = sc.registerNewTeam(plugin.arrData.get(6));
-        tGray = sc.registerNewTeam(plugin.arrData.get(7));
-        tDarkGray = sc.registerNewTeam(plugin.arrData.get(8));
-        tBlue = sc.registerNewTeam(plugin.arrData.get(9));
-        tGreen = sc.registerNewTeam(plugin.arrData.get(10));
-        tAqua = sc.registerNewTeam(plugin.arrData.get(11));
-        tRed = sc.registerNewTeam(plugin.arrData.get(12));
-        tLightPurple = sc.registerNewTeam(plugin.arrData.get(13));
-        tYellow = sc.registerNewTeam(plugin.arrData.get(14));
-        tWhite = sc.registerNewTeam(plugin.arrData.get(15));
-    }
-
-    private void setColors() {
-        tBlack.setColor(plugin.colors.get(0));
-        tDarkBlue.setColor(plugin.colors.get(1));
-        tDarkGreen.setColor(plugin.colors.get(2));
-        tDarkAqua.setColor(plugin.colors.get(3));
-        tDarkRed.setColor(plugin.colors.get(4));
-        tDarkPurple.setColor(plugin.colors.get(5));
-        tGold.setColor(plugin.colors.get(6));
-        tGray.setColor(plugin.colors.get(7));
-        tDarkGray.setColor(plugin.colors.get(8));
-        tBlue.setColor(plugin.colors.get(9));
-        tGreen.setColor(plugin.colors.get(10));
-        tAqua.setColor(plugin.colors.get(11));
-        tRed.setColor(plugin.colors.get(12));
-        tLightPurple.setColor(plugin.colors.get(13));
-        tYellow.setColor(plugin.colors.get(14));
-        tWhite.setColor(plugin.colors.get(15));
+    public void changeColor(final Player player, final String team, final String nameColor, final String color) {
+        final String playerName = player.getName();
+        Vars.glowingColor.put(playerName, nameColor);
+        sc.getTeam(team).addEntry(playerName);
+        message.sendMessage(Strings.M_GLOW_COLOR, Constants.AMOUNT, color, player);
     }
 
 }
