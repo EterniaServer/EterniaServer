@@ -81,7 +81,7 @@ sql:
 # online divided by the players sleeping))
 # blacklisted-worlds will set which worlds could not skip the night sleeping.
 bed:
-  speed: 300
+  speed: 50
   blacklisted-worlds:
     - 'evento'
 
@@ -89,6 +89,7 @@ bed:
 # back is the cost of the /back command.
 # singular is the name of the currency in the singular.
 # plural is the name of the currency in the plural.
+# no-baltop is the name of the bank account.
 money:
   start: 300
   back: 2500
@@ -100,9 +101,9 @@ money:
 
 # This commands will be blocked.
 blocked-commands:
-  - '/lp'
   - '/op'
   - '/deop'
+  - '/stop'
 
 # mob-name-color is the color of the mobs name in the mobspawner.
 # enable-lore will enable or disable lore of mobspawners.

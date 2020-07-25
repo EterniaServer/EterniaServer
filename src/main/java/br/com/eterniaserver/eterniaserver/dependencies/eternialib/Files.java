@@ -11,7 +11,6 @@ import java.util.Locale;
 
 public class Files {
 
-    private final String notFound = "faltando na jar";
     private final EterniaServer plugin;
     private final EFiles messages;
 
@@ -38,7 +37,7 @@ public class Files {
         try {
             EterniaServer.msgConfig.load(EFiles.fileLoad(plugin, "messages.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "messages.yml" + notFound);
+            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "arquivo de mensagens faltando | messages.yml");
         }
 
     }
@@ -50,7 +49,7 @@ public class Files {
             EterniaServer.groupConfig.load(EFiles.fileLoad(plugin, "groups.yml"));
             EterniaServer.placeholderConfig.load(EFiles.fileLoad(plugin, "customplaceholders.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "customplaceholders.yml" + notFound);
+            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "placeholders do chat faltando | customplaceholders.yml");
         }
 
     }
@@ -60,7 +59,7 @@ public class Files {
         try {
             EterniaServer.rewardsConfig.load(EFiles.fileLoad(plugin, "rewards.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "rewards.yml" + notFound);
+            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "configurações de rewards faltando | rewards.yml");
         }
 
     }
@@ -70,7 +69,7 @@ public class Files {
         try {
             EterniaServer.kitConfig.load(EFiles.fileLoad(plugin, "kits.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "kits.yml" + notFound);
+            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "lista de kits faltando | kits.yml");
         }
 
     }
@@ -80,7 +79,7 @@ public class Files {
         try {
             EterniaServer.cmdConfig.load(EFiles.fileLoad(plugin, "commands.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "commands.yml" + notFound);
+            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "comandos personalizados faltando | commands.yml");
         }
 
     }
@@ -90,7 +89,7 @@ public class Files {
         try {
             EterniaServer.blockConfig.load(EFiles.fileLoad(plugin, "blocks.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "blocks.yml" + notFound);
+            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "problemas para encontrar a configuração dos blocos | blocks.yml");
         }
 
     }
@@ -100,7 +99,7 @@ public class Files {
         try {
             EterniaServer.cashConfig.load(EFiles.fileLoad(plugin, "cashgui.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "cashgui.yml" + notFound);
+            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "sistema de cash não configurado | cashgui.yml");
         }
 
     }
