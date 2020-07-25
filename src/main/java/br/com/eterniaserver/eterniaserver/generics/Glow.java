@@ -47,12 +47,14 @@ public class Glow extends BaseCommand {
     @Subcommand("color")
     @CommandCompletion("@colors")
     public void onGlowColor(Player player, String color) {
+        final String dark = "escuro";
+        final String light = "claro";
         switch (color.hashCode()) {
             case 1741606617:
-                changeColor(player, plugin.arrData.get(8), "&8", "cinza escuro");
+                changeColor(player, plugin.arrData.get(8), "&8", "cinza" + dark);
                 break;
             case 1741452496:
-                changeColor(player, plugin.arrData.get(1), "&1", "azul escuro");
+                changeColor(player, plugin.arrData.get(1), "&1", "azul" + dark);
                 break;
             case 1741427506:
                 changeColor(player, plugin.arrData.get(3), "&3", "ciano");
@@ -61,7 +63,7 @@ public class Glow extends BaseCommand {
                 changeColor(player, plugin.arrData.get(4), "&4", "vermelho");
                 break;
             case 686244985:
-                changeColor(player, plugin.arrData.get(7), "&7", "cinza claro");
+                changeColor(player, plugin.arrData.get(7), "&7", "cinza" + light);
                 break;
             case 93818879:
                 changeColor(player, plugin.arrData.get(0), "&0", "preto");
@@ -76,7 +78,7 @@ public class Glow extends BaseCommand {
                 changeColor(player, plugin.arrData.get(9), "&9", "azul");
                 break;
             case 3002044:
-                changeColor(player, plugin.arrData.get(11), "&b", "azul claro");
+                changeColor(player, plugin.arrData.get(11), "&b", "azul" + light);
                 break;
             case 112785:
                 changeColor(player, plugin.arrData.get(12), "&c", "tomate");
@@ -91,7 +93,7 @@ public class Glow extends BaseCommand {
                 changeColor(player, plugin.arrData.get(5), "&5", "roxo");
                 break;
             case -1844766387:
-                changeColor(player, plugin.arrData.get(2), "&2", "verde escuro");
+                changeColor(player, plugin.arrData.get(2), "&2", "verde" + dark);
                 break;
             default:
                 changeColor(player, plugin.arrData.get(15), "&f", "branco");
