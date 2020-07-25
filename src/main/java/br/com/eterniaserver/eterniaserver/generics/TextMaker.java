@@ -14,6 +14,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
+import net.md_5.bungee.api.chat.hover.content.Text;
 
 import org.bukkit.entity.Player;
 
@@ -43,8 +44,7 @@ public class TextMaker extends StringHelper {
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();
 				tcs.add(new TextComponent(internMethods.setPlaceholders(p, cc(chatObject.getHover()))));
-				TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
-				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, bc));
+				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 			}
 			if(chatObject.getColor() != null) {
 				textComp.setColor(chatObject.getColor().asBungee());
@@ -79,8 +79,7 @@ public class TextMaker extends StringHelper {
 		if(s == null) return;
 		ArrayList<TextComponent> tcs = new ArrayList<>();
 		tcs.add(new TextComponent(cc(s)));
-		TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
-		text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, bc));
+		text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 	}
 
 	public void addClickSuggest(TextComponent text, String s) {
@@ -110,8 +109,7 @@ public class TextMaker extends StringHelper {
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();
 				tcs.add(new TextComponent(internMethods.setBothPlaceholders(p, to, cc(chatObject.getHover()))));
-				TextComponent[] bc = tcs.toArray(new TextComponent[tcs.size() - 1]);
-				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, bc));
+				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 			}
 			if(chatObject.getColor() != null) {
 				textComp.setColor(chatObject.getColor().asBungee());
