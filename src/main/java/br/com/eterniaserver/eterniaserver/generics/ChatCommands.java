@@ -48,6 +48,7 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("vanish|chupadadimensional")
     @CommandPermission("eternia.vanish")
     public void onVanish(Player player) {
+        messages.broadcastMessage(Strings.M_LEAVE, Constants.PLAYER, player.getName());
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(plugin, player);
         }
@@ -56,6 +57,7 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("unvanish|chupadadimensionalreversa")
     @CommandPermission("eternia.vanish")
     public void onUnVanish(Player player) {
+        messages.broadcastMessage(Strings.M_JOIN, Constants.PLAYER, player.getName());
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(plugin, player);
         }
