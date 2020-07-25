@@ -37,7 +37,11 @@ public class Local {
 
     private String getFormat(String message, final Player player) {
         String format = PlaceholderAPI.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
-        return strings.getColor(format.replace(Constants.MESSAGE, message));
+        if (player.hasPermission("eternia.chat.color")) {
+            return strings.getColor(format.replace(Constants.MESSAGE, message));
+        } else {
+            return strings.getColor(format).replace(Constants.MESSAGE, message);
+        }
     }
 
 }
