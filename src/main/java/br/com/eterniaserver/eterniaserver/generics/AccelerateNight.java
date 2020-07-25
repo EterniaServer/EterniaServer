@@ -41,7 +41,7 @@ public class AccelerateNight extends BukkitRunnable {
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
                 messages.broadcastMessage("bed.skip-night");
-                Vars.nightTime = System.currentTimeMillis();
+                changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {
                 world.setTime(time + (int) timeRate);
@@ -51,4 +51,9 @@ public class AccelerateNight extends BukkitRunnable {
             this.cancel();
         }
     }
+
+    private static void changeNightTime(final long time) {
+        Vars.nightTime = time;
+    }
+
 }

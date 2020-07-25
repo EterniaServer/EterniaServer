@@ -33,12 +33,7 @@ public class Glow extends BaseCommand {
     public Glow(EFiles message) {
         this.message = message;
         this.sc = Bukkit.getScoreboardManager().getMainScoreboard();
-        for (int i = 0; i < arrData.length; i++) {
-            if (sc.getTeam(arrData[i]) == null) {
-                sc.registerNewTeam(arrData[i]);
-                sc.getTeam(arrData[i]).setColor(colors[i]);
-            }
-        }
+        for (int i = 0; i < arrData.length; i++) if (sc.getTeam(arrData[i]) == null) sc.registerNewTeam(arrData[i]).setColor(colors[i]);
     }
 
     @Default
