@@ -1,10 +1,12 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
-
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.Strings;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,32 +18,38 @@ import org.bukkit.scoreboard.Scoreboard;
 @CommandPermission("eternia.glow")
 public class Glow extends BaseCommand {
 
+    private final String[] arrData = new String[] {
+            "tblack", "tdarkblue", "tdarkgreen", "tdarkaqua", "tdarkred", "tdarkpurple", "tgold", "tlightgray",
+            "tdarkgray", "tblue", "tgreen", "taqua", "tred", "tpurple", "tyellow", "twhite"
+    };
+    private final ChatColor[] colors = new ChatColor[] {
+            ChatColor.BLACK, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN, ChatColor.DARK_AQUA, ChatColor.DARK_RED,
+            ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GRAY, ChatColor.DARK_GRAY, ChatColor.BLUE, ChatColor.GREEN,
+            ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW, ChatColor.WHITE
+    };
     private final EFiles message;
     private final Scoreboard sc;
 
     public Glow(EFiles message) {
         this.message = message;
         this.sc = Bukkit.getScoreboardManager().getMainScoreboard();
-        String[] arrData = new String[] { "tblack", "tdarkblue", "tdarkgreen", "tdarkaqua", "tdarkred", "tdarkpurple", "tgold", "tlightgray", "tdarkgray", "tblue", "tgreen", "taqua", "tred", "tpurple", "tyellow", "twhite" };
-
-        for (String arrDatum : arrData) {
-            if (sc.getTeam(arrDatum) == null) {
-                sc.registerNewTeam(arrDatum);
+        for (int i = 0; i < arrData.length; i++) {
+            if (sc.getTeam(arrData[i]) == null) {
+                sc.registerNewTeam(arrData[i]);
+                sc.getTeam(arrData[i]).setColor(colors[i]);
             }
         }
-        colourSetup();
-
     }
 
     @Default
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
             player.setGlowing(true);
-            message.sendMessage("glow.brilho", player);
+            message.sendMessage(Strings.M_GLOW_ENABLED, player);
         } else {
             player.removePotionEffect(PotionEffectType.GLOWING);
             player.setGlowing(false);
-            message.sendMessage("glow.desbrilho", player);
+            message.sendMessage(Strings.M_GLOW_DISABLED, player);
         }
     }
 
@@ -51,105 +59,61 @@ public class Glow extends BaseCommand {
         final String playerName = player.getName();
         switch (color) {
             case "black":
-                Vars.glowingColor.put(playerName, ChatColor.BLACK + "");
-                sc.getTeam("tblack").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "preto", player);
+                changeColor(player, arrData[0], colors[0] + "", "preto");
                 break;
             case "darkblue":
-                Vars.glowingColor.put(playerName, ChatColor.DARK_BLUE + "");
-                sc.getTeam("tdarkblue").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "azul escuro", player);
+                changeColor(player, arrData[1], colors[1] + "", "azul escuro");
                 break;
             case "darkgreen":
-                Vars.glowingColor.put(playerName, ChatColor.DARK_GREEN + "");
-                sc.getTeam("tdarkgreen").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "verde escuro", player);
+                changeColor(player, arrData[2], colors[2] + "", "verde escuro");
                 break;
             case "darkaqua":
-                Vars.glowingColor.put(playerName, ChatColor.DARK_AQUA + "");
-                sc.getTeam("tdarkaqua").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "ciano", player);
+                changeColor(player, arrData[3], colors[3] + "", "ciano");
                 break;
             case "darkred":
-                Vars.glowingColor.put(playerName, ChatColor.DARK_RED + "");
-                sc.getTeam("tdarkred").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "vermelho", player);
+                changeColor(player, arrData[4], colors[4] + "", "vermelho");
                 break;
             case "darkpurple":
-                Vars.glowingColor.put(playerName, ChatColor.DARK_PURPLE + "");
-                sc.getTeam("tdarkpurple").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "roxo", player);
+                changeColor(player, arrData[5], colors[5] + "", "roxo");
                 break;
             case "gold":
-                Vars.glowingColor.put(playerName, ChatColor.GOLD + "");
-                sc.getTeam("tgold").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "dourado", player);
+                changeColor(player, arrData[6], colors[6] + "", "dourado");
                 break;
             case "lightgray":
-                Vars.glowingColor.put(playerName, ChatColor.GRAY + "");
-                sc.getTeam("tlightgray").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "cinza claro", player);
+                changeColor(player, arrData[7], colors[7] + "", "cinza claro");
                 break;
             case "darkgray":
-                Vars.glowingColor.put(playerName, ChatColor.DARK_GRAY + "");
-                sc.getTeam("tdarkgray").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "cinza escuro", player);
+                changeColor(player, arrData[8], colors[8] + "", "cinza escuro");
                 break;
             case "blue":
-                Vars.glowingColor.put(playerName, ChatColor.BLUE + "");
-                sc.getTeam("tblue").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "azul", player);
+                changeColor(player, arrData[9], colors[9] + "", "azul");
                 break;
             case "green":
-                Vars.glowingColor.put(playerName, ChatColor.GREEN + "");
-                sc.getTeam("tgreen").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "verde", player);
+                changeColor(player, arrData[10], colors[10] + "", "verde");
                 break;
             case "aqua":
-                Vars.glowingColor.put(playerName, ChatColor.AQUA + "");
-                sc.getTeam("taqua").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "azul claro", player);
+                changeColor(player, arrData[11], colors[11] + "", "azul claro");
                 break;
             case "red":
-                Vars.glowingColor.put(playerName, ChatColor.RED + "");
-                sc.getTeam("tred").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "tomate", player);
+                changeColor(player, arrData[12], colors[12] + "", "tomate");
                 break;
             case "purple":
-                Vars.glowingColor.put(playerName, ChatColor.LIGHT_PURPLE + "");
-                sc.getTeam("tpurple").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "rosa", player);
+                changeColor(player, arrData[13], colors[13] + "", "rosa");
                 break;
             case "yellow":
-                Vars.glowingColor.put(playerName, ChatColor.YELLOW + "");
-                sc.getTeam("tyellow").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "amarelo", player);
+                changeColor(player, arrData[14], colors[14] + "", "amarelo");
                 break;
             default:
-                Vars.glowingColor.put(playerName, ChatColor.WHITE + "");
-                sc.getTeam("twhite").addEntry(playerName);
-                message.sendMessage("glow.color", Constants.AMOUNT, "branco", player);
+                changeColor(player, arrData[15], colors[15] + "", "branco");
                 break;
         }
     }
 
-    private void colourSetup() {
-        sc.getTeam("tblack").setColor(ChatColor.BLACK);
-        sc.getTeam("tdarkblue").setColor(ChatColor.DARK_BLUE);
-        sc.getTeam("tdarkgreen").setColor(ChatColor.DARK_GREEN);
-        sc.getTeam("tdarkaqua").setColor(ChatColor.DARK_AQUA);
-        sc.getTeam("tdarkred").setColor(ChatColor.DARK_RED);
-        sc.getTeam("tdarkpurple").setColor(ChatColor.DARK_PURPLE);
-        sc.getTeam("tgold").setColor(ChatColor.GOLD);
-        sc.getTeam("tlightgray").setColor(ChatColor.GRAY);
-        sc.getTeam("tdarkgray").setColor(ChatColor.DARK_GRAY);
-        sc.getTeam("tblue").setColor(ChatColor.BLUE);
-        sc.getTeam("tgreen").setColor(ChatColor.GREEN);
-        sc.getTeam("taqua").setColor(ChatColor.AQUA);
-        sc.getTeam("tred").setColor(ChatColor.RED);
-        sc.getTeam("tpurple").setColor(ChatColor.LIGHT_PURPLE);
-        sc.getTeam("tyellow").setColor(ChatColor.YELLOW);
-        sc.getTeam("twhite").setColor(ChatColor.WHITE);
+    public void changeColor(final Player player, final String team, final String nameColor, final String color) {
+        final String playerName = player.getName();
+        Vars.glowingColor.put(playerName, nameColor);
+        sc.getTeam(team).addEntry(playerName);
+        message.sendMessage(Strings.M_GLOW_COLOR, Constants.AMOUNT, color, player);
     }
 
 }

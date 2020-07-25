@@ -101,8 +101,8 @@ public class HomeSystem extends BaseCommand {
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
                 final String[] values = getHomes(target.getPlayer().getName());
-                for (String line : values) accounts.append(line).append("&8, &3");
-                messages.sendMessage(Strings.M_HOME_LIST, Strings.HOMES, messages.getColor(accounts.toString()), player);
+                for (String line : values) if (!accounts.toString().equals("")) accounts.append(line).append("&8, &3");
+                messages.sendMessage(Strings.M_HOME_LIST, Constants.HOMES, messages.getColor(accounts.toString()), player);
             } else {
                 messages.sendMessage(Strings.M_NO_PERM, player);
             }

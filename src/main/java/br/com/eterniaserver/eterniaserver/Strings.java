@@ -122,4 +122,8 @@ public class Strings {
     public static final String M_CASH_NO = "cash.no-cash";
     public static final String M_CASH_ALREADY = "cash.already";
 
+    public static final String M_GLOW_ENABLED = "glow.brilho";
+    public static final String M_GLOW_DISABLED = "glow.desbrilho";
+    public static final String M_GLOW_COLOR = "glow.color";
+
 }
