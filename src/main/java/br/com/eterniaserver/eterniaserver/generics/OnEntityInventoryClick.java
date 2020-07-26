@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
@@ -25,15 +26,14 @@ public class OnEntityInventoryClick implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
-        if (e.isCancelled()) {
-            return;
-        }
+        if (e.isCancelled()) return;
 
         final Player player = (Player) e.getWhoClicked();
-        if (EterniaServer.serverConfig.getBoolean("spawners.prevent-anvil")
+        final ItemStack itemStack = e.getCurrentItem();
+        if (itemStack != null && (EterniaServer.serverConfig.getBoolean("spawners.prevent-anvil")
                 && EterniaServer.serverConfig.getBoolean("modules.spawners")
                 && e.getInventory().getType() == InventoryType.ANVIL
-                && Objects.requireNonNull(e.getCurrentItem()).getType() == Material.SPAWNER) {
+                && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
             messages.sendMessage(Strings.M_SPAWNER_NAME, player);
             messages.sendConsole(Strings.M_SPAWNER_LOG, Constants.PLAYER, player.getDisplayName());
