@@ -185,7 +185,6 @@ public class WarpSystem extends BaseCommand {
     }
 
     public void setShop(Location loc, String shop) {
-        Vars.shops.put(shop, loc);
         final String saveloc = loc.getWorld().getName() +
                 ":" + ((int) loc.getX()) +
                 ":" + ((int) loc.getY()) +
@@ -197,6 +196,7 @@ public class WarpSystem extends BaseCommand {
         } else {
             EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_SHOP, Strings.NAME, shop, Strings.LOC, saveloc));
         }
+        Vars.shops.put(shop, loc);
     }
 
     public Location getShop(String shop) {
@@ -204,7 +204,6 @@ public class WarpSystem extends BaseCommand {
     }
 
     public void setWarp(Location loc, String warp) {
-        Vars.warps.put(warp, loc);
         final String saveloc = loc.getWorld().getName() +
                 ":" + ((int) loc.getX()) +
                 ":" + ((int) loc.getY()) +
@@ -216,6 +215,7 @@ public class WarpSystem extends BaseCommand {
         } else {
             EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_WARP, Strings.NAME, warp, Strings.LOC, saveloc));
         }
+        Vars.warps.put(warp, loc);
     }
 
     public void delWarp(String warp) {

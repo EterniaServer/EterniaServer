@@ -108,8 +108,8 @@ public class HomeSystem extends BaseCommand {
             }
         } else {
             final String[] values = getHomes(player.getName());
-            for (String line : values) accounts.append(line).append("&8, &3");
-            messages.sendMessage(Strings.M_HOME_LIST, Strings.HOMES, messages.getColor(accounts.toString()), player);
+            for (String line : values) accounts.append(line).append(plugin.colors.get(8)).append(", ").append(plugin.colors.get(3));
+            messages.sendMessage(Strings.M_HOME_LIST, Constants.HOMES, messages.getColor(accounts.toString()), player);
         }
     }
 
