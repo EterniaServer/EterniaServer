@@ -6,4 +6,3 @@ author: Yuri Nogueira
 description: Blablabla
 api-version: '1.13'
 depend: [EterniaLib, Vault, PlaceholderAPI]
-softdepend: [EterniaMarriage]
