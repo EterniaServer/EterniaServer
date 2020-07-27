@@ -101,6 +101,10 @@
             <url>https://raw.github.com/yurinogueira/EterniaLib/repository</url>
         </repository>
         <repository>
+            <id>EterniaMarriage</id>
+            <url>https://raw.github.com/yurinogueira/EterniaMarriage/repository</url>
+        </repository>
+        <repository>
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
@@ -119,6 +123,12 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>br.com.eterniaserver</groupId>
+            <artifactId>EterniaMarriage</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>br.com.eterniaserver</groupId>
             <artifactId>EterniaLib</artifactId>

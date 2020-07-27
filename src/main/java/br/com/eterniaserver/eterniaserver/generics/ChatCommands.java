@@ -145,6 +145,7 @@ public class ChatCommands extends BaseCommand {
     @CommandCompletion("@players Oi.")
     @CommandPermission("eternia.tell")
     public void onTell(Player player, OnlinePlayer target, String[] msg) {
+        if (msg == null) msg = "Oi".split("x");
         sendPrivate(player, target.getPlayer(), getMessage(msg));
     }
 

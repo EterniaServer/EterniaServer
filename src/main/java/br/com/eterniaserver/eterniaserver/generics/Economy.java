@@ -4,19 +4,20 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
+
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import co.aikar.commands.annotation.Optional;
 import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class Economy extends BaseCommand {
@@ -86,7 +87,7 @@ public class Economy extends BaseCommand {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
             lista.forEach(name -> messages.sendMessage(Strings.M_ECO_BALLIST, Constants.POSITION, (lista.indexOf(name) + 1), Constants.PLAYER, name, Constants.AMOUNT, plugin.df2.format(APIEconomy.getMoney(name)), sender));
         } else {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            CompletableFuture.runAsync(() -> {
                 final ArrayList<String> list = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
                     double maior = 0.0;
@@ -102,8 +103,7 @@ public class Economy extends BaseCommand {
                 }
                 lista = list;
                 time = System.currentTimeMillis();
-                list.forEach(name -> messages.sendMessage(Strings.M_ECO_BALLIST, Constants.POSITION, (list.indexOf(name) + 1), Constants.PLAYER, name, Constants.AMOUNT, plugin.df2.format(APIEconomy.getMoney(name)), sender));
-            });
+            }).thenRun(() -> lista.forEach((name -> messages.sendMessage(Strings.M_ECO_BALLIST, Constants.POSITION, (lista.indexOf(name) + 1), Constants.PLAYER, name, Constants.AMOUNT, plugin.df2.format(APIEconomy.getMoney(name)), sender))));
         }
     }
 

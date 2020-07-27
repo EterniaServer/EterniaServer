@@ -5,4 +5,5 @@ version: '${project.version}'
 author: Yuri Nogueira
 description: Blablabla
 api-version: '1.13'
-softdepend: [EterniaLib, Vault, PlaceholderAPI]
+depend: [EterniaLib, Vault, PlaceholderAPI]
+softdepend: [EterniaMarriage]
