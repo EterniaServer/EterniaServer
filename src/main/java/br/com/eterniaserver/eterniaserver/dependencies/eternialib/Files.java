@@ -7,7 +7,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import org.bukkit.configuration.InvalidConfigurationException;
 import java.io.IOException;
-import java.util.Locale;
 
 public class Files {
 
@@ -25,7 +24,6 @@ public class Files {
             EterniaServer.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
 
             EFiles.fileLoad(plugin, "acf_messages.yml");
-            plugin.getManager().getLocales().loadYamlLanguageFile("acf_messages.yml", Locale.ENGLISH);
         } catch (IOException | InvalidConfigurationException e) {
             messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "problema para encontrar acf_messages.yml dentro da jar");
         }

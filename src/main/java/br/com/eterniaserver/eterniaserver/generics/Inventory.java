@@ -2,12 +2,9 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Strings;
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.annotation.Syntax;
-import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.acf.BaseCommand;
+import br.com.eterniaserver.acf.annotation.*;
+import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

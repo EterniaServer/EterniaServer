@@ -5,11 +5,8 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandPermission;
-import co.aikar.commands.annotation.Syntax;
+import br.com.eterniaserver.acf.BaseCommand;
+import br.com.eterniaserver.acf.annotation.*;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 

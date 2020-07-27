@@ -6,7 +6,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
 
-import io.papermc.lib.PaperLib;
+import br.com.eterniaserver.paperlib.PaperLib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

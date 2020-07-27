@@ -6,9 +6,9 @@ import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import br.com.eterniaserver.eterniaserver.Strings;
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
-import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.acf.BaseCommand;
+import br.com.eterniaserver.acf.annotation.*;
+import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

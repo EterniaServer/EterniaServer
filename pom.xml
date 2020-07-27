@@ -31,55 +31,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>io.papermc.lib</pattern>
-                                    <shadedPattern>br.com.eterniaserver.eterniaserver.paperlib</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>co.aikar.commands</pattern>
-                                    <shadedPattern>br.com.eterniaserver.eterniaserver.acf</shadedPattern> <!-- Replace this -->
-                                </relocation>
-                                <relocation>
-                                    <pattern>co.aikar.locales</pattern>
-                                    <shadedPattern>br.com.eterniaserver.eterniaserver.locales</shadedPattern> <!-- Replace this -->
-                                </relocation>
-                            </relocations>
                             <outputDirectory>${basedir}/target/classes/</outputDirectory>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/MANIFEST.*</exclude>
-                                        <exclude>acf-core_bg.properties</exclude>
-                                        <exclude>acf-core_cs.properties</exclude>
-                                        <exclude>acf-core_de.properties</exclude>
-                                        <exclude>acf-core_es.properties</exclude>
-                                        <exclude>acf-core_fr.properties</exclude>
-                                        <exclude>acf-core_hu.properties</exclude>
-                                        <exclude>acf-core_nb.properties</exclude>
-                                        <exclude>acf-core_nn.properties</exclude>
-                                        <exclude>acf-core_pl.properties</exclude>
-                                        <exclude>acf-core_pt.properties</exclude>
-                                        <exclude>acf-core_ru.properties</exclude>
-                                        <exclude>acf-core_sv.properties</exclude>
-                                        <exclude>acf-core_tr.properties</exclude>
-                                        <exclude>acf-minecraft_bg.properties</exclude>
-                                        <exclude>acf-minecraft_cs.properties</exclude>
-                                        <exclude>acf-minecraft_de.properties</exclude>
-                                        <exclude>acf-minecraft_es.properties</exclude>
-                                        <exclude>acf-minecraft_fr.properties</exclude>
-                                        <exclude>acf-minecraft_hu.properties</exclude>
-                                        <exclude>acf-minecraft_nb.properties</exclude>
-                                        <exclude>acf-minecraft_nn.properties</exclude>
-                                        <exclude>acf-minecraft_pl.properties</exclude>
-                                        <exclude>acf-minecraft_pt.properties</exclude>
-                                        <exclude>acf-minecraft_ru.properties</exclude>
-                                        <exclude>acf-minecraft_sv.properties</exclude>
-                                        <exclude>acf-minecraft_tr.properties</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -99,10 +51,6 @@
         <repository>
             <id>EterniaLib</id>
             <url>https://raw.github.com/yurinogueira/EterniaLib/repository</url>
-        </repository>
-        <repository>
-            <id>EterniaMarriage</id>
-            <url>https://raw.github.com/yurinogueira/EterniaMarriage/repository</url>
         </repository>
         <repository>
             <id>aikar</id>
@@ -125,14 +73,8 @@
     <dependencies>
         <dependency>
             <groupId>br.com.eterniaserver</groupId>
-            <artifactId>EterniaMarriage</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>br.com.eterniaserver</groupId>
             <artifactId>EterniaLib</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -152,18 +94,6 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.10.6</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.papermc</groupId>
-            <artifactId>paperlib</artifactId>
-            <version>1.0.4</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>acf-paper</artifactId>
-            <version>0.5.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

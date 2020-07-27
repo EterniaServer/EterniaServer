@@ -6,9 +6,8 @@ import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 
-import co.aikar.commands.PaperCommandManager;
-
 import com.google.common.collect.ImmutableList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -48,7 +47,6 @@ public class EterniaServer extends JavaPlugin {
     private final InternMethods internMethods = new InternMethods();
     private final PlaceHolders placeHolders = new PlaceHolders(sdf);
 
-    private PaperCommandManager manager;
     private EFiles messages;
     private Files files;
 
@@ -66,7 +64,6 @@ public class EterniaServer extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        manager = new PaperCommandManager(this);
         files = new Files(this);
 
         files.loadConfigs();
@@ -116,10 +113,6 @@ public class EterniaServer extends JavaPlugin {
 
     public EFiles getEFiles() {
         return messages;
-    }
-
-    public PaperCommandManager getManager() {
-        return manager;
     }
 
     public PlaceHolders getPlaceHolders() {
