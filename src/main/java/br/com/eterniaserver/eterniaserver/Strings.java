@@ -171,7 +171,7 @@ public class Strings {
     public static final String M_XP_DEPOSIT = "experience.deposit";
 
     public static final String M_ECO_MONEY = "eco.money";
-    public static final String M_ECO_OTHER = "eternia.money.other";
+    public static final String M_ECO_OTHER = "eco.money-other";
     public static final String M_ECO_PAY_NO = "eco.pay-nomoney";
     public static final String M_ECO_AUTO = "eco.auto-pay";
     public static final String M_ECO_PAY = "eco.pay";
