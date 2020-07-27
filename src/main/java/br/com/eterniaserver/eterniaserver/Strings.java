@@ -137,8 +137,8 @@ public class Strings {
     public static final String M_CHAT_SPY_E = "chat.spye";
     public static final String M_CHAT_ADVICE = "chat.global-advice";
     public static final String M_CHAT_C = "chat.channelc";
-    public static final String M_CASH_REMOVED = "cash.removed";
-    public static final String M_CASH_REMOVE = "cash.remove";
+    public static final String M_CHAT_IGNORED = "chat.ignored";
+    public static final String M_CHAT_IGNORE = "chat.ignore-sucess";
 
     public static final String M_KIT_NO_EXISTS = "kit.no-exists";
     public static final String M_KIT_LIST = "kit.list";
@@ -155,6 +155,8 @@ public class Strings {
     public static final String M_CASH_CANCEL = "cash.canc";
     public static final String M_CASH_RECEIVED = "cash.receive";
     public static final String M_CASH_SEND = "cash.send";
+    public static final String M_CASH_REMOVED = "cash.removed";
+    public static final String M_CASH_REMOVE = "cash.remove";
 
     public static final String M_GLOW_ENABLED = "glow.brilho";
     public static final String M_GLOW_DISABLED = "glow.desbrilho";

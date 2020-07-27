@@ -22,10 +22,8 @@ public class Files {
 
         try {
             EterniaServer.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
-
-            EFiles.fileLoad(plugin, "acf_messages.yml");
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "problema para encontrar acf_messages.yml dentro da jar");
+            messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "problema para encontrar config.yml dentro da jar");
         }
 
     }

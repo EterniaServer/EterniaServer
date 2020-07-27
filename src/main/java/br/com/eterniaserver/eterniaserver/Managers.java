@@ -1,11 +1,8 @@
 package br.com.eterniaserver.eterniaserver;
 
-import br.com.eterniaserver.acf.PaperCommandManager;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.generics.*;
-
-import com.google.common.collect.ImmutableList;
 
 public class Managers {
 

@@ -71,6 +71,7 @@ public class OnAsyncPlayerChat implements Listener {
                             e.setCancelled(true);
                             break;
                         default:
+                            for (Player p : Vars.ignoredPlayer.get(playerName)) e.getRecipients().remove(p);
                             ChatMessage messagex = new ChatMessage(message);
                             cf.filter(e, messagex);
                             c.filter(e, messagex);

@@ -63,6 +63,16 @@ public class ChatCommands extends BaseCommand {
         }
     }
 
+    @CommandAlias("ignore")
+    @CommandPermission("eternia.ignore")
+    public void onIgnore(Player player, OnlinePlayer targetOnline) {
+        final Player target = targetOnline.getPlayer();
+        if (target != null && target.isOnline()) {
+            Vars.ignoredPlayer.get(target.getName()).add(player);
+            messages.sendMessage(Strings.M_CHAT_IGNORE, Constants.TARGET, target.getDisplayName(), player);
+        }
+    }
+
     @CommandAlias("spy|socialspy")
     @CommandPermission("eternia.spy")
     public void onSpy(Player player) {
@@ -130,10 +140,15 @@ public class ChatCommands extends BaseCommand {
     @Syntax("<mensagem>")
     @CommandPermission("eternia.tell")
     public void onResp(Player sender, String[] msg) {
-        if (Vars.tell.containsKey(sender.getName())) {
-            final Player target = Bukkit.getPlayer(Vars.tell.get(sender.getName()));
+        final String playerName = sender.getName();
+        if (Vars.tell.containsKey(playerName)) {
+            final Player target = Bukkit.getPlayer(Vars.tell.get(playerName));
             if (target != null && target.isOnline()) {
-                sendPrivate(sender, target, getMessage(msg));
+                if (!Vars.ignoredPlayer.get(playerName).contains(target)) {
+                    sendPrivate(sender, target, getMessage(msg));
+                } else {
+                    messages.sendMessage(Strings.M_CHAT_IGNORED, sender);
+                }
                 return;
             }
         }
@@ -146,7 +161,12 @@ public class ChatCommands extends BaseCommand {
     @CommandPermission("eternia.tell")
     public void onTell(Player player, OnlinePlayer target, String[] msg) {
         if (msg == null) msg = "Oi".split("x");
-        sendPrivate(player, target.getPlayer(), getMessage(msg));
+        Player targetPlayer = target.getPlayer();
+        if (!Vars.ignoredPlayer.get(player.getName()).contains(targetPlayer)) {
+            sendPrivate(player, targetPlayer, getMessage(msg));
+        } else {
+            messages.sendMessage(Strings.M_CHAT_IGNORED, player);
+        }
     }
 
     private void playerNick(final Player player, final String string) {

@@ -14,8 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Objects;
-
 public class OnEntityInventoryClick implements Listener {
 
     private final EFiles messages;

@@ -66,6 +66,8 @@ chat:
   nick-money-2: '&7Utilize &6/nickaccept &7para aceitar e &6/nickdeny &7para negar&8.'
   no-change: '&7Você não tem nenhum pedido para mudança de nick&8.'
   nick-deny: '&7Você negou alterar seu nick&8.'
+  ignored: '&7Esse jogador está ti ignorando&8.'
+  ignore-sucess: '&7Você agora está ignorando o jogador &3%target_displayname%&8.'
 replaces:
   mem: '&7Memória&8: &3%use_memory%MB&8/&3%max_memory%MB&8.'
   online: '&7Tempo online&8: &3%hours% horas %minutes% minutos %seconds% segundos&8.'

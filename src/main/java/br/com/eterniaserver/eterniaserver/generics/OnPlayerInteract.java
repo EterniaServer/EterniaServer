@@ -25,7 +25,7 @@ public class OnPlayerInteract implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent e) {
         final Player player = e.getPlayer();
         final Action action = e.getAction();
@@ -44,6 +44,7 @@ public class OnPlayerInteract implements Listener {
                 } else {
                     Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
                 }
+                e.setCancelled(true);
             }
 
             if (EterniaServer.serverConfig.getBoolean("modules.experience") && is.getType().equals(Material.EXPERIENCE_BOTTLE)

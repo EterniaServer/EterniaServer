@@ -59,6 +59,7 @@ public class Vars {
     protected static final Map<String, String> tpaRequests = new HashMap<>();
     protected static final Map<String, String> glowingColor = new HashMap<>();
     protected static final Map<String, String> tell = new HashMap<>();
+    protected static final Map<String, List<Player>> ignoredPlayer = new HashMap<>();
     protected static final Map<String, String[]> home = new HashMap<>();
 
 
