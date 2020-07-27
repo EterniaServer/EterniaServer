@@ -50,7 +50,6 @@ public class OnAsyncPlayerChat implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
-            String message = e.getMessage();
             if (plugin.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
                 messages.sendMessage(Strings.M_CHATMUTED, player);
                 e.setCancelled(true);
@@ -60,28 +59,33 @@ public class OnAsyncPlayerChat implements Listener {
                     messages.sendMessage(Strings.M_CHAT_MUTED, Constants.TIME, TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(playerName) - time), player);
                     e.setCancelled(true);
                 } else {
-                    message = canHex(player, message);
-                    switch (Vars.global.getOrDefault(playerName, 0)) {
-                        case 0:
-                            local.sendChatMessage(message, player, EterniaServer.chatConfig.getInt("local.range"));
-                            e.setCancelled(true);
-                            break;
-                        case 2:
-                            staff.sendChatMessage(message, player);
-                            e.setCancelled(true);
-                            break;
-                        default:
-                            for (Player p : Vars.ignoredPlayer.get(playerName)) e.getRecipients().remove(p);
-                            ChatMessage messagex = new ChatMessage(message);
-                            cf.filter(e, messagex);
-                            c.filter(e, messagex);
-                            cp.filter(e, messagex);
-                            js.filter(e, messagex);
-                    }
+                    e.setCancelled(getChannel(e, player, playerName));
+
                 }
             }
         }
     }
+
+    private boolean getChannel(AsyncPlayerChatEvent e, final Player player, final String playerName) {
+        String message = e.getMessage();
+        switch (Vars.global.getOrDefault(playerName, 0)) {
+            case 0:
+                local.sendChatMessage(message, player, EterniaServer.chatConfig.getInt("local.range"));
+                return true;
+            case 2:
+                staff.sendChatMessage(message, player);
+                return true;
+            default:
+                for (Player p : Vars.ignoredPlayer.get(playerName)) e.getRecipients().remove(p);
+                ChatMessage messagex = new ChatMessage(message);
+                cf.filter(e, messagex);
+                c.filter(e, messagex);
+                cp.filter(e, messagex);
+                js.filter(e, messagex);
+                return false;
+        }
+    }
+
 
     private String canHex(final Player player, String message) {
         if (hexSupport && player.hasPermission("eternia.chat.color.hex")) {
