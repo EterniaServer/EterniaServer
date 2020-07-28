@@ -32,25 +32,21 @@ public class PlaceHolders extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player p, String identifier) {
-        if (p == null) {
-            return "";
-        } else {
-            return getPlaceHolder(getIdentifier(identifier), p.getName());
-        }
+        return p != null ? getPlaceHolder(getIdentifier(identifier), p.getName()) : "";
     }
 
     private byte getIdentifier(final String identifier) {
         switch(identifier.hashCode()) {
             case -690213213:
-                return 1;
+                return 0;
             case 96486:
-                return 2;
+                return 1;
             case 3046195:
-                return 3;
+                return 2;
             case 3175821:
-                return 4;
+                return 3;
             case 197143583:
-                return 5;
+                return 4;
             default:
                 return 12;
         }
@@ -58,19 +54,16 @@ public class PlaceHolders extends PlaceholderExpansion {
 
     private String getPlaceHolder(final byte var4, final String playerName) {
         switch (var4) {
+            case 0:
+                return Vars.playerLogin.containsKey(playerName) ? sdf.format(new Date(Vars.playerLogin.get(playerName))) : "Sem registro";
             case 1:
-                if (Vars.playerLogin.containsKey(playerName)) return sdf.format(new Date(Vars.playerLogin.get(playerName)));
-                else return "Sem registro";
+                return Vars.afk.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
             case 2:
-                if (Vars.afk.contains(playerName)) return EterniaServer.serverConfig.getString("placeholders.afk");
-                else return "";
-            case 3:
                 return String.valueOf(Vars.cash.getOrDefault(playerName, 0));
-            case 4:
+            case 3:
                 return Vars.glowingColor.getOrDefault(playerName, "");
-            case 5:
-                if (Vars.god.contains(playerName))return EterniaServer.serverConfig.getString("placeholders.godmode");
-                else return "";
+            case 4:
+                return Vars.god.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.godmode") : "";
             default:
                 return null;
         }
