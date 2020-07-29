@@ -139,6 +139,7 @@ public class Strings {
     public static final String M_CHAT_C = "chat.channelc";
     public static final String M_CHAT_IGNORED = "chat.ignored";
     public static final String M_CHAT_IGNORE = "chat.ignore-sucess";
+    public static final String M_CHAT_DENY = "chat.ignore-remove";
 
     public static final String M_KIT_NO_EXISTS = "kit.no-exists";
     public static final String M_KIT_LIST = "kit.list";

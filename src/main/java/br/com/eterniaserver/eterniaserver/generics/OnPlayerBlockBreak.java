@@ -31,7 +31,7 @@ public class OnPlayerBlockBreak implements Listener {
         this.messages = plugin.getEFiles();
     }
 
-    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
 

@@ -14,7 +14,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ChatCommands extends BaseCommand {
 
@@ -68,7 +70,20 @@ public class ChatCommands extends BaseCommand {
     public void onIgnore(Player player, OnlinePlayer targetOnline) {
         final Player target = targetOnline.getPlayer();
         if (target != null && target.isOnline()) {
-            Vars.ignoredPlayer.get(target.getName()).add(player);
+            final String targetName = target.getName();
+            List<Player> ignoreds;
+            if (Vars.ignoredPlayer.get(targetName) == null) {
+                ignoreds = new ArrayList<>();
+            } else {
+                ignoreds = Vars.ignoredPlayer.get(targetName);
+                if (ignoreds.contains(player)) {
+                    messages.sendMessage(Strings.M_CHAT_DENY, Constants.TARGET, target.getDisplayName(), player);
+                    ignoreds.remove(player);
+                    return;
+                }
+            }
+            ignoreds.add(player);
+            Vars.ignoredPlayer.put(target.getName(), ignoreds);
             messages.sendMessage(Strings.M_CHAT_IGNORE, Constants.TARGET, target.getDisplayName(), player);
         }
     }
@@ -144,11 +159,11 @@ public class ChatCommands extends BaseCommand {
         if (Vars.tell.containsKey(playerName)) {
             final Player target = Bukkit.getPlayer(Vars.tell.get(playerName));
             if (target != null && target.isOnline()) {
-                if (!Vars.ignoredPlayer.get(playerName).contains(target)) {
-                    sendPrivate(sender, target, getMessage(msg));
-                } else {
+                if (Vars.ignoredPlayer.get(playerName) != null && Vars.ignoredPlayer.get(playerName).contains(target)) {
                     messages.sendMessage(Strings.M_CHAT_IGNORED, sender);
+                    return;
                 }
+                sendPrivate(sender, target, getMessage(msg));
                 return;
             }
         }
@@ -162,11 +177,11 @@ public class ChatCommands extends BaseCommand {
     public void onTell(Player player, OnlinePlayer target, String[] msg) {
         if (msg == null) msg = "Oi".split("x");
         Player targetPlayer = target.getPlayer();
-        if (!Vars.ignoredPlayer.get(player.getName()).contains(targetPlayer)) {
-            sendPrivate(player, targetPlayer, getMessage(msg));
-        } else {
+        if (Vars.ignoredPlayer.get(player.getName()) != null && Vars.ignoredPlayer.get(player.getName()).contains(targetPlayer)) {
             messages.sendMessage(Strings.M_CHAT_IGNORED, player);
+            return;
         }
+        sendPrivate(player, targetPlayer, getMessage(msg));
     }
 
     private void playerNick(final Player player, final String string) {

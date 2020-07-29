@@ -21,6 +21,7 @@ public class Table {
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, playerNameTimeSQLite), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MUTED, playerNameTimeSQLite), false);
         }
+
         final String nameTime = "(name varchar(16), location varchar(128))";
         EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_XP, "(player_name varchar(32), xp int(11))"), false);
         EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_WARP, nameTime), false);

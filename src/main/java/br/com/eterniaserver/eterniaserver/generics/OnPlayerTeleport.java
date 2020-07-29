@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class OnPlayerTeleport implements Listener {
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
         final Player player = event.getPlayer();

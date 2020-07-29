@@ -3,10 +3,14 @@ package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.generics.AbstractCommand;
+import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
+
 import org.bukkit.configuration.InvalidConfigurationException;
+
 import java.io.IOException;
+import java.util.List;
 
 public class Files {
 
@@ -73,7 +77,17 @@ public class Files {
     public void loadCommands() {
 
         try {
-            EterniaServer.cmdConfig.load(EFiles.fileLoad(plugin, "commands.yml"));
+            final String commandsStr = "commands.";
+            EterniaServer.cmdConfig.load(EFiles.fileLoad(plugin, commandsStr + "yml"));
+            for (String keys : EterniaServer.cmdConfig.getConfigurationSection("commands").getKeys(false)) {
+                final String commandKey = commandsStr + keys;
+                String description = EterniaServer.cmdConfig.getString(commandKey + ".description");
+                List<String> aliasesString = EterniaServer.cmdConfig.getStringList(commandKey + ".aliases");
+                List<String> messagesString = EterniaServer.cmdConfig.getStringList(commandKey + ".text");
+                List<String> commandsString = EterniaServer.cmdConfig.getStringList(commandKey + ".command");
+                AbstractCommand myCommand = new CustomCommands(plugin, keys, description, aliasesString, messagesString, commandsString);
+                myCommand.register();
+            }
         } catch (IOException | InvalidConfigurationException e) {
             messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "comandos personalizados faltando | commands.yml");
         }

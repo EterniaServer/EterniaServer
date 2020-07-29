@@ -16,7 +16,7 @@ public class OnPlayerSignChange implements Listener {
         this.strings = plugin.getEFiles();
     }
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerSignChange(SignChangeEvent event) {
         if (event.getPlayer().hasPermission("eternia.sign.color")) for (byte i = 0; i < 4; i++) event.setLine(i, strings.getColor(event.getLine(i)));
     }

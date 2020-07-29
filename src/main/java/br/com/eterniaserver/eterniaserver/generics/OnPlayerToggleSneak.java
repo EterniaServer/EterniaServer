@@ -20,7 +20,7 @@ public class OnPlayerToggleSneak implements Listener {
     private final int max = EterniaServer.serverConfig.getInt("elevator.max");
     private final int min = EterniaServer.serverConfig.getInt("elevator.min");
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         if (event.isCancelled()) return;
 
