@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.Strings;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class Local {
@@ -37,7 +38,7 @@ public class Local {
     }
 
     private String getFormat(String message, final Player player) {
-        String format = PlaceholderAPI.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
+        String format = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, EterniaServer.chatConfig.getString("local.format"));
         if (player.hasPermission("eternia.chat.color")) {
             return strings.getColor(format.replace(Constants.MESSAGE, message));
         } else {

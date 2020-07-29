@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eterniaserver.dependencies.papi.*;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
@@ -45,7 +44,6 @@ public class EterniaServer extends JavaPlugin {
             ChatColor.YELLOW, ChatColor.WHITE);
 
     private final InternMethods internMethods = new InternMethods();
-    private final PlaceHolders placeHolders = new PlaceHolders(sdf);
 
     private EFiles messages;
     private Files files;
@@ -62,6 +60,7 @@ public class EterniaServer extends JavaPlugin {
     public static final FileConfiguration cashConfig = new YamlConfiguration();
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onEnable() {
 
         files = new Files(this);
@@ -73,8 +72,9 @@ public class EterniaServer extends JavaPlugin {
         messages = new EFiles(msgConfig);
 
         loadManagers();
-        placeholderAPIHook();
         vaultHook();
+
+        new PlaceHolders(sdf).register();
 
         this.getServer().getPluginManager().registerEvents(new OnPlayerJump(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityDamage(), this);
@@ -99,10 +99,6 @@ public class EterniaServer extends JavaPlugin {
         new VaultHook(this);
     }
 
-    private void placeholderAPIHook() {
-        new PAPI(this);
-    }
-
     private void loadManagers() {
         new Managers(this);
     }
@@ -113,10 +109,6 @@ public class EterniaServer extends JavaPlugin {
 
     public EFiles getEFiles() {
         return messages;
-    }
-
-    public PlaceHolders getPlaceHolders() {
-        return placeHolders;
     }
 
     public boolean isChatMuted() {

@@ -3,13 +3,10 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-
-import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,7 +21,6 @@ public class Others extends BaseCommand {
 
     private final EterniaServer plugin;
     private final EFiles messages;
-    private final PlaceHolders placeHolders;
 
     private final ItemStack coali = new ItemStack(Material.COAL);
     private final ItemStack lapizi = new ItemStack(Material.LAPIS_LAZULI);
@@ -37,7 +33,6 @@ public class Others extends BaseCommand {
     public Others(EterniaServer plugin) {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
-        this.placeHolders = plugin.getPlaceHolders();
     }
 
     @CommandAlias("reloadeternia|eterniareload")
@@ -52,8 +47,6 @@ public class Others extends BaseCommand {
         plugin.getFiles().loadKits();
         plugin.getFiles().loadRewards();
         plugin.getFiles().loadDatabase();
-        PlaceholderAPI.unregisterPlaceholderHook("eterniaserver");
-        PlaceholderAPI.registerPlaceholderHook("eterniaserver", placeHolders);
         messages.sendMessage(Strings.M_RELOAD_F, sender);
     }
 

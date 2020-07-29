@@ -19,6 +19,8 @@ public class Vars {
         throw new IllegalStateException("Utility class");
     }
 
+    protected static boolean canRegister = true;
+
     protected static long nightTime = System.currentTimeMillis();
 
     protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();

@@ -4,8 +4,9 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
+import javax.annotation.Nonnull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,20 +19,36 @@ public class PlaceHolders extends PlaceholderExpansion {
         this.sdf = sdf;
     }
 
+    @Override
+    public boolean persist(){
+        return true;
+    }
+
+    @Override
+    public boolean canRegister() {
+        return true;
+    }
+
+    @Override
+    @Nonnull
     public String getAuthor() {
         return "yurinogueira";
     }
 
+    @Override
+    @Nonnull
     public String getIdentifier() {
         return "eterniaserver";
     }
 
+    @Override
+    @Nonnull
     public String getVersion() {
         return this.version;
     }
 
     @Override
-    public String onPlaceholderRequest(Player p, String identifier) {
+    public String onRequest(OfflinePlayer p, String identifier) {
         return p != null ? getPlaceHolder(getIdentifier(identifier), p.getName()) : "";
     }
 
