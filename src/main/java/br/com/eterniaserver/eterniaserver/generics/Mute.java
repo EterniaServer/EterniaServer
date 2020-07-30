@@ -25,9 +25,9 @@ public class Mute extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_MUTED), Strings.PNAME, Strings.TIME);
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_MUTED), Strings.PLAYER_NAME, Strings.TIME);
         temp.forEach((k, v) -> Vars.playerMuted.put(k, Long.parseLong(v)));
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Muted Players", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Muted Players", Constants.AMOUNT, temp.size());
 
     }
 
@@ -54,7 +54,7 @@ public class Mute extends BaseCommand {
         long time = cal.getTimeInMillis();
         final String targetName = target.getPlayer().getName();
         messages.broadcastMessage(Strings.M_CHAT_MUTEBROAD, Constants.PLAYER, targetName, Constants.MESSAGE, messageFull(message));
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.PNAME, targetName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.PLAYER_NAME, targetName));
         Vars.playerMuted.put(targetName, cal.getTimeInMillis());
     }
 
@@ -67,7 +67,7 @@ public class Mute extends BaseCommand {
         final String playerName = target.getPlayer().getName();
         Vars.playerMuted.put(playerName, time);
         messages.broadcastMessage(Strings.M_CHAT_UNMUTEBROAD, Constants.PLAYER, target.getPlayer().getDisplayName());
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.PNAME, playerName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.PLAYER_NAME, playerName));
     }
 
     @CommandAlias("tempmute|mutetemporario")
@@ -81,7 +81,7 @@ public class Mute extends BaseCommand {
         final long timeInMillis = cal.getTimeInMillis();
         final String targetName = target.getPlayer().getName();
         messages.broadcastMessage(Strings.M_CHAT_MUTET, Constants.PLAYER, target.getPlayer().getDisplayName(), Constants.TIME, time, Constants.MESSAGE, messageFull(message));
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, timeInMillis, Strings.PNAME, targetName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, timeInMillis, Strings.PLAYER_NAME, targetName));
         Vars.playerMuted.put(targetName, cal.getTimeInMillis());
     }
 

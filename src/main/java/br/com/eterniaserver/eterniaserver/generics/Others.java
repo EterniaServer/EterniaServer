@@ -38,7 +38,7 @@ public class Others extends BaseCommand {
     @CommandAlias("reloadeternia|eterniareload")
     @CommandPermission("eternia.reload")
     public void onReload(CommandSender sender) {
-        messages.sendMessage(Strings.M_RELOAD_S, sender);
+        messages.sendMessage(Strings.MSG_RELOAD_START, sender);
         plugin.getFiles().loadConfigs();
         plugin.getFiles().loadMessages();
         plugin.getFiles().loadBlocksRewards();
@@ -47,7 +47,7 @@ public class Others extends BaseCommand {
         plugin.getFiles().loadKits();
         plugin.getFiles().loadRewards();
         plugin.getFiles().loadDatabase();
-        messages.sendMessage(Strings.M_RELOAD_F, sender);
+        messages.sendMessage(Strings.MSG_RELOAD_FINISH, sender);
     }
 
     @CommandAlias("itemrename|renameitem")
@@ -66,10 +66,10 @@ public class Others extends BaseCommand {
                 item.setLore(Collections.singletonList(transformToString(nome)));
                 player.getInventory().setItemInMainHand(item);
             } else {
-                messages.sendMessage(Strings.M_ITEM_RENAME, player);
+                messages.sendMessage(Strings.MSG_ITEM_RENAME, player);
             }
         } else {
-            messages.sendMessage(Strings.M_ITEM_NO, player);
+            messages.sendMessage(Strings.MSG_ITEM_NO, player);
         }
     }
 
@@ -89,7 +89,7 @@ public class Others extends BaseCommand {
     public void onFly(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             if (player.getWorld() == Bukkit.getWorld("evento") && !player.hasPermission("eternia.fly.evento")) {
-                messages.sendMessage(Strings.M_NO_PERM, player);
+                messages.sendMessage(Strings.MSG_NO_PERM, player);
             } else {
                 changeFlyState(player);
             }
@@ -145,7 +145,7 @@ public class Others extends BaseCommand {
         convertItems(gold, Material.GOLD_INGOT, Material.GOLD_BLOCK, player);
         convertItems(diamond, Material.DIAMOND, Material.DIAMOND_BLOCK, player);
         convertItems(esmeralda, Material.EMERALD, Material.EMERALD_BLOCK, player);
-        messages.sendMessage(Strings.M_CONDENSER, player);
+        messages.sendMessage(Strings.MSG_CONDENSER, player);
     }
 
     @CommandAlias("afk")
@@ -153,11 +153,11 @@ public class Others extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (Vars.afk.contains(playerName)) {
-            messages.broadcastMessage(Strings.M_AFK_DISABLE, Constants.PLAYER, playerName);
+            messages.broadcastMessage(Strings.MSG_AFK_DISABLE, Constants.PLAYER, playerName);
             Vars.afk.remove(playerName);
         } else {
             Vars.afk.add(playerName);
-            messages.broadcastMessage(Strings.M_AFK_ENABLE, Constants.PLAYER, playerName);
+            messages.broadcastMessage(Strings.MSG_AFK_ENABLE, Constants.PLAYER, playerName);
         }
     }
 
@@ -170,10 +170,10 @@ public class Others extends BaseCommand {
     private void changeGod(final Player player) {
         final String playerName = player.getName();
         if (Vars.god.contains(playerName)) {
-            messages.sendMessage(Strings.M_GOD_DISABLE, player);
+            messages.sendMessage(Strings.MSG_GOD_DISABLE, player);
             Vars.god.remove(playerName);
         } else {
-            messages.sendMessage(Strings.M_GOD_ENABLE, player);
+            messages.sendMessage(Strings.MSG_GOD_ENABLE, player);
             Vars.god.add(playerName);
         }
     }
@@ -194,10 +194,10 @@ public class Others extends BaseCommand {
     public void changeFlyState(Player player) {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
-            messages.sendMessage(Strings.M_FLY_DISABLE, player);
+            messages.sendMessage(Strings.MSG_FLY_DISABLE, player);
         } else {
             player.setAllowFlight(true);
-            messages.sendMessage(Strings.M_FLY_ENABLE, player);
+            messages.sendMessage(Strings.MSG_FLY_ENABLE, player);
         }
     }
 

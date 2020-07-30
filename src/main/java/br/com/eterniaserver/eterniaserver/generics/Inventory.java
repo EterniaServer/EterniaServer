@@ -40,7 +40,7 @@ public class Inventory extends BaseCommand {
             if (player.hasPermission("eternia.enderchest.other")) {
                 player.openInventory(target.getPlayer().getEnderChest());
             } else {
-                messages.sendMessage(Strings.M_NO_PERM, player);
+                messages.sendMessage(Strings.MSG_NO_PERM, player);
             }
         }
     }
@@ -50,7 +50,7 @@ public class Inventory extends BaseCommand {
     public void onHat(Player player) {
         dropHelmet(player);
         setHelmet(player);
-        messages.sendMessage(Strings.M_ITEM_HELMET, player);
+        messages.sendMessage(Strings.MSG_ITEM_HELMET, player);
     }
 
     private void dropHelmet(Player player) {

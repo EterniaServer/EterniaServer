@@ -14,7 +14,7 @@ public class APICash {
         if (Vars.cash.containsKey(playerName)) {
             return Vars.cash.get(playerName);
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PNAME, playerName, Strings.BALANCE, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PLAYER_NAME, playerName, Strings.BALANCE, 0));
             Vars.cash.put(playerName, 0);
             return 0;
         }
@@ -27,9 +27,9 @@ public class APICash {
     public static void setCash(String playerName, int amount) {
         if (Vars.cash.containsKey(playerName)) {
             Vars.cash.put(playerName, amount);
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_CASH, Strings.BALANCE, amount, Strings.PNAME, playerName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_CASH, Strings.BALANCE, amount, Strings.PLAYER_NAME, playerName));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PNAME, playerName, Strings.BALANCE, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PLAYER_NAME, playerName, Strings.BALANCE, 0));
             Vars.cash.put(playerName, 0);
             setCash(playerName, amount);
         }

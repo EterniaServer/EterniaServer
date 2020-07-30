@@ -29,9 +29,9 @@ public class Replaces extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.getRuntime = new GetRuntime();
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.PNAME, Strings.TIME);
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.PLAYER_NAME, Strings.TIME);
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Profile", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Profile", Constants.AMOUNT, temp.size());
 
     }
 
@@ -42,7 +42,7 @@ public class Replaces extends BaseCommand {
             player.setFlySpeed((float) speed / 10);
             player.setWalkSpeed((float) speed / 10);
         } else {
-            messages.sendMessage(Strings.M_SPEED, player);
+            messages.sendMessage(Strings.MSG_SPEED, player);
         }
     }
 
@@ -51,7 +51,7 @@ public class Replaces extends BaseCommand {
     public void onProfile(Player player) {
         final String playerName = player.getName();
 
-        messages.sendMessage(Strings.M_PROFILE_REGISTER, Constants.PLAYER_DATA, plugin.sdf.format(new Date(Vars.playerLogin.get(playerName))), player);
+        messages.sendMessage(Strings.MSG_PROFILE_REGISTER, Constants.PLAYER_DATA, plugin.sdf.format(new Date(Vars.playerLogin.get(playerName))), player);
         for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
             player.sendMessage(messages.getColor(putPAPI(player, line)));
         }
@@ -61,16 +61,16 @@ public class Replaces extends BaseCommand {
     @CommandPermission("eternia.mem")
     public void onMem(CommandSender player) {
         getRuntime.recalculateRuntime();
-        messages.sendMessage(Strings.M_MEM, Constants.MEM_USE, getRuntime.freemem, Constants.MEM_MAX, getRuntime.totalmem, player);
-        messages.sendMessage(Strings.M_MEM_ONLINE, Constants.HOURS, getRuntime.hours, Constants.MINUTE, getRuntime.minutes, Constants.SECONDS, getRuntime.seconds, player);
+        messages.sendMessage(Strings.MSG_MEM, Constants.MEM_USE, getRuntime.freemem, Constants.MEM_MAX, getRuntime.totalmem, player);
+        messages.sendMessage(Strings.MSG_MEM_ONLINE, Constants.HOURS, getRuntime.hours, Constants.MINUTE, getRuntime.minutes, Constants.SECONDS, getRuntime.seconds, player);
     }
 
     @CommandAlias("memall|memoryall")
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
-        messages.broadcastMessage(Strings.M_MEM, Constants.MEM_USE, getRuntime.freemem, Constants.MEM_MAX, getRuntime.totalmem);
-        messages.broadcastMessage(Strings.M_MEM_ONLINE, Constants.HOURS, getRuntime.hours, Constants.MINUTE, getRuntime.minutes, Constants.SECONDS, getRuntime.seconds);
+        messages.broadcastMessage(Strings.MSG_MEM, Constants.MEM_USE, getRuntime.freemem, Constants.MEM_MAX, getRuntime.totalmem);
+        messages.broadcastMessage(Strings.MSG_MEM_ONLINE, Constants.HOURS, getRuntime.hours, Constants.MINUTE, getRuntime.minutes, Constants.SECONDS, getRuntime.seconds);
     }
 
     private String putPAPI(Player player, String message) {

@@ -20,7 +20,7 @@ public class APIEconomy {
         if (Vars.balances.containsKey(playerName)) {
             return Vars.balances.get(playerName);
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PNAME, playerName, Strings.BALANCE, EterniaServer.serverConfig.getDouble("money.start")));Vars.balances.put(playerName, 300.0);
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PLAYER_NAME, playerName, Strings.BALANCE, EterniaServer.serverConfig.getDouble("money.start")));Vars.balances.put(playerName, 300.0);
             return 300.0;
         }
     }
@@ -43,9 +43,9 @@ public class APIEconomy {
     public static void setMoney(String playerName, double amount) {
         if (Vars.balances.containsKey(playerName)) {
             Vars.balances.put(playerName, amount);
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MONEY, Strings.BALANCE, amount, Strings.PNAME, playerName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MONEY, Strings.BALANCE, amount, Strings.PLAYER_NAME, playerName));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PNAME, playerName, Strings.BALANCE, EterniaServer.serverConfig.getDouble("money.start")));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PLAYER_NAME, playerName, Strings.BALANCE, EterniaServer.serverConfig.getDouble("money.start")));
             Vars.balances.put(playerName, 300.0);
             setMoney(playerName, amount);
         }

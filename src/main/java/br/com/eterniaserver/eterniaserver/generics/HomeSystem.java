@@ -32,7 +32,7 @@ public class HomeSystem extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOMES), Strings.NAME, Strings.LOC);
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOMES), Strings.NAME, Strings.LOCATION);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -43,14 +43,14 @@ public class HomeSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.homes.put(k, loc);
         });
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Home", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Home", Constants.AMOUNT, temp.size());
 
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOME), Strings.PNAME, Strings.HOMES);
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOME), Strings.PLAYER_NAME, Strings.HOMES);
         temp.forEach((k, v) -> {
             final String[] homess = v.split(":");
             Vars.home.put(k, homess);
         });
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "PlayerHomes", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "PlayerHomes", Constants.AMOUNT, temp.size());
 
     }
 
@@ -76,17 +76,17 @@ public class HomeSystem extends BaseCommand {
             if (locationExists(location, player) && !Vars.teleports.containsKey(player)) {
                 Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
             } else if (Vars.teleports.containsKey(player)) {
-                messages.sendMessage(Strings.M_TELEP, player);
+                messages.sendMessage(Strings.MSG_IN_TELEPORT, player);
             }
         } else if (player.hasPermission("eternia.home.other")) {
             Location location = getHome(nome.toLowerCase(), target.getPlayer().getName());
             if (locationExists(location, player) && !Vars.teleports.containsKey(player)) {
                 Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
             } else if (Vars.teleports.containsKey(player)) {
-                messages.sendMessage(Strings.M_TELEP, player);
+                messages.sendMessage(Strings.MSG_IN_TELEPORT, player);
             }
         } else {
-            messages.sendMessage(Strings.M_NO_PERM, player);
+            messages.sendMessage(Strings.MSG_NO_PERM, player);
         }
     }
 
@@ -101,7 +101,7 @@ public class HomeSystem extends BaseCommand {
                 for (String line : values) if (!accounts.toString().equals("")) accounts.append(line).append("&8, &3");
                 messages.sendMessage(Strings.M_HOME_LIST, Constants.HOMES, messages.getColor(accounts.toString()), player);
             } else {
-                messages.sendMessage(Strings.M_NO_PERM, player);
+                messages.sendMessage(Strings.MSG_NO_PERM, player);
             }
         } else {
             final String[] values = getHomes(player.getName());
@@ -165,12 +165,12 @@ public class HomeSystem extends BaseCommand {
                 ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (!t) {
             result.append(home).append(":");
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, result, Strings.PNAME, jogador));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, result, Strings.PLAYER_NAME, jogador));
             values = result.toString().split(":");
             Vars.home.put(jogador, values);
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOMES, Strings.NAME, homeName, Strings.LOC, saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOMES, Strings.NAME, homeName, Strings.LOCATION, saveloc));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOMES, Strings.LOC, saveloc, Strings.NAME, homeName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOMES, Strings.LOCATION, saveloc, Strings.NAME, homeName));
         }
     }
 
@@ -190,9 +190,9 @@ public class HomeSystem extends BaseCommand {
         values = novaString.split(":");
         Vars.home.put(jogador, values);
         if (t) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, "", Strings.PNAME, jogador));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, "", Strings.PLAYER_NAME, jogador));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, novaString, Strings.PNAME, jogador));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, novaString, Strings.PLAYER_NAME, jogador));
         }
         EQueries.executeQuery(Constants.getQueryDelete(Constants.TABLE_HOMES, Strings.NAME, homeName));
     }

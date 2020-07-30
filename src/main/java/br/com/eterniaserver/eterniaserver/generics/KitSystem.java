@@ -27,7 +27,7 @@ public class KitSystem extends BaseCommand {
 
         HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_KITS), Strings.NAME, Strings.COOLDOWN);
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Kits", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Kits", Constants.AMOUNT, temp.size());
 
     }
 
@@ -51,10 +51,10 @@ public class KitSystem extends BaseCommand {
                 if (timeInSec >= cooldown) {
                     giveKit(player, time, kitName, kit);
                 } else {
-                    messages.sendMessage(Strings.M_TIMING, Constants.COOLDOWN, cooldown - timeInSec, player);
+                    messages.sendMessage(Strings.MSG_TIMING, Constants.COOLDOWN, cooldown - timeInSec, player);
                 }
             } else {
-                messages.sendMessage(Strings.M_NO_PERM, Constants.KIT_NAME, kit, player);
+                messages.sendMessage(Strings.MSG_NO_PERM, Constants.KIT_NAME, kit, player);
             }
         } else {
             messages.sendMessage(Strings.M_KIT_NO_EXISTS, Constants.KIT_NAME, kit, player);

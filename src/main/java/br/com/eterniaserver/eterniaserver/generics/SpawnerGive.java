@@ -43,11 +43,11 @@ public class SpawnerGive extends BaseCommand {
             EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
             if (inventory.firstEmpty() == -1) {
-                messages.sendMessage(Strings.M_SPAWNER_INVFULL, player);
+                messages.sendMessage(Strings.MSG_SPAWNER_INVFULL, player);
             } else {
                 inventory.addItem(getSpawner(spawnerName, value));
-                messages.sendMessage(Strings.M_SPAWNER_SENT, Constants.VALUE, value, Constants.TYPE, spawnerName, Constants.TARGET, targetP.getDisplayName(), player);
-                messages.sendMessage(Strings.M_SPAWNER_RECEIVED, Constants.VALUE, value, Constants.TYPE, spawnerName, Constants.TARGET, player.getName(), targetP);
+                messages.sendMessage(Strings.MSG_SPAWNER_SENT, Constants.VALUE, value, Constants.TYPE, spawnerName, Constants.TARGET, targetP.getDisplayName(), player);
+                messages.sendMessage(Strings.MSG_SPAWNER_RECEIVED, Constants.VALUE, value, Constants.TYPE, spawnerName, Constants.TARGET, player.getName(), targetP);
             }
         } else {
             sendTypes(player);
@@ -75,7 +75,7 @@ public class SpawnerGive extends BaseCommand {
         StringBuilder str = new StringBuilder();
         for (String entity : entityList) str.append(ChatColor.DARK_AQUA).append(entity).append(ChatColor.DARK_GRAY).append(", ");
         str.append(ChatColor.GRAY).append("algumas entidades não funcionam");
-        messages.sendMessage(Strings.M_SPAWNER_GIVE, Constants.TYPE, str.toString(), player);
+        messages.sendMessage(Strings.MSG_SPAWNER_GIVE, Constants.TYPE, str.toString(), player);
     }
 
 }

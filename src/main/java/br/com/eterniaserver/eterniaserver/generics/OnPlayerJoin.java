@@ -46,7 +46,7 @@ public class OnPlayerJoin implements Listener {
         playerChecks(playerName);
 
         event.setJoinMessage(null);
-        plugin.getEFiles().broadcastMessage(Strings.M_JOIN, Constants.PLAYER, player.getDisplayName());
+        plugin.getEFiles().broadcastMessage(Strings.MSG_JOIN, Constants.PLAYER, player.getDisplayName());
     }
 
     private void playerMutedExist(String playerName) {
@@ -93,12 +93,12 @@ public class OnPlayerJoin implements Listener {
 
     private void playerMutedCreate(String playerName) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MUTED, Strings.PNAME, playerName, Strings.TIME, time));
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MUTED, Strings.PLAYER_NAME, playerName, Strings.TIME, time));
         Vars.playerMuted.put(playerName, time);
     }
 
     private void playerCashCreate(String playerName) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PNAME, playerName, Strings.BALANCE, 0));
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PLAYER_NAME, playerName, Strings.BALANCE, 0));
         Vars.cash.put(playerName, 0);
     }
 
@@ -116,23 +116,23 @@ public class OnPlayerJoin implements Listener {
     }
 
     private void playerMoneyCreate(String playerName) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PNAME, playerName, Strings.BALANCE, moneyStart));
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PLAYER_NAME, playerName, Strings.BALANCE, moneyStart));
         Vars.balances.put(playerName, 300.0);
     }
 
     private void playerProfileCreate(String playerName) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, Strings.PNAME, playerName, Strings.TIME, time));
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, Strings.PLAYER_NAME, playerName, Strings.TIME, time));
         Vars.playerLogin.put(playerName, time);
     }
 
     private void playerXPCreate(String playerName) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_XP, Strings.PNAME, playerName, Strings.XP, 0));
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_XP, Strings.PLAYER_NAME, playerName, Strings.XP, 0));
         Vars.xp.put(playerName, 0);
     }
 
     private void playerHomeCreate(String playerName) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOME, Strings.PNAME, playerName, Strings.HOMES, ""));
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOME, Strings.PLAYER_NAME, playerName, Strings.HOMES, ""));
     }
 
 }

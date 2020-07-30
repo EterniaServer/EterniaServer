@@ -29,9 +29,9 @@ public class ChatCommands extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.money = EterniaServer.serverConfig.getInt("money.nick");
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_NICK), Strings.PNAME, Strings.PDISPLAY);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_NICK), Strings.PLAYER_NAME, Strings.PLAYER_DISPLAY);
         temp.forEach(Vars.nickname::put);
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Nicks", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Nicks", Constants.AMOUNT, temp.size());
 
     }
 
@@ -50,7 +50,7 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("vanish|chupadadimensional")
     @CommandPermission("eternia.vanish")
     public void onVanish(Player player) {
-        messages.broadcastMessage(Strings.M_LEAVE, Constants.PLAYER, player.getName());
+        messages.broadcastMessage(Strings.MSG_LEAVE, Constants.PLAYER, player.getName());
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(plugin, player);
         }
@@ -59,7 +59,7 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("unvanish|chupadadimensionalreversa")
     @CommandPermission("eternia.vanish")
     public void onUnVanish(Player player) {
-        messages.broadcastMessage(Strings.M_JOIN, Constants.PLAYER, player.getName());
+        messages.broadcastMessage(Strings.MSG_JOIN, Constants.PLAYER, player.getName());
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(plugin, player);
         }
@@ -110,7 +110,7 @@ public class ChatCommands extends BaseCommand {
             if (target == null) {
                 playerNick(player, string);
             } else {
-                messages.sendMessage(Strings.M_NO_PERM, player);
+                messages.sendMessage(Strings.MSG_NO_PERM, player);
             }
         } else {
             staffNick(target, player, string);
@@ -130,7 +130,7 @@ public class ChatCommands extends BaseCommand {
                 saveToSQL(playerName);
                 Vars.nickname.put(playerName, Vars.nick.get(playerName));
             } else {
-                messages.sendMessage(Strings.M_NO_MONEY, player);
+                messages.sendMessage(Strings.MSG_NO_MONEY, player);
             }
             Vars.nick.remove(playerName);
         } else {
@@ -231,9 +231,9 @@ public class ChatCommands extends BaseCommand {
 
     private void saveToSQL(final String playerName) {
         if (Vars.nickname.containsKey(playerName)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_NICK, Strings.PDISPLAY, Vars.nick.get(playerName), Strings.PNAME, playerName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_NICK, Strings.PLAYER_DISPLAY, Vars.nick.get(playerName), Strings.PLAYER_NAME, playerName));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_NICK, Strings.PNAME, playerName, Strings.PDISPLAY, Vars.nick.get(playerName)));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_NICK, Strings.PLAYER_NAME, playerName, Strings.PLAYER_DISPLAY, Vars.nick.get(playerName)));
         }
     }
 

@@ -23,7 +23,7 @@ public class AccelerateNight extends BukkitRunnable {
         this.world = world;
         this.messages = plugin.getEFiles();
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
-            messages.broadcastMessage(Strings.M_BED_NIGHT_SKIP, Constants.WORLD, world.getName());
+            messages.broadcastMessage(Strings.MSG_SKIPPING, Constants.WORLD, world.getName());
         }
     }
 
@@ -41,7 +41,7 @@ public class AccelerateNight extends BukkitRunnable {
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
-                messages.broadcastMessage(Strings.M_BED_SKIP);
+                messages.broadcastMessage(Strings.MSG_SKIP_NIGHT);
                 changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {

@@ -28,9 +28,9 @@ public class Experience extends BaseCommand {
         this.internMethods = plugin.getInternMethods();
         this.messages = plugin.getEFiles();
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_XP), Strings.PNAME, Strings.XP);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_XP), Strings.PLAYER_NAME, Strings.XP);
         temp.forEach((k, v) -> Vars.xp.put(k, Integer.parseInt(v)));
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Experience", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Experience", Constants.AMOUNT, temp.size());
     }
 
     @CommandAlias("checklevel|verlevel")

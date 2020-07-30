@@ -55,12 +55,12 @@ public class Checks extends BukkitRunnable {
             } else if (Vars.playersInPortal.get(playerName) <= 1) {
                 if (location.getBlock().getType() == Material.NETHER_PORTAL) {
                     PaperLib.teleportAsync(player, getWarp());
-                    messages.sendMessage(Strings.M_WARP_DONE, player);
+                    messages.sendMessage(Strings.MSG_WARP_DONE, player);
                 }
             } else if (Vars.playersInPortal.get(playerName) > 1) {
                 Vars.playersInPortal.put(playerName, Vars.playersInPortal.get(playerName) - 1);
                 if (Vars.playersInPortal.get(playerName) < 5) {
-                    messages.sendMessage(Strings.M_NETHER_TRAP, Constants.COOLDOWN, Vars.playersInPortal.get(playerName), player);
+                    messages.sendMessage(Strings.MSG_NETHER_TRAP, Constants.COOLDOWN, Vars.playersInPortal.get(playerName), player);
                 }
             }
         } else {
@@ -72,11 +72,11 @@ public class Checks extends BukkitRunnable {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afkTime.get(playerName)) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
             if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
                 if (!Vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                    messages.broadcastMessage(Strings.M_AFK_BROAD, Constants.PLAYER, player.getDisplayName());
-                    player.kickPlayer(messages.getMessage(Strings.M_AFK_KICKED));
+                    messages.broadcastMessage(Strings.MSG_AFK_BROAD, Constants.PLAYER, player.getDisplayName());
+                    player.kickPlayer(messages.getMessage(Strings.MSG_AFK_KICKED));
                 }
             } else {
-                messages.broadcastMessage(Strings.M_AFK_ENABLE, Constants.PLAYER, player.getDisplayName());
+                messages.broadcastMessage(Strings.MSG_AFK_ENABLE, Constants.PLAYER, player.getDisplayName());
                 Vars.afk.add(playerName);
             }
         }
@@ -92,11 +92,11 @@ public class Checks extends BukkitRunnable {
                         messages.sendMessage(playerTeleport.getMessage(), player);
                         Vars.teleports.remove(player);
                     } else {
-                        messages.sendMessage(Strings.M_TP_TIMING, Constants.COOLDOWN, playerTeleport.getCountdown(), player);
+                        messages.sendMessage(Strings.MSG_TELEPORT_TIMING, Constants.COOLDOWN, playerTeleport.getCountdown(), player);
                         playerTeleport.decreaseCountdown();
                     }
                 } else {
-                    messages.sendMessage(Strings.M_TP_MOVE, player);
+                    messages.sendMessage(Strings.MSG_TELEPORT_MOVE, player);
                     Vars.teleports.remove(player);
                 }
             } else {

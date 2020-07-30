@@ -20,7 +20,7 @@ public class APIExperience {
             return Vars.xp.get(playerName);
         } else {
             Vars.xp.put(playerName, 0);
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_XP, Strings.PNAME, playerName, Strings.XP, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_XP, Strings.PLAYER_NAME, playerName, Strings.XP, 0));
             return 0;
         }
     }
@@ -32,7 +32,7 @@ public class APIExperience {
      */
     public static void setExp(String playerName, int amount) {
         Vars.xp.put(playerName, amount);
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_XP, Strings.XP, amount, Strings.PNAME, playerName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_XP, Strings.XP, amount, Strings.PLAYER_NAME, playerName));
     }
 
     /**

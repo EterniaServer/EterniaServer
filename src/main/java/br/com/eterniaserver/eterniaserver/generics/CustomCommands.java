@@ -46,7 +46,7 @@ public class CustomCommands extends AbstractCommand {
                 player.sendMessage(messages.getColor(line));
             }
         } else {
-            messages.sendMessage(Strings.M_NO_PERM, player);
+            messages.sendMessage(Strings.MSG_NO_PERM, player);
         }
     }
 

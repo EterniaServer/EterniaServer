@@ -36,9 +36,9 @@ public class Cash extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_CASH), Strings.PNAME, Strings.BALANCE);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_CASH), Strings.PLAYER_NAME, Strings.BALANCE);
         temp.forEach((k, v) -> Vars.cash.put(k, Integer.parseInt(v)));
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Cash", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Cash", Constants.AMOUNT, temp.size());
 
         loadGui();
 
@@ -106,7 +106,7 @@ public class Cash extends BaseCommand {
     @CommandPermission("eternia.cash.admin")
     public void onCashGive(CommandSender player, OnlinePlayer targetP, Integer value) {
         if (value <= 0) {
-            messages.sendMessage(Strings.M_NO_NEGATIVE, player);
+            messages.sendMessage(Strings.MSG_NO_NEGATIVE, player);
             return;
         }
 
@@ -123,7 +123,7 @@ public class Cash extends BaseCommand {
     @CommandPermission("eternia.cash.admin")
     public void onCashRemove(CommandSender player, OnlinePlayer targetP, Integer value) {
         if (value <= 0) {
-            messages.sendMessage(Strings.M_NO_NEGATIVE, player);
+            messages.sendMessage(Strings.MSG_NO_NEGATIVE, player);
             return;
         }
 
@@ -142,7 +142,10 @@ public class Cash extends BaseCommand {
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Loja de &aCash&8."));
         itemStack.setItemMeta(itemMeta);
         for (int i = 0; i < 27; i++) {
-            if (!EterniaServer.cashConfig.contains("gui." + i)) Vars.cashGui.add(itemStack);
+            if (!EterniaServer.cashConfig.contains("gui." + i)) {
+                Vars.cashGui.add(itemStack);
+                return;
+            }
 
             ItemStack item = new ItemStack(Material.getMaterial(EterniaServer.cashConfig.getString("gui." + i + ".material")));
             ItemMeta meta = item.getItemMeta();

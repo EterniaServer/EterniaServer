@@ -49,13 +49,13 @@ public class OnPlayerBlockBreak implements Listener {
                 event.setExpToDrop(0);
             } else {
                 event.setCancelled(true);
-                messages.sendMessage(Strings.M_SPAWNER_SILK, player);
+                messages.sendMessage(Strings.MSG_SPAWNER_SILK, player);
             }
         } else if (!player.hasPermission("eternia.spawners.break") && material == Material.SPAWNER) {
-            messages.sendMessage(Strings.M_NO_PERM, player);
+            messages.sendMessage(Strings.MSG_NO_PERM, player);
             event.setCancelled(true);
         } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {
-            messages.sendMessage(Strings.M_SPAWNER_BLOCKED, player);
+            messages.sendMessage(Strings.MSG_SPAWNER_BLOCKED, player);
             event.setCancelled(true);
         }
         final String blockConfig = "blocks.";
@@ -89,7 +89,7 @@ public class OnPlayerBlockBreak implements Listener {
                     player.getInventory().addItem(getSpawner(block, material));
                     block.getDrops().clear();
                 } else {
-                    messages.sendMessage(Strings.M_SPAWNER_INVFULL, player);
+                    messages.sendMessage(Strings.MSG_SPAWNER_INVFULL, player);
                     final Location loc = block.getLocation();
                     loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
                 }
@@ -98,7 +98,7 @@ public class OnPlayerBlockBreak implements Listener {
                 loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
             }
         } else {
-            messages.sendMessage(Strings.M_SPAWNER_FAILED, player);
+            messages.sendMessage(Strings.MSG_SPAWNER_FAILED, player);
         }
     }
 

@@ -30,9 +30,9 @@ public class Economy extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_MONEY), Strings.PNAME, Strings.BALANCE);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_MONEY), Strings.PLAYER_NAME, Strings.BALANCE);
         temp.forEach((k, v) -> Vars.balances.put(k, Double.parseDouble(v)));
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Economy", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Economy", Constants.AMOUNT, temp.size());
     }
 
     @CommandAlias("money|economy|balance|bal")
@@ -48,7 +48,7 @@ public class Economy extends BaseCommand {
                 double money = APIEconomy.getMoney(target.getPlayer().getName());
                 messages.sendMessage(Strings.M_ECO_OTHER, Constants.AMOUNT, plugin.df2.format(money), player);
             } else {
-                messages.sendMessage(Strings.M_NO_PERM, player);
+                messages.sendMessage(Strings.MSG_NO_PERM, player);
             }
         }
     }

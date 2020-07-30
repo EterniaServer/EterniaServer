@@ -30,7 +30,7 @@ public class OnPlayerLeave implements Listener {
         }
 
         event.setQuitMessage(null);
-        plugin.getEFiles().broadcastMessage(Strings.M_LEAVE, Constants.PLAYER, player.getDisplayName());
+        plugin.getEFiles().broadcastMessage(Strings.MSG_LEAVE, Constants.PLAYER, player.getDisplayName());
 
     }
 

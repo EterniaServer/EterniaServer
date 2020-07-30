@@ -33,8 +33,8 @@ public class OnEntityInventoryClick implements Listener {
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
-            messages.sendMessage(Strings.M_SPAWNER_NAME, player);
-            messages.sendConsole(Strings.M_SPAWNER_LOG, Constants.PLAYER, player.getDisplayName());
+            messages.sendMessage(Strings.MSG_SPAWNER_NAME, player);
+            messages.sendConsole(Strings.MSG_SPAWNER_LOG, Constants.PLAYER, player.getDisplayName());
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.cash") && e.getView().getTitle().equals("Cash")) {

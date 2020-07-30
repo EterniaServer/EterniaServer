@@ -33,7 +33,7 @@ public class RewardsSystem extends BaseCommand {
 
         HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_REWARD), Strings.CODE, Strings.CODE_GROUP);
         temp.forEach(Vars.rewards::put);
-        messages.sendConsole(Strings.M_LOAD_DATA, Constants.MODULE, "Keys", Constants.AMOUNT, temp.size());
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Keys", Constants.AMOUNT, temp.size());
 
     }
 
@@ -45,7 +45,7 @@ public class RewardsSystem extends BaseCommand {
             giveReward(Vars.rewards.get(key), player);
             deleteKey(key);
         } else {
-            messages.sendMessage(Strings.M_REWARD_INVALID, player);
+            messages.sendMessage(Strings.MSG_REWARD_INVALID, player);
         }
     }
 
@@ -57,9 +57,9 @@ public class RewardsSystem extends BaseCommand {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
-            messages.sendMessage(Strings.M_REWARD_CREATE, Constants.KEY, key, sender);
+            messages.sendMessage(Strings.MSG_REWARD_CREATE, Constants.KEY, key, sender);
         } else {
-            messages.sendMessage(Strings.M_REWARD_NO, Constants.GROUP, reward, sender);
+            messages.sendMessage(Strings.MSG_REWARD_NO, Constants.GROUP, reward, sender);
         }
     }
 

@@ -31,7 +31,7 @@ public class OnPlayerCommandPreProcess implements Listener {
 
         if (message.equalsIgnoreCase("/tps")) {
             String s = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, Constants.TPS);
-            messages.sendMessage(Strings.M_TPS, Constants.TPS, s.substring(0, s.length() - 2), player);
+            messages.sendMessage(Strings.MSG_TPS, Constants.TPS, s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
             return;
         }

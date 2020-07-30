@@ -50,18 +50,14 @@ public abstract class AbstractCommand implements CommandExecutor {
     }
 
     public void register() {
-        ReflectCommand cmd = new ReflectCommand(this.command);
-
-        if (this.alias != null) cmd.setAliases(this.alias);
-
-        if (this.description != null) cmd.setDescription(this.description);
-
         try {
             Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             f.setAccessible(true);
             CommandMap cmap = (CommandMap) f.get(Bukkit.getServer());
+            ReflectCommand cmd = new ReflectCommand(this.command, this);
+            if (this.alias != null) cmd.setAliases(this.alias);
+            if (this.description != null) cmd.setDescription(this.description);
             cmap.register("eterniaserver", cmd);
-            cmd.setExecutor(this);
             f.setAccessible(false);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
@@ -72,22 +68,16 @@ public abstract class AbstractCommand implements CommandExecutor {
 
 final class ReflectCommand extends Command {
 
-    public AbstractCommand exe = null;
+    private final AbstractCommand exe;
 
-    protected ReflectCommand(String command) {
+    protected ReflectCommand(String command, AbstractCommand exe) {
         super(command);
-    }
-
-    public void setExecutor(AbstractCommand exe) {
         this.exe = exe;
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (exe != null) {
-            return exe.onCommand(sender, this, commandLabel, args);
-        }
-        return false;
+        return exe.onCommand(sender, this, commandLabel, args);
     }
 
 }

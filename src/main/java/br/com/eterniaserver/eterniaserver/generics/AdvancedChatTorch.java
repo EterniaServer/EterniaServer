@@ -30,10 +30,10 @@ public class AdvancedChatTorch {
 		for(Object s: EterniaServer.groupConfig.getKeys(false)) {
 			if (!s.equals("groups")) {
 				if (!EterniaServer.groupConfig.contains(s.toString())) {
-					messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "nenhum grupo encontrado");
+					messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "nenhum grupo encontrado");
 				}
 				if (!EterniaServer.groupConfig.contains(s.toString() + ".perm")) {
-					messages.sendConsole(Strings.M_ERROR, Constants.ERROR, "permissão para o grupo não encontrada");
+					messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "permissão para o grupo não encontrada");
 				}
 			}
 		}
