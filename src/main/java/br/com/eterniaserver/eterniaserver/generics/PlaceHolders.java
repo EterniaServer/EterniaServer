@@ -48,6 +48,7 @@ public class PlaceHolders extends PlaceholderExpansion {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public String onRequest(OfflinePlayer p, @Nonnull String identifier) {
         return p != null ? getPlaceHolder(getIdentifier(identifier), p.getName()) : "";
     }

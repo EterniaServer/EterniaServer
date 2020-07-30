@@ -9,6 +9,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
@@ -75,7 +76,7 @@ public class OnPlayerBlockBreak implements Listener {
         }
         if (lowestNumberAboveRandom <= 1) {
             for (String command : EterniaServer.blockConfig.getStringList(blockConfig + materialName + "." + lowestNumberAboveRandom)) {
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders((OfflinePlayer) player, command));
             }
         }
     }
