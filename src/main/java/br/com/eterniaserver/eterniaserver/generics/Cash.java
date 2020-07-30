@@ -105,15 +105,16 @@ public class Cash extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.cash.admin")
     public void onCashGive(CommandSender player, OnlinePlayer targetP, Integer value) {
-        final Player target = targetP.getPlayer();
-        if (value > 0) {
-            final String targetName = target.getName();
-            APICash.addCash(targetName, value);
-            messages.sendMessage(Strings.M_CASH_RECEIVED, Constants.AMOUNT, value, target);
-            messages.sendMessage(Strings.M_CASH_SEND, Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
-        } else {
+        if (value <= 0) {
             messages.sendMessage(Strings.M_NO_NEGATIVE, player);
+            return;
         }
+
+        final Player target = targetP.getPlayer();
+        final String targetName = target.getName();
+        APICash.addCash(targetName, value);
+        messages.sendMessage(Strings.M_CASH_RECEIVED, Constants.AMOUNT, value, target);
+        messages.sendMessage(Strings.M_CASH_SEND, Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
     }
 
     @Subcommand("remove")
@@ -121,45 +122,39 @@ public class Cash extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.cash.admin")
     public void onCashRemove(CommandSender player, OnlinePlayer targetP, Integer value) {
-        final Player target = targetP.getPlayer();
-        if (value > 0) {
-            final String targetName = target.getName();
-            APICash.removeCash(targetName, value);
-            messages.sendMessage(Strings.M_CASH_REMOVED, Constants.AMOUNT, value, target);
-            messages.sendMessage(Strings.M_CASH_REMOVE, Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
-        } else {
+        if (value <= 0) {
             messages.sendMessage(Strings.M_NO_NEGATIVE, player);
+            return;
         }
+
+        final Player target = targetP.getPlayer();
+        final String targetName = target.getName();
+        APICash.removeCash(targetName, value);
+        messages.sendMessage(Strings.M_CASH_REMOVED, Constants.AMOUNT, value, target);
+        messages.sendMessage(Strings.M_CASH_REMOVE, Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
     }
 
     private void loadGui() {
-
         Vars.cashGui.clear();
 
         ItemStack itemStack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Loja de &aCash&8."));
         itemStack.setItemMeta(itemMeta);
-
         for (int i = 0; i < 27; i++) {
+            if (!EterniaServer.cashConfig.contains("gui." + i)) Vars.cashGui.add(itemStack);
 
-            if (EterniaServer.cashConfig.contains("gui." + i)) {
-                ItemStack item = new ItemStack(Material.getMaterial(EterniaServer.cashConfig.getString("gui." + i + ".material")));
-                ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', EterniaServer.cashConfig.getString("gui." + i + ".name")));
-                List<String> lista = EterniaServer.cashConfig.getStringList("gui." + i + ".lore");
-                for (int j = 0; j < lista.size(); j++) {
-                    lista.set(j, ChatColor.translateAlternateColorCodes('&', lista.get(j)));
-                }
-                meta.setLore(lista);
-                item.setItemMeta(meta);
-                Vars.cashGui.add(item);
-            } else {
-                Vars.cashGui.add(itemStack);
+            ItemStack item = new ItemStack(Material.getMaterial(EterniaServer.cashConfig.getString("gui." + i + ".material")));
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', EterniaServer.cashConfig.getString("gui." + i + ".name")));
+            List<String> lista = EterniaServer.cashConfig.getStringList("gui." + i + ".lore");
+            for (int j = 0; j < lista.size(); j++) {
+                lista.set(j, ChatColor.translateAlternateColorCodes('&', lista.get(j)));
             }
-
+            meta.setLore(lista);
+            item.setItemMeta(meta);
+            Vars.cashGui.add(item);
         }
-
     }
 
 }

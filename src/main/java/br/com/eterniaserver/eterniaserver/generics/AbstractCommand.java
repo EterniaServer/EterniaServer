@@ -43,8 +43,6 @@ public abstract class AbstractCommand implements CommandExecutor {
     protected final String description;
     protected final List<String> alias;
 
-    protected static CommandMap cmap;
-
     public AbstractCommand(String command, String description, List<String> aliases) {
         this.command = command.toLowerCase();
         this.description = description;
@@ -53,45 +51,43 @@ public abstract class AbstractCommand implements CommandExecutor {
 
     public void register() {
         ReflectCommand cmd = new ReflectCommand(this.command);
+
         if (this.alias != null) cmd.setAliases(this.alias);
+
         if (this.description != null) cmd.setDescription(this.description);
-        getCommandMap().register("", cmd);
-        cmd.setExecutor(this);
+
+        try {
+            Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            f.setAccessible(true);
+            CommandMap cmap = (CommandMap) f.get(Bukkit.getServer());
+            cmap.register("eterniaserver", cmd);
+            cmd.setExecutor(this);
+            f.setAccessible(false);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
     }
 
-    static CommandMap getCommandMap() {
-        if (cmap == null) {
-            try {
-                Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-                f.setAccessible(true);
-                cmap = (CommandMap) f.get(Bukkit.getServer());
-                return getCommandMap();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            return cmap;
-        }
-        return getCommandMap();
+}
+
+final class ReflectCommand extends Command {
+
+    public AbstractCommand exe = null;
+
+    protected ReflectCommand(String command) {
+        super(command);
     }
 
-    private static final class ReflectCommand extends Command {
+    public void setExecutor(AbstractCommand exe) {
+        this.exe = exe;
+    }
 
-        private AbstractCommand exe = null;
-        protected ReflectCommand(String command) {
-            super(command);
+    @Override
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (exe != null) {
+            return exe.onCommand(sender, this, commandLabel, args);
         }
-        public void setExecutor(AbstractCommand exe) {
-            this.exe = exe;
-        }
-        @Override
-        public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-            if (exe != null) {
-                return exe.onCommand(sender, this, commandLabel, args);
-            }
-            return false;
-        }
-
+        return false;
     }
 
 }
