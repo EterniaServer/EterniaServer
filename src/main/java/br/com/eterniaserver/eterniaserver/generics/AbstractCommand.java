@@ -62,7 +62,8 @@ public abstract class AbstractCommand implements CommandExecutor {
     static CommandMap getCommandMap() {
         if (cmap == null) {
             try {
-                final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+                Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+                f.setAccessible(true);
                 cmap = (CommandMap) f.get(Bukkit.getServer());
                 return getCommandMap();
             } catch (Exception e) {
