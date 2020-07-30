@@ -45,8 +45,7 @@ public class InternMethods {
     }
 
     public String setPlaceholders(Player p, String s) {
-        s = s.contains("%player_name%") ? s.replace("%player_name%", p.getName()) : s;
-        s = s.contains("%display_name%") ? s.replace("%display_name%", p.getDisplayName()) : s;
+        s = s.replace("%player_name%", p.getName()).replace("%display_name%", p.getDisplayName());
         return PlaceholderAPI.setPlaceholders((OfflinePlayer) p, s);
     }
 
