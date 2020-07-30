@@ -14,7 +14,7 @@
 default:
   priority: 1
   perm: eternia.chat.default
-  format: '{canal}{clan}{sufix}{prefix}%display_name% %eterniamarriage_statusheart% &8 ➤&r %message%'
+  format: '{canal}{clan}{sufix}{prefix}%display_name% {marry} &8➤&r %message%'
   useChatColor: true
   chatColor: f
   on_click:

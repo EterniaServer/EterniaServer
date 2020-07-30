@@ -43,3 +43,12 @@ canal:
     useGroupEvents: false
     hoverText: '&7Clique para entrar no &fGlobal&8.'
     suggestCmd: '/global '
+marry:
+  independentTextComponent: true
+  default:
+    priority: 1
+    perm: eternia.chat.global
+    value: '%eterniamarriage_statusheart%'
+    useGroupEvents: false
+    hoverText: '&7Casado(a) com&8: &3%eterniamarriage_partner%&8.'
+    suggestCmd: ''
