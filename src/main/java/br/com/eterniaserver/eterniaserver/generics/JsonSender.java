@@ -4,7 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class JsonSender {
@@ -19,17 +19,8 @@ public class JsonSender {
 		if(e.isCancelled()) return;
 		if(!Vars.uufi.containsKey(e.getPlayer().getName())) return;
 		TextMaker tm = new TextMaker(message, e.getPlayer(), plugin);
-		boolean relationalPlaceholders = EterniaServer.chatConfig.getBoolean("chat.enableRelationalPlaceholders");
-		if(!relationalPlaceholders) {
-			tm.convertMessageToComponents();
-		}
-		if(relationalPlaceholders) {
-			for (Player p : e.getRecipients()) {
-				p.spigot().sendMessage(tm.getRelationalText(p));
-			}
-		} else {
-			Bukkit.spigot().broadcast(tm.getText());
-		}
+		tm.convertMessageToComponents();
+		Bukkit.spigot().broadcast(tm.getText());
 		e.getRecipients().clear();
 	}
 

@@ -96,38 +96,6 @@ public class TextMaker extends StringHelper {
 		return text;
 	}
 
-	// Only used when relational placeholders is enabled. (If enabled, you have to compute placeholders for all players, not just once)
-	public TextComponent getRelationalText(Player to) {
-		BaseComponent[] baseComp = new BaseComponent[message.size()];
-		for(int i = 0; i < message.size(); i++) {
-			ChatObject chatObject = message.getChatObjects().get(i);
-			String msg = chatObject.message;
-			msg = internMethods.setBothPlaceholders(p, to, msg);
-			if(msg.contains(Constants.MESSAGE))
-				msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
-			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
-			if(chatObject.getHover() != null) {
-				ArrayList<TextComponent> tcs = new ArrayList<>();
-				tcs.add(new TextComponent(internMethods.setBothPlaceholders(p, to, cc(chatObject.getHover()))));
-				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
-			}
-			if(chatObject.getColor() != null) {
-				textComp.setColor(chatObject.getColor().asBungee());
-			}
-			if(chatObject.getSuggest() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, internMethods.setBothPlaceholders(p, to, cc(chatObject.getSuggest()))));
-			}
-			if(chatObject.getRun() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, internMethods.setBothPlaceholders(p, to, cc(chatObject.getRun()))));
-			}
-			if(chatObject.isText()) {
-				setTextAttr(textComp, p);
-			}
-			baseComp[i] = textComp;
-		}
-		return new TextComponent(baseComp);
-	}
-
 	public String getConfigString(Player p, String extra) {
 		return EterniaServer.groupConfig.getString (Vars.uufi.get(p.getName()).getName() + "." + extra);
 	}

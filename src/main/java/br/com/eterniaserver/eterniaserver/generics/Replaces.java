@@ -10,6 +10,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -73,7 +74,7 @@ public class Replaces extends BaseCommand {
     }
 
     private String putPAPI(Player player, String message) {
-        return PlaceholderAPI.setPlaceholders(player, message);
+        return PlaceholderAPI.setPlaceholders((OfflinePlayer) player, message);
     }
 
 } class GetRuntime {

@@ -10,6 +10,7 @@ import br.com.eterniaserver.acf.annotation.*;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -62,11 +63,11 @@ public class KitSystem extends BaseCommand {
 
     private void giveKit(final Player player, final long time, final String kitName, final String kit) {
         final String kitString = "kits.";
-        for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".command")) {
-            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, line));
+        for (String line : PlaceholderAPI.setPlaceholders((OfflinePlayer) player, EterniaServer.kitConfig.getStringList(kitString + kit + ".command"))) {
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), line);
         }
-        for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".text")) {
-            player.sendMessage(messages.getColor(PlaceholderAPI.setPlaceholders(player, line)));
+        for (String line : PlaceholderAPI.setPlaceholders((OfflinePlayer) player, EterniaServer.kitConfig.getStringList(kitString + kit + ".text"))) {
+            player.sendMessage(messages.getColor(line));
         }
         Vars.kitsCooldown.put(kitName, time);
         EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_KITS, Strings.COOLDOWN, time, Strings.NAME, kitName));

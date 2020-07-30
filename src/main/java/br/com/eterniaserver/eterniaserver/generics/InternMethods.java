@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
 import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
 import me.clip.placeholderapi.PlaceholderAPI;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class InternMethods {
@@ -46,15 +47,7 @@ public class InternMethods {
     public String setPlaceholders(Player p, String s) {
         s = s.contains("%player_name%") ? s.replace("%player_name%", p.getName()) : s;
         s = s.contains("%display_name%") ? s.replace("%display_name%", p.getDisplayName()) : s;
-        return PlaceholderAPI.setPlaceholders(p, s);
-    }
-
-    public String setRelationalPlaceholders(Player p, Player p2, String s) {
-        return PlaceholderAPI.setRelationalPlaceholders(p, p2, s);
-    }
-
-    public String setBothPlaceholders(Player p, Player to, String cc) {
-        return setRelationalPlaceholders(p, to, setPlaceholders(p, cc));
+        return PlaceholderAPI.setPlaceholders((OfflinePlayer) p, s);
     }
 
     public SubPlaceholder getSubPlaceholder(final Player player, final CustomPlaceholder cp) {

@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import me.clip.placeholderapi.PlaceholderAPI;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,7 +30,7 @@ public class OnPlayerCommandPreProcess implements Listener {
         String message = event.getMessage().toLowerCase();
 
         if (message.equalsIgnoreCase("/tps")) {
-            String s = PlaceholderAPI.setPlaceholders(player, Constants.TPS);
+            String s = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, Constants.TPS);
             messages.sendMessage(Strings.M_TPS, Constants.TPS, s.substring(0, s.length() - 2), player);
             event.setCancelled(true);
             return;

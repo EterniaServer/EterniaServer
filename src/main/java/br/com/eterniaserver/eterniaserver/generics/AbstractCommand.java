@@ -59,7 +59,7 @@ public abstract class AbstractCommand implements CommandExecutor {
         cmd.setExecutor(this);
     }
 
-    final CommandMap getCommandMap() {
+    static CommandMap getCommandMap() {
         if (cmap == null) {
             try {
                 final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -93,7 +93,5 @@ public abstract class AbstractCommand implements CommandExecutor {
         }
 
     }
-
-    public abstract boolean onCommand(CommandSender sender, Command cmd, String label, String[] args);
 
 }

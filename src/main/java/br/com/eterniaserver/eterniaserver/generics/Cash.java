@@ -15,6 +15,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -73,11 +74,11 @@ public class Cash extends BaseCommand {
         if (Vars.cashBuy.containsKey(playerName)) {
             final int slot = Vars.cashBuy.get(playerName);
             for (String line : EterniaServer.cashConfig.getStringList("gui." + slot + ".commands")) {
-                final String modifiedCommand = PlaceholderAPI.setPlaceholders(player, line);
+                final String modifiedCommand = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, line);
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
             }
             for (String line : EterniaServer.cashConfig.getStringList("gui." + slot + ".messages")) {
-                final String modifiedText = PlaceholderAPI.setPlaceholders(player, line);
+                final String modifiedText = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, line);
                 player.sendMessage(messages.getColor(modifiedText));
             }
             APICash.removeCash(playerName, EterniaServer.cashConfig.getInt("gui." + slot + ".cost"));

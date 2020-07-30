@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,13 +39,11 @@ public class CustomCommands extends AbstractCommand {
 
     private void checkCommands(final Player player, final String cmd) {
         if (player.hasPermission("eternia." + cmd)) {
-            for (String line : commandsStrings) {
-                final String modifiedCommand = PlaceholderAPI.setPlaceholders(player, line);
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+            for (String line : PlaceholderAPI.setPlaceholders((OfflinePlayer) player, commandsStrings)) {
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), line);
             }
-            for (String line : messagesStrings) {
-                final String modifiedText = PlaceholderAPI.setPlaceholders(player, line);
-                player.sendMessage(messages.getColor(modifiedText));
+            for (String line : PlaceholderAPI.setPlaceholders((OfflinePlayer) player, messagesStrings)) {
+                player.sendMessage(messages.getColor(line));
             }
         } else {
             messages.sendMessage(Strings.M_NO_PERM, player);

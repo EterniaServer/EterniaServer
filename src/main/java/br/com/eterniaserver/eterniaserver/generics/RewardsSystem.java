@@ -11,6 +11,7 @@ import br.com.eterniaserver.acf.annotation.*;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -75,7 +76,7 @@ public class RewardsSystem extends BaseCommand {
         for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection(rewardsConfig + group + ".commands").getKeys(true)) {
             if (Math.random() <= Double.parseDouble(percentage)) {
                 for (String command : EterniaServer.rewardsConfig.getStringList(rewardsConfig + group + ".commands." + percentage)) {
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), PlaceholderAPI.setPlaceholders((OfflinePlayer) player, command));
                 }
             }
         }

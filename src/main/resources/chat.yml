@@ -6,11 +6,8 @@
 # |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
 
 # autoUpdateGroups will update all players' groups whenever someone logs in.
-# enableRelationalPlaceholders will compute a json for each player (not
-# recommended)
 chat:
   autoUpdateGroups: false
-  enableRelationalPlaceholders: false
 # range is the distance for one player to be able to read the other's message.
 # format is the format of chat.
 local:
