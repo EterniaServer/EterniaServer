@@ -85,8 +85,7 @@ public class Files {
                 List<String> commandsString = EterniaServer.cmdConfig.getStringList(commandKey + ".command");
                 String description = EterniaServer.cmdConfig.getString(commandKey + ".description");
                 List<String> messagesString = EterniaServer.cmdConfig.getStringList(commandKey + ".text");
-                AbstractCommand myCommand = new CustomCommands(plugin, keys, description, aliasesString, messagesString, commandsString);
-                myCommand.register();
+                new CustomCommands(plugin, keys, description, aliasesString, messagesString, commandsString);
             }
         } catch (IOException | InvalidConfigurationException e) {
             messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "comandos personalizados faltando | commands.yml");

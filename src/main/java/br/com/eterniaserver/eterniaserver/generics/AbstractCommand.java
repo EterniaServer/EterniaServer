@@ -47,9 +47,10 @@ public abstract class AbstractCommand implements CommandExecutor {
         this.command = command.toLowerCase();
         this.description = description;
         this.alias = aliases;
+        register();
     }
 
-    public void register() {
+    private void register() {
         try {
             Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             f.setAccessible(true);
