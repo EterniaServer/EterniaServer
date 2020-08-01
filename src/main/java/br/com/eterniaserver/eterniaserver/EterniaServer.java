@@ -60,7 +60,6 @@ public class EterniaServer extends JavaPlugin {
     public static final FileConfiguration cashConfig = new YamlConfiguration();
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onEnable() {
 
         files = new Files(this);

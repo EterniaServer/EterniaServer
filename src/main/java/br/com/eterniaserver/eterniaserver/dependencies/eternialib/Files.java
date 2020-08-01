@@ -4,9 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.generics.AbstractCommand;
 import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.IOException;
