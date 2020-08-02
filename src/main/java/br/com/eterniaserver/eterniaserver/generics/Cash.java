@@ -31,6 +31,7 @@ public class Cash extends BaseCommand {
 
     private final EterniaServer plugin;
     private final EFiles messages;
+    private final int size = EterniaServer.cashConfig.getInt("size");
 
     public Cash(EterniaServer plugin) {
         this.plugin = plugin;
@@ -46,8 +47,8 @@ public class Cash extends BaseCommand {
 
     @Default
     public void onCash(Player player) {
-        Inventory gui = Bukkit.getServer().createInventory(player, 27, "Cash");
-        for (int i = 0; i < 27; i++) {
+        Inventory gui = Bukkit.getServer().createInventory(player, size, "Cash");
+        for (int i = 0; i < size; i++) {
             gui.setItem(i, Vars.cashGui.get(i));
         }
         player.openInventory(gui);
@@ -136,27 +137,26 @@ public class Cash extends BaseCommand {
 
     private void loadGui() {
         Vars.cashGui.clear();
-
         ItemStack itemStack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Loja de &aCash&8."));
         itemStack.setItemMeta(itemMeta);
-        for (int i = 0; i < 27; i++) {
-            if (!EterniaServer.cashConfig.contains("gui." + i)) {
+        for (int i = 0; i < size; i++) {
+            if (EterniaServer.cashConfig.contains("gui." + i)) {
+                ItemStack item = new ItemStack(Material.getMaterial(EterniaServer.cashConfig.getString("gui." + i + ".material")));
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', EterniaServer.cashConfig.getString("gui." + i + ".name")));
+                List<String> lista = EterniaServer.cashConfig.getStringList("gui." + i + ".lore");
+                for (int j = 0; j < lista.size(); j++) {
+                    lista.set(j, ChatColor.translateAlternateColorCodes('&', lista.get(j)));
+                }
+                meta.setLore(lista);
+                item.setItemMeta(meta);
+                Vars.cashGui.add(item);
+            } else {
                 Vars.cashGui.add(itemStack);
-                return;
             }
 
-            ItemStack item = new ItemStack(Material.getMaterial(EterniaServer.cashConfig.getString("gui." + i + ".material")));
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', EterniaServer.cashConfig.getString("gui." + i + ".name")));
-            List<String> lista = EterniaServer.cashConfig.getStringList("gui." + i + ".lore");
-            for (int j = 0; j < lista.size(); j++) {
-                lista.set(j, ChatColor.translateAlternateColorCodes('&', lista.get(j)));
-            }
-            meta.setLore(lista);
-            item.setItemMeta(meta);
-            Vars.cashGui.add(item);
         }
     }
 
