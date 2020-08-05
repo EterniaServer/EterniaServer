@@ -16,7 +16,7 @@ public class APICash {
         if (Vars.cash.containsKey(uuid)) {
             return Vars.cash.get(uuid);
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.PLAYER_NAME, uuid.toString(), Strings.BALANCE, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.UUID, uuid.toString(), Strings.BALANCE, 0));
             Vars.cash.put(uuid, 0);
             return 0;
         }

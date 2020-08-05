@@ -11,7 +11,7 @@ public class Table {
         if (EterniaLib.getMySQL()) {
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MONEY, "(uuid varchar(36), balance double(22,4))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_KITS, "(name varchar(32), cooldown bigint(20))"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, "(uuid varchar(36), time bigint(20), last bigint(20), hours int(11))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, "(uuid varchar(36), player_name varchar(16), time bigint(20), last bigint(20), hours int(11))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MUTED, "(uuid varchar(36), time bigint(20))"), false);
         } else {
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MONEY, "(uuid varchar(36), balance double(22))"), false);

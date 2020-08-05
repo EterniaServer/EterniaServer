@@ -47,14 +47,17 @@ public class OnPlayerJoin implements Listener {
         final long time = System.currentTimeMillis();
         Vars.afkTime.put(playerName, time);
         if (!Vars.playerLogin.containsKey(uuid)) {
-            PaperLib.teleportAsync(player, getWarp());
+            Location location = getWarp();
+            if (location != plugin.error) {
+                PaperLib.teleportAsync(player, getWarp());
+            }
             playerProfileCreate(uuid, playerName);
         } else {
             Vars.playerLast.put(uuid, time);
             if (!Vars.playerName.get(uuid).equals(playerName)) {
                 UUIDFetcher.putUUIDAndName(uuid, playerName);
                 Vars.playerName.put(uuid, playerName);
-                EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.PLAYER_NAME, player, Strings.UUID, uuid.toString()));
+                EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.PLAYER_NAME, playerName, Strings.UUID, uuid.toString()));
             }
             EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.LAST, time, Strings.UUID, uuid.toString()));
         }
