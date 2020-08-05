@@ -1,22 +1,14 @@
 package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eternialib.EQueries;
-import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.utils.StringHelper;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class Files {
 

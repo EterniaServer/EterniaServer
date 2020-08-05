@@ -6,6 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +17,7 @@ import java.util.concurrent.Callable;
 
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
 
-    private static final boolean onlineMode = Bukkit.getOnlineMode();
+    private static final boolean ONLINE_MODE = Bukkit.getOnlineMode();
 
     private static final double PROFILES_PER_REQUEST = 100;
     private static final String PROFILE_URL = "https://api.mojang.com/users/profiles/minecraft";
@@ -44,7 +45,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
     public static UUID getUUIDOf(String name) {
         UUID result = lookupCache.get(name);
         if (result == null) {
-            if (onlineMode) {
+            if (ONLINE_MODE) {
                 try {
                     return new UUIDFetcher(Collections.singletonList(name), true).call().get(name);
                 } catch(Exception e) {
@@ -60,23 +61,22 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
     }
 
     public static String getNameOf(UUID uuid) {
-        String result = lookupNameCache.get(uuid);
-        if (result == null) {
-            result = Bukkit.getOfflinePlayer(uuid).getName();
+        return lookupNameCache.computeIfAbsent(uuid, k -> {
+            String result = Bukkit.getOfflinePlayer(uuid).getName();
             lookupCache.put(result, uuid);
             lookupNameCache.put(uuid, result);
-        }
-        return result;
+            return result;
+        });
     }
 
-    private static void writeBody(HttpURLConnection connection, String body) throws Exception {
+    private static void writeBody(HttpURLConnection connection, String body) throws IOException {
         OutputStream stream = connection.getOutputStream();
         stream.write(body.getBytes(StandardCharsets.UTF_8));
         stream.flush();
         stream.close();
     }
 
-    private static HttpURLConnection createConnection() throws Exception {
+    private static HttpURLConnection createConnection() throws IOException {
         URL url = new URL(PROFILE_URL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
