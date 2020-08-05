@@ -47,15 +47,7 @@ public class HomeSystem extends BaseCommand {
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Home", Constants.AMOUNT, temp.size());
 
         temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOME), Strings.UUID, Strings.HOMES);
-        temp.forEach((k, v) -> {
-            List<String> list = new ArrayList<>();
-            for (String value : v.split(":")) {
-                if (!value.equals("")) {
-                    list.add(value);
-                }
-            }
-            Vars.home.put(UUID.fromString(k), list);
-        });
+        temp.forEach((k, v) -> Vars.home.put(UUID.fromString(k), new ArrayList<>(Arrays.asList(v.split(":")))));
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "PlayerHomes", Constants.AMOUNT, temp.size());
 
     }
@@ -104,15 +96,17 @@ public class HomeSystem extends BaseCommand {
         StringBuilder accounts = new StringBuilder();
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
-                for (String line : getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()))) {
-                    accounts.append(line).append("&8, &3");
+                List<String> list = getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
+                for (String line : list) {
+                    accounts.append(line).append(plugin.colors.get(8)).append(", ").append(plugin.colors.get(3));
                 }
                 messages.sendMessage(Strings.M_HOME_LIST, Constants.HOMES, messages.getColor(accounts.toString()), player);
             } else {
                 messages.sendMessage(Strings.MSG_NO_PERM, player);
             }
         } else {
-            for (String line : getHomes(UUIDFetcher.getUUIDOf(player.getName()))) {
+            List<String> list = getHomes(UUIDFetcher.getUUIDOf(player.getName()));
+            for (String line : list) {
                 accounts.append(line).append(plugin.colors.get(8)).append(", ").append(plugin.colors.get(3));
             }
             messages.sendMessage(Strings.M_HOME_LIST, Constants.HOMES, messages.getColor(accounts.toString()), player);
@@ -173,11 +167,11 @@ public class HomeSystem extends BaseCommand {
         for (int i = 0; i < size; i++) {
             final String value = values.get(i);
             if (value.equals(home)) {
-                result.append(value).append(":");
-                t = true;
-            } else {
                 if (i + 1 != size) result.append(value).append(":");
                 else result.append(value);
+                t = true;
+            } else {
+                result.append(value).append(":");
             }
         }
 
@@ -185,12 +179,13 @@ public class HomeSystem extends BaseCommand {
                 ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (!t) {
             result.append(home);
+            values.add(home);
             EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, result.toString(), Strings.UUID, uuid.toString()));
-            Vars.home.put(uuid, values);
             EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOMES, Strings.NAME, homeName, Strings.LOCATION, saveloc));
         } else {
             EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOMES, Strings.LOCATION, saveloc, Strings.NAME, homeName));
         }
+        Vars.home.put(uuid, values);
     }
 
     public void delHome(String home, String jogador) {
