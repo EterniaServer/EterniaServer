@@ -9,6 +9,7 @@ public class Strings {
     public static final String NAME = "name";
     public static final String LOCATION = "location";
     public static final String PLAYER_NAME = "player_name";
+    public static final String UUID = "uuid";
     public static final String PLAYER_DISPLAY = "player_display";
     public static final String BALANCE = "balance";
     public static final String CODE = "code";

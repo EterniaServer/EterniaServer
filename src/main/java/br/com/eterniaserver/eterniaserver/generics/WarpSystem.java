@@ -5,12 +5,13 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -139,8 +140,19 @@ public class WarpSystem extends BaseCommand {
     @CommandPermission("eternia.listwarp")
     public void onListWarp(Player player) {
         StringBuilder string = new StringBuilder();
-        for (String name : Vars.warps.keySet()) string.append(name).append(plugin.colors.get(8)).append(", ").append(plugin.colors.get(3));
-        messages.sendMessage(Strings.MSG_WARP_LIST, Constants.VALUE, string.substring(0, string.length() - 1), player);
+        Object[] list = Vars.warps.keySet().toArray();
+        int size = list.length;
+        for (int i = 0; i < size; i++) {
+            String line = list[i].toString();
+            if (player.hasPermission("eternia.warp." + line)) {
+                if (i + 1 != size) {
+                    string.append(line).append(plugin.colors.get(8)).append(", ").append(plugin.colors.get(3));
+                } else {
+                    string.append(line).append(plugin.colors.get(3));
+                }
+            }
+        }
+        messages.sendMessage(Strings.MSG_WARP_LIST, Constants.VALUE, string.toString(), player);
     }
 
     @CommandAlias("warp")

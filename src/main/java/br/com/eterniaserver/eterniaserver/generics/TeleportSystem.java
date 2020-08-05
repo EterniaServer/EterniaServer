@@ -4,13 +4,16 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class TeleportSystem extends BaseCommand {
 
@@ -91,11 +94,12 @@ public class TeleportSystem extends BaseCommand {
     @CommandPermission("eternia.back")
     public void onBack(Player player) {
         final String playerName = player.getName();
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (Vars.back.containsKey(playerName)) {
             if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!(EterniaServer.serverConfig.getBoolean("modules.economy")) && canBack(player))) {
                 Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), Strings.MSG_BACK_FREE));
-            } else if (APIEconomy.getMoney(playerName) >= backMoney && canBack(player)) {
-                APIEconomy.removeMoney(playerName, backMoney);
+            } else if (APIEconomy.getMoney(uuid) >= backMoney && canBack(player)) {
+                APIEconomy.removeMoney(uuid, backMoney);
                 Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), Strings.MSG_BACK_COST));
             } else if (canBack(player)){
                 messages.sendMessage(Strings.MSG_NO_MONEY, Constants.VALUE, backMoney, player);

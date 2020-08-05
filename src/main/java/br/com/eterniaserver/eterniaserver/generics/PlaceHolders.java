@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.OfflinePlayer;
@@ -9,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import javax.annotation.Nonnull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class PlaceHolders extends PlaceholderExpansion {
 
@@ -70,13 +72,14 @@ public class PlaceHolders extends PlaceholderExpansion {
     }
 
     private String getPlaceHolder(final byte var4, final String playerName) {
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         switch (var4) {
             case 0:
-                return Vars.playerLogin.containsKey(playerName) ? sdf.format(new Date(Vars.playerLogin.get(playerName))) : "Sem registro";
+                return Vars.playerLogin.containsKey(uuid) ? sdf.format(new Date(Vars.playerLogin.get(uuid))) : "Sem registro";
             case 1:
                 return Vars.afk.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
             case 2:
-                return String.valueOf(Vars.cash.getOrDefault(playerName, 0));
+                return String.valueOf(Vars.cash.getOrDefault(uuid, 0));
             case 3:
                 return Vars.glowingColor.getOrDefault(playerName, "");
             case 4:

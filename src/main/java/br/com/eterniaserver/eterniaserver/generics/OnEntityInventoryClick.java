@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.UUID;
 
 public class OnEntityInventoryClick implements Listener {
 
@@ -45,16 +48,17 @@ public class OnEntityInventoryClick implements Listener {
 
     private void cashGui(final Player player, InventoryClickEvent e) {
         final String playerName = player.getName();
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         e.setCancelled(true);
-        if (!Vars.cashBuy.containsKey(playerName)) {
+        if (!Vars.cashBuy.containsKey(uuid)) {
             int slot = e.getSlot();
             final String guiString = "gui." + slot;
             if (EterniaServer.cashConfig.contains(guiString)) {
                 final int cost = EterniaServer.cashConfig.getInt(guiString + ".cost");
-                if (APICash.hasCash(playerName, cost)) {
+                if (APICash.hasCash(uuid, cost)) {
                     messages.sendMessage(Strings.M_CASH_COST, Constants.AMOUNT, cost, player);
                     messages.sendMessage(Strings.M_CASH, player);
-                    Vars.cashBuy.put(playerName, slot);
+                    Vars.cashBuy.put(uuid, slot);
                 } else {
                     messages.sendMessage(Strings.M_CASH_NO, player);
                 }

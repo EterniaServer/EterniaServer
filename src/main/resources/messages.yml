@@ -199,7 +199,7 @@ teleport:
     created: '&7Você criou a warp &3%warp_name%&8.'
     deleted: '&7Warp deletada'
     done: '&7Bem-vindo a warp&8.'
-    list: '&7Warps&8: &3%value%&7algumas warps você pode não ter permissão&8.'
+    list: '&7Warps&8: &3%value%&8.'
     no-exists: '&7Não existe nenhuma warp com o nome &3%warp_name%&8.'
 other:
   new-nick: '&7Seu apelido alternativo é &3%s&8.'

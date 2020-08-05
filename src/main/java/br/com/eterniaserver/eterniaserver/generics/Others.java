@@ -128,7 +128,7 @@ public class Others extends BaseCommand {
         int diamond = 0;
         int esmeralda = 0;
         for (ItemStack i : player.getInventory().getContents()) {
-            if (i != null) {
+            if (i.getType() != Material.AIR) {
                 coal += checkItems(i, coali);
                 lapiz += checkItems(i, lapizi);
                 redstone += checkItems(i, redstonei);

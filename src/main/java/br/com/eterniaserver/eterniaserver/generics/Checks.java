@@ -4,7 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import br.com.eterniaserver.paperlib.PaperLib;
 

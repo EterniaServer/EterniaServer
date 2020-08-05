@@ -9,6 +9,7 @@ import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Experience extends BaseCommand {
 
@@ -28,8 +30,8 @@ public class Experience extends BaseCommand {
         this.internMethods = plugin.getInternMethods();
         this.messages = plugin.getEFiles();
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_XP), Strings.PLAYER_NAME, Strings.XP);
-        temp.forEach((k, v) -> Vars.xp.put(k, Integer.parseInt(v)));
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_XP), Strings.UUID, Strings.XP);
+        temp.forEach((k, v) -> Vars.xp.put(UUID.fromString(k), Integer.parseInt(v)));
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Experience", Constants.AMOUNT, temp.size());
     }
 
@@ -40,7 +42,7 @@ public class Experience extends BaseCommand {
         float xp = player.getExp();
         player.setLevel(0);
         player.setExp(0);
-        player.giveExp(APIExperience.getExp(player.getName()));
+        player.giveExp(APIExperience.getExp(UUIDFetcher.getUUIDOf(player.getName())));
         messages.sendMessage(Strings.M_XP_CHECK, Constants.AMOUNT, player.getLevel(), player);
         player.setLevel(lvl);
         player.setExp(xp);
@@ -72,11 +74,11 @@ public class Experience extends BaseCommand {
     @Syntax("<level>")
     @CommandPermission("eternia.withdrawlvl")
     public void onWithdrawLevel(Player player, Integer level) {
-        final String playerName = player.getName();
+        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         int xpla = internMethods.getXPForLevel(level);
-        if (APIExperience.getExp(playerName) >= xpla) {
-            APIExperience.removeExp(playerName, xpla);
+        if (APIExperience.getExp(uuid) >= xpla) {
+            APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
             messages.sendMessage(Strings.M_XP_WITHDRAW, Constants.AMOUNT, player.getLevel(), player);
         } else {
@@ -92,7 +94,7 @@ public class Experience extends BaseCommand {
         if (xpAtual >= xpla) {
             int xp = internMethods.getXPForLevel(xpla);
             int xpto = internMethods.getXPForLevel(xpAtual);
-            APIExperience.addExp(player.getName(), xp);
+            APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
             messages.sendMessage(Strings.M_XP_DEPOSIT, Constants.AMOUNT, xpla, player);
             player.setLevel(0);
             player.setExp(0);

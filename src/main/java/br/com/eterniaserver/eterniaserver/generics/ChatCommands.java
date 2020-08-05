@@ -9,6 +9,7 @@ import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class ChatCommands extends BaseCommand {
 
@@ -122,17 +124,18 @@ public class ChatCommands extends BaseCommand {
     @CommandPermission("eternia.nickname")
     public void onNickAccept(Player player) {
         final String playerName = player.getName();
-        if (Vars.nick.containsKey(playerName)) {
-            if (APIEconomy.hasMoney(playerName, money)) {
-                APIEconomy.removeMoney(playerName, money);
-                player.setDisplayName(Vars.nick.get(playerName));
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (Vars.nick.containsKey(uuid)) {
+            if (APIEconomy.hasMoney(uuid, money)) {
+                APIEconomy.removeMoney(uuid, money);
+                player.setDisplayName(Vars.nick.get(uuid));
                 messages.sendMessage(Strings.M_CHAT_NEWNICK, Constants.PLAYER, player.getDisplayName(), player);
                 saveToSQL(playerName);
-                Vars.nickname.put(playerName, Vars.nick.get(playerName));
+                Vars.nickname.put(playerName, Vars.nick.get(uuid));
             } else {
                 messages.sendMessage(Strings.MSG_NO_MONEY, player);
             }
-            Vars.nick.remove(playerName);
+            Vars.nick.remove(uuid);
         } else {
             messages.sendMessage(Strings.M_CHAT_NO_CHANGE, player);
         }
@@ -142,9 +145,9 @@ public class ChatCommands extends BaseCommand {
     @Syntax("<jogador> <novo_nome> ou <novo_nome>")
     @CommandPermission("eternia.nickname")
     public void onNickDeny(Player player) {
-        final String playerName = player.getName();
-        if (Vars.nick.containsKey(playerName)) {
-            Vars.nick.remove(playerName);
+        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        if (Vars.nick.containsKey(uuid)) {
+            Vars.nick.remove(uuid);
             messages.sendMessage(Strings.M_CHAT_NICK_DENY, player);
         } else {
             messages.sendMessage(Strings.M_CHAT_NO_CHANGE, player);
@@ -190,7 +193,7 @@ public class ChatCommands extends BaseCommand {
             player.setDisplayName(playerName);
             messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
         } else {
-            Vars.nick.put(playerName, string);
+            Vars.nick.put(UUIDFetcher.getUUIDOf(playerName), string);
             if (player.hasPermission("eternia.chat.color.nick")) {
                 messages.sendMessage(Strings.M_CHAT_NICK_MONEY, Constants.NEW_NAME, ChatColor.translateAlternateColorCodes('&', string), player);
             } else {
@@ -230,10 +233,11 @@ public class ChatCommands extends BaseCommand {
     }
 
     private void saveToSQL(final String playerName) {
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (Vars.nickname.containsKey(playerName)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_NICK, Strings.PLAYER_DISPLAY, Vars.nick.get(playerName), Strings.PLAYER_NAME, playerName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_NICK, Strings.PLAYER_DISPLAY, Vars.nick.get(uuid), Strings.UUID, uuid.toString()));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_NICK, Strings.PLAYER_NAME, playerName, Strings.PLAYER_DISPLAY, Vars.nick.get(playerName)));
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_NICK, Strings.UUID, uuid.toString(), Strings.PLAYER_DISPLAY, Vars.nick.get(uuid)));
         }
     }
 

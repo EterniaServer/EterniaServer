@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

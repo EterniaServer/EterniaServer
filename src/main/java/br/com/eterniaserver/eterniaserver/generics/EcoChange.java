@@ -8,6 +8,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,10 +27,9 @@ public class EcoChange extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     public void onSet(CommandSender sender, OnlinePlayer target, Double money) {
         final Player targetP = target.getPlayer();
-        final String targetName = targetP.getName();
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
-        APIEconomy.setMoney(targetName, money);
+        APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         messages.sendMessage(Strings.M_ECO_SET, Constants.AMOUNT, money, Constants.TARGET, targetP.getDisplayName(), sender);
         messages.sendMessage(Strings.M_ECO_RSET, Constants.AMOUNT, money, Constants.TARGET, senderName, targetP);
     }
@@ -39,10 +39,9 @@ public class EcoChange extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     public void onRemove(CommandSender sender, OnlinePlayer target, Double money) {
         final Player targetP = target.getPlayer();
-        final String targetName = targetP.getName();
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
-        APIEconomy.removeMoney(targetName, money);
+        APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         messages.sendMessage(Strings.M_ECO_REMOVE, Constants.AMOUNT ,money, Constants.TARGET, targetP.getDisplayName(), sender);
         messages.sendMessage(Strings.M_ECO_RREMOVE, Constants.AMOUNT, money, Constants.TARGET, senderName, targetP);
     }
@@ -52,10 +51,9 @@ public class EcoChange extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     public void onGive(CommandSender sender, OnlinePlayer target, Double money) {
         final Player targetP = target.getPlayer();
-        final String targetName = targetP.getName();
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
-        APIEconomy.addMoney(targetName, money);
+        APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         messages.sendMessage(Strings.M_ECO_GIVE, Constants.AMOUNT, money, Constants.TARGET, targetP.getDisplayName(), sender);
         messages.sendMessage(Strings.M_ECO_RECEIVE, Constants.AMOUNT, money, Constants.TARGET, senderName, targetP);
     }

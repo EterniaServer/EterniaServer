@@ -1,41 +1,50 @@
 package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
+import br.com.eterniaserver.eterniaserver.utils.StringHelper;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class Files {
 
     private final EterniaServer plugin;
-    private final EFiles messages;
+    private final StringHelper stringHelper;
 
     public Files(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getEFiles();
+        this.stringHelper = new StringHelper();
     }
 
     public void loadConfigs() {
 
+        final String config = "config.yml";
+
         try {
-            EterniaServer.serverConfig.load(EFiles.fileLoad(plugin, "config.yml"));
+            EterniaServer.serverConfig.load(EFiles.fileLoad(plugin, config));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "problema para encontrar config.yml dentro da jar");
+            errorInJar(config);
         }
 
     }
 
     public void loadMessages() {
 
+        final String messages = "messages.yml";
+
         try {
-            EterniaServer.msgConfig.load(EFiles.fileLoad(plugin, "messages.yml"));
+            EterniaServer.msgConfig.load(EFiles.fileLoad(plugin, messages));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "arquivo de mensagens faltando | messages.yml");
+            errorInJar(messages);
         }
 
     }
@@ -47,38 +56,43 @@ public class Files {
             EterniaServer.groupConfig.load(EFiles.fileLoad(plugin, "groups.yml"));
             EterniaServer.placeholderConfig.load(EFiles.fileLoad(plugin, "customplaceholders.yml"));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "placeholders do chat faltando | customplaceholders.yml");
+            errorInJar("(chat|groups|customplaceholders).yml");
         }
 
     }
 
     public void loadRewards() {
 
+        final String rewards = "rewards.yml";
+
         try {
-            EterniaServer.rewardsConfig.load(EFiles.fileLoad(plugin, "rewards.yml"));
+            EterniaServer.rewardsConfig.load(EFiles.fileLoad(plugin, rewards));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "configurações de rewards faltando | rewards.yml");
+            errorInJar(rewards);
         }
 
     }
 
     public void loadKits() {
 
+        final String kits = "kits.yml";
+
         try {
-            EterniaServer.kitConfig.load(EFiles.fileLoad(plugin, "kits.yml"));
+            EterniaServer.kitConfig.load(EFiles.fileLoad(plugin, kits));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "lista de kits faltando | kits.yml");
+            errorInJar(kits);
         }
 
     }
 
     public void loadCommands() {
 
+        final String commands = "commands.yml";
+
         try {
-            final String commandsStr = "commands.";
-            EterniaServer.cmdConfig.load(EFiles.fileLoad(plugin, commandsStr + "yml"));
+            EterniaServer.cmdConfig.load(EFiles.fileLoad(plugin, commands));
             for (String keys : EterniaServer.cmdConfig.getConfigurationSection("commands").getKeys(false)) {
-                final String commandKey = commandsStr + keys;
+                final String commandKey = "commands." + keys;
                 List<String> aliasesString = EterniaServer.cmdConfig.getStringList(commandKey + ".aliases");
                 List<String> commandsString = EterniaServer.cmdConfig.getStringList(commandKey + ".command");
                 String description = EterniaServer.cmdConfig.getString(commandKey + ".description");
@@ -86,35 +100,60 @@ public class Files {
                 new CustomCommands(plugin, keys, description, aliasesString, messagesString, commandsString);
             }
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "comandos personalizados faltando | commands.yml");
+            errorInJar(commands);
         }
 
     }
 
     public void loadBlocksRewards() {
 
+        final String blocks = "blocks.yml";
+
         try {
-            EterniaServer.blockConfig.load(EFiles.fileLoad(plugin, "blocks.yml"));
+            EterniaServer.blockConfig.load(EFiles.fileLoad(plugin, blocks));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "problemas para encontrar a configuração dos blocos | blocks.yml");
+            errorInJar(blocks);
         }
 
     }
 
     public void loadCashGui() {
 
+        final String cashGui = "cashgui.yml";
+
         try {
-            EterniaServer.cashConfig.load(EFiles.fileLoad(plugin, "cashgui.yml"));
+            EterniaServer.cashConfig.load(EFiles.fileLoad(plugin, cashGui));
         } catch (IOException | InvalidConfigurationException e) {
-            messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "sistema de cash não configurado | cashgui.yml");
+            errorInJar(cashGui);
         }
 
     }
 
     public void loadDatabase() {
 
+        final boolean onlinemode = plugin.getServer().getOnlineMode();
+        CompletableFuture.runAsync(() -> {
+            ArrayList<String> namesToConvert = new ArrayList<>();
+            for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                namesToConvert.add(player.getName());
+            }
+            UUIDFetcher uuidFetcher = new UUIDFetcher(namesToConvert);
+            try {
+                uuidFetcher.call(onlinemode);
+            } catch (Exception e) {
+                sendConsoleMessage("&8[&aE&9S&8] &7Erro ao carregar UUID's&8.");
+            }
+        });
         new Table();
 
+    }
+
+    private void sendConsoleMessage(final String msg) {
+        plugin.getServer().getConsoleSender().sendMessage(stringHelper.cc(msg));
+    }
+
+    private void errorInJar(final String arq) {
+        sendConsoleMessage("&8[&aE&9S&8] &7A jar do EterniaServer não possui o arquivo necessário&8: &3" + arq + "&8.");
     }
 
 }

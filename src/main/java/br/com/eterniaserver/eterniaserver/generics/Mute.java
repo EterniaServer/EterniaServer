@@ -10,11 +10,13 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.entity.Player;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Mute extends BaseCommand {
 
@@ -25,8 +27,8 @@ public class Mute extends BaseCommand {
         this.plugin = plugin;
         this.messages = plugin.getEFiles();
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_MUTED), Strings.PLAYER_NAME, Strings.TIME);
-        temp.forEach((k, v) -> Vars.playerMuted.put(k, Long.parseLong(v)));
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_MUTED), Strings.UUID, Strings.TIME);
+        temp.forEach((k, v) -> Vars.playerMuted.put(UUID.fromString(k), Long.parseLong(v)));
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Muted Players", Constants.AMOUNT, temp.size());
 
     }
@@ -55,7 +57,7 @@ public class Mute extends BaseCommand {
         final String targetName = target.getPlayer().getName();
         messages.broadcastMessage(Strings.M_CHAT_MUTEBROAD, Constants.PLAYER, targetName, Constants.MESSAGE, messageFull(message));
         EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.PLAYER_NAME, targetName));
-        Vars.playerMuted.put(targetName, cal.getTimeInMillis());
+        Vars.playerMuted.put(UUIDFetcher.getUUIDOf(targetName), cal.getTimeInMillis());
     }
 
     @CommandAlias("unmute|desilenciar")
@@ -65,9 +67,10 @@ public class Mute extends BaseCommand {
     public void onUnMute(OnlinePlayer target) {
         final long time = System.currentTimeMillis();
         final String playerName = target.getPlayer().getName();
-        Vars.playerMuted.put(playerName, time);
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        Vars.playerMuted.put(uuid, time);
         messages.broadcastMessage(Strings.M_CHAT_UNMUTEBROAD, Constants.PLAYER, target.getPlayer().getDisplayName());
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.PLAYER_NAME, playerName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.UUID, uuid.toString()));
     }
 
     @CommandAlias("tempmute|mutetemporario")
@@ -80,9 +83,10 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.MINUTE, time);
         final long timeInMillis = cal.getTimeInMillis();
         final String targetName = target.getPlayer().getName();
+        final UUID uuid = UUIDFetcher.getUUIDOf(targetName);
         messages.broadcastMessage(Strings.M_CHAT_MUTET, Constants.PLAYER, target.getPlayer().getDisplayName(), Constants.TIME, time, Constants.MESSAGE, messageFull(message));
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, timeInMillis, Strings.PLAYER_NAME, targetName));
-        Vars.playerMuted.put(targetName, cal.getTimeInMillis());
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, timeInMillis, Strings.UUID, uuid.toString()));
+        Vars.playerMuted.put(uuid, cal.getTimeInMillis());
     }
 
     private String messageFull(String[] message) {

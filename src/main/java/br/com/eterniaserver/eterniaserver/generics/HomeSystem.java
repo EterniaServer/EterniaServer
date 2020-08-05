@@ -1,16 +1,18 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.utils.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,8 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class HomeSystem extends BaseCommand {
 
@@ -45,10 +46,15 @@ public class HomeSystem extends BaseCommand {
         });
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Home", Constants.AMOUNT, temp.size());
 
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOME), Strings.PLAYER_NAME, Strings.HOMES);
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOME), Strings.UUID, Strings.HOMES);
         temp.forEach((k, v) -> {
-            final String[] homess = v.split(":");
-            Vars.home.put(k, homess);
+            List<String> list = new ArrayList<>();
+            for (String value : v.split(":")) {
+                if (!value.equals("")) {
+                    list.add(value);
+                }
+            }
+            Vars.home.put(UUID.fromString(k), list);
         });
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "PlayerHomes", Constants.AMOUNT, temp.size());
 
@@ -59,7 +65,8 @@ public class HomeSystem extends BaseCommand {
     @CommandPermission("eternia.delhome")
     public void onDelHome(Player player, String nome) {
         final String playerName = player.getName();
-        if (existHome(nome.toLowerCase(), playerName)) {
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (existHome(nome.toLowerCase(), uuid)) {
             delHome(nome.toLowerCase(), playerName);
             messages.sendMessage(Strings.M_HOME_DELETED, player);
         } else {
@@ -97,15 +104,17 @@ public class HomeSystem extends BaseCommand {
         StringBuilder accounts = new StringBuilder();
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
-                final String[] values = getHomes(target.getPlayer().getName());
-                for (String line : values) if (!accounts.toString().equals("")) accounts.append(line).append("&8, &3");
+                for (String line : getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()))) {
+                    accounts.append(line).append("&8, &3");
+                }
                 messages.sendMessage(Strings.M_HOME_LIST, Constants.HOMES, messages.getColor(accounts.toString()), player);
             } else {
                 messages.sendMessage(Strings.MSG_NO_PERM, player);
             }
         } else {
-            final String[] values = getHomes(player.getName());
-            for (String line : values) accounts.append(line).append(plugin.colors.get(8)).append(", ").append(plugin.colors.get(3));
+            for (String line : getHomes(UUIDFetcher.getUUIDOf(player.getName()))) {
+                accounts.append(line).append(plugin.colors.get(8)).append(", ").append(plugin.colors.get(3));
+            }
             messages.sendMessage(Strings.M_HOME_LIST, Constants.HOMES, messages.getColor(accounts.toString()), player);
         }
     }
@@ -115,28 +124,33 @@ public class HomeSystem extends BaseCommand {
     @CommandPermission("eternia.sethome")
     public void onSetHome(Player player, String nome) {
         int i = 4;
-        for (int v = 5; v <= 30; v++) if (player.hasPermission("eternia.sethome." + v)) i = v;
+        for (int v = 5; v <= 93; v++) if (player.hasPermission("eternia.sethome." + v)) i = v;
         final String playerName = player.getName();
-        if (nome.length() <= i) {
-            if (canHome(playerName) < i || (existHome(nome.toLowerCase(), playerName))) {
-                setHome(player.getLocation(), nome.toLowerCase(), playerName);
-                messages.sendMessage(Strings.M_HOME_CREATED, player);
-            } else {
-                ItemStack item = new ItemStack(Material.COMPASS);
-                ItemMeta meta = item.getItemMeta();
-                final Location loc = player.getLocation();
-                final String saveloc = loc.getWorld().getName() + ":" + ((int) loc.getX()) + ":" + ((int) loc.getY()) +
-                        ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
-                meta.setLore(Collections.singletonList(saveloc));
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&e" + nome.toLowerCase() + "&8]"));
-                item.setItemMeta(meta);
-                PlayerInventory inventory = player.getInventory();
-                inventory.addItem(item);
-                messages.sendMessage(Strings.M_HOME_LIMIT, player);
-            }
-        } else {
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+
+        if (nome.length() > 10) {
             messages.sendMessage(Strings.M_HOME_EXCEEDED, player);
+            return;
         }
+
+        if (canHome(uuid) < i || (existHome(nome.toLowerCase(), uuid))) {
+            setHome(player.getLocation(), nome.toLowerCase(), playerName);
+            messages.sendMessage(Strings.M_HOME_CREATED, player);
+            return;
+        }
+
+        ItemStack item = new ItemStack(Material.COMPASS);
+        ItemMeta meta = item.getItemMeta();
+        final Location loc = player.getLocation();
+        final String saveloc = loc.getWorld().getName() + ":" + ((int) loc.getX()) +
+                ":" + ((int) loc.getY()) + ":" + ((int) loc.getZ()) +
+                ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
+        meta.setLore(Collections.singletonList(saveloc));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&e" + nome.toLowerCase() + "&8]"));
+        item.setItemMeta(meta);
+        PlayerInventory inventory = player.getInventory();
+        inventory.addItem(item);
+        messages.sendMessage(Strings.M_HOME_LIMIT, player);
     }
 
     private boolean locationExists(final Location location, final Player player) {
@@ -152,22 +166,27 @@ public class HomeSystem extends BaseCommand {
         Vars.homes.put(homeName, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
-        String[] values = getHomes(jogador);
-        for (String line : values) {
-            if (line.equals(home)) {
-                result.append(line).append(":");
+        final UUID uuid = UUIDFetcher.getUUIDOf(jogador);
+
+        List<String> values = getHomes(uuid);
+        int size = values.size();
+        for (int i = 0; i < size; i++) {
+            final String value = values.get(i);
+            if (value.equals(home)) {
+                result.append(value).append(":");
                 t = true;
             } else {
-                result.append(line).append(":");
+                if (i + 1 != size) result.append(value).append(":");
+                else result.append(value);
             }
         }
+
         final String saveloc = loc.getWorld().getName() + ":" + ((int) loc.getX()) + ":" + ((int) loc.getY()) +
                 ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (!t) {
-            result.append(home).append(":");
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, result, Strings.PLAYER_NAME, jogador));
-            values = result.toString().split(":");
-            Vars.home.put(jogador, values);
+            result.append(home);
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, result.toString(), Strings.UUID, uuid.toString()));
+            Vars.home.put(uuid, values);
             EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOMES, Strings.NAME, homeName, Strings.LOCATION, saveloc));
         } else {
             EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOMES, Strings.LOCATION, saveloc, Strings.NAME, homeName));
@@ -175,25 +194,22 @@ public class HomeSystem extends BaseCommand {
     }
 
     public void delHome(String home, String jogador) {
+        final UUID uuid = UUIDFetcher.getUUIDOf(jogador);
         final String homeName = home + "." + jogador;
         Vars.homes.remove(homeName);
         StringBuilder nova = new StringBuilder();
-        String[] values = getHomes(jogador);
-        boolean t = true;
-        for (String line : values) {
-            if (!line.equals(home)) {
-                nova.append(line).append(":");
-                t = false;
+
+        List<String> values = getHomes(uuid);
+        int size = values.size();
+        for (int i = 0; i < size; i++) {
+            final String value = values.get(i);
+            if (!value.equals(home)) {
+                if (i + 1 != size) nova.append(value).append(":");
+                else nova.append(value);
             }
         }
-        final String novaString = nova.toString();
-        values = novaString.split(":");
-        Vars.home.put(jogador, values);
-        if (t) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, "", Strings.PLAYER_NAME, jogador));
-        } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, novaString, Strings.PLAYER_NAME, jogador));
-        }
+        Vars.home.put(uuid, values);
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, nova.toString(), Strings.UUID, uuid.toString()));
         EQueries.executeQuery(Constants.getQueryDelete(Constants.TABLE_HOMES, Strings.NAME, homeName));
     }
 
@@ -202,18 +218,18 @@ public class HomeSystem extends BaseCommand {
         return Vars.homes.containsKey(homeName) ? Vars.homes.get(homeName) : plugin.error;
     }
 
-    public boolean existHome(String home, String jogador) {
-        String[] homes = getHomes(jogador);
+    public boolean existHome(String home, UUID uuid) {
+        List<String> homes = getHomes(uuid);
         for (String line : homes) if (line.equals(home)) return true;
         return false;
     }
 
-    public int canHome(String jogador) {
-        return getHomes(jogador) != null ? getHomes(jogador).length : 0;
+    public int canHome(UUID uuid) {
+        return getHomes(uuid) != null ? getHomes(uuid).size() : 0;
     }
 
-    public String[] getHomes(String jogador) {
-        return Vars.home.get(jogador) != null ? Vars.home.get(jogador) : "".split(":");
+    public List<String> getHomes(UUID uuid) {
+        return Vars.home.get(uuid) != null ? Vars.home.get(uuid) : new ArrayList<>();
     }
 
 }

@@ -5,6 +5,8 @@ import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 
+import java.util.UUID;
+
 public class APIEconomy {
 
     private APIEconomy() {
@@ -13,60 +15,61 @@ public class APIEconomy {
 
     /**
      * Gets the money in player account
-     * @param playerName to check
+     * @param uuid to check
      * @return Amount currently held in player's account
      */
-    public static double getMoney(String playerName) {
-        if (Vars.balances.containsKey(playerName)) {
-            return Vars.balances.get(playerName);
+    public static double getMoney(UUID uuid) {
+        if (Vars.balances.containsKey(uuid)) {
+            return Vars.balances.get(uuid);
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PLAYER_NAME, playerName, Strings.BALANCE, EterniaServer.serverConfig.getDouble("money.start")));Vars.balances.put(playerName, 300.0);
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.UUID, uuid.toString(), Strings.BALANCE, EterniaServer.serverConfig.getDouble("money.start")));
+            Vars.balances.put(uuid, 300.0);
             return 300.0;
         }
     }
 
     /**
      * Return a boolean that indicate if the player has money enough.
-     * @param playerName to check
+     * @param uuid to check
      * @param amount to check
      * @return the boolean
      */
-    public static boolean hasMoney(String playerName, double amount) {
-        return getMoney(playerName) >= amount;
+    public static boolean hasMoney(UUID uuid, double amount) {
+        return getMoney(uuid) >= amount;
     }
 
     /**
      * Defines the amount money in player's account.
-     * @param playerName to check
+     * @param uuid to check
      * @param amount to set
      */
-    public static void setMoney(String playerName, double amount) {
-        if (Vars.balances.containsKey(playerName)) {
-            Vars.balances.put(playerName, amount);
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MONEY, Strings.BALANCE, amount, Strings.PLAYER_NAME, playerName));
+    public static void setMoney(UUID uuid, double amount) {
+        if (Vars.balances.containsKey(uuid)) {
+            Vars.balances.put(uuid, amount);
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MONEY, Strings.BALANCE, amount, Strings.UUID, uuid.toString()));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.PLAYER_NAME, playerName, Strings.BALANCE, EterniaServer.serverConfig.getDouble("money.start")));
-            Vars.balances.put(playerName, 300.0);
-            setMoney(playerName, amount);
+            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.UUID, uuid.toString(), Strings.BALANCE, EterniaServer.serverConfig.getDouble("money.start")));
+            Vars.balances.put(uuid, 300.0);
+            setMoney(uuid, amount);
         }
     }
 
     /**
      * Adds money to player account.
-     * @param playerName to check
+     * @param uuid to check
      * @param amount to add
      */
-    public static void addMoney(String playerName, double amount) {
-        setMoney(playerName, getMoney(playerName) + amount);
+    public static void addMoney(UUID uuid, double amount) {
+        setMoney(uuid, getMoney(uuid) + amount);
     }
 
     /**
      * Removes money to player account.
-     * @param playerName to check
+     * @param uuid to check
      * @param amount to remove
      */
-    public static void removeMoney(String playerName, double amount) {
-        setMoney(playerName, getMoney(playerName) - amount);
+    public static void removeMoney(UUID uuid, double amount) {
+        setMoney(uuid, getMoney(uuid) - amount);
     }
 
 }

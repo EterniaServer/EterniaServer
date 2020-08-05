@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 
 import net.md_5.bungee.api.ChatColor;
@@ -15,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,12 +57,12 @@ public class OnAsyncPlayerChat implements Listener {
                 e.setCancelled(true);
             } else {
                 final long time = System.currentTimeMillis();
-                if (Vars.playerMuted.get(playerName) - time > 0) {
-                    messages.sendMessage(Strings.M_CHAT_MUTED, Constants.TIME, TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(playerName) - time), player);
+                final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+                if (Vars.playerMuted.get(uuid) - time > 0) {
+                    messages.sendMessage(Strings.M_CHAT_MUTED, Constants.TIME, TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(uuid) - time), player);
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), playerName));
-
                 }
             }
         }

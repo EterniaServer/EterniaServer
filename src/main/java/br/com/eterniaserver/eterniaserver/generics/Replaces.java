@@ -9,6 +9,7 @@ import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
+import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 import java.lang.management.ManagementFactory;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Replaces extends BaseCommand {
 
@@ -29,8 +31,8 @@ public class Replaces extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.getRuntime = new GetRuntime();
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.PLAYER_NAME, Strings.TIME);
-        temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.TIME);
+        temp.forEach((k, v) -> Vars.playerLogin.put(UUID.fromString(k), Long.parseLong(v)));
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Profile", Constants.AMOUNT, temp.size());
 
     }
@@ -49,9 +51,7 @@ public class Replaces extends BaseCommand {
     @CommandAlias("profile|perfil")
     @CommandPermission("eternia.profile")
     public void onProfile(Player player) {
-        final String playerName = player.getName();
-
-        messages.sendMessage(Strings.MSG_PROFILE_REGISTER, Constants.PLAYER_DATA, plugin.sdf.format(new Date(Vars.playerLogin.get(playerName))), player);
+        messages.sendMessage(Strings.MSG_PROFILE_REGISTER, Constants.PLAYER_DATA, plugin.sdf.format(new Date(Vars.playerLogin.get(UUIDFetcher.getUUIDOf(player.getName())))), player);
         for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
             player.sendMessage(messages.getColor(putPAPI(player, line)));
         }
