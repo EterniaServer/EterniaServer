@@ -16,7 +16,7 @@ public class Table {
         } else {
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MONEY, "(uuid varchar(36), balance double(22))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_KITS, "(name varchar(32), cooldown integer)"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, "(uuid varchar(36), time integer, last integer, hours int(11))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, "(uuid varchar(36), player_name varchar(16), time integer, last integer, hours int(11))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MUTED, "(uuid varchar(36), time integer)"), false);
         }
 
@@ -29,7 +29,7 @@ public class Table {
         EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_REWARD, "(code varchar(16), lalalala varchar(16))"), false);
         EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_NICK, "(uuid varchar(36), player_display varchar(16))"), false);
         EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_CASH, "(uuid varchar(36), balance int(6))"), false);
-        
+
     }
 
 }

@@ -256,12 +256,18 @@ public class VaultMethods implements Economy {
 
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
-        return  createPlayerAccount(playerName);
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (playerMoneyExist(uuid)) return false;
+        playerMoneyCreate(uuid);
+        return true;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
-        return createPlayerAccount(player);
+        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        if (playerMoneyExist(uuid)) return false;
+        playerMoneyCreate(uuid);
+        return true;
     }
 
     private boolean playerMoneyExist(UUID uuid) {

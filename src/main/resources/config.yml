@@ -5,7 +5,6 @@
 # |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
 # |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
 
-# playerchecks contain importants checks, please don't disable.
 # bed contain the bed module to skip night.
 # block-reward will enable or disable the rewards for break certain
 # types of blocks.
@@ -17,7 +16,6 @@
 # spawners will enable or disable to get and place spawners.
 # teleports will enable or disable warps, teleportoplayer and others.
 modules:
-  playerchecks: true
   bed: true
   block-reward: true
   cash: true

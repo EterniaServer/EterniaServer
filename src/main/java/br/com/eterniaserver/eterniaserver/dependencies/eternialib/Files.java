@@ -132,16 +132,16 @@ public class Files {
     public void loadDatabase() {
 
         final boolean onlinemode = plugin.getServer().getOnlineMode();
+        ArrayList<String> namesToConvert = new ArrayList<>();
+        for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+            namesToConvert.add(player.getName());
+        }
         CompletableFuture.runAsync(() -> {
-            ArrayList<String> namesToConvert = new ArrayList<>();
-            for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-                namesToConvert.add(player.getName());
-            }
             UUIDFetcher uuidFetcher = new UUIDFetcher(namesToConvert);
             try {
                 uuidFetcher.call(onlinemode);
             } catch (Exception e) {
-                sendConsoleMessage("&8[&aE&9S&8] &7Erro ao carregar UUID's&8.");
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> sendConsoleMessage("&8[&aE&9S&8] &7Erro ao carregar UUID's&8."));
             }
         });
         new Table();

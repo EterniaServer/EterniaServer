@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.Gson;
+import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 public class UUIDFetcher {
 
+    private static boolean online = false;
     private static int profilesPerRequest = 100;
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
     private final Gson gson = new Gson();
@@ -35,8 +37,9 @@ public class UUIDFetcher {
         this(names, true);
     }
 
-    public void call(boolean onlinemode) throws Exception {
+    public void call(boolean onlinemode) throws IOException, InterruptedException {
 
+        online = onlinemode;
         if (onlinemode) {
             for (int i = 0; i * profilesPerRequest < names.size(); i++) {
                 boolean retry;
@@ -110,15 +113,28 @@ public class UUIDFetcher {
         return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
     }
 
+    public static void putUUIDAndName(UUID uuid, String playerName) {
+        lookupCache.put(playerName, uuid);
+        lookupNameCache.put(uuid, playerName);
+    }
+
     public static UUID getUUIDOf(String name) {
         UUID result = lookupCache.get(name);
-        if (result == null) throw new IllegalArgumentException(name);
+        if (result == null) {
+            result = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
+            lookupCache.put(name, result);
+            lookupNameCache.put(result, name);
+        }
         return result;
     }
 
     public static String getNameOf(UUID uuid) {
         String result = lookupNameCache.get(uuid);
-        if (result == null) throw new IllegalArgumentException(String.valueOf(uuid));
+        if (result == null) {
+            result = Bukkit.getOfflinePlayer(uuid).getName();
+            lookupCache.put(result, uuid);
+            lookupNameCache.put(uuid, result);
+        }
         return result;
     }
 

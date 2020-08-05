@@ -78,6 +78,8 @@ public class Strings {
     public static final String MSG_LIGHTNING_RECEIVED = "generic.simp.received-lightning";
 
     public static final String MSG_PROFILE_REGISTER = "generic.profile.register";
+    public static final String MSG_PROFILE_LAST = "generic.profile.last";
+    public static final String MSG_PROFILE_HOURS = "generic.profile.hours";
 
     public static final String MSG_SUICIDE = "generic.simp.suicide";
     public static final String MSG_WEATHER = "generic.simp.weather-changed";

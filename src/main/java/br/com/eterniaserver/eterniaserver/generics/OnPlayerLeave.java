@@ -27,13 +27,11 @@ public class OnPlayerLeave implements Listener {
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-            Vars.afkTime.remove(playerName);
-            final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-            int hours = Vars.playerHours.get(uuid) + (int) TimeUnit.MICROSECONDS.toHours(System.currentTimeMillis() - Vars.playerLast.get(uuid));
-            Vars.playerHours.put(uuid, hours);
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.HOURS, hours, Strings.UUID, uuid.toString()));
-        }
+        Vars.afkTime.remove(playerName);
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        int hours = Vars.playerHours.get(uuid) + (int) TimeUnit.MICROSECONDS.toHours(System.currentTimeMillis() - Vars.playerLast.get(uuid));
+        Vars.playerHours.put(uuid, hours);
+        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.HOURS, hours, Strings.UUID, uuid.toString()));
 
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             plugin.getInternMethods().removeUUIF(player);

@@ -5,8 +5,10 @@ import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
+import br.com.eterniaserver.paperlib.PaperLib;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,16 +43,19 @@ public class OnPlayerJoin implements Listener {
             }
         }
 
-        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-            final long time = System.currentTimeMillis();
-            Vars.afkTime.put(playerName, time);
-
-            if (!Vars.playerLogin.containsKey(uuid)) {
-                playerProfileCreate(uuid);
-            } else {
-                Vars.playerLast.put(uuid, time);
-                EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.LAST, time, Strings.UUID, uuid.toString()));
+        final long time = System.currentTimeMillis();
+        Vars.afkTime.put(playerName, time);
+        if (!Vars.playerLogin.containsKey(uuid)) {
+            PaperLib.teleportAsync(player, getWarp());
+            playerProfileCreate(uuid, playerName);
+        } else {
+            Vars.playerLast.put(uuid, time);
+            if (!Vars.playerName.get(uuid).equals(playerName)) {
+                UUIDFetcher.putUUIDAndName(uuid, playerName);
+                Vars.playerName.put(uuid, playerName);
+                EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.PLAYER_NAME, player, Strings.UUID, uuid.toString()));
             }
+            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.LAST, time, Strings.UUID, uuid.toString()));
         }
 
         playerXPExist(uuid);
@@ -71,9 +76,7 @@ public class OnPlayerJoin implements Listener {
     }
 
     private void playerChecks(String playerName) {
-        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-            Vars.afkTime.put(playerName, System.currentTimeMillis());
-        }
+        Vars.afkTime.put(playerName, System.currentTimeMillis());
     }
 
     private void playerCashExist(UUID uuid) {
@@ -129,11 +132,14 @@ public class OnPlayerJoin implements Listener {
         Vars.balances.put(uuid, 300.0);
     }
 
-    private void playerProfileCreate(UUID uuid) {
+    private void playerProfileCreate(UUID uuid, String playerName) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, "(uuid, time, last, hours)",
-                "('" + uuid.toString() + "', '" + time + "', '" + time + "', '" + 0 + "')"));
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, "(uuid, player_name, time, last, hours)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "')"));
         Vars.playerLogin.put(uuid, time);
+        Vars.playerLast.put(uuid, time);
+        Vars.playerHours.put(uuid, 0);
+        Vars.playerName.put(uuid, playerName);
     }
 
     private void playerXPCreate(UUID uuid) {
@@ -143,6 +149,10 @@ public class OnPlayerJoin implements Listener {
 
     private void playerHomeCreate(UUID uuid) {
         EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOME, Strings.UUID, uuid.toString(), Strings.HOMES, ""));
+    }
+
+    private Location getWarp() {
+        return Vars.warps.containsKey("spawn") ? Vars.warps.get("spawn") : plugin.error;
     }
 
 }

@@ -34,7 +34,7 @@ public class Vars {
     protected static final Map<UUID, String> nick = new HashMap<>();
     protected static final Map<UUID, Integer> cashBuy = new HashMap<>();
     protected static final Map<UUID, Long> playerMuted = new HashMap<>();
-
+    protected static final Map<UUID, String> playerName = new HashMap<>();
     protected static final Map<UUID, Long> playerLogin = new HashMap<>();
     protected static final Map<UUID, Long> playerLast = new HashMap<>();
     protected static final Map<UUID, Integer> playerHours = new HashMap<>();

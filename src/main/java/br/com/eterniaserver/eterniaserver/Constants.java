@@ -10,6 +10,7 @@ public class Constants {
     public static final String PLAYER = "%player_displayname%";
     public static final String TARGET = "%target_displayname%";
     public static final String PLAYER_DATA = "%player_register_data%";
+    public static final String PLAYER_LAST = "%player_last_login%";
     public static final String VALUE = "%value%";
     public static final String WARP = "%warp_name%";
     public static final String WORLD = "%world_name%";

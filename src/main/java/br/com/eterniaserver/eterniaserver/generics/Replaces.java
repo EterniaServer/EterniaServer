@@ -4,13 +4,13 @@ import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
-
 import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
+
 import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -44,6 +44,10 @@ public class Replaces extends BaseCommand {
         temp.forEach((k, v) -> Vars.playerHours.put(UUID.fromString(k), Integer.parseInt(v)));
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Hours", Constants.AMOUNT, size);
 
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.PLAYER_NAME);
+        temp.forEach((k, v) -> Vars.playerName.put(UUID.fromString(k), v));
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Player Name", Constants.AMOUNT, size);
+
     }
 
     @CommandAlias("speed")
@@ -60,7 +64,10 @@ public class Replaces extends BaseCommand {
     @CommandAlias("profile|perfil")
     @CommandPermission("eternia.profile")
     public void onProfile(Player player) {
-        messages.sendMessage(Strings.MSG_PROFILE_REGISTER, Constants.PLAYER_DATA, plugin.sdf.format(new Date(Vars.playerLogin.get(UUIDFetcher.getUUIDOf(player.getName())))), player);
+        UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        messages.sendMessage(Strings.MSG_PROFILE_REGISTER, Constants.PLAYER_DATA, plugin.sdf.format(new Date(Vars.playerLogin.get(uuid))), player);
+        messages.sendMessage(Strings.MSG_PROFILE_LAST, Constants.PLAYER_LAST, plugin.sdf.format(new Date(Vars.playerLast.get(uuid))), player);
+        messages.sendMessage(Strings.MSG_PROFILE_HOURS, Constants.HOURS, Vars.playerHours.get(uuid), player);
         for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
             player.sendMessage(messages.getColor(putPAPI(player, line)));
         }

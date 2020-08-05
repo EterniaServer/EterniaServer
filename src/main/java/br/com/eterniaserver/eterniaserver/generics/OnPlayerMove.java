@@ -24,12 +24,10 @@ public class OnPlayerMove implements Listener {
         if (event.getTo().distanceSquared(event.getFrom()) != 0) {
             final Player player = event.getPlayer();
             final String playerName = player.getName();
-            if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
-                Vars.afkTime.put(playerName, System.currentTimeMillis());
-                if (Vars.afk.contains(playerName)) {
-                    Vars.afk.remove(playerName);
-                    plugin.getEFiles().broadcastMessage(Strings.MSG_AFK_DISABLE, Constants.PLAYER, player.getDisplayName());
-                }
+            Vars.afkTime.put(playerName, System.currentTimeMillis());
+            if (Vars.afk.contains(playerName)) {
+                Vars.afk.remove(playerName);
+                plugin.getEFiles().broadcastMessage(Strings.MSG_AFK_DISABLE, Constants.PLAYER, player.getDisplayName());
             }
         }
     }
