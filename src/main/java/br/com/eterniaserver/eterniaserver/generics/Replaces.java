@@ -33,7 +33,16 @@ public class Replaces extends BaseCommand {
 
         HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.TIME);
         temp.forEach((k, v) -> Vars.playerLogin.put(UUID.fromString(k), Long.parseLong(v)));
-        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Profile", Constants.AMOUNT, temp.size());
+        int size = temp.size();
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Register", Constants.AMOUNT, size);
+
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.LAST);
+        temp.forEach((k, v) -> Vars.playerLast.put(UUID.fromString(k), Long.parseLong(v)));
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Last Login", Constants.AMOUNT, size);
+
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.HOURS);
+        temp.forEach((k, v) -> Vars.playerHours.put(UUID.fromString(k), Integer.parseInt(v)));
+        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Hours", Constants.AMOUNT, size);
 
     }
 

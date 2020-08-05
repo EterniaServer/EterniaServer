@@ -69,4 +69,8 @@ public class Constants {
         return "INSERT INTO " + table + " (" + type + ", " + type2 + ") VALUES ('" + value + "', '" + value2 + "');";
     }
 
+    public static String getQueryInsert(final String table, final String type, final Object value) {
+        return "INSERT INTO " + table + " " + type + " VALUES " + value + ";";
+    }
+
 }

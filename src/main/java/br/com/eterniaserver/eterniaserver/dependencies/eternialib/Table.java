@@ -9,17 +9,15 @@ public class Table {
     public Table() {
 
         if (EterniaLib.getMySQL()) {
-            final String playerNameTimeMySQL = "(uuid varchar(36), time bigint(20))";
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MONEY, "(uuid varchar(36), balance double(22,4))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_KITS, "(name varchar(32), cooldown bigint(20))"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, playerNameTimeMySQL), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MUTED, playerNameTimeMySQL), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, "(uuid varchar(36), time bigint(20), last bigint(20), hours int(11))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MUTED, "(uuid varchar(36), time bigint(20))"), false);
         } else {
-            final String playerNameTimeSQLite = "(uuid varchar(36), time integer)";
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MONEY, "(uuid varchar(36), balance double(22))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_KITS, "(name varchar(32), cooldown integer)"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, playerNameTimeSQLite), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MUTED, playerNameTimeSQLite), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_PLAYER, "(uuid varchar(36), time integer, last integer, hours int(11))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Constants.TABLE_MUTED, "(uuid varchar(36), time integer)"), false);
         }
 
         final String nameTime = "(name varchar(16), location varchar(64))";

@@ -19,6 +19,8 @@ public class Strings {
     public static final String XP = "xp";
     public static final String HOMES = "homes";
     public static final String CLEAR = "clear";
+    public static final String LAST = "last";
+    public static final String HOURS = "hours";
 
     public static final String MSG_NO_MONEY = "server.no-money";
     public static final String MSG_LOAD_DATA = "server.load-data";

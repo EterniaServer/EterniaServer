@@ -3,10 +3,11 @@ package br.com.eterniaserver.eterniaserver.objects;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.common.base.Charsets;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.io.InputStreamReader;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 public class UUIDFetcher {
 
-    private static int PROFILES_PER_REQUEST = 100;
+    private static int profilesPerRequest = 100;
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
     private final Gson gson = new Gson();
     private final List<String> names;
@@ -37,12 +38,12 @@ public class UUIDFetcher {
     public void call(boolean onlinemode) throws Exception {
 
         if (onlinemode) {
-            for (int i = 0; i * PROFILES_PER_REQUEST < names.size(); i++) {
+            for (int i = 0; i * profilesPerRequest < names.size(); i++) {
                 boolean retry;
                 JsonArray array;
                 do {
                     HttpURLConnection connection = createConnection();
-                    String body = gson.toJson(names.subList(i * PROFILES_PER_REQUEST, Math.min((i + 1) * PROFILES_PER_REQUEST, names.size())));
+                    String body = gson.toJson(names.subList(i * profilesPerRequest, Math.min((i + 1) * profilesPerRequest, names.size())));
                     writeBody(connection, body);
                     retry = false;
                     array = null;
@@ -53,8 +54,8 @@ public class UUIDFetcher {
 
                         if (e.getMessage().contains("429")) {
                             retry = true;
-                            if (i == 0 && PROFILES_PER_REQUEST > 1) {
-                                PROFILES_PER_REQUEST = Math.max(PROFILES_PER_REQUEST - 5, 1);
+                            if (i == 0 && profilesPerRequest > 1) {
+                                profilesPerRequest = Math.max(profilesPerRequest - 5, 1);
                             } else {
                                 Thread.sleep(30000);
                             }
@@ -79,7 +80,7 @@ public class UUIDFetcher {
             }
         } else {
             for (String name : names) {
-                UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
+                UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
                 lookupCache.put(name, uuid);
                 lookupCache.put(name.toLowerCase(), uuid);
                 lookupNameCache.put(uuid, name);
@@ -87,14 +88,14 @@ public class UUIDFetcher {
         }
     }
 
-    private static void writeBody(HttpURLConnection connection, String body) throws Exception {
+    private static void writeBody(HttpURLConnection connection, String body) throws IOException {
         OutputStream stream = connection.getOutputStream();
         stream.write(body.getBytes());
         stream.flush();
         stream.close();
     }
 
-    private static HttpURLConnection createConnection() throws Exception {
+    private static HttpURLConnection createConnection() throws IOException {
         URL url = new URL(PROFILE_URL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");

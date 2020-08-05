@@ -41,7 +41,18 @@ public class OnPlayerJoin implements Listener {
             }
         }
 
-        playerProfileExist(uuid);
+        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks")) {
+            final long time = System.currentTimeMillis();
+            Vars.afkTime.put(playerName, time);
+
+            if (!Vars.playerLogin.containsKey(uuid)) {
+                playerProfileCreate(uuid);
+            } else {
+                Vars.playerLast.put(uuid, time);
+                EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.LAST, time, Strings.UUID, uuid.toString()));
+            }
+        }
+
         playerXPExist(uuid);
         playerHomeExist(uuid);
         playerMoneyExist(uuid);
@@ -74,12 +85,6 @@ public class OnPlayerJoin implements Listener {
     private void playerMoneyExist(UUID uuid) {
         if (EterniaServer.serverConfig.getBoolean("modules.economy") && !Vars.balances.containsKey(uuid)) {
             playerMoneyCreate(uuid);
-        }
-    }
-
-    private void playerProfileExist(UUID uuid) {
-        if (EterniaServer.serverConfig.getBoolean("modules.playerchecks") && !Vars.playerLogin.containsKey(uuid)) {
-            playerProfileCreate(uuid);
         }
     }
 
@@ -126,7 +131,8 @@ public class OnPlayerJoin implements Listener {
 
     private void playerProfileCreate(UUID uuid) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, Strings.UUID, uuid.toString(), Strings.TIME, time));
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, "(uuid, time, last, hours)",
+                "('" + uuid.toString() + "', '" + time + "', '" + time + "', '" + 0 + "')"));
         Vars.playerLogin.put(uuid, time);
     }
 
