@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class OnPlayerJoin implements Listener {
@@ -67,6 +68,17 @@ public class OnPlayerJoin implements Listener {
 
         event.setJoinMessage(null);
         plugin.getEFiles().broadcastMessage(Strings.MSG_JOIN, Constants.PLAYER, player.getDisplayName());
+    }
+
+    private void playerProfileCreate(UUID uuid, String playerName) {
+        final long time = System.currentTimeMillis();
+        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, "(uuid, player_name, time, last, hours)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "')"));
+        UUIDFetcher.putUUIDAndName(uuid, playerName);
+        Vars.playerLogin.put(uuid, time);
+        Vars.playerLast.put(uuid, time);
+        Vars.playerHours.put(uuid, 0);
+        Vars.playerName.put(uuid, playerName);
     }
 
     private void playerMutedExist(UUID uuid) {
@@ -132,16 +144,6 @@ public class OnPlayerJoin implements Listener {
         Vars.balances.put(uuid, 300.0);
     }
 
-    private void playerProfileCreate(UUID uuid, String playerName) {
-        final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, "(uuid, player_name, time, last, hours)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "')"));
-        Vars.playerLogin.put(uuid, time);
-        Vars.playerLast.put(uuid, time);
-        Vars.playerHours.put(uuid, 0);
-        Vars.playerName.put(uuid, playerName);
-    }
-
     private void playerXPCreate(UUID uuid) {
         EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_XP, Strings.UUID, uuid.toString(), Strings.XP, 0));
         Vars.xp.put(uuid, 0);
@@ -149,6 +151,7 @@ public class OnPlayerJoin implements Listener {
 
     private void playerHomeCreate(UUID uuid) {
         EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOME, Strings.UUID, uuid.toString(), Strings.HOMES, ""));
+        Vars.home.put(uuid, new ArrayList<>());
     }
 
     private Location getWarp() {

@@ -1,7 +1,10 @@
 package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
 import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.utils.StringHelper;
@@ -130,22 +133,7 @@ public class Files {
     }
 
     public void loadDatabase() {
-
-        final boolean onlinemode = plugin.getServer().getOnlineMode();
-        ArrayList<String> namesToConvert = new ArrayList<>();
-        for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-            namesToConvert.add(player.getName());
-        }
-        CompletableFuture.runAsync(() -> {
-            UUIDFetcher uuidFetcher = new UUIDFetcher(namesToConvert);
-            try {
-                uuidFetcher.call(onlinemode);
-            } catch (Exception e) {
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> sendConsoleMessage("&8[&aE&9S&8] &7Erro ao carregar UUID's&8."));
-            }
-        });
         new Table();
-
     }
 
     private void sendConsoleMessage(final String msg) {

@@ -45,7 +45,10 @@ public class Replaces extends BaseCommand {
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Hours", Constants.AMOUNT, size);
 
         temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.PLAYER_NAME);
-        temp.forEach((k, v) -> Vars.playerName.put(UUID.fromString(k), v));
+        temp.forEach((k, v) -> {
+            Vars.playerName.put(UUID.fromString(k), v);
+            UUIDFetcher.putUUIDAndName(UUID.fromString(k), v);
+        });
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Player Name", Constants.AMOUNT, size);
 
     }
