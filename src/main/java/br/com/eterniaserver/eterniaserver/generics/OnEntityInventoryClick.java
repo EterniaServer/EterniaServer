@@ -48,8 +48,8 @@ public class OnEntityInventoryClick implements Listener {
 
     private void cashGui(final Player player, InventoryClickEvent e) {
         final String playerName = player.getName();
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         e.setCancelled(true);
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (!Vars.cashBuy.containsKey(uuid)) {
             int slot = e.getSlot();
             final String guiString = "gui." + slot;

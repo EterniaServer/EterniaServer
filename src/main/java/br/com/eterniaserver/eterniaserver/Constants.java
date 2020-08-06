@@ -24,7 +24,7 @@ public class Constants {
     public static final String HOURS = "%hours%";
     public static final String MINUTE = "%minutes%";
     public static final String SECONDS = "%seconds%";
-    public static final String TPS = "%server_tps_1%";
+    public static final String TPS = "%server_tps%";
     public static final String TIME = "%time%";
     public static final String KITS = "%kits%";
     public static final String KIT_NAME = "%kit_name%";

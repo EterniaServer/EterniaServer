@@ -105,7 +105,7 @@ public class Economy extends BaseCommand {
                 }
                 lista = list;
                 time = System.currentTimeMillis();
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()-> lista.forEach((namet -> messages.sendMessage(Strings.M_ECO_BALLIST, Constants.POSITION, (lista.indexOf(namet) + 1), Constants.PLAYER, namet, Constants.AMOUNT, plugin.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet))), sender))));
+                lista.forEach((namet -> messages.sendMessage(Strings.M_ECO_BALLIST, Constants.POSITION, (lista.indexOf(namet) + 1), Constants.PLAYER, namet, Constants.AMOUNT, plugin.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet))), sender)));
             });
         }
     }
