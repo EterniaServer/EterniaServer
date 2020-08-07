@@ -51,7 +51,7 @@ public class Constants {
     public static final String TABLE_XP = EterniaServer.serverConfig.getString("sql.table-xp");
 
     public static String getQueryCreateTable(final String table, final String values) {
-        return "CREATE TABLE IF NOT EXISTS " + table + values + ";";
+        return "CREATE TABLE IF NOT EXISTS " + table + " " + values + ";";
     }
 
     public static String getQuerySelectAll(final String table) {
