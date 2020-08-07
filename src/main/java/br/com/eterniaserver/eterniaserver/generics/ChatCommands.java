@@ -31,8 +31,8 @@ public class ChatCommands extends BaseCommand {
         this.messages = plugin.getEFiles();
         this.money = EterniaServer.serverConfig.getInt("money.nick");
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_NICK), Strings.PLAYER_NAME, Strings.PLAYER_DISPLAY);
-        temp.forEach(Vars.nickname::put);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_NICK), Strings.UUID, Strings.PLAYER_DISPLAY);
+        temp.forEach((k, v) -> Vars.nickname.put(UUIDFetcher.getUUIDOf(k), v));
         messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Nicks", Constants.AMOUNT, temp.size());
 
     }
@@ -131,7 +131,7 @@ public class ChatCommands extends BaseCommand {
                 player.setDisplayName(Vars.nick.get(uuid));
                 messages.sendMessage(Strings.M_CHAT_NEWNICK, Constants.PLAYER, player.getDisplayName(), player);
                 saveToSQL(playerName);
-                Vars.nickname.put(playerName, Vars.nick.get(uuid));
+                Vars.nickname.put(uuid, Vars.nick.get(uuid));
             } else {
                 messages.sendMessage(Strings.MSG_NO_MONEY, player);
             }
@@ -209,7 +209,7 @@ public class ChatCommands extends BaseCommand {
             if (string.equals(Strings.CLEAR)) {
                 player.setDisplayName(playerName);
                 saveToSQL(playerName);
-                Vars.nickname.put(playerName, playerName);
+                Vars.nickname.put(UUIDFetcher.getUUIDOf(playerName), playerName);
                 messages.sendMessage(Strings.M_CHAT_REMOVE_NICK, player);
             } else {
                 player.setDisplayName(messages.getColor(string));
@@ -234,7 +234,7 @@ public class ChatCommands extends BaseCommand {
 
     private void saveToSQL(final String playerName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (Vars.nickname.containsKey(playerName)) {
+        if (Vars.nickname.containsKey(uuid)) {
             EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_NICK, Strings.PLAYER_DISPLAY, Vars.nick.get(uuid), Strings.UUID, uuid.toString()));
         } else {
             EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_NICK, Strings.UUID, uuid.toString(), Strings.PLAYER_DISPLAY, Vars.nick.get(uuid)));

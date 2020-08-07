@@ -36,8 +36,8 @@ public class OnPlayerJoin implements Listener {
             if (player.hasPermission("eternia.spy")) {
                 Vars.spy.put(playerName, true);
             }
-            if (Vars.nickname.containsKey(playerName)) {
-                player.setDisplayName(ChatColor.translateAlternateColorCodes('&', Vars.nickname.get(playerName)));
+            if (Vars.nickname.containsKey(uuid)) {
+                player.setDisplayName(ChatColor.translateAlternateColorCodes('&', Vars.nickname.get(uuid)));
             }
         }
 

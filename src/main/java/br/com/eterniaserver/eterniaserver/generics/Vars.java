@@ -32,6 +32,7 @@ public class Vars {
     protected static final Map<UUID, Integer> xp = new HashMap<>();
     protected static final Map<UUID, Integer> cash = new HashMap<>();
     protected static final Map<UUID, String> nick = new HashMap<>();
+    protected static final Map<UUID, String> nickname = new HashMap<>();
     protected static final Map<UUID, Integer> cashBuy = new HashMap<>();
     protected static final Map<UUID, Long> playerMuted = new HashMap<>();
     protected static final Map<UUID, String> playerName = new HashMap<>();
@@ -52,7 +53,6 @@ public class Vars {
     protected static final Map<String, Long> afkTime = new HashMap<>();
     protected static final Map<String, Long> bedCooldown = new HashMap<>();
     protected static final Map<String, String> rewards = new HashMap<>();
-    protected static final Map<String, String> nickname = new HashMap<>();
     protected static final Map<String, String> tpaRequests = new HashMap<>();
     protected static final Map<String, String> glowingColor = new HashMap<>();
     protected static final Map<String, String> tell = new HashMap<>();
