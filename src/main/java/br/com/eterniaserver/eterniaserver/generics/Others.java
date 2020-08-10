@@ -1,6 +1,5 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
@@ -20,7 +19,6 @@ import java.util.Collections;
 public class Others extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final EFiles messages;
 
     private final ItemStack coali = new ItemStack(Material.COAL);
     private final ItemStack lapizi = new ItemStack(Material.LAPIS_LAZULI);
@@ -32,13 +30,12 @@ public class Others extends BaseCommand {
 
     public Others(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getEFiles();
     }
 
     @CommandAlias("reloadeternia|eterniareload")
     @CommandPermission("eternia.reload")
     public void onReload(CommandSender sender) {
-        messages.sendMessage(Strings.MSG_RELOAD_START, sender);
+        sender.sendMessage(Strings.MSG_RELOAD_START);
         plugin.getFiles().loadConfigs();
         plugin.getFiles().loadMessages();
         plugin.getFiles().loadBlocksRewards();
@@ -47,7 +44,7 @@ public class Others extends BaseCommand {
         plugin.getFiles().loadKits();
         plugin.getFiles().loadRewards();
         plugin.getFiles().loadDatabase();
-        messages.sendMessage(Strings.MSG_RELOAD_FINISH, sender);
+        sender.sendMessage(Strings.MSG_RELOAD_FINISH);
     }
 
     @CommandAlias("itemrename|renameitem")
@@ -66,10 +63,10 @@ public class Others extends BaseCommand {
                 item.setLore(Collections.singletonList(transformToString(nome)));
                 player.getInventory().setItemInMainHand(item);
             } else {
-                messages.sendMessage(Strings.MSG_ITEM_RENAME, player);
+                player.sendMessage(Strings.MSG_ITEM_RENAME);
             }
         } else {
-            messages.sendMessage(Strings.MSG_ITEM_NO, player);
+            player.sendMessage(Strings.MSG_ITEM_NO);
         }
     }
 
@@ -89,7 +86,7 @@ public class Others extends BaseCommand {
     public void onFly(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             if (player.getWorld() == Bukkit.getWorld("evento") && !player.hasPermission("eternia.fly.evento")) {
-                messages.sendMessage(Strings.MSG_NO_PERM, player);
+                player.sendMessage(Strings.MSG_NO_PERM);
             } else {
                 changeFlyState(player);
             }
@@ -104,15 +101,15 @@ public class Others extends BaseCommand {
     public void onFeed(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             player.setFoodLevel(20);
-            messages.sendMessage("generic.others.feeded", player);
+            player.sendMessage(Strings.MSG_FEEDED);
         } else {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.feed.other")) {
                 targetP.setFoodLevel(20);
-                messages.sendMessage("generic.others.feeded-target", Constants.TARGET, targetP.getDisplayName(), player);
-                messages.sendMessage("generic.others.feeded", Constants.TARGET, player.getDisplayName(), targetP);
+                player.sendMessage(Strings.MSG_FEEDED_TARGET.replace(Constants.TARGET, targetP.getDisplayName()));
+                player.sendMessage(Strings.MSG_FEEDED);
             } else {
-                messages.sendMessage("server.no-perm", player);
+                player.sendMessage(Strings.MSG_NO_PERM);
             }
         }
     }
@@ -128,7 +125,7 @@ public class Others extends BaseCommand {
         int diamond = 0;
         int esmeralda = 0;
         for (ItemStack i : player.getInventory().getContents()) {
-            if (i.getType() != Material.AIR) {
+            if (i != null && i.getType() != Material.AIR) {
                 coal += checkItems(i, coali);
                 lapiz += checkItems(i, lapizi);
                 redstone += checkItems(i, redstonei);
@@ -145,7 +142,7 @@ public class Others extends BaseCommand {
         convertItems(gold, Material.GOLD_INGOT, Material.GOLD_BLOCK, player);
         convertItems(diamond, Material.DIAMOND, Material.DIAMOND_BLOCK, player);
         convertItems(esmeralda, Material.EMERALD, Material.EMERALD_BLOCK, player);
-        messages.sendMessage(Strings.MSG_CONDENSER, player);
+        player.sendMessage(Strings.MSG_CONDENSER);
     }
 
     @CommandAlias("afk")
@@ -153,27 +150,27 @@ public class Others extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (Vars.afk.contains(playerName)) {
-            messages.broadcastMessage(Strings.MSG_AFK_DISABLE, Constants.PLAYER, playerName);
+            Bukkit.getConsoleSender().sendMessage(Strings.MSG_AFK_DISABLE.replace(Constants.PLAYER, player.getDisplayName()));
             Vars.afk.remove(playerName);
         } else {
             Vars.afk.add(playerName);
-            messages.broadcastMessage(Strings.MSG_AFK_ENABLE, Constants.PLAYER, playerName);
+            Bukkit.getConsoleSender().sendMessage(Strings.MSG_AFK_ENABLE.replace(Constants.PLAYER, player.getDisplayName()));
         }
     }
 
     private String transformToString(final String[] nome) {
         StringBuilder sb = new StringBuilder();
         for (String arg : nome) sb.append(arg).append(" ");
-        return messages.getColor(sb.toString());
+        return Strings.getColor(sb.toString());
     }
 
     private void changeGod(final Player player) {
         final String playerName = player.getName();
         if (Vars.god.contains(playerName)) {
-            messages.sendMessage(Strings.MSG_GOD_DISABLE, player);
+            player.sendMessage(Strings.MSG_GOD_DISABLE);
             Vars.god.remove(playerName);
         } else {
-            messages.sendMessage(Strings.MSG_GOD_ENABLE, player);
+            player.sendMessage(Strings.MSG_GOD_ENABLE);
             Vars.god.add(playerName);
         }
     }
@@ -194,10 +191,10 @@ public class Others extends BaseCommand {
     public void changeFlyState(Player player) {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
-            messages.sendMessage(Strings.MSG_FLY_DISABLE, player);
+            player.sendMessage(Strings.MSG_FLY_DISABLE);
         } else {
             player.setAllowFlight(true);
-            messages.sendMessage(Strings.MSG_FLY_ENABLE, player);
+            player.sendMessage(Strings.MSG_FLY_ENABLE);
         }
     }
 

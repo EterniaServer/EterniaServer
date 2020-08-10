@@ -28,6 +28,7 @@ public class OnPlayerBlockPlace implements Listener {
                 spawner.update();
             }
         }
+
     }
 
 }

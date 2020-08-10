@@ -1,6 +1,5 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
@@ -11,12 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Inventory extends BaseCommand {
-
-    private final EFiles messages;
-
-    public Inventory(EFiles messages) {
-        this.messages = messages;
-    }
 
     @CommandAlias("workbench|craftingtable")
     @CommandPermission("eternia.workbench")
@@ -40,7 +33,7 @@ public class Inventory extends BaseCommand {
             if (player.hasPermission("eternia.enderchest.other")) {
                 player.openInventory(target.getPlayer().getEnderChest());
             } else {
-                messages.sendMessage(Strings.MSG_NO_PERM, player);
+                player.sendMessage(Strings.MSG_NO_PERM);
             }
         }
     }
@@ -50,7 +43,7 @@ public class Inventory extends BaseCommand {
     public void onHat(Player player) {
         dropHelmet(player);
         setHelmet(player);
-        messages.sendMessage(Strings.MSG_ITEM_HELMET, player);
+        player.sendMessage(Strings.MSG_ITEM_HELMET);
     }
 
     private void dropHelmet(Player player) {

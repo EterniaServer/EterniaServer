@@ -1,26 +1,18 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CommandAlias("eco")
 @CommandPermission("eternia.eco")
 public class EcoChange extends BaseCommand {
-
-    private final EFiles messages;
-
-    public EcoChange(EterniaServer plugin) {
-        this.messages = plugin.getEFiles();
-    }
 
     @Subcommand("set|definir")
     @CommandCompletion("@players 100")
@@ -30,8 +22,8 @@ public class EcoChange extends BaseCommand {
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        messages.sendMessage(Strings.M_ECO_SET, Constants.AMOUNT, money, Constants.TARGET, targetP.getDisplayName(), sender);
-        messages.sendMessage(Strings.M_ECO_RSET, Constants.AMOUNT, money, Constants.TARGET, senderName, targetP);
+        sender.sendMessage(Strings.M_ECO_SET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_ECO_RSET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
     @Subcommand("take|remover")
@@ -42,8 +34,8 @@ public class EcoChange extends BaseCommand {
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        messages.sendMessage(Strings.M_ECO_REMOVE, Constants.AMOUNT ,money, Constants.TARGET, targetP.getDisplayName(), sender);
-        messages.sendMessage(Strings.M_ECO_RREMOVE, Constants.AMOUNT, money, Constants.TARGET, senderName, targetP);
+        sender.sendMessage(Strings.M_ECO_REMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_ECO_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
     @Subcommand("give|dar")
@@ -54,8 +46,8 @@ public class EcoChange extends BaseCommand {
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        messages.sendMessage(Strings.M_ECO_GIVE, Constants.AMOUNT, money, Constants.TARGET, targetP.getDisplayName(), sender);
-        messages.sendMessage(Strings.M_ECO_RECEIVE, Constants.AMOUNT, money, Constants.TARGET, senderName, targetP);
+        sender.sendMessage(Strings.M_ECO_GIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_ECO_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
 }

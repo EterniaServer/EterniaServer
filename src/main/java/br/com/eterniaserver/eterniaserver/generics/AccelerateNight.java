@@ -1,6 +1,5 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
@@ -16,14 +15,12 @@ public class AccelerateNight extends BukkitRunnable {
 
     private final EterniaServer plugin;
     private final World world;
-    private final EFiles messages;
 
     public AccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        this.messages = plugin.getEFiles();
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
-            messages.broadcastMessage(Strings.MSG_SKIPPING, Constants.WORLD, world.getName());
+            Bukkit.broadcastMessage(Strings.MSG_SKIPPING.replace(Constants.WORLD, world.getName()));
         }
     }
 
@@ -41,7 +38,7 @@ public class AccelerateNight extends BukkitRunnable {
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
-                messages.broadcastMessage(Strings.MSG_SKIP_NIGHT);
+                Bukkit.broadcastMessage(Strings.MSG_SKIP_NIGHT);
                 changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {

@@ -1,15 +1,13 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,16 +21,11 @@ import java.util.UUID;
 
 public class Experience extends BaseCommand {
 
-    private final InternMethods internMethods;
-    private final EFiles messages;
-
-    public Experience(EterniaServer plugin) {
-        this.internMethods = plugin.getInternMethods();
-        this.messages = plugin.getEFiles();
+    public Experience() {
 
         final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_XP), Strings.UUID, Strings.XP);
         temp.forEach((k, v) -> Vars.xp.put(UUID.fromString(k), Integer.parseInt(v)));
-        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Experience", Constants.AMOUNT, temp.size());
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Experience").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }
 
     @CommandAlias("checklevel|verlevel")
@@ -43,7 +36,7 @@ public class Experience extends BaseCommand {
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(APIExperience.getExp(UUIDFetcher.getUUIDOf(player.getName())));
-        messages.sendMessage(Strings.M_XP_CHECK, Constants.AMOUNT, player.getLevel(), player);
+        player.sendMessage(Strings.M_XP_CHECK.replace(Constants.AMOUNT, String.valueOf(player.getLevel())));
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -52,7 +45,7 @@ public class Experience extends BaseCommand {
     @Syntax("<level>")
     @CommandPermission("eternia.bottlexp")
     public void onBottleLevel(Player player, Integer xpWant) {
-        int xpReal = internMethods.getXPForLevel(player.getLevel());
+        int xpReal = InternMethods.getXPForLevel(player.getLevel());
         if (xpWant > 0 && xpReal > xpWant) {
             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
             ItemMeta meta = item.getItemMeta();
@@ -61,12 +54,12 @@ public class Experience extends BaseCommand {
             item.setLore(Collections.singletonList(String.valueOf(xpWant)));
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
-            messages.sendMessage(Strings.M_XP_BOTTLE, player);
+            player.sendMessage(Strings.M_XP_BOTTLE);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpReal - xpWant);
         } else {
-            messages.sendMessage(Strings.M_XP_INSUFFICIENT, player);
+            player.sendMessage(Strings.M_XP_INSUFFICIENT);
         }
     }
 
@@ -76,13 +69,13 @@ public class Experience extends BaseCommand {
     public void onWithdrawLevel(Player player, Integer level) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
-        int xpla = internMethods.getXPForLevel(level);
+        int xpla = InternMethods.getXPForLevel(level);
         if (APIExperience.getExp(uuid) >= xpla) {
             APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
-            messages.sendMessage(Strings.M_XP_WITHDRAW, Constants.AMOUNT, player.getLevel(), player);
+            player.sendMessage(Strings.M_XP_WITHDRAW.replace(Constants.AMOUNT, String.valueOf(player.getLevel())));
         } else {
-            messages.sendMessage(Strings.M_XP_INSUFFICIENT, player);
+            player.sendMessage(Strings.M_XP_INSUFFICIENT);
         }
     }
 
@@ -92,15 +85,15 @@ public class Experience extends BaseCommand {
     public void onDepositLevel(Player player, Integer xpla) {
         int xpAtual = player.getLevel();
         if (xpAtual >= xpla) {
-            int xp = internMethods.getXPForLevel(xpla);
-            int xpto = internMethods.getXPForLevel(xpAtual);
+            int xp = InternMethods.getXPForLevel(xpla);
+            int xpto = InternMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
-            messages.sendMessage(Strings.M_XP_DEPOSIT, Constants.AMOUNT, xpla, player);
+            player.sendMessage(Strings.M_XP_DEPOSIT.replace(Constants.AMOUNT, String.valueOf(xpla)));
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);
         } else {
-            messages.sendMessage(Strings.M_XP_INSUFFICIENT, player);
+            player.sendMessage(Strings.M_XP_INSUFFICIENT);
         }
     }
 

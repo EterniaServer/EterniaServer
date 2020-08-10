@@ -3,19 +3,15 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
-
-import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -30,17 +26,13 @@ import java.util.UUID;
 @CommandPermission("eternia.cash")
 public class Cash extends BaseCommand {
 
-    private final EterniaServer plugin;
-    private final EFiles messages;
     private final int size = EterniaServer.cashConfig.getInt("size");
 
-    public Cash(EterniaServer plugin) {
-        this.plugin = plugin;
-        this.messages = plugin.getEFiles();
+    public Cash() {
 
         final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_CASH), Strings.UUID, Strings.BALANCE);
         temp.forEach((k, v) -> Vars.cash.put(UUID.fromString(k), Integer.parseInt(v)));
-        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Cash", Constants.AMOUNT, temp.size());
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Cash").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
         loadGui();
 
@@ -62,12 +54,12 @@ public class Cash extends BaseCommand {
         if (playerName != null) {
             UUID uuid = UUIDFetcher.getUUIDOf(playerName);
             if (Vars.cash.containsKey(uuid)) {
-                messages.sendMessage(Strings.M_CASH_BALANCE_OTHER, Constants.AMOUNT, Vars.cash.get(uuid), player);
+                player.sendMessage(Strings.M_CASH_BALANCE_OTHER.replace(Constants.AMOUNT, String.valueOf(Vars.cash.get(uuid))));
             } else {
-                messages.sendMessage(Strings.M_CASH_NO_PLAYER, player);
+                player.sendMessage(Strings.M_CASH_NO_PLAYER);
             }
         } else {
-            messages.sendMessage(Strings.M_CASH_BALANCE, Constants.AMOUNT, Vars.cash.get(UUIDFetcher.getUUIDOf(player.getName())), player);
+            player.sendMessage(Strings.M_CASH_BALANCE.replace(Constants.AMOUNT, String.valueOf(Vars.cash.get(UUIDFetcher.getUUIDOf(player.getName())))));
         }
     }
 
@@ -77,18 +69,18 @@ public class Cash extends BaseCommand {
         if (Vars.cashBuy.containsKey(uuid)) {
             final int slot = Vars.cashBuy.get(uuid);
             for (String line : EterniaServer.cashConfig.getStringList("gui." + slot + ".commands")) {
-                final String modifiedCommand = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, line);
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), modifiedCommand);
+                final String modifiedCommand = InternMethods.setPlaceholders(player, line);
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), modifiedCommand);
             }
             for (String line : EterniaServer.cashConfig.getStringList("gui." + slot + ".messages")) {
-                final String modifiedText = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, line);
-                player.sendMessage(messages.getColor(modifiedText));
+                final String modifiedText = InternMethods.setPlaceholders(player, line);
+                player.sendMessage(Strings.getColor(modifiedText));
             }
             APICash.removeCash(uuid, EterniaServer.cashConfig.getInt("gui." + slot + ".cost"));
-            messages.sendMessage(Strings.M_CASH_SUCESS, player);
+            player.sendMessage(Strings.M_CASH_SUCESS);
             Vars.cashBuy.remove(uuid);
         } else {
-            messages.sendMessage(Strings.M_CASH_NO_BUY, player);
+            player.sendMessage(Strings.M_CASH_NO_BUY);
         }
     }
 
@@ -96,10 +88,10 @@ public class Cash extends BaseCommand {
     public void onCashDeny(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (Vars.cashBuy.containsKey(uuid)) {
-            messages.sendMessage(Strings.M_CASH_CANCEL, player);
+            player.sendMessage(Strings.M_CASH_CANCEL);
             Vars.cashBuy.remove(uuid);
         } else {
-            messages.sendMessage(Strings.M_CASH_NO_BUY, player);
+            player.sendMessage(Strings.M_CASH_NO_BUY);
         }
     }
 
@@ -109,14 +101,14 @@ public class Cash extends BaseCommand {
     @CommandPermission("eternia.cash.admin")
     public void onCashGive(CommandSender player, OnlinePlayer targetP, Integer value) {
         if (value <= 0) {
-            messages.sendMessage(Strings.MSG_NO_NEGATIVE, player);
+            player.sendMessage(Strings.MSG_NO_NEGATIVE);
             return;
         }
 
         final Player target = targetP.getPlayer();
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        messages.sendMessage(Strings.M_CASH_RECEIVED, Constants.AMOUNT, value, target);
-        messages.sendMessage(Strings.M_CASH_SEND, Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
+        target.sendMessage(Strings.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(Strings.M_CASH_SEND.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, target.getDisplayName()));
     }
 
     @Subcommand("remove")
@@ -125,14 +117,14 @@ public class Cash extends BaseCommand {
     @CommandPermission("eternia.cash.admin")
     public void onCashRemove(CommandSender player, OnlinePlayer targetP, Integer value) {
         if (value <= 0) {
-            messages.sendMessage(Strings.MSG_NO_NEGATIVE, player);
+            player.sendMessage(Strings.MSG_NO_NEGATIVE);
             return;
         }
 
         final Player target = targetP.getPlayer();
         APICash.removeCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        messages.sendMessage(Strings.M_CASH_REMOVED, Constants.AMOUNT, value, target);
-        messages.sendMessage(Strings.M_CASH_REMOVE, Constants.AMOUNT, value, Constants.TARGET, target.getDisplayName(), player);
+        target.sendMessage(Strings.M_CASH_REMOVED.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(Strings.M_CASH_REMOVE.replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
     private void loadGui() {

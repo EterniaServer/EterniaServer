@@ -1,21 +1,15 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class OnPlayerMove implements Listener {
-
-    private final EterniaServer plugin;
-
-    public OnPlayerMove(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -27,7 +21,7 @@ public class OnPlayerMove implements Listener {
             Vars.afkTime.put(playerName, System.currentTimeMillis());
             if (Vars.afk.contains(playerName)) {
                 Vars.afk.remove(playerName);
-                plugin.getEFiles().broadcastMessage(Strings.MSG_AFK_DISABLE, Constants.PLAYER, player.getDisplayName());
+                Bukkit.getConsoleSender().sendMessage(Strings.MSG_AFK_DISABLE.replace(Constants.PLAYER, player.getDisplayName()));
             }
         }
     }

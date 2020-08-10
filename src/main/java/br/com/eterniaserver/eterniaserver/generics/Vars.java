@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -32,13 +33,10 @@ public class Vars {
     protected static final Map<UUID, Integer> xp = new HashMap<>();
     protected static final Map<UUID, Integer> cash = new HashMap<>();
     protected static final Map<UUID, String> nick = new HashMap<>();
-    protected static final Map<UUID, String> nickname = new HashMap<>();
     protected static final Map<UUID, Integer> cashBuy = new HashMap<>();
     protected static final Map<UUID, Long> playerMuted = new HashMap<>();
-    protected static final Map<UUID, String> playerName = new HashMap<>();
-    protected static final Map<UUID, Long> playerLogin = new HashMap<>();
-    protected static final Map<UUID, Long> playerLast = new HashMap<>();
-    protected static final Map<UUID, Integer> playerHours = new HashMap<>();
+
+    protected static final Map<UUID, PlayerProfile> playerProfile = new HashMap<>();
 
     protected static final Map<String, Long> kitsCooldown = new HashMap<>();
     protected static final Map<String, Boolean> spy = new HashMap<>();

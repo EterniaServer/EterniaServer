@@ -1,17 +1,14 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
+import org.bukkit.Bukkit;
 
 public class AdvancedChatTorch {
 
-	private final EFiles messages;
-
-	public AdvancedChatTorch(EterniaServer plugin) {
-		this.messages = plugin.getEFiles();
+	public AdvancedChatTorch() {
 		registerCustomPlaceholders();
 		checkGroups();
 	}
@@ -30,10 +27,10 @@ public class AdvancedChatTorch {
 		for(Object s: EterniaServer.groupConfig.getKeys(false)) {
 			if (!s.equals("groups")) {
 				if (!EterniaServer.groupConfig.contains(s.toString())) {
-					messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "nenhum grupo encontrado");
+					Bukkit.getConsoleSender().sendMessage(Strings.MSG_ERROR.replace(Constants.ERROR, "nenhum grupo encontrado"));
 				}
 				if (!EterniaServer.groupConfig.contains(s.toString() + ".perm")) {
-					messages.sendConsole(Strings.MSG_ERROR, Constants.ERROR, "permissão para o grupo não encontrada");
+					Bukkit.getConsoleSender().sendMessage(Strings.MSG_ERROR.replace(Constants.ERROR, "permissão para o grupo não encontrada"));
 				}
 			}
 		}

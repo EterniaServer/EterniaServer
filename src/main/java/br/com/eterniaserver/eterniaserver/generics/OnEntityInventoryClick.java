@@ -1,11 +1,10 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,12 +18,6 @@ import java.util.UUID;
 
 public class OnEntityInventoryClick implements Listener {
 
-    private final EFiles messages;
-
-    public OnEntityInventoryClick(EterniaServer plugin) {
-        this.messages = plugin.getEFiles();
-    }
-
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
         if (e.isCancelled()) return;
@@ -36,8 +29,8 @@ public class OnEntityInventoryClick implements Listener {
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
-            messages.sendMessage(Strings.MSG_SPAWNER_NAME, player);
-            messages.sendConsole(Strings.MSG_SPAWNER_LOG, Constants.PLAYER, player.getDisplayName());
+            player.sendMessage(Strings.MSG_SPAWNER_NAME);
+            player.sendMessage(Strings.MSG_SPAWNER_LOG.replace(Constants.PLAYER, player.getDisplayName()));
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.cash") && e.getView().getTitle().equals("Cash")) {
@@ -56,16 +49,16 @@ public class OnEntityInventoryClick implements Listener {
             if (EterniaServer.cashConfig.contains(guiString)) {
                 final int cost = EterniaServer.cashConfig.getInt(guiString + ".cost");
                 if (APICash.hasCash(uuid, cost)) {
-                    messages.sendMessage(Strings.M_CASH_COST, Constants.AMOUNT, cost, player);
-                    messages.sendMessage(Strings.M_CASH, player);
+                    player.sendMessage(Strings.M_CASH_COST.replace(Constants.AMOUNT, String.valueOf(cost)));
+                    player.sendMessage(Strings.M_CASH);
                     Vars.cashBuy.put(uuid, slot);
                 } else {
-                    messages.sendMessage(Strings.M_CASH_NO, player);
+                    player.sendMessage(Strings.M_CASH_NO);
                 }
             }
         } else {
-            messages.sendMessage(Strings.M_CASH_ALREADY, player);
-            messages.sendMessage(Strings.M_CASH, player);
+            player.sendMessage(Strings.M_CASH_ALREADY);
+            player.sendMessage(Strings.M_CASH);
         }
         player.closeInventory();
     }

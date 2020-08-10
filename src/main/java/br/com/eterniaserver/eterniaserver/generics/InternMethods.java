@@ -7,24 +7,23 @@ import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
 import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
 import me.clip.placeholderapi.PlaceholderAPI;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class InternMethods {
 
-    public int getXPForLevel(int lvl) {
+    public static int getXPForLevel(int lvl) {
         if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
         else if (lvl > 15 && lvl < 31) return (int) ((2.5 * (lvl * lvl)) - (40.5 * lvl) + 360);
         else if (lvl >= 31) return (int) ((4.5 * (lvl * lvl)) - (162.5 * lvl) + 2220);
         else return 0;
     }
 
-    public long getCooldown(String name) {
+    public static long getCooldown(String name) {
         if (!Vars.bedCooldown.containsKey(name)) return 0;
         else return Vars.bedCooldown.get(name);
     }
 
-    public void addUUIF(Player p) {
+    public static void addUUIF(Player p) {
         for (String s : EterniaServer.groupConfig.getKeys(false)) {
             if(s.equals("groups")) continue;
             int priority = EterniaServer.groupConfig.getInt(s + ".priority");
@@ -40,17 +39,17 @@ public class InternMethods {
         }
     }
 
-    public void removeUUIF(Player p) {
+    public static void removeUUIF(Player p) {
         Vars.uufi.remove(p.getName());
     }
 
-    public String setPlaceholders(Player p, String s) {
+    public static String setPlaceholders(Player p, String s) {
         s = s.replace("%player_name%", p.getName());
         s = s.replace("%display_name%", p.getDisplayName());
-        return PlaceholderAPI.setPlaceholders((OfflinePlayer) p, s);
+        return PlaceholderAPI.setPlaceholders(p, s);
     }
 
-    public SubPlaceholder getSubPlaceholder(final Player player, final CustomPlaceholder cp) {
+    public static SubPlaceholder getSubPlaceholder(final Player player, final CustomPlaceholder cp) {
         SubPlaceholder bestPlaceholder = null;
         for (SubPlaceholder subPlaceholder : cp.getPlaceholders()) {
             if (subPlaceholder.hasPerm(player)) {

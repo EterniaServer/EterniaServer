@@ -1,16 +1,15 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,18 +22,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Economy extends BaseCommand {
 
-    private final EterniaServer plugin;
-    private final EFiles messages;
     private long time = 0;
     private ArrayList<String> lista;
 
-    public Economy(EterniaServer plugin) {
-        this.plugin = plugin;
-        this.messages = plugin.getEFiles();
+    public Economy() {
 
         final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_MONEY), Strings.UUID, Strings.BALANCE);
         temp.forEach((k, v) -> Vars.balances.put(UUID.fromString(k), Double.parseDouble(v)));
-        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Economy", Constants.AMOUNT, temp.size());
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Economy").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }
 
     @CommandAlias("money|economy|balance|bal")
@@ -44,13 +39,13 @@ public class Economy extends BaseCommand {
     public void onMoney(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
-            messages.sendMessage(Strings.M_ECO_MONEY, Constants.AMOUNT, plugin.df2.format(money), player);
+            player.sendMessage(Strings.M_ECO_MONEY.replace(Constants.AMOUNT, EterniaServer.df2.format(money)));
         } else {
             if (player.hasPermission("eternia.money.other")) {
                 double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
-                messages.sendMessage(Strings.M_ECO_OTHER, Constants.AMOUNT, plugin.df2.format(money), player);
+                player.sendMessage(Strings.M_ECO_OTHER.replace(Constants.AMOUNT, EterniaServer.df2.format(money)));
             } else {
-                messages.sendMessage(Strings.MSG_NO_PERM, player);
+                player.sendMessage(Strings.MSG_NO_PERM);
             }
         }
     }
@@ -70,16 +65,16 @@ public class Economy extends BaseCommand {
                 if (APIEconomy.getMoney(uuid) >= value) {
                     APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetName), value);
                     APIEconomy.removeMoney(uuid, value);
-                    messages.sendMessage(Strings.M_ECO_PAY, Constants.AMOUNT, value, Constants.TARGET, targetName, player);
-                    messages.sendMessage(Strings.M_ECO_PAY_ME, Constants.AMOUNT, value, Constants.TARGET, playerName, targetP);
+                    player.sendMessage(Strings.M_ECO_PAY.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, targetP.getDisplayName()));
+                    targetP.sendMessage(Strings.M_ECO_PAY_ME.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, player.getDisplayName()));
                 } else {
-                    messages.sendMessage(Strings.M_ECO_PAY_NO, player);
+                    player.sendMessage(Strings.M_ECO_PAY_NO);
                 }
             } else {
-                messages.sendMessage(Strings.M_ECO_PAY_NO, player);
+                player.sendMessage(Strings.M_ECO_PAY_NO);
             }
         } else {
-            messages.sendMessage(Strings.M_ECO_AUTO, player);
+            player.sendMessage(Strings.M_ECO_AUTO);
         }
     }
 
@@ -87,7 +82,7 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.baltop")
     public void onBaltop(CommandSender sender) {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
-            lista.forEach(name -> messages.sendMessage(Strings.M_ECO_BALLIST, Constants.POSITION, (lista.indexOf(name) + 1), Constants.PLAYER, name, Constants.AMOUNT, plugin.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(name))), sender));
+            lista.forEach((namet -> sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet)))))));
         } else {
             CompletableFuture.runAsync(() -> {
                 String name = "yurinogueira";
@@ -105,7 +100,7 @@ public class Economy extends BaseCommand {
                 }
                 lista = list;
                 time = System.currentTimeMillis();
-                lista.forEach((namet -> messages.sendMessage(Strings.M_ECO_BALLIST, Constants.POSITION, (lista.indexOf(namet) + 1), Constants.PLAYER, namet, Constants.AMOUNT, plugin.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet))), sender)));
+                list.forEach((namet -> sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet)))))));
             });
         }
     }

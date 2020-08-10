@@ -1,24 +1,22 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.OfflinePlayer;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class VaultMethods implements Economy {
 
-    private final DecimalFormat df2 = new DecimalFormat(".##");
     private final double startMoney = EterniaServer.serverConfig.getDouble("money.start");
 
     @Override
@@ -43,7 +41,7 @@ public class VaultMethods implements Economy {
 
     @Override
     public String format(double amount) {
-        return df2.format(amount);
+        return EterniaServer.df2.format(amount);
     }
 
     @Override

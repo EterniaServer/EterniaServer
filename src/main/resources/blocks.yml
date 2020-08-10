@@ -14,28 +14,34 @@
 # IF YOU USE PlaceholderAPI you can set placeholders here.
 blocks:
   "STONE":
-    "0.1":
-      - 'say Oi %player_name%!'
-    "0.01":
-      - 'say Oi %player_name% você é um minerador de sorte em!'
+    "0.001":
+      - 'crates givekey %player_name% minerios'
+    "0.00005":
+      - 'crates givekey %player_name% mineriosraros'
+  "GRAVEL":
+    "0.002":
+      - 'sf give %player_name% MAGNESIUM_DUST'
   "COAL_ORE":
-    "0.1":
-      - ''
+    "0.01":
+      - 'sf give %player_name% COAL_DUST'
   "IRON_ORE":
-    "0.1":
-      - ''
+    "0.002":
+      - 'sf give %player_name% ALUMINUM_DUST'
+    "0.004":
+      - 'sf give %player_name% IRON_DUST'
+    "0.0001":
+      - 'sf give %player_name% SILVER_DUST'
   "GOLD_ORE":
-    "0.1":
-      - ''
-  "DIAMOND_ORE":
-    "0.1":
-      - ''
-  "EMERALD_ORE":
-    "0.1":
-      - ''
-  "LAPIS_ORE":
-    "0.1":
-      - ''
-  "NETHER_QUARTZ_ORE":
-    "0.1":
-      - ''
+    "0.002":
+      - 'sf give %player_name% GOLD_DUST'
+  "ANDESITE":
+    "0.002":
+      - 'sf give %player_name% TIN_DUST'
+    "0.004":
+      - 'sf give %player_name% ZINC_DUST'
+  "DIORITE":
+    "0.002":
+      - 'sf give %player_name% LEAD_DUST'
+  "GRANITE":
+    "0.002":
+      - 'sf give %player_name% COPPER_DUST'

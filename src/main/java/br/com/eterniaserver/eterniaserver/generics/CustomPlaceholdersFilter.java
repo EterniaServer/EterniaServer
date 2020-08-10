@@ -1,18 +1,12 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.*;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class CustomPlaceholdersFilter extends StringHelper {
-
-	private final EterniaServer plugin;
-
-	public CustomPlaceholdersFilter(EterniaServer plugin) {
-		this.plugin = plugin;
-	}
+public class CustomPlaceholdersFilter {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
@@ -21,9 +15,9 @@ public class CustomPlaceholdersFilter extends StringHelper {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();
 				if (objMsg.contains("{" + cp.getId() + "}")) {
-					SubPlaceholder bestPlaceholder = plugin.getInternMethods().getSubPlaceholder(p, cp);
+					SubPlaceholder bestPlaceholder = InternMethods.getSubPlaceholder(p, cp);
 					if (cp.isNotIndependent() && bestPlaceholder != null) {
-						chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", cc(plugin.getInternMethods().setPlaceholders(p, bestPlaceholder.getValue()))));
+						chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", Strings.getColor(InternMethods.setPlaceholders(p, bestPlaceholder.getValue()))));
 					} else {
 						putplaceholders(objMsg, cp, chatObj, bestPlaceholder, message, i, p);
 					}
@@ -40,7 +34,7 @@ public class CustomPlaceholdersFilter extends StringHelper {
 			String hover = bestPlaceholder.getHover();
 			String suggest = bestPlaceholder.getSuggest();
 			String run = bestPlaceholder.getRun();
-			message.getChatObjects().add(i + 1, new ChatObject(cc(plugin.getInternMethods().setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
+			message.getChatObjects().add(i + 1, new ChatObject(Strings.getColor(InternMethods.setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
 			if (bestPlaceholder.isText()) {
 				message.getChatObjects().get(i + 1).setIsText(true);
 			}

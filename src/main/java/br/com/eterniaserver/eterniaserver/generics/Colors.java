@@ -2,13 +2,13 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
-import br.com.eterniaserver.eterniaserver.utils.StringHelper;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class Colors extends StringHelper {
+public class Colors {
 	
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
@@ -45,11 +45,11 @@ public class Colors extends StringHelper {
 		String m = message.getMessageSent();
 		for(String s : perms) {
 			if(s.equals("&")) {
-				m = cc(m);
+				m = Strings.getColor(m);
 				break;
 			}
 			if(m.contains(s)) {
-				m = m.replace(s, cc(s));
+				m = m.replace(s, Strings.getColor(s));
 			}
 		}
 

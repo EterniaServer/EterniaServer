@@ -1,23 +1,13 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.Strings;
-import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class Local {
-
-    private final EFiles strings;
-
-    public Local(EterniaServer plugin) {
-        this.strings = plugin.getEFiles();
-    }
 
     public void sendChatMessage(String message, Player player, int radius) {
         int pes = 0;
@@ -29,20 +19,20 @@ public class Local {
                 pes += 1;
                 p.sendMessage(format);
             } else if (p.hasPermission("eternia.spy") && Boolean.TRUE.equals(b)) {
-                p.sendMessage(strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
+                p.sendMessage(Strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
             }
         }
         if (pes <= 1) {
-            strings.sendMessage(Strings.M_CHAT_NOONE, player);
+            player.sendMessage(Strings.M_CHAT_NOONE);
         }
     }
 
     private String getFormat(String message, final Player player) {
-        String format = PlaceholderAPI.setPlaceholders((OfflinePlayer) player, EterniaServer.chatConfig.getString("local.format"));
+        String format = InternMethods.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
         if (player.hasPermission("eternia.chat.color")) {
-            return strings.getColor(format.replace(Constants.MESSAGE, message));
+            return Strings.getColor(format.replace(Constants.MESSAGE, message));
         } else {
-            return strings.getColor(format).replace(Constants.MESSAGE, message);
+            return(format.replace(Constants.MESSAGE, message));
         }
     }
 

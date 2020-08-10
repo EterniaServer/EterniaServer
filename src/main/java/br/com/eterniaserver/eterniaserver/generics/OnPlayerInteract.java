@@ -4,9 +4,12 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
+import com.google.common.collect.ImmutableList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,12 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class OnPlayerInteract implements Listener {
-
-    private final EterniaServer plugin;
-
-    public OnPlayerInteract(EterniaServer plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent e) {
@@ -40,7 +37,7 @@ public class OnPlayerInteract implements Listener {
                 final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
 
                 if (Vars.teleports.containsKey(player)) {
-                    plugin.getEFiles().sendMessage(Strings.MSG_IN_TELEPORT, player);
+                    player.sendMessage(Strings.MSG_IN_TELEPORT);
                 } else {
                     Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
                 }
@@ -52,6 +49,15 @@ public class OnPlayerInteract implements Listener {
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                 player.giveExp(Integer.parseInt(lore.get(0)));
             }
+
+            if (e.getClickedBlock() != null && list.contains(e.getClickedBlock().getType())) {
+                final Location location = e.getClickedBlock().getLocation();
+                location.getNearbyEntities(1, 1, 1).forEach(k -> {
+                    if (k instanceof Minecart) {
+                        e.setCancelled(true);
+                    }
+                });
+            }
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.spawners") && e.getClickedBlock() != null
@@ -61,4 +67,7 @@ public class OnPlayerInteract implements Listener {
             e.setCancelled(true);
         }
     }
+
+    private final List<Material> list = ImmutableList.of(Material.RAIL, Material.POWERED_RAIL, Material.DETECTOR_RAIL, Material.ACTIVATOR_RAIL);
+
 }

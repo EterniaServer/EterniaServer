@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.OfflinePlayer;
@@ -75,7 +75,7 @@ public class PlaceHolders extends PlaceholderExpansion {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         switch (var4) {
             case 0:
-                return Vars.playerLogin.containsKey(uuid) ? sdf.format(new Date(Vars.playerLogin.get(uuid))) : "Sem registro";
+                return Vars.playerProfile.containsKey(uuid) ? sdf.format(new Date(Vars.playerProfile.get(uuid).getFirstLogin())) : "Sem registro";
             case 1:
                 return Vars.afk.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
             case 2:

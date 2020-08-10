@@ -31,6 +31,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * For a How-To on how to use AbstractCommand see this post @ http://forums.bukkit.org/threads/195990/
@@ -77,7 +78,7 @@ final class ReflectCommand extends Command {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
         return exe.onCommand(sender, this, commandLabel, args);
     }
 

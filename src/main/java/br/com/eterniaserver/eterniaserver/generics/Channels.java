@@ -1,8 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
@@ -12,12 +10,6 @@ import org.bukkit.entity.Player;
 @CommandAlias("ch|channels")
 @CommandPermission("eternia.chat.channels")
 public class Channels extends BaseCommand {
-
-    private final EFiles messages;
-
-    public Channels(EterniaServer plugin) {
-        this.messages = plugin.getEFiles();
-    }
 
     @Subcommand("local")
     @CommandAlias("l|local")
@@ -41,7 +33,7 @@ public class Channels extends BaseCommand {
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
         if (messages != null && messages.length == 0) {
             Vars.global.put(player.getName(), channel);
-            this.messages.sendMessage(Strings.M_CHAT_C, Constants.CHANNEL_NAME, channelName, player);
+            player.sendMessage(Strings.M_CHAT_C.replace(Constants.CHANNEL_NAME, channelName));
         } else {
             int o = Vars.global.get(player.getName());
             Vars.global.put(player.getName(), channel);

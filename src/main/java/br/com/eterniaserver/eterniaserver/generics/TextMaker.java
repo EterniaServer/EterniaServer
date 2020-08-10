@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
-import br.com.eterniaserver.eterniaserver.utils.StringHelper;
 import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
 
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -18,17 +18,15 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 
 import org.bukkit.entity.Player;
 
-public class TextMaker extends StringHelper {
+public class TextMaker {
 
 	protected TextComponent text;
 	private final ChatMessage message;
 	private final Player p;
-	private final InternMethods internMethods;
 
-	public TextMaker(ChatMessage message, Player p, EterniaServer plugin) {
+	public TextMaker(ChatMessage message, Player p) {
 		this.p = p;
 		this.message = message;
-		internMethods = plugin.getInternMethods();
 	}
 
 	public void convertMessageToComponents() {
@@ -36,24 +34,24 @@ public class TextMaker extends StringHelper {
 		for(int i = 0; i < message.size(); i++) {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
-			msg = internMethods.setPlaceholders(p, msg);
+			msg = InternMethods.setPlaceholders(p, msg);
 			if(msg.contains(Constants.MESSAGE)) {
 				msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
 			}
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {
 				ArrayList<TextComponent> tcs = new ArrayList<>();
-				tcs.add(new TextComponent(internMethods.setPlaceholders(p, cc(chatObject.getHover()))));
+				tcs.add(new TextComponent(InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getHover()))));
 				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 			}
 			if(chatObject.getColor() != null) {
 				textComp.setColor(chatObject.getColor().asBungee());
 			}
 			if(chatObject.getSuggest() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, internMethods.setPlaceholders(p, cc(chatObject.getSuggest()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getSuggest()))));
 			}
 			if(chatObject.getRun() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, internMethods.setPlaceholders(p, cc(chatObject.getRun()))));
+				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getRun()))));
 			}
 			if(chatObject.isText()) {
 				setTextAttr(textComp, p);
@@ -78,7 +76,7 @@ public class TextMaker extends StringHelper {
 	public void addHover(TextComponent text, String s) {
 		if(s == null) return;
 		ArrayList<TextComponent> tcs = new ArrayList<>();
-		tcs.add(new TextComponent(cc(s)));
+		tcs.add(new TextComponent(Strings.getColor(s)));
 		text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 	}
 
@@ -109,7 +107,7 @@ public class TextMaker extends StringHelper {
 		for(CustomPlaceholder cp: Vars.customPlaceholders) {
 			String id = cp.getId();
 			if(!stringMessage.contains("{" + id + "}")) continue;
-			SubPlaceholder bestPlaceholder = internMethods.getSubPlaceholder(p, cp);
+			SubPlaceholder bestPlaceholder = InternMethods.getSubPlaceholder(p, cp);
 			if(bestPlaceholder != null) {
 				stringMessage = stringMessage.replace("{" + id + "}", bestPlaceholder.getValue());
 			} else {
@@ -117,7 +115,7 @@ public class TextMaker extends StringHelper {
 			}
 		}
 		s2 = stringMessage;
-		return internMethods.setPlaceholders(p, s2);
+		return InternMethods.setPlaceholders(p, s2);
 	}
 
 }

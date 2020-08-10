@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.eterniaserver</groupId>
     <artifactId>EterniaServer</artifactId>
-    <version>5.0-Master</version>
+    <version>1.0.0</version>
 
     <properties>
         <sonar.projectKey>yurinogueira_EterniaServer</sonar.projectKey>
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>br.com.eterniaserver</groupId>
             <artifactId>EterniaLib</artifactId>
-            <version>1.8</version>
+            <version>1.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -1,56 +1,67 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
-import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.lang.management.ManagementFactory;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.UUID;
 
 public class Replaces extends BaseCommand {
 
-    private final EterniaServer plugin;
-    private final EFiles messages;
     private final GetRuntime getRuntime;
 
-    public Replaces(EterniaServer plugin) {
-        this.plugin = plugin;
-        this.messages = plugin.getEFiles();
+    public Replaces() {
         this.getRuntime = new GetRuntime();
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.TIME);
-        temp.forEach((k, v) -> Vars.playerLogin.put(UUID.fromString(k), Long.parseLong(v)));
-        int size = temp.size();
-        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Register", Constants.AMOUNT, size);
-
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.LAST);
-        temp.forEach((k, v) -> Vars.playerLast.put(UUID.fromString(k), Long.parseLong(v)));
-        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Last Login", Constants.AMOUNT, size);
-
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.HOURS);
-        temp.forEach((k, v) -> Vars.playerHours.put(UUID.fromString(k), Integer.parseInt(v)));
-        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Hours", Constants.AMOUNT, size);
-
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_PLAYER), Strings.UUID, Strings.PLAYER_NAME);
-        temp.forEach((k, v) -> {
-            Vars.playerName.put(UUID.fromString(k), v);
-            UUIDFetcher.putUUIDAndName(UUID.fromString(k), v);
-        });
-        messages.sendConsole(Strings.MSG_LOAD_DATA, Constants.MODULE, "Player Name", Constants.AMOUNT, size);
-
+        if (EterniaLib.getMySQL()) {
+            EterniaLib.getPlugin().connections.executeSQLQuery(connection -> {
+                final PreparedStatement getHashMap = connection.prepareStatement(Constants.getQuerySelectAll(Constants.TABLE_PLAYER));
+                final ResultSet resultSet = getHashMap.executeQuery();
+                while (resultSet.next()) {
+                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Strings.UUID)), new PlayerProfile(
+                            resultSet.getString(Strings.PLAYER_NAME),
+                            resultSet.getLong(Strings.TIME),
+                            resultSet.getLong(Strings.LAST),
+                            resultSet.getInt(Strings.HOURS)
+                    ));
+                }
+                getHashMap.close();
+                resultSet.close();
+            });
+        } else {
+            try {
+                final PreparedStatement getHashMap = Connections.connection.prepareStatement(Constants.getQuerySelectAll(Constants.TABLE_PLAYER));
+                final ResultSet resultSet = getHashMap.executeQuery();
+                while (resultSet.next()) {
+                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Strings.UUID)), new PlayerProfile(
+                            resultSet.getString(Strings.PLAYER_NAME),
+                            resultSet.getLong(Strings.TIME),
+                            resultSet.getLong(Strings.LAST),
+                            resultSet.getInt(Strings.HOURS)
+                    ));
+                }
+                getHashMap.close();
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        sendConsole(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Profiles").replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.size())));
     }
 
     @CommandAlias("speed")
@@ -60,7 +71,7 @@ public class Replaces extends BaseCommand {
             player.setFlySpeed((float) speed / 10);
             player.setWalkSpeed((float) speed / 10);
         } else {
-            messages.sendMessage(Strings.MSG_SPEED, player);
+            player.sendMessage(Strings.MSG_SPEED);
         }
     }
 
@@ -68,11 +79,15 @@ public class Replaces extends BaseCommand {
     @CommandPermission("eternia.profile")
     public void onProfile(Player player) {
         UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        messages.sendMessage(Strings.MSG_PROFILE_REGISTER, Constants.PLAYER_DATA, plugin.sdf.format(new Date(Vars.playerLogin.get(uuid))), player);
-        messages.sendMessage(Strings.MSG_PROFILE_LAST, Constants.PLAYER_LAST, plugin.sdf.format(new Date(Vars.playerLast.get(uuid))), player);
-        messages.sendMessage(Strings.MSG_PROFILE_HOURS, Constants.HOURS, Vars.playerHours.get(uuid), player);
-        for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
-            player.sendMessage(messages.getColor(putPAPI(player, line)));
+        if (Vars.playerProfile.containsKey(uuid)) {
+            player.sendMessage(Strings.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getFirstLogin()))));
+            player.sendMessage(Strings.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getLastLogin()))));
+            player.sendMessage(Strings.MSG_PROFILE_HOURS.replace(Constants.HOURS, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getHours()))));
+            for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
+                player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(player, line)));
+            }
+        } else {
+            // todo
         }
     }
 
@@ -80,23 +95,25 @@ public class Replaces extends BaseCommand {
     @CommandPermission("eternia.mem")
     public void onMem(CommandSender player) {
         getRuntime.recalculateRuntime();
-        messages.sendMessage(Strings.MSG_MEM, Constants.MEM_USE, getRuntime.freemem, Constants.MEM_MAX, getRuntime.totalmem, player);
-        messages.sendMessage(Strings.MSG_MEM_ONLINE, Constants.HOURS, getRuntime.hours, Constants.MINUTE, getRuntime.minutes, Constants.SECONDS, getRuntime.seconds, player);
+        player.sendMessage(Strings.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
+        player.sendMessage(Strings.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
     }
 
     @CommandAlias("memall|memoryall")
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
-        messages.broadcastMessage(Strings.MSG_MEM, Constants.MEM_USE, getRuntime.freemem, Constants.MEM_MAX, getRuntime.totalmem);
-        messages.broadcastMessage(Strings.MSG_MEM_ONLINE, Constants.HOURS, getRuntime.hours, Constants.MINUTE, getRuntime.minutes, Constants.SECONDS, getRuntime.seconds);
+        sendConsole(Strings.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
+        sendConsole(Strings.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
     }
 
-    private String putPAPI(Player player, String message) {
-        return PlaceholderAPI.setPlaceholders((OfflinePlayer) player, message);
+    private void sendConsole(String message) {
+        Bukkit.getConsoleSender().sendMessage(message);
     }
 
-} class GetRuntime {
+}
+
+class GetRuntime {
 
     long freemem;
     long totalmem;
@@ -113,5 +130,6 @@ public class Replaces extends BaseCommand {
         minutes = (int) ((milliseconds / (1000*60)) % 60);
         hours   = (int) ((milliseconds / (1000*60*60)) % 24);
     }
+
 
 }

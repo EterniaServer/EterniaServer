@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
@@ -9,7 +9,6 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -17,18 +16,14 @@ import java.util.UUID;
 
 public class TeleportSystem extends BaseCommand {
 
-    private final EFiles messages;
     private final double backMoney = EterniaServer.serverConfig.getInt("money.back");
 
-    public TeleportSystem(EterniaServer plugin) {
-        this.messages = plugin.getEFiles();
-    }
 
     @CommandAlias("tpall|teleportall")
     @CommandPermission("eternia.tpall")
     public void onTeleportAll(Player player) {
         for (Player other : Bukkit.getOnlinePlayers()) if (other != player) other.teleport(player);
-        messages.sendMessage(Strings.MSG_TELEPORT_ALL, player);
+        player.sendMessage(Strings.MSG_TELEPORT_ALL);
     }
 
     @CommandAlias("tpaccept|teleportaccept")
@@ -38,13 +33,13 @@ public class TeleportSystem extends BaseCommand {
         if (Vars.tpaRequests.containsKey(playerName)) {
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             if (target != null) {
-                messages.sendMessage(Strings.MSG_TELEPORT_ACCEPT, Constants.TARGET, player.getDisplayName(), target);
+                target.sendMessage(Strings.MSG_TELEPORT_ACCEPT.replace(Constants.TARGET, player.getDisplayName()));
                 Vars.teleports.put(target, new PlayerTeleport(target, player.getLocation(), Strings.MSG_TELEPORT_DONE));
             }
             Vars.tpaTime.remove(playerName);
             Vars.tpaRequests.remove(playerName);
         } else {
-            messages.sendMessage(Strings.MSG_TELEPORT_NO_REQUEST, player);
+            player.sendMessage(Strings.MSG_TELEPORT_NO_REQUEST);
         }
     }
 
@@ -53,13 +48,13 @@ public class TeleportSystem extends BaseCommand {
     public void onTeleportDeny(Player player) {
         final String playerName = player.getName();
         if (Vars.tpaRequests.containsKey(playerName)) {
-            messages.sendMessage(Strings.MSG_TELEPORT_DENY, Constants.TARGET, Vars.tpaRequests.get(playerName), player);
+            player.sendMessage(Strings.MSG_TELEPORT_DENY.replace(Constants.TARGET, Vars.tpaRequests.get(playerName)));
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             Vars.tpaRequests.remove(playerName);
             Vars.tpaTime.remove(playerName);
-            if (target != null && target.isOnline()) messages.sendMessage(Strings.MSG_TELEPORT_DENIED, target);
+            if (target != null && target.isOnline()) target.sendMessage(Strings.MSG_TELEPORT_DENIED);
         } else {
-            messages.sendMessage(Strings.MSG_TELEPORT_NO_REQUEST, player);
+            player.sendMessage(Strings.MSG_TELEPORT_NO_REQUEST);
         }
     }
 
@@ -70,7 +65,7 @@ public class TeleportSystem extends BaseCommand {
     public void onTeleportToPlayer(Player player, OnlinePlayer target) {
         final Player targetP = target.getPlayer();
         if (Vars.teleports.containsKey(player)) {
-            messages.sendMessage(Strings.MSG_IN_TELEPORT, player);
+            player.sendMessage(Strings.MSG_IN_TELEPORT);
         } else {
             if (targetP != player) {
                 final String playerName = player.getName();
@@ -79,13 +74,13 @@ public class TeleportSystem extends BaseCommand {
                     Vars.tpaRequests.remove(targetName);
                     Vars.tpaRequests.put(targetName, playerName);
                     Vars.tpaTime.put(targetName, System.currentTimeMillis());
-                    messages.sendMessage(Strings.MSG_TELEPORT_RECEIVED, Constants.TARGET, player.getDisplayName(), targetP);
-                    messages.sendMessage(Strings.MSG_TELEPORT_SENT, Constants.TARGET, targetP.getDisplayName(), player);
+                    targetP.sendMessage(Strings.MSG_TELEPORT_ACCEPT.replace(Constants.TARGET, player.getDisplayName()));
+                    player.sendMessage(Strings.MSG_TELEPORT_SENT.replace(Constants.TARGET, targetP.getDisplayName()));
                 } else {
-                    messages.sendMessage(Strings.MSG_TELEPORT_EXISTS, player);
+                    player.sendMessage(Strings.MSG_TELEPORT_EXISTS);
                 }
             } else {
-                messages.sendMessage(Strings.MSG_TELEPORT_YOURSELF, player);
+                player.sendMessage(Strings.MSG_TELEPORT_YOURSELF);
             }
         }
     }
@@ -102,16 +97,16 @@ public class TeleportSystem extends BaseCommand {
                 APIEconomy.removeMoney(uuid, backMoney);
                 Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), Strings.MSG_BACK_COST));
             } else if (canBack(player)){
-                messages.sendMessage(Strings.MSG_NO_MONEY, Constants.VALUE, backMoney, player);
+                player.sendMessage(Strings.MSG_NO_MONEY.replace(Constants.VALUE, String.valueOf(backMoney)));
             }
         } else {
-            messages.sendMessage(Strings.MSG_BACK_NO_TELEPORT, player);
+            player.sendMessage(Strings.MSG_BACK_NO_TELEPORT);
         }
     }
 
     private boolean canBack(final Player player) {
         if (Vars.teleports.containsKey(player)) {
-            messages.sendMessage(Strings.MSG_IN_TELEPORT, player);
+            player.sendMessage(Strings.MSG_IN_TELEPORT);
             return false;
         }
         return true;

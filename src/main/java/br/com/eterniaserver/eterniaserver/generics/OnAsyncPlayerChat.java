@@ -1,10 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EFiles;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Strings;
-import br.com.eterniaserver.eterniaserver.objects.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 
 import net.md_5.bungee.api.ChatColor;
@@ -27,7 +26,6 @@ public class OnAsyncPlayerChat implements Listener {
     private final ChatFormatter cf;
     private final JsonSender js;
     private final CustomPlaceholdersFilter cp;
-    private final EFiles messages;
     private final Local local;
     private final Staff staff;
     private final Colors c = new Colors();
@@ -36,12 +34,11 @@ public class OnAsyncPlayerChat implements Listener {
 
     public OnAsyncPlayerChat(EterniaServer plugin) {
         this.plugin = plugin;
-        this.messages = plugin.getEFiles();
-        this.cp = new CustomPlaceholdersFilter(plugin);
-        this.js = new JsonSender(plugin);
-        this.cf = new ChatFormatter(plugin);
-        this.local = new Local(plugin);
-        this.staff = new Staff(plugin);
+        this.cp = new CustomPlaceholdersFilter();
+        this.js = new JsonSender();
+        this.cf = new ChatFormatter();
+        this.local = new Local();
+        this.staff = new Staff();
         hexSupport = Bukkit.getBukkitVersion().contains("1.16");
     }
 
@@ -53,13 +50,13 @@ public class OnAsyncPlayerChat implements Listener {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
             if (plugin.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
-                messages.sendMessage(Strings.M_CHATMUTED, player);
+                player.sendMessage(Strings.M_CHATMUTED);
                 e.setCancelled(true);
             } else {
                 final long time = System.currentTimeMillis();
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 if (Vars.playerMuted.get(uuid) - time > 0) {
-                    messages.sendMessage(Strings.M_CHAT_MUTED, Constants.TIME, TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(uuid) - time), player);
+                    player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, String.valueOf(TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(uuid) - time))));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), playerName));
