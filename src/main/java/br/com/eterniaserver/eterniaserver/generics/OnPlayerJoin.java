@@ -43,7 +43,7 @@ public class OnPlayerJoin implements Listener {
             if (location != EterniaServer.error) {
                 PaperLib.teleportAsync(player, getWarp());
             }
-            playerProfileCreate(uuid, playerName);
+            playerProfileCreate(uuid, playerName, player.getFirstPlayed());
         } else {
             final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
             playerProfile.setLastLogin(time);
@@ -62,10 +62,10 @@ public class OnPlayerJoin implements Listener {
         Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(Constants.PLAYER, player.getDisplayName()));
     }
 
-    private void playerProfileCreate(UUID uuid, String playerName) {
+    private void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
         final long time = System.currentTimeMillis();
         EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, "(uuid, player_name, time, last, hours)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "')"));
+                "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "')"));
         Vars.playerProfile.put(uuid, new PlayerProfile(
                 playerName,
                 time,

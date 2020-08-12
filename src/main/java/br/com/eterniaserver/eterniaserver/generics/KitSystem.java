@@ -27,7 +27,7 @@ public class KitSystem extends BaseCommand {
     @CommandAlias("kits")
     @CommandPermission("eternia.kits")
     public void onKits(Player player) {
-        player.sendMessage(Strings.M_KIT_LIST.replace(Constants.KITS, Strings.getColor(EterniaServer.kitConfig.getString("kits.nameofkits"))));
+        player.sendMessage(Strings.M_KIT_LIST.replace(Constants.KITS, Strings.getColor(EterniaServer.kitConfig.getString("nameofkits"))));
     }
 
     @CommandAlias("kit")
