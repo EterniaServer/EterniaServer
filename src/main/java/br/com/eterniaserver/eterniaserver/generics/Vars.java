@@ -21,7 +21,6 @@ public class Vars {
     protected static long nightTime = System.currentTimeMillis();
 
     protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
-    protected static final List<ItemStack> cashGui = new ArrayList<>();
     protected static final List<String> god = new ArrayList<>();
     protected static final List<String> afk = new ArrayList<>();
     protected static final List<World> skippingWorlds = new ArrayList<>();
@@ -33,8 +32,9 @@ public class Vars {
     protected static final Map<UUID, Integer> xp = new HashMap<>();
     protected static final Map<UUID, Integer> cash = new HashMap<>();
     protected static final Map<UUID, String> nick = new HashMap<>();
-    protected static final Map<UUID, Integer> cashBuy = new HashMap<>();
     protected static final Map<UUID, Long> playerMuted = new HashMap<>();
+
+    protected static final Map<UUID, String> cashItem = new HashMap<>();
 
     protected static final Map<UUID, PlayerProfile> playerProfile = new HashMap<>();
 

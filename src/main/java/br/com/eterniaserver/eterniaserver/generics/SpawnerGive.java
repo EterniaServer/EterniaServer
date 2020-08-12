@@ -37,7 +37,7 @@ public class SpawnerGive extends BaseCommand {
                 player.sendMessage(Strings.MSG_SPAWNER_INVFULL);
             } else {
                 inventory.addItem(getSpawner(spawnerName, value));
-                player.sendMessage(Strings.MSG_SPAWNER_SENT.replace(Constants.VALUE, String.valueOf(value).replace(Constants.TYPE, spawnerName).replace(Constants.TARGET, targetP.getDisplayName())));
+                player.sendMessage(Strings.MSG_SPAWNER_SENT.replace(Constants.VALUE, String.valueOf(value)).replace(Constants.TYPE, spawnerName).replace(Constants.TARGET, targetP.getDisplayName()));
                 player.sendMessage(Strings.MSG_SPAWNER_RECEIVED.replace(Constants.TYPE, spawnerName).replace(Constants.TARGET, player.getName()).replace(Constants.VALUE, String.valueOf(value)));
             }
         } else {

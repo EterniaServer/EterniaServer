@@ -357,7 +357,9 @@ public class Strings {
     public static String M_ECO_RECEIVE;
 
     private static String putPrefix(FileConfiguration msg, String path) {
-        return M_SERVER_PREFIX + getColor(msg.getString(path));
+        String message = msg.getString(path);
+        if (message == null) message = "&7Erro&8, &7texto &3" + path + "&7não encontrado&8.";
+        return M_SERVER_PREFIX + getColor(message);
     }
 
     public static String getColor(String string) {
