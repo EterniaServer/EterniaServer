@@ -1,11 +1,13 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.generics.*;
 
 import org.bukkit.Bukkit;
 
-public class Managers {
+public class Managers implements Constants {
 
     private final EterniaServer plugin;
 
@@ -62,7 +64,7 @@ public class Managers {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.chat"), "Chat")) {
             plugin.getFiles().loadChat();
             EterniaLib.getManager().registerCommand(new Channels());
-            EterniaLib.getManager().registerCommand(new Mute(plugin));
+            EterniaLib.getManager().registerCommand(new Mute());
             EterniaLib.getManager().registerCommand(new ChatCommands(plugin));
             new AdvancedChatTorch();
         }
@@ -71,7 +73,6 @@ public class Managers {
     private void loadEconomyManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.economy"), "Economy")) {
             EterniaLib.getManager().registerCommand(new Economy());
-            EterniaLib.getManager().registerCommand(new EcoChange());
         }
     }
 
@@ -136,10 +137,10 @@ public class Managers {
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
-            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_ENABLE.replace(Constants.MODULE, module));
+            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_ENABLE.replace(MODULE, module));
         }
         else {
-            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_DISABLE.replace(Constants.MODULE, module));
+            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_DISABLE.replace(MODULE, module));
         }
         return enable;
     }

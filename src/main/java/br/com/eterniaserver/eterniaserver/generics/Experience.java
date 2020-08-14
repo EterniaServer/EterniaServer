@@ -1,15 +1,18 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Configs;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -19,31 +22,97 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Experience extends BaseCommand {
+@CommandAlias("xp")
+@CommandPermission("eternia.xp.user")
+public class Experience extends BaseCommand implements Constants{
 
     public Experience() {
-
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_XP), Strings.UUID, Strings.XP);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_XP), UUID_STR, XP_STR);
         temp.forEach((k, v) -> Vars.xp.put(UUID.fromString(k), Integer.parseInt(v)));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Experience").replace(Constants.AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Experience").replace(AMOUNT, String.valueOf(temp.size())));
     }
 
-    @CommandAlias("checklevel|verlevel")
-    @CommandPermission("eternia.checklvl")
+    @Default
+    public void xpHelp(CommandSender sender) {
+        sender.sendMessage(Strings.MSG_XP_HELP_TITLE);
+        if (sender.hasPermission("eternia.xp.admin")) {
+            sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
+                    .replace(COMMANDS, "xp set &3<jogador> <quantia>")
+                    .replace(MESSAGE, Strings.MSG_XP_HELP_SET)));
+            sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
+                    .replace(COMMANDS, "xp take &3<jogador> <quantia>")
+                    .replace(MESSAGE, Strings.MSG_XP_HELP_TAKE)));
+            sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
+                    .replace(COMMANDS, "xp give &3<jogador> <quantia>")
+                    .replace(MESSAGE, Strings.MSG_XP_HELP_GIVE)));
+        }
+        sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
+                .replace(Constants.COMMANDS, "xp check")
+                .replace(Constants.MESSAGE, Strings.MSG_XP_HELP_CHECK)));
+        sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
+                .replace(Constants.COMMANDS, "xp bottle &3<quantia>")
+                .replace(Constants.MESSAGE, Strings.MSG_XP_HELP_BOTTLE)));
+        sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
+                .replace(Constants.COMMANDS, "xp deposit &3<quantia>")
+                .replace(Constants.MESSAGE, Strings.MSG_XP_HELP_DEPOSIT)));
+        sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
+                .replace(Constants.COMMANDS, "xp withdraw &3<quantia>")
+                .replace(Constants.MESSAGE, Strings.MSG_XP_HELP_WITHDRAW)));
+    }
+
+    @Subcommand("set")
+    @CommandCompletion("@players 100")
+    @Syntax("<jogador> <quantia>")
+    @CommandPermission("eternia.xp.admin")
+    public void onSet(CommandSender sender, OnlinePlayer target, int money) {
+        final Player targetP = target.getPlayer();
+        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
+
+        targetP.setLevel(money);
+        sender.sendMessage(Strings.M_XP_SET.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_XP_RSET.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+    }
+
+    @Subcommand("take")
+    @CommandCompletion("@players 100")
+    @Syntax("<jogador> <quantia>")
+    @CommandPermission("eternia.xp.admin")
+    public void onTake(CommandSender sender, OnlinePlayer target, int money) {
+        final Player targetP = target.getPlayer();
+        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
+
+        targetP.setLevel(targetP.getLevel() - money);
+        sender.sendMessage(Strings.M_XP_REMOVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_XP_RREMOVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+    }
+
+    @Subcommand("give")
+    @CommandCompletion("@players 100")
+    @Syntax("<jogador> <quantia>")
+    @CommandPermission("eternia.xp.admin")
+    public void onGive(CommandSender sender, OnlinePlayer target, int money) {
+        final Player targetP = target.getPlayer();
+        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
+
+        targetP.setLevel(targetP.getLevel() + money);
+        sender.sendMessage(Strings.M_XP_GIVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_XP_RECEIVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+    }
+
+    @Subcommand("check")
     public void onCheckLevel(Player player) {
         int lvl = player.getLevel();
         float xp = player.getExp();
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(APIExperience.getExp(UUIDFetcher.getUUIDOf(player.getName())));
-        player.sendMessage(Strings.M_XP_CHECK.replace(Constants.AMOUNT, String.valueOf(player.getLevel())));
+        player.sendMessage(Strings.M_XP_CHECK.replace(AMOUNT, String.valueOf(player.getLevel())));
         player.setLevel(lvl);
         player.setExp(xp);
     }
 
-    @CommandAlias("bottlelvl|bottleexp|gaffinhas")
-    @Syntax("<level>")
-    @CommandPermission("eternia.bottlexp")
+    @CommandAlias("bottle")
+    @Syntax("<quantia>")
     public void onBottleLevel(Player player, Integer xpWant) {
         int xpReal = InternMethods.getXPForLevel(player.getLevel());
         if (xpWant > 0 && xpReal > xpWant) {
@@ -63,9 +132,8 @@ public class Experience extends BaseCommand {
         }
     }
 
-    @CommandAlias("withdrawlvl|pegarlvl|takelvl")
-    @Syntax("<level>")
-    @CommandPermission("eternia.withdrawlvl")
+    @CommandAlias("withdraw")
+    @Syntax("<quantia>")
     public void onWithdrawLevel(Player player, Integer level) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
@@ -73,22 +141,21 @@ public class Experience extends BaseCommand {
         if (APIExperience.getExp(uuid) >= xpla) {
             APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
-            player.sendMessage(Strings.M_XP_WITHDRAW.replace(Constants.AMOUNT, String.valueOf(player.getLevel())));
+            player.sendMessage(Strings.M_XP_WITHDRAW.replace(AMOUNT, String.valueOf(player.getLevel())));
         } else {
             player.sendMessage(Strings.M_XP_INSUFFICIENT);
         }
     }
 
-    @CommandAlias("depositlvl|depositarlvl")
-    @Syntax("<level>")
-    @CommandPermission("eternia.depositlvl")
+    @CommandAlias("deposit")
+    @Syntax("<quantia>")
     public void onDepositLevel(Player player, Integer xpla) {
         int xpAtual = player.getLevel();
         if (xpAtual >= xpla) {
             int xp = InternMethods.getXPForLevel(xpla);
             int xpto = InternMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
-            player.sendMessage(Strings.M_XP_DEPOSIT.replace(Constants.AMOUNT, String.valueOf(xpla)));
+            player.sendMessage(Strings.M_XP_DEPOSIT.replace(AMOUNT, String.valueOf(xpla)));
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);

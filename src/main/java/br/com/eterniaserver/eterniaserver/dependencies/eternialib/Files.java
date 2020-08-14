@@ -1,7 +1,8 @@
 package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Configs;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
 
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -19,7 +20,6 @@ public class Files {
     }
 
     public void loadConfigs() {
-
         final String config = "config.yml";
 
         final File file = new File(plugin.getDataFolder(), config);
@@ -34,7 +34,6 @@ public class Files {
     }
 
     public void loadMessages() {
-
         final String messages = "messages.yml";
 
         final File file = new File(plugin.getDataFolder(), messages);
@@ -156,6 +155,10 @@ public class Files {
             errorInJar(cashGui);
         }
 
+    }
+
+    public void loadConfigurations() {
+        Configs.reloadConfigs();
     }
 
     public void loadDatabase() {

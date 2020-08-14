@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -54,7 +54,7 @@ public class OnPlayerBlockBreak implements Listener {
         double randomNumber = Math.random();
         double lowestNumberAboveRandom = 1.1;
         final String blockConfig = "blocks.";
-        for (String key : EterniaServer.blockConfig.getConfigurationSection(blockConfig + materialName).getKeys(true)) {
+        for (String key : EterniaServer.blockConfig.getConfigurationSection(blockConfig + materialName).getKeys(false)) {
             double current = Double.parseDouble(key);
             if (current < lowestNumberAboveRandom && current > randomNumber) {
                 lowestNumberAboveRandom = current;

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver;
+package br.com.eterniaserver.eterniaserver.configs;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,24 +9,9 @@ public class Strings {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final String NAME = "name";
-    public static final String LOCATION = "location";
-    public static final String PLAYER_NAME = "player_name";
-    public static final String UUID = "uuid";
-    public static final String PLAYER_DISPLAY = "player_display";
-    public static final String BALANCE = "balance";
-    public static final String CODE = "code";
-    public static final String CODE_GROUP = "lalalala";
-    public static final String TIME = "time";
-    public static final String COOLDOWN = "cooldown";
-    public static final String XP = "xp";
-    public static final String HOMES = "homes";
-    public static final String CLEAR = "clear";
-    public static final String LAST = "last";
-    public static final String HOURS = "hours";
-
     public static void reloadMessages(FileConfiguration msg) {
         M_SERVER_PREFIX = getColor(msg.getString("server.prefix"));
+        MSG_HELP_FORMAT = getColor(msg.getString("server.help-format"));
         MSG_MODULE_ENABLE = putPrefix(msg, "modules.enable");
         MSG_MODULE_DISABLE = putPrefix(msg, "modules.disable");
         MSG_NO_MONEY = putPrefix(msg, "server.no-money");
@@ -120,9 +105,11 @@ public class Strings {
         M_CHAT_UNMUTEBROAD = putPrefix(msg, "chat.unmutebroad");
         M_CHAT_MUTET = putPrefix(msg, "chat.mutetbroad");
         M_CHAT_NOONE = putPrefix(msg, "chat.noone");
-        M_CHAT_TO = getColor(msg.getString("chat.toplayer"));
-        M_CHAT_FROM = getColor(msg.getString("chat.fromplayer"));
-        M_CHAT_R_NO = putPrefix(msg, "chat.rnaote");
+        M_CHAT_TO = getColor(msg.getString("chat.tell.to-player"));
+        M_CHAT_FROM = getColor(msg.getString("chat.tell.from-player"));
+        M_CHAT_R_NO = putPrefix(msg, "chat.tell.no-one");
+        MSG_CHAT_LOCKED = putPrefix(msg, "chat.tell.locked");
+        MSG_CHAT_UNLOCKED = putPrefix(msg, "chat.tell.unlocked");
         M_CHAT_NO_CHANGE = putPrefix(msg, "chat.no-change");
         M_CHAT_NICK_DENY = putPrefix(msg, "chat.nick-deny");
         M_CHAT_NEWNICK = putPrefix(msg, "chat.newnick");
@@ -163,6 +150,20 @@ public class Strings {
         M_XP_INSUFFICIENT = putPrefix(msg, "experience.insufficient");
         M_XP_WITHDRAW = putPrefix(msg, "experience.withdraw");
         M_XP_DEPOSIT = putPrefix(msg, "experience.deposit");
+        MSG_XP_HELP_TITLE = putPrefix(msg, "experience.help.title");
+        MSG_XP_HELP_SET = getColor(msg.getString("experience.help.set"));
+        MSG_XP_HELP_TAKE = getColor(msg.getString("experience.help.take"));
+        MSG_XP_HELP_GIVE = getColor(msg.getString("experience.help.give"));
+        MSG_XP_HELP_CHECK = getColor(msg.getString("experience.help.check"));
+        MSG_XP_HELP_BOTTLE = getColor(msg.getString("experience.help.bottle"));
+        MSG_XP_HELP_DEPOSIT = getColor(msg.getString("experience.help.deposit"));
+        MSG_XP_HELP_WITHDRAW = getColor(msg.getString("experience.help.withdraw"));
+        M_XP_SET = putPrefix(msg,"experience.xp-set");
+        M_XP_RSET = putPrefix(msg, "experience.xp-rset");
+        M_XP_REMOVE = putPrefix(msg, "experience.xp-remove");
+        M_XP_RREMOVE = putPrefix(msg, "experience.xp-rremove");
+        M_XP_GIVE = putPrefix(msg, "experience.xp-give");
+        M_XP_RECEIVE = putPrefix(msg, "experience.xp-receive");
         M_ECO_MONEY = putPrefix(msg, "eco.money");
         M_ECO_OTHER = putPrefix(msg, "eco.money-other");
         M_ECO_PAY_NO = putPrefix(msg, "eco.pay-nomoney");
@@ -176,11 +177,20 @@ public class Strings {
         M_ECO_RREMOVE = putPrefix(msg, "eco.eco-rremove");
         M_ECO_GIVE = putPrefix(msg, "eco.eco-give");
         M_ECO_RECEIVE = putPrefix(msg, "eco.eco-receive");
+        MSG_ECO_HELP_TITLE = putPrefix(msg, "eco.help.title");
+        MSG_ECO_HELP_SET = getColor(msg.getString("eco.help.set"));
+        MSG_ECO_HELP_TAKE = getColor(msg.getString("eco.help.take"));
+        MSG_ECO_HELP_GIVE = getColor(msg.getString("eco.help.give"));
+        MSG_ECO_HELP_MONEY = getColor(msg.getString("eco.help.money"));
+        MSG_ECO_HELP_MONEY_ADMIN = getColor(msg.getString("eco.help.money-admin"));
+        MSG_ECO_HELP_PAY = getColor(msg.getString("eco.help.pay"));
+        MSG_ECO_HELP_BALTOP = getColor(msg.getString("eco.help.baltop"));
         MSG_FEEDED = putPrefix(msg, "generic.others.feeded");
         MSG_FEEDED_TARGET = putPrefix(msg, "generic.others.feeded-target");
     }
 
     public static String M_SERVER_PREFIX;
+    public static String MSG_HELP_FORMAT;
     public static String MSG_MODULE_ENABLE;
     public static String MSG_MODULE_DISABLE;
     public static String MSG_NO_MONEY;
@@ -296,6 +306,8 @@ public class Strings {
     public static String M_CHAT_TO;
     public static String M_CHAT_FROM;
     public static String M_CHAT_R_NO;
+    public static String MSG_CHAT_LOCKED;
+    public static String MSG_CHAT_UNLOCKED;
     public static String M_CHAT_NO_CHANGE;
     public static String M_CHAT_NICK_DENY;
     public static String M_CHAT_NEWNICK;
@@ -341,6 +353,20 @@ public class Strings {
     public static String M_XP_INSUFFICIENT;
     public static String M_XP_WITHDRAW;
     public static String M_XP_DEPOSIT;
+    public static String MSG_XP_HELP_TITLE;
+    public static String MSG_XP_HELP_SET;
+    public static String MSG_XP_HELP_TAKE;
+    public static String MSG_XP_HELP_GIVE;
+    public static String MSG_XP_HELP_CHECK;
+    public static String MSG_XP_HELP_BOTTLE;
+    public static String MSG_XP_HELP_DEPOSIT;
+    public static String MSG_XP_HELP_WITHDRAW;
+    public static String M_XP_SET;
+    public static String M_XP_RSET;
+    public static String M_XP_REMOVE;
+    public static String M_XP_RREMOVE;
+    public static String M_XP_GIVE;
+    public static String M_XP_RECEIVE;
 
     public static String M_ECO_MONEY;
     public static String M_ECO_OTHER;
@@ -355,6 +381,14 @@ public class Strings {
     public static String M_ECO_RREMOVE;
     public static String M_ECO_GIVE;
     public static String M_ECO_RECEIVE;
+    public static String MSG_ECO_HELP_TITLE;
+    public static String MSG_ECO_HELP_SET;
+    public static String MSG_ECO_HELP_TAKE;
+    public static String MSG_ECO_HELP_GIVE;
+    public static String MSG_ECO_HELP_MONEY;
+    public static String MSG_ECO_HELP_MONEY_ADMIN;
+    public static String MSG_ECO_HELP_PAY;
+    public static String MSG_ECO_HELP_BALTOP;
 
     private static String putPrefix(FileConfiguration msg, String path) {
         String message = msg.getString(path);

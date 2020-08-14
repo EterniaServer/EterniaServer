@@ -2,9 +2,9 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
@@ -18,7 +18,7 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 
 import org.bukkit.entity.Player;
 
-public class TextMaker {
+public class TextMaker implements Constants {
 
 	protected TextComponent text;
 	private final ChatMessage message;
@@ -35,8 +35,8 @@ public class TextMaker {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
 			msg = InternMethods.setPlaceholders(p, msg);
-			if(msg.contains(Constants.MESSAGE)) {
-				msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
+			if (msg.contains(MESSAGE)) {
+				msg = msg.replace(MESSAGE, message.getMessageSent());
 			}
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {

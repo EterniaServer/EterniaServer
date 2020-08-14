@@ -19,8 +19,6 @@ import java.util.List;
 
 public class EterniaServer extends JavaPlugin {
 
-    private boolean chatMuted = false;
-
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     public static final DecimalFormat df2 = new DecimalFormat(".##");
     public static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -42,8 +40,6 @@ public class EterniaServer extends JavaPlugin {
             ChatColor.DARK_GRAY, ChatColor.BLUE, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE,
             ChatColor.YELLOW, ChatColor.WHITE);
 
-    private Files files;
-
     public static final FileConfiguration serverConfig = new YamlConfiguration();
     public static final FileConfiguration msgConfig = new YamlConfiguration();
     public static final FileConfiguration cmdConfig = new YamlConfiguration();
@@ -55,13 +51,14 @@ public class EterniaServer extends JavaPlugin {
     public static final FileConfiguration groupConfig = new YamlConfiguration();
     public static final FileConfiguration cashConfig = new YamlConfiguration();
 
+    public final Files files = new Files(this);
+
     @Override
     public void onEnable() {
 
-        files = new Files(this);
-
         files.loadConfigs();
         files.loadMessages();
+        files.loadConfigurations();
         files.loadDatabase();
 
         loadManagers();
@@ -74,7 +71,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnEntityInventoryClick(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockPlace(), this);
-        this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChat(this), this);
+        this.getServer().getPluginManager().registerEvents(new OnAsyncPlayerChat(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommandPreProcess(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerInteract(), this);
@@ -94,14 +91,6 @@ public class EterniaServer extends JavaPlugin {
 
     private void loadManagers() {
         new Managers(this);
-    }
-
-    public boolean isChatMuted() {
-        return chatMuted;
-    }
-
-    public void setChatMuted(boolean chatMuted) {
-        this.chatMuted = chatMuted;
     }
 
     public Files getFiles() {

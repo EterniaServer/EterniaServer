@@ -8,7 +8,6 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -18,6 +17,7 @@ public class Vars {
         throw new IllegalStateException("Utility class");
     }
 
+    protected static boolean chatMuted = false;
     protected static long nightTime = System.currentTimeMillis();
 
     protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
@@ -37,6 +37,7 @@ public class Vars {
     protected static final Map<UUID, String> cashItem = new HashMap<>();
 
     protected static final Map<UUID, PlayerProfile> playerProfile = new HashMap<>();
+    protected static final Map<String, String> chatLocked = new HashMap<>();
 
     protected static final Map<String, Long> kitsCooldown = new HashMap<>();
     protected static final Map<String, Boolean> spy = new HashMap<>();

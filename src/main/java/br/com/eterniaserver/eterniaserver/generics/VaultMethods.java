@@ -2,10 +2,10 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Configs;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.Strings;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class VaultMethods implements Economy {
+public class VaultMethods implements Economy, Constants {
 
     private final double startMoney = EterniaServer.serverConfig.getDouble("money.start");
 
@@ -273,7 +273,7 @@ public class VaultMethods implements Economy {
     }
 
     private void playerMoneyCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.UUID, uuid.toString(), Strings.BALANCE, startMoney));
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, UUID_STR, uuid.toString(), BALANCE_STR, startMoney));
         Vars.balances.put(uuid, 300.0);
     }
 

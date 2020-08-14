@@ -1,10 +1,10 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class OnEntityInventoryClick implements Listener {
+public class OnEntityInventoryClick implements Listener, Constants {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
@@ -32,7 +32,7 @@ public class OnEntityInventoryClick implements Listener {
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
             player.sendMessage(Strings.MSG_SPAWNER_NAME);
-            player.sendMessage(Strings.MSG_SPAWNER_LOG.replace(Constants.PLAYER, player.getDisplayName()));
+            player.sendMessage(Strings.MSG_SPAWNER_LOG.replace(PLAYER, player.getDisplayName()));
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.cash")) {

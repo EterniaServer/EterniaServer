@@ -2,9 +2,10 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Configs;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -12,7 +13,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class OnAsyncPlayerPreLogin implements Listener {
+public class OnAsyncPlayerPreLogin implements Listener, Constants {
 
     private final double moneyStart = EterniaServer.serverConfig.getDouble("money.start");
 
@@ -51,22 +52,22 @@ public class OnAsyncPlayerPreLogin implements Listener {
     }
 
     private void playerCashCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.UUID, uuid.toString(), Strings.BALANCE, 0), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_CASH, UUID_STR, uuid.toString(), BALANCE_STR, 0), false);
         Vars.cash.put(uuid, 0);
     }
 
     private void playerMoneyCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MONEY, Strings.UUID, uuid.toString(), Strings.BALANCE, moneyStart), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, UUID_STR, uuid.toString(), BALANCE_STR, moneyStart), false);
         Vars.balances.put(uuid, 300.0);
     }
 
     private void playerXPCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_XP, Strings.UUID, uuid.toString(), Strings.XP, 0), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_XP, UUID_STR, uuid.toString(), XP_STR, 0), false);
         Vars.xp.put(uuid, 0);
     }
 
     private void playerHomeCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOME, Strings.UUID, uuid.toString(), Strings.HOMES, ""), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_HOME, UUID_STR, uuid.toString(), HOMES_STR, ""), false);
         Vars.home.put(uuid, new ArrayList<>());
     }
 

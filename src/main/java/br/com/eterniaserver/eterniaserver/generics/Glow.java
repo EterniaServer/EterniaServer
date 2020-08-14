@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
@@ -14,7 +14,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 @CommandAlias("glow")
 @CommandPermission("eternia.glow")
-public class Glow extends BaseCommand {
+public class Glow extends BaseCommand implements Constants {
 
     private final Scoreboard sc;
 
@@ -99,7 +99,7 @@ public class Glow extends BaseCommand {
         final String playerName = player.getName();
         Vars.glowingColor.put(playerName, nameColor);
         sc.getTeam(team).addEntry(playerName);
-        player.sendMessage(Strings.M_GLOW_COLOR.replace(Constants.AMOUNT, color));
+        player.sendMessage(Strings.M_GLOW_COLOR.replace(AMOUNT, color));
     }
 
 }

@@ -2,9 +2,10 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Configs;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.paperlib.PaperLib;
 
@@ -17,7 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
 
-public class OnPlayerJoin implements Listener {
+public class OnPlayerJoin implements Listener, Constants {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -50,25 +51,25 @@ public class OnPlayerJoin implements Listener {
             if (!playerProfile.getPlayerName().equals(playerName)) {
                 playerProfile.setPlayerName(playerName);
                 Vars.playerProfile.put(uuid, playerProfile);
-                EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.PLAYER_NAME, playerName, Strings.UUID, uuid.toString()));
+                EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, PLAYER_NAME_STR, playerName, UUID_STR, uuid.toString()));
             }
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_PLAYER, Strings.LAST, time, Strings.UUID, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, LAST_STR, time, UUID_STR, uuid.toString()));
         }
 
         playerKitsCreate(playerName);
         playerChecks(playerName);
 
         event.setJoinMessage(null);
-        Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(Constants.PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(PLAYER, player.getDisplayName()));
     }
 
     private void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_PLAYER, "(uuid, player_name, time, last, hours)",
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_PLAYER, "(uuid, player_name, time, last, hours)",
                 "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "')"));
         Vars.playerProfile.put(uuid, new PlayerProfile(
                 playerName,
-                time,
+                firstPlayed,
                 time,
                 0
         ));
@@ -86,7 +87,7 @@ public class OnPlayerJoin implements Listener {
 
     private void playerMutedCreate(UUID uuid) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_MUTED, Strings.UUID, uuid.toString(), Strings.TIME, time));
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MUTED, UUID_STR, uuid.toString(), TIME_STR, time));
         Vars.playerMuted.put(uuid, time);
     }
 
@@ -96,7 +97,7 @@ public class OnPlayerJoin implements Listener {
             for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(false)) {
                 final String kitName = kit + "." + playerName;
                 if (!Vars.kitsCooldown.containsKey(kitName)) {
-                    EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_KITS, Strings.NAME, kitName, Strings.COOLDOWN, time));
+                    EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_KITS, NAME_STR, kitName, COOLDOWN_STR, time));
                     Vars.kitsCooldown.put(kitName, time);
                 }
             }

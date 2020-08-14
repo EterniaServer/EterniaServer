@@ -1,9 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;
 
-public class AccelerateNight extends BukkitRunnable {
+public class AccelerateNight extends BukkitRunnable implements Constants{
 
     private final EterniaServer plugin;
     private final World world;
@@ -20,7 +20,7 @@ public class AccelerateNight extends BukkitRunnable {
         this.plugin = plugin;
         this.world = world;
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
-            Bukkit.broadcastMessage(Strings.MSG_SKIPPING.replace(Constants.WORLD, world.getName()));
+            Bukkit.broadcastMessage(Strings.MSG_SKIPPING.replace(WORLD, world.getName()));
         }
     }
 

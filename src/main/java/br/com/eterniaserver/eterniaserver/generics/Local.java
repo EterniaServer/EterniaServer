@@ -1,13 +1,13 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class Local {
+public class Local implements Constants {
 
     public void sendChatMessage(String message, Player player, int radius) {
         int pes = 0;
@@ -30,9 +30,9 @@ public class Local {
     private String getFormat(String message, final Player player) {
         String format = InternMethods.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
         if (player.hasPermission("eternia.chat.color")) {
-            return Strings.getColor(format.replace(Constants.MESSAGE, message));
+            return Strings.getColor(format.replace(MESSAGE, message));
         } else {
-            return(format.replace(Constants.MESSAGE, message));
+            return(format.replace(MESSAGE, message));
         }
     }
 

@@ -2,10 +2,9 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Configs;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -18,29 +17,24 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Mute extends BaseCommand {
+public class Mute extends BaseCommand implements Constants {
 
-    private final EterniaServer plugin;
 
-    public Mute(EterniaServer plugin) {
-        this.plugin = plugin;
-
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_MUTED), Strings.UUID, Strings.TIME);
+    public Mute() {
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_MUTED), UUID_STR, TIME_STR);
         temp.forEach((k, v) -> Vars.playerMuted.put(UUID.fromString(k), Long.parseLong(v)));
-
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Muted Players").replace(Constants.AMOUNT, String.valueOf(temp.size())));
-
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Muted Players").replace(AMOUNT, String.valueOf(temp.size())));
     }
 
     @CommandAlias("mutechannels|muteall")
     @CommandPermission("eternia.mute.channels")
     public void muteChannels(Player sender) {
-        if (plugin.isChatMuted()) {
-            plugin.setChatMuted(false);
-            Bukkit.broadcastMessage(Strings.M_CHAT_D.replace(Constants.PLAYER, sender.getDisplayName()));
+        if (Vars.chatMuted) {
+            Vars.chatMuted = false;
+            Bukkit.broadcastMessage(Strings.M_CHAT_D.replace(PLAYER, sender.getDisplayName()));
         } else {
-            plugin.setChatMuted(true);
-            Bukkit.broadcastMessage(Strings.M_CHAT_E.replace(Constants.PLAYER, sender.getDisplayName()));
+            Vars.chatMuted = true;
+            Bukkit.broadcastMessage(Strings.M_CHAT_E.replace(PLAYER, sender.getDisplayName()));
         }
     }
 
@@ -56,8 +50,8 @@ public class Mute extends BaseCommand {
         cal.setTime(new Date());
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
-        Bukkit.broadcastMessage(Strings.M_CHAT_MUTEBROAD.replace(Constants.PLAYER, targetP.getDisplayName()).replace(Constants.MESSAGE, messageFull(message)));
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.UUID, UUIDFetcher.getUUIDOf(targetName).toString()));
+        Bukkit.broadcastMessage(Strings.M_CHAT_MUTEBROAD.replace(PLAYER, targetP.getDisplayName()).replace(MESSAGE, messageFull(message)));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_MUTED, TIME_STR, time, UUID_STR, UUIDFetcher.getUUIDOf(targetName).toString()));
         Vars.playerMuted.put(UUIDFetcher.getUUIDOf(targetName), cal.getTimeInMillis());
     }
 
@@ -70,8 +64,8 @@ public class Mute extends BaseCommand {
         final String playerName = target.getPlayer().getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         Vars.playerMuted.put(uuid, time);
-        Bukkit.broadcastMessage(Strings.M_CHAT_UNMUTEBROAD.replace(Constants.PLAYER, target.getPlayer().getDisplayName()));
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, time, Strings.UUID, uuid.toString()));
+        Bukkit.broadcastMessage(Strings.M_CHAT_UNMUTEBROAD.replace(PLAYER, target.getPlayer().getDisplayName()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_MUTED, TIME_STR, time, UUID_STR, uuid.toString()));
     }
 
     @CommandAlias("tempmute|mutetemporario")
@@ -85,8 +79,8 @@ public class Mute extends BaseCommand {
         final long timeInMillis = cal.getTimeInMillis();
         final String targetName = target.getPlayer().getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(targetName);
-        Bukkit.broadcastMessage(Strings.M_CHAT_MUTET.replace(Constants.PLAYER, target.getPlayer().getDisplayName()).replace(Constants.TIME, String.valueOf(time)).replace(Constants.MESSAGE, messageFull(message)));
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_MUTED, Strings.TIME, timeInMillis, Strings.UUID, uuid.toString()));
+        Bukkit.broadcastMessage(Strings.M_CHAT_MUTET.replace(PLAYER, target.getPlayer().getDisplayName()).replace(TIME, String.valueOf(time)).replace(MESSAGE, messageFull(message)));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_MUTED, TIME_STR, timeInMillis, UUID_STR, uuid.toString()));
         Vars.playerMuted.put(uuid, cal.getTimeInMillis());
     }
 

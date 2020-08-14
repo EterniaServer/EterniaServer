@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 
-public class Others extends BaseCommand {
+public class Others extends BaseCommand implements Constants {
 
     private final EterniaServer plugin;
 
@@ -106,7 +106,7 @@ public class Others extends BaseCommand {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.feed.other")) {
                 targetP.setFoodLevel(20);
-                player.sendMessage(Strings.MSG_FEEDED_TARGET.replace(Constants.TARGET, targetP.getDisplayName()));
+                player.sendMessage(Strings.MSG_FEEDED_TARGET.replace(TARGET, targetP.getDisplayName()));
                 player.sendMessage(Strings.MSG_FEEDED);
             } else {
                 player.sendMessage(Strings.MSG_NO_PERM);
@@ -150,11 +150,11 @@ public class Others extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (Vars.afk.contains(playerName)) {
-            Bukkit.getConsoleSender().sendMessage(Strings.MSG_AFK_DISABLE.replace(Constants.PLAYER, player.getDisplayName()));
+            Bukkit.broadcastMessage(Strings.MSG_AFK_DISABLE.replace(PLAYER, player.getDisplayName()));
             Vars.afk.remove(playerName);
         } else {
             Vars.afk.add(playerName);
-            Bukkit.getConsoleSender().sendMessage(Strings.MSG_AFK_ENABLE.replace(Constants.PLAYER, player.getDisplayName()));
+            Bukkit.broadcastMessage(Strings.MSG_AFK_ENABLE.replace(PLAYER, player.getDisplayName()));
         }
     }
 

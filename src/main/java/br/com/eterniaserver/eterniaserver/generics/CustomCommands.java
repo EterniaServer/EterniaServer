@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.objects.AbstractCommand;
 
 import org.bukkit.command.Command;

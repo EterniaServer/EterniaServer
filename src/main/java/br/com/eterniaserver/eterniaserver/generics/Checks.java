@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
 
@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;
 
-public class Checks extends BukkitRunnable {
+public class Checks extends BukkitRunnable implements Constants {
 
     @Override
     public void run() {
@@ -50,7 +50,7 @@ public class Checks extends BukkitRunnable {
             } else if (Vars.playersInPortal.get(playerName) > 1) {
                 Vars.playersInPortal.put(playerName, Vars.playersInPortal.get(playerName) - 1);
                 if (Vars.playersInPortal.get(playerName) < 5) {
-                    player.sendMessage(Strings.MSG_NETHER_TRAP.replace(Constants.COOLDOWN, String.valueOf(Vars.playersInPortal.get(playerName))));
+                    player.sendMessage(Strings.MSG_NETHER_TRAP.replace(COOLDOWN, String.valueOf(Vars.playersInPortal.get(playerName))));
                 }
             }
         } else {

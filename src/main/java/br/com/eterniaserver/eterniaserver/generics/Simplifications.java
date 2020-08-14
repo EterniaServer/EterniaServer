@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class Simplifications extends BaseCommand {
+public class Simplifications extends BaseCommand implements Constants {
 
     @CommandAlias("rain|chuva")
     @CommandPermission("eternia.rain")
@@ -35,8 +35,8 @@ public class Simplifications extends BaseCommand {
         if (target != null) {
             final Player targetP = target.getPlayer();
             world.strikeLightning(targetP.getLocation());
-            player.sendMessage(Strings.MSG_LIGHTNING_SENT.replace(Constants.TARGET, targetP.getDisplayName()));
-            player.sendMessage(Strings.MSG_LIGHTNING_RECEIVED.replace(Constants.TARGET, player.getDisplayName()));
+            player.sendMessage(Strings.MSG_LIGHTNING_SENT.replace(TARGET, targetP.getDisplayName()));
+            player.sendMessage(Strings.MSG_LIGHTNING_RECEIVED.replace(TARGET, player.getDisplayName()));
         } else {
             world.strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
@@ -50,7 +50,7 @@ public class Simplifications extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            Bukkit.broadcastMessage(Strings.MSG_SUICIDE.replace(Constants.MESSAGE, sb.toString()).replace(Constants.PLAYER, player.getDisplayName()));
+            Bukkit.broadcastMessage(Strings.MSG_SUICIDE.replace(MESSAGE, sb.toString()).replace(PLAYER, player.getDisplayName()));
         } else {
             player.setHealth(0);
         }

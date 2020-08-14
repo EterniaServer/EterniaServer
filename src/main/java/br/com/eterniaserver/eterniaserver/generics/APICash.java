@@ -1,12 +1,12 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
-import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Configs;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 
 import java.util.UUID;
 
-public class APICash {
+public class APICash implements Constants {
 
     private APICash() {
         throw new IllegalStateException("Utility class");
@@ -16,7 +16,7 @@ public class APICash {
         if (Vars.cash.containsKey(uuid)) {
             return Vars.cash.get(uuid);
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.UUID, uuid.toString(), Strings.BALANCE, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_CASH, UUID_STR, uuid.toString(), BALANCE_STR, 0));
             Vars.cash.put(uuid, 0);
             return 0;
         }
@@ -29,9 +29,9 @@ public class APICash {
     public static void setCash(UUID uuid, int amount) {
         if (Vars.cash.containsKey(uuid)) {
             Vars.cash.put(uuid, amount);
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_CASH, Strings.BALANCE, amount, Strings.UUID, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_CASH, BALANCE_STR, amount, UUID_STR, uuid.toString()));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_CASH, Strings.UUID, uuid.toString(), Strings.BALANCE, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_CASH, UUID_STR, uuid.toString(), BALANCE_STR, 0));
             Vars.cash.put(uuid, 0);
             setCash(uuid, amount);
         }

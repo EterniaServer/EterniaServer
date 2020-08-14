@@ -24,6 +24,7 @@ server:
   load-data: '&3%module% &7carregados &3%amount% &7de arquivos&8.'
   no-money: '&7Você não possui todo esse dinheiro&8, &3%money%&8.'
   neg: '&7O valor não pode ser negativo&8.'
+  help-format: '&8| &7Use&8: &6/%command% &8- &7%message%'
 glow:
   brilho: '&7Brilhando&8!'
   desbrilho: '&7Desbrilhando :(&8!'
@@ -45,10 +46,13 @@ cash:
   removed: '&7Você perdeu &3%amount% &7de cash&8.'
   remove: '&7Você removeu &3%amount% &7de cash para &3%target_displayname%&8.'
 chat:
+  tell:
+    to-player: '&8[&6P&8] &6%player_displayname% &8-> &6%target_displayname%&8: &6%message%'
+    from-player: '&8[&6P&8] &6%player_displayname% &8<- &6%target_displayname%&8: &6%message%'
+    no-one: '&7Você não possui ninguém para responder&8.'
+    locked: '&7Você travou o chat com &3%player_displayname%&8.'
+    unlocked: '&7Chat destravado&8.'
   global-advice: '&7%advice%'
-  rnaote: '&7Você não possui ninguém para responder&8.'
-  toplayer: '&8[&6P&8] &6%player_displayname% &8-> &6%target_displayname%&8: &6%message%'
-  fromplayer: '&8[&6P&8] &6%player_displayname% &8<- &6%target_displayname%&8: &6%message%'
   noone: '&7Não há ninguém para ti ouvir&8.'
   spye: '&7Spy ativado&8.'
   spyd: '&7Spy desativado&8.'
@@ -82,6 +86,15 @@ bed:
   player-leave: '&3%player_displayname% &7desistiu de ir dormir&8.'
   player-s: '&3%player_displayname% &7está dormindo&8, &7durma também para a noite passar mais rapidamente&8.'
 eco:
+  help:
+    title: '&7Ajuda &8- &7Dinheiro&8:'
+    set: '&7Para definir o saldo de um jogador&8.'
+    take: '&7Para retirar uma quantia de um jogador&8.'
+    give: '&7Para dar uma quantia a um jogador&8.'
+    money-admin: '&7Para verificar o seu saldo ou o de outro jogador&8.'
+    money: '&7Para verificar o seu saldo&8.'
+    pay: '&7Para pagar uma quantia a um jogador&8.'
+    baltop: '&8Para verificar a lista de mais ricos&8.'
   auto-pay: '&7Você não pode se pagar&8.'
   pay-nomoney: '&7Você não possui todo esse dinheiro&8.'
   pay: '&7Você pagou &3%amount% &7para &3%target_displayname%&8.'
@@ -97,11 +110,26 @@ eco:
   eco-set: '&7Você definiu para &3%amount%&7 o saldo de &3%target_displayname%&8.'
   eco-rset: '&7Seu saldo foi definido para &3%amount%&7 por &3%target_displayname%&8.'
 experience:
+  help:
+    title: '&7Ajuda &8- &7Exp&8:'
+    set: '&7Para definir o saldo de XP de um jogador&8.'
+    take: '&7Para retirar uma quantia de XP de um jogador&8.'
+    give: '&7Para dar uma quantia de XP a um jogador&8.'
+    check: '&7Para verificar o seu saldo de XP guardado&8.'
+    bottle: '&7Para retirar o seu saldo de XP em uma garrafa&8.'
+    deposit: '&7Para guardar uma quantia de XP&8.'
+    withdraw: '&7Para retirar uma quantia de XP&8.'
   check: '&7Você possui &3%amount% &7leveis guardados&8.'
   bottleexp: '&7Toma ai sua garrafinha&8!'
   deposit: '&7Pronto você guardou &3%amount% &7leveis&8.'
   insufficient: '&7Você não tem EXP suficiênte&8.'
   withdraw: '&7Pronto seu nível agora é &3%amount%&8.'
+  xp-give: '&7Você deu &3%amount%&7 de XP para &3%target_displayname%&8.'
+  xp-receive: '&7Você recebeu &3%amount%&7 de XP de &3%target_displayname%&8.'
+  xp-remove: '&7Você retirou &3%amount%&7 de XP de &3%target_displayname%&8.'
+  xp-rremove: '&7Você perdeu &3%amount%&7 de XP por &3%target_displayname%&8.'
+  xp-set: '&7Você definiu para &3%amount%&7 o saldo de XP de &3%target_displayname%&8.'
+  xpo-rset: '&7Seu saldo de XP foi definido para &3%amount%&7 por &3%target_displayname%&8.'
 generic:
   afk:
     broadcast-kicked: '&3%player_displayname% &7estava AFK e foi kickado por isso&8.'

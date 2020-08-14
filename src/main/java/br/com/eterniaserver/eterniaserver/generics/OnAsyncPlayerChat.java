@@ -1,11 +1,12 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 
+import br.com.eterniaserver.eterniaserver.utils.TimeEnum;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
@@ -16,13 +17,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class OnAsyncPlayerChat implements Listener {
+public class OnAsyncPlayerChat implements Listener, Constants {
 
-    private final EterniaServer plugin;
     private final ChatFormatter cf;
     private final JsonSender js;
     private final CustomPlaceholdersFilter cp;
@@ -32,8 +31,7 @@ public class OnAsyncPlayerChat implements Listener {
     private final boolean hexSupport;
     private final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
 
-    public OnAsyncPlayerChat(EterniaServer plugin) {
-        this.plugin = plugin;
+    public OnAsyncPlayerChat() {
         this.cp = new CustomPlaceholdersFilter();
         this.js = new JsonSender();
         this.cf = new ChatFormatter();
@@ -45,18 +43,17 @@ public class OnAsyncPlayerChat implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
-            if (plugin.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
+            if (Vars.chatMuted && !player.hasPermission("eternia.mute.bypass")) {
                 player.sendMessage(Strings.M_CHATMUTED);
                 e.setCancelled(true);
             } else {
-                final long time = System.currentTimeMillis();
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-                if (Vars.playerMuted.get(uuid) - time > 0) {
-                    player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, String.valueOf(TimeUnit.MILLISECONDS.toSeconds(Vars.playerMuted.get(uuid) - time))));
+                final long time = Vars.playerMuted.get(uuid);
+                if (TimeEnum.HASCOOLDOWN.stayMuted(time)) {
+                    player.sendMessage(Strings.M_CHAT_MUTED.replace(TIME, TimeEnum.HASCOOLDOWN.getTimeLeft(time)));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), playerName));
@@ -74,6 +71,9 @@ public class OnAsyncPlayerChat implements Listener {
             case 2:
                 staff.sendChatMessage(message, player);
                 return true;
+            case 3:
+                sendTell(player, message);
+                return true;
             default:
                 ChatMessage messagex = new ChatMessage(message);
                 cf.filter(e, messagex);
@@ -84,6 +84,21 @@ public class OnAsyncPlayerChat implements Listener {
         }
     }
 
+    private void sendTell(Player sender, final String msg) {
+        final String playerName = sender.getName();
+        if (Vars.chatLocked.containsKey(playerName)) {
+            final Player target = Bukkit.getPlayer(Vars.chatLocked.get(playerName));
+            if (target != null && target.isOnline()) {
+                if (Vars.ignoredPlayer.get(playerName) != null && Vars.ignoredPlayer.get(playerName).contains(target)) {
+                    sender.sendMessage(Strings.M_CHAT_IGNORE);
+                    return;
+                }
+                InternMethods.sendPrivate(sender, target, msg);
+                return;
+            }
+        }
+        sender.sendMessage(Strings.M_CHAT_R_NO);
+    }
 
     private String canHex(final Player player, String message) {
         if (hexSupport && player.hasPermission("eternia.chat.color.hex")) {

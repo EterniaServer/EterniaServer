@@ -3,9 +3,10 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.configs.Configs;
+import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Strings;
+import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import br.com.eterniaserver.acf.BaseCommand;
@@ -23,11 +24,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class HomeSystem extends BaseCommand {
+public class HomeSystem extends BaseCommand implements Constants{
 
     public HomeSystem() {
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOMES), Strings.NAME, Strings.LOCATION);
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOMES), NAME_STR, LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -38,11 +39,11 @@ public class HomeSystem extends BaseCommand {
                     Float.parseFloat(split[5]));
             Vars.homes.put(k, loc);
         });
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Home").replace(Constants.AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Home").replace(AMOUNT, String.valueOf(temp.size())));
 
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Constants.TABLE_HOME), Strings.UUID, Strings.HOMES);
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOME), UUID_STR, HOMES_STR);
         temp.forEach((k, v) -> Vars.home.put(UUID.fromString(k), new ArrayList<>(Arrays.asList(v.split(":")))));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Homes").replace(Constants.AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Player Homes").replace(AMOUNT, String.valueOf(temp.size())));
 
     }
 
@@ -94,7 +95,7 @@ public class HomeSystem extends BaseCommand {
                 for (String line : list) {
                     accounts.append(line).append(EterniaServer.colors.get(8)).append(", ").append(EterniaServer.colors.get(3));
                 }
-                player.sendMessage(Strings.M_HOME_LIST.replace(Constants.HOMES, Strings.getColor(accounts.toString())));
+                player.sendMessage(Strings.M_HOME_LIST.replace(HOMES, Strings.getColor(accounts.toString())));
             } else {
                 player.sendMessage(Strings.MSG_NO_PERM);
             }
@@ -103,7 +104,7 @@ public class HomeSystem extends BaseCommand {
             for (String line : list) {
                 accounts.append(line).append(EterniaServer.colors.get(8)).append(", ").append(EterniaServer.colors.get(3));
             }
-            player.sendMessage(Strings.M_HOME_LIST.replace(Constants.HOMES, Strings.getColor(accounts.toString())));
+            player.sendMessage(Strings.M_HOME_LIST.replace(HOMES, Strings.getColor(accounts.toString())));
         }
     }
 
@@ -174,10 +175,10 @@ public class HomeSystem extends BaseCommand {
         if (!t) {
             result.append(home);
             values.add(home);
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, result.toString(), Strings.UUID, uuid.toString()));
-            EQueries.executeQuery(Constants.getQueryInsert(Constants.TABLE_HOMES, Strings.NAME, homeName, Strings.LOCATION, saveloc));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOME, HOMES_STR, result.toString(), UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_HOMES, NAME_STR, homeName, LOCATION_STR, saveloc));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOMES, Strings.LOCATION, saveloc, Strings.NAME, homeName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOMES, LOCATION_STR, saveloc, NAME_STR, homeName));
         }
         Vars.home.put(uuid, values);
     }
@@ -200,8 +201,8 @@ public class HomeSystem extends BaseCommand {
             }
         }
         Vars.home.put(uuid, newValues);
-        EQueries.executeQuery(Constants.getQueryUpdate(Constants.TABLE_HOME, Strings.HOMES, nova.toString(), Strings.UUID, uuid.toString()));
-        EQueries.executeQuery(Constants.getQueryDelete(Constants.TABLE_HOMES, Strings.NAME, homeName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOME, HOMES_STR, nova.toString(), UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_HOMES, NAME_STR, homeName));
     }
 
     public Location getHome(String home, String jogador) {
