@@ -234,9 +234,9 @@ public class ChatCommands extends BaseCommand {
         }
 
         if (player.hasPermission("eternia.chat.color.nick")) {
-            player.sendMessage(Strings.M_CHAT_NICK_MONEY.replace(Constants.NEW_NAME, Strings.getColor(string)));
+            player.sendMessage(Strings.M_CHAT_NICK_MONEY.replace(Constants.NEW_NAME, Strings.getColor(string)).replace(Constants.AMOUNT, String.valueOf(money)));
         } else {
-            player.sendMessage(Strings.M_CHAT_NICK_MONEY.replace(Constants.NEW_NAME, string));
+            player.sendMessage(Strings.M_CHAT_NICK_MONEY.replace(Constants.NEW_NAME, string).replace(Constants.AMOUNT, String.valueOf(money)));
         }
 
         Vars.nick.put(UUIDFetcher.getUUIDOf(playerName), string);

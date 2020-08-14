@@ -66,7 +66,7 @@ chat:
   chatmuted: '&7O chat está mutado&8!'
   cm-e: '&7Todos os canais foram mutados por &3%player_displayname%&8!'
   cm-d: '&7Todos os canais foram desmutados por &3%player_displayname%&8!'
-  nick-money: '&7Você quer trocar seu nick para &3%new_name% &7isso irá custar &31.500.000,00 E$&8.'
+  nick-money: '&7Você quer trocar seu nick para &3%new_name% &7isso irá custar &3%amount%&7 E$&8.'
   nick-money-2: '&7Utilize &6/nickaccept &7para aceitar e &6/nickdeny &7para negar&8.'
   no-change: '&7Você não tem nenhum pedido para mudança de nick&8.'
   nick-deny: '&7Você negou alterar seu nick&8.'

@@ -7,7 +7,7 @@ import br.com.eterniaserver.eterniaserver.configs.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class Local implements Constants {
+public class Local {
 
     public void sendChatMessage(String message, Player player, int radius) {
         int pes = 0;
@@ -30,9 +30,9 @@ public class Local implements Constants {
     private String getFormat(String message, final Player player) {
         String format = InternMethods.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
         if (player.hasPermission("eternia.chat.color")) {
-            return Strings.getColor(format.replace(MESSAGE, message));
+            return Strings.getColor(format.replace(Constants.MESSAGE, message));
         } else {
-            return(format.replace(MESSAGE, message));
+            return(format.replace(Constants.MESSAGE, message));
         }
     }
 
