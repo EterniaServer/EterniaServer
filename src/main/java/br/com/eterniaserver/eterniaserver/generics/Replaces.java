@@ -48,9 +48,7 @@ public class Replaces extends BaseCommand {
                 resultSet.close();
             });
         } else {
-            try {
-                final PreparedStatement getHashMap = Connections.connection.prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER));
-                final ResultSet resultSet = getHashMap.executeQuery();
+            try (PreparedStatement getHashMap = Connections.connection.prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER)); ResultSet resultSet = getHashMap.executeQuery()) {
                 while (resultSet.next()) {
                     Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), new PlayerProfile(
                             resultSet.getString(Constants.PLAYER_NAME_STR),
@@ -59,8 +57,6 @@ public class Replaces extends BaseCommand {
                             resultSet.getInt(Constants.HOURS_STR)
                     ));
                 }
-                getHashMap.close();
-                resultSet.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
