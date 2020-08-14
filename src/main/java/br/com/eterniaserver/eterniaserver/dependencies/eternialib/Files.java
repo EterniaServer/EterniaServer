@@ -41,7 +41,6 @@ public class Files {
 
         try {
             EterniaServer.msgConfig.load(file);
-            Strings.reloadMessages(EterniaServer.msgConfig);
         } catch (IOException | InvalidConfigurationException e) {
             errorInJar(messages);
         }
@@ -155,10 +154,6 @@ public class Files {
             errorInJar(cashGui);
         }
 
-    }
-
-    public void loadConfigurations() {
-        Configs.reloadConfigs();
     }
 
     public void loadDatabase() {

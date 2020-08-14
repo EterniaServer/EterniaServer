@@ -58,7 +58,6 @@ public class EterniaServer extends JavaPlugin {
 
         files.loadConfigs();
         files.loadMessages();
-        files.loadConfigurations();
         files.loadDatabase();
 
         loadManagers();

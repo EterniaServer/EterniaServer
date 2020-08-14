@@ -8,32 +8,17 @@ public class Configs {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void reloadConfigs() {
-        TABLE_CASH = EterniaServer.serverConfig.getString("sql.table-cash");
-        TABLE_HOME = EterniaServer.serverConfig.getString("sql.table-home");
-        TABLE_HOMES = EterniaServer.serverConfig.getString("sql.table-homes");
-        TABLE_KITS = EterniaServer.serverConfig.getString("sql.table-kits");
-        TABLE_NICK = EterniaServer.serverConfig.getString("sql.table-nick");
-        TABLE_MONEY = EterniaServer.serverConfig.getString("sql.table-money");
-        TABLE_MUTED = EterniaServer.serverConfig.getString("sql.table-muted");
-        TABLE_PLAYER = EterniaServer.serverConfig.getString("sql.table-player");
-        TABLE_REWARD = EterniaServer.serverConfig.getString("sql.table-rewards");
-        TABLE_SHOP = EterniaServer.serverConfig.getString("sql.table-shop");
-        TABLE_WARP = EterniaServer.serverConfig.getString("sql.table-warp");
-        TABLE_XP = EterniaServer.serverConfig.getString("sql.table-xp");
-    }
-
-    public static String TABLE_CASH;
-    public static String TABLE_HOME;
-    public static String TABLE_HOMES;
-    public static String TABLE_KITS;
-    public static String TABLE_NICK;
-    public static String TABLE_MONEY;
-    public static String TABLE_MUTED;
-    public static String TABLE_PLAYER;
-    public static String TABLE_REWARD;
-    public static String TABLE_SHOP;
-    public static String TABLE_WARP;
-    public static String TABLE_XP;
+    public static final String TABLE_CASH = EterniaServer.serverConfig.getString("sql.table-cash");
+    public static final String TABLE_HOME = EterniaServer.serverConfig.getString("sql.table-home");
+    public static final String TABLE_HOMES = EterniaServer.serverConfig.getString("sql.table-homes");
+    public static final String TABLE_KITS = EterniaServer.serverConfig.getString("sql.table-kits");
+    public static final String TABLE_NICK = EterniaServer.serverConfig.getString("sql.table-nick");
+    public static final String TABLE_MONEY = EterniaServer.serverConfig.getString("sql.table-money");
+    public static final String TABLE_MUTED = EterniaServer.serverConfig.getString("sql.table-muted");
+    public static final String TABLE_PLAYER = EterniaServer.serverConfig.getString("sql.table-player");
+    public static final String TABLE_REWARD = EterniaServer.serverConfig.getString("sql.table-rewards");
+    public static final String TABLE_SHOP = EterniaServer.serverConfig.getString("sql.table-shop");
+    public static final String TABLE_WARP = EterniaServer.serverConfig.getString("sql.table-warp");
+    public static final String TABLE_XP = EterniaServer.serverConfig.getString("sql.table-xp");
 
 }
