@@ -18,7 +18,7 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 
 import org.bukkit.entity.Player;
 
-public class TextMaker implements Constants {
+public class TextMaker {
 
 	protected TextComponent text;
 	private final ChatMessage message;
@@ -35,8 +35,8 @@ public class TextMaker implements Constants {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
 			msg = InternMethods.setPlaceholders(p, msg);
-			if (msg.contains(MESSAGE)) {
-				msg = msg.replace(MESSAGE, message.getMessageSent());
+			if (msg.contains(Constants.MESSAGE)) {
+				msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
 			}
 			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 			if(chatObject.getHover() != null) {

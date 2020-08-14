@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class ChatCommands extends BaseCommand implements Constants {
+public class ChatCommands extends BaseCommand {
 
     private final EterniaServer plugin;
     private final int money;
@@ -30,14 +30,14 @@ public class ChatCommands extends BaseCommand implements Constants {
         this.plugin = plugin;
         this.money = EterniaServer.serverConfig.getInt("money.nick");
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_NICK), UUID_STR, PLAYER_DISPLAY_STR);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_NICK), Constants.UUID_STR, Constants.PLAYER_DISPLAY_STR);
         temp.forEach((k, v) -> {
             final UUID uuid = UUID.fromString(k);
             final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
             playerProfile.setPlayerDisplayName(v);
             Vars.playerProfile.put(uuid, playerProfile);
         });
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Nicks").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Nicks").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
     }
 
@@ -50,13 +50,13 @@ public class ChatCommands extends BaseCommand implements Constants {
     @CommandAlias("broadcast|advice|aviso")
     @CommandPermission("eternia.advice")
     public void onBroadcast(String[] message) {
-        Bukkit.broadcastMessage(Strings.M_CHAT_ADVICE.replace(ADVICE, Strings.getColor(getMessage(message))));
+        Bukkit.broadcastMessage(Strings.M_CHAT_ADVICE.replace(Constants.ADVICE, Strings.getColor(getMessage(message))));
     }
 
     @CommandAlias("vanish|chupadadimensional")
     @CommandPermission("eternia.vanish")
     public void onVanish(Player player) {
-        Bukkit.broadcastMessage(Strings.MSG_LEAVE.replace(PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(Strings.MSG_LEAVE.replace(Constants.PLAYER, player.getDisplayName()));
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(plugin, player);
         }
@@ -65,7 +65,7 @@ public class ChatCommands extends BaseCommand implements Constants {
     @CommandAlias("unvanish|chupadadimensionalreversa")
     @CommandPermission("eternia.vanish")
     public void onUnVanish(Player player) {
-        Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(Constants.PLAYER, player.getDisplayName()));
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(plugin, player);
         }
@@ -83,14 +83,14 @@ public class ChatCommands extends BaseCommand implements Constants {
             } else {
                 ignoreds = Vars.ignoredPlayer.get(targetName);
                 if (ignoreds.contains(player)) {
-                    player.sendMessage(Strings.M_CHAT_DENY.replace(TARGET, target.getDisplayName()));
+                    player.sendMessage(Strings.M_CHAT_DENY.replace(Constants.TARGET, target.getDisplayName()));
                     ignoreds.remove(player);
                     return;
                 }
             }
             ignoreds.add(player);
             Vars.ignoredPlayer.put(target.getName(), ignoreds);
-            player.sendMessage(Strings.M_CHAT_IGNORE.replace(TARGET, target.getDisplayName()));
+            player.sendMessage(Strings.M_CHAT_IGNORE.replace(Constants.TARGET, target.getDisplayName()));
         }
     }
 
@@ -133,7 +133,7 @@ public class ChatCommands extends BaseCommand implements Constants {
             if (APIEconomy.hasMoney(uuid, money)) {
                 APIEconomy.removeMoney(uuid, money);
                 player.setDisplayName(Vars.nick.get(uuid));
-                player.sendMessage(Strings.M_CHAT_NEWNICK.replace(PLAYER, player.getDisplayName()));
+                player.sendMessage(Strings.M_CHAT_NEWNICK.replace(Constants.PLAYER, player.getDisplayName()));
                 saveToSQL(playerName);
                 final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
                 playerProfile.setPlayerDisplayName(Vars.nick.get(uuid));
@@ -202,7 +202,7 @@ public class ChatCommands extends BaseCommand implements Constants {
         if (msg == null || msg.length == 0 || msg.length == 1) {
             Vars.chatLocked.put(playerName, target.getName());
             Vars.global.put(playerName, 3);
-            player.sendMessage(Strings.MSG_CHAT_LOCKED.replace(TARGET, target.getDisplayName()));
+            player.sendMessage(Strings.MSG_CHAT_LOCKED.replace(Constants.TARGET, target.getDisplayName()));
             return;
         }
 
@@ -218,7 +218,7 @@ public class ChatCommands extends BaseCommand implements Constants {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         final long time = Vars.playerMuted.get(uuid);
         if (TimeEnum.HASCOOLDOWN.stayMuted(time)) {
-            player.sendMessage(Strings.M_CHAT_MUTED.replace(TIME, TimeEnum.HASCOOLDOWN.getTimeLeft(time)));
+            player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, TimeEnum.HASCOOLDOWN.getTimeLeft(time)));
             return true;
         }
         return false;
@@ -227,16 +227,16 @@ public class ChatCommands extends BaseCommand implements Constants {
     private void playerNick(final Player player, final String string) {
         final String playerName = player.getName();
 
-        if (string.equals(CLEAR_STR)) {
+        if (string.equals(Constants.CLEAR_STR)) {
             player.setDisplayName(playerName);
             player.sendMessage(Strings.M_CHAT_REMOVE_NICK);
             return;
         }
 
         if (player.hasPermission("eternia.chat.color.nick")) {
-            player.sendMessage(Strings.M_CHAT_NICK_MONEY.replace(NEW_NAME, Strings.getColor(string)));
+            player.sendMessage(Strings.M_CHAT_NICK_MONEY.replace(Constants.NEW_NAME, Strings.getColor(string)));
         } else {
-            player.sendMessage(Strings.M_CHAT_NICK_MONEY.replace(NEW_NAME, string));
+            player.sendMessage(Strings.M_CHAT_NICK_MONEY.replace(Constants.NEW_NAME, string));
         }
 
         Vars.nick.put(UUIDFetcher.getUUIDOf(playerName), string);
@@ -250,7 +250,7 @@ public class ChatCommands extends BaseCommand implements Constants {
         }
 
         final String playerName = player.getName();
-        if (string.equals(CLEAR_STR)) {
+        if (string.equals(Constants.CLEAR_STR)) {
             final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
             final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
             player.setDisplayName(playerName);
@@ -266,23 +266,23 @@ public class ChatCommands extends BaseCommand implements Constants {
 
     private void changeNickName(final Player target, final Player player, final String string) {
         final String targetName = target.getName();
-        if (string.equals(CLEAR_STR)) {
+        if (string.equals(Constants.CLEAR_STR)) {
             target.setDisplayName(targetName);
             target.sendMessage(Strings.M_CHAT_REMOVE_NICK);
             player.sendMessage(Strings.M_CHAT_REMOVE_NICK);
         } else {
             target.setDisplayName(Strings.getColor(string));
-            player.sendMessage(Strings.M_CHAT_NEWNICK.replace(PLAYER, Strings.getColor(string)));
-            target.sendMessage(Strings.M_CHAT_NEWNICK.replace(PLAYER, Strings.getColor(string)));
+            player.sendMessage(Strings.M_CHAT_NEWNICK.replace(Constants.PLAYER, Strings.getColor(string)));
+            target.sendMessage(Strings.M_CHAT_NEWNICK.replace(Constants.PLAYER, Strings.getColor(string)));
         }
     }
 
     private void saveToSQL(final String playerName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (Vars.playerProfile.containsKey(uuid) && Vars.playerProfile.get(uuid).getPlayerDisplayName() != null) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_NICK, PLAYER_DISPLAY_STR, Vars.nick.get(uuid), UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_NICK, Constants.PLAYER_DISPLAY_STR, Vars.nick.get(uuid), Constants.UUID_STR, uuid.toString()));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_NICK, UUID_STR, uuid.toString(), PLAYER_DISPLAY_STR, Vars.nick.get(uuid)));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_NICK, Constants.UUID_STR, uuid.toString(), Constants.PLAYER_DISPLAY_STR, Vars.nick.get(uuid)));
         }
     }
 

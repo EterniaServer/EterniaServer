@@ -7,7 +7,7 @@ import br.com.eterniaserver.eterniaserver.generics.*;
 
 import org.bukkit.Bukkit;
 
-public class Managers implements Constants {
+public class Managers {
 
     private final EterniaServer plugin;
 
@@ -137,10 +137,10 @@ public class Managers implements Constants {
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
-            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_ENABLE.replace(MODULE, module));
+            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_ENABLE.replace(Constants.MODULE, module));
         }
         else {
-            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_DISABLE.replace(MODULE, module));
+            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_DISABLE.replace(Constants.MODULE, module));
         }
         return enable;
     }

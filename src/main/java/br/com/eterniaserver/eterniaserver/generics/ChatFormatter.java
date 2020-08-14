@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class ChatFormatter implements Constants {
+public class ChatFormatter {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
@@ -18,10 +18,10 @@ public class ChatFormatter implements Constants {
 		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) InternMethods.addUUIF(p);
 		FormatInfo fi = Vars.uufi.get(p.getName());
 		if (EterniaServer.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
-			ChatObject msg = new ChatObject(MESSAGE);
+			ChatObject msg = new ChatObject(Constants.MESSAGE);
 			msg.setColor(ChatColor.getByChar(EterniaServer.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));
 			String total = parse(p, EterniaServer.groupConfig.getString(fi.getName() + ".format"));
-			int i = total.indexOf(MESSAGE);
+			int i = total.indexOf(Constants.MESSAGE);
 			int i2 = i + 9;
 			String prefix = total.substring(0, i);
 			message.get(0).setMessage(prefix);

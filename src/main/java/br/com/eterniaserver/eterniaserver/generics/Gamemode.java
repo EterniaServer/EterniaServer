@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 @CommandAlias("gamemode|gm")
 @CommandPermission("eternia.gamemode")
-public class Gamemode extends BaseCommand implements Constants {
+public class Gamemode extends BaseCommand {
 
     @Default
     @Subcommand("help")
@@ -28,12 +28,12 @@ public class Gamemode extends BaseCommand implements Constants {
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
             playerZin.setGameMode(GameMode.SURVIVAL);
-            player.sendMessage(Strings.M_GM_CHANGED.replace(GM, survivalString));
+            player.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, survivalString));
         } else if (target != null) {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.SURVIVAL);
-            targetP.sendMessage(Strings.M_GM_CHANGED.replace(GM, survivalString));
-            player.sendMessage(Strings.M_GM_TARGET.replace(TARGET, targetP.getDisplayName()).replace(GM, survivalString));
+            targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, survivalString));
+            player.sendMessage(Strings.M_GM_TARGET.replace(Constants.TARGET, targetP.getDisplayName()).replace(Constants.GM, survivalString));
         }
     }
 
@@ -45,12 +45,12 @@ public class Gamemode extends BaseCommand implements Constants {
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
             playerZin.setGameMode(GameMode.CREATIVE);
-            playerZin.sendMessage(Strings.M_GM_CHANGED.replace(GM, creativeString));
+            playerZin.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, creativeString));
         } else if (target != null) {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.CREATIVE);
-            targetP.sendMessage(Strings.M_GM_CHANGED.replace(GM, creativeString));
-            player.sendMessage(Strings.M_GM_TARGET.replace(TARGET, targetP.getDisplayName()).replace(GM, creativeString));
+            targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, creativeString));
+            player.sendMessage(Strings.M_GM_TARGET.replace(Constants.TARGET, targetP.getDisplayName()).replace(Constants.GM, creativeString));
         }
     }
 
@@ -62,12 +62,12 @@ public class Gamemode extends BaseCommand implements Constants {
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
             playerZin.setGameMode(GameMode.ADVENTURE);
-            playerZin.sendMessage(Strings.M_GM_CHANGED.replace(GM, adventureString));
+            playerZin.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, adventureString));
         } else if (target != null) {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.ADVENTURE);
-            targetP.sendMessage(Strings.M_GM_CHANGED.replace(GM, adventureString));
-            player.sendMessage(Strings.M_GM_TARGET.replace(TARGET, targetP.getDisplayName()).replace(GM, adventureString));
+            targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, adventureString));
+            player.sendMessage(Strings.M_GM_TARGET.replace(Constants.TARGET, targetP.getDisplayName()).replace(Constants.GM, adventureString));
         }
     }
 
@@ -79,12 +79,12 @@ public class Gamemode extends BaseCommand implements Constants {
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
             playerZin.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(Strings.M_GM_CHANGED.replace(GM, spectatorString));
+            player.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, spectatorString));
         } else if (target != null) {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(Strings.M_GM_CHANGED.replace(GM, spectatorString));
-            player.sendMessage(Strings.M_GM_TARGET.replace(TARGET, targetP.getDisplayName()).replace(GM, spectatorString));
+            player.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, spectatorString));
+            player.sendMessage(Strings.M_GM_TARGET.replace(Constants.TARGET, targetP.getDisplayName()).replace(Constants.GM, spectatorString));
         }
     }
 

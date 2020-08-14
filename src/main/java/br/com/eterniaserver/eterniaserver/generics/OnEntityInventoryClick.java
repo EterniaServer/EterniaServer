@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class OnEntityInventoryClick implements Listener, Constants {
+public class OnEntityInventoryClick implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
@@ -32,7 +32,7 @@ public class OnEntityInventoryClick implements Listener, Constants {
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
             player.sendMessage(Strings.MSG_SPAWNER_NAME);
-            player.sendMessage(Strings.MSG_SPAWNER_LOG.replace(PLAYER, player.getDisplayName()));
+            player.sendMessage(Strings.MSG_SPAWNER_LOG.replace(Constants.PLAYER, player.getDisplayName()));
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.cash")) {

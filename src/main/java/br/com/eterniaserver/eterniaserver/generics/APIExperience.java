@@ -6,7 +6,7 @@ import br.com.eterniaserver.eterniaserver.configs.Constants;
 
 import java.util.UUID;
 
-public class APIExperience implements Constants {
+public class APIExperience {
 
     private APIExperience() {
         throw new IllegalStateException("Utility class");
@@ -22,7 +22,7 @@ public class APIExperience implements Constants {
             return Vars.xp.get(uuid);
         } else {
             Vars.xp.put(uuid, 0);
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_XP, UUID_STR, uuid.toString(), XP_STR, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_XP, Constants.UUID_STR, uuid.toString(), Constants.XP_STR, 0));
             return 0;
         }
     }
@@ -34,7 +34,7 @@ public class APIExperience implements Constants {
      */
     public static void setExp(UUID uuid, int amount) {
         Vars.xp.put(uuid, amount);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_XP, XP_STR, amount, UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_XP, Constants.XP_STR, amount, Constants.UUID_STR, uuid.toString()));
     }
 
     /**

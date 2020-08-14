@@ -6,7 +6,7 @@ import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 import org.bukkit.Bukkit;
 
-public class AdvancedChatTorch implements Constants {
+public class AdvancedChatTorch {
 
 	public AdvancedChatTorch() {
 		registerCustomPlaceholders();
@@ -27,10 +27,10 @@ public class AdvancedChatTorch implements Constants {
 		for(Object s: EterniaServer.groupConfig.getKeys(false)) {
 			if (!s.equals("groups")) {
 				if (!EterniaServer.groupConfig.contains(s.toString())) {
-					Bukkit.getConsoleSender().sendMessage(Strings.MSG_ERROR.replace(ERROR, "nenhum grupo encontrado"));
+					Bukkit.getConsoleSender().sendMessage(Strings.MSG_ERROR.replace(Constants.ERROR, "nenhum grupo encontrado"));
 				}
 				if (!EterniaServer.groupConfig.contains(s.toString() + ".perm")) {
-					Bukkit.getConsoleSender().sendMessage(Strings.MSG_ERROR.replace(ERROR, "permissão para o grupo não encontrada"));
+					Bukkit.getConsoleSender().sendMessage(Strings.MSG_ERROR.replace(Constants.ERROR, "permissão para o grupo não encontrada"));
 				}
 			}
 		}

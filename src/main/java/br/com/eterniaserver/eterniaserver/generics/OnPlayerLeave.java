@@ -17,7 +17,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class OnPlayerLeave implements Listener, Constants {
+public class OnPlayerLeave implements Listener {
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
@@ -30,7 +30,7 @@ public class OnPlayerLeave implements Listener, Constants {
         int hours = playerProfile.getHours() + (int) TimeUnit.MICROSECONDS.toHours(System.currentTimeMillis() - playerProfile.getLastLogin());
         playerProfile.setHours(hours);
         Vars.playerProfile.put(uuid, playerProfile);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, HOURS_STR, hours, UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.HOURS_STR, hours, Constants.UUID_STR, uuid.toString()));
 
 
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
@@ -39,7 +39,7 @@ public class OnPlayerLeave implements Listener, Constants {
         }
 
         event.setQuitMessage(null);
-        Bukkit.broadcastMessage(Strings.MSG_LEAVE.replace(PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(Strings.MSG_LEAVE.replace(Constants.PLAYER, player.getDisplayName()));
 
     }
 

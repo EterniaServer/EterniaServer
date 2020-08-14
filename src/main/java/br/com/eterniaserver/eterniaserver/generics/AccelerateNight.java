@@ -11,7 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;
 
-public class AccelerateNight extends BukkitRunnable implements Constants{
+public class AccelerateNight extends BukkitRunnable {
 
     private final EterniaServer plugin;
     private final World world;
@@ -20,7 +20,7 @@ public class AccelerateNight extends BukkitRunnable implements Constants{
         this.plugin = plugin;
         this.world = world;
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
-            Bukkit.broadcastMessage(Strings.MSG_SKIPPING.replace(WORLD, world.getName()));
+            Bukkit.broadcastMessage(Strings.MSG_SKIPPING.replace(Constants.WORLD, world.getName()));
         }
     }
 

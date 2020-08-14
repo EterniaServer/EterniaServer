@@ -24,12 +24,12 @@ import java.util.UUID;
 
 @CommandAlias("xp")
 @CommandPermission("eternia.xp.user")
-public class Experience extends BaseCommand implements Constants{
+public class Experience extends BaseCommand {
 
     public Experience() {
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_XP), UUID_STR, XP_STR);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_XP), Constants.UUID_STR, Constants.XP_STR);
         temp.forEach((k, v) -> Vars.xp.put(UUID.fromString(k), Integer.parseInt(v)));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Experience").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Experience").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }
 
     @Default
@@ -37,14 +37,14 @@ public class Experience extends BaseCommand implements Constants{
         sender.sendMessage(Strings.MSG_XP_HELP_TITLE);
         if (sender.hasPermission("eternia.xp.admin")) {
             sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                    .replace(COMMANDS, "xp set &3<jogador> <quantia>")
-                    .replace(MESSAGE, Strings.MSG_XP_HELP_SET)));
+                    .replace(Constants.COMMANDS, "xp set &3<jogador> <quantia>")
+                    .replace(Constants.MESSAGE, Strings.MSG_XP_HELP_SET)));
             sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                    .replace(COMMANDS, "xp take &3<jogador> <quantia>")
-                    .replace(MESSAGE, Strings.MSG_XP_HELP_TAKE)));
+                    .replace(Constants.COMMANDS, "xp take &3<jogador> <quantia>")
+                    .replace(Constants.MESSAGE, Strings.MSG_XP_HELP_TAKE)));
             sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                    .replace(COMMANDS, "xp give &3<jogador> <quantia>")
-                    .replace(MESSAGE, Strings.MSG_XP_HELP_GIVE)));
+                    .replace(Constants.COMMANDS, "xp give &3<jogador> <quantia>")
+                    .replace(Constants.MESSAGE, Strings.MSG_XP_HELP_GIVE)));
         }
         sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
                 .replace(Constants.COMMANDS, "xp check")
@@ -69,8 +69,8 @@ public class Experience extends BaseCommand implements Constants{
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         targetP.setLevel(money);
-        sender.sendMessage(Strings.M_XP_SET.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_XP_RSET.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+        sender.sendMessage(Strings.M_XP_SET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_XP_RSET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
     @Subcommand("take")
@@ -82,8 +82,8 @@ public class Experience extends BaseCommand implements Constants{
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         targetP.setLevel(targetP.getLevel() - money);
-        sender.sendMessage(Strings.M_XP_REMOVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_XP_RREMOVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+        sender.sendMessage(Strings.M_XP_REMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_XP_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
     @Subcommand("give")
@@ -95,8 +95,8 @@ public class Experience extends BaseCommand implements Constants{
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         targetP.setLevel(targetP.getLevel() + money);
-        sender.sendMessage(Strings.M_XP_GIVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_XP_RECEIVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+        sender.sendMessage(Strings.M_XP_GIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_XP_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
     @Subcommand("check")
@@ -106,7 +106,7 @@ public class Experience extends BaseCommand implements Constants{
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(APIExperience.getExp(UUIDFetcher.getUUIDOf(player.getName())));
-        player.sendMessage(Strings.M_XP_CHECK.replace(AMOUNT, String.valueOf(player.getLevel())));
+        player.sendMessage(Strings.M_XP_CHECK.replace(Constants.AMOUNT, String.valueOf(player.getLevel())));
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -141,7 +141,7 @@ public class Experience extends BaseCommand implements Constants{
         if (APIExperience.getExp(uuid) >= xpla) {
             APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
-            player.sendMessage(Strings.M_XP_WITHDRAW.replace(AMOUNT, String.valueOf(player.getLevel())));
+            player.sendMessage(Strings.M_XP_WITHDRAW.replace(Constants.AMOUNT, String.valueOf(player.getLevel())));
         } else {
             player.sendMessage(Strings.M_XP_INSUFFICIENT);
         }
@@ -155,7 +155,7 @@ public class Experience extends BaseCommand implements Constants{
             int xp = InternMethods.getXPForLevel(xpla);
             int xpto = InternMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
-            player.sendMessage(Strings.M_XP_DEPOSIT.replace(AMOUNT, String.valueOf(xpla)));
+            player.sendMessage(Strings.M_XP_DEPOSIT.replace(Constants.AMOUNT, String.valueOf(xpla)));
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);

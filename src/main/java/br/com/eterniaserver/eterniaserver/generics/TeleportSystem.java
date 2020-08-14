@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class TeleportSystem extends BaseCommand implements Constants {
+public class TeleportSystem extends BaseCommand {
 
     private final double backMoney = EterniaServer.serverConfig.getInt("money.back");
 
@@ -33,7 +33,7 @@ public class TeleportSystem extends BaseCommand implements Constants {
         if (Vars.tpaRequests.containsKey(playerName)) {
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             if (target != null) {
-                target.sendMessage(Strings.MSG_TELEPORT_ACCEPT.replace(TARGET, player.getDisplayName()));
+                target.sendMessage(Strings.MSG_TELEPORT_ACCEPT.replace(Constants.TARGET, player.getDisplayName()));
                 Vars.teleports.put(target, new PlayerTeleport(target, player.getLocation(), Strings.MSG_TELEPORT_DONE));
             }
             Vars.tpaTime.remove(playerName);
@@ -48,7 +48,7 @@ public class TeleportSystem extends BaseCommand implements Constants {
     public void onTeleportDeny(Player player) {
         final String playerName = player.getName();
         if (Vars.tpaRequests.containsKey(playerName)) {
-            player.sendMessage(Strings.MSG_TELEPORT_DENY.replace(TARGET, Vars.tpaRequests.get(playerName)));
+            player.sendMessage(Strings.MSG_TELEPORT_DENY.replace(Constants.TARGET, Vars.tpaRequests.get(playerName)));
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             Vars.tpaRequests.remove(playerName);
             Vars.tpaTime.remove(playerName);
@@ -74,8 +74,8 @@ public class TeleportSystem extends BaseCommand implements Constants {
                     Vars.tpaRequests.remove(targetName);
                     Vars.tpaRequests.put(targetName, playerName);
                     Vars.tpaTime.put(targetName, System.currentTimeMillis());
-                    targetP.sendMessage(Strings.MSG_TELEPORT_RECEIVED.replace(TARGET, player.getDisplayName()));
-                    player.sendMessage(Strings.MSG_TELEPORT_SENT.replace(TARGET, targetP.getDisplayName()));
+                    targetP.sendMessage(Strings.MSG_TELEPORT_RECEIVED.replace(Constants.TARGET, player.getDisplayName()));
+                    player.sendMessage(Strings.MSG_TELEPORT_SENT.replace(Constants.TARGET, targetP.getDisplayName()));
                 } else {
                     player.sendMessage(Strings.MSG_TELEPORT_EXISTS);
                 }
@@ -97,7 +97,7 @@ public class TeleportSystem extends BaseCommand implements Constants {
                 APIEconomy.removeMoney(uuid, backMoney);
                 Vars.teleports.put(player, new PlayerTeleport(player, Vars.back.get(playerName), Strings.MSG_BACK_COST));
             } else if (canBack(player)){
-                player.sendMessage(Strings.MSG_NO_MONEY.replace(VALUE, String.valueOf(backMoney)));
+                player.sendMessage(Strings.MSG_NO_MONEY.replace(Constants.VALUE, String.valueOf(backMoney)));
             }
         } else {
             player.sendMessage(Strings.MSG_BACK_NO_TELEPORT);

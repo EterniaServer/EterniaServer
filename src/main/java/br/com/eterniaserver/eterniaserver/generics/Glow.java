@@ -14,7 +14,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 @CommandAlias("glow")
 @CommandPermission("eternia.glow")
-public class Glow extends BaseCommand implements Constants {
+public class Glow extends BaseCommand {
 
     private final Scoreboard sc;
 
@@ -99,7 +99,7 @@ public class Glow extends BaseCommand implements Constants {
         final String playerName = player.getName();
         Vars.glowingColor.put(playerName, nameColor);
         sc.getTeam(team).addEntry(playerName);
-        player.sendMessage(Strings.M_GLOW_COLOR.replace(AMOUNT, color));
+        player.sendMessage(Strings.M_GLOW_COLOR.replace(Constants.AMOUNT, color));
     }
 
 }

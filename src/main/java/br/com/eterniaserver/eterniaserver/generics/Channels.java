@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 @CommandAlias("ch|channels")
 @CommandPermission("eternia.chat.channels")
-public class Channels extends BaseCommand implements Constants {
+public class Channels extends BaseCommand {
 
     @Subcommand("local")
     @CommandAlias("l|local")
@@ -33,7 +33,7 @@ public class Channels extends BaseCommand implements Constants {
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
         if (messages != null && messages.length == 0) {
             Vars.global.put(player.getName(), channel);
-            player.sendMessage(Strings.M_CHAT_C.replace(CHANNEL_NAME, channelName));
+            player.sendMessage(Strings.M_CHAT_C.replace(Constants.CHANNEL_NAME, channelName));
         } else {
             int o = Vars.global.get(player.getName());
             Vars.global.put(player.getName(), channel);

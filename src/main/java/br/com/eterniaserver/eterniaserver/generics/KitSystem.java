@@ -14,21 +14,21 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class KitSystem extends BaseCommand implements Constants {
+public class KitSystem extends BaseCommand {
 
     public KitSystem() {
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_KITS), NAME_STR, COOLDOWN_STR);
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_KITS), Constants.NAME_STR, Constants.COOLDOWN_STR);
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
 
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Kits").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Kits").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
     }
 
     @CommandAlias("kits")
     @CommandPermission("eternia.kits")
     public void onKits(Player player) {
-        player.sendMessage(Strings.M_KIT_LIST.replace(KITS, Strings.getColor(EterniaServer.kitConfig.getString("nameofkits"))));
+        player.sendMessage(Strings.M_KIT_LIST.replace(Constants.KITS, Strings.getColor(EterniaServer.kitConfig.getString("nameofkits"))));
     }
 
     @CommandAlias("kit")
@@ -45,13 +45,13 @@ public class KitSystem extends BaseCommand implements Constants {
                 if (TimeEnum.HASCOOLDOWN.hasCooldown(cd, cooldown)) {
                     giveKit(player, time, kitName, kit);
                 } else {
-                    player.sendMessage(Strings.MSG_TIMING.replace(COOLDOWN, TimeEnum.HASCOOLDOWN.getTimeLeft(cooldown, cd)));
+                    player.sendMessage(Strings.MSG_TIMING.replace(Constants.COOLDOWN, TimeEnum.HASCOOLDOWN.getTimeLeft(cooldown, cd)));
                 }
             } else {
-                player.sendMessage(Strings.MSG_NO_PERM.replace(KIT_NAME, kit));
+                player.sendMessage(Strings.MSG_NO_PERM.replace(Constants.KIT_NAME, kit));
             }
         } else {
-            player.sendMessage(Strings.M_KIT_NO_EXISTS.replace(KIT_NAME, kit));
+            player.sendMessage(Strings.M_KIT_NO_EXISTS.replace(Constants.KIT_NAME, kit));
         }
     }
 
@@ -64,7 +64,7 @@ public class KitSystem extends BaseCommand implements Constants {
             player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(player, line)));
         }
         Vars.kitsCooldown.put(kitName, time);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_KITS, COOLDOWN_STR, time, NAME_STR, kitName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_KITS, Constants.COOLDOWN_STR, time, Constants.NAME_STR, kitName));
     }
 
 }

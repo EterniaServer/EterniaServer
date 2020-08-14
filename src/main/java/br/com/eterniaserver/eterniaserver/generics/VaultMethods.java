@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class VaultMethods implements Economy, Constants {
+public class VaultMethods implements Economy {
 
     private final double startMoney = EterniaServer.serverConfig.getDouble("money.start");
 
@@ -273,7 +273,7 @@ public class VaultMethods implements Economy, Constants {
     }
 
     private void playerMoneyCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, UUID_STR, uuid.toString(), BALANCE_STR, startMoney));
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, startMoney));
         Vars.balances.put(uuid, 300.0);
     }
 

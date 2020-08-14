@@ -7,7 +7,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import java.util.UUID;
 
-public class APIEconomy implements Constants {
+public class APIEconomy {
 
     private APIEconomy() {
         throw new IllegalStateException("Utility class");
@@ -22,7 +22,7 @@ public class APIEconomy implements Constants {
         if (Vars.balances.containsKey(uuid)) {
             return Vars.balances.get(uuid);
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, UUID_STR, uuid.toString(), BALANCE_STR, EterniaServer.serverConfig.getDouble("money.start")));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, EterniaServer.serverConfig.getDouble("money.start")));
             Vars.balances.put(uuid, 300.0);
             return 300.0;
         }
@@ -46,9 +46,9 @@ public class APIEconomy implements Constants {
     public static void setMoney(UUID uuid, double amount) {
         if (Vars.balances.containsKey(uuid)) {
             Vars.balances.put(uuid, amount);
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_MONEY, BALANCE_STR, amount, UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_MONEY, Constants.BALANCE_STR, amount, Constants.UUID_STR, uuid.toString()));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, UUID_STR, uuid.toString(), BALANCE_STR, EterniaServer.serverConfig.getDouble("money.start")));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, EterniaServer.serverConfig.getDouble("money.start")));
             Vars.balances.put(uuid, 300.0);
             setMoney(uuid, amount);
         }

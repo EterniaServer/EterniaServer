@@ -13,7 +13,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class OnAsyncPlayerPreLogin implements Listener, Constants {
+public class OnAsyncPlayerPreLogin implements Listener {
 
     private final double moneyStart = EterniaServer.serverConfig.getDouble("money.start");
 
@@ -52,22 +52,22 @@ public class OnAsyncPlayerPreLogin implements Listener, Constants {
     }
 
     private void playerCashCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_CASH, UUID_STR, uuid.toString(), BALANCE_STR, 0), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_CASH, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, 0), false);
         Vars.cash.put(uuid, 0);
     }
 
     private void playerMoneyCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, UUID_STR, uuid.toString(), BALANCE_STR, moneyStart), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, moneyStart), false);
         Vars.balances.put(uuid, 300.0);
     }
 
     private void playerXPCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_XP, UUID_STR, uuid.toString(), XP_STR, 0), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_XP, Constants.UUID_STR, uuid.toString(), Constants.XP_STR, 0), false);
         Vars.xp.put(uuid, 0);
     }
 
     private void playerHomeCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_HOME, UUID_STR, uuid.toString(), HOMES_STR, ""), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_HOME, Constants.UUID_STR, uuid.toString(), Constants.HOMES_STR, ""), false);
         Vars.home.put(uuid, new ArrayList<>());
     }
 

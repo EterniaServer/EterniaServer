@@ -9,7 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class OnPlayerMove implements Listener, Constants {
+public class OnPlayerMove implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -21,7 +21,7 @@ public class OnPlayerMove implements Listener, Constants {
             Vars.afkTime.put(playerName, System.currentTimeMillis());
             if (Vars.afk.contains(playerName)) {
                 Vars.afk.remove(playerName);
-                Bukkit.broadcastMessage(Strings.MSG_AFK_DISABLE.replace(PLAYER, player.getDisplayName()));
+                Bukkit.broadcastMessage(Strings.MSG_AFK_DISABLE.replace(Constants.PLAYER, player.getDisplayName()));
             }
         }
     }

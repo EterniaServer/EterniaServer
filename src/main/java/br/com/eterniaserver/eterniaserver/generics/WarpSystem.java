@@ -16,11 +16,11 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class WarpSystem extends BaseCommand implements Constants {
+public class WarpSystem extends BaseCommand {
 
     public WarpSystem() {
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_SHOP), NAME_STR, LOCATION_STR);
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_SHOP), Constants.NAME_STR, Constants.LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -31,9 +31,9 @@ public class WarpSystem extends BaseCommand implements Constants {
                     Float.parseFloat(split[5]));
             Vars.shops.put(k, loc);
         });
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Shops").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Shops").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_WARP), NAME_STR, LOCATION_STR);
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_WARP), Constants.NAME_STR, Constants.LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -44,7 +44,7 @@ public class WarpSystem extends BaseCommand implements Constants {
                     Float.parseFloat(split[5]));
             Vars.warps.put(k, loc);
         });
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Warps").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Warps").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
     }
 
@@ -63,7 +63,7 @@ public class WarpSystem extends BaseCommand implements Constants {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.spawn.other") && spawnExists(location, player)) {
                 Vars.teleports.put(targetP, new PlayerTeleport(target.getPlayer(), location, Strings.MSG_WARP_DONE));
-                player.sendMessage(Strings.MSG_SPAWN_TELEPORT_TARGET.replace(TARGET, targetP.getDisplayName()));
+                player.sendMessage(Strings.MSG_SPAWN_TELEPORT_TARGET.replace(Constants.TARGET, targetP.getDisplayName()));
             } else if (!player.hasPermission("eternia.spawn.other")) {
                 player.sendMessage(Strings.MSG_NO_PERM);
             }
@@ -115,7 +115,7 @@ public class WarpSystem extends BaseCommand implements Constants {
     @CommandPermission("eternia.setwarp")
     public void onSetWarp(Player player, String nome) {
         setWarp(player.getLocation(), nome.toLowerCase());
-        player.sendMessage(Strings.MSG_WARP_CREATED.replace(WARP, nome));
+        player.sendMessage(Strings.MSG_WARP_CREATED.replace(Constants.WARP, nome));
     }
 
     @CommandAlias("delwarp")
@@ -126,7 +126,7 @@ public class WarpSystem extends BaseCommand implements Constants {
             delWarp(nome.toLowerCase());
             player.sendMessage(Strings.MSG_WARP_DELETED);
         } else {
-            player.sendMessage(Strings.MSG_WARP_NO_EXISTS.replace(WARP, nome.toLowerCase()));
+            player.sendMessage(Strings.MSG_WARP_NO_EXISTS.replace(Constants.WARP, nome.toLowerCase()));
         }
     }
 
@@ -146,7 +146,7 @@ public class WarpSystem extends BaseCommand implements Constants {
                 }
             }
         }
-        player.sendMessage(Strings.MSG_WARP_LIST.replace(VALUE, string.toString()));
+        player.sendMessage(Strings.MSG_WARP_LIST.replace(Constants.VALUE, string.toString()));
     }
 
     @CommandAlias("warp")
@@ -175,7 +175,7 @@ public class WarpSystem extends BaseCommand implements Constants {
 
     private boolean warpExists(final Location location, final Player player, final String nome) {
         if (location == EterniaServer.error) {
-            player.sendMessage(Strings.MSG_WARP_NO_EXISTS.replace(WARP, nome));
+            player.sendMessage(Strings.MSG_WARP_NO_EXISTS.replace(Constants.WARP, nome));
             return false;
         }
         return true;
@@ -197,9 +197,9 @@ public class WarpSystem extends BaseCommand implements Constants {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (Vars.shops.containsKey(shop)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_SHOP, LOCATION_STR, saveloc, NAME_STR, shop));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_SHOP, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, shop));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_SHOP, NAME_STR, shop, LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_SHOP, Constants.NAME_STR, shop, Constants.LOCATION_STR, saveloc));
         }
         Vars.shops.put(shop, loc);
     }
@@ -216,16 +216,16 @@ public class WarpSystem extends BaseCommand implements Constants {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (Vars.warps.containsKey(warp)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_WARP, LOCATION_STR, saveloc, NAME_STR, warp));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_WARP, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, warp));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_WARP, NAME_STR, warp, LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_WARP, Constants.NAME_STR, warp, Constants.LOCATION_STR, saveloc));
         }
         Vars.warps.put(warp, loc);
     }
 
     public void delWarp(String warp) {
         Vars.warps.remove(warp);
-        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_WARP, NAME_STR, warp));
+        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_WARP, Constants.NAME_STR, warp));
     }
 
     public Location getWarp(String warp) {

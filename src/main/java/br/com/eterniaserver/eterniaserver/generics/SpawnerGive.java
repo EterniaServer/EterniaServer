@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpawnerGive extends BaseCommand implements Constants {
+public class SpawnerGive extends BaseCommand {
 
     @CommandAlias("spawnergive|givespawner")
     @Syntax("<mob> <quantia> <jogador>")
@@ -37,8 +37,8 @@ public class SpawnerGive extends BaseCommand implements Constants {
                 player.sendMessage(Strings.MSG_SPAWNER_INVFULL);
             } else {
                 inventory.addItem(getSpawner(spawnerName, value));
-                player.sendMessage(Strings.MSG_SPAWNER_SENT.replace(VALUE, String.valueOf(value)).replace(TYPE, spawnerName).replace(TARGET, targetP.getDisplayName()));
-                player.sendMessage(Strings.MSG_SPAWNER_RECEIVED.replace(TYPE, spawnerName).replace(TARGET, player.getName()).replace(VALUE, String.valueOf(value)));
+                player.sendMessage(Strings.MSG_SPAWNER_SENT.replace(Constants.VALUE, String.valueOf(value)).replace(Constants.TYPE, spawnerName).replace(Constants.TARGET, targetP.getDisplayName()));
+                player.sendMessage(Strings.MSG_SPAWNER_RECEIVED.replace(Constants.TYPE, spawnerName).replace(Constants.TARGET, player.getName()).replace(Constants.VALUE, String.valueOf(value)));
             }
         } else {
             sendTypes(player);
@@ -66,7 +66,7 @@ public class SpawnerGive extends BaseCommand implements Constants {
         StringBuilder str = new StringBuilder();
         for (String entity : EterniaServer.entityList) str.append(ChatColor.DARK_AQUA).append(entity).append(ChatColor.DARK_GRAY).append(", ");
         str.append(ChatColor.GRAY).append("algumas entidades não funcionam");
-        player.sendMessage(Strings.MSG_SPAWNER_GIVE.replace(TYPE, str.toString()));
+        player.sendMessage(Strings.MSG_SPAWNER_GIVE.replace(Constants.TYPE, str.toString()));
     }
 
 }

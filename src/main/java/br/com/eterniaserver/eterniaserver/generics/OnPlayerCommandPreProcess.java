@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class OnPlayerCommandPreProcess implements Listener, Constants{
+public class OnPlayerCommandPreProcess implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
@@ -20,8 +20,8 @@ public class OnPlayerCommandPreProcess implements Listener, Constants{
         String message = event.getMessage().toLowerCase();
 
         if (message.equalsIgnoreCase("/tps")) {
-            String s = InternMethods.setPlaceholders(player, TPS);
-            player.sendMessage(Strings.MSG_TPS.replace(TPS, s.substring(0, s.length() - 2)));
+            String s = InternMethods.setPlaceholders(player, Constants.TPS);
+            player.sendMessage(Strings.MSG_TPS.replace(Constants.TPS, s.substring(0, s.length() - 2)));
             event.setCancelled(true);
             return;
         }

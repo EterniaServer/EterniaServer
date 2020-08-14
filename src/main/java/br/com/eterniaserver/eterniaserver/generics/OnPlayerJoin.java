@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
 
-public class OnPlayerJoin implements Listener, Constants {
+public class OnPlayerJoin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -51,16 +51,16 @@ public class OnPlayerJoin implements Listener, Constants {
             if (!playerProfile.getPlayerName().equals(playerName)) {
                 playerProfile.setPlayerName(playerName);
                 Vars.playerProfile.put(uuid, playerProfile);
-                EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, PLAYER_NAME_STR, playerName, UUID_STR, uuid.toString()));
+                EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.PLAYER_NAME_STR, playerName, Constants.UUID_STR, uuid.toString()));
             }
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, LAST_STR, time, UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.LAST_STR, time, Constants.UUID_STR, uuid.toString()));
         }
 
         playerKitsCreate(playerName);
         playerChecks(playerName);
 
         event.setJoinMessage(null);
-        Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(Constants.PLAYER, player.getDisplayName()));
     }
 
     private void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
@@ -87,7 +87,7 @@ public class OnPlayerJoin implements Listener, Constants {
 
     private void playerMutedCreate(UUID uuid) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MUTED, UUID_STR, uuid.toString(), TIME_STR, time));
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MUTED, Constants.UUID_STR, uuid.toString(), Constants.TIME_STR, time));
         Vars.playerMuted.put(uuid, time);
     }
 
@@ -97,7 +97,7 @@ public class OnPlayerJoin implements Listener, Constants {
             for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(false)) {
                 final String kitName = kit + "." + playerName;
                 if (!Vars.kitsCooldown.containsKey(kitName)) {
-                    EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_KITS, NAME_STR, kitName, COOLDOWN_STR, time));
+                    EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_KITS, Constants.NAME_STR, kitName, Constants.COOLDOWN_STR, time));
                     Vars.kitsCooldown.put(kitName, time);
                 }
             }

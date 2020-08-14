@@ -24,11 +24,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class HomeSystem extends BaseCommand implements Constants{
+public class HomeSystem extends BaseCommand {
 
     public HomeSystem() {
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOMES), NAME_STR, LOCATION_STR);
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOMES), Constants.NAME_STR, Constants.LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -39,11 +39,11 @@ public class HomeSystem extends BaseCommand implements Constants{
                     Float.parseFloat(split[5]));
             Vars.homes.put(k, loc);
         });
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Home").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Home").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOME), UUID_STR, HOMES_STR);
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOME), Constants.UUID_STR, Constants.HOMES_STR);
         temp.forEach((k, v) -> Vars.home.put(UUID.fromString(k), new ArrayList<>(Arrays.asList(v.split(":")))));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Player Homes").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Homes").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
     }
 
@@ -95,7 +95,7 @@ public class HomeSystem extends BaseCommand implements Constants{
                 for (String line : list) {
                     accounts.append(line).append(EterniaServer.colors.get(8)).append(", ").append(EterniaServer.colors.get(3));
                 }
-                player.sendMessage(Strings.M_HOME_LIST.replace(HOMES, Strings.getColor(accounts.toString())));
+                player.sendMessage(Strings.M_HOME_LIST.replace(Constants.HOMES, Strings.getColor(accounts.toString())));
             } else {
                 player.sendMessage(Strings.MSG_NO_PERM);
             }
@@ -104,7 +104,7 @@ public class HomeSystem extends BaseCommand implements Constants{
             for (String line : list) {
                 accounts.append(line).append(EterniaServer.colors.get(8)).append(", ").append(EterniaServer.colors.get(3));
             }
-            player.sendMessage(Strings.M_HOME_LIST.replace(HOMES, Strings.getColor(accounts.toString())));
+            player.sendMessage(Strings.M_HOME_LIST.replace(Constants.HOMES, Strings.getColor(accounts.toString())));
         }
     }
 
@@ -175,10 +175,10 @@ public class HomeSystem extends BaseCommand implements Constants{
         if (!t) {
             result.append(home);
             values.add(home);
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOME, HOMES_STR, result.toString(), UUID_STR, uuid.toString()));
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_HOMES, NAME_STR, homeName, LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOME, Constants.HOMES_STR, result.toString(), Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_HOMES, Constants.NAME_STR, homeName, Constants.LOCATION_STR, saveloc));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOMES, LOCATION_STR, saveloc, NAME_STR, homeName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOMES, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, homeName));
         }
         Vars.home.put(uuid, values);
     }
@@ -201,8 +201,8 @@ public class HomeSystem extends BaseCommand implements Constants{
             }
         }
         Vars.home.put(uuid, newValues);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOME, HOMES_STR, nova.toString(), UUID_STR, uuid.toString()));
-        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_HOMES, NAME_STR, homeName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOME, Constants.HOMES_STR, nova.toString(), Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_HOMES, Constants.NAME_STR, homeName));
     }
 
     public Location getHome(String home, String jogador) {

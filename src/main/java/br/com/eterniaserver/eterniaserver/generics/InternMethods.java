@@ -12,7 +12,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class InternMethods implements Constants {
+public class InternMethods {
 
     public static int getXPForLevel(int lvl) {
         if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
@@ -72,13 +72,13 @@ public class InternMethods implements Constants {
         final String targetDisplay = target.getDisplayName();
         Vars.tell.put(target.getName(), player.getName());
         player.sendMessage(Strings.M_CHAT_TO.
-                replace(PLAYER, playerDisplay).
-                replace(TARGET, targetDisplay).
-                replace(MESSAGE, s));
+                replace(Constants.PLAYER, playerDisplay).
+                replace(Constants.TARGET, targetDisplay).
+                replace(Constants.MESSAGE, s));
         target.sendMessage(Strings.M_CHAT_FROM.
-                replace(PLAYER, targetDisplay).
-                replace(TARGET, playerDisplay).
-                replace(MESSAGE, s));
+                replace(Constants.PLAYER, targetDisplay).
+                replace(Constants.TARGET, playerDisplay).
+                replace(Constants.MESSAGE, s));
         for (String p : Vars.spy.keySet()) {
             final Boolean b = Vars.spy.getOrDefault(p, false);
             if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {

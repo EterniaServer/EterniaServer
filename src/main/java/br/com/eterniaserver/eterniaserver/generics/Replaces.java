@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class Replaces extends BaseCommand implements Constants {
+public class Replaces extends BaseCommand {
 
     private final GetRuntime getRuntime;
 
@@ -35,11 +35,11 @@ public class Replaces extends BaseCommand implements Constants {
                 final PreparedStatement getHashMap = connection.prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER));
                 final ResultSet resultSet = getHashMap.executeQuery();
                 while (resultSet.next()) {
-                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(UUID_STR)), new PlayerProfile(
-                            resultSet.getString(PLAYER_NAME_STR),
-                            resultSet.getLong(TIME_STR),
-                            resultSet.getLong(LAST_STR),
-                            resultSet.getInt(HOURS_STR)
+                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), new PlayerProfile(
+                            resultSet.getString(Constants.PLAYER_NAME_STR),
+                            resultSet.getLong(Constants.TIME_STR),
+                            resultSet.getLong(Constants.LAST_STR),
+                            resultSet.getInt(Constants.HOURS_STR)
                     ));
                 }
                 getHashMap.close();
@@ -50,11 +50,11 @@ public class Replaces extends BaseCommand implements Constants {
                 final PreparedStatement getHashMap = Connections.connection.prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER));
                 final ResultSet resultSet = getHashMap.executeQuery();
                 while (resultSet.next()) {
-                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(UUID_STR)), new PlayerProfile(
-                            resultSet.getString(PLAYER_NAME_STR),
-                            resultSet.getLong(TIME_STR),
-                            resultSet.getLong(LAST_STR),
-                            resultSet.getInt(HOURS_STR)
+                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), new PlayerProfile(
+                            resultSet.getString(Constants.PLAYER_NAME_STR),
+                            resultSet.getLong(Constants.TIME_STR),
+                            resultSet.getLong(Constants.LAST_STR),
+                            resultSet.getInt(Constants.HOURS_STR)
                     ));
                 }
                 getHashMap.close();
@@ -63,7 +63,7 @@ public class Replaces extends BaseCommand implements Constants {
                 e.printStackTrace();
             }
         }
-        sendConsole(Strings.MSG_LOAD_DATA.replace(MODULE, "Player Profiles").replace(AMOUNT, String.valueOf(Vars.playerProfile.size())));
+        sendConsole(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Profiles").replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.size())));
     }
 
     @CommandAlias("speed")
@@ -82,9 +82,9 @@ public class Replaces extends BaseCommand implements Constants {
     public void onProfile(Player player) {
         UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (Vars.playerProfile.containsKey(uuid)) {
-            player.sendMessage(Strings.MSG_PROFILE_REGISTER.replace(PLAYER_DATA, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getFirstLogin()))));
-            player.sendMessage(Strings.MSG_PROFILE_LAST.replace(PLAYER_LAST, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getLastLogin()))));
-            player.sendMessage(Strings.MSG_PROFILE_HOURS.replace(HOURS, String.valueOf(TimeUnit.MILLISECONDS.toHours(Vars.playerProfile.get(uuid).getHours()))));
+            player.sendMessage(Strings.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getFirstLogin()))));
+            player.sendMessage(Strings.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getLastLogin()))));
+            player.sendMessage(Strings.MSG_PROFILE_HOURS.replace(Constants.HOURS, String.valueOf(TimeUnit.MILLISECONDS.toHours(Vars.playerProfile.get(uuid).getHours()))));
             for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
                 player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(player, line)));
             }
@@ -97,16 +97,16 @@ public class Replaces extends BaseCommand implements Constants {
     @CommandPermission("eternia.mem")
     public void onMem(CommandSender player) {
         getRuntime.recalculateRuntime();
-        player.sendMessage(Strings.MSG_MEM.replace(MEM_USE, String.valueOf(getRuntime.freemem)).replace(MEM_MAX, String.valueOf(getRuntime.totalmem)));
-        player.sendMessage(Strings.MSG_MEM_ONLINE.replace(HOURS, String.valueOf(getRuntime.hours)).replace(MINUTE, String.valueOf(getRuntime.minutes)).replace(SECONDS, String.valueOf(getRuntime.seconds)));
+        player.sendMessage(Strings.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
+        player.sendMessage(Strings.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
     }
 
     @CommandAlias("memall|memoryall")
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
-        sendConsole(Strings.MSG_MEM.replace(MEM_USE, String.valueOf(getRuntime.freemem)).replace(MEM_MAX, String.valueOf(getRuntime.totalmem)));
-        sendConsole(Strings.MSG_MEM_ONLINE.replace(HOURS, String.valueOf(getRuntime.hours)).replace(MINUTE, String.valueOf(getRuntime.minutes)).replace(SECONDS, String.valueOf(getRuntime.seconds)));
+        sendConsole(Strings.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
+        sendConsole(Strings.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
     }
 
     private void sendConsole(String message) {

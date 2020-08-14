@@ -23,15 +23,15 @@ import java.util.concurrent.TimeUnit;
 
 @CommandAlias("eco")
 @CommandPermission("eternia.money.user")
-public class Economy extends BaseCommand implements Constants{
+public class Economy extends BaseCommand {
 
     private long time = 0;
     private ArrayList<String> lista;
 
     public Economy() {
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_MONEY), UUID_STR, BALANCE_STR);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_MONEY), Constants.UUID_STR, Constants.BALANCE_STR);
         temp.forEach((k, v) -> Vars.balances.put(UUID.fromString(k), Double.parseDouble(v)));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Economy").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Economy").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }
 
     @Default
@@ -39,28 +39,28 @@ public class Economy extends BaseCommand implements Constants{
         sender.sendMessage(Strings.MSG_ECO_HELP_TITLE);
         if (sender.hasPermission("eternia.money.admin")) {
             sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                    .replace(COMMANDS, "eco set &3<jogador> <quantia>")
-                    .replace(MESSAGE, Strings.MSG_ECO_HELP_SET)));
+                    .replace(Constants.COMMANDS, "eco set &3<jogador> <quantia>")
+                    .replace(Constants.MESSAGE, Strings.MSG_ECO_HELP_SET)));
             sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                    .replace(COMMANDS, "eco take &3<jogador> <quantia>")
-                    .replace(MESSAGE, Strings.MSG_ECO_HELP_TAKE)));
+                    .replace(Constants.COMMANDS, "eco take &3<jogador> <quantia>")
+                    .replace(Constants.MESSAGE, Strings.MSG_ECO_HELP_TAKE)));
             sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                    .replace(COMMANDS, "eco give &3<jogador> <quantia>")
-                    .replace(MESSAGE, Strings.MSG_ECO_HELP_GIVE)));
+                    .replace(Constants.COMMANDS, "eco give &3<jogador> <quantia>")
+                    .replace(Constants.MESSAGE, Strings.MSG_ECO_HELP_GIVE)));
             sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                    .replace(COMMANDS, "money &3<jogador>")
-                    .replace(MESSAGE, Strings.MSG_ECO_HELP_MONEY_ADMIN)));
+                    .replace(Constants.COMMANDS, "money &3<jogador>")
+                    .replace(Constants.MESSAGE, Strings.MSG_ECO_HELP_MONEY_ADMIN)));
         } else {
             sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                    .replace(COMMANDS, "money")
-                    .replace(MESSAGE, Strings.MSG_ECO_HELP_MONEY)));
+                    .replace(Constants.COMMANDS, "money")
+                    .replace(Constants.MESSAGE, Strings.MSG_ECO_HELP_MONEY)));
         }
         sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                .replace(COMMANDS, "pay")
-                .replace(MESSAGE, Strings.MSG_ECO_HELP_PAY)));
+                .replace(Constants.COMMANDS, "pay")
+                .replace(Constants.MESSAGE, Strings.MSG_ECO_HELP_PAY)));
         sender.sendMessage(Strings.getColor(Strings.MSG_HELP_FORMAT
-                .replace(COMMANDS, "baltop")
-                .replace(MESSAGE, Strings.MSG_ECO_HELP_BALTOP)));
+                .replace(Constants.COMMANDS, "baltop")
+                .replace(Constants.MESSAGE, Strings.MSG_ECO_HELP_BALTOP)));
     }
 
     @Subcommand("set")
@@ -72,8 +72,8 @@ public class Economy extends BaseCommand implements Constants{
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(Strings.M_ECO_SET.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_ECO_RSET.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+        sender.sendMessage(Strings.M_ECO_SET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_ECO_RSET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
     @Subcommand("take")
@@ -85,8 +85,8 @@ public class Economy extends BaseCommand implements Constants{
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(Strings.M_ECO_REMOVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_ECO_RREMOVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+        sender.sendMessage(Strings.M_ECO_REMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_ECO_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
     @Subcommand("give")
@@ -98,8 +98,8 @@ public class Economy extends BaseCommand implements Constants{
         final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(Strings.M_ECO_GIVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_ECO_RECEIVE.replace(AMOUNT, String.valueOf(money)).replace(TARGET, senderName));
+        sender.sendMessage(Strings.M_ECO_GIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
+        targetP.sendMessage(Strings.M_ECO_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
     }
 
     @CommandAlias("money")
@@ -109,11 +109,11 @@ public class Economy extends BaseCommand implements Constants{
     public void onMoney(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
-            player.sendMessage(Strings.M_ECO_MONEY.replace(AMOUNT, EterniaServer.df2.format(money)));
+            player.sendMessage(Strings.M_ECO_MONEY.replace(Constants.AMOUNT, EterniaServer.df2.format(money)));
         } else {
             if (player.hasPermission("eternia.money.admin")) {
                 double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
-                player.sendMessage(Strings.M_ECO_OTHER.replace(AMOUNT, EterniaServer.df2.format(money)));
+                player.sendMessage(Strings.M_ECO_OTHER.replace(Constants.AMOUNT, EterniaServer.df2.format(money)));
             } else {
                 player.sendMessage(Strings.MSG_NO_PERM);
             }
@@ -135,8 +135,8 @@ public class Economy extends BaseCommand implements Constants{
                 if (APIEconomy.getMoney(uuid) >= value) {
                     APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetName), value);
                     APIEconomy.removeMoney(uuid, value);
-                    player.sendMessage(Strings.M_ECO_PAY.replace(AMOUNT, String.valueOf(value)).replace(TARGET, targetP.getDisplayName()));
-                    targetP.sendMessage(Strings.M_ECO_PAY_ME.replace(AMOUNT, String.valueOf(value)).replace(TARGET, player.getDisplayName()));
+                    player.sendMessage(Strings.M_ECO_PAY.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, targetP.getDisplayName()));
+                    targetP.sendMessage(Strings.M_ECO_PAY_ME.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, player.getDisplayName()));
                 } else {
                     player.sendMessage(Strings.M_ECO_PAY_NO);
                 }
@@ -152,7 +152,7 @@ public class Economy extends BaseCommand implements Constants{
     @Subcommand("baltop")
     public void onBaltop(CommandSender sender) {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
-            lista.forEach((namet -> sender.sendMessage(Strings.M_ECO_BALLIST.replace(POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(PLAYER, namet).replace(AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet)))))));
+            lista.forEach((namet -> sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet)))))));
         } else {
             CompletableFuture.runAsync(() -> {
                 String name = "yurinogueira";
@@ -170,7 +170,7 @@ public class Economy extends BaseCommand implements Constants{
                 }
                 lista = list;
                 time = System.currentTimeMillis();
-                list.forEach((namet -> sender.sendMessage(Strings.M_ECO_BALLIST.replace(POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(PLAYER, namet).replace(AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet)))))));
+                list.forEach((namet -> sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet)))))));
             });
         }
     }

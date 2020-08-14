@@ -25,15 +25,15 @@ import java.util.*;
 
 @CommandAlias("cash")
 @CommandPermission("eternia.cash")
-public class Cash extends BaseCommand implements Constants {
+public class Cash extends BaseCommand {
 
     public static CashGui cashGui;
 
     public Cash() {
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_CASH), UUID_STR, BALANCE_STR);
+        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_CASH), Constants.UUID_STR, Constants.BALANCE_STR);
         temp.forEach((k, v) -> Vars.cash.put(UUID.fromString(k), Integer.parseInt(v)));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Cash").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Cash").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
         ItemStack itemStack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -161,13 +161,13 @@ public class Cash extends BaseCommand implements Constants {
     @Syntax("<jogador>")
     public void onCashBalance(Player player, @Optional String playerName) {
         if (playerName == null) {
-            player.sendMessage(Strings.M_CASH_BALANCE.replace(AMOUNT, String.valueOf(Vars.cash.get(UUIDFetcher.getUUIDOf(player.getName())))));
+            player.sendMessage(Strings.M_CASH_BALANCE.replace(Constants.AMOUNT, String.valueOf(Vars.cash.get(UUIDFetcher.getUUIDOf(player.getName())))));
             return;
         }
 
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
-        if (Vars.cash.containsKey(uuid)) player.sendMessage(Strings.M_CASH_BALANCE_OTHER.replace(AMOUNT, String.valueOf(Vars.cash.get(uuid))));
+        if (Vars.cash.containsKey(uuid)) player.sendMessage(Strings.M_CASH_BALANCE_OTHER.replace(Constants.AMOUNT, String.valueOf(Vars.cash.get(uuid))));
         else player.sendMessage(Strings.M_CASH_NO_PLAYER);
     }
 
@@ -229,8 +229,8 @@ public class Cash extends BaseCommand implements Constants {
 
         APICash.removeCash(uuid, value);
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(Strings.M_CASH_RECEIVED.replace(AMOUNT, String.valueOf(value)));
-        player.sendMessage(Strings.M_CASH_SEND.replace(AMOUNT, String.valueOf(value)).replace(TARGET, target.getDisplayName()));
+        target.sendMessage(Strings.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(Strings.M_CASH_SEND.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, target.getDisplayName()));
     }
 
     @Subcommand("give")
@@ -245,8 +245,8 @@ public class Cash extends BaseCommand implements Constants {
 
         final Player target = targetP.getPlayer();
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(Strings.M_CASH_RECEIVED.replace(AMOUNT, String.valueOf(value)));
-        player.sendMessage(Strings.M_CASH_SEND.replace(AMOUNT, String.valueOf(value)).replace(TARGET, target.getDisplayName()));
+        target.sendMessage(Strings.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(Strings.M_CASH_SEND.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, target.getDisplayName()));
     }
 
     @Subcommand("remove")
@@ -261,8 +261,8 @@ public class Cash extends BaseCommand implements Constants {
 
         final Player target = targetP.getPlayer();
         APICash.removeCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(Strings.M_CASH_REMOVED.replace(AMOUNT, String.valueOf(value)));
-        player.sendMessage(Strings.M_CASH_REMOVE.replace(AMOUNT, String.valueOf(value)));
+        target.sendMessage(Strings.M_CASH_REMOVED.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(Strings.M_CASH_REMOVE.replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
 }

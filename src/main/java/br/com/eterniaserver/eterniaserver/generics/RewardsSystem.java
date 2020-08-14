@@ -17,15 +17,15 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 
 @SuppressWarnings("squid:S2245")
-public class RewardsSystem extends BaseCommand implements Constants {
+public class RewardsSystem extends BaseCommand {
 
     private final SecureRandom random = new SecureRandom();
     private final byte[] bytes = new byte[20];
 
     public RewardsSystem(EterniaServer plugin) {
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_REWARD), CODE_STR, CODE_GROUP_STR);
+        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_REWARD), Constants.CODE_STR, Constants.CODE_GROUP_STR);
         temp.forEach(Vars.rewards::put);
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(MODULE, "Keys").replace(AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Keys").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }
 
     @CommandAlias("usekey|usarkey|usarchave")
@@ -48,18 +48,18 @@ public class RewardsSystem extends BaseCommand implements Constants {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
-            sender.sendMessage(Strings.MSG_REWARD_CREATE.replace(KEY, key));
+            sender.sendMessage(Strings.MSG_REWARD_CREATE.replace(Constants.KEY, key));
         } else {
-            sender.sendMessage(Strings.MSG_REWARD_NO.replace(GROUP, reward));
+            sender.sendMessage(Strings.MSG_REWARD_NO.replace(Constants.GROUP, reward));
         }
     }
 
     private void createKey(final String grupo, String key) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_REWARD, CODE_STR, key, CODE_GROUP_STR, grupo));
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_REWARD, Constants.CODE_STR, key, Constants.CODE_GROUP_STR, grupo));
     }
 
     private void deleteKey(final String key) {
-        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_REWARD, CODE_STR, key));
+        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_REWARD, Constants.CODE_STR, key));
     }
 
     private void giveReward(String group, Player player) {

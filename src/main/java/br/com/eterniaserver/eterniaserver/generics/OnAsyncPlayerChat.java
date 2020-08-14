@@ -20,7 +20,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class OnAsyncPlayerChat implements Listener, Constants {
+public class OnAsyncPlayerChat implements Listener {
 
     private final ChatFormatter cf;
     private final JsonSender js;
@@ -53,7 +53,7 @@ public class OnAsyncPlayerChat implements Listener, Constants {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = Vars.playerMuted.get(uuid);
                 if (TimeEnum.HASCOOLDOWN.stayMuted(time)) {
-                    player.sendMessage(Strings.M_CHAT_MUTED.replace(TIME, TimeEnum.HASCOOLDOWN.getTimeLeft(time)));
+                    player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, TimeEnum.HASCOOLDOWN.getTimeLeft(time)));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), playerName));
