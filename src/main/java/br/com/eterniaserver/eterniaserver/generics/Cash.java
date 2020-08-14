@@ -27,7 +27,7 @@ import java.util.*;
 @CommandPermission("eternia.cash")
 public class Cash extends BaseCommand {
 
-    public static CashGui cashGui;
+    protected static CashGui cashGui;
 
     public Cash() {
 

@@ -14,11 +14,19 @@ import org.bukkit.entity.Player;
 
 public class InternMethods {
 
+    private InternMethods() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static int getXPForLevel(int lvl) {
         if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
         else if (lvl > 15 && lvl < 31) return (int) ((2.5 * (lvl * lvl)) - (40.5 * lvl) + 360);
         else if (lvl >= 31) return (int) ((4.5 * (lvl * lvl)) - (162.5 * lvl) + 2220);
         else return 0;
+    }
+
+    public static void setChatMuted(boolean bool) {
+        Vars.chatMuted = bool;
     }
 
     public static long getCooldown(String name) {

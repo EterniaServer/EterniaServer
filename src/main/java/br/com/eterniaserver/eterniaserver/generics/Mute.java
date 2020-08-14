@@ -19,7 +19,6 @@ import java.util.UUID;
 
 public class Mute extends BaseCommand {
 
-
     public Mute() {
         HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_MUTED), Constants.UUID_STR, Constants.TIME_STR);
         temp.forEach((k, v) -> Vars.playerMuted.put(UUID.fromString(k), Long.parseLong(v)));
@@ -30,10 +29,10 @@ public class Mute extends BaseCommand {
     @CommandPermission("eternia.mute.channels")
     public void muteChannels(Player sender) {
         if (Vars.chatMuted) {
-            Vars.chatMuted = false;
+            InternMethods.setChatMuted(false);
             Bukkit.broadcastMessage(Strings.M_CHAT_D.replace(Constants.PLAYER, sender.getDisplayName()));
         } else {
-            Vars.chatMuted = true;
+            InternMethods.setChatMuted(true);
             Bukkit.broadcastMessage(Strings.M_CHAT_E.replace(Constants.PLAYER, sender.getDisplayName()));
         }
     }

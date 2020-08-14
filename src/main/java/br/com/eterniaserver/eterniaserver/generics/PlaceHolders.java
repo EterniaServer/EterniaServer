@@ -14,12 +14,8 @@ import java.util.UUID;
 
 public class PlaceHolders extends PlaceholderExpansion {
 
-    private final SimpleDateFormat sdf;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final String version = this.getClass().getPackage().getImplementationVersion();
-
-    public PlaceHolders(SimpleDateFormat sdf) {
-        this.sdf = sdf;
-    }
 
     @Override
     public boolean persist(){

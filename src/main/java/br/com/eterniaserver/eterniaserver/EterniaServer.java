@@ -14,14 +14,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class EterniaServer extends JavaPlugin {
 
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     public static final DecimalFormat df2 = new DecimalFormat(".##");
-    public static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public static final List<String> arrData = ImmutableList.of("tblack", "tdarkblue", "tdarkgreen", "tdarkaqua", "tdarkred",
             "tdarkpurple", "tgold", "tlightgray", "tdarkgray", "tblue", "tgreen", "taqua", "tred", "tpurple", "tyellow",
@@ -63,7 +61,7 @@ public class EterniaServer extends JavaPlugin {
         loadManagers();
         vaultHook();
 
-        new PlaceHolders(sdf).register();
+        new PlaceHolders().register();
 
         this.getServer().getPluginManager().registerEvents(new OnPlayerJump(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityDamage(), this);

@@ -19,6 +19,7 @@ import java.lang.management.ManagementFactory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class Replaces extends BaseCommand {
 
     private final GetRuntime getRuntime;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public Replaces() {
         this.getRuntime = new GetRuntime();
@@ -82,8 +84,8 @@ public class Replaces extends BaseCommand {
     public void onProfile(Player player) {
         UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (Vars.playerProfile.containsKey(uuid)) {
-            player.sendMessage(Strings.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getFirstLogin()))));
-            player.sendMessage(Strings.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, EterniaServer.sdf.format(new Date(Vars.playerProfile.get(uuid).getLastLogin()))));
+            player.sendMessage(Strings.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, sdf.format(new Date(Vars.playerProfile.get(uuid).getFirstLogin()))));
+            player.sendMessage(Strings.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, sdf.format(new Date(Vars.playerProfile.get(uuid).getLastLogin()))));
             player.sendMessage(Strings.MSG_PROFILE_HOURS.replace(Constants.HOURS, String.valueOf(TimeUnit.MILLISECONDS.toHours(Vars.playerProfile.get(uuid).getHours()))));
             for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
                 player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(player, line)));

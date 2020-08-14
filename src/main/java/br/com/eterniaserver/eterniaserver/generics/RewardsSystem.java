@@ -22,7 +22,7 @@ public class RewardsSystem extends BaseCommand {
     private final SecureRandom random = new SecureRandom();
     private final byte[] bytes = new byte[20];
 
-    public RewardsSystem(EterniaServer plugin) {
+    public RewardsSystem() {
         HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_REWARD), Constants.CODE_STR, Constants.CODE_GROUP_STR);
         temp.forEach(Vars.rewards::put);
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Keys").replace(Constants.AMOUNT, String.valueOf(temp.size())));
@@ -64,7 +64,7 @@ public class RewardsSystem extends BaseCommand {
 
     private void giveReward(String group, Player player) {
         final String rewardsConfig = "rewards.";
-        for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection(rewardsConfig + group + ".commands").getKeys(true)) {
+        for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection(rewardsConfig + group + ".commands").getKeys(false)) {
             if (Math.random() <= Double.parseDouble(percentage)) {
                 for (String command : EterniaServer.rewardsConfig.getStringList(rewardsConfig + group + ".commands." + percentage)) {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), InternMethods.setPlaceholders(player, command));

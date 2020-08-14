@@ -118,7 +118,7 @@ public class Managers {
     private void loadRewardsManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
             plugin.getFiles().loadRewards();
-            EterniaLib.getManager().registerCommand(new RewardsSystem(plugin));
+            EterniaLib.getManager().registerCommand(new RewardsSystem());
         }
     }
 

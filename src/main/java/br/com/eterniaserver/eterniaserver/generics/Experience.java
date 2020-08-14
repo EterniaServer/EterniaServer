@@ -111,7 +111,8 @@ public class Experience extends BaseCommand {
         player.setExp(xp);
     }
 
-    @CommandAlias("bottle")
+    @Subcommand("bottle")
+    @CommandCompletion("10")
     @Syntax("<quantia>")
     public void onBottleLevel(Player player, Integer xpWant) {
         int xpReal = InternMethods.getXPForLevel(player.getLevel());
@@ -132,7 +133,8 @@ public class Experience extends BaseCommand {
         }
     }
 
-    @CommandAlias("withdraw")
+    @Subcommand("withdraw")
+    @CommandCompletion("10")
     @Syntax("<quantia>")
     public void onWithdrawLevel(Player player, Integer level) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
@@ -147,7 +149,8 @@ public class Experience extends BaseCommand {
         }
     }
 
-    @CommandAlias("deposit")
+    @Subcommand("deposit")
+    @CommandCompletion("10")
     @Syntax("<quantia>")
     public void onDepositLevel(Player player, Integer xpla) {
         int xpAtual = player.getLevel();
