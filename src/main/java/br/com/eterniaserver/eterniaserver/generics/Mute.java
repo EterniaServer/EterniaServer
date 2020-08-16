@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.configs.Configs;
@@ -12,15 +13,12 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class Mute extends BaseCommand {
 
     public Mute() {
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_MUTED), Constants.UUID_STR, Constants.TIME_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_MUTED), Constants.UUID_STR, Constants.TIME_STR);
         temp.forEach((k, v) -> Vars.playerMuted.put(UUID.fromString(k), Long.parseLong(v)));
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Muted Players").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }

@@ -19,7 +19,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @CommandAlias("xp")
@@ -27,7 +27,7 @@ import java.util.UUID;
 public class Experience extends BaseCommand {
 
     public Experience() {
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_XP), Constants.UUID_STR, Constants.XP_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_XP), Constants.UUID_STR, Constants.XP_STR);
         temp.forEach((k, v) -> Vars.xp.put(UUID.fromString(k), Integer.parseInt(v)));
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Experience").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }

@@ -12,13 +12,13 @@ import br.com.eterniaserver.eterniaserver.utils.TimeEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class KitSystem extends BaseCommand {
 
     public KitSystem() {
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_KITS), Constants.NAME_STR, Constants.COOLDOWN_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_KITS), Constants.NAME_STR, Constants.COOLDOWN_STR);
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
 
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Kits").replace(Constants.AMOUNT, String.valueOf(temp.size())));

@@ -14,13 +14,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class WarpSystem extends BaseCommand {
 
     public WarpSystem() {
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_SHOP), Constants.NAME_STR, Constants.LOCATION_STR);
+        Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_SHOP), Constants.NAME_STR, Constants.LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),

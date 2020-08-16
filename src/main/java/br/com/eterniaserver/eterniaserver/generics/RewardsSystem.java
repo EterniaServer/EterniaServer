@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.security.SecureRandom;
-import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("squid:S2245")
 public class RewardsSystem extends BaseCommand {
@@ -23,7 +23,7 @@ public class RewardsSystem extends BaseCommand {
     private final byte[] bytes = new byte[20];
 
     public RewardsSystem() {
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_REWARD), Constants.CODE_STR, Constants.CODE_GROUP_STR);
+        Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_REWARD), Constants.CODE_STR, Constants.CODE_GROUP_STR);
         temp.forEach(Vars.rewards::put);
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Keys").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }

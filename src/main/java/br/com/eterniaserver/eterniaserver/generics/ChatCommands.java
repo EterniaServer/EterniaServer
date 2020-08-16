@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.configs.Configs;
@@ -16,10 +17,7 @@ import br.com.eterniaserver.eterniaserver.utils.TimeEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ChatCommands extends BaseCommand {
 
@@ -30,7 +28,7 @@ public class ChatCommands extends BaseCommand {
         this.plugin = plugin;
         this.money = EterniaServer.serverConfig.getInt("money.nick");
 
-        final HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_NICK), Constants.UUID_STR, Constants.PLAYER_DISPLAY_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_NICK), Constants.UUID_STR, Constants.PLAYER_DISPLAY_STR);
         temp.forEach((k, v) -> {
             final UUID uuid = UUID.fromString(k);
             final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
@@ -199,7 +197,7 @@ public class ChatCommands extends BaseCommand {
 
         final Player target = targets.getPlayer();
 
-        if (msg == null || msg.length == 0 || msg.length == 1) {
+        if (msg == null || msg.length == 0) {
             Vars.chatLocked.put(playerName, target.getName());
             Vars.global.put(playerName, 3);
             player.sendMessage(Strings.MSG_CHAT_LOCKED.replace(Constants.TARGET, target.getDisplayName()));

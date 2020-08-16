@@ -28,7 +28,7 @@ public class HomeSystem extends BaseCommand {
 
     public HomeSystem() {
 
-        HashMap<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOMES), Constants.NAME_STR, Constants.LOCATION_STR);
+        Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOMES), Constants.NAME_STR, Constants.LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
