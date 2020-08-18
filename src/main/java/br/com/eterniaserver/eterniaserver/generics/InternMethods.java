@@ -12,6 +12,8 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.concurrent.TimeUnit;
+
 public class InternMethods {
 
     private InternMethods() {
@@ -98,6 +100,22 @@ public class InternMethods {
                 }
             }
         }
+    }
+
+    public static String getTimeLeft(long cooldown) {
+        return String.valueOf(TimeUnit.MILLISECONDS.toSeconds(cooldown - System.currentTimeMillis()));
+    }
+
+    public static String getTimeLeft(long cooldown, long cd) {
+        return String.valueOf(cooldown - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cd));
+    }
+
+    public static boolean hasCooldown(long cooldown, int timeNeeded) {
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown) >= timeNeeded;
+    }
+
+    public  static boolean stayMuted(long cooldown) {
+        return cooldown - System.currentTimeMillis() > 0;
     }
 
 }

@@ -52,22 +52,22 @@ public class OnAsyncPlayerPreLogin implements Listener {
     }
 
     private void playerCashCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_CASH, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, 0), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.tableCash, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, 0), false);
         Vars.cash.put(uuid, 0);
     }
 
     private void playerMoneyCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, moneyStart), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.tableMoney, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, moneyStart), false);
         Vars.balances.put(uuid, 300.0);
     }
 
     private void playerXPCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_XP, Constants.UUID_STR, uuid.toString(), Constants.XP_STR, 0), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.tableXp, Constants.UUID_STR, uuid.toString(), Constants.XP_STR, 0), false);
         Vars.xp.put(uuid, 0);
     }
 
     private void playerHomeCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_HOME, Constants.UUID_STR, uuid.toString(), Constants.HOMES_STR, ""), false);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.tableHome, Constants.UUID_STR, uuid.toString(), Constants.HOMES_STR, ""), false);
         Vars.home.put(uuid, new ArrayList<>());
     }
 

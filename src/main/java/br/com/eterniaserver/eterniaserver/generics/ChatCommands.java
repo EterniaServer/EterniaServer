@@ -13,7 +13,6 @@ import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
-import br.com.eterniaserver.eterniaserver.utils.TimeEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -28,7 +27,7 @@ public class ChatCommands extends BaseCommand {
         this.plugin = plugin;
         this.money = EterniaServer.serverConfig.getInt("money.nick");
 
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_NICK), Constants.UUID_STR, Constants.PLAYER_DISPLAY_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableNick), Constants.UUID_STR, Constants.PLAYER_DISPLAY_STR);
         temp.forEach((k, v) -> {
             final UUID uuid = UUID.fromString(k);
             final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
@@ -184,8 +183,14 @@ public class ChatCommands extends BaseCommand {
     @Syntax("<jogador> <mensagem>")
     @CommandCompletion("@players Oi.")
     @CommandPermission("eternia.tell")
-    public void onTell(Player player, OnlinePlayer targets, @Optional String[] msg) {
+    public void onTell(Player player, @Optional OnlinePlayer targets, @Optional String[] msg) {
         if (isMuted(player)) return;
+
+        if (targets == null) {
+            Vars.global.put(player.getName(), 1);
+            player.sendMessage(Strings.M_CHAT_C.replace(Constants.CHANNEL_NAME, "Global"));
+            return;
+        }
 
         final String playerName = player.getName();
 
@@ -215,8 +220,8 @@ public class ChatCommands extends BaseCommand {
     private boolean isMuted(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         final long time = Vars.playerMuted.get(uuid);
-        if (TimeEnum.HASCOOLDOWN.stayMuted(time)) {
-            player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, TimeEnum.HASCOOLDOWN.getTimeLeft(time)));
+        if (InternMethods.stayMuted(time)) {
+            player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
             return true;
         }
         return false;
@@ -278,9 +283,9 @@ public class ChatCommands extends BaseCommand {
     private void saveToSQL(final String playerName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (Vars.playerProfile.containsKey(uuid) && Vars.playerProfile.get(uuid).getPlayerDisplayName() != null) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_NICK, Constants.PLAYER_DISPLAY_STR, Vars.nick.get(uuid), Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableNick, Constants.PLAYER_DISPLAY_STR, Vars.nick.get(uuid), Constants.UUID_STR, uuid.toString()));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_NICK, Constants.UUID_STR, uuid.toString(), Constants.PLAYER_DISPLAY_STR, Vars.nick.get(uuid)));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableNick, Constants.UUID_STR, uuid.toString(), Constants.PLAYER_DISPLAY_STR, Vars.nick.get(uuid)));
         }
     }
 

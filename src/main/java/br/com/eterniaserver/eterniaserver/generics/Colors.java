@@ -40,15 +40,15 @@ public class Colors {
 			perms.add("&k");
 		}
 
-		if(perms.isEmpty()) return;
+		if (perms.isEmpty()) return;
 		
 		String m = message.getMessageSent();
-		for(String s : perms) {
-			if(s.equals("&")) {
+		for (String s : perms) {
+			if (s.equals("&")) {
 				m = Strings.getColor(m);
 				break;
 			}
-			if(m.contains(s)) {
+			if (m.contains(s)) {
 				m = m.replace(s, Strings.getColor(s));
 			}
 		}

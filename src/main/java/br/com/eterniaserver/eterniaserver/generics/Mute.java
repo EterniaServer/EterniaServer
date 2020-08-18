@@ -18,7 +18,7 @@ import java.util.*;
 public class Mute extends BaseCommand {
 
     public Mute() {
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_MUTED), Constants.UUID_STR, Constants.TIME_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableMuted), Constants.UUID_STR, Constants.TIME_STR);
         temp.forEach((k, v) -> Vars.playerMuted.put(UUID.fromString(k), Long.parseLong(v)));
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Muted Players").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }
@@ -48,7 +48,7 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
         Bukkit.broadcastMessage(Strings.M_CHAT_MUTEBROAD.replace(Constants.PLAYER, targetP.getDisplayName()).replace(Constants.MESSAGE, messageFull(message)));
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_MUTED, Constants.TIME_STR, time, Constants.UUID_STR, UUIDFetcher.getUUIDOf(targetName).toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableMuted, Constants.TIME_STR, time, Constants.UUID_STR, UUIDFetcher.getUUIDOf(targetName).toString()));
         Vars.playerMuted.put(UUIDFetcher.getUUIDOf(targetName), cal.getTimeInMillis());
     }
 
@@ -62,7 +62,7 @@ public class Mute extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         Vars.playerMuted.put(uuid, time);
         Bukkit.broadcastMessage(Strings.M_CHAT_UNMUTEBROAD.replace(Constants.PLAYER, target.getPlayer().getDisplayName()));
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_MUTED, Constants.TIME_STR, time, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableMuted, Constants.TIME_STR, time, Constants.UUID_STR, uuid.toString()));
     }
 
     @CommandAlias("tempmute|mutetemporario")
@@ -77,7 +77,7 @@ public class Mute extends BaseCommand {
         final String targetName = target.getPlayer().getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(targetName);
         Bukkit.broadcastMessage(Strings.M_CHAT_MUTET.replace(Constants.PLAYER, target.getPlayer().getDisplayName()).replace(Constants.TIME, String.valueOf(time)).replace(Constants.MESSAGE, messageFull(message)));
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_MUTED, Constants.TIME_STR, timeInMillis, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableMuted, Constants.TIME_STR, timeInMillis, Constants.UUID_STR, uuid.toString()));
         Vars.playerMuted.put(uuid, cal.getTimeInMillis());
     }
 

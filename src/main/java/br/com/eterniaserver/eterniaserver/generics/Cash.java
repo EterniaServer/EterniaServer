@@ -31,7 +31,7 @@ public class Cash extends BaseCommand {
 
     public Cash() {
 
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_CASH), Constants.UUID_STR, Constants.BALANCE_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableCash), Constants.UUID_STR, Constants.BALANCE_STR);
         temp.forEach((k, v) -> Vars.cash.put(UUID.fromString(k), Integer.parseInt(v)));
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Cash").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 

@@ -34,7 +34,7 @@ public class Replaces extends BaseCommand {
 
         if (EterniaLib.getMySQL()) {
             EterniaLib.getConnections().executeSQLQuery(connection -> {
-                final PreparedStatement getHashMap = connection.prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER));
+                final PreparedStatement getHashMap = connection.prepareStatement(Constants.getQuerySelectAll(Configs.tablePlayer));
                 final ResultSet resultSet = getHashMap.executeQuery();
                 while (resultSet.next()) {
                     Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), new PlayerProfile(
@@ -48,7 +48,7 @@ public class Replaces extends BaseCommand {
                 resultSet.close();
             });
         } else {
-            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER)); ResultSet resultSet = getHashMap.executeQuery()) {
+            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(Constants.getQuerySelectAll(Configs.tablePlayer)); ResultSet resultSet = getHashMap.executeQuery()) {
                 while (resultSet.next()) {
                     Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), new PlayerProfile(
                             resultSet.getString(Constants.PLAYER_NAME_STR),

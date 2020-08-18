@@ -30,7 +30,7 @@ public class OnPlayerLeave implements Listener {
         int hours = playerProfile.getHours() + (int) TimeUnit.MICROSECONDS.toHours(System.currentTimeMillis() - playerProfile.getLastLogin());
         playerProfile.setHours(hours);
         Vars.playerProfile.put(uuid, playerProfile);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.HOURS_STR, hours, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.HOURS_STR, hours, Constants.UUID_STR, uuid.toString()));
 
 
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {

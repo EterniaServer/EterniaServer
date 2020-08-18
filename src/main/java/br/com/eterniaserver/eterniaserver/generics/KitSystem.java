@@ -7,7 +7,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
-import br.com.eterniaserver.eterniaserver.utils.TimeEnum;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,7 +17,7 @@ public class KitSystem extends BaseCommand {
 
     public KitSystem() {
 
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_KITS), Constants.NAME_STR, Constants.COOLDOWN_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableKits), Constants.NAME_STR, Constants.COOLDOWN_STR);
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
 
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Kits").replace(Constants.AMOUNT, String.valueOf(temp.size())));
@@ -42,10 +41,10 @@ public class KitSystem extends BaseCommand {
                 final String kitName = kit + "." + player.getName();
                 final int cooldown = EterniaServer.kitConfig.getInt(kitString + kit + ".delay");
                 final long cd = Vars.kitsCooldown.get(kitName);
-                if (TimeEnum.HASCOOLDOWN.hasCooldown(cd, cooldown)) {
+                if (InternMethods.hasCooldown(cd, cooldown)) {
                     giveKit(player, time, kitName, kit);
                 } else {
-                    player.sendMessage(Strings.MSG_TIMING.replace(Constants.COOLDOWN, TimeEnum.HASCOOLDOWN.getTimeLeft(cooldown, cd)));
+                    player.sendMessage(Strings.MSG_TIMING.replace(Constants.COOLDOWN, InternMethods.getTimeLeft(cooldown, cd)));
                 }
             } else {
                 player.sendMessage(Strings.MSG_NO_PERM.replace(Constants.KIT_NAME, kit));
@@ -64,7 +63,7 @@ public class KitSystem extends BaseCommand {
             player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(player, line)));
         }
         Vars.kitsCooldown.put(kitName, time);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_KITS, Constants.COOLDOWN_STR, time, Constants.NAME_STR, kitName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableKits, Constants.COOLDOWN_STR, time, Constants.NAME_STR, kitName));
     }
 
 }

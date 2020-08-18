@@ -6,7 +6,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 
-import br.com.eterniaserver.eterniaserver.utils.TimeEnum;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
@@ -52,8 +51,8 @@ public class OnAsyncPlayerChat implements Listener {
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = Vars.playerMuted.get(uuid);
-                if (TimeEnum.HASCOOLDOWN.stayMuted(time)) {
-                    player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, TimeEnum.HASCOOLDOWN.getTimeLeft(time)));
+                if (InternMethods.stayMuted(time)) {
+                    player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), playerName));

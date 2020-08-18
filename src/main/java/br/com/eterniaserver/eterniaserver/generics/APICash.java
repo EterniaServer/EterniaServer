@@ -16,7 +16,7 @@ public class APICash {
         if (Vars.cash.containsKey(uuid)) {
             return Vars.cash.get(uuid);
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_CASH, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableCash, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, 0));
             Vars.cash.put(uuid, 0);
             return 0;
         }
@@ -29,9 +29,9 @@ public class APICash {
     public static void setCash(UUID uuid, int amount) {
         if (Vars.cash.containsKey(uuid)) {
             Vars.cash.put(uuid, amount);
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_CASH, Constants.BALANCE_STR, amount, Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableCash, Constants.BALANCE_STR, amount, Constants.UUID_STR, uuid.toString()));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_CASH, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableCash, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, 0));
             Vars.cash.put(uuid, 0);
             setCash(uuid, amount);
         }

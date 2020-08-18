@@ -20,7 +20,7 @@ public class WarpSystem extends BaseCommand {
 
     public WarpSystem() {
 
-        Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_SHOP), Constants.NAME_STR, Constants.LOCATION_STR);
+        Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableShop), Constants.NAME_STR, Constants.LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -33,7 +33,7 @@ public class WarpSystem extends BaseCommand {
         });
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Shops").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_WARP), Constants.NAME_STR, Constants.LOCATION_STR);
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableWarp), Constants.NAME_STR, Constants.LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -197,9 +197,9 @@ public class WarpSystem extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (Vars.shops.containsKey(shop)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_SHOP, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, shop));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableShop, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, shop));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_SHOP, Constants.NAME_STR, shop, Constants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableShop, Constants.NAME_STR, shop, Constants.LOCATION_STR, saveloc));
         }
         Vars.shops.put(shop, loc);
     }
@@ -216,16 +216,16 @@ public class WarpSystem extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (Vars.warps.containsKey(warp)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_WARP, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, warp));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableWarp, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, warp));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_WARP, Constants.NAME_STR, warp, Constants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableWarp, Constants.NAME_STR, warp, Constants.LOCATION_STR, saveloc));
         }
         Vars.warps.put(warp, loc);
     }
 
     public void delWarp(String warp) {
         Vars.warps.remove(warp);
-        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_WARP, Constants.NAME_STR, warp));
+        EQueries.executeQuery(Constants.getQueryDelete(Configs.tableWarp, Constants.NAME_STR, warp));
     }
 
     public Location getWarp(String warp) {

@@ -28,7 +28,7 @@ public class HomeSystem extends BaseCommand {
 
     public HomeSystem() {
 
-        Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOMES), Constants.NAME_STR, Constants.LOCATION_STR);
+        Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableHomes), Constants.NAME_STR, Constants.LOCATION_STR);
         temp.forEach((k, v) -> {
             final String[] split = v.split(":");
             final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -41,7 +41,7 @@ public class HomeSystem extends BaseCommand {
         });
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Home").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
-        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_HOME), Constants.UUID_STR, Constants.HOMES_STR);
+        temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableHome), Constants.UUID_STR, Constants.HOMES_STR);
         temp.forEach((k, v) -> Vars.home.put(UUID.fromString(k), new ArrayList<>(Arrays.asList(v.split(":")))));
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Homes").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
@@ -175,10 +175,10 @@ public class HomeSystem extends BaseCommand {
         if (!t) {
             result.append(home);
             values.add(home);
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOME, Constants.HOMES_STR, result.toString(), Constants.UUID_STR, uuid.toString()));
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_HOMES, Constants.NAME_STR, homeName, Constants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableHome, Constants.HOMES_STR, result.toString(), Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableHomes, Constants.NAME_STR, homeName, Constants.LOCATION_STR, saveloc));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOMES, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, homeName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableHomes, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, homeName));
         }
         Vars.home.put(uuid, values);
     }
@@ -201,8 +201,8 @@ public class HomeSystem extends BaseCommand {
             }
         }
         Vars.home.put(uuid, newValues);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_HOME, Constants.HOMES_STR, nova.toString(), Constants.UUID_STR, uuid.toString()));
-        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_HOMES, Constants.NAME_STR, homeName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableHome, Constants.HOMES_STR, nova.toString(), Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryDelete(Configs.tableHomes, Constants.NAME_STR, homeName));
     }
 
     public Location getHome(String home, String jogador) {

@@ -22,7 +22,7 @@ public class APIExperience {
             return Vars.xp.get(uuid);
         } else {
             Vars.xp.put(uuid, 0);
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_XP, Constants.UUID_STR, uuid.toString(), Constants.XP_STR, 0));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableXp, Constants.UUID_STR, uuid.toString(), Constants.XP_STR, 0));
             return 0;
         }
     }
@@ -34,7 +34,7 @@ public class APIExperience {
      */
     public static void setExp(UUID uuid, int amount) {
         Vars.xp.put(uuid, amount);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_XP, Constants.XP_STR, amount, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableXp, Constants.XP_STR, amount, Constants.UUID_STR, uuid.toString()));
     }
 
     /**

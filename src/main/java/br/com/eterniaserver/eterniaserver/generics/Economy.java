@@ -28,7 +28,7 @@ public class Economy extends BaseCommand {
     private ArrayList<String> lista;
 
     public Economy() {
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_MONEY), Constants.UUID_STR, Constants.BALANCE_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableMoney), Constants.UUID_STR, Constants.BALANCE_STR);
         temp.forEach((k, v) -> Vars.balances.put(UUID.fromString(k), Double.parseDouble(v)));
         Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Economy").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }

@@ -273,7 +273,7 @@ public class VaultMethods implements Economy {
     }
 
     private void playerMoneyCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_MONEY, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, startMoney));
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.tableMoney, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, startMoney));
         Vars.balances.put(uuid, 300.0);
     }
 
