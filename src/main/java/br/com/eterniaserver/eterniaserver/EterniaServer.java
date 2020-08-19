@@ -67,6 +67,7 @@ public class EterniaServer extends JavaPlugin {
 
         this.getServer().getPluginManager().registerEvents(new OnPlayerJump(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityDamage(), this);
+        this.getServer().getPluginManager().registerEvents(new OnEntityDamageByEntity(), this);
         this.getServer().getPluginManager().registerEvents(new OnEntityInventoryClick(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockBreak(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerBlockPlace(), this);
@@ -77,6 +78,7 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnPlayerLeave(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerRespawn(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerSignChange(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerTeleport(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerToggleSneak(), this);

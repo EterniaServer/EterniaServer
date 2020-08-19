@@ -25,6 +25,7 @@ public class OnPlayerJoin implements Listener {
         final Player player = event.getPlayer();
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             InternMethods.addUUIF(player);
             Vars.global.put(playerName, 0);

@@ -24,7 +24,6 @@ modules:
   economy: true
   elevator: true
   experience: true
-  generic: true
   home: true
   kits: true
   spawners: true
@@ -48,6 +47,7 @@ server:
   afk-timer: 900
   afk-kick: true
   cooldown: 4
+  pvp-time: 15
 
 # The blocks you choose will be able to be elevators if have another of the
 # same type above or bellow.

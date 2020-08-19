@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
+import java.util.UUID;
 
 public class Others extends BaseCommand {
 
@@ -81,18 +83,47 @@ public class Others extends BaseCommand {
         }
     }
 
-    @CommandAlias("fly|voar")
+    @CommandAlias("fly")
     @CommandPermission("eternia.fly")
-    public void onFly(Player player, @Optional OnlinePlayer target) {
-        if (target == null) {
-            if (player.getWorld() == Bukkit.getWorld("evento") && !player.hasPermission("eternia.fly.evento")) {
+    public void onFly(Player player, @Optional OnlinePlayer targetS) {
+        if (targetS != null) {
+            final String worldName = player.getWorld().getName();
+            if ((worldName.equals("evento") || worldName.equals("world_evento")) && !player.hasPermission("eternia.fly.evento")) {
                 player.sendMessage(Strings.MSG_NO_PERM);
-            } else {
-                changeFlyState(player);
+                return;
             }
-        } else {
-            changeFlyState(target.getPlayer());
+
+            final Player target = targetS.getPlayer();
+            final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
+
+            if (APIFly.isOnPvP(uuid)) {
+                player.sendMessage(InternMethods.putName(target, Strings.FLY_TARGET_IN_PVP.replace(Constants.AMOUNT, String.valueOf(APIFly.getPvPCooldown(uuid)))));
+                return;
+            }
+
+            APIFly.changeFlyState(target);
+            if (target.isFlying()) {
+                target.sendMessage(InternMethods.putName(player, Strings.FLY_ENABLED_BY));
+                player.sendMessage(InternMethods.putName(target, Strings.FLY_ENABLED_FOR));
+                return;
+            }
+            target.sendMessage(InternMethods.putName(player, Strings.FLY_DISABLED_BY));
+            player.sendMessage(InternMethods.putName(target, Strings.FLY_DISABLED_FOR));
+            return;
         }
+        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+
+        if (APIFly.isOnPvP(uuid)) {
+            player.sendMessage(Strings.FLY_IN_PVP.replace(Constants.AMOUNT, String.valueOf(APIFly.getPvPCooldown(uuid))));
+            return;
+        }
+
+        APIFly.changeFlyState(player);
+        if (player.isFlying()) {
+            player.sendMessage(Strings.FLY_ENABLED);
+            return;
+        }
+        player.sendMessage(Strings.FLY_DISABLED);
     }
 
     @CommandAlias("feed|saciar")
@@ -185,16 +216,6 @@ public class Others extends BaseCommand {
         if (amount != 0) {
             player.getInventory().removeItem(new ItemStack(material, amount * 9));
             player.getInventory().addItem(new ItemStack(block, amount));
-        }
-    }
-
-    public void changeFlyState(Player player) {
-        if (player.getAllowFlight()) {
-            player.setAllowFlight(false);
-            player.sendMessage(Strings.MSG_FLY_DISABLE);
-        } else {
-            player.setAllowFlight(true);
-            player.sendMessage(Strings.MSG_FLY_ENABLE);
         }
     }
 

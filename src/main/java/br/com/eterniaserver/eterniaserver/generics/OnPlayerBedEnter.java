@@ -22,7 +22,7 @@ public class OnPlayerBedEnter implements Listener {
             final String playerName = player.getName();
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - InternMethods.getCooldown(playerName)) > 6) {
                 Vars.bedCooldown.put(playerName, System.currentTimeMillis());
-                Bukkit.getConsoleSender().sendMessage(Strings.MSG_PLAYER_SKIP.replace(Constants.PLAYER, player.getDisplayName()));
+                Bukkit.broadcastMessage(Strings.MSG_PLAYER_SKIP.replace(Constants.PLAYER, player.getDisplayName()));
             }
         }
     }

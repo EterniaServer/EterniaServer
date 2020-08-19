@@ -1,5 +1,9 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+
+import java.util.concurrent.TimeUnit;
+
 public class PlayerProfile {
 
     private String playerName;
@@ -7,6 +11,7 @@ public class PlayerProfile {
     private final long firstLogin;
     private long lastLogin;
     private int hours;
+    private long isOnPvP;
 
     public PlayerProfile(String playerName, long firstLogin, long lastLogin, int hours) {
         this.playerName = playerName;
@@ -35,6 +40,16 @@ public class PlayerProfile {
         return lastLogin;
     }
 
+    public boolean isOnPvP() {
+        if (isOnPvP == 0) return false;
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - isOnPvP) < EterniaServer.serverConfig.getInt("server.pvp-time");
+    }
+
+    public int getIsOnPvP() {
+        if (isOnPvP == 0) return 0;
+        return (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - isOnPvP);
+    }
+
     public String getPlayerDisplayName() {
         return playerDisplayName;
     }
@@ -50,4 +65,9 @@ public class PlayerProfile {
     public void setPlayerDisplayName(String playerDisplayName) {
         this.playerDisplayName = playerDisplayName;
     }
+
+    public void setIsOnPvP() {
+        this.isOnPvP = System.currentTimeMillis();
+    }
+
 }

@@ -62,6 +62,14 @@ public class InternMethods {
         return PlaceholderAPI.setPlaceholders(p, s);
     }
 
+    public static String putName(Player player, Player target, String string) {
+        return putName(player, string).replace("%target_name%", target.getName()).replace("%target_displayname%", target.getDisplayName());
+    }
+
+    public static String putName(Player player, String string) {
+        return string.replace("%player_name%", player.getName()).replace("%player_displayname%", player.getDisplayName());
+    }
+
     public static SubPlaceholder getSubPlaceholder(final Player player, final CustomPlaceholder cp) {
         SubPlaceholder bestPlaceholder = null;
         for (SubPlaceholder subPlaceholder : cp.getPlaceholders()) {

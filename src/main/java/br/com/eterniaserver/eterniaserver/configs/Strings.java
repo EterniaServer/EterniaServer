@@ -90,8 +90,16 @@ public class Strings {
     public static final String MSG_AFK_KICKED = putPrefix("generic.afk.kicked");
     public static final String MSG_AFK_BROAD = putPrefix("generic.afk.broadcast-kicked");
 
-    public static final String MSG_FLY_ENABLE = putPrefix("generic.others.fly-enabled");
-    public static final String MSG_FLY_DISABLE = putPrefix("generic.others.fly-disabled");
+    public static final String FLY_PVP_DISABLED = putPrefix("generic.fly.getpvp");
+    public static final String FLY_IN_PVP = putPrefix("generic.fly.pvp");
+    public static final String FLY_TARGET_IN_PVP = putPrefix("generic.fly.target-pvp");
+    public static final String FLY_ENABLED = putPrefix("generic.fly.enabled");
+    public static final String FLY_ENABLED_BY = putPrefix("generic.fly.enabled-by");
+    public static final String FLY_ENABLED_FOR = putPrefix("generic.fly-enabled-for");
+    public static final String FLY_DISABLED = putPrefix("generic.fly.disabled");
+    public static final String FLY_DISABLED_BY = putPrefix("generic.fly.disabled-by");
+    public static final String FLY_DISABLED_FOR = putPrefix("generic.fly.disabled-for");
+
     public static final String MSG_GOD_ENABLE = putPrefix("generic.others.god-enabled");
     public static final String MSG_GOD_DISABLE = putPrefix("generic.others.god-disabled");
     public static final String MSG_RELOAD_START = putPrefix("generic.others.reload-start");
