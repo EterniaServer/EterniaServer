@@ -30,6 +30,10 @@ public class SpawnerGive extends BaseCommand {
         final Player targetP = target.getPlayer();
         final Inventory inventory = targetP.getInventory();
         final String spawnerName = spawner.toUpperCase();
+        final String displayName;
+        if (player instanceof Player) displayName = ((Player) player).getDisplayName();
+        else displayName = player.getName();
+
         if (EterniaServer.entityList.contains(spawnerName)) {
             EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
@@ -37,8 +41,8 @@ public class SpawnerGive extends BaseCommand {
                 player.sendMessage(Strings.MSG_SPAWNER_INVFULL);
             } else {
                 inventory.addItem(getSpawner(spawnerName, value));
-                player.sendMessage(Strings.MSG_SPAWNER_SENT.replace(Constants.VALUE, String.valueOf(value)).replace(Constants.TYPE, spawnerName).replace(Constants.TARGET, targetP.getDisplayName()));
-                player.sendMessage(Strings.MSG_SPAWNER_RECEIVED.replace(Constants.TYPE, spawnerName).replace(Constants.TARGET, player.getName()).replace(Constants.VALUE, String.valueOf(value)));
+                player.sendMessage(InternMethods.putName(targetP, Strings.MSG_SPAWNER_SENT.replace(Constants.VALUE, String.valueOf(value)).replace(Constants.TYPE, spawnerName)));
+                targetP.sendMessage(InternMethods.putName(player, Strings.MSG_SPAWNER_RECEIVED.replace(Constants.TYPE, spawnerName).replace(Constants.VALUE, String.valueOf(value))));
             }
         } else {
             sendTypes(player);

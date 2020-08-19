@@ -68,11 +68,10 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.money.admin")
     public void onSet(CommandSender sender, OnlinePlayer target, Double money) {
         final Player targetP = target.getPlayer();
-        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(Strings.M_ECO_SET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_ECO_RSET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
+        sender.sendMessage(InternMethods.putName(targetP, Strings.M_ECO_SET.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(InternMethods.putName(sender, Strings.M_ECO_RSET.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("take")
@@ -81,11 +80,10 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.money.admin")
     public void onRemove(CommandSender sender, OnlinePlayer target, Double money) {
         final Player targetP = target.getPlayer();
-        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(Strings.M_ECO_REMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_ECO_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
+        sender.sendMessage(InternMethods.putName(targetP, Strings.M_ECO_REMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(InternMethods.putName(sender, Strings.M_ECO_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("give")
@@ -94,11 +92,9 @@ public class Economy extends BaseCommand {
     @CommandPermission("eternia.money.admin")
     public void onGive(CommandSender sender, OnlinePlayer target, Double money) {
         final Player targetP = target.getPlayer();
-        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-
         APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(Strings.M_ECO_GIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_ECO_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
+        sender.sendMessage(InternMethods.putName(targetP, Strings.M_ECO_GIVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(InternMethods.putName(sender, Strings.M_ECO_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @CommandAlias("money")
@@ -134,8 +130,8 @@ public class Economy extends BaseCommand {
                 if (APIEconomy.getMoney(uuid) >= value) {
                     APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetName), value);
                     APIEconomy.removeMoney(uuid, value);
-                    player.sendMessage(Strings.M_ECO_PAY.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, targetP.getDisplayName()));
-                    targetP.sendMessage(Strings.M_ECO_PAY_ME.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, player.getDisplayName()));
+                    player.sendMessage(InternMethods.putName(targetP, Strings.M_ECO_PAY.replace(Constants.AMOUNT, String.valueOf(value))));
+                    targetP.sendMessage(InternMethods.putName(player, Strings.M_ECO_PAY_ME.replace(Constants.AMOUNT, String.valueOf(value))));
                 } else {
                     player.sendMessage(Strings.M_ECO_PAY_NO);
                 }
@@ -150,8 +146,15 @@ public class Economy extends BaseCommand {
     @CommandAlias("baltop")
     @Subcommand("baltop")
     public void onBaltop(CommandSender sender) {
+        final boolean nickEnable = Strings.M_ECO_BALLIST.contains("%player_displayname%");
+
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
-            lista.forEach((namet -> sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet)))))));
+            lista.forEach((namet -> {
+                final UUID uuid;
+                if (Vars.realName.containsKey(namet) && nickEnable) uuid = UUIDFetcher.getUUIDOf(Vars.realName.get(namet));
+                else uuid = UUIDFetcher.getUUIDOf(namet);
+                sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(uuid))));
+            }));
         } else {
             CompletableFuture.runAsync(() -> {
                 String name = "yurinogueira";
@@ -159,7 +162,9 @@ public class Economy extends BaseCommand {
                 for (int i = 0; i < 10; i++) {
                     double maior = 0.0;
                     for (Map.Entry<UUID, Double> entry : Vars.balances.entrySet()) {
-                        final String playerName = UUIDFetcher.getNameOf(entry.getKey());
+                        final String playerName;
+                        if (Vars.nick.containsKey(entry.getKey()) && nickEnable) playerName = Vars.nick.get(entry.getKey());
+                        else playerName = UUIDFetcher.getNameOf(entry.getKey());
                         if (entry.getValue() > maior && !list.contains(playerName) && !EterniaServer.serverConfig.getStringList("money.no-baltop").contains(playerName)) {
                             maior = entry.getValue();
                             name = playerName;
@@ -169,7 +174,12 @@ public class Economy extends BaseCommand {
                 }
                 lista = list;
                 time = System.currentTimeMillis();
-                list.forEach((namet -> sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(UUIDFetcher.getUUIDOf(namet)))))));
+                list.forEach((namet -> {
+                    final UUID uuid;
+                    if (Vars.realName.containsKey(namet) && nickEnable) uuid = UUIDFetcher.getUUIDOf(Vars.realName.get(namet));
+                    else uuid = UUIDFetcher.getUUIDOf(namet);
+                    sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(uuid))));
+                }));
             });
         }
     }

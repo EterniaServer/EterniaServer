@@ -10,6 +10,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.paperlib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -62,8 +63,9 @@ public class WarpSystem extends BaseCommand {
         } else {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.spawn.other") && spawnExists(location, player)) {
-                Vars.teleports.put(targetP, new PlayerTeleport(target.getPlayer(), location, Strings.MSG_WARP_DONE));
-                player.sendMessage(Strings.MSG_SPAWN_TELEPORT_TARGET.replace(Constants.TARGET, targetP.getDisplayName()));
+                PaperLib.teleportAsync(targetP, location);
+                targetP.sendMessage(InternMethods.putName(player, Strings.SPAWN_BY));
+                player.sendMessage(InternMethods.putName(targetP, Strings.MSG_SPAWN_TELEPORT_TARGET));
             } else if (!player.hasPermission("eternia.spawn.other")) {
                 player.sendMessage(Strings.MSG_NO_PERM);
             }

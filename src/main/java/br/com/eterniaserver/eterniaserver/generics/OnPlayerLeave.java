@@ -39,7 +39,7 @@ public class OnPlayerLeave implements Listener {
         }
 
         event.setQuitMessage(null);
-        Bukkit.broadcastMessage(Strings.MSG_LEAVE.replace(Constants.PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_LEAVE));
 
     }
 

@@ -27,6 +27,7 @@ public class Strings {
     public static final String MSG_SPAWN_CREATED = putPrefix("teleport.spawn.created");
     public static final String MSG_SPAWN_NO_EXISTS = putPrefix("teleport.spawn.no-exists");
     public static final String MSG_SPAWN_TELEPORT_TARGET = putPrefix("teleport.spawn.tp-target");
+    public static final String SPAWN_BY = putPrefix("teleport.spawn.tp-you");
 
     public static final String MSG_SHOP_CREATED = putPrefix("teleport.shop.created");
     public static final String MSG_SHOP_DONE = putPrefix("teleport.shop.done");

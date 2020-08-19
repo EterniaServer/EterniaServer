@@ -53,7 +53,7 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("vanish|chupadadimensional")
     @CommandPermission("eternia.vanish")
     public void onVanish(Player player) {
-        Bukkit.broadcastMessage(Strings.MSG_LEAVE.replace(Constants.PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_LEAVE));
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(plugin, player);
         }
@@ -62,7 +62,7 @@ public class ChatCommands extends BaseCommand {
     @CommandAlias("unvanish|chupadadimensionalreversa")
     @CommandPermission("eternia.vanish")
     public void onUnVanish(Player player) {
-        Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(Constants.PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_JOIN));
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(plugin, player);
         }
@@ -80,14 +80,14 @@ public class ChatCommands extends BaseCommand {
             } else {
                 ignoreds = Vars.ignoredPlayer.get(targetName);
                 if (ignoreds.contains(player)) {
-                    player.sendMessage(Strings.M_CHAT_DENY.replace(Constants.TARGET, target.getDisplayName()));
+                    player.sendMessage(InternMethods.putName(target, Strings.M_CHAT_DENY));
                     ignoreds.remove(player);
                     return;
                 }
             }
             ignoreds.add(player);
             Vars.ignoredPlayer.put(target.getName(), ignoreds);
-            player.sendMessage(Strings.M_CHAT_IGNORE.replace(Constants.TARGET, target.getDisplayName()));
+            player.sendMessage(InternMethods.putName(target, Strings.M_CHAT_IGNORE));
         }
     }
 
@@ -130,7 +130,7 @@ public class ChatCommands extends BaseCommand {
             if (APIEconomy.hasMoney(uuid, money)) {
                 APIEconomy.removeMoney(uuid, money);
                 player.setDisplayName(Vars.nick.get(uuid));
-                player.sendMessage(Strings.M_CHAT_NEWNICK.replace(Constants.PLAYER, player.getDisplayName()));
+                player.sendMessage(InternMethods.putName(player, Strings.M_CHAT_NEWNICK));
                 saveToSQL(playerName);
                 final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
                 playerProfile.setPlayerDisplayName(Vars.nick.get(uuid));
@@ -205,7 +205,7 @@ public class ChatCommands extends BaseCommand {
         if (msg == null || msg.length == 0) {
             Vars.chatLocked.put(playerName, target.getName());
             Vars.global.put(playerName, 3);
-            player.sendMessage(Strings.MSG_CHAT_LOCKED.replace(Constants.TARGET, target.getDisplayName()));
+            player.sendMessage(InternMethods.putName(target, Strings.MSG_CHAT_LOCKED));
             return;
         }
 
@@ -274,9 +274,9 @@ public class ChatCommands extends BaseCommand {
             target.sendMessage(Strings.M_CHAT_REMOVE_NICK);
             player.sendMessage(Strings.M_CHAT_REMOVE_NICK);
         } else {
-            target.setDisplayName(Strings.getColor(string));
-            player.sendMessage(Strings.M_CHAT_NEWNICK.replace(Constants.PLAYER, Strings.getColor(string)));
-            target.sendMessage(Strings.M_CHAT_NEWNICK.replace(Constants.PLAYER, Strings.getColor(string)));
+            target.setDisplayName(string);
+            player.sendMessage(InternMethods.putName(target, Strings.M_CHAT_NEWNICK));
+            target.sendMessage(InternMethods.putName(target, Strings.M_CHAT_NEWNICK));
         }
     }
 

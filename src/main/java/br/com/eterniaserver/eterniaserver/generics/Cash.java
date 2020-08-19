@@ -230,7 +230,7 @@ public class Cash extends BaseCommand {
         APICash.removeCash(uuid, value);
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
         target.sendMessage(Strings.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(Strings.M_CASH_SEND.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, target.getDisplayName()));
+        player.sendMessage(InternMethods.putName(target, Strings.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
     @Subcommand("give")
@@ -246,7 +246,7 @@ public class Cash extends BaseCommand {
         final Player target = targetP.getPlayer();
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
         target.sendMessage(Strings.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(Strings.M_CASH_SEND.replace(Constants.AMOUNT, String.valueOf(value)).replace(Constants.TARGET, target.getDisplayName()));
+        player.sendMessage(InternMethods.putName(target, Strings.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
     @Subcommand("remove")
@@ -262,7 +262,7 @@ public class Cash extends BaseCommand {
         final Player target = targetP.getPlayer();
         APICash.removeCash(UUIDFetcher.getUUIDOf(target.getName()), value);
         target.sendMessage(Strings.M_CASH_REMOVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(Strings.M_CASH_REMOVE.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(InternMethods.putName(target, Strings.M_CASH_REMOVE).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
 }

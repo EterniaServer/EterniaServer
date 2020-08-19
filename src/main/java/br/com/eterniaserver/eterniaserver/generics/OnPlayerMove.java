@@ -21,7 +21,7 @@ public class OnPlayerMove implements Listener {
             Vars.afkTime.put(playerName, System.currentTimeMillis());
             if (Vars.afk.contains(playerName)) {
                 Vars.afk.remove(playerName);
-                Bukkit.broadcastMessage(Strings.MSG_AFK_DISABLE.replace(Constants.PLAYER, player.getDisplayName()));
+                Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_DISABLE));
             }
         }
     }

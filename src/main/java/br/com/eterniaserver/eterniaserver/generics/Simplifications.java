@@ -35,8 +35,8 @@ public class Simplifications extends BaseCommand {
         if (target != null) {
             final Player targetP = target.getPlayer();
             world.strikeLightning(targetP.getLocation());
-            player.sendMessage(Strings.MSG_LIGHTNING_SENT.replace(Constants.TARGET, targetP.getDisplayName()));
-            player.sendMessage(Strings.MSG_LIGHTNING_RECEIVED.replace(Constants.TARGET, player.getDisplayName()));
+            player.sendMessage(InternMethods.putName(targetP, Strings.MSG_LIGHTNING_SENT));
+            targetP.sendMessage(InternMethods.putName(player, Strings.MSG_LIGHTNING_RECEIVED));
         } else {
             world.strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
@@ -50,7 +50,7 @@ public class Simplifications extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            Bukkit.broadcastMessage(Strings.MSG_SUICIDE.replace(Constants.MESSAGE, sb.toString()).replace(Constants.PLAYER, player.getDisplayName()));
+            Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_SUICIDE.replace(Constants.MESSAGE, sb.toString())));
         } else {
             player.setHealth(0);
         }

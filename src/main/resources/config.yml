@@ -79,7 +79,7 @@ sql:
 # online divided by the players sleeping))
 # blacklisted-worlds will set which worlds could not skip the night sleeping.
 bed:
-  speed: 50
+  speed: 100
   blacklisted-worlds:
     - 'evento'
 
@@ -95,7 +95,7 @@ money:
   singular: 'Eternia'
   plural: 'Eternias'
   no-baltop:
-    - 'yurinogueira'
+    - 'YuriNogueira'
 
 # This commands will be blocked.
 blocked-commands:

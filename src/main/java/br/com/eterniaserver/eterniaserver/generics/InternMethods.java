@@ -10,6 +10,7 @@ import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
@@ -68,6 +69,10 @@ public class InternMethods {
 
     public static String putName(Player player, String string) {
         return string.replace("%player_name%", player.getName()).replace("%player_displayname%", player.getDisplayName());
+    }
+
+    public static String putName(CommandSender player, String string) {
+        return string.replace("%player_name%", player.getName()).replace("%player_displayname%", player.getName());
     }
 
     public static SubPlaceholder getSubPlaceholder(final Player player, final CustomPlaceholder cp) {

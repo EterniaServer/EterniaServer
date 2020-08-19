@@ -1,6 +1,5 @@
 package br.com.eterniaserver.eterniaserver;
 
-import br.com.eterniaserver.eterniaserver.configs.Configs;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
@@ -13,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yaml.snakeyaml.Yaml;
 
 import java.text.DecimalFormat;
 import java.util.List;

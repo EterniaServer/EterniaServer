@@ -137,8 +137,9 @@ public class Others extends BaseCommand {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.feed.other")) {
                 targetP.setFoodLevel(20);
+                player.sendMessage(InternMethods.putName(targetP, Strings.MSG_FEEDED_TARGET));
                 player.sendMessage(Strings.MSG_FEEDED_TARGET.replace(Constants.TARGET, targetP.getDisplayName()));
-                player.sendMessage(Strings.MSG_FEEDED);
+                targetP.sendMessage(Strings.MSG_FEEDED);
             } else {
                 player.sendMessage(Strings.MSG_NO_PERM);
             }
@@ -181,11 +182,11 @@ public class Others extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (Vars.afk.contains(playerName)) {
-            Bukkit.broadcastMessage(Strings.MSG_AFK_DISABLE.replace(Constants.PLAYER, player.getDisplayName()));
+            Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_DISABLE));
             Vars.afk.remove(playerName);
         } else {
             Vars.afk.add(playerName);
-            Bukkit.broadcastMessage(Strings.MSG_AFK_ENABLE.replace(Constants.PLAYER, player.getDisplayName()));
+            Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_ENABLE));
         }
     }
 

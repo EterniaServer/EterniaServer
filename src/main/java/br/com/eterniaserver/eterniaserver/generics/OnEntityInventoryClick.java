@@ -32,7 +32,7 @@ public class OnEntityInventoryClick implements Listener {
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
             player.sendMessage(Strings.MSG_SPAWNER_NAME);
-            player.sendMessage(Strings.MSG_SPAWNER_LOG.replace(Constants.PLAYER, player.getDisplayName()));
+            player.sendMessage(InternMethods.putName(player, Strings.MSG_SPAWNER_LOG));
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.cash")) {

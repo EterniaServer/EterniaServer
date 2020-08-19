@@ -33,7 +33,7 @@ public class Gamemode extends BaseCommand {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.SURVIVAL);
             targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, survivalString));
-            player.sendMessage(Strings.M_GM_TARGET.replace(Constants.TARGET, targetP.getDisplayName()).replace(Constants.GM, survivalString));
+            player.sendMessage(InternMethods.putName(targetP, Strings.M_GM_TARGET.replace(Constants.GM, survivalString)));
         }
     }
 
@@ -50,7 +50,7 @@ public class Gamemode extends BaseCommand {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.CREATIVE);
             targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, creativeString));
-            player.sendMessage(Strings.M_GM_TARGET.replace(Constants.TARGET, targetP.getDisplayName()).replace(Constants.GM, creativeString));
+            player.sendMessage(InternMethods.putName(targetP, Strings.M_GM_TARGET.replace(Constants.GM, creativeString)));
         }
     }
 
@@ -67,7 +67,7 @@ public class Gamemode extends BaseCommand {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.ADVENTURE);
             targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, adventureString));
-            player.sendMessage(Strings.M_GM_TARGET.replace(Constants.TARGET, targetP.getDisplayName()).replace(Constants.GM, adventureString));
+            player.sendMessage(InternMethods.putName(targetP, Strings.M_GM_TARGET.replace(Constants.GM, adventureString)));
         }
     }
 
@@ -84,7 +84,7 @@ public class Gamemode extends BaseCommand {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.SPECTATOR);
             player.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, spectatorString));
-            player.sendMessage(Strings.M_GM_TARGET.replace(Constants.TARGET, targetP.getDisplayName()).replace(Constants.GM, spectatorString));
+            player.sendMessage(InternMethods.putName(targetP, Strings.M_GM_TARGET.replace(Constants.GM, spectatorString)));
         }
     }
 

@@ -61,7 +61,7 @@ public class OnPlayerJoin implements Listener {
         playerChecks(playerName);
 
         event.setJoinMessage(null);
-        Bukkit.broadcastMessage(Strings.MSG_JOIN.replace(Constants.PLAYER, player.getDisplayName()));
+        Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_JOIN));
     }
 
     private void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {

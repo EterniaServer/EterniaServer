@@ -66,11 +66,10 @@ public class Experience extends BaseCommand {
     @CommandPermission("eternia.xp.admin")
     public void onSet(CommandSender sender, OnlinePlayer target, int money) {
         final Player targetP = target.getPlayer();
-        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         targetP.setLevel(money);
-        sender.sendMessage(Strings.M_XP_SET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_XP_RSET.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
+        sender.sendMessage(InternMethods.putName(targetP, Strings.M_XP_SET.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(InternMethods.putName(sender, Strings.M_XP_RSET.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("take")
@@ -79,11 +78,10 @@ public class Experience extends BaseCommand {
     @CommandPermission("eternia.xp.admin")
     public void onTake(CommandSender sender, OnlinePlayer target, int money) {
         final Player targetP = target.getPlayer();
-        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         targetP.setLevel(targetP.getLevel() - money);
-        sender.sendMessage(Strings.M_XP_REMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_XP_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
+        sender.sendMessage(InternMethods.putName(targetP, Strings.M_XP_REMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(InternMethods.putName(sender, Strings.M_XP_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("give")
@@ -92,11 +90,10 @@ public class Experience extends BaseCommand {
     @CommandPermission("eternia.xp.admin")
     public void onGive(CommandSender sender, OnlinePlayer target, int money) {
         final Player targetP = target.getPlayer();
-        final String senderName = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
 
         targetP.setLevel(targetP.getLevel() + money);
-        sender.sendMessage(Strings.M_XP_GIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, targetP.getDisplayName()));
-        targetP.sendMessage(Strings.M_XP_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money)).replace(Constants.TARGET, senderName));
+        sender.sendMessage(InternMethods.putName(targetP, Strings.M_XP_GIVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(InternMethods.putName(sender, Strings.M_XP_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("check")

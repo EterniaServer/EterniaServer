@@ -62,11 +62,11 @@ public class Checks extends BukkitRunnable {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afkTime.get(playerName)) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
             if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
                 if (!Vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                    player.sendMessage(Strings.MSG_AFK_BROAD.replace(Constants.PLAYER, player.getDisplayName()));
+                    Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_BROAD));
                     player.kickPlayer(Strings.MSG_AFK_KICKED);
                 }
             } else {
-                Bukkit.broadcastMessage(Strings.MSG_AFK_ENABLE.replace(Constants.PLAYER, player.getDisplayName()));
+                Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_ENABLE));
                 Vars.afk.add(playerName);
             }
         }

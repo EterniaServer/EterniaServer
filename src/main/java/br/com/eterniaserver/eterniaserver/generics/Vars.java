@@ -51,6 +51,7 @@ public class Vars {
     protected static final Map<String, Long> tpaTime = new HashMap<>();
     protected static final Map<String, Long> afkTime = new HashMap<>();
     protected static final Map<String, Long> bedCooldown = new HashMap<>();
+    protected static final Map<String, String> realName = new HashMap<>();
     protected static final Map<String, String> rewards = new HashMap<>();
     protected static final Map<String, String> tpaRequests = new HashMap<>();
     protected static final Map<String, String> glowingColor = new HashMap<>();

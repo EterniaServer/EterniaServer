@@ -28,10 +28,10 @@ public class Mute extends BaseCommand {
     public void muteChannels(Player sender) {
         if (Vars.chatMuted) {
             InternMethods.setChatMuted(false);
-            Bukkit.broadcastMessage(Strings.M_CHAT_D.replace(Constants.PLAYER, sender.getDisplayName()));
+            Bukkit.broadcastMessage(InternMethods.putName(sender, Strings.M_CHAT_D));
         } else {
             InternMethods.setChatMuted(true);
-            Bukkit.broadcastMessage(Strings.M_CHAT_E.replace(Constants.PLAYER, sender.getDisplayName()));
+            Bukkit.broadcastMessage(InternMethods.putName(sender, Strings.M_CHAT_E));
         }
     }
 
@@ -47,7 +47,7 @@ public class Mute extends BaseCommand {
         cal.setTime(new Date());
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
-        Bukkit.broadcastMessage(Strings.M_CHAT_MUTEBROAD.replace(Constants.PLAYER, targetP.getDisplayName()).replace(Constants.MESSAGE, messageFull(message)));
+        Bukkit.broadcastMessage(InternMethods.putName(targetP, Strings.M_CHAT_MUTEBROAD).replace(Constants.MESSAGE, messageFull(message)));
         EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableMuted, Constants.TIME_STR, time, Constants.UUID_STR, UUIDFetcher.getUUIDOf(targetName).toString()));
         Vars.playerMuted.put(UUIDFetcher.getUUIDOf(targetName), cal.getTimeInMillis());
     }
@@ -61,7 +61,7 @@ public class Mute extends BaseCommand {
         final String playerName = target.getPlayer().getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         Vars.playerMuted.put(uuid, time);
-        Bukkit.broadcastMessage(Strings.M_CHAT_UNMUTEBROAD.replace(Constants.PLAYER, target.getPlayer().getDisplayName()));
+        Bukkit.broadcastMessage(InternMethods.putName(target.getPlayer(), Strings.M_CHAT_UNMUTEBROAD));
         EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableMuted, Constants.TIME_STR, time, Constants.UUID_STR, uuid.toString()));
     }
 
@@ -76,7 +76,7 @@ public class Mute extends BaseCommand {
         final long timeInMillis = cal.getTimeInMillis();
         final String targetName = target.getPlayer().getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(targetName);
-        Bukkit.broadcastMessage(Strings.M_CHAT_MUTET.replace(Constants.PLAYER, target.getPlayer().getDisplayName()).replace(Constants.TIME, String.valueOf(time)).replace(Constants.MESSAGE, messageFull(message)));
+        Bukkit.broadcastMessage(InternMethods.putName(target.getPlayer(), Strings.M_CHAT_MUTET.replace(Constants.TIME, String.valueOf(time)).replace(Constants.MESSAGE, messageFull(message))));
         EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableMuted, Constants.TIME_STR, timeInMillis, Constants.UUID_STR, uuid.toString()));
         Vars.playerMuted.put(uuid, cal.getTimeInMillis());
     }

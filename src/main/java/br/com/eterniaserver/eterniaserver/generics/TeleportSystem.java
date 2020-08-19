@@ -33,7 +33,7 @@ public class TeleportSystem extends BaseCommand {
         if (Vars.tpaRequests.containsKey(playerName)) {
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             if (target != null) {
-                target.sendMessage(Strings.MSG_TELEPORT_ACCEPT.replace(Constants.TARGET, player.getDisplayName()));
+                target.sendMessage(InternMethods.putName(player, Strings.MSG_TELEPORT_ACCEPT));
                 Vars.teleports.put(target, new PlayerTeleport(target, player.getLocation(), Strings.MSG_TELEPORT_DONE));
             }
             Vars.tpaTime.remove(playerName);
@@ -47,13 +47,15 @@ public class TeleportSystem extends BaseCommand {
     @CommandPermission("eternia.tpa")
     public void onTeleportDeny(Player player) {
         final String playerName = player.getName();
-        if (Vars.tpaRequests.containsKey(playerName)) {
-            player.sendMessage(Strings.MSG_TELEPORT_DENY.replace(Constants.TARGET, Vars.tpaRequests.get(playerName)));
-            final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
+        final Player target = Bukkit.getPlayer(UUIDFetcher.getUUIDOf(Vars.tpaRequests.get(playerName)));
+        if (target != null && target.isOnline()) {
+            player.sendMessage(InternMethods.putName(target, Strings.MSG_TELEPORT_DENY));
             Vars.tpaRequests.remove(playerName);
             Vars.tpaTime.remove(playerName);
-            if (target != null && target.isOnline()) target.sendMessage(Strings.MSG_TELEPORT_DENIED);
+            target.sendMessage(Strings.MSG_TELEPORT_DENIED);
         } else {
+            Vars.tpaRequests.remove(playerName);
+            Vars.tpaTime.remove(playerName);
             player.sendMessage(Strings.MSG_TELEPORT_NO_REQUEST);
         }
     }
@@ -74,8 +76,8 @@ public class TeleportSystem extends BaseCommand {
                     Vars.tpaRequests.remove(targetName);
                     Vars.tpaRequests.put(targetName, playerName);
                     Vars.tpaTime.put(targetName, System.currentTimeMillis());
-                    targetP.sendMessage(Strings.MSG_TELEPORT_RECEIVED.replace(Constants.TARGET, player.getDisplayName()));
-                    player.sendMessage(Strings.MSG_TELEPORT_SENT.replace(Constants.TARGET, targetP.getDisplayName()));
+                    targetP.sendMessage(InternMethods.putName(player, Strings.MSG_TELEPORT_RECEIVED));
+                    player.sendMessage(InternMethods.putName(targetP, Strings.MSG_TELEPORT_SENT));
                 } else {
                     player.sendMessage(Strings.MSG_TELEPORT_EXISTS);
                 }
