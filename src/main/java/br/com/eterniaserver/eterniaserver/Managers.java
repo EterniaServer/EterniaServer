@@ -111,7 +111,11 @@ public class Managers {
 
     private void loadPlayerChecks() {
         sendModuleStatus(true, "PlayerChecks");
-        new Checks().runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt("server.checks") * 20);
+        if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
+            new Checks(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.serverConfig.getInt("server.checks") * 20);
+            return;
+        }
+        new Checks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt("server.checks") * 20);
     }
 
     private void loadRewardsManager() {

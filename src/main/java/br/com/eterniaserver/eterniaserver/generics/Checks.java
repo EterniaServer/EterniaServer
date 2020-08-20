@@ -18,6 +18,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Checks extends BukkitRunnable {
 
+    private final EterniaServer plugin;
+
+    public Checks(EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -28,18 +34,14 @@ public class Checks extends BukkitRunnable {
             checkNetherTrap(player, location, playerName);
             checkAFK(player, playerName);
             getPlayersInTp(player);
-            refreshPlayers();
+            refreshPlayers(player);
         }
     }
 
-    private void refreshPlayers() {
-        if (EterniaServer.serverConfig.getBoolean("modules.chat") && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.checkTime) > 15) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-                Vars.playersName.put("@" + player.getName(), uuid);
-                Vars.playersName.put("@" + player.getDisplayName(), uuid);
-            }
-        }
+    private void refreshPlayers(Player player) {
+        UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        Vars.playersName.put("@" + player.getName(), uuid);
+        Vars.playersName.put("@" + player.getDisplayName(), uuid);
     }
 
     private void tpaTime(final String playerName) {
@@ -56,7 +58,7 @@ public class Checks extends BukkitRunnable {
                 Vars.playersInPortal.put(playerName, 7);
             } else if (Vars.playersInPortal.get(playerName) <= 1) {
                 if (location.getBlock().getType() == Material.NETHER_PORTAL) {
-                    PaperLib.teleportAsync(player, getWarp());
+                    runSync(() -> PaperLib.teleportAsync(player, getWarp()));
                     player.sendMessage(Strings.MSG_WARP_DONE);
                 }
             } else if (Vars.playersInPortal.get(playerName) > 1) {
@@ -75,7 +77,7 @@ public class Checks extends BukkitRunnable {
             if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
                 if (!Vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                     Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_BROAD));
-                    player.kickPlayer(Strings.MSG_AFK_KICKED);
+                    runSync(() -> player.kickPlayer(Strings.MSG_AFK_KICKED));
                 }
             } else {
                 Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_ENABLE));
@@ -90,7 +92,7 @@ public class Checks extends BukkitRunnable {
             if (!player.hasPermission("eternia.timing.bypass")) {
                 if (!playerTeleport.hasMoved()) {
                     if (playerTeleport.getCountdown() == 0) {
-                        PaperLib.teleportAsync(player, playerTeleport.getWantLocation());
+                        runSync(()-> PaperLib.teleportAsync(player, playerTeleport.getWantLocation()));
                         player.sendMessage(playerTeleport.getMessage());
                         Vars.teleports.remove(player);
                     } else {
@@ -102,7 +104,7 @@ public class Checks extends BukkitRunnable {
                     Vars.teleports.remove(player);
                 }
             } else {
-                PaperLib.teleportAsync(player, playerTeleport.getWantLocation());
+                runSync(()-> PaperLib.teleportAsync(player, playerTeleport.getWantLocation()));
                 player.sendMessage(playerTeleport.getMessage());
                 Vars.teleports.remove(player);
             }
@@ -111,6 +113,14 @@ public class Checks extends BukkitRunnable {
 
     private Location getWarp() {
         return Vars.warps.getOrDefault("spawn", EterniaServer.error);
+    }
+
+    public void runSync(Runnable runnable) {
+        if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
+            Bukkit.getScheduler().runTask(plugin, runnable);
+            return;
+        }
+        runnable.run();
     }
 
 }

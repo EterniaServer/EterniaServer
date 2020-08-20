@@ -43,7 +43,7 @@ public class TextMaker {
 			String msg = chatObject.message;
 			msg = InternMethods.setPlaceholders(p, msg);
 			if (msg.contains(Constants.MESSAGE)) msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
-			if (msg.contains("@")) {
+			if (p.hasPermission("eternia.chat.mention") && msg.contains("@")) {
 				int lenght = msg.length();
 				for (int v = 0; v < lenght; v++) {
 					String playerName;
@@ -60,7 +60,7 @@ public class TextMaker {
 				}
 			}
 			ItemStack itemStack = p.getInventory().getItemInMainHand();
-			if (msg.contains("[item]") && (itemStack != null && !itemStack.getType().equals(Material.AIR))) {
+			if (p.hasPermission("eternia.chat.item") && msg.contains("[item]") && (itemStack != null && !itemStack.getType().equals(Material.AIR))) {
 				baseComp[i] = sendItemInHand(msg, itemStack);
 			} else {
 				TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));

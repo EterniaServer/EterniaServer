@@ -35,7 +35,7 @@ placeholders:
   afk: '&9 AFK'
   godmode: '&9 GOD'
 
-# async-check will enable the async method, please don't disable it if you
+# async-check will enable the async method.
 # don't know what you're doing.
 # checks is the interval between checks, like afk, anti nether trap, cooldowns
 # don't touch this, if you don't know what you're doing.
@@ -43,6 +43,7 @@ placeholders:
 # cooldown is the interval between the player being teleported when using a
 # command that teleports him.
 server:
+  async-check: true
   checks: 1
   afk-timer: 900
   afk-kick: true

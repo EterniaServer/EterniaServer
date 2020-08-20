@@ -26,7 +26,7 @@ public class ChatFormatter {
 			String prefix = total.substring(0, i);
 			message.get(0).setMessage(prefix);
 			message.getChatObjects().add(msg);
-			if(i2+1<=total.length()) {
+			if(i2 + 1 <=total.length()) {
 				message.getChatObjects().add(new ChatObject(total.substring(i2+1)));
 			}
 		} else {
