@@ -1,13 +1,12 @@
 # EterniaServer
 **Download**: Até o momento sem link para download disponível.
 ### Sonarcloud:
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=security_rating)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=bugs)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=code_smells)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=yurinogueira_EterniaServer&metric=sqale_index)](https://sonarcloud.io/dashboard?id=yurinogueira_EterniaServer)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=EterniaServer_EterniaServer&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=EterniaServer_EterniaServer)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=EterniaServer_EterniaServer&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=EterniaServer_EterniaServer)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=EterniaServer_EterniaServer&metric=code_smells)](https://sonarcloud.io/dashboard?id=EterniaServer_EterniaServer)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=EterniaServer_EterniaServer&metric=sqale_index)](https://sonarcloud.io/dashboard?id=EterniaServer_EterniaServer)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=EterniaServer_EterniaServer&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=EterniaServer_EterniaServer)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=EterniaServer_EterniaServer&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=EterniaServer_EterniaServer)
 ### Contribuindo:
 O EterniaServer é um projeto Open-Source e qualquer melhoria ou feacture extra será bem vinda. Agradeço
 a todos que ajudaram e irão ajudar contribuindo para o EterniaServer plugin, assim mantendo a manutenção dele.
