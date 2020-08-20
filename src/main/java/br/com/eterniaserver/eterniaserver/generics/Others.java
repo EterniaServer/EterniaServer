@@ -97,7 +97,7 @@ public class Others extends BaseCommand {
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
 
             if (APIFly.isOnPvP(uuid)) {
-                player.sendMessage(InternMethods.putName(target, Strings.FLY_TARGET_IN_PVP.replace(Constants.AMOUNT, String.valueOf(APIFly.getPvPCooldown(uuid)))));
+                player.sendMessage(InternMethods.putName(target, Strings.FLY_TARGET_IN_PVP.replace(Constants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid)))));
                 return;
             }
 
@@ -114,7 +114,7 @@ public class Others extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (APIFly.isOnPvP(uuid)) {
-            player.sendMessage(Strings.FLY_IN_PVP.replace(Constants.AMOUNT, String.valueOf(APIFly.getPvPCooldown(uuid))));
+            player.sendMessage(Strings.FLY_IN_PVP.replace(Constants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid))));
             return;
         }
 
