@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
@@ -12,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Checks extends BukkitRunnable {
@@ -26,7 +28,17 @@ public class Checks extends BukkitRunnable {
             checkNetherTrap(player, location, playerName);
             checkAFK(player, playerName);
             getPlayersInTp(player);
+            refreshPlayers();
+        }
+    }
 
+    private void refreshPlayers() {
+        if (EterniaServer.serverConfig.getBoolean("modules.chat") && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.checkTime) > 15) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+                Vars.playersName.put("@" + player.getName(), uuid);
+                Vars.playersName.put("@" + player.getDisplayName(), uuid);
+            }
         }
     }
 

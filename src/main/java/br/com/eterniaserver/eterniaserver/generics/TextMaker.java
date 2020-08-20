@@ -2,6 +2,8 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 
+import br.com.eterniaserver.eternialib.NBTCompound;
+import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
@@ -16,7 +18,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Instrument;
+import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class TextMaker {
 
@@ -35,30 +42,61 @@ public class TextMaker {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
 			msg = InternMethods.setPlaceholders(p, msg);
-			if (msg.contains(Constants.MESSAGE)) {
-				msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
+			if (msg.contains(Constants.MESSAGE)) msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
+			if (msg.contains("@")) {
+				int lenght = msg.length();
+				for (int v = 0; v < lenght; v++) {
+					String playerName;
+					if (Character.toString(msg.charAt(v)).equals("@")) {
+						if (lenght > v + 16) playerName = msg.substring(v, v + 16).split(" ")[0];
+						else playerName = msg.substring(v, v + lenght - 1).split(" ")[0];
+						if (Vars.playersName.containsKey(playerName)) {
+							Player player = Bukkit.getPlayer(Vars.playersName.get(playerName));
+							player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
+							player.sendTitle(Strings.getColor(p.getDisplayName()), Strings.getColor("&7mencionou você&8!"), 10, 40, 10);
+						}
+						break;
+					}
+				}
 			}
-			TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
-			if(chatObject.getHover() != null) {
-				ArrayList<TextComponent> tcs = new ArrayList<>();
-				tcs.add(new TextComponent(InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getHover()))));
-				textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
+			ItemStack itemStack = p.getInventory().getItemInMainHand();
+			if (msg.contains("[item]") && (itemStack != null && !itemStack.getType().equals(Material.AIR))) {
+				baseComp[i] = sendItemInHand(msg, itemStack);
+			} else {
+				TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
+				if (chatObject.getHover() != null) {
+					ArrayList<TextComponent> tcs = new ArrayList<>();
+					tcs.add(new TextComponent(InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getHover()))));
+					textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
+				}
+				if (chatObject.getColor() != null) {
+					textComp.setColor(chatObject.getColor().asBungee());
+				}
+				if (chatObject.getSuggest() != null) {
+					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getSuggest()))));
+				}
+				if (chatObject.getRun() != null) {
+					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getRun()))));
+				}
+				if (chatObject.isText()) {
+					setTextAttr(textComp, p);
+				}
+				baseComp[i] = textComp;
 			}
-			if(chatObject.getColor() != null) {
-				textComp.setColor(chatObject.getColor().asBungee());
-			}
-			if(chatObject.getSuggest() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getSuggest()))));
-			}
-			if(chatObject.getRun() != null) {
-				textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, InternMethods.setPlaceholders(p, Strings.getColor(chatObject.getRun()))));
-			}
-			if(chatObject.isText()) {
-				setTextAttr(textComp, p);
-			}
-			baseComp[i] = textComp;
 		}
 		text = new TextComponent(baseComp);
+	}
+
+	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
+		NBTCompound compound = NBTItem.convertItemtoNBT(itemStack);
+		String json = compound.toString();
+		BaseComponent[] baseComponents = new BaseComponent[] {
+				new TextComponent(json)
+		};
+		HoverEvent event = new HoverEvent(Action.SHOW_ITEM, baseComponents);
+		TextComponent component = new TextComponent(string);
+		component.setHoverEvent(event);
+		return component;
 	}
 
 	private void setTextAttr(TextComponent text, Player p) {

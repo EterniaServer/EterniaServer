@@ -12,6 +12,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.TimeUnit;
 
@@ -127,7 +128,7 @@ public class InternMethods {
         return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown) >= timeNeeded;
     }
 
-    public  static boolean stayMuted(long cooldown) {
+    public static boolean stayMuted(long cooldown) {
         return cooldown - System.currentTimeMillis() > 0;
     }
 

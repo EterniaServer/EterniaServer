@@ -19,6 +19,7 @@ public class Vars {
 
     protected static boolean chatMuted = false;
     protected static long nightTime = System.currentTimeMillis();
+    protected static long checkTime = System.currentTimeMillis();
 
     protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
     protected static final List<String> god = new ArrayList<>();
@@ -33,6 +34,7 @@ public class Vars {
     protected static final Map<UUID, Integer> cash = new HashMap<>();
     protected static final Map<UUID, String> nick = new HashMap<>();
     protected static final Map<UUID, Long> playerMuted = new HashMap<>();
+    protected static final Map<String, UUID> playersName = new HashMap<>();
 
     protected static final Map<UUID, String> cashItem = new HashMap<>();
 
