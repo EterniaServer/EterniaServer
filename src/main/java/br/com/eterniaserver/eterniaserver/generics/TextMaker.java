@@ -52,8 +52,10 @@ public class TextMaker {
 						else playerName = msg.substring(v, v + lenght - 1).split(" ")[0];
 						if (Vars.playersName.containsKey(playerName)) {
 							Player player = Bukkit.getPlayer(Vars.playersName.get(playerName));
-							player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-							player.sendTitle(Strings.getColor(p.getDisplayName()), Strings.getColor("&7mencionou você&8!"), 10, 40, 10);
+							if (player != null && player.isOnline()) {
+								player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
+								player.sendTitle(Strings.getColor(p.getDisplayName()), Strings.getColor("&7mencionou você&8!"), 10, 40, 10);
+							}
 						}
 						break;
 					}
