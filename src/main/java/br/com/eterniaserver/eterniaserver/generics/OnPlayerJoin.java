@@ -28,7 +28,6 @@ public class OnPlayerJoin implements Listener {
 
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             InternMethods.addUUIF(player);
-            Vars.global.put(playerName, 0);
             playerMutedExist(uuid);
             if (player.hasPermission("eternia.spy")) {
                 Vars.spy.put(playerName, true);
@@ -48,7 +47,7 @@ public class OnPlayerJoin implements Listener {
             playerProfileCreate(uuid, playerName, player.getFirstPlayed());
         } else {
             final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
-            playerProfile.setLastLogin(time);
+            playerProfile.lastLogin = time;
             if (!playerProfile.getPlayerName().equals(playerName)) {
                 playerProfile.setPlayerName(playerName);
                 Vars.playerProfile.put(uuid, playerProfile);

@@ -1,6 +1,5 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 

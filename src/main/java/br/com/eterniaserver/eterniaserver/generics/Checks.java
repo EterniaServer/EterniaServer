@@ -29,7 +29,6 @@ public class Checks extends BukkitRunnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Location location = player.getLocation();
             final String playerName = player.getName();
-
             tpaTime(playerName);
             checkNetherTrap(player, location, playerName);
             checkAFK(player, playerName);

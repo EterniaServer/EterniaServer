@@ -19,7 +19,6 @@ public class Vars {
 
     protected static boolean chatMuted = false;
     protected static long nightTime = System.currentTimeMillis();
-    protected static long checkTime = System.currentTimeMillis();
 
     protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
     protected static final List<String> god = new ArrayList<>();
@@ -32,7 +31,6 @@ public class Vars {
     protected static final Map<UUID, Double> balances = new HashMap<>();
     protected static final Map<UUID, Integer> xp = new HashMap<>();
     protected static final Map<UUID, Integer> cash = new HashMap<>();
-    protected static final Map<UUID, String> nick = new HashMap<>();
     protected static final Map<UUID, Long> playerMuted = new HashMap<>();
     protected static final Map<String, UUID> playersName = new HashMap<>();
 
@@ -43,7 +41,6 @@ public class Vars {
 
     protected static final Map<String, Long> kitsCooldown = new HashMap<>();
     protected static final Map<String, Boolean> spy = new HashMap<>();
-    protected static final Map<String, Integer> global = new HashMap<>();
     protected static final Map<String, Integer> playersInPortal = new HashMap<>();
     protected static final Map<String, FormatInfo> uufi = new HashMap<>();
     protected static final Map<String, Location> homes = new HashMap<>();
@@ -53,7 +50,6 @@ public class Vars {
     protected static final Map<String, Long> tpaTime = new HashMap<>();
     protected static final Map<String, Long> afkTime = new HashMap<>();
     protected static final Map<String, Long> bedCooldown = new HashMap<>();
-    protected static final Map<String, String> realName = new HashMap<>();
     protected static final Map<String, String> rewards = new HashMap<>();
     protected static final Map<String, String> tpaRequests = new HashMap<>();
     protected static final Map<String, String> glowingColor = new HashMap<>();

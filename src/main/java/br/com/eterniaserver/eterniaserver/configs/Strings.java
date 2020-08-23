@@ -69,9 +69,10 @@ public class Strings {
     public static final String MSG_LIGHTNING_SENT = putPrefix("generic.simp.sent-lightning");
     public static final String MSG_LIGHTNING_RECEIVED = putPrefix("generic.simp.received-lightning");
 
-    public static final String MSG_PROFILE_REGISTER = putPrefix("generic.profile.register");
-    public static final String MSG_PROFILE_LAST = putPrefix("generic.profile.lacast");
-    public static final String MSG_PROFILE_HOURS = putPrefix("generic.profile.hours");
+    public static final String MSG_PROFILE_TITLE = getColor(EterniaServer.msgConfig.getString("generic.profile.title"));
+    public static final String MSG_PROFILE_REGISTER = getColor(EterniaServer.msgConfig.getString("generic.profile.register"));
+    public static final String MSG_PROFILE_LAST = getColor(EterniaServer.msgConfig.getString("generic.profile.last"));
+    public static final String MSG_PROFILE_HOURS = getColor(EterniaServer.msgConfig.getString("generic.profile.hours"));
 
     public static final String MSG_SUICIDE = putPrefix("generic.simp.suicide");
     public static final String MSG_WEATHER = putPrefix("generic.simp.weather-changed");

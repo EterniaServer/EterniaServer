@@ -55,15 +55,15 @@ public class OnAsyncPlayerChat implements Listener {
                     player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
                     e.setCancelled(true);
                 } else {
-                    e.setCancelled(getChannel(e, player, e.getMessage(), playerName));
+                    e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
                 }
             }
         }
     }
 
-    private boolean getChannel(AsyncPlayerChatEvent e, Player player, String message, String playerName) {
+    private boolean getChannel(AsyncPlayerChatEvent e, Player player, String message, UUID uuid) {
         message = canHex(player, message);
-        switch (Vars.global.getOrDefault(playerName, 0)) {
+        switch (Vars.playerProfile.get(uuid).chatChannel) {
             case 0:
                 local.sendChatMessage(message, player, EterniaServer.chatConfig.getInt("local.range"));
                 return true;

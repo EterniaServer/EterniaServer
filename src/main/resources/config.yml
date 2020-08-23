@@ -73,7 +73,6 @@ sql:
   table-player: 'es_users_profile'
   table-muted: 'es_muted'
   table-rewards: 'es_rewards'
-  table-nick: 'es_users_nick'
   table-cash: 'es_users_cash'
 
 # speed is how faster the night will pass (this will be divided by the (players
@@ -88,7 +87,7 @@ bed:
 # back is the cost of the /back command.
 # singular is the name of the currency in the singular.
 # plural is the name of the currency in the plural.
-# no-baltop is the name of the bank account.
+# no-baltop is the UUID of the bank account.
 money:
   start: 300
   back: 1000
@@ -96,7 +95,7 @@ money:
   singular: 'Eternia'
   plural: 'Eternias'
   no-baltop:
-    - 'YuriNogueira'
+    - '164f99df-8df9-36e8-9b92-7ae0bac5857f'
 
 # This commands will be blocked.
 blocked-commands:

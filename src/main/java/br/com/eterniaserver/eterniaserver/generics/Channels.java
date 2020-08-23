@@ -1,11 +1,14 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @CommandAlias("ch|channels")
 @CommandPermission("eternia.chat.channels")
@@ -31,16 +34,17 @@ public class Channels extends BaseCommand {
     }
 
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
+        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (messages != null && messages.length == 0) {
-            Vars.global.put(player.getName(), channel);
+            Vars.playerProfile.get(uuid).chatChannel = channel;
             player.sendMessage(Strings.M_CHAT_C.replace(Constants.CHANNEL_NAME, channelName));
         } else {
-            int o = Vars.global.get(player.getName());
-            Vars.global.put(player.getName(), channel);
+            int o = Vars.playerProfile.get(uuid).chatChannel;
+            Vars.playerProfile.get(uuid).chatChannel = channel;
             StringBuilder sb = new StringBuilder();
             for (String arg : messages) sb.append(arg).append(" ");
             player.chat(sb.substring(0, sb.length() - 1));
-            Vars.global.put(player.getName(), o);
+            Vars.playerProfile.get(uuid).chatChannel = o;
         }
     }
 

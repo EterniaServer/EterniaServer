@@ -30,9 +30,6 @@ public class SpawnerGive extends BaseCommand {
         final Player targetP = target.getPlayer();
         final Inventory inventory = targetP.getInventory();
         final String spawnerName = spawner.toUpperCase();
-        final String displayName;
-        if (player instanceof Player) displayName = ((Player) player).getDisplayName();
-        else displayName = player.getName();
 
         if (EterniaServer.entityList.contains(spawnerName)) {
             EntityType.valueOf(spawnerName);

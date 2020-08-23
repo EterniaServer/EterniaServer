@@ -160,13 +160,14 @@ generic:
     enabled-by: '&7O seu voar foi ativado por &3%player_displayname%&8.'
     enabled-for: '&7Você ativou o voar de &3%player_displayname%&8.'
   profile:
+    title: '&8[&aE&9S&8]=======[&3Perfil&8]=======[&aP&9P&8]'
     register: '&7Data de registro&8: &3%player_register_data%&8.'
     last: '&7Ultimo login&8: &3%player_last_login%&8.'
-    hours: '&7Horas de jogo&8: &3%hours%&8.'
+    hours: '&7Tempo de jogo&8: &3%hours%&8.'
     # PAPI Supported for custom \/
     custom:
-      - '&8[&aE&9S&8] &7Nome&8: &3%player_displayname%&8.'
-      - '&8[&aE&9S&8] &7Nome Real&8: &3%player_name%&8.'
+      - '&7Nome&8: &3%player_displayname%&8.'
+      - '&7Nome Real&8: &3%player_name%&8.'
   gm:
     changed: '&7Seu modo de jogo foi alterado para &3%gamemode%&8.'
     changed-target: '&7Você alterou o modo de jogo de &3%player_displayname% &7para &3%gamemode%&8.'

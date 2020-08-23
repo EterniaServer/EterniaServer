@@ -71,7 +71,7 @@ public class PlaceHolders extends PlaceholderExpansion {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         switch (var4) {
             case 0:
-                return Vars.playerProfile.containsKey(uuid) ? sdf.format(new Date(Vars.playerProfile.get(uuid).getFirstLogin())) : "Sem registro";
+                return Vars.playerProfile.containsKey(uuid) ? sdf.format(new Date(Vars.playerProfile.get(uuid).firstLogin)) : "Sem registro";
             case 1:
                 return Vars.afk.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
             case 2:

@@ -276,7 +276,7 @@ guis:
         - '&230 dias de duração!'
         - '&2Preço C$ 20'
       commands:
-        - 'lp user %player_name% parent addtemp guerreiro 30d'
+        - 'lp user %player_name% parent addtemp cguerreiro 30d'
       messages:
         - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
     14:
@@ -291,7 +291,7 @@ guis:
         - '&230 dias de duração!'
         - '&2Preço C$ 20'
       commands:
-        - 'lp user %player_name% parent addtemp ladino 30d'
+        - 'lp user %player_name% parent addtemp cladino 30d'
       messages:
         - '&8[&aE&9S&8] &7parabéns pela aquisição&8!'
   spawners:

@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +26,8 @@ import java.util.concurrent.TimeUnit;
 public class Economy extends BaseCommand {
 
     private long time = 0;
-    private ArrayList<String> lista;
+    private List<UUID> lista;
+    final boolean nickEnable = Strings.M_ECO_BALLIST.contains("%player_displayname%");
 
     public Economy() {
         final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableMoney), Constants.UUID_STR, Constants.BALANCE_STR);
@@ -146,42 +148,43 @@ public class Economy extends BaseCommand {
     @CommandAlias("baltop")
     @Subcommand("baltop")
     public void onBaltop(CommandSender sender) {
-        final boolean nickEnable = Strings.M_ECO_BALLIST.contains("%player_displayname%");
-
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
-            lista.forEach((namet -> {
-                final UUID uuid;
-                if (Vars.realName.containsKey(namet) && nickEnable) uuid = UUIDFetcher.getUUIDOf(Vars.realName.get(namet));
-                else uuid = UUIDFetcher.getUUIDOf(namet);
-                sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(uuid))));
-            }));
+            showBaltop(sender);
         } else {
             CompletableFuture.runAsync(() -> {
-                String name = "yurinogueira";
-                final ArrayList<String> list = new ArrayList<>();
+                UUID uuid = UUID.fromString(EterniaServer.serverConfig.getStringList("money.no-baltop").get(0));
+                final List<UUID> list = new ArrayList<>();
                 for (int i = 0; i < 10; i++) {
                     double maior = 0.0;
+                    UUID bestUUID = uuid;
                     for (Map.Entry<UUID, Double> entry : Vars.balances.entrySet()) {
-                        final String playerName;
-                        if (Vars.nick.containsKey(entry.getKey()) && nickEnable) playerName = Vars.nick.get(entry.getKey());
-                        else playerName = UUIDFetcher.getNameOf(entry.getKey());
-                        if (entry.getValue() > maior && !list.contains(playerName) && !EterniaServer.serverConfig.getStringList("money.no-baltop").contains(playerName)) {
+                        uuid = entry.getKey();
+                        double money = entry.getValue();
+                        if (money > maior && !list.contains(uuid) && !EterniaServer.serverConfig.getStringList("money.no-baltop").contains(uuid.toString())) {
                             maior = entry.getValue();
-                            name = playerName;
+                            bestUUID = uuid;
                         }
                     }
-                    list.add(name);
+                    list.add(bestUUID);
                 }
-                lista = list;
                 time = System.currentTimeMillis();
-                list.forEach((namet -> {
-                    final UUID uuid;
-                    if (Vars.realName.containsKey(namet) && nickEnable) uuid = UUIDFetcher.getUUIDOf(Vars.realName.get(namet));
-                    else uuid = UUIDFetcher.getUUIDOf(namet);
-                    sender.sendMessage(Strings.M_ECO_BALLIST.replace(Constants.POSITION, String.valueOf(lista.indexOf(namet) + 1)).replace(Constants.PLAYER, namet).replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(uuid))));
-                }));
+                lista = list;
+                showBaltop(sender);
             });
         }
+    }
+
+    private void showBaltop(CommandSender sender) {
+        lista.forEach((user -> {
+            final String playerName;
+            if (nickEnable) playerName = Vars.playerProfile.get(user).getPlayerDisplayName();
+            else playerName = Vars.playerProfile.get(user).getPlayerName();
+            sender.sendMessage(Strings.M_ECO_BALLIST
+                    .replace(Constants.POSITION, String.valueOf(lista.indexOf(user)))
+                    .replace(Constants.PLAYER, playerName)
+                    .replace("%player_name%", playerName)
+                    .replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(user))));
+        }));
     }
 
 }

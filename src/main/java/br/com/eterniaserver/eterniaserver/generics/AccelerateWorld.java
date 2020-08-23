@@ -27,10 +27,6 @@ public class AccelerateWorld implements Runnable {
         final int sleeping = getSleeping(world).size();
         if (sleeping > 0) {
             Vars.skippingWorlds.add(world);
-            if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
-                new AccelerateNight(world, plugin).runTaskTimerAsynchronously(plugin, 1, 1);
-                return;
-            }
             new AccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }

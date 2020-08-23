@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
@@ -41,7 +42,7 @@ public class Replaces extends BaseCommand {
                             resultSet.getString(Constants.PLAYER_NAME_STR),
                             resultSet.getLong(Constants.TIME_STR),
                             resultSet.getLong(Constants.LAST_STR),
-                            resultSet.getInt(Constants.HOURS_STR)
+                            resultSet.getLong(Constants.HOURS_STR)
                     ));
                 }
                 getHashMap.close();
@@ -54,7 +55,7 @@ public class Replaces extends BaseCommand {
                             resultSet.getString(Constants.PLAYER_NAME_STR),
                             resultSet.getLong(Constants.TIME_STR),
                             resultSet.getLong(Constants.LAST_STR),
-                            resultSet.getInt(Constants.HOURS_STR)
+                            resultSet.getLong(Constants.HOURS_STR)
                     ));
                 }
             } catch (SQLException e) {
@@ -77,18 +78,29 @@ public class Replaces extends BaseCommand {
 
     @CommandAlias("profile|perfil")
     @CommandPermission("eternia.profile")
-    public void onProfile(Player player) {
-        UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        if (Vars.playerProfile.containsKey(uuid)) {
-            player.sendMessage(Strings.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, sdf.format(new Date(Vars.playerProfile.get(uuid).getFirstLogin()))));
-            player.sendMessage(Strings.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, sdf.format(new Date(Vars.playerProfile.get(uuid).getLastLogin()))));
-            player.sendMessage(Strings.MSG_PROFILE_HOURS.replace(Constants.HOURS, String.valueOf(TimeUnit.MILLISECONDS.toHours(Vars.playerProfile.get(uuid).getHours()))));
-            for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
-                player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(player, line)));
-            }
+    @CommandCompletion("@players")
+    public void onProfile(Player player, @Optional OnlinePlayer onlinePlayer) {
+        if (onlinePlayer != null) {
+            sendProfile(player, onlinePlayer.getPlayer());
         } else {
-            // todo
+            sendProfile(player, player);
         }
+    }
+
+    private void sendProfile(Player player, Player target) {
+        final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
+        final long millis = Vars.playerProfile.get(uuid).updateTimePlayed();
+        String hms = Strings.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
+        player.sendMessage(Strings.MSG_PROFILE_TITLE);
+        for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
+            player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(target, line)));
+        }
+        player.sendMessage(Strings.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, sdf.format(new Date(Vars.playerProfile.get(uuid).firstLogin))));
+        player.sendMessage(Strings.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, sdf.format(new Date(Vars.playerProfile.get(uuid).lastLogin))));
+        player.sendMessage(Strings.MSG_PROFILE_HOURS.replace(Constants.HOURS, hms));
+        player.sendMessage(Strings.MSG_PROFILE_TITLE);
     }
 
     @CommandAlias("mem|memory")
