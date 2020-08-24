@@ -80,15 +80,12 @@ bed:
 # back is the cost of the /back command.
 # singular is the name of the currency in the singular.
 # plural is the name of the currency in the plural.
-# no-baltop is the UUID of the bank account.
 money:
   start: 300
   back: 1000
   nick: 500000
   singular: 'Eternia'
   plural: 'Eternias'
-  no-baltop:
-    - '164f99df-8df9-36e8-9b92-7ae0bac5857f'
 
 # This commands will be blocked.
 blocked-commands:

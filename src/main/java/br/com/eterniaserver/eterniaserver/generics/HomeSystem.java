@@ -95,6 +95,7 @@ public class HomeSystem extends BaseCommand {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
+        nome = nome.replaceAll("[^a-zA-Z0-9]", "");
         if (nome.length() > 10) {
             player.sendMessage(Strings.M_HOME_EXCEEDED);
             return;

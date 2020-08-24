@@ -63,6 +63,7 @@ public class Profile extends BaseCommand {
                     }
                     if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
                         playerProfile.muted = resultSet.getLong(Constants.MUTED_STR);
+                        playerProfile.playerDisplayName = resultSet.getString(Constants.PLAYER_DISPLAY_STR);
                     }
                     Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
                 }
@@ -92,6 +93,7 @@ public class Profile extends BaseCommand {
                     }
                     if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
                         playerProfile.muted = resultSet.getLong(Constants.MUTED_STR);
+                        playerProfile.playerDisplayName = resultSet.getString(Constants.PLAYER_DISPLAY_STR);
                     }
                     Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
                 }

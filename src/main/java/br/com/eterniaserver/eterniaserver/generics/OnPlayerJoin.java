@@ -25,8 +25,8 @@ public class OnPlayerJoin implements Listener {
         final Player player = event.getPlayer();
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-
         final long time = System.currentTimeMillis();
+
         Vars.afkTime.put(playerName, time);
         if (!Vars.playerProfile.containsKey(uuid)) {
             Location location = getWarp();
@@ -74,7 +74,6 @@ public class OnPlayerJoin implements Listener {
         }
 
         playerKitsCreate(playerName);
-        playerChecks(playerName);
 
         event.setJoinMessage(null);
         Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_JOIN));
@@ -94,10 +93,6 @@ public class OnPlayerJoin implements Listener {
         playerProfile.muted = time;
         Vars.playerProfile.put(uuid, playerProfile);
 
-    }
-
-    private void playerChecks(String playerName) {
-        Vars.afkTime.put(playerName, System.currentTimeMillis());
     }
 
     private void playerKitsCreate(String playerName) {

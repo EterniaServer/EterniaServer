@@ -104,6 +104,7 @@ public class ChatCommands extends BaseCommand {
     @Syntax("<novo_nome> <jogador> ou <novo_nome>")
     @CommandPermission("eternia.nickname")
     public void onNickname(Player player, String string, @Optional OnlinePlayer target) {
+        string = string.replaceAll("[^a-zA-Z0-9]", "");
         if (!player.hasPermission("eternia.nickname.others")) {
             if (target == null) {
                 playerNick(player, string);
