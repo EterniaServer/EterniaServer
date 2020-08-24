@@ -42,26 +42,27 @@ public class OnEntityInventoryClick implements Listener {
                     e.setCancelled(true);
                     break;
                 case "Perm":
-                    permGui(player, "guis.perm." + e.getSlot());
-                    e.setCancelled(true);
+                    e.setCancelled(chooseGUi(player, "guis.perm.", e.getSlot()));
                     break;
                 case "Pacotes":
-                    permGui(player, "guis.pacotes." + e.getSlot());
-                    e.setCancelled(true);
+                    e.setCancelled(chooseGUi(player, "guis.pacotes.", e.getSlot()));
                     break;
                 case "Tags":
-                    permGui(player, "guis.tags." + e.getSlot());
-                    e.setCancelled(true);
+                    e.setCancelled(chooseGUi(player, "guis.tags.", e.getSlot()));
                     break;
                 case "Spawners":
-                    permGui(player, "guis.spawners." + e.getSlot());
-                    e.setCancelled(true);
+                    e.setCancelled(chooseGUi(player, "guis.spawners.", e.getSlot()));
                     break;
                 default:
                     break;
             }
         }
 
+    }
+
+    private boolean chooseGUi(Player player, String guiName, int slot) {
+        permGui(player, guiName + slot);
+        return true;
     }
 
     private void menuGui(final Player player, int slotInt) {

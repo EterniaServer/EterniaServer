@@ -21,7 +21,7 @@ public class PlayerProfile {
     public int cash = 0;
     public int xp = 0;
 
-    public long isOnPvP;
+    public long onPvP;
 
     public int chatChannel = 0;
     public boolean nickRequest = false;
@@ -42,21 +42,21 @@ public class PlayerProfile {
     }
 
     public boolean isOnPvP() {
-        if (isOnPvP == 0) return false;
-        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - isOnPvP) < EterniaServer.serverConfig.getInt("server.pvp-time");
+        if (onPvP == 0) return false;
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP) < EterniaServer.serverConfig.getInt("server.pvp-time");
     }
 
     public void setIsOnPvP() {
-        this.isOnPvP = System.currentTimeMillis();
+        this.onPvP = System.currentTimeMillis();
     }
 
     public List<String> getHomes() {
         return homes != null ? homes : new ArrayList<>();
     }
 
-    public int getIsOnPvP() {
-        if (isOnPvP == 0) return 0;
-        return (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - isOnPvP);
+    public int getOnPvP() {
+        if (onPvP == 0) return 0;
+        return (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP);
     }
 
     public String getPlayerDisplayName() {
