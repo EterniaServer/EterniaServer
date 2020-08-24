@@ -4,9 +4,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.configs.Configs;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
@@ -30,10 +28,6 @@ public class Cash extends BaseCommand {
     protected static CashGui cashGui;
 
     public Cash() {
-
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableCash), Constants.UUID_STR, Constants.BALANCE_STR);
-        temp.forEach((k, v) -> Vars.cash.put(UUID.fromString(k), Integer.parseInt(v)));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Cash").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
         ItemStack itemStack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -161,13 +155,15 @@ public class Cash extends BaseCommand {
     @Syntax("<jogador>")
     public void onCashBalance(Player player, @Optional String playerName) {
         if (playerName == null) {
-            player.sendMessage(Strings.M_CASH_BALANCE.replace(Constants.AMOUNT, String.valueOf(Vars.cash.get(UUIDFetcher.getUUIDOf(player.getName())))));
+            player.sendMessage(Strings.M_CASH_BALANCE.replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.get(UUIDFetcher.getUUIDOf(player.getName())).cash)));
             return;
         }
 
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
-        if (Vars.cash.containsKey(uuid)) player.sendMessage(Strings.M_CASH_BALANCE_OTHER.replace(Constants.AMOUNT, String.valueOf(Vars.cash.get(uuid))));
+        if (Vars.playerProfile.containsKey(uuid)) {
+            player.sendMessage(Strings.M_CASH_BALANCE_OTHER.replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.get(uuid).cash)));
+        }
         else player.sendMessage(Strings.M_CASH_NO_PLAYER);
     }
 

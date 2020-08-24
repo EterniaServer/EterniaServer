@@ -1,7 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.eterniaserver.configs.Configs;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -10,13 +11,14 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -28,12 +30,6 @@ public class Economy extends BaseCommand {
     private long time = 0;
     private List<UUID> lista;
     final boolean nickEnable = Strings.M_ECO_BALLIST.contains("%player_displayname%");
-
-    public Economy() {
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableMoney), Constants.UUID_STR, Constants.BALANCE_STR);
-        temp.forEach((k, v) -> Vars.balances.put(UUID.fromString(k), Double.parseDouble(v)));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Economy").replace(Constants.AMOUNT, String.valueOf(temp.size())));
-    }
 
     @Default
     public void ecoHelp(CommandSender sender) {
@@ -152,24 +148,39 @@ public class Economy extends BaseCommand {
             showBaltop(sender);
         } else {
             CompletableFuture.runAsync(() -> {
-                UUID uuid = UUID.fromString(EterniaServer.serverConfig.getStringList("money.no-baltop").get(0));
-                final List<UUID> list = new ArrayList<>();
-                for (int i = 0; i < 10; i++) {
-                    double maior = 0.0;
-                    UUID bestUUID = uuid;
-                    for (Map.Entry<UUID, Double> entry : Vars.balances.entrySet()) {
-                        uuid = entry.getKey();
-                        double money = entry.getValue();
-                        if (money > maior && !list.contains(uuid) && !EterniaServer.serverConfig.getStringList("money.no-baltop").contains(uuid.toString())) {
-                            maior = entry.getValue();
-                            bestUUID = uuid;
+                if (EterniaLib.getMySQL()) {
+                    EterniaLib.getConnections().executeSQLQuery(connection -> {
+                        final PreparedStatement getHashMap = connection.prepareStatement(
+                                "SELECT " + Constants.UUID_STR +
+                                        " FROM " + Configs.tablePlayer +
+                                        " ORDER BY " + Constants.BALANCE_STR + " DESC LIMIT 10;");
+                        final ResultSet resultSet = getHashMap.executeQuery();
+                        final List<UUID> tempList = new ArrayList<>();
+                        while (resultSet.next()) {
+                            tempList.add(UUID.fromString(resultSet.getString(Constants.UUID_STR)));
                         }
+                        time = System.currentTimeMillis();
+                        lista = tempList;
+                        getHashMap.close();
+                        resultSet.close();
+                        showBaltop(sender);
+                    });
+                } else {
+                    try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
+                            "SELECT " + Constants.UUID_STR +
+                                    " FROM " + Configs.tablePlayer +
+                                    " ORDER BY " + Constants.BALANCE_STR + " DESC LIMIT 10;"); ResultSet resultSet = getHashMap.executeQuery()) {
+                        final List<UUID> tempList = new ArrayList<>();
+                        while (resultSet.next()) {
+                            tempList.add(UUID.fromString(resultSet.getString(Constants.UUID_STR)));
+                        }
+                        time = System.currentTimeMillis();
+                        lista = tempList;
+                        showBaltop(sender);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                    list.add(bestUUID);
                 }
-                time = System.currentTimeMillis();
-                lista = list;
-                showBaltop(sender);
             });
         }
     }
@@ -180,7 +191,7 @@ public class Economy extends BaseCommand {
             if (nickEnable) playerName = Vars.playerProfile.get(user).getPlayerDisplayName();
             else playerName = Vars.playerProfile.get(user).getPlayerName();
             sender.sendMessage(Strings.M_ECO_BALLIST
-                    .replace(Constants.POSITION, String.valueOf(lista.indexOf(user)))
+                    .replace(Constants.POSITION, String.valueOf(lista.indexOf(user) + 1))
                     .replace(Constants.PLAYER, playerName)
                     .replace("%player_name%", playerName)
                     .replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(user))));

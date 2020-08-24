@@ -75,7 +75,7 @@ public class PlaceHolders extends PlaceholderExpansion {
             case 1:
                 return Vars.afk.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
             case 2:
-                return String.valueOf(Vars.cash.getOrDefault(uuid, 0));
+                return String.valueOf(Vars.playerProfile.get(uuid).cash);
             case 3:
                 return Vars.glowingColor.getOrDefault(playerName, "");
             case 4:

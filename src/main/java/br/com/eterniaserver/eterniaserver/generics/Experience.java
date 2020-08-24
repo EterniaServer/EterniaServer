@@ -1,15 +1,12 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.configs.Configs;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -19,18 +16,11 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.UUID;
 
 @CommandAlias("xp")
 @CommandPermission("eternia.xp.user")
 public class Experience extends BaseCommand {
-
-    public Experience() {
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableXp), Constants.UUID_STR, Constants.XP_STR);
-        temp.forEach((k, v) -> Vars.xp.put(UUID.fromString(k), Integer.parseInt(v)));
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Experience").replace(Constants.AMOUNT, String.valueOf(temp.size())));
-    }
 
     @Default
     public void xpHelp(CommandSender sender) {

@@ -63,17 +63,10 @@ elevator:
 # With this you can choose between using MySQL or SQLite and
 # define the name of each table.
 sql:
-  table-xp: 'es_exp'
-  table-money: 'es_money'
-  table-warp: 'es_warps'
-  table-shop: 'es_shops'
-  table-home: 'es_users_homes'
-  table-homes: 'es_homes_location'
   table-kits: 'es_kits'
-  table-player: 'es_users_profile'
-  table-muted: 'es_muted'
+  table-player: 'es_players'
   table-rewards: 'es_rewards'
-  table-cash: 'es_users_cash'
+  table-locations: 'es_locations'
 
 # speed is how faster the night will pass (this will be divided by the (players
 # online divided by the players sleeping))

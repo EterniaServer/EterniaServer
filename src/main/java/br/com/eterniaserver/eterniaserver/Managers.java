@@ -91,7 +91,7 @@ public class Managers {
         EterniaLib.getManager().registerCommand(new Gamemode());
         EterniaLib.getManager().registerCommand(new Inventory());
         EterniaLib.getManager().registerCommand(new Others(plugin));
-        EterniaLib.getManager().registerCommand(new Replaces());
+        EterniaLib.getManager().registerCommand(new Profile());
         EterniaLib.getManager().registerCommand(new Simplifications());
         EterniaLib.getManager().registerCommand(new Glow());
     }

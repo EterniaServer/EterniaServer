@@ -2,22 +2,31 @@ package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerProfile {
 
-    private String playerName;
+    public String playerName;
     public String playerDisplayName;
+
+    public List<String> homes;
 
     public final long firstLogin;
     public long lastLogin;
     public long hours;
+
+    public double balance = 0.0;
+    public int cash = 0;
+    public int xp = 0;
 
     public long isOnPvP;
 
     public int chatChannel = 0;
     public boolean nickRequest = false;
     public String tempNick;
+    public long muted = System.currentTimeMillis();
 
     public PlayerProfile(String playerName, long firstLogin, long lastLogin, long hours) {
         this.playerName = playerName;
@@ -37,13 +46,17 @@ public class PlayerProfile {
         return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - isOnPvP) < EterniaServer.serverConfig.getInt("server.pvp-time");
     }
 
+    public void setIsOnPvP() {
+        this.isOnPvP = System.currentTimeMillis();
+    }
+
+    public List<String> getHomes() {
+        return homes != null ? homes : new ArrayList<>();
+    }
+
     public int getIsOnPvP() {
         if (isOnPvP == 0) return 0;
         return (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - isOnPvP);
-    }
-
-    public void setIsOnPvP() {
-        this.isOnPvP = System.currentTimeMillis();
     }
 
     public String getPlayerDisplayName() {

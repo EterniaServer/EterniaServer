@@ -18,7 +18,6 @@ public class TeleportSystem extends BaseCommand {
 
     private final double backMoney = EterniaServer.serverConfig.getInt("money.back");
 
-
     @CommandAlias("tpall|teleportall")
     @CommandPermission("eternia.tpall")
     public void onTeleportAll(Player player) {

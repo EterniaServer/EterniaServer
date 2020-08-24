@@ -220,7 +220,7 @@ public class ChatCommands extends BaseCommand {
 
     private boolean isMuted(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        final long time = Vars.playerMuted.get(uuid);
+        final long time = Vars.playerProfile.get(uuid).muted;
         if (InternMethods.stayMuted(time)) {
             player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
             return true;
@@ -245,9 +245,9 @@ public class ChatCommands extends BaseCommand {
         }
 
         final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
-        playerProfile.playerDisplayName = playerProfile.tempNick;
-        playerProfile.tempNick = null;
-        playerProfile.nickRequest = false;
+
+        playerProfile.tempNick = string;
+        playerProfile.nickRequest = true;
         Vars.playerProfile.put(uuid, playerProfile);
         player.sendMessage(Strings.M_CHAT_NICK_MONEY_2);
     }
@@ -261,13 +261,8 @@ public class ChatCommands extends BaseCommand {
         if (string.equals(Constants.CLEAR_STR)) {
             final String playerName = player.getName();
             final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-            final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
-
             player.setDisplayName(playerName);
-            playerProfile.playerDisplayName = playerName;
-            playerProfile.tempNick = null;
-            playerProfile.nickRequest = false;
-            Vars.playerProfile.put(uuid, playerProfile);
+            Vars.playerProfile.get(uuid).playerDisplayName = playerName;
             player.sendMessage(Strings.M_CHAT_REMOVE_NICK);
             saveToSQL(uuid);
             return;

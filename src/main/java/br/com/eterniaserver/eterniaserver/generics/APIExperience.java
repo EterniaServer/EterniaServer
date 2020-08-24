@@ -1,8 +1,11 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configs.Configs;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import java.util.UUID;
 
@@ -18,11 +21,21 @@ public class APIExperience {
      * @return Amount currently held in player's database
      */
     public static Integer getExp(UUID uuid) {
-        if (Vars.xp.containsKey(uuid)) {
-            return Vars.xp.get(uuid);
+        if (Vars.playerProfile.containsKey(uuid)) {
+            return Vars.playerProfile.get(uuid).xp;
         } else {
-            Vars.xp.put(uuid, 0);
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableXp, Constants.UUID_STR, uuid.toString(), Constants.XP_STR, 0));
+            final long time = System.currentTimeMillis();
+            final String playerName = UUIDFetcher.getNameOf(uuid);
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, xp)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "', '" + 0 + "')"));
+            final PlayerProfile playerProfile = new PlayerProfile(
+                    playerName,
+                    time,
+                    time,
+                    0
+            );
+            playerProfile.balance = EterniaServer.serverConfig.getDouble("money.start");
+            Vars.playerProfile.put(uuid, playerProfile);
             return 0;
         }
     }
@@ -33,8 +46,8 @@ public class APIExperience {
      * @param amount to set
      */
     public static void setExp(UUID uuid, int amount) {
-        Vars.xp.put(uuid, amount);
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableXp, Constants.XP_STR, amount, Constants.UUID_STR, uuid.toString()));
+        Vars.playerProfile.get(uuid).xp = amount;
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.XP_STR, amount, Constants.UUID_STR, uuid.toString()));
     }
 
     /**

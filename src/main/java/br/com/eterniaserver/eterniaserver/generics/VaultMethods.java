@@ -5,6 +5,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.configs.Configs;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -269,12 +270,22 @@ public class VaultMethods implements Economy {
     }
 
     private boolean playerMoneyExist(UUID uuid) {
-        return Vars.balances.containsKey(uuid);
+        return Vars.playerProfile.containsKey(uuid);
     }
 
     private void playerMoneyCreate(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.tableMoney, Constants.UUID_STR, uuid.toString(), Constants.BALANCE_STR, startMoney));
-        Vars.balances.put(uuid, 300.0);
+        final long time = System.currentTimeMillis();
+        final String playerName = UUIDFetcher.getNameOf(uuid);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + startMoney + "')"));
+        final PlayerProfile playerProfile = new PlayerProfile(
+                playerName,
+                time,
+                time,
+                0
+        );
+        playerProfile.balance = startMoney;
+        Vars.playerProfile.put(uuid, playerProfile);
     }
 
 }

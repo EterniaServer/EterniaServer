@@ -26,17 +26,6 @@ public class OnPlayerJoin implements Listener {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
-        if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
-            InternMethods.addUUIF(player);
-            playerMutedExist(uuid);
-            if (player.hasPermission("eternia.spy")) {
-                Vars.spy.put(playerName, true);
-            }
-            if (Vars.playerProfile.containsKey(uuid)) {
-                player.setDisplayName(Vars.playerProfile.get(uuid).getPlayerDisplayName());
-            }
-        }
-
         final long time = System.currentTimeMillis();
         Vars.afkTime.put(playerName, time);
         if (!Vars.playerProfile.containsKey(uuid)) {
@@ -46,7 +35,25 @@ public class OnPlayerJoin implements Listener {
             }
             playerProfileCreate(uuid, playerName, player.getFirstPlayed());
         } else {
-            final PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
+            PlayerProfile playerProfile = Vars.playerProfile.get(uuid);
+            if (playerProfile.playerName == null) {
+                final PlayerProfile newPlayerProfile = new PlayerProfile(playerName, time, time, 0);
+                newPlayerProfile.cash = playerProfile.cash;
+                newPlayerProfile.balance = playerProfile.balance;
+                newPlayerProfile.xp = playerProfile.xp;
+                newPlayerProfile.muted = time;
+                EQueries.executeQuery(
+                        "UPDATE " + Configs.tablePlayer +
+                                " SET player_name='" + playerName +
+                                "', player_display='" + playerName +
+                                "', time='" + player.getFirstPlayed() +
+                                "', last='" + time +
+                                "', hours='" + 0 +
+                                "', muted='" + time +
+                                "' WHERE uuid='" + uuid.toString() + "'");
+                playerProfile = newPlayerProfile;
+                Vars.playerProfile.put(uuid, newPlayerProfile);
+            }
             playerProfile.lastLogin = time;
             if (!playerProfile.getPlayerName().equals(playerName)) {
                 playerProfile.setPlayerName(playerName);
@@ -54,6 +61,16 @@ public class OnPlayerJoin implements Listener {
                 EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.PLAYER_NAME_STR, playerName, Constants.UUID_STR, uuid.toString()));
             }
             EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.LAST_STR, time, Constants.UUID_STR, uuid.toString()));
+        }
+
+        if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
+            InternMethods.addUUIF(player);
+            if (player.hasPermission("eternia.spy")) {
+                Vars.spy.put(playerName, true);
+            }
+            if (Vars.playerProfile.containsKey(uuid)) {
+                player.setDisplayName(Vars.playerProfile.get(uuid).getPlayerDisplayName());
+            }
         }
 
         playerKitsCreate(playerName);
@@ -65,30 +82,22 @@ public class OnPlayerJoin implements Listener {
 
     private void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "')"));
-        Vars.playerProfile.put(uuid, new PlayerProfile(
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "', '" + time + "')"));
+        final PlayerProfile playerProfile = new PlayerProfile(
                 playerName,
                 firstPlayed,
                 time,
                 0
-        ));
-    }
+        );
+        playerProfile.balance = EterniaServer.serverConfig.getDouble("money.start");
+        playerProfile.muted = time;
+        Vars.playerProfile.put(uuid, playerProfile);
 
-    private void playerMutedExist(UUID uuid) {
-        if (!Vars.playerMuted.containsKey(uuid)) {
-            playerMutedCreate(uuid);
-        }
     }
 
     private void playerChecks(String playerName) {
         Vars.afkTime.put(playerName, System.currentTimeMillis());
-    }
-
-    private void playerMutedCreate(UUID uuid) {
-        final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.tableMuted, Constants.UUID_STR, uuid.toString(), Constants.TIME_STR, time));
-        Vars.playerMuted.put(uuid, time);
     }
 
     private void playerKitsCreate(String playerName) {
@@ -105,7 +114,7 @@ public class OnPlayerJoin implements Listener {
     }
 
     private Location getWarp() {
-        return Vars.warps.getOrDefault("spawn", EterniaServer.error);
+        return Vars.locations.getOrDefault("warp.spawn", EterniaServer.error);
     }
 
 }

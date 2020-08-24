@@ -10,25 +10,54 @@ public class Table {
     public Table() {
 
         if (EterniaLib.getMySQL()) {
-            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableMoney, "(uuid varchar(36), balance double(22,4))"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableKits, "(name varchar(32), cooldown bigint(20))"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tablePlayer, "(uuid varchar(36), player_name varchar(16), time bigint(20), last bigint(20), hours bigint(20))"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableMuted, "(uuid varchar(36), time bigint(20))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableKits,
+                    "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, " +
+                            "name VARCHAR(32), " +
+                            "cooldown BIGINT(20))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tablePlayer,
+                    "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, " +
+                            "uuid VARCHAR(36), " +
+                            "player_name VARCHAR(16), " +
+                            "player_display VARCHAR(16), " +
+                            "time BIGINT(20), " +
+                            "last BIGINT(20), " +
+                            "hours BIGINT(20), " +
+                            "balance DOUBLE(20,4), " +
+                            "cash BIGINT(20), " +
+                            "xp BIGINT(20), " +
+                            "muted BIGINT(20), " +
+                            "homes VARCHAR(1024))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableLocations,
+                    "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, " +
+                            "name VARCHAR(32), " +
+                            "location VARCHAR(64))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableReward,
+                    "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, " +
+                            "code VARCHAR(16), " +
+                            "group_name VARCHAR(16))"), false);
         } else {
-            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableMoney, "(uuid varchar(36), balance double(22))"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableKits, "(name varchar(32), cooldown integer)"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tablePlayer, "(uuid varchar(36), player_name varchar(16), time integer, last integer, hours integer)"), false);
-            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableMuted, "(uuid varchar(36), time integer)"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableKits,
+                    "(name VARCHAR(32), " +
+                            "cooldown INTEGER)"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tablePlayer,
+                    "(uuid VARCHAR(36), " +
+                            "player_name VARCHAR(16), " +
+                            "player_display VARCHAR(16), " +
+                            "time INTEGER, " +
+                            "last INTEGER, " +
+                            "hours INTEGER, " +
+                            "balance DOUBLE(22), " +
+                            "cash INTEGER, " +
+                            "xp INTEGER, " +
+                            "muted INTEGER, " +
+                            "homes VARCHAR(1024))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableLocations,
+                    "(name VARCHAR(32), " +
+                            "location VARCHAR(64))"), false);
+            EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableReward,
+                    "(code VARCHAR(16), " +
+                            "group_name VARCHAR(16))"), false);
         }
-
-        final String nameTime = "(name varchar(16), location varchar(64))";
-        EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableXp, "(uuid varchar(36), xp int(11))"), false);
-        EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableWarp, nameTime), false);
-        EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableShop, nameTime), false);
-        EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableHome, "(uuid varchar(36), homes varchar(1024))"), false);
-        EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableHomes, "(name varchar(32), location varchar(64))"), false);
-        EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableReward, "(code varchar(16), lalalala varchar(16))"), false);
-        EQueries.executeQuery(Constants.getQueryCreateTable(Configs.tableCash, "(uuid varchar(36), balance int(6))"), false);
     }
 
 }

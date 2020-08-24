@@ -44,13 +44,15 @@ public class Constants {
     public static final String PLAYER_DISPLAY_STR = "player_display";
     public static final String BALANCE_STR = "balance";
     public static final String CODE_STR = "code";
-    public static final String CODE_GROUP_STR = "lalalala";
+    public static final String CODE_GROUP_STR = "group_name";
     public static final String TIME_STR = "time";
     public static final String COOLDOWN_STR = "cooldown";
     public static final String XP_STR = "xp";
     public static final String HOMES_STR = "homes";
     public static final String CLEAR_STR = "clear";
     public static final String LAST_STR = "last";
+    public static final String CASH_STR = "cash";
+    public static final String MUTED_STR = "muted";
     public static final String HOURS_STR = "hours";
 
     public static String getQueryCreateTable(final String table, final String values) {

@@ -50,7 +50,7 @@ public class OnAsyncPlayerChat implements Listener {
                 e.setCancelled(true);
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-                final long time = Vars.playerMuted.get(uuid);
+                final long time = Vars.playerProfile.get(uuid).muted;
                 if (InternMethods.stayMuted(time)) {
                     player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
                     e.setCancelled(true);

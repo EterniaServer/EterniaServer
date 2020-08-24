@@ -1,6 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
@@ -13,6 +15,7 @@ import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,16 +24,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class Replaces extends BaseCommand {
+public class Profile extends BaseCommand {
 
     private final GetRuntime getRuntime;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-    public Replaces() {
+    public Profile() {
         this.getRuntime = new GetRuntime();
 
         if (EterniaLib.getMySQL()) {
@@ -38,12 +40,31 @@ public class Replaces extends BaseCommand {
                 final PreparedStatement getHashMap = connection.prepareStatement(Constants.getQuerySelectAll(Configs.tablePlayer));
                 final ResultSet resultSet = getHashMap.executeQuery();
                 while (resultSet.next()) {
-                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), new PlayerProfile(
+                    final PlayerProfile playerProfile = new PlayerProfile(
                             resultSet.getString(Constants.PLAYER_NAME_STR),
                             resultSet.getLong(Constants.TIME_STR),
                             resultSet.getLong(Constants.LAST_STR),
                             resultSet.getLong(Constants.HOURS_STR)
-                    ));
+                    );
+                    if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
+                        playerProfile.cash = resultSet.getInt(Constants.CASH_STR);
+                    }
+                    if (EterniaServer.serverConfig.getBoolean("modules.economy")) {
+                        playerProfile.balance = resultSet.getDouble(Constants.BALANCE_STR);
+                    }
+                    if (EterniaServer.serverConfig.getBoolean("modules.experience")) {
+                        playerProfile.xp = resultSet.getInt(Constants.XP_STR);
+                    }
+                    if (EterniaServer.serverConfig.getBoolean("modules.home")) {
+                        String result = resultSet.getString(Constants.HOMES_STR);
+                        if (result != null) {
+                            playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
+                        }
+                    }
+                    if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
+                        playerProfile.muted = resultSet.getLong(Constants.MUTED_STR);
+                    }
+                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
                 }
                 getHashMap.close();
                 resultSet.close();
@@ -51,18 +72,63 @@ public class Replaces extends BaseCommand {
         } else {
             try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(Constants.getQuerySelectAll(Configs.tablePlayer)); ResultSet resultSet = getHashMap.executeQuery()) {
                 while (resultSet.next()) {
-                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), new PlayerProfile(
+                    final PlayerProfile playerProfile = new PlayerProfile(
                             resultSet.getString(Constants.PLAYER_NAME_STR),
                             resultSet.getLong(Constants.TIME_STR),
                             resultSet.getLong(Constants.LAST_STR),
                             resultSet.getLong(Constants.HOURS_STR)
-                    ));
+                    );
+                    if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
+                        playerProfile.cash = resultSet.getInt(Constants.CASH_STR);
+                    }
+                    if (EterniaServer.serverConfig.getBoolean("modules.economy")) {
+                        playerProfile.balance = resultSet.getDouble(Constants.BALANCE_STR);
+                    }
+                    if (EterniaServer.serverConfig.getBoolean("modules.experience")) {
+                        playerProfile.xp = resultSet.getInt(Constants.XP_STR);
+                    }
+                    if (EterniaServer.serverConfig.getBoolean("modules.home")) {
+                        playerProfile.homes = new ArrayList<>(Arrays.asList(resultSet.getString(Constants.HOMES_STR).split(":")));
+                    }
+                    if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
+                        playerProfile.muted = resultSet.getLong(Constants.MUTED_STR);
+                    }
+                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         sendConsole(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Profiles").replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.size())));
+
+        if (EterniaServer.serverConfig.getBoolean("modules.home")) {
+            final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableLocations), Constants.NAME_STR, Constants.LOCATION_STR);
+            temp.forEach((k, v) -> {
+                final String[] split = v.split(":");
+                final Location loc = new Location(Bukkit.getWorld(split[0]),
+                        Double.parseDouble(split[1]),
+                        (Double.parseDouble(split[2]) + 1),
+                        Double.parseDouble(split[3]),
+                        Float.parseFloat(split[4]),
+                        Float.parseFloat(split[5]));
+                Vars.locations.put(k, loc);
+            });
+        }
+
+        if (EterniaServer.serverConfig.getBoolean("modules.teleports")) {
+            final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableLocations), Constants.NAME_STR, Constants.LOCATION_STR);
+            temp.forEach((k, v) -> {
+                final String[] split = v.split(":");
+                final Location loc = new Location(Bukkit.getWorld(split[0]),
+                        Double.parseDouble(split[1]),
+                        (Double.parseDouble(split[2]) + 1),
+                        Double.parseDouble(split[3]),
+                        Float.parseFloat(split[4]),
+                        Float.parseFloat(split[5]));
+                Vars.locations.put(k, loc);
+            });
+        }
+
     }
 
     @CommandAlias("speed")
