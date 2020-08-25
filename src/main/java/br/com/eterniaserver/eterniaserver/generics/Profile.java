@@ -37,7 +37,7 @@ public class Profile extends BaseCommand {
 
         if (EterniaLib.getMySQL()) {
             EterniaLib.getConnections().executeSQLQuery(connection -> {
-                final PreparedStatement getHashMap = connection.prepareStatement(Constants.getQuerySelectAll(Configs.tablePlayer));
+                final PreparedStatement getHashMap = connection.prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER));
                 final ResultSet resultSet = getHashMap.executeQuery();
                 while (resultSet.next()) {
                     final PlayerProfile playerProfile = new PlayerProfile(
@@ -71,7 +71,7 @@ public class Profile extends BaseCommand {
                 resultSet.close();
             });
         } else {
-            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(Constants.getQuerySelectAll(Configs.tablePlayer)); ResultSet resultSet = getHashMap.executeQuery()) {
+            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER)); ResultSet resultSet = getHashMap.executeQuery()) {
                 while (resultSet.next()) {
                     final PlayerProfile playerProfile = new PlayerProfile(
                             resultSet.getString(Constants.PLAYER_NAME_STR),
@@ -104,7 +104,7 @@ public class Profile extends BaseCommand {
         sendConsole(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Profiles").replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.size())));
 
         if (EterniaServer.serverConfig.getBoolean("modules.home")) {
-            final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableLocations), Constants.NAME_STR, Constants.LOCATION_STR);
+            final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_LOCATIONS), Constants.NAME_STR, Constants.LOCATION_STR);
             temp.forEach((k, v) -> {
                 final String[] split = v.split(":");
                 final Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -118,7 +118,7 @@ public class Profile extends BaseCommand {
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.teleports")) {
-            final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.tableLocations), Constants.NAME_STR, Constants.LOCATION_STR);
+            final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_LOCATIONS), Constants.NAME_STR, Constants.LOCATION_STR);
             temp.forEach((k, v) -> {
                 final String[] split = v.split(":");
                 final Location loc = new Location(Bukkit.getWorld(split[0]),

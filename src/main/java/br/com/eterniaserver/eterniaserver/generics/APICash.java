@@ -21,7 +21,7 @@ public class APICash {
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance, cash)",
                     "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "', '" + 0 +"')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
@@ -42,11 +42,11 @@ public class APICash {
     public static void setCash(UUID uuid, int amount) {
         if (Vars.playerProfile.containsKey(uuid)) {
             Vars.playerProfile.get(uuid).cash = amount;
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.CASH_STR, amount, Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.CASH_STR, amount, Constants.UUID_STR, uuid.toString()));
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance, cash)",
                     "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "', '" + 0 +"')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,

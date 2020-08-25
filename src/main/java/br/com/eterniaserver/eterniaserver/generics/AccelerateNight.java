@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.configs.Configs;
 import br.com.eterniaserver.eterniaserver.configs.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
@@ -29,7 +30,7 @@ public class AccelerateNight extends BukkitRunnable {
         final long time = world.getTime();
         final int sleeping = AccelerateWorld.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
-        double base = EterniaServer.serverConfig.getInt("bed.speed");
+        double base = Configs.BED_SPEED;
         if (sleeping > 0) {
             int x = players / sleeping;
             double timeRate = base / x;

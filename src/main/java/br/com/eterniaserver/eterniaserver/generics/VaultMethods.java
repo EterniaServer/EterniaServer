@@ -18,8 +18,6 @@ import java.util.UUID;
 
 public class VaultMethods implements Economy {
 
-    private final double startMoney = EterniaServer.serverConfig.getDouble("money.start");
-
     @Override
     public boolean isEnabled() {
         return true;
@@ -47,12 +45,12 @@ public class VaultMethods implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return EterniaServer.serverConfig.getString("money.plural");
+        return Configs.BALANCE_PLURAL_NAME;
     }
 
     @Override
     public String currencyNameSingular() {
-        return EterniaServer.serverConfig.getString("money.singular");
+        return Configs.BALANCE_SINGULAR_NAME;
     }
 
     @Override
@@ -276,15 +274,15 @@ public class VaultMethods implements Economy {
     private void playerMoneyCreate(UUID uuid) {
         final long time = System.currentTimeMillis();
         final String playerName = UUIDFetcher.getNameOf(uuid);
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + startMoney + "')"));
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.BALANCE_START + "')"));
         final PlayerProfile playerProfile = new PlayerProfile(
                 playerName,
                 time,
                 time,
                 0
         );
-        playerProfile.balance = startMoney;
+        playerProfile.balance = Configs.BALANCE_START;
         Vars.playerProfile.put(uuid, playerProfile);
     }
 

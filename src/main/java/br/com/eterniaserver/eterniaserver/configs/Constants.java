@@ -37,6 +37,8 @@ public class Constants {
     public static final String ADVICE = "%advice%";
     public static final String CHANNEL_NAME = "%channel_name%";
     public static final String ERROR = "%error%";
+    public static final String PRIMARY_KEY = "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ";
+    public static final String SERVER_CHECKS = "server.checks";
     public static final String NAME_STR = "name";
     public static final String LOCATION_STR = "location";
     public static final String PLAYER_NAME_STR = "player_name";

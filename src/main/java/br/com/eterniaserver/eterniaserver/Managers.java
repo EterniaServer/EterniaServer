@@ -35,7 +35,7 @@ public class Managers {
 
     private void loadBedManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.bed"), "Bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt("server.checks") * 40);
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 40);
             plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedEnter(), plugin);
             plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedLeave(), plugin);
         }
@@ -112,10 +112,10 @@ public class Managers {
     private void loadPlayerChecks() {
         sendModuleStatus(true, "PlayerChecks");
         if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
-            new Checks(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.serverConfig.getInt("server.checks") * 20);
+            new Checks(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 20);
             return;
         }
-        new Checks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt("server.checks") * 20);
+        new Checks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 20);
     }
 
     private void loadRewardsManager() {

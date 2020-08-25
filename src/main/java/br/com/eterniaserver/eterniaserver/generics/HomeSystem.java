@@ -155,10 +155,10 @@ public class HomeSystem extends BaseCommand {
         if (!t) {
             result.append(home);
             values.add(home);
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.HOMES_STR, result.toString(), Constants.UUID_STR, uuid.toString()));
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableLocations, Constants.NAME_STR, homeName, Constants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.HOMES_STR, result.toString(), Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_LOCATIONS, Constants.NAME_STR, homeName, Constants.LOCATION_STR, saveloc));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableLocations, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, homeName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_LOCATIONS, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, homeName));
         }
         Vars.playerProfile.get(uuid).homes = values;
     }
@@ -181,8 +181,8 @@ public class HomeSystem extends BaseCommand {
             }
         }
         Vars.playerProfile.get(uuid).homes = newValues;
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.HOMES_STR, nova.toString(), Constants.UUID_STR, uuid.toString()));
-        EQueries.executeQuery(Constants.getQueryDelete(Configs.tableLocations, Constants.NAME_STR, homeName));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.HOMES_STR, nova.toString(), Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_LOCATIONS, Constants.NAME_STR, homeName));
     }
 
     public Location getHome(String home, String jogador) {

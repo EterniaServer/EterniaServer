@@ -26,17 +26,17 @@ public class APIEconomy {
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "')"));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.BALANCE_START + "')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
-            playerProfile.balance = EterniaServer.serverConfig.getDouble("money.start");
+            playerProfile.balance = Configs.BALANCE_START;
             Vars.playerProfile.put(uuid, playerProfile);
-            return EterniaServer.serverConfig.getDouble("money.start");
+            return Configs.BALANCE_START;
         }
     }
 
@@ -58,19 +58,19 @@ public class APIEconomy {
     public static void setMoney(UUID uuid, double amount) {
         if (Vars.playerProfile.containsKey(uuid)) {
             Vars.playerProfile.get(uuid).balance = amount;
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.BALANCE_STR, amount, Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.BALANCE_STR, amount, Constants.UUID_STR, uuid.toString()));
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "')"));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.BALANCE_START + "')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
-            playerProfile.balance = EterniaServer.serverConfig.getDouble("money.start");
+            playerProfile.balance = Configs.BALANCE_START;
             Vars.playerProfile.put(uuid, playerProfile);
             setMoney(uuid, amount);
         }

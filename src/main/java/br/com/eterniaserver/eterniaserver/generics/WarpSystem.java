@@ -169,15 +169,11 @@ public class WarpSystem extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (Vars.locations.containsKey(shop)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableLocations, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, shop));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_LOCATIONS, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, shop));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableLocations, Constants.NAME_STR, shop, Constants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_LOCATIONS, Constants.NAME_STR, shop, Constants.LOCATION_STR, saveloc));
         }
         Vars.locations.put(shop, loc);
-    }
-
-    public Location getShop(String shop) {
-        return Vars.locations.getOrDefault(shop, EterniaServer.error);
     }
 
     public void setWarp(Location loc, String warp) {
@@ -189,9 +185,9 @@ public class WarpSystem extends BaseCommand {
                 ":" + ((int) loc.getPitch());
         final String warpName = "warp." + warp;
         if (Vars.locations.containsKey(warpName)) {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.tableLocations, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, warpName));
+            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_LOCATIONS, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, warpName));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.tableLocations, Constants.NAME_STR, warpName, Constants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_LOCATIONS, Constants.NAME_STR, warpName, Constants.LOCATION_STR, saveloc));
         }
         Vars.locations.put(warpName, loc);
     }
@@ -199,7 +195,11 @@ public class WarpSystem extends BaseCommand {
     public void delWarp(String warp) {
         final String warpName = "warp." + warp;
         Vars.locations.remove(warpName);
-        EQueries.executeQuery(Constants.getQueryDelete(Configs.tableLocations, Constants.NAME_STR, warpName));
+        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_LOCATIONS, Constants.NAME_STR, warpName));
+    }
+
+    public Location getShop(String shop) {
+        return Vars.locations.getOrDefault(shop, EterniaServer.error);
     }
 
     public Location getWarp(String warp) {

@@ -152,7 +152,7 @@ public class Economy extends BaseCommand {
                     EterniaLib.getConnections().executeSQLQuery(connection -> {
                         final PreparedStatement getHashMap = connection.prepareStatement(
                                 "SELECT " + Constants.UUID_STR +
-                                        " FROM " + Configs.tablePlayer +
+                                        " FROM " + Configs.TABLE_PLAYER +
                                         " ORDER BY " + Constants.BALANCE_STR + " DESC LIMIT 10;");
                         final ResultSet resultSet = getHashMap.executeQuery();
                         final List<UUID> tempList = new ArrayList<>();
@@ -168,7 +168,7 @@ public class Economy extends BaseCommand {
                 } else {
                     try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
                             "SELECT " + Constants.UUID_STR +
-                                    " FROM " + Configs.tablePlayer +
+                                    " FROM " + Configs.TABLE_PLAYER +
                                     " ORDER BY " + Constants.BALANCE_STR + " DESC LIMIT 10;"); ResultSet resultSet = getHashMap.executeQuery()) {
                         final List<UUID> tempList = new ArrayList<>();
                         while (resultSet.next()) {

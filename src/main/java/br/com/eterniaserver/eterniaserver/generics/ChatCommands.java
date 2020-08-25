@@ -286,7 +286,7 @@ public class ChatCommands extends BaseCommand {
     }
 
     private void saveToSQL(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.tablePlayer, Constants.PLAYER_DISPLAY_STR, Vars.playerProfile.get(uuid).getPlayerDisplayName(), Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.PLAYER_DISPLAY_STR, Vars.playerProfile.get(uuid).getPlayerDisplayName(), Constants.UUID_STR, uuid.toString()));
     }
 
 }
