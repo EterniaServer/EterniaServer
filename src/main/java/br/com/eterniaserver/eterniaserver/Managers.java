@@ -90,6 +90,7 @@ public class Managers {
         sendModuleStatus(true, "Generic");
         EterniaLib.getManager().registerCommand(new Gamemode());
         EterniaLib.getManager().registerCommand(new Inventory());
+        EterniaLib.getManager().registerCommand(new Item());
         EterniaLib.getManager().registerCommand(new Others(plugin));
         EterniaLib.getManager().registerCommand(new Profile());
         EterniaLib.getManager().registerCommand(new Simplifications());

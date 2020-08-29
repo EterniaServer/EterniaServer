@@ -13,9 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
 import java.util.UUID;
 
 public class Others extends BaseCommand {
@@ -47,29 +45,6 @@ public class Others extends BaseCommand {
         plugin.getFiles().loadRewards();
         plugin.getFiles().loadDatabase();
         sender.sendMessage(Strings.MSG_RELOAD_FINISH);
-    }
-
-    @CommandAlias("itemrename|renameitem")
-    @Syntax("<name/lore> <nome>")
-    @CommandPermission("eternia.renameitem")
-    public void onItemRename(Player player, String func, String[] nome) {
-        if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
-            if (func.equals("name")) {
-                ItemStack item = player.getInventory().getItemInMainHand();
-                ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(transformToString(nome));
-                item.setItemMeta(meta);
-                player.getInventory().setItemInMainHand(item);
-            } else if (func.equals("lore")) {
-                ItemStack item = player.getInventory().getItemInMainHand();
-                item.setLore(Collections.singletonList(transformToString(nome)));
-                player.getInventory().setItemInMainHand(item);
-            } else {
-                player.sendMessage(Strings.MSG_ITEM_RENAME);
-            }
-        } else {
-            player.sendMessage(Strings.MSG_ITEM_NO);
-        }
     }
 
     @CommandAlias("god")
@@ -188,12 +163,6 @@ public class Others extends BaseCommand {
             Vars.afk.add(playerName);
             Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_ENABLE));
         }
-    }
-
-    private String transformToString(final String[] nome) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : nome) sb.append(arg).append(" ");
-        return Strings.getColor(sb.toString());
     }
 
     private void changeGod(final Player player) {

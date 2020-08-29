@@ -89,7 +89,10 @@ public class Profile extends BaseCommand {
                         playerProfile.xp = resultSet.getInt(Constants.XP_STR);
                     }
                     if (EterniaServer.serverConfig.getBoolean("modules.home")) {
-                        playerProfile.homes = new ArrayList<>(Arrays.asList(resultSet.getString(Constants.HOMES_STR).split(":")));
+                        String result = resultSet.getString(Constants.HOMES_STR);
+                        if (result != null) {
+                            playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
+                        }
                     }
                     if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
                         playerProfile.muted = resultSet.getLong(Constants.MUTED_STR);

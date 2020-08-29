@@ -18,10 +18,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Instrument;
-import org.bukkit.Material;
-import org.bukkit.Note;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,6 +47,7 @@ public class TextMaker {
 					if (Character.toString(msg.charAt(v)).equals("@")) {
 						if (lenght > v + 16) playerName = msg.substring(v, v + 16).split(" ")[0];
 						else playerName = msg.substring(v, v + lenght - 1).split(" ")[0];
+						msg = msg.replace(playerName, EterniaServer.colors.get(3) + playerName + EterniaServer.colors.get(15));
 						if (Vars.playersName.containsKey(playerName)) {
 							Player player = Bukkit.getPlayer(Vars.playersName.get(playerName));
 							if (player != null && player.isOnline()) {
@@ -96,7 +94,7 @@ public class TextMaker {
 				new TextComponent(json)
 		};
 		HoverEvent event = new HoverEvent(Action.SHOW_ITEM, baseComponents);
-		TextComponent component = new TextComponent(string);
+		TextComponent component = new TextComponent(string.replace("[item]", EterniaServer.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + EterniaServer.colors.get(15)));
 		component.setHoverEvent(event);
 		return component;
 	}

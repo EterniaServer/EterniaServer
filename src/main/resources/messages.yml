@@ -130,16 +130,22 @@ experience:
   xp-rremove: '&7Você perdeu &3%amount%&7 de XP por &3%player_displayname%&8.'
   xp-set: '&7Você definiu para &3%amount%&7 o saldo de XP de &3%player_displayname%&8.'
   xpo-rset: '&7Seu saldo de XP foi definido para &3%amount%&7 por &3%player_displayname%&8.'
+item:
+  name:
+    clear: '&7Você limpou o nome do item&8.'
+    set: '&7Você alterou o nome do item para &3%name%&8.'
+  lore:
+    add: '&7Você adicionou mais uma linha a lore do item &3%name%&8.'
+    set: '&7Você definiu a lore do item para &3%name%&8.'
+    clear: '&7Você limpou a lore do item&8.'
+  no: '&7Você não possui nenhum item em sua mão&8.'
+  helmet: '&7Tome seu novo caçapete&8.'
 generic:
   afk:
     broadcast-kicked: '&3%player_displayname% &7estava AFK e foi kickado por isso&8.'
     disabled: '&3%player_displayname% &7não está mais AFK&8.'
     enabled: '&3%player_displayname% &7agora está AFK&8.'
     kicked: '&7Você foi kickado por está afk&8.'
-  items:
-    helmet: '&7Aproveite seu novo Caçapete&8.'
-    no-item: '&7Nenhum há item na sua mão&8.'
-    rename: '&7Use &6/renameitem &3<name|lore> <nome>'
   others:
     condenser: '&7:)&8.'
     invalid: '&7Não pode ser maior que &310 &7nem menor que &31&8.'

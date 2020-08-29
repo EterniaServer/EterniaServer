@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.configs.Strings;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
@@ -18,6 +19,7 @@ public class Inventory extends BaseCommand {
     }
 
     @CommandAlias("openinv|invsee")
+    @CommandCompletion("@players")
     @Syntax("<jogador>")
     @CommandPermission("eternia.openinv")
     public void onOpenInventory(Player player, OnlinePlayer target) {
@@ -25,6 +27,8 @@ public class Inventory extends BaseCommand {
     }
 
     @CommandAlias("enderchest|ec")
+    @CommandCompletion("@players")
+    @Syntax("<jogador>")
     @CommandPermission("eternia.enderchest")
     public void onEnderChest(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
@@ -41,9 +45,12 @@ public class Inventory extends BaseCommand {
     @CommandAlias("hat|capacete")
     @CommandPermission("eternia.hat")
     public void onHat(Player player) {
+        if (new NBTItem(player.getInventory().getItemInMainHand()).getInteger("EterniaLock") == 1) {
+            return;
+        }
         dropHelmet(player);
         setHelmet(player);
-        player.sendMessage(Strings.MSG_ITEM_HELMET);
+        player.sendMessage(Strings.ITEM_HELMET);
     }
 
     private void dropHelmet(Player player) {

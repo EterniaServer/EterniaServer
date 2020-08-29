@@ -106,9 +106,14 @@ public class Strings {
     public static final String MSG_GOD_DISABLE = putPrefix("generic.others.god-disabled");
     public static final String MSG_RELOAD_START = putPrefix("generic.others.reload-start");
     public static final String MSG_RELOAD_FINISH = putPrefix("generic.others.reload-finish");
-    public static final String MSG_ITEM_RENAME = putPrefix("generic.items.rename");
-    public static final String MSG_ITEM_NO = putPrefix("generic.items.no-item");
-    public static final String MSG_ITEM_HELMET = putPrefix("generic.items.helmet");
+
+    public static final String ITEM_NAME_CLEAR = putPrefix("item.name.clear");
+    public static final String ITEM_NAME_SET = putPrefix("item.name.set");
+    public static final String ITEM_LORE_CLEAR = putPrefix("item.lore.clear");
+    public static final String ITEM_LORE_ADD = putPrefix("item.lore.add");
+    public static final String ITEM_LORE_SET = putPrefix("item.lore.set");
+    public static final String ITEM_NO = putPrefix("item.no");
+    public static final String ITEM_HELMET = putPrefix("item.helmet");
 
     public static final String MSG_PLAYER_SKIP = putPrefix("bed.player-s");
     public static final String MSG_SKIP_NIGHT = putPrefix("bed.skip-night");
