@@ -1,7 +1,8 @@
 package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
+import br.com.eterniaserver.eterniaserver.generics.PlaceHolders;
+import br.com.eterniaserver.eterniaserver.strings.Strings;
 import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
 
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -157,6 +158,10 @@ public class Files {
 
     public void loadDatabase() {
         new Table();
+    }
+
+    public void loadPlaceHolders() {
+        new PlaceHolders().register();
     }
 
     private void sendConsoleMessage(final String msg) {

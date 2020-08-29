@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.configs.Strings;
+import br.com.eterniaserver.eterniaserver.strings.Strings;
 import br.com.eterniaserver.eterniaserver.utils.*;
 
 import org.bukkit.entity.Player;

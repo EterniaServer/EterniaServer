@@ -2,8 +2,8 @@ package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eterniaserver.configs.Configs;
-import br.com.eterniaserver.eterniaserver.configs.Constants;
+import br.com.eterniaserver.eterniaserver.generics.Configs;
+import br.com.eterniaserver.eterniaserver.strings.Constants;
 
 public class Table {
 

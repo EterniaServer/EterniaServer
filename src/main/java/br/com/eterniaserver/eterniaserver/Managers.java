@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eterniaserver.configs.Constants;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
+import br.com.eterniaserver.eterniaserver.strings.Constants;
+import br.com.eterniaserver.eterniaserver.strings.Strings;
 import br.com.eterniaserver.eterniaserver.generics.*;
 
 import org.bukkit.Bukkit;
@@ -36,8 +36,8 @@ public class Managers {
     private void loadBedManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.bed"), "Bed")) {
             plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 40);
-            plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedEnter(), plugin);
-            plugin.getServer().getPluginManager().registerEvents(new OnPlayerBedLeave(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new EventPlayerBedEnter(), plugin);
+            plugin.getServer().getPluginManager().registerEvents(new EventPlayerBedLeave(), plugin);
         }
     }
 
@@ -56,23 +56,23 @@ public class Managers {
     private void loadCashManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.cash"), "Cash")) {
             plugin.getFiles().loadCashGui();
-            EterniaLib.getManager().registerCommand(new Cash());
+            EterniaLib.getManager().registerCommand(new BaseCmdCash());
         }
     }
 
     private void loadChatManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.chat"), "Chat")) {
             plugin.getFiles().loadChat();
-            EterniaLib.getManager().registerCommand(new Channels());
-            EterniaLib.getManager().registerCommand(new Mute());
-            EterniaLib.getManager().registerCommand(new ChatCommands(plugin));
+            EterniaLib.getManager().registerCommand(new BaseCmdChannels());
+            EterniaLib.getManager().registerCommand(new BaseCmdMute());
+            EterniaLib.getManager().registerCommand(new BaseCmdChat(plugin));
             new AdvancedChatTorch();
         }
     }
 
     private void loadEconomyManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.economy"), "Economy")) {
-            EterniaLib.getManager().registerCommand(new Economy());
+            EterniaLib.getManager().registerCommand(new BaseCmdEconomy());
         }
     }
 
@@ -82,24 +82,21 @@ public class Managers {
 
     private void loadExperienceManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.experience"), "Experience")) {
-            EterniaLib.getManager().registerCommand(new Experience());
+            EterniaLib.getManager().registerCommand(new BaseCmdExperience());
         }
     }
 
     private void loadGenericManager() {
         sendModuleStatus(true, "Generic");
-        EterniaLib.getManager().registerCommand(new Gamemode());
-        EterniaLib.getManager().registerCommand(new Inventory());
-        EterniaLib.getManager().registerCommand(new Item());
-        EterniaLib.getManager().registerCommand(new Others(plugin));
-        EterniaLib.getManager().registerCommand(new Profile());
-        EterniaLib.getManager().registerCommand(new Simplifications());
-        EterniaLib.getManager().registerCommand(new Glow());
+        EterniaLib.getManager().registerCommand(new BaseCmdGamemode());
+        EterniaLib.getManager().registerCommand(new BaseCmdInventory());
+        EterniaLib.getManager().registerCommand(new BaseCmdItem());
+        EterniaLib.getManager().registerCommand(new BaseCmdGeneric(plugin));
     }
 
     private void loadHomesManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.home"), "Homes")) {
-            EterniaLib.getManager().registerCommand(new HomeSystem());
+            EterniaLib.getManager().registerCommand(new BaseCmdHome());
         }
     }
 
@@ -122,20 +119,20 @@ public class Managers {
     private void loadRewardsManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
             plugin.getFiles().loadRewards();
-            EterniaLib.getManager().registerCommand(new RewardsSystem());
+            EterniaLib.getManager().registerCommand(new BaseCmdRewards());
         }
     }
 
     private void loadSpawnersManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.spawners"), "Spawners")) {
-            EterniaLib.getManager().registerCommand(new SpawnerGive());
+            EterniaLib.getManager().registerCommand(new BaseCmdSpawner());
         }
     }
 
     private void loadTeleportsManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.teleports"), "Teleports")) {
-            EterniaLib.getManager().registerCommand(new WarpSystem());
-            EterniaLib.getManager().registerCommand(new TeleportSystem());
+            EterniaLib.getManager().registerCommand(new BaseCmdWarp());
+            EterniaLib.getManager().registerCommand(new BaseCmdTeleport());
         }
     }
 

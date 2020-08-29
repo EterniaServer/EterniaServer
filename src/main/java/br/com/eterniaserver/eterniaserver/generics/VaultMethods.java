@@ -2,8 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.configs.Configs;
-import br.com.eterniaserver.eterniaserver.configs.Constants;
+import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 

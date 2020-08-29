@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.configs.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

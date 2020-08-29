@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 
-import br.com.eterniaserver.eterniaserver.configs.Strings;
+import br.com.eterniaserver.eterniaserver.strings.Strings;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 
 import org.bukkit.entity.Player;

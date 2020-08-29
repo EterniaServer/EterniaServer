@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import br.com.eterniaserver.eternialib.NBTCompound;
 import br.com.eterniaserver.eternialib.NBTItem;
-import br.com.eterniaserver.eterniaserver.configs.Constants;
+import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.configs.Strings;
+import br.com.eterniaserver.eterniaserver.strings.Strings;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
