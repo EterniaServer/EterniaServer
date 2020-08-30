@@ -2,6 +2,8 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
+import br.com.eterniaserver.eternialib.NBTItem;
+import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.strings.Strings;
 
 import com.google.common.collect.ImmutableList;
@@ -18,6 +20,19 @@ public class BaseCmdItem extends BaseCommand {
     @Default
     public void itemHelp(Player player) {
 
+    }
+
+    @Subcommand("addkey")
+    @Syntax("<chave> <valor>")
+    public void onItemAddKey(Player player, String key, String value) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item != null && item.getType() != Material.AIR) {
+            NBTItem nbtItem = new NBTItem(item);
+            nbtItem.setString(key, value);
+            player.sendMessage(Strings.ITEM_ADDKEY.replace(Constants.KEY, key).replace(Constants.VALUE, value));
+        } else {
+            player.sendMessage(Strings.ITEM_NO);
+        }
     }
 
     @Subcommand("clear lore")
@@ -52,8 +67,12 @@ public class BaseCmdItem extends BaseCommand {
         if (item != null && item.getType() != Material.AIR) {
             name = Strings.getColor(name);
             List<String> lore = item.getLore();
-            lore.add(name);
-            item.setLore(lore);
+            if (lore != null) {
+                lore.add(name);
+                item.setLore(lore);
+            } else {
+                item.setLore(List.of(name));
+            }
             player.getInventory().setItemInMainHand(item);
             player.sendMessage(Strings.ITEM_LORE_ADD.replace("%name%", name));
         } else {

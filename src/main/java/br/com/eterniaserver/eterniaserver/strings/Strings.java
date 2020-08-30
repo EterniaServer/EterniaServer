@@ -107,11 +107,12 @@ public class Strings {
     public static final String MSG_RELOAD_START = putPrefix("generic.others.reload-start");
     public static final String MSG_RELOAD_FINISH = putPrefix("generic.others.reload-finish");
 
-    public static final String ITEM_NAME_CLEAR = putPrefix("item.name.clear");
-    public static final String ITEM_NAME_SET = putPrefix("item.name.set");
     public static final String ITEM_LORE_CLEAR = putPrefix("item.lore.clear");
     public static final String ITEM_LORE_ADD = putPrefix("item.lore.add");
     public static final String ITEM_LORE_SET = putPrefix("item.lore.set");
+    public static final String ITEM_NAME_CLEAR = putPrefix("item.name.clear");
+    public static final String ITEM_NAME_SET = putPrefix("item.name.set");
+    public static final String ITEM_ADDKEY = putPrefix("item.addkey");
     public static final String ITEM_NO = putPrefix("item.no");
     public static final String ITEM_HELMET = putPrefix("item.helmet");
 

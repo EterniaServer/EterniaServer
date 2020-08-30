@@ -138,6 +138,7 @@ item:
     add: '&7Você adicionou mais uma linha a lore do item &3%name%&8.'
     set: '&7Você definiu a lore do item para &3%name%&8.'
     clear: '&7Você limpou a lore do item&8.'
+  addkey: '&7Adicionado uma chave e um valor ao item&8. &7Chave&8: &3%key% &8| &7Valor&8: &3%value%&8.'
   no: '&7Você não possui nenhum item em sua mão&8.'
   helmet: '&7Tome seu novo caçapete&8.'
 generic:
