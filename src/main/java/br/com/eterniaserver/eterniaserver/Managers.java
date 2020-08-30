@@ -1,9 +1,28 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eterniaserver.generics.AccelerateWorld;
+import br.com.eterniaserver.eterniaserver.generics.AdvancedChatTorch;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdCash;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdChannels;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdChat;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdHome;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdItem;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdMute;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdRewards;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdSpawner;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp;
+import br.com.eterniaserver.eterniaserver.generics.Checks;
+import br.com.eterniaserver.eterniaserver.generics.KitSystem;
+import br.com.eterniaserver.eterniaserver.generics.Vars;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.strings.Strings;
-import br.com.eterniaserver.eterniaserver.generics.*;
 
 import org.bukkit.Bukkit;
 
@@ -15,6 +34,7 @@ public class Managers {
 
         this.plugin = plugin;
 
+        loadCompletions();
         loadGenericManager();
         loadBedManager();
         loadBlockRewardsManager();
@@ -33,11 +53,14 @@ public class Managers {
 
     }
 
+    private void loadCompletions() {
+        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("colors", Vars.colorsString);
+        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("entidades", Vars.entityList);
+    }
+
     private void loadBedManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.bed"), "Bed")) {
             plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 40);
-            plugin.getServer().getPluginManager().registerEvents(new EventPlayerBedEnter(), plugin);
-            plugin.getServer().getPluginManager().registerEvents(new EventPlayerBedLeave(), plugin);
         }
     }
 

@@ -110,9 +110,9 @@ public class BaseCmdWarp extends BaseCommand {
                 String warp = line.replace("warp.", "");
                 if (player.hasPermission("eternia.warp." + warp)) {
                     if (i + 1 != size) {
-                        string.append(warp).append(EterniaServer.colors.get(8)).append(", ").append(EterniaServer.colors.get(3));
+                        string.append(warp).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
                     } else {
-                        string.append(warp).append(EterniaServer.colors.get(3));
+                        string.append(warp).append(Vars.colors.get(3));
                     }
                 }
             }
@@ -137,7 +137,7 @@ public class BaseCmdWarp extends BaseCommand {
     }
 
     private boolean shopExists(final Location location, final Player player) {
-        if (location == EterniaServer.error) {
+        if (location == Vars.error) {
             player.sendMessage(Strings.MSG_SHOP_NO_EXISTS);
             return false;
         }
@@ -145,7 +145,7 @@ public class BaseCmdWarp extends BaseCommand {
     }
 
     private boolean warpExists(final Location location, final Player player, final String nome) {
-        if (location == EterniaServer.error) {
+        if (location == Vars.error) {
             player.sendMessage(Strings.MSG_WARP_NO_EXISTS.replace(Constants.WARP, nome));
             return false;
         }
@@ -153,7 +153,7 @@ public class BaseCmdWarp extends BaseCommand {
     }
 
     private boolean spawnExists(final Location location, final Player player) {
-        if (location == EterniaServer.error) {
+        if (location == Vars.error) {
             player.sendMessage(Strings.MSG_SPAWN_NO_EXISTS);
             return false;
         }
@@ -198,11 +198,11 @@ public class BaseCmdWarp extends BaseCommand {
     }
 
     public Location getShop(String shop) {
-        return Vars.locations.getOrDefault(shop, EterniaServer.error);
+        return Vars.locations.getOrDefault(shop, Vars.error);
     }
 
     public Location getWarp(String warp) {
-        return Vars.locations.getOrDefault("warp." + warp, EterniaServer.error);
+        return Vars.locations.getOrDefault("warp." + warp, Vars.error);
     }
 
 }

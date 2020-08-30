@@ -1,5 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +13,8 @@ public class EventPlayerBedLeave implements Listener {
 
     @EventHandler
     public void onPlayerBedLeave(PlayerBedLeaveEvent event) {
+        if (!EterniaServer.serverConfig.getBoolean("modules.bed")) return;
+
         final Player player = event.getPlayer();
         final String playerName = player.getName();
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - InternMethods.getCooldown(playerName)) > 6) {

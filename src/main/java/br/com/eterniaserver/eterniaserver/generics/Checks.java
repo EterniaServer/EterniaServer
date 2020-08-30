@@ -111,7 +111,7 @@ public class Checks extends BukkitRunnable {
     }
 
     private Location getWarp() {
-        return Vars.locations.getOrDefault("warp.spawn", EterniaServer.error);
+        return Vars.locations.getOrDefault("warp.spawn", Vars.error);
     }
 
     public void runSync(Runnable runnable) {

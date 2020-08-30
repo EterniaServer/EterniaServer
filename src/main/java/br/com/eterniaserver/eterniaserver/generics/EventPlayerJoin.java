@@ -29,7 +29,7 @@ public class EventPlayerJoin implements Listener {
         Vars.afkTime.put(playerName, time);
         if (!Vars.playerProfile.containsKey(uuid)) {
             Location location = getWarp();
-            if (location != EterniaServer.error) {
+            if (location != Vars.error) {
                 PaperLib.teleportAsync(player, getWarp());
             }
             playerProfileCreate(uuid, playerName, player.getFirstPlayed());
@@ -108,7 +108,7 @@ public class EventPlayerJoin implements Listener {
     }
 
     private Location getWarp() {
-        return Vars.locations.getOrDefault("warp.spawn", EterniaServer.error);
+        return Vars.locations.getOrDefault("warp.spawn", Vars.error);
     }
 
 }

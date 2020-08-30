@@ -70,7 +70,7 @@ public class BaseCmdHome extends BaseCommand {
             if (player.hasPermission("eternia.homes.other")) {
                 List<String> list = getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
                 for (String line : list) {
-                    accounts.append(line).append(EterniaServer.colors.get(8)).append(", ").append(EterniaServer.colors.get(3));
+                    accounts.append(line).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
                 }
                 player.sendMessage(Strings.M_HOME_LIST.replace(Constants.HOMES, Strings.getColor(accounts.toString())));
             } else {
@@ -79,7 +79,7 @@ public class BaseCmdHome extends BaseCommand {
         } else {
             List<String> list = getHomes(UUIDFetcher.getUUIDOf(player.getName()));
             for (String line : list) {
-                accounts.append(line).append(EterniaServer.colors.get(8)).append(", ").append(EterniaServer.colors.get(3));
+                accounts.append(line).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
             }
             player.sendMessage(Strings.M_HOME_LIST.replace(Constants.HOMES, Strings.getColor(accounts.toString())));
         }
@@ -121,7 +121,7 @@ public class BaseCmdHome extends BaseCommand {
     }
 
     private boolean locationExists(final Location location, final Player player) {
-        if (location == EterniaServer.error) {
+        if (location == Vars.error) {
             player.sendMessage(Strings.M_HOME_NO);
             return false;
         }
@@ -185,7 +185,7 @@ public class BaseCmdHome extends BaseCommand {
     }
 
     public Location getHome(String home, String jogador) {
-        return Vars.locations.getOrDefault(home + "." + jogador, EterniaServer.error);
+        return Vars.locations.getOrDefault(home + "." + jogador, Vars.error);
     }
 
     public boolean existHome(String home, UUID uuid) {

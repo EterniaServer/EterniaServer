@@ -30,7 +30,7 @@ public class BaseCmdSpawner extends BaseCommand {
         final Inventory inventory = targetP.getInventory();
         final String spawnerName = spawner.toUpperCase();
 
-        if (EterniaServer.entityList.contains(spawnerName)) {
+        if (Vars.entityList.contains(spawnerName)) {
             EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
             if (inventory.firstEmpty() == -1) {
@@ -64,7 +64,7 @@ public class BaseCmdSpawner extends BaseCommand {
 
     private void sendTypes(final CommandSender player) {
         StringBuilder str = new StringBuilder();
-        for (String entity : EterniaServer.entityList) str.append(ChatColor.DARK_AQUA).append(entity).append(ChatColor.DARK_GRAY).append(", ");
+        for (String entity : Vars.entityList) str.append(ChatColor.DARK_AQUA).append(entity).append(ChatColor.DARK_GRAY).append(", ");
         str.append(ChatColor.GRAY).append("algumas entidades não funcionam");
         player.sendMessage(Strings.MSG_SPAWNER_GIVE.replace(Constants.TYPE, str.toString()));
     }

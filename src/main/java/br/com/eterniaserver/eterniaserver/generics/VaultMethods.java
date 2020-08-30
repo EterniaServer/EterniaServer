@@ -39,7 +39,7 @@ public class VaultMethods implements Economy {
 
     @Override
     public String format(double amount) {
-        return EterniaServer.df2.format(amount);
+        return Vars.df2.format(amount);
     }
 
     @Override

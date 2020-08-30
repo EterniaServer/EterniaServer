@@ -101,11 +101,11 @@ public class BaseCmdEconomy extends BaseCommand {
     public void onMoney(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
-            player.sendMessage(Strings.M_ECO_MONEY.replace(Constants.AMOUNT, EterniaServer.df2.format(money)));
+            player.sendMessage(Strings.M_ECO_MONEY.replace(Constants.AMOUNT, Vars.df2.format(money)));
         } else {
             if (player.hasPermission("eternia.money.admin")) {
                 double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
-                player.sendMessage(Strings.M_ECO_OTHER.replace(Constants.AMOUNT, EterniaServer.df2.format(money)));
+                player.sendMessage(Strings.M_ECO_OTHER.replace(Constants.AMOUNT, Vars.df2.format(money)));
             } else {
                 player.sendMessage(Strings.MSG_NO_PERM);
             }
@@ -193,7 +193,7 @@ public class BaseCmdEconomy extends BaseCommand {
                     .replace(Constants.POSITION, String.valueOf(lista.indexOf(user) + 1))
                     .replace(Constants.PLAYER, playerName)
                     .replace("%player_name%", playerName)
-                    .replace(Constants.AMOUNT, EterniaServer.df2.format(APIEconomy.getMoney(user))));
+                    .replace(Constants.AMOUNT, Vars.df2.format(APIEconomy.getMoney(user))));
         }));
     }
 

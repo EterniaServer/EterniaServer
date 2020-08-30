@@ -47,7 +47,7 @@ public class TextMaker {
 					if (Character.toString(msg.charAt(v)).equals("@")) {
 						if (lenght > v + 16) playerName = msg.substring(v, v + 16).split(" ")[0];
 						else playerName = msg.substring(v, v + lenght - 1).split(" ")[0];
-						msg = msg.replace(playerName, EterniaServer.colors.get(3) + playerName + EterniaServer.colors.get(15));
+						msg = msg.replace(playerName, Vars.colors.get(3) + playerName + Vars.colors.get(15));
 						if (Vars.playersName.containsKey(playerName)) {
 							Player player = Bukkit.getPlayer(Vars.playersName.get(playerName));
 							if (player != null && player.isOnline()) {
@@ -94,7 +94,7 @@ public class TextMaker {
 				new TextComponent(json)
 		};
 		HoverEvent event = new HoverEvent(Action.SHOW_ITEM, baseComponents);
-		TextComponent component = new TextComponent(string.replace("[item]", EterniaServer.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + EterniaServer.colors.get(15)));
+		TextComponent component = new TextComponent(string.replace("[item]", Vars.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + Vars.colors.get(15)));
 		component.setHoverEvent(event);
 		return component;
 	}

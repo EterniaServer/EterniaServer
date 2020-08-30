@@ -53,8 +53,8 @@ public class BaseCmdGeneric extends BaseCommand {
 
         this.sc = Bukkit.getScoreboardManager().getMainScoreboard();
         for (int i = 0; i < 16; i++) {
-            if (sc.getTeam(EterniaServer.arrData.get(i)) == null) {
-                sc.registerNewTeam(EterniaServer.arrData.get(i)).setColor(EterniaServer.colors.get(i));
+            if (sc.getTeam(Vars.arrData.get(i)) == null) {
+                sc.registerNewTeam(Vars.arrData.get(i)).setColor(Vars.colors.get(i));
             }
         }
 
@@ -219,52 +219,52 @@ public class BaseCmdGeneric extends BaseCommand {
         final String light = "claro";
         switch (color.hashCode()) {
             case 1741606617:
-                changeColor(player, EterniaServer.arrData.get(8), "&8", "cinza " + dark);
+                changeColor(player, Vars.arrData.get(8), "&8", "cinza " + dark);
                 break;
             case 1741452496:
-                changeColor(player, EterniaServer.arrData.get(1), "&1", "azul " + dark);
+                changeColor(player, Vars.arrData.get(1), "&1", "azul " + dark);
                 break;
             case 1741427506:
-                changeColor(player, EterniaServer.arrData.get(3), "&3", "ciano");
+                changeColor(player, Vars.arrData.get(3), "&3", "ciano");
                 break;
             case 1441664347:
-                changeColor(player, EterniaServer.arrData.get(4), "&4", "vermelho");
+                changeColor(player, Vars.arrData.get(4), "&4", "vermelho");
                 break;
             case 686244985:
-                changeColor(player, EterniaServer.arrData.get(7), "&7", "cinza " + light);
+                changeColor(player, Vars.arrData.get(7), "&7", "cinza " + light);
                 break;
             case 93818879:
-                changeColor(player, EterniaServer.arrData.get(0), "&0", "preto");
+                changeColor(player, Vars.arrData.get(0), "&0", "preto");
                 break;
             case 98619139:
-                changeColor(player, EterniaServer.arrData.get(10), "&a", "verde");
+                changeColor(player, Vars.arrData.get(10), "&a", "verde");
                 break;
             case 3178592:
-                changeColor(player, EterniaServer.arrData.get(6), "&6", "dourado");
+                changeColor(player, Vars.arrData.get(6), "&6", "dourado");
                 break;
             case 3027034:
-                changeColor(player, EterniaServer.arrData.get(9), "&9", "azul");
+                changeColor(player, Vars.arrData.get(9), "&9", "azul");
                 break;
             case 3002044:
-                changeColor(player, EterniaServer.arrData.get(11), "&b", "azul " + light);
+                changeColor(player, Vars.arrData.get(11), "&b", "azul " + light);
                 break;
             case 112785:
-                changeColor(player, EterniaServer.arrData.get(12), "&c", "tomate");
+                changeColor(player, Vars.arrData.get(12), "&c", "tomate");
                 break;
             case -734239628:
-                changeColor(player, EterniaServer.arrData.get(14), "&e", "amarelo");
+                changeColor(player, Vars.arrData.get(14), "&e", "amarelo");
                 break;
             case -976943172:
-                changeColor(player, EterniaServer.arrData.get(13), "&d", "rosa");
+                changeColor(player, Vars.arrData.get(13), "&d", "rosa");
                 break;
             case -1092352334:
-                changeColor(player, EterniaServer.arrData.get(5), "&5", "roxo");
+                changeColor(player, Vars.arrData.get(5), "&5", "roxo");
                 break;
             case -1844766387:
-                changeColor(player, EterniaServer.arrData.get(2), "&2", "verde " + dark);
+                changeColor(player, Vars.arrData.get(2), "&2", "verde " + dark);
                 break;
             default:
-                changeColor(player, EterniaServer.arrData.get(15), "&f", "branco");
+                changeColor(player, Vars.arrData.get(15), "&f", "branco");
                 break;
         }
     }

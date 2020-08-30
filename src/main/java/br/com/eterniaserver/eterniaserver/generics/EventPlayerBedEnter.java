@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.strings.Strings;
 
 import org.bukkit.Bukkit;
@@ -14,7 +15,7 @@ public class EventPlayerBedEnter implements Listener {
 
     @EventHandler
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
-        if (event.isCancelled()) return;
+        if (!EterniaServer.serverConfig.getBoolean("modules.bed")) return;
 
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             final Player player = event.getPlayer();
