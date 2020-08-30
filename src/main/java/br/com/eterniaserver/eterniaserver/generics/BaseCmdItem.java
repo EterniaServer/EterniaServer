@@ -1,12 +1,16 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.acf.BaseCommand;
-import br.com.eterniaserver.acf.annotation.*;
+import br.com.eterniaserver.acf.annotation.CommandAlias;
+import br.com.eterniaserver.acf.annotation.CommandCompletion;
+import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Default;
+import br.com.eterniaserver.acf.annotation.Subcommand;
+import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.strings.Strings;
 
-import com.google.common.collect.ImmutableList;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -87,7 +91,7 @@ public class BaseCmdItem extends BaseCommand {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item != null && item.getType() != Material.AIR) {
             name = Strings.getColor(name);
-            item.setLore(ImmutableList.of(name));
+            item.setLore(List.of(name));
             player.getInventory().setItemInMainHand(item);
             player.sendMessage(Strings.ITEM_LORE_SET.replace("%name%", name));
         } else {
