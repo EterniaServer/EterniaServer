@@ -4,7 +4,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,8 +31,8 @@ public class EventEntityInventoryClick implements Listener {
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
-            player.sendMessage(Strings.MSG_SPAWNER_NAME);
-            player.sendMessage(InternMethods.putName(player, Strings.MSG_SPAWNER_LOG));
+            player.sendMessage(MSG.MSG_SPAWNER_NAME);
+            player.sendMessage(InternMethods.putName(player, MSG.MSG_SPAWNER_LOG));
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
@@ -111,11 +111,11 @@ public class EventEntityInventoryClick implements Listener {
             if (EterniaServer.cashConfig.contains(permString)) {
                 final int cost = EterniaServer.cashConfig.getInt(permString + ".cost");
                 if (APICash.hasCash(uuid, cost)) {
-                    player.sendMessage(Strings.M_CASH_COST.replace(Constants.AMOUNT, String.valueOf(cost)));
-                    player.sendMessage(Strings.M_CASH);
+                    player.sendMessage(MSG.M_CASH_COST.replace(Constants.AMOUNT, String.valueOf(cost)));
+                    player.sendMessage(MSG.M_CASH);
                     Vars.cashItem.put(uuid, permString);
                 } else {
-                    player.sendMessage(Strings.M_CASH_NO);
+                    player.sendMessage(MSG.M_CASH_NO);
                 }
             } else {
                 player.closeInventory();
@@ -126,8 +126,8 @@ public class EventEntityInventoryClick implements Listener {
                 player.openInventory(gui);
             }
         } else {
-            player.sendMessage(Strings.M_CASH_ALREADY);
-            player.sendMessage(Strings.M_CASH);
+            player.sendMessage(MSG.M_CASH_ALREADY);
+            player.sendMessage(MSG.M_CASH);
         }
     }
 

@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -19,18 +19,18 @@ public class Local {
                 pes += 1;
                 p.sendMessage(format);
             } else if (p.hasPermission("eternia.spy") && Boolean.TRUE.equals(b)) {
-                p.sendMessage(Strings.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
+                p.sendMessage(MSG.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
             }
         }
         if (pes <= 1) {
-            player.sendMessage(Strings.M_CHAT_NOONE);
+            player.sendMessage(MSG.M_CHAT_NOONE);
         }
     }
 
     private String getFormat(String message, final Player player) {
         String format = InternMethods.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
         if (player.hasPermission("eternia.chat.color")) {
-            return Strings.getColor(format.replace(Constants.MESSAGE, message));
+            return MSG.getColor(format.replace(Constants.MESSAGE, message));
         } else {
             return(format.replace(Constants.MESSAGE, message));
         }

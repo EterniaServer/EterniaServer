@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
@@ -19,14 +19,14 @@ public class KitSystem extends BaseCommand {
         final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_KITS), Constants.NAME_STR, Constants.COOLDOWN_STR);
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
 
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Kits").replace(Constants.AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(MSG.MSG_LOAD_DATA.replace(Constants.MODULE, "Kits").replace(Constants.AMOUNT, String.valueOf(temp.size())));
 
     }
 
     @CommandAlias("kits")
     @CommandPermission("eternia.kits")
     public void onKits(Player player) {
-        player.sendMessage(Strings.M_KIT_LIST.replace(Constants.KITS, Strings.getColor(EterniaServer.kitConfig.getString("nameofkits"))));
+        player.sendMessage(MSG.M_KIT_LIST.replace(Constants.KITS, MSG.getColor(EterniaServer.kitConfig.getString("nameofkits"))));
     }
 
     @CommandAlias("kit")
@@ -43,13 +43,13 @@ public class KitSystem extends BaseCommand {
                 if (InternMethods.hasCooldown(cd, cooldown)) {
                     giveKit(player, time, kitName, kit);
                 } else {
-                    player.sendMessage(Strings.MSG_TIMING.replace(Constants.COOLDOWN, InternMethods.getTimeLeft(cooldown, cd)));
+                    player.sendMessage(MSG.MSG_TIMING.replace(Constants.COOLDOWN, InternMethods.getTimeLeft(cooldown, cd)));
                 }
             } else {
-                player.sendMessage(Strings.MSG_NO_PERM.replace(Constants.KIT_NAME, kit));
+                player.sendMessage(MSG.MSG_NO_PERM.replace(Constants.KIT_NAME, kit));
             }
         } else {
-            player.sendMessage(Strings.M_KIT_NO_EXISTS.replace(Constants.KIT_NAME, kit));
+            player.sendMessage(MSG.M_KIT_NO_EXISTS.replace(Constants.KIT_NAME, kit));
         }
     }
 
@@ -59,7 +59,7 @@ public class KitSystem extends BaseCommand {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), InternMethods.setPlaceholders(player, line));
         }
         for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".text")) {
-            player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(player, line)));
+            player.sendMessage(MSG.getColor(InternMethods.setPlaceholders(player, line)));
         }
         Vars.kitsCooldown.put(kitName, time);
         EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_KITS, Constants.COOLDOWN_STR, time, Constants.NAME_STR, kitName));

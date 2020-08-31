@@ -3,12 +3,13 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -20,6 +21,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -129,7 +131,7 @@ public class BaseCmdGeneric extends BaseCommand {
                 e.printStackTrace();
             }
         }
-        sendConsole(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Profiles").replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.size())));
+        sendConsole(MSG.MSG_LOAD_DATA.replace(Constants.MODULE, "Player Profiles").replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.size())));
 
         if (EterniaServer.serverConfig.getBoolean("modules.home")) {
             final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_LOCATIONS), Constants.NAME_STR, Constants.LOCATION_STR);
@@ -168,7 +170,7 @@ public class BaseCmdGeneric extends BaseCommand {
             player.setFlySpeed((float) speed / 10);
             player.setWalkSpeed((float) speed / 10);
         } else {
-            player.sendMessage(Strings.MSG_SPEED);
+            player.sendMessage(MSG.MSG_SPEED);
         }
     }
 
@@ -187,26 +189,26 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandPermission("eternia.mem")
     public void onMem(CommandSender player) {
         getRuntime.recalculateRuntime();
-        player.sendMessage(Strings.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
-        player.sendMessage(Strings.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
+        player.sendMessage(MSG.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
+        player.sendMessage(MSG.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
     }
 
     @CommandAlias("memall|memoryall")
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
-        sendConsole(Strings.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
-        sendConsole(Strings.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
+        sendConsole(MSG.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
+        sendConsole(MSG.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
     }
 
     @CommandAlias("glow")
     @CommandPermission("eternia.glow")
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
-            player.sendMessage(Strings.M_GLOW_ENABLED);
+            player.sendMessage(MSG.M_GLOW_ENABLED);
         } else {
             player.removePotionEffect(PotionEffectType.GLOWING);
-            player.sendMessage(Strings.M_GLOW_DISABLED);
+            player.sendMessage(MSG.M_GLOW_DISABLED);
         }
         player.setGlowing(!player.isGlowing());
     }
@@ -272,7 +274,7 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandAlias("reloadeternia|eterniareload")
     @CommandPermission("eternia.reload")
     public void onReload(CommandSender sender) {
-        sender.sendMessage(Strings.MSG_RELOAD_START);
+        sender.sendMessage(MSG.MSG_RELOAD_START);
         plugin.getFiles().loadConfigs();
         plugin.getFiles().loadMessages();
         plugin.getFiles().loadBlocksRewards();
@@ -281,7 +283,7 @@ public class BaseCmdGeneric extends BaseCommand {
         plugin.getFiles().loadKits();
         plugin.getFiles().loadRewards();
         plugin.getFiles().loadDatabase();
-        sender.sendMessage(Strings.MSG_RELOAD_FINISH);
+        sender.sendMessage(MSG.MSG_RELOAD_FINISH);
     }
 
     @CommandAlias("god")
@@ -298,44 +300,47 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandAlias("fly")
     @CommandPermission("eternia.fly")
     public void onFly(Player player, @Optional OnlinePlayer targetS) {
+        final String worldName = player.getWorld().getName();
+
+        if ((worldName.equals("evento") || worldName.equals("world_evento")) && !player.hasPermission("eternia.fly.evento")) {
+            player.sendMessage(MSG.MSG_NO_PERM);
+            return;
+        }
+
         if (targetS != null) {
-            final String worldName = player.getWorld().getName();
-            if ((worldName.equals("evento") || worldName.equals("world_evento")) && !player.hasPermission("eternia.fly.evento")) {
-                player.sendMessage(Strings.MSG_NO_PERM);
-                return;
-            }
 
             final Player target = targetS.getPlayer();
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
 
             if (APIFly.isOnPvP(uuid)) {
-                player.sendMessage(InternMethods.putName(target, Strings.FLY_TARGET_IN_PVP.replace(Constants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid)))));
+                player.sendMessage(InternMethods.putName(target, MSG.FLY_TARGET_IN_PVP.replace(Constants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid)))));
                 return;
             }
 
             APIFly.changeFlyState(target);
             if (target.isFlying()) {
-                target.sendMessage(InternMethods.putName(player, Strings.FLY_ENABLED_BY));
-                player.sendMessage(InternMethods.putName(target, Strings.FLY_ENABLED_FOR));
+                target.sendMessage(InternMethods.putName(player, MSG.FLY_ENABLED_BY));
+                player.sendMessage(InternMethods.putName(target, MSG.FLY_ENABLED_FOR));
                 return;
             }
-            target.sendMessage(InternMethods.putName(player, Strings.FLY_DISABLED_BY));
-            player.sendMessage(InternMethods.putName(target, Strings.FLY_DISABLED_FOR));
+            target.sendMessage(InternMethods.putName(player, MSG.FLY_DISABLED_BY));
+            player.sendMessage(InternMethods.putName(target, MSG.FLY_DISABLED_FOR));
             return;
         }
+
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (APIFly.isOnPvP(uuid)) {
-            player.sendMessage(Strings.FLY_IN_PVP.replace(Constants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid))));
+            player.sendMessage(MSG.FLY_IN_PVP.replace(Constants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid))));
             return;
         }
 
         APIFly.changeFlyState(player);
         if (player.isFlying()) {
-            player.sendMessage(Strings.FLY_ENABLED);
+            player.sendMessage(MSG.FLY_ENABLED);
             return;
         }
-        player.sendMessage(Strings.FLY_DISABLED);
+        player.sendMessage(MSG.FLY_DISABLED);
     }
 
     @CommandAlias("feed|saciar")
@@ -344,16 +349,16 @@ public class BaseCmdGeneric extends BaseCommand {
     public void onFeed(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             player.setFoodLevel(20);
-            player.sendMessage(Strings.MSG_FEEDED);
+            player.sendMessage(MSG.MSG_FEEDED);
         } else {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.feed.other")) {
                 targetP.setFoodLevel(20);
-                player.sendMessage(InternMethods.putName(targetP, Strings.MSG_FEEDED_TARGET));
-                player.sendMessage(Strings.MSG_FEEDED_TARGET.replace(Constants.TARGET, targetP.getDisplayName()));
-                targetP.sendMessage(Strings.MSG_FEEDED);
+                player.sendMessage(InternMethods.putName(targetP, MSG.MSG_FEEDED_TARGET));
+                player.sendMessage(MSG.MSG_FEEDED_TARGET.replace(Constants.TARGET, targetP.getDisplayName()));
+                targetP.sendMessage(MSG.MSG_FEEDED);
             } else {
-                player.sendMessage(Strings.MSG_NO_PERM);
+                player.sendMessage(MSG.MSG_NO_PERM);
             }
         }
     }
@@ -386,21 +391,21 @@ public class BaseCmdGeneric extends BaseCommand {
         convertItems(gold, Material.GOLD_INGOT, Material.GOLD_BLOCK, player);
         convertItems(diamond, Material.DIAMOND, Material.DIAMOND_BLOCK, player);
         convertItems(esmeralda, Material.EMERALD, Material.EMERALD_BLOCK, player);
-        player.sendMessage(Strings.MSG_CONDENSER);
+        player.sendMessage(MSG.MSG_CONDENSER);
     }
 
     @CommandAlias("rain|chuva")
     @CommandPermission("eternia.rain")
     public void onRain(Player player) {
         player.getWorld().setStorm(true);
-        player.sendMessage(Strings.MSG_WEATHER);
+        player.sendMessage(MSG.MSG_WEATHER);
     }
 
     @CommandAlias("sun|sol")
     @CommandPermission("eternia.sun")
     public void onSun(Player player) {
         player.getWorld().setStorm(false);
-        player.sendMessage(Strings.MSG_WEATHER);
+        player.sendMessage(MSG.MSG_WEATHER);
     }
 
     @CommandAlias("thor|lightning")
@@ -412,8 +417,8 @@ public class BaseCmdGeneric extends BaseCommand {
         if (target != null) {
             final Player targetP = target.getPlayer();
             world.strikeLightning(targetP.getLocation());
-            player.sendMessage(InternMethods.putName(targetP, Strings.MSG_LIGHTNING_SENT));
-            targetP.sendMessage(InternMethods.putName(player, Strings.MSG_LIGHTNING_RECEIVED));
+            player.sendMessage(InternMethods.putName(targetP, MSG.MSG_LIGHTNING_SENT));
+            targetP.sendMessage(InternMethods.putName(player, MSG.MSG_LIGHTNING_RECEIVED));
         } else {
             world.strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
@@ -427,7 +432,7 @@ public class BaseCmdGeneric extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_SUICIDE.replace(Constants.MESSAGE, sb.toString())));
+            Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_SUICIDE.replace(Constants.MESSAGE, sb.toString())));
         } else {
             player.setHealth(0);
         }
@@ -438,21 +443,143 @@ public class BaseCmdGeneric extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (Vars.afk.contains(playerName)) {
-            Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_DISABLE));
+            Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_AFK_DISABLE));
             Vars.afk.remove(playerName);
         } else {
             Vars.afk.add(playerName);
-            Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_ENABLE));
+            Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_AFK_ENABLE));
+        }
+    }
+
+    @CommandAlias("item")
+    @CommandPermission("eternia.item")
+    public void itemHelp(CommandSender sender) {
+        sender.sendMessage(MSG.ITEM_HELP_TITLE);
+        if (sender.hasPermission("eternia.item.nbt")) {
+            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
+                    .replace(Constants.COMMANDS, "item addkey &3<chave> <valor>")
+                    .replace(Constants.MESSAGE, MSG.ITEM_HELP_ADDKEY)));
+        }
+        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
+                .replace(Constants.COMMANDS, "item clear lore")
+                .replace(Constants.MESSAGE, MSG.ITEM_HELP_CLEAR_LORE)));
+        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
+                .replace(Constants.COMMANDS, "item clear name")
+                .replace(Constants.MESSAGE, MSG.ITEM_HELP_CLEAR_NAME)));
+        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
+                .replace(Constants.COMMANDS, "item add lore")
+                .replace(Constants.MESSAGE, MSG.ITEM_HELP_ADD_LORE)));
+        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
+                .replace(Constants.COMMANDS, "item set lore")
+                .replace(Constants.MESSAGE, MSG.ITEM_HELP_SET_LORE)));
+        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
+                .replace(Constants.COMMANDS, "item set name")
+                .replace(Constants.MESSAGE, MSG.ITEM_HELP_SET_NAME)));
+    }
+
+    @CommandAlias("item addkey")
+    @Syntax("<chave> <valor>")
+    @CommandPermission("eternia.item.nbt")
+    public void onItemAddKey(Player player, String key, String value) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item != null && item.getType() != Material.AIR) {
+            NBTItem nbtItem = new NBTItem(item);
+            nbtItem.setString(key, value);
+            player.sendMessage(MSG.ITEM_ADDKEY.replace(Constants.KEY, key).replace(Constants.VALUE, value));
+        } else {
+            player.sendMessage(MSG.ITEM_NO);
+        }
+    }
+
+    @CommandAlias("item clear lore")
+    @CommandPermission("eternia.item")
+    public void onItemClearLore(Player player) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item != null && item.getType() != Material.AIR) {
+            item.getLore().clear();
+            player.getInventory().setItemInMainHand(item);
+            player.sendMessage(MSG.ITEM_LORE_CLEAR);
+        } else {
+            player.sendMessage(MSG.ITEM_NO);
+        }
+    }
+
+    @CommandAlias("item clear name")
+    @CommandPermission("eternia.item")
+    public void onItemClearName(Player player) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item != null && item.getType() != Material.AIR) {
+            item.getItemMeta().setDisplayName(item.getI18NDisplayName());
+            player.getInventory().setItemInMainHand(item);
+            player.sendMessage(MSG.ITEM_NAME_CLEAR);
+        } else {
+            player.sendMessage(MSG.ITEM_NO);
+        }
+    }
+
+    @CommandAlias("item add lore")
+    @Syntax("<lore>")
+    @CommandCompletion("<lore>")
+    @CommandPermission("eternia.item")
+    public void onItemAddLore(Player player, String name) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item != null && item.getType() != Material.AIR) {
+            name = MSG.getColor(name);
+            List<String> lore = item.getLore();
+            if (lore != null) {
+                lore.add(name);
+                item.setLore(lore);
+            } else {
+                item.setLore(List.of(name));
+            }
+            player.getInventory().setItemInMainHand(item);
+            player.sendMessage(MSG.ITEM_LORE_ADD.replace("%name%", name));
+        } else {
+            player.sendMessage(MSG.ITEM_NO);
+        }
+    }
+
+    @CommandAlias("item set lore")
+    @Syntax("<lore>")
+    @CommandCompletion("<lore>")
+    @CommandPermission("eternia.item")
+    public void onItemSetLore(Player player, String name) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item != null && item.getType() != Material.AIR) {
+            name = MSG.getColor(name);
+            item.setLore(List.of(name));
+            player.getInventory().setItemInMainHand(item);
+            player.sendMessage(MSG.ITEM_LORE_SET.replace("%name%", name));
+        } else {
+            player.sendMessage(MSG.ITEM_NO);
+        }
+    }
+
+    @CommandAlias("item set name")
+    @Syntax("<nome>")
+    @CommandCompletion("<nome>")
+    @CommandPermission("eternia.item")
+    public void onItemSetName(Player player, String name) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item != null && item.getType() != Material.AIR) {
+            name = MSG.getColor(name);
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(name);
+            item.setItemMeta(meta);
+            player.getInventory().setItemInMainHand(item);
+            player.sendMessage(MSG.ITEM_NAME_SET.replace("%name%", name));
+        } else {
+            player.sendMessage(MSG.ITEM_NO);
         }
     }
 
     private void changeGod(final Player player) {
         final String playerName = player.getName();
         if (Vars.god.contains(playerName)) {
-            player.sendMessage(Strings.MSG_GOD_DISABLE);
+            player.sendMessage(MSG.MSG_GOD_DISABLE);
             Vars.god.remove(playerName);
         } else {
-            player.sendMessage(Strings.MSG_GOD_ENABLE);
+            player.sendMessage(MSG.MSG_GOD_ENABLE);
             Vars.god.add(playerName);
         }
     }
@@ -474,23 +601,23 @@ public class BaseCmdGeneric extends BaseCommand {
         final String playerName = player.getName();
         Vars.glowingColor.put(playerName, nameColor);
         sc.getTeam(team).addEntry(playerName);
-        player.sendMessage(Strings.M_GLOW_COLOR.replace(Constants.AMOUNT, color));
+        player.sendMessage(MSG.M_GLOW_COLOR.replace(Constants.AMOUNT, color));
     }
 
     private void sendProfile(Player player, Player target) {
         final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
         final long millis = Vars.playerProfile.get(uuid).updateTimePlayed();
-        String hms = Strings.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
+        String hms = MSG.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
-        player.sendMessage(Strings.MSG_PROFILE_TITLE);
+        player.sendMessage(MSG.MSG_PROFILE_TITLE);
         for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
-            player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(target, line)));
+            player.sendMessage(MSG.getColor(InternMethods.setPlaceholders(target, line)));
         }
-        player.sendMessage(Strings.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, sdf.format(new Date(Vars.playerProfile.get(uuid).firstLogin))));
-        player.sendMessage(Strings.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, sdf.format(new Date(Vars.playerProfile.get(uuid).lastLogin))));
-        player.sendMessage(Strings.MSG_PROFILE_HOURS.replace(Constants.HOURS, hms));
-        player.sendMessage(Strings.MSG_PROFILE_TITLE);
+        player.sendMessage(MSG.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, sdf.format(new Date(Vars.playerProfile.get(uuid).firstLogin))));
+        player.sendMessage(MSG.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, sdf.format(new Date(Vars.playerProfile.get(uuid).lastLogin))));
+        player.sendMessage(MSG.MSG_PROFILE_HOURS.replace(Constants.HOURS, hms));
+        player.sendMessage(MSG.MSG_PROFILE_TITLE);
     }
 
     private void sendConsole(String message) {

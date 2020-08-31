@@ -2,8 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
@@ -22,18 +21,18 @@ public class BaseCmdWarp extends BaseCommand {
         final Location location = getWarp("spawn");
         if (target == null) {
             if (Vars.teleports.containsKey(player)) {
-                player.sendMessage(Strings.MSG_IN_TELEPORT);
+                player.sendMessage(MSG.MSG_IN_TELEPORT);
             } else if (spawnExists(location, player)) {
-                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.MSG_WARP_DONE));
+                Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.MSG_WARP_DONE));
             }
         } else {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.spawn.other") && spawnExists(location, player)) {
                 PaperLib.teleportAsync(targetP, location);
-                targetP.sendMessage(InternMethods.putName(player, Strings.SPAWN_BY));
-                player.sendMessage(InternMethods.putName(targetP, Strings.MSG_SPAWN_TELEPORT_TARGET));
+                targetP.sendMessage(InternMethods.putName(player, MSG.SPAWN_BY));
+                player.sendMessage(InternMethods.putName(targetP, MSG.MSG_SPAWN_TELEPORT_TARGET));
             } else if (!player.hasPermission("eternia.spawn.other")) {
-                player.sendMessage(Strings.MSG_NO_PERM);
+                player.sendMessage(MSG.MSG_NO_PERM);
             }
         }
     }
@@ -47,19 +46,19 @@ public class BaseCmdWarp extends BaseCommand {
                final Location location = getWarp("shop");
                if (player.hasPermission("eternia.warp.shop")) {
                    if (shopExists(location, player) && !Vars.teleports.containsKey(player)) {
-                       Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.MSG_WARP_DONE));
+                       Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.MSG_WARP_DONE));
                    } else if (Vars.teleports.containsKey(player)) {
-                       player.sendMessage(Strings.MSG_IN_TELEPORT);
+                       player.sendMessage(MSG.MSG_IN_TELEPORT);
                    }
                } else {
-                   player.sendMessage(Strings.MSG_NO_PERM);
+                   player.sendMessage(MSG.MSG_NO_PERM);
                }
         } else {
             final Location location = getShop(target.toLowerCase());
             if (shopExists(location, player) && !Vars.teleports.containsKey(player)) {
-                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.MSG_SHOP_DONE));
+                Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.MSG_SHOP_DONE));
             } else if (Vars.teleports.containsKey(player)) {
-                player.sendMessage(Strings.MSG_IN_TELEPORT);
+                player.sendMessage(MSG.MSG_IN_TELEPORT);
             }
         }
     }
@@ -68,14 +67,14 @@ public class BaseCmdWarp extends BaseCommand {
     @CommandPermission("eternia.setspawn")
     public void onSetSpawn(Player player) {
         setWarp(player.getLocation(), "spawn");
-        player.sendMessage(Strings.MSG_SPAWN_CREATED);
+        player.sendMessage(MSG.MSG_SPAWN_CREATED);
     }
 
     @CommandAlias("setshop|setloja")
     @CommandPermission("eternia.setshop")
     public void onSetShop(Player player) {
         setShop(player.getLocation(), player.getName().toLowerCase());
-        player.sendMessage(Strings.MSG_SHOP_CREATED);
+        player.sendMessage(MSG.MSG_SHOP_CREATED);
     }
 
     @CommandAlias("setwarp")
@@ -83,7 +82,7 @@ public class BaseCmdWarp extends BaseCommand {
     @CommandPermission("eternia.setwarp")
     public void onSetWarp(Player player, String nome) {
         setWarp(player.getLocation(), nome.toLowerCase());
-        player.sendMessage(Strings.MSG_WARP_CREATED.replace(Constants.WARP, nome));
+        player.sendMessage(MSG.MSG_WARP_CREATED.replace(Constants.WARP, nome));
     }
 
     @CommandAlias("delwarp")
@@ -92,9 +91,9 @@ public class BaseCmdWarp extends BaseCommand {
     public void onDelWarp(Player player, String nome) {
         if (Vars.locations.containsKey("warp." + nome.toLowerCase())) {
             delWarp(nome.toLowerCase());
-            player.sendMessage(Strings.MSG_WARP_DELETED);
+            player.sendMessage(MSG.MSG_WARP_DELETED);
         } else {
-            player.sendMessage(Strings.MSG_WARP_NO_EXISTS.replace(Constants.WARP, nome.toLowerCase()));
+            player.sendMessage(MSG.MSG_WARP_NO_EXISTS.replace(Constants.WARP, nome.toLowerCase()));
         }
     }
 
@@ -117,7 +116,7 @@ public class BaseCmdWarp extends BaseCommand {
                 }
             }
         }
-        player.sendMessage(Strings.MSG_WARP_LIST.replace(Constants.VALUE, string.toString()));
+        player.sendMessage(MSG.MSG_WARP_LIST.replace(Constants.VALUE, string.toString()));
     }
 
     @CommandAlias("warp")
@@ -127,18 +126,18 @@ public class BaseCmdWarp extends BaseCommand {
         if (player.hasPermission("eternia.warp." + nome.toLowerCase())) {
             final Location location = getWarp(nome.toLowerCase());
             if (warpExists(location, player, nome) && !Vars.teleports.containsKey(player)) {
-                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.MSG_WARP_DONE));
+                Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.MSG_WARP_DONE));
             } else if (Vars.teleports.containsKey(player)) {
-                player.sendMessage(Strings.MSG_IN_TELEPORT);
+                player.sendMessage(MSG.MSG_IN_TELEPORT);
             }
         } else {
-            player.sendMessage(Strings.MSG_NO_PERM);
+            player.sendMessage(MSG.MSG_NO_PERM);
         }
     }
 
     private boolean shopExists(final Location location, final Player player) {
         if (location == Vars.error) {
-            player.sendMessage(Strings.MSG_SHOP_NO_EXISTS);
+            player.sendMessage(MSG.MSG_SHOP_NO_EXISTS);
             return false;
         }
         return true;
@@ -146,7 +145,7 @@ public class BaseCmdWarp extends BaseCommand {
 
     private boolean warpExists(final Location location, final Player player, final String nome) {
         if (location == Vars.error) {
-            player.sendMessage(Strings.MSG_WARP_NO_EXISTS.replace(Constants.WARP, nome));
+            player.sendMessage(MSG.MSG_WARP_NO_EXISTS.replace(Constants.WARP, nome));
             return false;
         }
         return true;
@@ -154,7 +153,7 @@ public class BaseCmdWarp extends BaseCommand {
 
     private boolean spawnExists(final Location location, final Player player) {
         if (location == Vars.error) {
-            player.sendMessage(Strings.MSG_SPAWN_NO_EXISTS);
+            player.sendMessage(MSG.MSG_SPAWN_NO_EXISTS);
             return false;
         }
         return true;

@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.PlaceHolders;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
 
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -165,7 +165,7 @@ public class Files {
     }
 
     private void sendConsoleMessage(final String msg) {
-        plugin.getServer().getConsoleSender().sendMessage(Strings.getColor(msg));
+        plugin.getServer().getConsoleSender().sendMessage(MSG.getColor(msg));
     }
 
     private void errorInJar(final String arq) {

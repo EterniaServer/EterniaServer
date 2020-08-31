@@ -4,8 +4,7 @@ import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import br.com.eterniaserver.acf.BaseCommand;
@@ -32,9 +31,9 @@ public class BaseCmdHome extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (existHome(nome.toLowerCase(), uuid)) {
             delHome(nome.toLowerCase(), playerName);
-            player.sendMessage(Strings.M_HOME_DELETED);
+            player.sendMessage(MSG.M_HOME_DELETED);
         } else {
-            player.sendMessage(Strings.M_HOME_NO);
+            player.sendMessage(MSG.M_HOME_NO);
         }
     }
 
@@ -45,19 +44,19 @@ public class BaseCmdHome extends BaseCommand {
         if (target == null) {
             Location location = getHome(nome.toLowerCase(), player.getName());
             if (locationExists(location, player) && !Vars.teleports.containsKey(player)) {
-                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
+                Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.M_HOME_DONE));
             } else if (Vars.teleports.containsKey(player)) {
-                player.sendMessage(Strings.MSG_IN_TELEPORT);
+                player.sendMessage(MSG.MSG_IN_TELEPORT);
             }
         } else if (player.hasPermission("eternia.home.other")) {
             Location location = getHome(nome.toLowerCase(), target.getPlayer().getName());
             if (locationExists(location, player) && !Vars.teleports.containsKey(player)) {
-                Vars.teleports.put(player, new PlayerTeleport(player, location, Strings.M_HOME_DONE));
+                Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.M_HOME_DONE));
             } else if (Vars.teleports.containsKey(player)) {
-                player.sendMessage(Strings.MSG_IN_TELEPORT);
+                player.sendMessage(MSG.MSG_IN_TELEPORT);
             }
         } else {
-            player.sendMessage(Strings.MSG_NO_PERM);
+            player.sendMessage(MSG.MSG_NO_PERM);
         }
     }
 
@@ -72,16 +71,16 @@ public class BaseCmdHome extends BaseCommand {
                 for (String line : list) {
                     accounts.append(line).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
                 }
-                player.sendMessage(Strings.M_HOME_LIST.replace(Constants.HOMES, Strings.getColor(accounts.toString())));
+                player.sendMessage(MSG.M_HOME_LIST.replace(Constants.HOMES, MSG.getColor(accounts.toString())));
             } else {
-                player.sendMessage(Strings.MSG_NO_PERM);
+                player.sendMessage(MSG.MSG_NO_PERM);
             }
         } else {
             List<String> list = getHomes(UUIDFetcher.getUUIDOf(player.getName()));
             for (String line : list) {
                 accounts.append(line).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
             }
-            player.sendMessage(Strings.M_HOME_LIST.replace(Constants.HOMES, Strings.getColor(accounts.toString())));
+            player.sendMessage(MSG.M_HOME_LIST.replace(Constants.HOMES, MSG.getColor(accounts.toString())));
         }
     }
 
@@ -96,13 +95,13 @@ public class BaseCmdHome extends BaseCommand {
 
         nome = nome.replaceAll("[^a-zA-Z0-9]", "");
         if (nome.length() > 10) {
-            player.sendMessage(Strings.M_HOME_EXCEEDED);
+            player.sendMessage(MSG.M_HOME_EXCEEDED);
             return;
         }
 
         if (canHome(uuid) < i || (existHome(nome.toLowerCase(), uuid))) {
             setHome(player.getLocation(), nome.toLowerCase(), playerName);
-            player.sendMessage(Strings.M_HOME_CREATED);
+            player.sendMessage(MSG.M_HOME_CREATED);
             return;
         }
 
@@ -117,12 +116,12 @@ public class BaseCmdHome extends BaseCommand {
         item.setItemMeta(meta);
         PlayerInventory inventory = player.getInventory();
         inventory.addItem(item);
-        player.sendMessage(Strings.M_HOME_LIMIT);
+        player.sendMessage(MSG.M_HOME_LIMIT);
     }
 
     private boolean locationExists(final Location location, final Player player) {
         if (location == Vars.error) {
-            player.sendMessage(Strings.M_HOME_NO);
+            player.sendMessage(MSG.M_HOME_NO);
             return false;
         }
         return true;

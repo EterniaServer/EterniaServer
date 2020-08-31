@@ -3,14 +3,14 @@ package br.com.eterniaserver.eterniaserver.strings;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.ChatColor;
 
-public class Strings {
+public class MSG {
 
-    private Strings() {
+    private MSG() {
         throw new IllegalStateException("Utility class");
     }
 
     public static final String M_SERVER_PREFIX = getColor(EterniaServer.msgConfig.getString("server.prefix"));
-    public static final String MSG_HELP_FORMAT = getColor(EterniaServer.msgConfig.getString("server.help-format"));
+    public static final String HELP_FORMAT = getColor(EterniaServer.msgConfig.getString("server.help-format"));
     public static final String MSG_MODULE_ENABLE = putPrefix("modules.enable");
     public static final String MSG_MODULE_DISABLE = putPrefix("modules.disable");
     public static final String MSG_NO_MONEY = putPrefix("server.no-money");
@@ -115,6 +115,35 @@ public class Strings {
     public static final String ITEM_ADDKEY = putPrefix("item.addkey");
     public static final String ITEM_NO = putPrefix("item.no");
     public static final String ITEM_HELMET = putPrefix("item.helmet");
+    public static final String ITEM_HELP_TITLE = getColor(EterniaServer.msgConfig.getString("item.help.title"));
+    public static final String ITEM_HELP_ADDKEY = getColor(EterniaServer.msgConfig.getString("item.help.addkey"));
+    public static final String ITEM_HELP_CLEAR_LORE = getColor(EterniaServer.msgConfig.getString("item.help.clearlore"));
+    public static final String ITEM_HELP_CLEAR_NAME = getColor(EterniaServer.msgConfig.getString("item.help.clearname"));
+    public static final String ITEM_HELP_ADD_LORE = getColor(EterniaServer.msgConfig.getString("item.help.addlore"));
+    public static final String ITEM_HELP_SET_LORE = getColor(EterniaServer.msgConfig.getString("item.help.setlore"));
+    public static final String ITEM_HELP_SET_NAME = getColor(EterniaServer.msgConfig.getString("item.help.setname"));
+
+    public static final String ECO_MONEY = putPrefix("eco.money");
+    public static final String ECO_OTHER = putPrefix("eco.money-other");
+    public static final String ECO_PAY_NO = putPrefix("eco.pay-nomoney");
+    public static final String ECO_AUTO = putPrefix("eco.auto-pay");
+    public static final String ECO_PAY = putPrefix("eco.pay");
+    public static final String ECO_PAY_ME = putPrefix("eco.pay-me");
+    public static final String ECO_BALLIST = putPrefix("eco.ballist");
+    public static final String ECO_SET = putPrefix("eco.eco-set");
+    public static final String ECO_RSET = putPrefix("eco.eco-rset");
+    public static final String ECO_REMOVE = putPrefix("eco.eco-remove");
+    public static final String ECO_RREMOVE = putPrefix("eco.eco-rremove");
+    public static final String ECO_GIVE = putPrefix("eco.eco-give");
+    public static final String ECO_RECEIVE = putPrefix("eco.eco-receive");
+    public static final String ECO_HELP_TITLE = putPrefix("eco.help.title");
+    public static final String ECO_HELP_SET = getColor(EterniaServer.msgConfig.getString("eco.help.set"));
+    public static final String ECO_HELP_TAKE = getColor(EterniaServer.msgConfig.getString("eco.help.take"));
+    public static final String ECO_HELP_GIVE = getColor(EterniaServer.msgConfig.getString("eco.help.give"));
+    public static final String ECO_HELP_MONEY = getColor(EterniaServer.msgConfig.getString("eco.help.money"));
+    public static final String ECO_HELP_MONEY_ADMIN = getColor(EterniaServer.msgConfig.getString("eco.help.money-admin"));
+    public static final String ECO_HELP_PAY = getColor(EterniaServer.msgConfig.getString("eco.help.pay"));
+    public static final String ECO_HELP_BALTOP = getColor(EterniaServer.msgConfig.getString("eco.help.baltop"));
 
     public static final String MSG_PLAYER_SKIP = putPrefix("bed.player-s");
     public static final String MSG_SKIP_NIGHT = putPrefix("bed.skip-night");
@@ -204,28 +233,6 @@ public class Strings {
     public static final String M_XP_RREMOVE = putPrefix("experience.xp-rremove");
     public static final String M_XP_GIVE = putPrefix("experience.xp-give");
     public static final String M_XP_RECEIVE = putPrefix("experience.xp-receive");
-
-    public static final String M_ECO_MONEY = putPrefix("eco.money");
-    public static final String M_ECO_OTHER = putPrefix("eco.money-other");
-    public static final String M_ECO_PAY_NO = putPrefix("eco.pay-nomoney");
-    public static final String M_ECO_AUTO = putPrefix("eco.auto-pay");
-    public static final String M_ECO_PAY = putPrefix("eco.pay");
-    public static final String M_ECO_PAY_ME = putPrefix("eco.pay-me");
-    public static final String M_ECO_BALLIST = putPrefix("eco.ballist");
-    public static final String M_ECO_SET = putPrefix("eco.eco-set");
-    public static final String M_ECO_RSET = putPrefix("eco.eco-rset");
-    public static final String M_ECO_REMOVE = putPrefix("eco.eco-remove");
-    public static final String M_ECO_RREMOVE = putPrefix("eco.eco-rremove");
-    public static final String M_ECO_GIVE = putPrefix("eco.eco-give");
-    public static final String M_ECO_RECEIVE = putPrefix("eco.eco-receive");
-    public static final String MSG_ECO_HELP_TITLE = putPrefix("eco.help.title");
-    public static final String MSG_ECO_HELP_SET = getColor(EterniaServer.msgConfig.getString("eco.help.set"));
-    public static final String MSG_ECO_HELP_TAKE = getColor(EterniaServer.msgConfig.getString("eco.help.take"));
-    public static final String MSG_ECO_HELP_GIVE = getColor(EterniaServer.msgConfig.getString("eco.help.give"));
-    public static final String MSG_ECO_HELP_MONEY = getColor(EterniaServer.msgConfig.getString("eco.help.money"));
-    public static final String MSG_ECO_HELP_MONEY_ADMIN = getColor(EterniaServer.msgConfig.getString("eco.help.money-admin"));
-    public static final String MSG_ECO_HELP_PAY = getColor(EterniaServer.msgConfig.getString("eco.help.pay"));
-    public static final String MSG_ECO_HELP_BALTOP = getColor(EterniaServer.msgConfig.getString("eco.help.baltop"));
 
     private static String putPrefix(String path) {
         String message = EterniaServer.msgConfig.getString(path);

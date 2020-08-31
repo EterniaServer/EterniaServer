@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
@@ -24,7 +24,7 @@ public class BaseCmdRewards extends BaseCommand {
     public BaseCmdRewards() {
         Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_REWARD), Constants.CODE_STR, Constants.CODE_GROUP_STR);
         temp.forEach(Vars.rewards::put);
-        Bukkit.getConsoleSender().sendMessage(Strings.MSG_LOAD_DATA.replace(Constants.MODULE, "Keys").replace(Constants.AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(MSG.MSG_LOAD_DATA.replace(Constants.MODULE, "Keys").replace(Constants.AMOUNT, String.valueOf(temp.size())));
     }
 
     @CommandAlias("usekey|usarkey|usarchave")
@@ -35,7 +35,7 @@ public class BaseCmdRewards extends BaseCommand {
             giveReward(Vars.rewards.get(key), player);
             deleteKey(key);
         } else {
-            player.sendMessage(Strings.MSG_REWARD_INVALID);
+            player.sendMessage(MSG.MSG_REWARD_INVALID);
         }
     }
 
@@ -47,9 +47,9 @@ public class BaseCmdRewards extends BaseCommand {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
-            sender.sendMessage(Strings.MSG_REWARD_CREATE.replace(Constants.KEY, key));
+            sender.sendMessage(MSG.MSG_REWARD_CREATE.replace(Constants.KEY, key));
         } else {
-            sender.sendMessage(Strings.MSG_REWARD_NO.replace(Constants.GROUP, reward));
+            sender.sendMessage(MSG.MSG_REWARD_NO.replace(Constants.GROUP, reward));
         }
     }
 

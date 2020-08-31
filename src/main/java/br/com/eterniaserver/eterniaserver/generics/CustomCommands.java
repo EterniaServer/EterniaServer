@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.AbstractCommand;
 
 import org.bukkit.command.Command;
@@ -41,10 +41,10 @@ public class CustomCommands extends AbstractCommand {
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), InternMethods.setPlaceholders(player, line));
             }
             for (String line : messagesStrings) {
-                player.sendMessage(Strings.getColor(InternMethods.setPlaceholders(player, line)));
+                player.sendMessage(MSG.getColor(InternMethods.setPlaceholders(player, line)));
             }
         } else {
-            player.sendMessage(Strings.MSG_NO_PERM);
+            player.sendMessage(MSG.MSG_NO_PERM);
         }
     }
 

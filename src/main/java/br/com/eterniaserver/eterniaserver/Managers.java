@@ -12,7 +12,6 @@ import br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdHome;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdItem;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdMute;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdRewards;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdSpawner;
@@ -22,7 +21,7 @@ import br.com.eterniaserver.eterniaserver.generics.Checks;
 import br.com.eterniaserver.eterniaserver.generics.KitSystem;
 import br.com.eterniaserver.eterniaserver.generics.Vars;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.Bukkit;
 
@@ -113,7 +112,6 @@ public class Managers {
         sendModuleStatus(true, "Generic");
         EterniaLib.getManager().registerCommand(new BaseCmdGamemode());
         EterniaLib.getManager().registerCommand(new BaseCmdInventory());
-        EterniaLib.getManager().registerCommand(new BaseCmdItem());
         EterniaLib.getManager().registerCommand(new BaseCmdGeneric(plugin));
     }
 
@@ -161,10 +159,10 @@ public class Managers {
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
-            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_ENABLE.replace(Constants.MODULE, module));
+            Bukkit.getConsoleSender().sendMessage(MSG.MSG_MODULE_ENABLE.replace(Constants.MODULE, module));
         }
         else {
-            Bukkit.getConsoleSender().sendMessage(Strings.MSG_MODULE_DISABLE.replace(Constants.MODULE, module));
+            Bukkit.getConsoleSender().sendMessage(MSG.MSG_MODULE_DISABLE.replace(Constants.MODULE, module));
         }
         return enable;
     }

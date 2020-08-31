@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 
 import net.md_5.bungee.api.ChatColor;
@@ -46,13 +46,13 @@ public class EventAsyncPlayerChat implements Listener {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
             if (Vars.chatMuted && !player.hasPermission("eternia.mute.bypass")) {
-                player.sendMessage(Strings.M_CHATMUTED);
+                player.sendMessage(MSG.M_CHATMUTED);
                 e.setCancelled(true);
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = Vars.playerProfile.get(uuid).muted;
                 if (InternMethods.stayMuted(time)) {
-                    player.sendMessage(Strings.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
+                    player.sendMessage(MSG.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
@@ -89,14 +89,14 @@ public class EventAsyncPlayerChat implements Listener {
             final Player target = Bukkit.getPlayer(Vars.chatLocked.get(playerName));
             if (target != null && target.isOnline()) {
                 if (Vars.ignoredPlayer.get(playerName) != null && Vars.ignoredPlayer.get(playerName).contains(target)) {
-                    sender.sendMessage(Strings.M_CHAT_IGNORE);
+                    sender.sendMessage(MSG.M_CHAT_IGNORE);
                     return;
                 }
                 InternMethods.sendPrivate(sender, target, msg);
                 return;
             }
         }
-        sender.sendMessage(Strings.M_CHAT_R_NO);
+        sender.sendMessage(MSG.M_CHAT_R_NO);
     }
 
     private String canHex(final Player player, String message) {

@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
@@ -20,7 +20,7 @@ public class AccelerateNight extends BukkitRunnable {
         this.plugin = plugin;
         this.world = world;
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
-            Bukkit.broadcastMessage(Strings.MSG_SKIPPING.replace(Constants.WORLD, world.getName()));
+            Bukkit.broadcastMessage(MSG.MSG_SKIPPING.replace(Constants.WORLD, world.getName()));
         }
     }
 
@@ -38,7 +38,7 @@ public class AccelerateNight extends BukkitRunnable {
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
-                Bukkit.broadcastMessage(Strings.MSG_SKIP_NIGHT);
+                Bukkit.broadcastMessage(MSG.MSG_SKIP_NIGHT);
                 changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {

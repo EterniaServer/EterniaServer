@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
 
@@ -94,11 +94,11 @@ public class InternMethods {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();
         Vars.tell.put(target.getName(), player.getName());
-        player.sendMessage(Strings.M_CHAT_TO.
+        player.sendMessage(MSG.M_CHAT_TO.
                 replace(Constants.PLAYER, playerDisplay).
                 replace(Constants.TARGET, targetDisplay).
                 replace(Constants.MESSAGE, s));
-        target.sendMessage(Strings.M_CHAT_FROM.
+        target.sendMessage(MSG.M_CHAT_FROM.
                 replace(Constants.PLAYER, targetDisplay).
                 replace(Constants.TARGET, playerDisplay).
                 replace(Constants.MESSAGE, s));
@@ -107,7 +107,7 @@ public class InternMethods {
             if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {
                 final Player spyPlayer = Bukkit.getPlayerExact(p);
                 if (spyPlayer != null && spyPlayer.isOnline()) {
-                    spyPlayer.sendMessage(Strings.getColor("&8[&7SPY-&6P&8] &8" + playerDisplay + " -> " + targetDisplay + ": " + s));
+                    spyPlayer.sendMessage(MSG.getColor("&8[&7SPY-&6P&8] &8" + playerDisplay + " -> " + targetDisplay + ": " + s));
                 } else {
                     Vars.spy.remove(p);
                 }

@@ -4,7 +4,7 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class EventPlayerLeave implements Listener {
         }
 
         event.setQuitMessage(null);
-        Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_LEAVE));
+        Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_LEAVE));
 
     }
 

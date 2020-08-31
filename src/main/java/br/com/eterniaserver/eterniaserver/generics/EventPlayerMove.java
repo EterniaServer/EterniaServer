@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ public class EventPlayerMove implements Listener {
             Vars.afkTime.put(playerName, System.currentTimeMillis());
             if (Vars.afk.contains(playerName)) {
                 Vars.afk.remove(playerName);
-                Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_AFK_DISABLE));
+                Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_AFK_DISABLE));
             }
         }
     }

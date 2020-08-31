@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +16,7 @@ public class EventEntityDamageByEntity implements Listener {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             final Player player = (Player) event.getDamager();
             if (player.isFlying() && !player.hasPermission("eternia.fly.bypass")) {
-                player.sendMessage(Strings.FLY_PVP_DISABLED);
+                player.sendMessage(MSG.FLY_PVP_DISABLED);
                 APIFly.setIsOnPvP(UUIDFetcher.getUUIDOf(player.getName()));
                 player.setAllowFlight(false);
                 player.setFlying(false);

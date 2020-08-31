@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +21,7 @@ public class EventPlayerCommandPreProcess implements Listener {
 
         if (message.equalsIgnoreCase("/tps")) {
             String s = InternMethods.setPlaceholders(player, Constants.TPS);
-            player.sendMessage(Strings.MSG_TPS.replace(Constants.TPS, s.substring(0, s.length() - 2)));
+            player.sendMessage(MSG.MSG_TPS.replace(Constants.TPS, s.substring(0, s.length() - 2)));
             event.setCancelled(true);
             return;
         }

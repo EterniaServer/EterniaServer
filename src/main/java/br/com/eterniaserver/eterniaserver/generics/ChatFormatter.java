@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
 import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
 
@@ -36,7 +36,7 @@ public class ChatFormatter {
 
 	public String parse(Player p, String s) {
 		if (s.contains("&")) {
-			s = Strings.getColor(s);
+			s = MSG.getColor(s);
 		}
 		s = InternMethods.setPlaceholders(p, s);
 		return s;

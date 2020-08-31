@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
@@ -37,7 +37,7 @@ public class BaseCmdChannels extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (messages != null && messages.length == 0) {
             Vars.playerProfile.get(uuid).chatChannel = channel;
-            player.sendMessage(Strings.M_CHAT_C.replace(Constants.CHANNEL_NAME, channelName));
+            player.sendMessage(MSG.M_CHAT_C.replace(Constants.CHANNEL_NAME, channelName));
         } else {
             int o = Vars.playerProfile.get(uuid).chatChannel;
             Vars.playerProfile.get(uuid).chatChannel = channel;

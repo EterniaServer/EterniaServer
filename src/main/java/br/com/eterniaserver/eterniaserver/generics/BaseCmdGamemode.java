@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -17,7 +17,7 @@ public class BaseCmdGamemode extends BaseCommand {
     @Default
     @Subcommand("help")
     public void showGamemode(CommandSender sender) {
-        sender.sendMessage(Strings.M_GM_USE);
+        sender.sendMessage(MSG.M_GM_USE);
     }
 
     @Subcommand("survival|s|0|sobrevivencia")
@@ -28,12 +28,12 @@ public class BaseCmdGamemode extends BaseCommand {
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
             playerZin.setGameMode(GameMode.SURVIVAL);
-            player.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, survivalString));
+            player.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, survivalString));
         } else if (target != null) {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.SURVIVAL);
-            targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, survivalString));
-            player.sendMessage(InternMethods.putName(targetP, Strings.M_GM_TARGET.replace(Constants.GM, survivalString)));
+            targetP.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, survivalString));
+            player.sendMessage(InternMethods.putName(targetP, MSG.M_GM_TARGET.replace(Constants.GM, survivalString)));
         }
     }
 
@@ -45,12 +45,12 @@ public class BaseCmdGamemode extends BaseCommand {
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
             playerZin.setGameMode(GameMode.CREATIVE);
-            playerZin.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, creativeString));
+            playerZin.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, creativeString));
         } else if (target != null) {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.CREATIVE);
-            targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, creativeString));
-            player.sendMessage(InternMethods.putName(targetP, Strings.M_GM_TARGET.replace(Constants.GM, creativeString)));
+            targetP.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, creativeString));
+            player.sendMessage(InternMethods.putName(targetP, MSG.M_GM_TARGET.replace(Constants.GM, creativeString)));
         }
     }
 
@@ -62,12 +62,12 @@ public class BaseCmdGamemode extends BaseCommand {
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
             playerZin.setGameMode(GameMode.ADVENTURE);
-            playerZin.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, adventureString));
+            playerZin.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, adventureString));
         } else if (target != null) {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.ADVENTURE);
-            targetP.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, adventureString));
-            player.sendMessage(InternMethods.putName(targetP, Strings.M_GM_TARGET.replace(Constants.GM, adventureString)));
+            targetP.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, adventureString));
+            player.sendMessage(InternMethods.putName(targetP, MSG.M_GM_TARGET.replace(Constants.GM, adventureString)));
         }
     }
 
@@ -79,12 +79,12 @@ public class BaseCmdGamemode extends BaseCommand {
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
             playerZin.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, spectatorString));
+            player.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, spectatorString));
         } else if (target != null) {
             final Player targetP = target.getPlayer();
             targetP.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(Strings.M_GM_CHANGED.replace(Constants.GM, spectatorString));
-            player.sendMessage(InternMethods.putName(targetP, Strings.M_GM_TARGET.replace(Constants.GM, spectatorString)));
+            player.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, spectatorString));
+            player.sendMessage(InternMethods.putName(targetP, MSG.M_GM_TARGET.replace(Constants.GM, spectatorString)));
         }
     }
 

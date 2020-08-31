@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.NBTItem;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -37,7 +37,7 @@ public class BaseCmdInventory extends BaseCommand {
             if (player.hasPermission("eternia.enderchest.other")) {
                 player.openInventory(target.getPlayer().getEnderChest());
             } else {
-                player.sendMessage(Strings.MSG_NO_PERM);
+                player.sendMessage(MSG.MSG_NO_PERM);
             }
         }
     }
@@ -50,7 +50,7 @@ public class BaseCmdInventory extends BaseCommand {
         }
         dropHelmet(player);
         setHelmet(player);
-        player.sendMessage(Strings.ITEM_HELMET);
+        player.sendMessage(MSG.ITEM_HELMET);
     }
 
     private void dropHelmet(Player player) {

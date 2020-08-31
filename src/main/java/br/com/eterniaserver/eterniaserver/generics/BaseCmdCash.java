@@ -7,7 +7,7 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import br.com.eterniaserver.eterniaserver.objects.CashGui;
 import org.bukkit.Bukkit;
@@ -155,16 +155,16 @@ public class BaseCmdCash extends BaseCommand {
     @Syntax("<jogador>")
     public void onCashBalance(Player player, @Optional String playerName) {
         if (playerName == null) {
-            player.sendMessage(Strings.M_CASH_BALANCE.replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.get(UUIDFetcher.getUUIDOf(player.getName())).cash)));
+            player.sendMessage(MSG.M_CASH_BALANCE.replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.get(UUIDFetcher.getUUIDOf(player.getName())).cash)));
             return;
         }
 
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
         if (Vars.playerProfile.containsKey(uuid)) {
-            player.sendMessage(Strings.M_CASH_BALANCE_OTHER.replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.get(uuid).cash)));
+            player.sendMessage(MSG.M_CASH_BALANCE_OTHER.replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.get(uuid).cash)));
         }
-        else player.sendMessage(Strings.M_CASH_NO_PLAYER);
+        else player.sendMessage(MSG.M_CASH_NO_PLAYER);
     }
 
     @Subcommand("accept")
@@ -172,7 +172,7 @@ public class BaseCmdCash extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (!Vars.cashItem.containsKey(uuid)) {
-            player.sendMessage(Strings.M_CASH_NO_BUY);
+            player.sendMessage(MSG.M_CASH_NO_BUY);
             return;
         }
 
@@ -185,11 +185,11 @@ public class BaseCmdCash extends BaseCommand {
 
         for (String line : EterniaServer.cashConfig.getStringList(cashString + ".messages")) {
             final String modifiedText = InternMethods.setPlaceholders(player, line);
-            player.sendMessage(Strings.getColor(modifiedText));
+            player.sendMessage(MSG.getColor(modifiedText));
         }
 
         APICash.removeCash(uuid, EterniaServer.cashConfig.getInt(cashString + ".cost"));
-        player.sendMessage(Strings.M_CASH_SUCESS);
+        player.sendMessage(MSG.M_CASH_SUCESS);
         Vars.cashItem.remove(uuid);
     }
 
@@ -198,11 +198,11 @@ public class BaseCmdCash extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (!Vars.cashItem.containsKey(uuid)) {
-            player.sendMessage(Strings.M_CASH_NO_BUY);
+            player.sendMessage(MSG.M_CASH_NO_BUY);
             return;
         }
 
-        player.sendMessage(Strings.M_CASH_CANCEL);
+        player.sendMessage(MSG.M_CASH_CANCEL);
         Vars.cashItem.remove(uuid);
     }
 
@@ -211,7 +211,7 @@ public class BaseCmdCash extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     public void onCashPay(Player player, OnlinePlayer targetP, Integer value) {
         if (value <= 0) {
-            player.sendMessage(Strings.MSG_NO_NEGATIVE);
+            player.sendMessage(MSG.MSG_NO_NEGATIVE);
             return;
         }
 
@@ -219,14 +219,14 @@ public class BaseCmdCash extends BaseCommand {
         final Player target = targetP.getPlayer();
 
         if (!APICash.hasCash(uuid, value)) {
-            player.sendMessage(Strings.MSG_NO_MONEY);
+            player.sendMessage(MSG.MSG_NO_MONEY);
             return;
         }
 
         APICash.removeCash(uuid, value);
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(Strings.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(InternMethods.putName(target, Strings.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
+        target.sendMessage(MSG.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(InternMethods.putName(target, MSG.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
     @Subcommand("give")
@@ -235,14 +235,14 @@ public class BaseCmdCash extends BaseCommand {
     @CommandPermission("eternia.cash.admin")
     public void onCashGive(CommandSender player, OnlinePlayer targetP, Integer value) {
         if (value <= 0) {
-            player.sendMessage(Strings.MSG_NO_NEGATIVE);
+            player.sendMessage(MSG.MSG_NO_NEGATIVE);
             return;
         }
 
         final Player target = targetP.getPlayer();
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(Strings.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(InternMethods.putName(target, Strings.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
+        target.sendMessage(MSG.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(InternMethods.putName(target, MSG.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
     @Subcommand("remove")
@@ -251,14 +251,14 @@ public class BaseCmdCash extends BaseCommand {
     @CommandPermission("eternia.cash.admin")
     public void onCashRemove(CommandSender player, OnlinePlayer targetP, Integer value) {
         if (value <= 0) {
-            player.sendMessage(Strings.MSG_NO_NEGATIVE);
+            player.sendMessage(MSG.MSG_NO_NEGATIVE);
             return;
         }
 
         final Player target = targetP.getPlayer();
         APICash.removeCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(Strings.M_CASH_REMOVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(InternMethods.putName(target, Strings.M_CASH_REMOVE).replace(Constants.AMOUNT, String.valueOf(value)));
+        target.sendMessage(MSG.M_CASH_REMOVED.replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(InternMethods.putName(target, MSG.M_CASH_REMOVE).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
 }

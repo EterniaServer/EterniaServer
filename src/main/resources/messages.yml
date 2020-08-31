@@ -131,6 +131,14 @@ experience:
   xp-set: '&7Você definiu para &3%amount%&7 o saldo de XP de &3%player_displayname%&8.'
   xpo-rset: '&7Seu saldo de XP foi definido para &3%amount%&7 por &3%player_displayname%&8.'
 item:
+  help:
+    title: '&7Ajuda &8- &7Item&8:'
+    addkey: '&7Para adicionar uma chave e um valor NBT&8.'
+    clearlore: '&7Para limpar toda a lore do item&8.'
+    clearname: '&7Para limpar o nome do item&8.'
+    addlore: '&7Para adicionar mais uma linha de lore no item&8.'
+    setlore: '&7Para definir a lore de um item&8.'
+    setname: '&7Para definir o nome de um item&8.'
   name:
     clear: '&7Você limpou o nome do item&8.'
     set: '&7Você alterou o nome do item para &3%name%&8.'

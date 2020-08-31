@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.utils.*;
 
 import org.bukkit.entity.Player;
@@ -17,7 +17,7 @@ public class CustomPlaceholdersFilter {
 				if (objMsg.contains("{" + cp.getId() + "}")) {
 					SubPlaceholder bestPlaceholder = InternMethods.getSubPlaceholder(p, cp);
 					if (cp.isNotIndependent() && bestPlaceholder != null) {
-						chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", Strings.getColor(InternMethods.setPlaceholders(p, bestPlaceholder.getValue()))));
+						chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", MSG.getColor(InternMethods.setPlaceholders(p, bestPlaceholder.getValue()))));
 					} else {
 						putplaceholders(objMsg, cp, chatObj, bestPlaceholder, message, i, p);
 					}
@@ -34,7 +34,7 @@ public class CustomPlaceholdersFilter {
 			String hover = bestPlaceholder.getHover();
 			String suggest = bestPlaceholder.getSuggest();
 			String run = bestPlaceholder.getRun();
-			message.getChatObjects().add(i + 1, new ChatObject(Strings.getColor(InternMethods.setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
+			message.getChatObjects().add(i + 1, new ChatObject(MSG.getColor(InternMethods.setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
 			if (bestPlaceholder.isText()) {
 				message.getChatObjects().get(i + 1).setIsText(true);
 			}

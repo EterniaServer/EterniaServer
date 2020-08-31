@@ -4,7 +4,7 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.Strings;
+import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.paperlib.PaperLib;
 
@@ -75,7 +75,7 @@ public class EventPlayerJoin implements Listener {
         playerKitsCreate(playerName);
 
         event.setJoinMessage(null);
-        Bukkit.broadcastMessage(InternMethods.putName(player, Strings.MSG_JOIN));
+        Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_JOIN));
     }
 
     private void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
