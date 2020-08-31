@@ -374,7 +374,7 @@ public class BaseCmdGeneric extends BaseCommand {
         int diamond = 0;
         int esmeralda = 0;
         for (ItemStack i : player.getInventory().getContents()) {
-            if (i != null && i.getType() != Material.AIR) {
+            if (i.getItemMeta() != null && i.getType() != Material.AIR) {
                 coal += checkItems(i, coali);
                 lapiz += checkItems(i, lapizi);
                 redstone += checkItems(i, redstonei);
@@ -482,7 +482,7 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandPermission("eternia.item.nbt")
     public void onItemAddKey(Player player, String key, String value) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() != Material.AIR) {
+        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(item);
             nbtItem.setString(key, value);
             player.sendMessage(MSG.ITEM_ADDKEY.replace(Constants.KEY, key).replace(Constants.VALUE, value));
@@ -495,7 +495,7 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandPermission("eternia.item")
     public void onItemClearLore(Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() != Material.AIR) {
+        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
             item.getLore().clear();
             player.getInventory().setItemInMainHand(item);
             player.sendMessage(MSG.ITEM_LORE_CLEAR);
@@ -508,7 +508,7 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandPermission("eternia.item")
     public void onItemClearName(Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() != Material.AIR) {
+        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
             item.getItemMeta().setDisplayName(item.getI18NDisplayName());
             player.getInventory().setItemInMainHand(item);
             player.sendMessage(MSG.ITEM_NAME_CLEAR);
@@ -523,7 +523,7 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandPermission("eternia.item")
     public void onItemAddLore(Player player, String name) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() != Material.AIR) {
+        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
             name = MSG.getColor(name);
             List<String> lore = item.getLore();
             if (lore != null) {
@@ -545,7 +545,7 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandPermission("eternia.item")
     public void onItemSetLore(Player player, String name) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() != Material.AIR) {
+        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
             name = MSG.getColor(name);
             item.setLore(List.of(name));
             player.getInventory().setItemInMainHand(item);
@@ -561,7 +561,7 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandPermission("eternia.item")
     public void onItemSetName(Player player, String name) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() != Material.AIR) {
+        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
             name = MSG.getColor(name);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(name);
