@@ -66,67 +66,13 @@ public class BaseCmdGeneric extends BaseCommand {
             EterniaLib.getConnections().executeSQLQuery(connection -> {
                 final PreparedStatement getHashMap = connection.prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER));
                 final ResultSet resultSet = getHashMap.executeQuery();
-                while (resultSet.next()) {
-                    final PlayerProfile playerProfile = new PlayerProfile(
-                            resultSet.getString(Constants.PLAYER_NAME_STR),
-                            resultSet.getLong(Constants.TIME_STR),
-                            resultSet.getLong(Constants.LAST_STR),
-                            resultSet.getLong(Constants.HOURS_STR)
-                    );
-                    if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
-                        playerProfile.cash = resultSet.getInt(Constants.CASH_STR);
-                    }
-                    if (EterniaServer.serverConfig.getBoolean("modules.economy")) {
-                        playerProfile.balance = resultSet.getDouble(Constants.BALANCE_STR);
-                    }
-                    if (EterniaServer.serverConfig.getBoolean("modules.experience")) {
-                        playerProfile.xp = resultSet.getInt(Constants.XP_STR);
-                    }
-                    if (EterniaServer.serverConfig.getBoolean("modules.home")) {
-                        String result = resultSet.getString(Constants.HOMES_STR);
-                        if (result != null) {
-                            playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
-                        }
-                    }
-                    if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
-                        playerProfile.muted = resultSet.getLong(Constants.MUTED_STR);
-                        playerProfile.playerDisplayName = resultSet.getString(Constants.PLAYER_DISPLAY_STR);
-                    }
-                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
-                }
+                getPlayersProfiles(resultSet);
                 getHashMap.close();
                 resultSet.close();
             });
         } else {
             try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(Constants.getQuerySelectAll(Configs.TABLE_PLAYER)); ResultSet resultSet = getHashMap.executeQuery()) {
-                while (resultSet.next()) {
-                    final PlayerProfile playerProfile = new PlayerProfile(
-                            resultSet.getString(Constants.PLAYER_NAME_STR),
-                            resultSet.getLong(Constants.TIME_STR),
-                            resultSet.getLong(Constants.LAST_STR),
-                            resultSet.getLong(Constants.HOURS_STR)
-                    );
-                    if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
-                        playerProfile.cash = resultSet.getInt(Constants.CASH_STR);
-                    }
-                    if (EterniaServer.serverConfig.getBoolean("modules.economy")) {
-                        playerProfile.balance = resultSet.getDouble(Constants.BALANCE_STR);
-                    }
-                    if (EterniaServer.serverConfig.getBoolean("modules.experience")) {
-                        playerProfile.xp = resultSet.getInt(Constants.XP_STR);
-                    }
-                    if (EterniaServer.serverConfig.getBoolean("modules.home")) {
-                        String result = resultSet.getString(Constants.HOMES_STR);
-                        if (result != null) {
-                            playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
-                        }
-                    }
-                    if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
-                        playerProfile.muted = resultSet.getLong(Constants.MUTED_STR);
-                        playerProfile.playerDisplayName = resultSet.getString(Constants.PLAYER_DISPLAY_STR);
-                    }
-                    Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
-                }
+                getPlayersProfiles(resultSet);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -618,6 +564,37 @@ public class BaseCmdGeneric extends BaseCommand {
         player.sendMessage(MSG.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, sdf.format(new Date(Vars.playerProfile.get(uuid).lastLogin))));
         player.sendMessage(MSG.MSG_PROFILE_HOURS.replace(Constants.HOURS, hms));
         player.sendMessage(MSG.MSG_PROFILE_TITLE);
+    }
+
+    private void getPlayersProfiles(ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            final PlayerProfile playerProfile = new PlayerProfile(
+                    resultSet.getString(Constants.PLAYER_NAME_STR),
+                    resultSet.getLong(Constants.TIME_STR),
+                    resultSet.getLong(Constants.LAST_STR),
+                    resultSet.getLong(Constants.HOURS_STR)
+            );
+            if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
+                playerProfile.cash = resultSet.getInt(Constants.CASH_STR);
+            }
+            if (EterniaServer.serverConfig.getBoolean("modules.economy")) {
+                playerProfile.balance = resultSet.getDouble(Constants.BALANCE_STR);
+            }
+            if (EterniaServer.serverConfig.getBoolean("modules.experience")) {
+                playerProfile.xp = resultSet.getInt(Constants.XP_STR);
+            }
+            if (EterniaServer.serverConfig.getBoolean("modules.home")) {
+                String result = resultSet.getString(Constants.HOMES_STR);
+                if (result != null) {
+                    playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
+                }
+            }
+            if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
+                playerProfile.muted = resultSet.getLong(Constants.MUTED_STR);
+                playerProfile.playerDisplayName = resultSet.getString(Constants.PLAYER_DISPLAY_STR);
+            }
+            Vars.playerProfile.put(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
+        }
     }
 
     private void sendConsole(String message) {
