@@ -32,8 +32,11 @@ public class Managers {
 
     public Managers(EterniaServer plugin) {
 
+        EterniaLib.getManager().enableUnstableAPI("help");
+        
         this.plugin = plugin;
 
+        loadConditions();
         loadCompletions();
         loadGenericManager();
         loadBedManager();
@@ -53,7 +56,8 @@ public class Managers {
 
     }
 
-    private void loadCompletions() {
+    private void loadConditions() {
+
         EterniaLib.getManager().getCommandConditions().addCondition(Integer.class, "limits", (c, exec, value) -> {
             if (value == null) {
                 return;
@@ -65,6 +69,7 @@ public class Managers {
                 throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
             }
         });
+
         EterniaLib.getManager().getCommandConditions().addCondition(Double.class, "limits", (c, exec, value) -> {
             if (value == null) {
                 return;
@@ -76,7 +81,10 @@ public class Managers {
                 throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
             }
         });
-        EterniaLib.getManager().enableUnstableAPI("help");
+
+    }
+
+    private void loadCompletions() {
         EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("colors", Vars.colorsString);
         EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("entidades", Vars.entityList);
     }
@@ -184,11 +192,10 @@ public class Managers {
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
             Bukkit.getConsoleSender().sendMessage(MSG.MSG_MODULE_ENABLE.replace(Constants.MODULE, module));
+            return true;
         }
-        else {
-            Bukkit.getConsoleSender().sendMessage(MSG.MSG_MODULE_DISABLE.replace(Constants.MODULE, module));
-        }
-        return enable;
+        Bukkit.getConsoleSender().sendMessage(MSG.MSG_MODULE_DISABLE.replace(Constants.MODULE, module));
+        return false;
     }
 
 }

@@ -57,10 +57,6 @@ public class SubPlaceholder {
 		return priority;
 	}
 
-	public String getPerm() {
-		return perm;
-	}
-
 	public boolean hasPerm(Player p) {
 		return perm.equals("") || p.hasPermission(perm);
 	}

@@ -11,6 +11,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.Arrays;
+
 public class EventPlayerCommandPreProcess implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -21,7 +23,7 @@ public class EventPlayerCommandPreProcess implements Listener {
         String message = event.getMessage().toLowerCase();
 
         if (message.equalsIgnoreCase("/tps")) {
-            player.sendMessage(MSG.MSG_TPS.replace(Constants.TPS, Bukkit.getServer().getTPS().toString()));
+            player.sendMessage(MSG.MSG_TPS.replace(Constants.TPS, Arrays.toString(Bukkit.getServer().getTPS())));
             event.setCancelled(true);
             return;
         }

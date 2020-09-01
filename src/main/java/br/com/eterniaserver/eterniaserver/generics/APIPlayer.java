@@ -8,14 +8,12 @@ import java.util.UUID;
 
 public class APIPlayer {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
     private APIPlayer() {
         throw new IllegalStateException("Utility class");
     }
 
     public static String getFirstLogin(UUID uuid) {
-        return Vars.playerProfile.containsKey(uuid) ? sdf.format(new Date(Vars.playerProfile.get(uuid).firstLogin)) : "Sem registro";
+        return Vars.playerProfile.containsKey(uuid) ? new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(Vars.playerProfile.get(uuid).firstLogin)) : "Sem registro";
     }
 
     public static String isAFK(String playerName) {
