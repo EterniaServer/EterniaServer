@@ -62,10 +62,10 @@ public class Managers {
             if (value == null) {
                 return;
             }
-            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value) {
+            if (c.getConfigValue("min", 0) > value) {
                 throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
             }
-            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value) {
+            if (c.getConfigValue("max", 3) < value) {
                 throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
             }
         });
@@ -74,10 +74,10 @@ public class Managers {
             if (value == null) {
                 return;
             }
-            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value) {
+            if (c.getConfigValue("min", 0) > value) {
                 throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
             }
-            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value) {
+            if (c.getConfigValue("max", 3) < value) {
                 throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
             }
         });
