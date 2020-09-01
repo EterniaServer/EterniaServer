@@ -10,11 +10,11 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public class AccelerateWorld implements Runnable {
+public class UtilAccelerateWorld implements Runnable {
 
     private final EterniaServer plugin;
 
-    public AccelerateWorld(EterniaServer plugin) {
+    public UtilAccelerateWorld(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
@@ -27,7 +27,7 @@ public class AccelerateWorld implements Runnable {
         final int sleeping = getSleeping(world).size();
         if (sleeping > 0) {
             Vars.skippingWorlds.add(world);
-            new AccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
+            new UtilAccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }
 

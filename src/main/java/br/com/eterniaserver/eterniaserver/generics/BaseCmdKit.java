@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class KitSystem extends BaseCommand {
+public class BaseCmdKit extends BaseCommand {
 
-    public KitSystem() {
+    public BaseCmdKit() {
 
         final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(Configs.TABLE_KITS), Constants.NAME_STR, Constants.COOLDOWN_STR);
         temp.forEach((k, v) -> Vars.kitsCooldown.put(k, Long.parseLong(v)));
@@ -40,10 +40,10 @@ public class KitSystem extends BaseCommand {
                 final String kitName = kit + "." + player.getName();
                 final int cooldown = EterniaServer.kitConfig.getInt(kitString + kit + ".delay");
                 final long cd = Vars.kitsCooldown.get(kitName);
-                if (InternMethods.hasCooldown(cd, cooldown)) {
+                if (UtilInternMethods.hasCooldown(cd, cooldown)) {
                     giveKit(player, time, kitName, kit);
                 } else {
-                    player.sendMessage(MSG.MSG_TIMING.replace(Constants.COOLDOWN, InternMethods.getTimeLeft(cooldown, cd)));
+                    player.sendMessage(MSG.MSG_TIMING.replace(Constants.COOLDOWN, UtilInternMethods.getTimeLeft(cooldown, cd)));
                 }
             } else {
                 player.sendMessage(MSG.MSG_NO_PERM.replace(Constants.KIT_NAME, kit));
@@ -56,10 +56,10 @@ public class KitSystem extends BaseCommand {
     private void giveKit(final Player player, final long time, final String kitName, final String kit) {
         final String kitString = "kits.";
         for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".command")) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), InternMethods.setPlaceholders(player, line));
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, line));
         }
         for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".text")) {
-            player.sendMessage(MSG.getColor(InternMethods.setPlaceholders(player, line)));
+            player.sendMessage(MSG.getColor(UtilInternMethods.setPlaceholders(player, line)));
         }
         Vars.kitsCooldown.put(kitName, time);
         EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_KITS, Constants.COOLDOWN_STR, time, Constants.NAME_STR, kitName));

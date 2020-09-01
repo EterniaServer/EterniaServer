@@ -2,8 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
-import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
-import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
+import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,7 +50,7 @@ public class Vars {
     protected static boolean chatMuted = false;
     protected static long nightTime = System.currentTimeMillis();
 
-    protected static final List<CustomPlaceholder> customPlaceholders = new ArrayList<>();
+    protected static final List<UtilCustomPlaceholder> customPlaceholders = new ArrayList<>();
     protected static final List<World> skippingWorlds = new ArrayList<>();
     protected static final List<String> god = new ArrayList<>();
     protected static final List<String> afk = new ArrayList<>();

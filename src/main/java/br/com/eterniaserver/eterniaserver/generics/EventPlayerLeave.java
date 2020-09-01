@@ -26,12 +26,12 @@ public class EventPlayerLeave implements Listener {
         EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.HOURS_STR, Vars.playerProfile.get(uuid).updateTimePlayed(), Constants.UUID_STR, uuid.toString()));
 
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
-            InternMethods.removeUUIF(player);
+            UtilInternMethods.removeUUIF(player);
             if (player.hasPermission("eternia.spy")) Vars.spy.remove(playerName);
         }
 
         event.setQuitMessage(null);
-        Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_LEAVE));
+        Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_LEAVE));
 
     }
 

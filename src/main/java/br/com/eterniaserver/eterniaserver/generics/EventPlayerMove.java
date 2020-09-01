@@ -20,7 +20,7 @@ public class EventPlayerMove implements Listener {
             Vars.afkTime.put(playerName, System.currentTimeMillis());
             if (Vars.afk.contains(playerName)) {
                 Vars.afk.remove(playerName);
-                Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_AFK_DISABLE));
+                Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_AFK_DISABLE));
             }
         }
     }

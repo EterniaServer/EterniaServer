@@ -17,7 +17,7 @@ public class EventPlayerBedLeave implements Listener {
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - InternMethods.getCooldown(playerName)) > 6) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - UtilInternMethods.getCooldown(playerName)) > 6) {
             Vars.bedCooldown.put(playerName, System.currentTimeMillis());
         }
     }

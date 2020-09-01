@@ -47,7 +47,7 @@ public class BaseCmdChat extends BaseCommand {
     @CommandAlias("vanish|chupadadimensional")
     @CommandPermission("eternia.vanish")
     public void onVanish(Player player) {
-        Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_LEAVE));
+        Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_LEAVE));
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(plugin, player);
         }
@@ -56,7 +56,7 @@ public class BaseCmdChat extends BaseCommand {
     @CommandAlias("unvanish|chupadadimensionalreversa")
     @CommandPermission("eternia.vanish")
     public void onUnVanish(Player player) {
-        Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_JOIN));
+        Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_JOIN));
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(plugin, player);
         }
@@ -74,14 +74,14 @@ public class BaseCmdChat extends BaseCommand {
             } else {
                 ignoreds = Vars.ignoredPlayer.get(targetName);
                 if (ignoreds.contains(player)) {
-                    player.sendMessage(InternMethods.putName(target, MSG.M_CHAT_DENY));
+                    player.sendMessage(UtilInternMethods.putName(target, MSG.M_CHAT_DENY));
                     ignoreds.remove(player);
                     return;
                 }
             }
             ignoreds.add(player);
             Vars.ignoredPlayer.put(target.getName(), ignoreds);
-            player.sendMessage(InternMethods.putName(target, MSG.M_CHAT_IGNORE));
+            player.sendMessage(UtilInternMethods.putName(target, MSG.M_CHAT_IGNORE));
         }
     }
 
@@ -127,7 +127,7 @@ public class BaseCmdChat extends BaseCommand {
             if (APIEconomy.hasMoney(uuid, money)) {
                 APIEconomy.removeMoney(uuid, money);
                 player.setDisplayName(playerProfile.tempNick);
-                player.sendMessage(InternMethods.putName(player, MSG.M_CHAT_NEWNICK));
+                player.sendMessage(UtilInternMethods.putName(player, MSG.M_CHAT_NEWNICK));
                 playerProfile.playerDisplayName = playerProfile.tempNick;
             } else {
                 player.sendMessage(MSG.MSG_NO_MONEY);
@@ -172,7 +172,7 @@ public class BaseCmdChat extends BaseCommand {
                     sender.sendMessage(MSG.M_CHAT_IGNORE);
                     return;
                 }
-                InternMethods.sendPrivate(sender, target, msg);
+                UtilInternMethods.sendPrivate(sender, target, msg);
                 return;
             }
         }
@@ -206,7 +206,7 @@ public class BaseCmdChat extends BaseCommand {
         if (msg == null || msg.length() == 0) {
             Vars.chatLocked.put(playerName, target.getName());
             Vars.playerProfile.get(uuid).chatChannel = 3;
-            player.sendMessage(InternMethods.putName(target, MSG.MSG_CHAT_LOCKED));
+            player.sendMessage(UtilInternMethods.putName(target, MSG.MSG_CHAT_LOCKED));
             return;
         }
 
@@ -215,14 +215,14 @@ public class BaseCmdChat extends BaseCommand {
             return;
         }
 
-        InternMethods.sendPrivate(player, target, msg);
+        UtilInternMethods.sendPrivate(player, target, msg);
     }
 
     private boolean isMuted(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         final long time = Vars.playerProfile.get(uuid).muted;
-        if (InternMethods.stayMuted(time)) {
-            player.sendMessage(MSG.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
+        if (UtilInternMethods.stayMuted(time)) {
+            player.sendMessage(MSG.M_CHAT_MUTED.replace(Constants.TIME, UtilInternMethods.getTimeLeft(time)));
             return true;
         }
         return false;
@@ -279,8 +279,8 @@ public class BaseCmdChat extends BaseCommand {
             player.sendMessage(MSG.M_CHAT_REMOVE_NICK);
         } else {
             target.setDisplayName(string);
-            player.sendMessage(InternMethods.putName(target, MSG.M_CHAT_NEWNICK));
-            target.sendMessage(InternMethods.putName(target, MSG.M_CHAT_NEWNICK));
+            player.sendMessage(UtilInternMethods.putName(target, MSG.M_CHAT_NEWNICK));
+            target.sendMessage(UtilInternMethods.putName(target, MSG.M_CHAT_NEWNICK));
         }
     }
 

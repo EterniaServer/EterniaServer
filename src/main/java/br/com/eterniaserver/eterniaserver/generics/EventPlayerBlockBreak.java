@@ -62,7 +62,7 @@ public class EventPlayerBlockBreak implements Listener {
         }
         if (lowestNumberAboveRandom <= 1) {
             for (String command : EterniaServer.blockConfig.getStringList(blockConfig + materialName + "." + lowestNumberAboveRandom)) {
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), InternMethods.setPlaceholders(player, command));
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, command));
             }
         }
     }

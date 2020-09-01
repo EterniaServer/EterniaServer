@@ -14,9 +14,52 @@ public class APIEconomy {
     }
 
     /**
-     * Gets the money in player account
-     * @param uuid to check
-     * @return Amount currently held in player's account
+     * Get the singular name of current
+     * @return the name
+     */
+    public static String singularName() {
+        return Configs.BALANCE_SINGULAR_NAME;
+    }
+
+    /**
+     * Get the plural name of current
+     * @return the name
+     */
+    public static String pluralName() {
+        return Configs.BALANCE_PLURAL_NAME;
+    }
+
+    /**
+     * Check if player has account
+     * @param uuid uuid of player
+     */
+    public static boolean hasAccount(UUID uuid) {
+        return Vars.playerProfile.containsKey(uuid);
+    }
+
+    /**
+     * Create a account for the player
+     * @param uuid uuid of player
+     */
+    public static void createAccount(UUID uuid) {
+        final long time = System.currentTimeMillis();
+        final String playerName = UUIDFetcher.getNameOf(uuid);
+        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.BALANCE_START + "')"));
+        final PlayerProfile playerProfile = new PlayerProfile(
+                playerName,
+                time,
+                time,
+                0
+        );
+        playerProfile.balance = Configs.BALANCE_START;
+        Vars.playerProfile.put(uuid, playerProfile);
+    }
+
+    /**
+     * Get the balance of the player
+     * @param uuid of player
+     * @return the balance
      */
     public static double getMoney(UUID uuid) {
         if (Vars.playerProfile.containsKey(uuid)) {
@@ -39,19 +82,19 @@ public class APIEconomy {
     }
 
     /**
-     * Return a boolean that indicate if the player has money enough.
-     * @param uuid to check
-     * @param amount to check
-     * @return the boolean
+     * Check if the player has money enough
+     * @param uuid of player
+     * @param amount the amount of money needed
+     * @return if has or not
      */
     public static boolean hasMoney(UUID uuid, double amount) {
         return getMoney(uuid) >= amount;
     }
 
     /**
-     * Defines the amount money in player's account.
-     * @param uuid to check
-     * @param amount to set
+     * Defines the balance of the player
+     * @param uuid of player
+     * @param amount the amount of money to set
      */
     public static void setMoney(UUID uuid, double amount) {
         if (Vars.playerProfile.containsKey(uuid)) {
@@ -75,18 +118,18 @@ public class APIEconomy {
     }
 
     /**
-     * Adds money to player account.
-     * @param uuid to check
-     * @param amount to add
+     * Give money to player account
+     * @param uuid of player
+     * @param amount the amount of money to give
      */
     public static void addMoney(UUID uuid, double amount) {
         setMoney(uuid, getMoney(uuid) + amount);
     }
 
     /**
-     * Removes money to player account.
-     * @param uuid to check
-     * @param amount to remove
+     * Give money to player account
+     * @param uuid of player
+     * @param amount the amount of money to give
      */
     public static void removeMoney(UUID uuid, double amount) {
         setMoney(uuid, getMoney(uuid) - amount);

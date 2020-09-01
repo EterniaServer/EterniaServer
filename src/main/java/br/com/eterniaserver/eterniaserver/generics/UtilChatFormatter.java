@@ -1,21 +1,22 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.strings.MSG;
-import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
-import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
+import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
+import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class ChatFormatter {
+public class UtilChatFormatter {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
 		if (!Vars.uufi.containsKey(p.getName())) return;
-		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) InternMethods.addUUIF(p);
+		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) UtilInternMethods.addUUIF(p);
 		FormatInfo fi = Vars.uufi.get(p.getName());
 		if (EterniaServer.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
 			ChatObject msg = new ChatObject(Constants.MESSAGE);
@@ -38,7 +39,7 @@ public class ChatFormatter {
 		if (s.contains("&")) {
 			s = MSG.getColor(s);
 		}
-		s = InternMethods.setPlaceholders(p, s);
+		s = UtilInternMethods.setPlaceholders(p, s);
 		return s;
 	}
 }

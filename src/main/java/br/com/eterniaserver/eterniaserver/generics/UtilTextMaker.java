@@ -2,33 +2,33 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 
-import br.com.eterniaserver.eternialib.NBTCompound;
-import br.com.eterniaserver.eternialib.NBTItem;
+import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.strings.MSG;
-import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
-import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
-import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
+import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
+import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Instrument;
+import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class TextMaker {
+public class UtilTextMaker {
 
 	protected TextComponent text;
 	private final ChatMessage message;
 	private final Player p;
 
-	public TextMaker(ChatMessage message, Player p) {
+	public UtilTextMaker(ChatMessage message, Player p) {
 		this.p = p;
 		this.message = message;
 	}
@@ -38,7 +38,7 @@ public class TextMaker {
 		for(int i = 0; i < message.size(); i++) {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
-			msg = InternMethods.setPlaceholders(p, msg);
+			msg = UtilInternMethods.setPlaceholders(p, msg);
 			if (msg.contains(Constants.MESSAGE)) msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
 			if (p.hasPermission("eternia.chat.mention") && msg.contains("@")) {
 				int lenght = msg.length();
@@ -66,17 +66,17 @@ public class TextMaker {
 				TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 				if (chatObject.getHover() != null) {
 					ArrayList<TextComponent> tcs = new ArrayList<>();
-					tcs.add(new TextComponent(InternMethods.setPlaceholders(p, MSG.getColor(chatObject.getHover()))));
-					textComp.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
+					tcs.add(new TextComponent(UtilInternMethods.setPlaceholders(p, MSG.getColor(chatObject.getHover()))));
+					textComp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 				}
 				if (chatObject.getColor() != null) {
 					textComp.setColor(chatObject.getColor().asBungee());
 				}
 				if (chatObject.getSuggest() != null) {
-					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, InternMethods.setPlaceholders(p, MSG.getColor(chatObject.getSuggest()))));
+					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, UtilInternMethods.setPlaceholders(p, MSG.getColor(chatObject.getSuggest()))));
 				}
 				if (chatObject.getRun() != null) {
-					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, InternMethods.setPlaceholders(p, MSG.getColor(chatObject.getRun()))));
+					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, UtilInternMethods.setPlaceholders(p, MSG.getColor(chatObject.getRun()))));
 				}
 				if (chatObject.isText()) {
 					setTextAttr(textComp, p);
@@ -88,15 +88,13 @@ public class TextMaker {
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
-		NBTCompound compound = NBTItem.convertItemtoNBT(itemStack);
-		String json = compound.toString();
-		BaseComponent[] baseComponents = new BaseComponent[] {
-				new TextComponent(json)
-		};
-		HoverEvent event = new HoverEvent(Action.SHOW_ITEM, baseComponents);
-		TextComponent component = new TextComponent(string.replace("[item]", Vars.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + Vars.colors.get(15)));
-		component.setHoverEvent(event);
-		return component;
+		if (EventAsyncPlayerChat.version116) {
+			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
+			TextComponent component = new TextComponent(string.replace("[item]", Vars.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + Vars.colors.get(15)));
+			component.setHoverEvent(event);
+			return component;
+		}
+		return new TextComponent("sem suporte");
 	}
 
 	private void setTextAttr(TextComponent text, Player p) {
@@ -142,10 +140,10 @@ public class TextMaker {
 
 	public String customPlaceholder(Player p, String s2) {
 		String stringMessage = s2;
-		for(CustomPlaceholder cp: Vars.customPlaceholders) {
+		for(UtilCustomPlaceholder cp: Vars.customPlaceholders) {
 			String id = cp.getId();
 			if(!stringMessage.contains("{" + id + "}")) continue;
-			SubPlaceholder bestPlaceholder = InternMethods.getSubPlaceholder(p, cp);
+			SubPlaceholder bestPlaceholder = UtilInternMethods.getSubPlaceholder(p, cp);
 			if(bestPlaceholder != null) {
 				stringMessage = stringMessage.replace("{" + id + "}", bestPlaceholder.getValue());
 			} else {
@@ -153,7 +151,7 @@ public class TextMaker {
 			}
 		}
 		s2 = stringMessage;
-		return InternMethods.setPlaceholders(p, s2);
+		return UtilInternMethods.setPlaceholders(p, s2);
 	}
 
 }

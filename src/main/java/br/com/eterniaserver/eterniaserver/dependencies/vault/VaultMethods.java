@@ -1,10 +1,8 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.dependencies.vault;
 
-import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
+import br.com.eterniaserver.eterniaserver.generics.Vars;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -44,32 +42,32 @@ public class VaultMethods implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return Configs.BALANCE_PLURAL_NAME;
+        return APIEconomy.pluralName();
     }
 
     @Override
     public String currencyNameSingular() {
-        return Configs.BALANCE_SINGULAR_NAME;
+        return APIEconomy.singularName();
     }
 
     @Override
     public boolean hasAccount(String playerName) {
-        return playerMoneyExist(UUIDFetcher.getUUIDOf(playerName));
+        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(playerName));
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return playerMoneyExist(UUIDFetcher.getUUIDOf(player.getName()));
+        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(player.getName()));
     }
 
     @Override
     public boolean hasAccount(String playerName, String worldName) {
-        return playerMoneyExist(UUIDFetcher.getUUIDOf(playerName));
+        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(playerName));
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return playerMoneyExist(UUIDFetcher.getUUIDOf(player.getName()));
+        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(player.getName()));
     }
 
     @Override
@@ -237,52 +235,35 @@ public class VaultMethods implements Economy {
     @Override
     public boolean createPlayerAccount(String playerName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (playerMoneyExist(uuid)) return false;
-        playerMoneyCreate(uuid);
+        if (APIEconomy.hasAccount(uuid)) return false;
+        APIEconomy.createAccount(uuid);
         return true;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        if (playerMoneyExist(uuid)) return false;
-        playerMoneyCreate(uuid);
+        if (APIEconomy.hasAccount(uuid)) return false;
+        APIEconomy.createAccount(uuid);
         return true;
     }
 
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (playerMoneyExist(uuid)) return false;
-        playerMoneyCreate(uuid);
+        if (APIEconomy.hasAccount(uuid)) return false;
+        APIEconomy.createAccount(uuid);
         return true;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        if (playerMoneyExist(uuid)) return false;
-        playerMoneyCreate(uuid);
+        if (APIEconomy.hasAccount(uuid)) return false;
+        APIEconomy.createAccount(uuid);
         return true;
     }
 
-    private boolean playerMoneyExist(UUID uuid) {
-        return Vars.playerProfile.containsKey(uuid);
-    }
 
-    private void playerMoneyCreate(UUID uuid) {
-        final long time = System.currentTimeMillis();
-        final String playerName = UUIDFetcher.getNameOf(uuid);
-        EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.BALANCE_START + "')"));
-        final PlayerProfile playerProfile = new PlayerProfile(
-                playerName,
-                time,
-                time,
-                0
-        );
-        playerProfile.balance = Configs.BALANCE_START;
-        Vars.playerProfile.put(uuid, playerProfile);
-    }
 
 }

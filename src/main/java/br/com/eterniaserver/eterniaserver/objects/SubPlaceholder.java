@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.utils;
+package br.com.eterniaserver.eterniaserver.objects;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;

@@ -1,10 +1,10 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.objects;
 
 import org.bukkit.ChatColor;
 
 public class ChatObject {
 
-	String message;
+	public String message;
 	String hover;
 	String suggest;
 

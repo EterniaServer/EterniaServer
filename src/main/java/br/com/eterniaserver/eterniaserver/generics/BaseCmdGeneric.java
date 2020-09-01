@@ -1,9 +1,17 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.CommandHelp;
+import br.com.eterniaserver.acf.annotation.CommandAlias;
+import br.com.eterniaserver.acf.annotation.CommandCompletion;
+import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Default;
+import br.com.eterniaserver.acf.annotation.Description;
+import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Optional;
+import br.com.eterniaserver.acf.annotation.Subcommand;
+import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
@@ -11,17 +19,16 @@ import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
-import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -34,12 +41,9 @@ import java.util.concurrent.TimeUnit;
 
 public class BaseCmdGeneric extends BaseCommand {
 
-    //TODO Refatorar o sistema em várias classes e subclasses extendendo uma após a outra.
-
     private final EterniaServer plugin;
-
-    private final GetRuntime getRuntime;
     private final Scoreboard sc;
+    private final UtilGetRuntime getRuntime;
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final ItemStack coali = new ItemStack(Material.COAL);
@@ -53,14 +57,15 @@ public class BaseCmdGeneric extends BaseCommand {
     public BaseCmdGeneric(EterniaServer plugin) {
         this.plugin = plugin;
 
-        this.sc = Bukkit.getScoreboardManager().getMainScoreboard();
+        Scoreboard sc = Bukkit.getScoreboardManager().getMainScoreboard();
         for (int i = 0; i < 16; i++) {
             if (sc.getTeam(Vars.arrData.get(i)) == null) {
                 sc.registerNewTeam(Vars.arrData.get(i)).setColor(Vars.colors.get(i));
             }
         }
+        this.sc = sc;
 
-        this.getRuntime = new GetRuntime();
+        this.getRuntime = new UtilGetRuntime();
 
         if (EterniaLib.getMySQL()) {
             EterniaLib.getConnections().executeSQLQuery(connection -> {
@@ -106,7 +111,14 @@ public class BaseCmdGeneric extends BaseCommand {
                 Vars.locations.put(k, loc);
             });
         }
+    }
 
+    @CommandAlias("help")
+    @Syntax("<página>")
+    @Description(" Ajuda para os comandos básicos")
+    @HelpCommand
+    public void onHelp(CommandHelp help) {
+        help.showHelp();
     }
 
     @CommandAlias("speed")
@@ -145,76 +157,6 @@ public class BaseCmdGeneric extends BaseCommand {
         getRuntime.recalculateRuntime();
         sendConsole(MSG.MSG_MEM.replace(Constants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(Constants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
         sendConsole(MSG.MSG_MEM_ONLINE.replace(Constants.HOURS, String.valueOf(getRuntime.hours)).replace(Constants.MINUTE, String.valueOf(getRuntime.minutes)).replace(Constants.SECONDS, String.valueOf(getRuntime.seconds)));
-    }
-
-    @CommandAlias("glow")
-    @CommandPermission("eternia.glow")
-    public void onGlow(Player player) {
-        if (!player.isGlowing()) {
-            player.sendMessage(MSG.M_GLOW_ENABLED);
-        } else {
-            player.removePotionEffect(PotionEffectType.GLOWING);
-            player.sendMessage(MSG.M_GLOW_DISABLED);
-        }
-        player.setGlowing(!player.isGlowing());
-    }
-
-    @CommandAlias("glow color")
-    @CommandPermission("eternia.glow")
-    @CommandCompletion("@colors")
-    public void onGlowColor(Player player, String color) {
-        final String dark = "escuro";
-        final String light = "claro";
-        switch (color.hashCode()) {
-            case 1741606617:
-                changeColor(player, Vars.arrData.get(8), "&8", "cinza " + dark);
-                break;
-            case 1741452496:
-                changeColor(player, Vars.arrData.get(1), "&1", "azul " + dark);
-                break;
-            case 1741427506:
-                changeColor(player, Vars.arrData.get(3), "&3", "ciano");
-                break;
-            case 1441664347:
-                changeColor(player, Vars.arrData.get(4), "&4", "vermelho");
-                break;
-            case 686244985:
-                changeColor(player, Vars.arrData.get(7), "&7", "cinza " + light);
-                break;
-            case 93818879:
-                changeColor(player, Vars.arrData.get(0), "&0", "preto");
-                break;
-            case 98619139:
-                changeColor(player, Vars.arrData.get(10), "&a", "verde");
-                break;
-            case 3178592:
-                changeColor(player, Vars.arrData.get(6), "&6", "dourado");
-                break;
-            case 3027034:
-                changeColor(player, Vars.arrData.get(9), "&9", "azul");
-                break;
-            case 3002044:
-                changeColor(player, Vars.arrData.get(11), "&b", "azul " + light);
-                break;
-            case 112785:
-                changeColor(player, Vars.arrData.get(12), "&c", "tomate");
-                break;
-            case -734239628:
-                changeColor(player, Vars.arrData.get(14), "&e", "amarelo");
-                break;
-            case -976943172:
-                changeColor(player, Vars.arrData.get(13), "&d", "rosa");
-                break;
-            case -1092352334:
-                changeColor(player, Vars.arrData.get(5), "&5", "roxo");
-                break;
-            case -1844766387:
-                changeColor(player, Vars.arrData.get(2), "&2", "verde " + dark);
-                break;
-            default:
-                changeColor(player, Vars.arrData.get(15), "&f", "branco");
-                break;
-        }
     }
 
     @CommandAlias("reloadeternia|eterniareload")
@@ -259,18 +201,18 @@ public class BaseCmdGeneric extends BaseCommand {
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
 
             if (APIFly.isOnPvP(uuid)) {
-                player.sendMessage(InternMethods.putName(target, MSG.FLY_TARGET_IN_PVP.replace(Constants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid)))));
+                player.sendMessage(UtilInternMethods.putName(target, MSG.FLY_TARGET_IN_PVP.replace(Constants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid)))));
                 return;
             }
 
             APIFly.changeFlyState(target);
             if (target.isFlying()) {
-                target.sendMessage(InternMethods.putName(player, MSG.FLY_ENABLED_BY));
-                player.sendMessage(InternMethods.putName(target, MSG.FLY_ENABLED_FOR));
+                target.sendMessage(UtilInternMethods.putName(player, MSG.FLY_ENABLED_BY));
+                player.sendMessage(UtilInternMethods.putName(target, MSG.FLY_ENABLED_FOR));
                 return;
             }
-            target.sendMessage(InternMethods.putName(player, MSG.FLY_DISABLED_BY));
-            player.sendMessage(InternMethods.putName(target, MSG.FLY_DISABLED_FOR));
+            target.sendMessage(UtilInternMethods.putName(player, MSG.FLY_DISABLED_BY));
+            player.sendMessage(UtilInternMethods.putName(target, MSG.FLY_DISABLED_FOR));
             return;
         }
 
@@ -300,7 +242,7 @@ public class BaseCmdGeneric extends BaseCommand {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.feed.other")) {
                 targetP.setFoodLevel(20);
-                player.sendMessage(InternMethods.putName(targetP, MSG.MSG_FEEDED_TARGET));
+                player.sendMessage(UtilInternMethods.putName(targetP, MSG.MSG_FEEDED_TARGET));
                 player.sendMessage(MSG.MSG_FEEDED_TARGET.replace(Constants.TARGET, targetP.getDisplayName()));
                 targetP.sendMessage(MSG.MSG_FEEDED);
             } else {
@@ -320,7 +262,7 @@ public class BaseCmdGeneric extends BaseCommand {
         int diamond = 0;
         int esmeralda = 0;
         for (ItemStack i : player.getInventory().getContents()) {
-            if (i.getItemMeta() != null && i.getType() != Material.AIR) {
+            if (i != null && i.getType() != Material.AIR) {
                 coal += checkItems(i, coali);
                 lapiz += checkItems(i, lapizi);
                 redstone += checkItems(i, redstonei);
@@ -363,8 +305,8 @@ public class BaseCmdGeneric extends BaseCommand {
         if (target != null) {
             final Player targetP = target.getPlayer();
             world.strikeLightning(targetP.getLocation());
-            player.sendMessage(InternMethods.putName(targetP, MSG.MSG_LIGHTNING_SENT));
-            targetP.sendMessage(InternMethods.putName(player, MSG.MSG_LIGHTNING_RECEIVED));
+            player.sendMessage(UtilInternMethods.putName(targetP, MSG.MSG_LIGHTNING_SENT));
+            targetP.sendMessage(UtilInternMethods.putName(player, MSG.MSG_LIGHTNING_RECEIVED));
         } else {
             world.strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
@@ -378,7 +320,7 @@ public class BaseCmdGeneric extends BaseCommand {
             StringBuilder sb = new StringBuilder();
             for (java.lang.String arg : args) sb.append(arg).append(" ");
             player.setHealth(0);
-            Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_SUICIDE.replace(Constants.MESSAGE, sb.toString())));
+            Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_SUICIDE.replace(Constants.MESSAGE, sb.toString())));
         } else {
             player.setHealth(0);
         }
@@ -389,134 +331,175 @@ public class BaseCmdGeneric extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (Vars.afk.contains(playerName)) {
-            Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_AFK_DISABLE));
+            Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_AFK_DISABLE));
             Vars.afk.remove(playerName);
         } else {
             Vars.afk.add(playerName);
-            Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_AFK_ENABLE));
+            Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_AFK_ENABLE));
         }
     }
 
-    @CommandAlias("item")
-    @CommandPermission("eternia.item")
-    public void itemHelp(CommandSender sender) {
-        sender.sendMessage(MSG.ITEM_HELP_TITLE);
-        if (sender.hasPermission("eternia.item.nbt")) {
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "item addkey &3<chave> <valor>")
-                    .replace(Constants.MESSAGE, MSG.ITEM_HELP_ADDKEY)));
-        }
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "item clear lore")
-                .replace(Constants.MESSAGE, MSG.ITEM_HELP_CLEAR_LORE)));
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "item clear name")
-                .replace(Constants.MESSAGE, MSG.ITEM_HELP_CLEAR_NAME)));
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "item add lore")
-                .replace(Constants.MESSAGE, MSG.ITEM_HELP_ADD_LORE)));
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "item set lore")
-                .replace(Constants.MESSAGE, MSG.ITEM_HELP_SET_LORE)));
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "item set name")
-                .replace(Constants.MESSAGE, MSG.ITEM_HELP_SET_NAME)));
-    }
+    @CommandAlias("gamemode|gm")
+    @CommandPermission("eternia.gamemode")
+    @Description(" Altera o modo de jogo de um jogador")
+    public class onGamemode extends BaseCommand {
 
-    @CommandAlias("item addkey")
-    @Syntax("<chave> <valor>")
-    @CommandPermission("eternia.item.nbt")
-    public void onItemAddKey(Player player, String key, String value) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
-            NBTItem nbtItem = new NBTItem(item);
-            nbtItem.setString(key, value);
-            player.sendMessage(MSG.ITEM_ADDKEY.replace(Constants.KEY, key).replace(Constants.VALUE, value));
-        } else {
-            player.sendMessage(MSG.ITEM_NO);
-        }
-    }
-
-    @CommandAlias("item clear lore")
-    @CommandPermission("eternia.item")
-    public void onItemClearLore(Player player) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
-            item.getLore().clear();
-            player.getInventory().setItemInMainHand(item);
-            player.sendMessage(MSG.ITEM_LORE_CLEAR);
-        } else {
-            player.sendMessage(MSG.ITEM_NO);
-        }
-    }
-
-    @CommandAlias("item clear name")
-    @CommandPermission("eternia.item")
-    public void onItemClearName(Player player) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
-            item.getItemMeta().setDisplayName(item.getI18NDisplayName());
-            player.getInventory().setItemInMainHand(item);
-            player.sendMessage(MSG.ITEM_NAME_CLEAR);
-        } else {
-            player.sendMessage(MSG.ITEM_NO);
-        }
-    }
-
-    @CommandAlias("item add lore")
-    @Syntax("<lore>")
-    @CommandCompletion("<lore>")
-    @CommandPermission("eternia.item")
-    public void onItemAddLore(Player player, String name) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
-            name = MSG.getColor(name);
-            List<String> lore = item.getLore();
-            if (lore != null) {
-                lore.add(name);
-                item.setLore(lore);
-            } else {
-                item.setLore(List.of(name));
+        @Subcommand("survival|s|0|sobrevivencia")
+        @CommandCompletion("@players")
+        @Description(" Define o modo de jogo de um jogador como sobrevivência")
+        @Syntax("<jogador>")
+        public void onSurvival(CommandSender player, @Optional OnlinePlayer target) {
+            final String survivalString = "Sobrevivência";
+            final Player playerZin = (Player) player;
+            if (target == null && playerZin != null) {
+                playerZin.setGameMode(GameMode.SURVIVAL);
+                player.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, survivalString));
+            } else if (target != null) {
+                final Player targetP = target.getPlayer();
+                targetP.setGameMode(GameMode.SURVIVAL);
+                targetP.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, survivalString));
+                player.sendMessage(UtilInternMethods.putName(targetP, MSG.M_GM_TARGET.replace(Constants.GM, survivalString)));
             }
-            player.getInventory().setItemInMainHand(item);
-            player.sendMessage(MSG.ITEM_LORE_ADD.replace("%name%", name));
-        } else {
-            player.sendMessage(MSG.ITEM_NO);
+        }
+
+        @Subcommand("creative|c|1|criativo")
+        @CommandCompletion("@players")
+        @Description(" Define o modo de jogo de um jogador como criativo")
+        @Syntax("<jogador>")
+        public void onCreative(CommandSender player, @Optional OnlinePlayer target) {
+            final String creativeString = "Criativo";
+            final Player playerZin = (Player) player;
+            if (target == null && playerZin != null) {
+                playerZin.setGameMode(GameMode.CREATIVE);
+                playerZin.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, creativeString));
+            } else if (target != null) {
+                final Player targetP = target.getPlayer();
+                targetP.setGameMode(GameMode.CREATIVE);
+                targetP.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, creativeString));
+                player.sendMessage(UtilInternMethods.putName(targetP, MSG.M_GM_TARGET.replace(Constants.GM, creativeString)));
+            }
+        }
+
+        @Subcommand("adventure|a|2|aventura")
+        @CommandCompletion("@players")
+        @Description(" Define o modo de jogo de um jogador como aventura")
+        @Syntax("<jogador>")
+        public void onAdventure(CommandSender player, @Optional OnlinePlayer target) {
+            final String adventureString = "Aventura";
+            final Player playerZin = (Player) player;
+            if (target == null && playerZin != null) {
+                playerZin.setGameMode(GameMode.ADVENTURE);
+                playerZin.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, adventureString));
+            } else if (target != null) {
+                final Player targetP = target.getPlayer();
+                targetP.setGameMode(GameMode.ADVENTURE);
+                targetP.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, adventureString));
+                player.sendMessage(UtilInternMethods.putName(targetP, MSG.M_GM_TARGET.replace(Constants.GM, adventureString)));
+            }
+        }
+
+        @Subcommand("spectator|spect|3|espectador")
+        @CommandCompletion("@players")
+        @Description(" Define o modo de jogo de um jogador como espectador")
+        @Syntax("<jogador>")
+        public void onSpectator(CommandSender player, @Optional OnlinePlayer target) {
+            final String spectatorString = "Espectador";
+            final Player playerZin = (Player) player;
+            if (target == null && playerZin != null) {
+                playerZin.setGameMode(GameMode.SPECTATOR);
+                player.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, spectatorString));
+            } else if (target != null) {
+                final Player targetP = target.getPlayer();
+                targetP.setGameMode(GameMode.SPECTATOR);
+                player.sendMessage(MSG.M_GM_CHANGED.replace(Constants.GM, spectatorString));
+                player.sendMessage(UtilInternMethods.putName(targetP, MSG.M_GM_TARGET.replace(Constants.GM, spectatorString)));
+            }
+        }
+
+    }
+
+    @CommandAlias("glow")
+    @CommandPermission("eternia.glow")
+    public class Glow extends BaseCommand {
+
+        @Default
+        @Description(" Ativa ou desativa o glow")
+        public void onGlow(Player player) {
+            if (!player.isGlowing()) {
+                player.sendMessage(MSG.M_GLOW_ENABLED);
+            } else {
+                player.removePotionEffect(PotionEffectType.GLOWING);
+                player.sendMessage(MSG.M_GLOW_DISABLED);
+            }
+            player.setGlowing(!player.isGlowing());
+        }
+
+        @Subcommand("color")
+        @CommandPermission("eternia.glow")
+        @CommandCompletion("@colors")
+        @Syntax("<cor>")
+        @Description(" Escolhe qual cor utilizar no glow")
+        public void onGlowColor(Player player, String color) {
+            final String dark = "escuro";
+            final String light = "claro";
+            switch (color.hashCode()) {
+                case 1741606617:
+                    changeColor(player, Vars.arrData.get(8), "&8", "cinza " + dark);
+                    break;
+                case 1741452496:
+                    changeColor(player, Vars.arrData.get(1), "&1", "azul " + dark);
+                    break;
+                case 1741427506:
+                    changeColor(player, Vars.arrData.get(3), "&3", "ciano");
+                    break;
+                case 1441664347:
+                    changeColor(player, Vars.arrData.get(4), "&4", "vermelho");
+                    break;
+                case 686244985:
+                    changeColor(player, Vars.arrData.get(7), "&7", "cinza " + light);
+                    break;
+                case 93818879:
+                    changeColor(player, Vars.arrData.get(0), "&0", "preto");
+                    break;
+                case 98619139:
+                    changeColor(player, Vars.arrData.get(10), "&a", "verde");
+                    break;
+                case 3178592:
+                    changeColor(player, Vars.arrData.get(6), "&6", "dourado");
+                    break;
+                case 3027034:
+                    changeColor(player, Vars.arrData.get(9), "&9", "azul");
+                    break;
+                case 3002044:
+                    changeColor(player, Vars.arrData.get(11), "&b", "azul " + light);
+                    break;
+                case 112785:
+                    changeColor(player, Vars.arrData.get(12), "&c", "tomate");
+                    break;
+                case -734239628:
+                    changeColor(player, Vars.arrData.get(14), "&e", "amarelo");
+                    break;
+                case -976943172:
+                    changeColor(player, Vars.arrData.get(13), "&d", "rosa");
+                    break;
+                case -1092352334:
+                    changeColor(player, Vars.arrData.get(5), "&5", "roxo");
+                    break;
+                case -1844766387:
+                    changeColor(player, Vars.arrData.get(2), "&2", "verde " + dark);
+                    break;
+                default:
+                    changeColor(player, Vars.arrData.get(15), "&f", "branco");
+                    break;
+            }
         }
     }
 
-    @CommandAlias("item set lore")
-    @Syntax("<lore>")
-    @CommandCompletion("<lore>")
-    @CommandPermission("eternia.item")
-    public void onItemSetLore(Player player, String name) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
-            name = MSG.getColor(name);
-            item.setLore(List.of(name));
-            player.getInventory().setItemInMainHand(item);
-            player.sendMessage(MSG.ITEM_LORE_SET.replace("%name%", name));
-        } else {
-            player.sendMessage(MSG.ITEM_NO);
-        }
-    }
-
-    @CommandAlias("item set name")
-    @Syntax("<nome>")
-    @CommandCompletion("<nome>")
-    @CommandPermission("eternia.item")
-    public void onItemSetName(Player player, String name) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getItemMeta() != null && item.getType() != Material.AIR) {
-            name = MSG.getColor(name);
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(name);
-            item.setItemMeta(meta);
-            player.getInventory().setItemInMainHand(item);
-            player.sendMessage(MSG.ITEM_NAME_SET.replace("%name%", name));
-        } else {
-            player.sendMessage(MSG.ITEM_NO);
-        }
+    private void changeColor(final Player player, final String team, final String nameColor, final String color) {
+        final String playerName = player.getName();
+        Vars.glowingColor.put(playerName, nameColor);
+        sc.getTeam(team).addEntry(playerName);
+        player.sendMessage(MSG.M_GLOW_COLOR.replace(Constants.AMOUNT, color));
     }
 
     private void changeGod(final Player player) {
@@ -543,13 +526,6 @@ public class BaseCmdGeneric extends BaseCommand {
         }
     }
 
-    public void changeColor(final Player player, final String team, final String nameColor, final String color) {
-        final String playerName = player.getName();
-        Vars.glowingColor.put(playerName, nameColor);
-        sc.getTeam(team).addEntry(playerName);
-        player.sendMessage(MSG.M_GLOW_COLOR.replace(Constants.AMOUNT, color));
-    }
-
     private void sendProfile(Player player, Player target) {
         final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
         final long millis = Vars.playerProfile.get(uuid).updateTimePlayed();
@@ -558,7 +534,7 @@ public class BaseCmdGeneric extends BaseCommand {
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
         player.sendMessage(MSG.MSG_PROFILE_TITLE);
         for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
-            player.sendMessage(MSG.getColor(InternMethods.setPlaceholders(target, line)));
+            player.sendMessage(MSG.getColor(UtilInternMethods.setPlaceholders(target, line)));
         }
         player.sendMessage(MSG.MSG_PROFILE_REGISTER.replace(Constants.PLAYER_DATA, sdf.format(new Date(Vars.playerProfile.get(uuid).firstLogin))));
         player.sendMessage(MSG.MSG_PROFILE_LAST.replace(Constants.PLAYER_LAST, sdf.format(new Date(Vars.playerProfile.get(uuid).lastLogin))));

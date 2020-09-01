@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.lang.management.ManagementFactory;
 
-public class GetRuntime {
+public class UtilGetRuntime {
 
     long freemem;
     long totalmem;

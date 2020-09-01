@@ -23,22 +23,21 @@ import br.com.eterniaserver.eterniaserver.generics.EventPlayerTeleport;
 import br.com.eterniaserver.eterniaserver.generics.EventPlayerToggleSneak;
 import br.com.eterniaserver.eterniaserver.generics.EventServerListPing;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
-    public static final FileConfiguration serverConfig = new YamlConfiguration();
-    public static final FileConfiguration msgConfig = new YamlConfiguration();
-    public static final FileConfiguration cmdConfig = new YamlConfiguration();
-    public static final FileConfiguration rewardsConfig = new YamlConfiguration();
-    public static final FileConfiguration blockConfig = new YamlConfiguration();
-    public static final FileConfiguration kitConfig = new YamlConfiguration();
-    public static final FileConfiguration chatConfig = new YamlConfiguration();
-    public static final FileConfiguration placeholderConfig = new YamlConfiguration();
-    public static final FileConfiguration groupConfig = new YamlConfiguration();
-    public static final FileConfiguration cashConfig = new YamlConfiguration();
+    public static final YamlConfiguration serverConfig = new YamlConfiguration();
+    public static final YamlConfiguration msgConfig = new YamlConfiguration();
+    public static final YamlConfiguration cmdConfig = new YamlConfiguration();
+    public static final YamlConfiguration rewardsConfig = new YamlConfiguration();
+    public static final YamlConfiguration blockConfig = new YamlConfiguration();
+    public static final YamlConfiguration kitConfig = new YamlConfiguration();
+    public static final YamlConfiguration chatConfig = new YamlConfiguration();
+    public static final YamlConfiguration placeholderConfig = new YamlConfiguration();
+    public static final YamlConfiguration groupConfig = new YamlConfiguration();
+    public static final YamlConfiguration cashConfig = new YamlConfiguration();
 
     private final Files files = new Files(this);
 

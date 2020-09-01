@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.strings.MSG;
@@ -14,14 +15,24 @@ import java.util.UUID;
 @CommandPermission("eternia.chat.channels")
 public class BaseCmdChannels extends BaseCommand {
 
+    @Default
+    @HelpCommand
+    @Syntax("<página>")
+    @Description(" Ajuda para o sistema de Canais")
+    public void onChannels(CommandHelp help) {
+        help.showHelp();
+    }
+
     @Subcommand("local")
     @CommandAlias("l|local")
+    @Description(" Fale ou vá para o canal local")
     public void toLocal(Player player, @Optional String[] messages) {
         changeChannel(0, "Local", player, messages);
     }
 
     @Subcommand("global")
     @CommandAlias("g|global")
+    @Description(" Fale ou vá para o canal global")
     public void toGlobal(Player player, @Optional String[] messages) {
         changeChannel(1, "Global", player, messages);
     }
@@ -29,6 +40,7 @@ public class BaseCmdChannels extends BaseCommand {
     @Subcommand("staff")
     @CommandAlias("s|a|staff")
     @CommandPermission("eternia.chat.staff")
+    @Description(" Fale ou vá para o canal de staffs")
     public void toStaff(Player player, @Optional String[] messages) {
         changeChannel(2, "Staff", player, messages);
     }

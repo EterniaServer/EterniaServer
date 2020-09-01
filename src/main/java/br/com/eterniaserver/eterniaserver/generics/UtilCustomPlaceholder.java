@@ -1,19 +1,20 @@
-package br.com.eterniaserver.eterniaserver.utils;
+package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class CustomPlaceholder {
+public class UtilCustomPlaceholder {
 
 	final String id;
 	final boolean independentTextComponent;
 	final List<SubPlaceholder> placeholders = new ArrayList<>();
 
-	public CustomPlaceholder(String id) {
+	public UtilCustomPlaceholder(String id) {
 		this.id = id;
 		if(EterniaServer.placeholderConfig.contains(id + ".independentTextComponent")) {
 			independentTextComponent = EterniaServer.placeholderConfig.getBoolean(id + ".independentTextComponent");

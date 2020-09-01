@@ -16,11 +16,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class Checks extends BukkitRunnable {
+public class PluginTick extends BukkitRunnable {
 
     private final EterniaServer plugin;
 
-    public Checks(EterniaServer plugin) {
+    public PluginTick(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
@@ -75,11 +75,11 @@ public class Checks extends BukkitRunnable {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afkTime.get(playerName)) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
             if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
                 if (!Vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                    Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_AFK_BROAD));
+                    Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_AFK_BROAD));
                     runSync(() -> player.kickPlayer(MSG.MSG_AFK_KICKED));
                 }
             } else {
-                Bukkit.broadcastMessage(InternMethods.putName(player, MSG.MSG_AFK_ENABLE));
+                Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_AFK_ENABLE));
                 Vars.afk.add(playerName);
             }
         }

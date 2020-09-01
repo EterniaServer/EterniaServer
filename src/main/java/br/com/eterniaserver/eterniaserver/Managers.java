@@ -1,14 +1,15 @@
 package br.com.eterniaserver.eterniaserver;
 
+import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eterniaserver.generics.AccelerateWorld;
-import br.com.eterniaserver.eterniaserver.generics.AdvancedChatTorch;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdItem;
+import br.com.eterniaserver.eterniaserver.generics.UtilAccelerateWorld;
+import br.com.eterniaserver.eterniaserver.generics.UtilAdvancedChatTorch;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdCash;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdChannels;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdChat;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdHome;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory;
@@ -17,8 +18,8 @@ import br.com.eterniaserver.eterniaserver.generics.BaseCmdRewards;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdSpawner;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp;
-import br.com.eterniaserver.eterniaserver.generics.Checks;
-import br.com.eterniaserver.eterniaserver.generics.KitSystem;
+import br.com.eterniaserver.eterniaserver.generics.PluginTick;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdKit;
 import br.com.eterniaserver.eterniaserver.generics.Vars;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.strings.MSG;
@@ -53,13 +54,36 @@ public class Managers {
     }
 
     private void loadCompletions() {
+        EterniaLib.getManager().getCommandConditions().addCondition(Integer.class, "limits", (c, exec, value) -> {
+            if (value == null) {
+                return;
+            }
+            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value) {
+                throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
+            }
+            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value) {
+                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
+            }
+        });
+        EterniaLib.getManager().getCommandConditions().addCondition(Double.class, "limits", (c, exec, value) -> {
+            if (value == null) {
+                return;
+            }
+            if (c.hasConfig("min") && c.getConfigValue("min", 0) > value) {
+                throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
+            }
+            if (c.hasConfig("max") && c.getConfigValue("max", 3) < value) {
+                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
+            }
+        });
+        EterniaLib.getManager().enableUnstableAPI("help");
         EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("colors", Vars.colorsString);
         EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("entidades", Vars.entityList);
     }
 
     private void loadBedManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.bed"), "Bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new AccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 40);
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new UtilAccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 40);
         }
     }
 
@@ -88,7 +112,7 @@ public class Managers {
             EterniaLib.getManager().registerCommand(new BaseCmdChannels());
             EterniaLib.getManager().registerCommand(new BaseCmdMute());
             EterniaLib.getManager().registerCommand(new BaseCmdChat(plugin));
-            new AdvancedChatTorch();
+            new UtilAdvancedChatTorch();
         }
     }
 
@@ -110,9 +134,9 @@ public class Managers {
 
     private void loadGenericManager() {
         sendModuleStatus(true, "Generic");
-        EterniaLib.getManager().registerCommand(new BaseCmdGamemode());
         EterniaLib.getManager().registerCommand(new BaseCmdInventory());
         EterniaLib.getManager().registerCommand(new BaseCmdGeneric(plugin));
+        EterniaLib.getManager().registerCommand(new BaseCmdItem());
     }
 
     private void loadHomesManager() {
@@ -124,17 +148,17 @@ public class Managers {
     private void loadKitManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.kits"), "Kits")) {
             plugin.getFiles().loadKits();
-            EterniaLib.getManager().registerCommand(new KitSystem());
+            EterniaLib.getManager().registerCommand(new BaseCmdKit());
         }
     }
 
     private void loadPlayerChecks() {
         sendModuleStatus(true, "PlayerChecks");
         if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
-            new Checks(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 20);
+            new PluginTick(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 20);
             return;
         }
-        new Checks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 20);
+        new PluginTick(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 20);
     }
 
     private void loadRewardsManager() {

@@ -3,10 +3,9 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.strings.MSG;
-import br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder;
-import br.com.eterniaserver.eterniaserver.utils.FormatInfo;
+import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 
-import br.com.eterniaserver.eterniaserver.utils.SubPlaceholder;
+import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
@@ -15,9 +14,9 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
 
-public class InternMethods {
+public class UtilInternMethods {
 
-    private InternMethods() {
+    private UtilInternMethods() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -53,6 +52,44 @@ public class InternMethods {
         }
     }
 
+    public static void sendStaff(String message, Player player) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.hasPermission("eternia.chat.staff")) {
+                String format = EterniaServer.chatConfig.getString("staff.format");
+                format = UtilInternMethods.setPlaceholders(player, format);
+                format = MSG.getColor(format.replace(Constants.MESSAGE, message));
+                p.sendMessage(format);
+            }
+        }
+    }
+
+    public static void sendLocal(String message, Player player, int radius) {
+        int pes = 0;
+        final String format = getFormat(message, player);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (Vars.ignoredPlayer.get(player.getName()) != null && Vars.ignoredPlayer.get(player.getName()).contains(p)) return;
+            final Boolean b = Vars.spy.get(p.getName());
+            if ((player.getWorld() == p.getWorld() && p.getLocation().distanceSquared(player.getLocation()) <= Math.pow(radius, 2)) || radius <= 0) {
+                pes += 1;
+                p.sendMessage(format);
+            } else if (p.hasPermission("eternia.spy") && Boolean.TRUE.equals(b)) {
+                p.sendMessage(MSG.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
+            }
+        }
+        if (pes <= 1) {
+            player.sendMessage(MSG.M_CHAT_NOONE);
+        }
+    }
+
+    private static String getFormat(String message, final Player player) {
+        String format = UtilInternMethods.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
+        if (player.hasPermission("eternia.chat.color")) {
+            return MSG.getColor(format.replace(Constants.MESSAGE, message));
+        } else {
+            return(format.replace(Constants.MESSAGE, message));
+        }
+    }
+
     public static void removeUUIF(Player p) {
         Vars.uufi.remove(p.getName());
     }
@@ -75,7 +112,7 @@ public class InternMethods {
         return string.replace("%player_name%", player.getName()).replace("%player_displayname%", player.getName());
     }
 
-    public static SubPlaceholder getSubPlaceholder(final Player player, final CustomPlaceholder cp) {
+    public static SubPlaceholder getSubPlaceholder(final Player player, final UtilCustomPlaceholder cp) {
         SubPlaceholder bestPlaceholder = null;
         for (SubPlaceholder subPlaceholder : cp.getPlaceholders()) {
             if (subPlaceholder.hasPerm(player)) {

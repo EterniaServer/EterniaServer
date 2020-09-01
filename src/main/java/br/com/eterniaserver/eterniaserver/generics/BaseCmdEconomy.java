@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
@@ -30,73 +31,56 @@ public class BaseCmdEconomy extends BaseCommand {
     final boolean nickEnable = MSG.ECO_BALLIST.contains("%player_displayname%");
 
     @Default
-    public void ecoHelp(CommandSender sender) {
-        sender.sendMessage(MSG.ECO_HELP_TITLE);
-        if (sender.hasPermission("eternia.money.admin")) {
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "eco set &3<jogador> <quantia>")
-                    .replace(Constants.MESSAGE, MSG.ECO_HELP_SET)));
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "eco take &3<jogador> <quantia>")
-                    .replace(Constants.MESSAGE, MSG.ECO_HELP_TAKE)));
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "eco give &3<jogador> <quantia>")
-                    .replace(Constants.MESSAGE, MSG.ECO_HELP_GIVE)));
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "money &3<jogador>")
-                    .replace(Constants.MESSAGE, MSG.ECO_HELP_MONEY_ADMIN)));
-        } else {
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "money")
-                    .replace(Constants.MESSAGE, MSG.ECO_HELP_MONEY)));
-        }
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "pay")
-                .replace(Constants.MESSAGE, MSG.ECO_HELP_PAY)));
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "baltop")
-                .replace(Constants.MESSAGE, MSG.ECO_HELP_BALTOP)));
+    @Syntax("<página>")
+    @Description(" Ajuda para o /eco")
+    @HelpCommand
+    public void ecoHelp(CommandHelp help) {
+        help.showHelp();
     }
 
     @Subcommand("set")
     @CommandCompletion("@players 100")
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.money.admin")
-    public void onSet(CommandSender sender, OnlinePlayer target, Double money) {
+    @Description(" Define o saldo de um jogador")
+    public void onSet(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
         final Player targetP = target.getPlayer();
 
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(InternMethods.putName(targetP, MSG.ECO_SET.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(InternMethods.putName(sender, MSG.ECO_RSET.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.ECO_SET.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.ECO_RSET.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("take")
     @CommandCompletion("@players 100")
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.money.admin")
-    public void onRemove(CommandSender sender, OnlinePlayer target, Double money) {
+    @Description(" Retira uma quantia de saldo de um jogador")
+    public void onRemove(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
         final Player targetP = target.getPlayer();
 
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(InternMethods.putName(targetP, MSG.ECO_REMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(InternMethods.putName(sender, MSG.ECO_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.ECO_REMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.ECO_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("give")
     @CommandCompletion("@players 100")
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.money.admin")
-    public void onGive(CommandSender sender, OnlinePlayer target, Double money) {
+    @Description(" Dar uma quantia de saldo a um jogador")
+    public void onGive(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
         final Player targetP = target.getPlayer();
         APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(InternMethods.putName(targetP, MSG.ECO_GIVE.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(InternMethods.putName(sender, MSG.ECO_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.ECO_GIVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.ECO_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @CommandAlias("money")
     @Subcommand("money")
     @CommandCompletion("@players")
     @Syntax("<jogador>")
+    @Description(" Verifica o saldo de um jogador")
     public void onMoney(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
@@ -115,22 +99,19 @@ public class BaseCmdEconomy extends BaseCommand {
     @Subcommand("pay")
     @CommandCompletion("@players 100")
     @Syntax("<jogador> <quantia>")
-    public void onPay(Player player, OnlinePlayer target, Double value) {
+    @Description(" Paga uma quantia a um jogador")
+    public void onPay(Player player, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double value) {
         final String playerName = player.getName();
         final Player targetP = target.getPlayer();
         final String targetName = targetP.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
         if (!(targetP.equals(player))) {
-            if (value > 0) {
-                if (APIEconomy.getMoney(uuid) >= value) {
-                    APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetName), value);
-                    APIEconomy.removeMoney(uuid, value);
-                    player.sendMessage(InternMethods.putName(targetP, MSG.ECO_PAY.replace(Constants.AMOUNT, String.valueOf(value))));
-                    targetP.sendMessage(InternMethods.putName(player, MSG.ECO_PAY_ME.replace(Constants.AMOUNT, String.valueOf(value))));
-                } else {
-                    player.sendMessage(MSG.ECO_PAY_NO);
-                }
+            if (APIEconomy.getMoney(uuid) >= value) {
+                APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetName), value);
+                APIEconomy.removeMoney(uuid, value);
+                player.sendMessage(UtilInternMethods.putName(targetP, MSG.ECO_PAY.replace(Constants.AMOUNT, String.valueOf(value))));
+                targetP.sendMessage(UtilInternMethods.putName(player, MSG.ECO_PAY_ME.replace(Constants.AMOUNT, String.valueOf(value))));
             } else {
                 player.sendMessage(MSG.ECO_PAY_NO);
             }
@@ -141,6 +122,7 @@ public class BaseCmdEconomy extends BaseCommand {
 
     @CommandAlias("baltop")
     @Subcommand("baltop")
+    @Description(" Verifica a lista de mais ricos")
     public void onBaltop(CommandSender sender) {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
             showBaltop(sender);

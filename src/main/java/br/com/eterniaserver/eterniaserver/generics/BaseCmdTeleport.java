@@ -32,7 +32,7 @@ public class BaseCmdTeleport extends BaseCommand {
         if (Vars.tpaRequests.containsKey(playerName)) {
             final Player target = Bukkit.getPlayer(Vars.tpaRequests.get(playerName));
             if (target != null) {
-                target.sendMessage(InternMethods.putName(player, MSG.MSG_TELEPORT_ACCEPT));
+                target.sendMessage(UtilInternMethods.putName(player, MSG.MSG_TELEPORT_ACCEPT));
                 Vars.teleports.put(target, new PlayerTeleport(target, player.getLocation(), MSG.MSG_TELEPORT_DONE));
             }
             Vars.tpaTime.remove(playerName);
@@ -48,7 +48,7 @@ public class BaseCmdTeleport extends BaseCommand {
         final String playerName = player.getName();
         final Player target = Bukkit.getPlayer(UUIDFetcher.getUUIDOf(Vars.tpaRequests.get(playerName)));
         if (target != null && target.isOnline()) {
-            player.sendMessage(InternMethods.putName(target, MSG.MSG_TELEPORT_DENY));
+            player.sendMessage(UtilInternMethods.putName(target, MSG.MSG_TELEPORT_DENY));
             Vars.tpaRequests.remove(playerName);
             Vars.tpaTime.remove(playerName);
             target.sendMessage(MSG.MSG_TELEPORT_DENIED);
@@ -75,8 +75,8 @@ public class BaseCmdTeleport extends BaseCommand {
                     Vars.tpaRequests.remove(targetName);
                     Vars.tpaRequests.put(targetName, playerName);
                     Vars.tpaTime.put(targetName, System.currentTimeMillis());
-                    targetP.sendMessage(InternMethods.putName(player, MSG.MSG_TELEPORT_RECEIVED));
-                    player.sendMessage(InternMethods.putName(targetP, MSG.MSG_TELEPORT_SENT));
+                    targetP.sendMessage(UtilInternMethods.putName(player, MSG.MSG_TELEPORT_RECEIVED));
+                    player.sendMessage(UtilInternMethods.putName(targetP, MSG.MSG_TELEPORT_SENT));
                 } else {
                     player.sendMessage(MSG.MSG_TELEPORT_EXISTS);
                 }

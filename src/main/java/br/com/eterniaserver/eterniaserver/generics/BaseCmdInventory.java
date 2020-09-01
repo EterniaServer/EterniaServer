@@ -45,7 +45,14 @@ public class BaseCmdInventory extends BaseCommand {
     @CommandAlias("hat|capacete")
     @CommandPermission("eternia.hat")
     public void onHat(Player player) {
-        if (new NBTItem(player.getInventory().getItemInMainHand()).getInteger("EterniaLock") == 1) {
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+
+        if (itemStack != null && itemStack.getType() != Material.AIR) {
+            player.sendMessage(MSG.ITEM_NO);
+            return;
+        }
+
+        if (new NBTItem(itemStack).hasKey("EterniaLock")) {
             return;
         }
         dropHelmet(player);

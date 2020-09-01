@@ -1,20 +1,20 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.dependencies.papi;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+
+import br.com.eterniaserver.eterniaserver.generics.APICash;
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.OfflinePlayer;
 
 import javax.annotation.Nonnull;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 public class PlaceHolders extends PlaceholderExpansion {
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private final String version = this.getClass().getPackage().getImplementationVersion();
 
     @Override
@@ -71,15 +71,15 @@ public class PlaceHolders extends PlaceholderExpansion {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         switch (var4) {
             case 0:
-                return Vars.playerProfile.containsKey(uuid) ? sdf.format(new Date(Vars.playerProfile.get(uuid).firstLogin)) : "Sem registro";
+                return APIPlayer.getFirstLogin(uuid);
             case 1:
-                return Vars.afk.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
+                return APIPlayer.isAFK(playerName);
             case 2:
-                return String.valueOf(Vars.playerProfile.get(uuid).cash);
+                return String.valueOf(APICash.getCash(uuid));
             case 3:
-                return Vars.glowingColor.getOrDefault(playerName, "");
+                return APIPlayer.getGlowColor(playerName);
             case 4:
-                return Vars.god.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.godmode") : "";
+                return APIPlayer.isGod(playerName) ? EterniaServer.serverConfig.getString("placeholders.godmode") : "";
             default:
                 return null;
         }

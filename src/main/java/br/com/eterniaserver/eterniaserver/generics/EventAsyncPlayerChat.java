@@ -4,7 +4,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.strings.MSG;
-import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
+import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -21,22 +21,18 @@ import java.util.regex.Pattern;
 
 public class EventAsyncPlayerChat implements Listener {
 
-    private final ChatFormatter cf;
-    private final JsonSender js;
-    private final CustomPlaceholdersFilter cp;
-    private final Local local;
-    private final Staff staff;
-    private final Colors c = new Colors();
-    private final boolean hexSupport;
+    public static boolean version116;
+    private final UtilChatFormatter cf;
+    private final UtilJsonSender js;
+    private final UtilCustomPlaceholdersFilter cp;
+    private final UtilColors c = new UtilColors();
     private final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
 
     public EventAsyncPlayerChat() {
-        this.cp = new CustomPlaceholdersFilter();
-        this.js = new JsonSender();
-        this.cf = new ChatFormatter();
-        this.local = new Local();
-        this.staff = new Staff();
-        hexSupport = Bukkit.getBukkitVersion().contains("1.16");
+        this.cp = new UtilCustomPlaceholdersFilter();
+        this.js = new UtilJsonSender();
+        this.cf = new UtilChatFormatter();
+        version116 = Bukkit.getBukkitVersion().contains("1.16");
     }
 
 
@@ -51,8 +47,8 @@ public class EventAsyncPlayerChat implements Listener {
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = Vars.playerProfile.get(uuid).muted;
-                if (InternMethods.stayMuted(time)) {
-                    player.sendMessage(MSG.M_CHAT_MUTED.replace(Constants.TIME, InternMethods.getTimeLeft(time)));
+                if (UtilInternMethods.stayMuted(time)) {
+                    player.sendMessage(MSG.M_CHAT_MUTED.replace(Constants.TIME, UtilInternMethods.getTimeLeft(time)));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
@@ -65,10 +61,10 @@ public class EventAsyncPlayerChat implements Listener {
         message = canHex(player, message);
         switch (Vars.playerProfile.get(uuid).chatChannel) {
             case 0:
-                local.sendChatMessage(message, player, EterniaServer.chatConfig.getInt("local.range"));
+                UtilInternMethods.sendLocal(message, player, EterniaServer.chatConfig.getInt("local.range"));
                 return true;
             case 2:
-                staff.sendChatMessage(message, player);
+                UtilInternMethods.sendStaff(message, player);
                 return true;
             case 3:
                 sendTell(player, message);
@@ -92,7 +88,7 @@ public class EventAsyncPlayerChat implements Listener {
                     sender.sendMessage(MSG.M_CHAT_IGNORE);
                     return;
                 }
-                InternMethods.sendPrivate(sender, target, msg);
+                UtilInternMethods.sendPrivate(sender, target, msg);
                 return;
             }
         }
@@ -100,7 +96,7 @@ public class EventAsyncPlayerChat implements Listener {
     }
 
     private String canHex(final Player player, String message) {
-        if (hexSupport && player.hasPermission("eternia.chat.color.hex")) {
+        if (version116 && player.hasPermission("eternia.chat.color.hex")) {
             Matcher matcher = colorPattern.matcher(message);
             if (matcher.find()) {
                 StringBuffer buffer = new StringBuffer();

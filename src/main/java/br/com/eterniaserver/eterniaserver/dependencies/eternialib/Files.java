@@ -1,11 +1,12 @@
 package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.generics.PlaceHolders;
+import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.strings.MSG;
-import br.com.eterniaserver.eterniaserver.generics.CustomCommands;
+import br.com.eterniaserver.eterniaserver.objects.CustomCommands;
 
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,140 +21,45 @@ public class Files {
     }
 
     public void loadConfigs() {
-        final String config = "config.yml";
-
-        final File file = new File(plugin.getDataFolder(), config);
-        if (!file.exists()) plugin.saveResource(config, false);
-
-        try {
-            EterniaServer.serverConfig.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            errorInJar(config);
-        }
-
+        loadFile("config.yml", EterniaServer.serverConfig);
     }
 
     public void loadMessages() {
-        final String messages = "messages.yml";
-
-        final File file = new File(plugin.getDataFolder(), messages);
-        if (!file.exists()) plugin.saveResource(messages, false);
-
-        try {
-            EterniaServer.msgConfig.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            errorInJar(messages);
-        }
-
+        loadFile("messages.yml", EterniaServer.msgConfig);
     }
 
     public void loadChat() {
-
-        final String chat = "chat.yml";
-        final String groups = "groups.yml";
-        final String placeholder = "customplaceholders.yml";
-
-        final File chatFile = new File(plugin.getDataFolder(), chat);
-        final File groupsFile = new File(plugin.getDataFolder(), groups);
-        final File placeholderFile = new File(plugin.getDataFolder(), placeholder);
-
-        if (!chatFile.exists()) plugin.saveResource(chat, false);
-        if (!groupsFile.exists()) plugin.saveResource(groups, false);
-        if (!placeholderFile.exists()) plugin.saveResource(placeholder, false);
-
-        try {
-            EterniaServer.chatConfig.load(chatFile);
-            EterniaServer.groupConfig.load(groupsFile);
-            EterniaServer.placeholderConfig.load(placeholderFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            errorInJar(chat);
-            errorInJar(groups);
-            errorInJar(placeholder);
-        }
-
+        loadFile("chat.yml", EterniaServer.chatConfig);
+        loadFile("groups.yml", EterniaServer.groupConfig);
+        loadFile("customplaceholders.yml", EterniaServer.placeholderConfig);
     }
 
     public void loadRewards() {
-
-        final String rewards = "rewards.yml";
-
-        final File file = new File(plugin.getDataFolder(), rewards);
-        if (!file.exists()) plugin.saveResource(rewards, false);
-
-        try {
-            EterniaServer.rewardsConfig.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            errorInJar(rewards);
-        }
-
+        loadFile("rewards.yml", EterniaServer.rewardsConfig);
     }
 
     public void loadKits() {
-
-        final String kits = "kits.yml";
-
-        final File file = new File(plugin.getDataFolder(), kits);
-        if (!file.exists()) plugin.saveResource(kits, false);
-
-        try {
-            EterniaServer.kitConfig.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            errorInJar(kits);
-        }
-
+        loadFile("kits.yml", EterniaServer.kitConfig);
     }
 
     public void loadCommands() {
-
-        final String commands = "commands.yml";
-
-        final File file = new File(plugin.getDataFolder(), commands);
-        if (!file.exists()) plugin.saveResource(commands, false);
-
-        try {
-            EterniaServer.cmdConfig.load(file);
-            for (String keys : EterniaServer.cmdConfig.getConfigurationSection("commands").getKeys(false)) {
-                final String commandKey = "commands." + keys;
-                List<String> aliasesString = EterniaServer.cmdConfig.getStringList(commandKey + ".aliases");
-                List<String> commandsString = EterniaServer.cmdConfig.getStringList(commandKey + ".command");
-                String description = EterniaServer.cmdConfig.getString(commandKey + ".description");
-                List<String> messagesString = EterniaServer.cmdConfig.getStringList(commandKey + ".text");
-                new CustomCommands(plugin, keys, description, aliasesString, messagesString, commandsString);
-            }
-        } catch (IOException | InvalidConfigurationException e) {
-            errorInJar(commands);
+        loadFile("commands.yml", EterniaServer.cmdConfig);
+        for (String keys : EterniaServer.cmdConfig.getConfigurationSection("commands").getKeys(false)) {
+            final String commandKey = "commands." + keys;
+            List<String> aliasesString = EterniaServer.cmdConfig.getStringList(commandKey + ".aliases");
+            List<String> commandsString = EterniaServer.cmdConfig.getStringList(commandKey + ".command");
+            String description = EterniaServer.cmdConfig.getString(commandKey + ".description");
+            List<String> messagesString = EterniaServer.cmdConfig.getStringList(commandKey + ".text");
+            new CustomCommands(plugin, keys, description, aliasesString, messagesString, commandsString);
         }
-
     }
 
     public void loadBlocksRewards() {
-
-        final String blocks = "blocks.yml";
-
-        final File file = new File(plugin.getDataFolder(), blocks);
-        if (!file.exists()) plugin.saveResource(blocks, false);
-
-        try {
-            EterniaServer.blockConfig.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            errorInJar(blocks);
-        }
-
+        loadFile("blocks.yml", EterniaServer.blockConfig);
     }
 
     public void loadCashGui() {
-
-        final String cashGui = "cashgui.yml";
-
-        final File file = new File(plugin.getDataFolder(), cashGui);
-        if (!file.exists()) plugin.saveResource(cashGui, false);
-
-        try {
-            EterniaServer.cashConfig.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            errorInJar(cashGui);
-        }
-
+        loadFile("cashgui.yml", EterniaServer.cashConfig);
     }
 
     public void loadDatabase() {
@@ -164,12 +70,23 @@ public class Files {
         new PlaceHolders().register();
     }
 
-    private void sendConsoleMessage(final String msg) {
-        plugin.getServer().getConsoleSender().sendMessage(MSG.getColor(msg));
-    }
+    private void loadFile(String fileName, YamlConfiguration yamlConfiguration) {
 
-    private void errorInJar(final String arq) {
-        sendConsoleMessage("&8[&aE&9S&8] &7A jar do EterniaServer não possui o arquivo necessário&8: &3" + arq + "&8.");
+        final File file = new File(plugin.getDataFolder(), fileName);
+
+        if (!file.exists()) {
+            plugin.saveResource(fileName, false);
+        }
+
+        if (!file.canRead()) {
+            plugin.getServer().getConsoleSender().sendMessage(
+                    MSG.getColor("&8[&aE&9S&8] &7A jar do EterniaServer não possui o arquivo necessário&8: &3" + fileName + "&8."));
+        } else try {
+            yamlConfiguration.load(file);
+        } catch (InvalidConfigurationException | IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

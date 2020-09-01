@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.acf.BaseCommand;
+import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -139,7 +140,16 @@ public class BaseCmdCash extends BaseCommand {
         cashGui = new CashGui(menuGui, permGui, pacoGui, tagsGui, spawGui);
     }
 
+    @Subcommand("help")
+    @HelpCommand
+    @Syntax("<página>")
+    @Description(" Ajuda para o sistema de Cash")
+    public void onCashHelp(CommandHelp help) {
+        help.showHelp();
+    }
+
     @Default
+    @Description(" Abre a GUI da loja de Cash")
     public void onCash(Player player) {
         Inventory gui = Bukkit.getServer().createInventory(player, cashGui.getMenuGui().size(), "Cash");
 
@@ -153,6 +163,7 @@ public class BaseCmdCash extends BaseCommand {
     @Subcommand("balance")
     @CommandCompletion("@players")
     @Syntax("<jogador>")
+    @Description(" Mostra o saldo atual de cash de um jogador")
     public void onCashBalance(Player player, @Optional String playerName) {
         if (playerName == null) {
             player.sendMessage(MSG.M_CASH_BALANCE.replace(Constants.AMOUNT, String.valueOf(Vars.playerProfile.get(UUIDFetcher.getUUIDOf(player.getName())).cash)));
@@ -168,6 +179,7 @@ public class BaseCmdCash extends BaseCommand {
     }
 
     @Subcommand("accept")
+    @Description(" Aceita uma compra da loja de cash")
     public void onCashAccept(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
@@ -179,12 +191,12 @@ public class BaseCmdCash extends BaseCommand {
         final String cashString = Vars.cashItem.get(uuid);
 
         for (String line : EterniaServer.cashConfig.getStringList(cashString + ".commands")) {
-            final String modifiedCommand = InternMethods.setPlaceholders(player, line);
+            final String modifiedCommand = UtilInternMethods.setPlaceholders(player, line);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), modifiedCommand);
         }
 
         for (String line : EterniaServer.cashConfig.getStringList(cashString + ".messages")) {
-            final String modifiedText = InternMethods.setPlaceholders(player, line);
+            final String modifiedText = UtilInternMethods.setPlaceholders(player, line);
             player.sendMessage(MSG.getColor(modifiedText));
         }
 
@@ -194,6 +206,7 @@ public class BaseCmdCash extends BaseCommand {
     }
 
     @Subcommand("deny")
+    @Description(" Recusa uma compra da loja de cash")
     public void onCashDeny(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
@@ -209,12 +222,8 @@ public class BaseCmdCash extends BaseCommand {
     @Subcommand("pay")
     @CommandCompletion("@players 10")
     @Syntax("<jogador> <quantia>")
-    public void onCashPay(Player player, OnlinePlayer targetP, Integer value) {
-        if (value <= 0) {
-            player.sendMessage(MSG.MSG_NO_NEGATIVE);
-            return;
-        }
-
+    @Description(" Paga uma quantia de cash a um jogador")
+    public void onCashPay(Player player, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         final Player target = targetP.getPlayer();
 
@@ -226,39 +235,31 @@ public class BaseCmdCash extends BaseCommand {
         APICash.removeCash(uuid, value);
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
         target.sendMessage(MSG.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(InternMethods.putName(target, MSG.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(UtilInternMethods.putName(target, MSG.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
     @Subcommand("give")
     @CommandCompletion("@players 10")
     @Syntax("<jogador> <quantia>")
+    @Description(" Dá uma quantia de cash a um jogador")
     @CommandPermission("eternia.cash.admin")
-    public void onCashGive(CommandSender player, OnlinePlayer targetP, Integer value) {
-        if (value <= 0) {
-            player.sendMessage(MSG.MSG_NO_NEGATIVE);
-            return;
-        }
-
+    public void onCashGive(CommandSender player, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
         final Player target = targetP.getPlayer();
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
         target.sendMessage(MSG.M_CASH_RECEIVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(InternMethods.putName(target, MSG.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(UtilInternMethods.putName(target, MSG.M_CASH_SEND).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
     @Subcommand("remove")
     @CommandCompletion("@players 10")
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.cash.admin")
-    public void onCashRemove(CommandSender player, OnlinePlayer targetP, Integer value) {
-        if (value <= 0) {
-            player.sendMessage(MSG.MSG_NO_NEGATIVE);
-            return;
-        }
-
+    @Description(" Remove uma quantia de cash de um jogador")
+    public void onCashRemove(CommandSender player, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
         final Player target = targetP.getPlayer();
         APICash.removeCash(UUIDFetcher.getUUIDOf(target.getName()), value);
         target.sendMessage(MSG.M_CASH_REMOVED.replace(Constants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(InternMethods.putName(target, MSG.M_CASH_REMOVE).replace(Constants.AMOUNT, String.valueOf(value)));
+        player.sendMessage(UtilInternMethods.putName(target, MSG.M_CASH_REMOVE).replace(Constants.AMOUNT, String.valueOf(value)));
     }
 
 }

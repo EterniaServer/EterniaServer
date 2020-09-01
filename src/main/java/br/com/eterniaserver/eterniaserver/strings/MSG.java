@@ -10,7 +10,6 @@ public class MSG {
     }
 
     public static final String M_SERVER_PREFIX = getColor(EterniaServer.msgConfig.getString("server.prefix"));
-    public static final String HELP_FORMAT = getColor(EterniaServer.msgConfig.getString("server.help-format"));
     public static final String MSG_MODULE_ENABLE = putPrefix("modules.enable");
     public static final String MSG_MODULE_DISABLE = putPrefix("modules.disable");
     public static final String MSG_NO_MONEY = putPrefix("server.no-money");
@@ -115,13 +114,6 @@ public class MSG {
     public static final String ITEM_ADDKEY = putPrefix("item.addkey");
     public static final String ITEM_NO = putPrefix("item.no");
     public static final String ITEM_HELMET = putPrefix("item.helmet");
-    public static final String ITEM_HELP_TITLE = getColor(EterniaServer.msgConfig.getString("item.help.title"));
-    public static final String ITEM_HELP_ADDKEY = getColor(EterniaServer.msgConfig.getString("item.help.addkey"));
-    public static final String ITEM_HELP_CLEAR_LORE = getColor(EterniaServer.msgConfig.getString("item.help.clearlore"));
-    public static final String ITEM_HELP_CLEAR_NAME = getColor(EterniaServer.msgConfig.getString("item.help.clearname"));
-    public static final String ITEM_HELP_ADD_LORE = getColor(EterniaServer.msgConfig.getString("item.help.addlore"));
-    public static final String ITEM_HELP_SET_LORE = getColor(EterniaServer.msgConfig.getString("item.help.setlore"));
-    public static final String ITEM_HELP_SET_NAME = getColor(EterniaServer.msgConfig.getString("item.help.setname"));
 
     public static final String ECO_MONEY = putPrefix("eco.money");
     public static final String ECO_OTHER = putPrefix("eco.money-other");
@@ -136,14 +128,6 @@ public class MSG {
     public static final String ECO_RREMOVE = putPrefix("eco.eco-rremove");
     public static final String ECO_GIVE = putPrefix("eco.eco-give");
     public static final String ECO_RECEIVE = putPrefix("eco.eco-receive");
-    public static final String ECO_HELP_TITLE = putPrefix("eco.help.title");
-    public static final String ECO_HELP_SET = getColor(EterniaServer.msgConfig.getString("eco.help.set"));
-    public static final String ECO_HELP_TAKE = getColor(EterniaServer.msgConfig.getString("eco.help.take"));
-    public static final String ECO_HELP_GIVE = getColor(EterniaServer.msgConfig.getString("eco.help.give"));
-    public static final String ECO_HELP_MONEY = getColor(EterniaServer.msgConfig.getString("eco.help.money"));
-    public static final String ECO_HELP_MONEY_ADMIN = getColor(EterniaServer.msgConfig.getString("eco.help.money-admin"));
-    public static final String ECO_HELP_PAY = getColor(EterniaServer.msgConfig.getString("eco.help.pay"));
-    public static final String ECO_HELP_BALTOP = getColor(EterniaServer.msgConfig.getString("eco.help.baltop"));
 
     public static final String MSG_PLAYER_SKIP = putPrefix("bed.player-s");
     public static final String MSG_SKIP_NIGHT = putPrefix("bed.skip-night");
@@ -219,14 +203,6 @@ public class MSG {
     public static final String M_XP_WITHDRAW = putPrefix("experience.withdraw");
     public static final String M_XP_DEPOSIT = putPrefix("experience.deposit");
 
-    public static final String MSG_XP_HELP_TITLE = putPrefix("experience.help.title");
-    public static final String MSG_XP_HELP_SET = getColor(EterniaServer.msgConfig.getString("experience.help.set"));
-    public static final String MSG_XP_HELP_TAKE = getColor(EterniaServer.msgConfig.getString("experience.help.take"));
-    public static final String MSG_XP_HELP_GIVE= getColor(EterniaServer.msgConfig.getString("experience.help.give"));
-    public static final String MSG_XP_HELP_CHECK = getColor(EterniaServer.msgConfig.getString("experience.help.check"));
-    public static final String MSG_XP_HELP_BOTTLE = getColor(EterniaServer.msgConfig.getString("experience.help.bottle"));
-    public static final String MSG_XP_HELP_DEPOSIT = getColor(EterniaServer.msgConfig.getString("experience.help.deposit"));
-    public static final String MSG_XP_HELP_WITHDRAW = getColor(EterniaServer.msgConfig.getString("experience.help.withdraw"));
     public static final String M_XP_SET = putPrefix("experience.xp-set");
     public static final String M_XP_RSET = putPrefix("experience.xp-rset");
     public static final String M_XP_REMOVE = putPrefix("experience.xp-remove");

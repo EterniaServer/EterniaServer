@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.strings.Constants;
@@ -23,70 +24,54 @@ import java.util.UUID;
 public class BaseCmdExperience extends BaseCommand {
 
     @Default
-    public void xpHelp(CommandSender sender) {
-        sender.sendMessage(MSG.MSG_XP_HELP_TITLE);
-        if (sender.hasPermission("eternia.xp.admin")) {
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "xp set &3<jogador> <quantia>")
-                    .replace(Constants.MESSAGE, MSG.MSG_XP_HELP_SET)));
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "xp take &3<jogador> <quantia>")
-                    .replace(Constants.MESSAGE, MSG.MSG_XP_HELP_TAKE)));
-            sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                    .replace(Constants.COMMANDS, "xp give &3<jogador> <quantia>")
-                    .replace(Constants.MESSAGE, MSG.MSG_XP_HELP_GIVE)));
-        }
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "xp check")
-                .replace(Constants.MESSAGE, MSG.MSG_XP_HELP_CHECK)));
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "xp bottle &3<quantia>")
-                .replace(Constants.MESSAGE, MSG.MSG_XP_HELP_BOTTLE)));
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "xp deposit &3<quantia>")
-                .replace(Constants.MESSAGE, MSG.MSG_XP_HELP_DEPOSIT)));
-        sender.sendMessage(MSG.getColor(MSG.HELP_FORMAT
-                .replace(Constants.COMMANDS, "xp withdraw &3<quantia>")
-                .replace(Constants.MESSAGE, MSG.MSG_XP_HELP_WITHDRAW)));
+    @HelpCommand
+    @Syntax("<página>")
+    @Description(" Ajuda para o sistema de experiência")
+    public void xpHelp(CommandSender sender, CommandHelp help) {
+        help.showHelp();
     }
 
     @Subcommand("set")
     @CommandCompletion("@players 100")
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.xp.admin")
-    public void onSet(CommandSender sender, OnlinePlayer target, int money) {
+    @Description(" Define o nível do jogador")
+    public void onSet(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999") Integer money) {
         final Player targetP = target.getPlayer();
 
         targetP.setLevel(money);
-        sender.sendMessage(InternMethods.putName(targetP, MSG.M_XP_SET.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(InternMethods.putName(sender, MSG.M_XP_RSET.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.M_XP_SET.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.M_XP_RSET.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("take")
     @CommandCompletion("@players 100")
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.xp.admin")
-    public void onTake(CommandSender sender, OnlinePlayer target, int money) {
+    @Description(" Retira uma quantidade de nível do jogador")
+    public void onTake(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999") Integer money) {
         final Player targetP = target.getPlayer();
 
         targetP.setLevel(targetP.getLevel() - money);
-        sender.sendMessage(InternMethods.putName(targetP, MSG.M_XP_REMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(InternMethods.putName(sender, MSG.M_XP_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.M_XP_REMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.M_XP_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("give")
     @CommandCompletion("@players 100")
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.xp.admin")
-    public void onGive(CommandSender sender, OnlinePlayer target, int money) {
+    @Description(" Dá uma quantidade de nível do jogador")
+    public void onGive(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999") Integer money) {
         final Player targetP = target.getPlayer();
 
         targetP.setLevel(targetP.getLevel() + money);
-        sender.sendMessage(InternMethods.putName(targetP, MSG.M_XP_GIVE.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(InternMethods.putName(sender, MSG.M_XP_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.M_XP_GIVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.M_XP_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("check")
+    @Description(" Verifica quantos leveis você possui guardado")
     public void onCheckLevel(Player player) {
         int lvl = player.getLevel();
         float xp = player.getExp();
@@ -101,8 +86,9 @@ public class BaseCmdExperience extends BaseCommand {
     @Subcommand("bottle")
     @CommandCompletion("10")
     @Syntax("<quantia>")
-    public void onBottleLevel(Player player, Integer xpWant) {
-        int xpReal = InternMethods.getXPForLevel(player.getLevel());
+    @Description(" Converte uma quantia de nível para uma garra de EXP")
+    public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpWant) {
+        int xpReal = UtilInternMethods.getXPForLevel(player.getLevel());
         if (xpWant > 0 && xpReal > xpWant) {
             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
             ItemMeta meta = item.getItemMeta();
@@ -123,10 +109,11 @@ public class BaseCmdExperience extends BaseCommand {
     @Subcommand("withdraw")
     @CommandCompletion("10")
     @Syntax("<quantia>")
-    public void onWithdrawLevel(Player player, Integer level) {
+    @Description(" Retira uma quantia de nível")
+    public void onWithdrawLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer level) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
-        int xpla = InternMethods.getXPForLevel(level);
+        int xpla = UtilInternMethods.getXPForLevel(level);
         if (APIExperience.getExp(uuid) >= xpla) {
             APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
@@ -139,11 +126,12 @@ public class BaseCmdExperience extends BaseCommand {
     @Subcommand("deposit")
     @CommandCompletion("10")
     @Syntax("<quantia>")
-    public void onDepositLevel(Player player, Integer xpla) {
+    @Description(" Guarda uma quantia de nível")
+    public void onDepositLevel(Player player, @Conditions("limits:min=1,max=9999999")  Integer xpla) {
         int xpAtual = player.getLevel();
         if (xpAtual >= xpla) {
-            int xp = InternMethods.getXPForLevel(xpla);
-            int xpto = InternMethods.getXPForLevel(xpAtual);
+            int xp = UtilInternMethods.getXPForLevel(xpla);
+            int xpto = UtilInternMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
             player.sendMessage(MSG.M_XP_DEPOSIT.replace(Constants.AMOUNT, String.valueOf(xpla)));
             player.setLevel(0);

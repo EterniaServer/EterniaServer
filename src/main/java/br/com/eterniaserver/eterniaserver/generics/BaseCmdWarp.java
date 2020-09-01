@@ -29,8 +29,8 @@ public class BaseCmdWarp extends BaseCommand {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.spawn.other") && spawnExists(location, player)) {
                 PaperLib.teleportAsync(targetP, location);
-                targetP.sendMessage(InternMethods.putName(player, MSG.SPAWN_BY));
-                player.sendMessage(InternMethods.putName(targetP, MSG.MSG_SPAWN_TELEPORT_TARGET));
+                targetP.sendMessage(UtilInternMethods.putName(player, MSG.SPAWN_BY));
+                player.sendMessage(UtilInternMethods.putName(targetP, MSG.MSG_SPAWN_TELEPORT_TARGET));
             } else if (!player.hasPermission("eternia.spawn.other")) {
                 player.sendMessage(MSG.MSG_NO_PERM);
             }

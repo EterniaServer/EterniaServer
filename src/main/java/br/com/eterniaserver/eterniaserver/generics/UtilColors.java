@@ -3,12 +3,12 @@ package br.com.eterniaserver.eterniaserver.generics;
 import java.util.ArrayList;
 
 import br.com.eterniaserver.eterniaserver.strings.MSG;
-import br.com.eterniaserver.eterniaserver.utils.ChatMessage;
+import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class Colors {
+public class UtilColors {
 	
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();

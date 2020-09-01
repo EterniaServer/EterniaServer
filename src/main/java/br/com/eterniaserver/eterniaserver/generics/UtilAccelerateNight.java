@@ -11,12 +11,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;
 
-public class AccelerateNight extends BukkitRunnable {
+public class UtilAccelerateNight extends BukkitRunnable {
 
     private final EterniaServer plugin;
     private final World world;
 
-    public AccelerateNight(final World world, EterniaServer plugin) {
+    public UtilAccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
@@ -27,7 +27,7 @@ public class AccelerateNight extends BukkitRunnable {
     @Override
     public void run() {
         final long time = world.getTime();
-        final int sleeping = AccelerateWorld.getSleeping(world).size();
+        final int sleeping = UtilAccelerateWorld.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
         double base = Configs.BED_SPEED;
         if (sleeping > 0) {
