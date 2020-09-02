@@ -2,6 +2,8 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode;
+import br.com.eterniaserver.eterniaserver.generics.BaseCmdGlow;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdItem;
 import br.com.eterniaserver.eterniaserver.generics.UtilAccelerateWorld;
 import br.com.eterniaserver.eterniaserver.generics.UtilAdvancedChatTorch;
@@ -144,6 +146,8 @@ public class Managers {
         sendModuleStatus(true, "Generic");
         EterniaLib.getManager().registerCommand(new BaseCmdInventory());
         EterniaLib.getManager().registerCommand(new BaseCmdGeneric(plugin));
+        EterniaLib.getManager().registerCommand(new BaseCmdGamemode());
+        EterniaLib.getManager().registerCommand(new BaseCmdGlow());
         EterniaLib.getManager().registerCommand(new BaseCmdItem());
     }
 

@@ -16,8 +16,12 @@ public class APIPlayer {
         return PluginVars.playerProfile.containsKey(uuid) ? new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(PluginVars.playerProfile.get(uuid).firstLogin)) : "Sem registro";
     }
 
-    public static String isAFK(String playerName) {
-        return PluginVars.afk.contains(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
+    public static boolean isAFK(String playerName) {
+        return PluginVars.afk.contains(playerName);
+    }
+
+    public static String isAFKPlaceholder(String playerName) {
+        return isAFK(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
     }
 
     public static String getGlowColor(String playerName) {
@@ -26,6 +30,10 @@ public class APIPlayer {
 
     public static boolean isGod(String playerName) {
         return PluginVars.god.contains(playerName);
+    }
+
+    public static String isGodPlaceholder(String playerName) {
+        return isGod(playerName) ? EterniaServer.serverConfig.getString("placeholders.godmode") : "";
     }
 
 }

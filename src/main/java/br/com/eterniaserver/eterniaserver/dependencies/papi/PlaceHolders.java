@@ -73,13 +73,13 @@ public class PlaceHolders extends PlaceholderExpansion {
             case 0:
                 return APIPlayer.getFirstLogin(uuid);
             case 1:
-                return APIPlayer.isAFK(playerName);
+                return APIPlayer.isAFKPlaceholder(playerName);
             case 2:
                 return String.valueOf(APICash.getCash(uuid));
             case 3:
                 return APIPlayer.getGlowColor(playerName);
             case 4:
-                return APIPlayer.isGod(playerName) ? EterniaServer.serverConfig.getString("placeholders.godmode") : "";
+                return APIPlayer.isGodPlaceholder(playerName);
             default:
                 return null;
         }

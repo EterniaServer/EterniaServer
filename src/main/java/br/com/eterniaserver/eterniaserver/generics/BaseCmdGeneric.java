@@ -40,7 +40,6 @@ import java.util.concurrent.TimeUnit;
 public class BaseCmdGeneric extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final Scoreboard sc;
     private final UtilGetRuntime getRuntime;
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -54,14 +53,6 @@ public class BaseCmdGeneric extends BaseCommand {
 
     public BaseCmdGeneric(EterniaServer plugin) {
         this.plugin = plugin;
-
-        Scoreboard sc = Bukkit.getScoreboardManager().getMainScoreboard();
-        for (int i = 0; i < 16; i++) {
-            if (sc.getTeam(PluginVars.arrData.get(i)) == null) {
-                sc.registerNewTeam(PluginVars.arrData.get(i)).setColor(PluginVars.colors.get(i));
-            }
-        }
-        this.sc = sc;
 
         this.getRuntime = new UtilGetRuntime();
 
@@ -109,14 +100,6 @@ public class BaseCmdGeneric extends BaseCommand {
                 PluginVars.locations.put(k, loc);
             });
         }
-    }
-
-    @CommandAlias("help")
-    @Syntax("<página>")
-    @Description(" Ajuda para os comandos básicos")
-    @HelpCommand
-    public void onHelp(CommandHelp help) {
-        help.showHelp();
     }
 
     @CommandAlias("speed")
@@ -335,169 +318,6 @@ public class BaseCmdGeneric extends BaseCommand {
             PluginVars.afk.add(playerName);
             Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_ENABLE));
         }
-    }
-
-    @CommandAlias("gamemode|gm")
-    @CommandPermission("eternia.gamemode")
-    @Description(" Altera o modo de jogo de um jogador")
-    public class onGamemode extends BaseCommand {
-
-        @Subcommand("survival|s|0|sobrevivencia")
-        @CommandCompletion("@players")
-        @Description(" Define o modo de jogo de um jogador como sobrevivência")
-        @Syntax("<jogador>")
-        public void onSurvival(CommandSender player, @Optional OnlinePlayer target) {
-            final String survivalString = "Sobrevivência";
-            final Player playerZin = (Player) player;
-            if (target == null && playerZin != null) {
-                playerZin.setGameMode(GameMode.SURVIVAL);
-                player.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, survivalString));
-            } else if (target != null) {
-                final Player targetP = target.getPlayer();
-                targetP.setGameMode(GameMode.SURVIVAL);
-                targetP.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, survivalString));
-                player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_GM_TARGET.replace(PluginConstants.GM, survivalString)));
-            }
-        }
-
-        @Subcommand("creative|c|1|criativo")
-        @CommandCompletion("@players")
-        @Description(" Define o modo de jogo de um jogador como criativo")
-        @Syntax("<jogador>")
-        public void onCreative(CommandSender player, @Optional OnlinePlayer target) {
-            final String creativeString = "Criativo";
-            final Player playerZin = (Player) player;
-            if (target == null && playerZin != null) {
-                playerZin.setGameMode(GameMode.CREATIVE);
-                playerZin.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, creativeString));
-            } else if (target != null) {
-                final Player targetP = target.getPlayer();
-                targetP.setGameMode(GameMode.CREATIVE);
-                targetP.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, creativeString));
-                player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_GM_TARGET.replace(PluginConstants.GM, creativeString)));
-            }
-        }
-
-        @Subcommand("adventure|a|2|aventura")
-        @CommandCompletion("@players")
-        @Description(" Define o modo de jogo de um jogador como aventura")
-        @Syntax("<jogador>")
-        public void onAdventure(CommandSender player, @Optional OnlinePlayer target) {
-            final String adventureString = "Aventura";
-            final Player playerZin = (Player) player;
-            if (target == null && playerZin != null) {
-                playerZin.setGameMode(GameMode.ADVENTURE);
-                playerZin.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, adventureString));
-            } else if (target != null) {
-                final Player targetP = target.getPlayer();
-                targetP.setGameMode(GameMode.ADVENTURE);
-                targetP.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, adventureString));
-                player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_GM_TARGET.replace(PluginConstants.GM, adventureString)));
-            }
-        }
-
-        @Subcommand("spectator|spect|3|espectador")
-        @CommandCompletion("@players")
-        @Description(" Define o modo de jogo de um jogador como espectador")
-        @Syntax("<jogador>")
-        public void onSpectator(CommandSender player, @Optional OnlinePlayer target) {
-            final String spectatorString = "Espectador";
-            final Player playerZin = (Player) player;
-            if (target == null && playerZin != null) {
-                playerZin.setGameMode(GameMode.SPECTATOR);
-                player.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, spectatorString));
-            } else if (target != null) {
-                final Player targetP = target.getPlayer();
-                targetP.setGameMode(GameMode.SPECTATOR);
-                player.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, spectatorString));
-                player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_GM_TARGET.replace(PluginConstants.GM, spectatorString)));
-            }
-        }
-
-    }
-
-    @CommandAlias("glow")
-    @CommandPermission("eternia.glow")
-    public class Glow extends BaseCommand {
-
-        @Default
-        @Description(" Ativa ou desativa o glow")
-        public void onGlow(Player player) {
-            if (!player.isGlowing()) {
-                player.sendMessage(PluginMSGs.M_GLOW_ENABLED);
-            } else {
-                player.removePotionEffect(PotionEffectType.GLOWING);
-                player.sendMessage(PluginMSGs.M_GLOW_DISABLED);
-            }
-            player.setGlowing(!player.isGlowing());
-        }
-
-        @Subcommand("color")
-        @CommandPermission("eternia.glow")
-        @CommandCompletion("@colors")
-        @Syntax("<cor>")
-        @Description(" Escolhe qual cor utilizar no glow")
-        public void onGlowColor(Player player, String color) {
-            final String dark = "escuro";
-            final String light = "claro";
-            switch (color.hashCode()) {
-                case 1741606617:
-                    changeColor(player, PluginVars.arrData.get(8), "&8", "cinza " + dark);
-                    break;
-                case 1741452496:
-                    changeColor(player, PluginVars.arrData.get(1), "&1", "azul " + dark);
-                    break;
-                case 1741427506:
-                    changeColor(player, PluginVars.arrData.get(3), "&3", "ciano");
-                    break;
-                case 1441664347:
-                    changeColor(player, PluginVars.arrData.get(4), "&4", "vermelho");
-                    break;
-                case 686244985:
-                    changeColor(player, PluginVars.arrData.get(7), "&7", "cinza " + light);
-                    break;
-                case 93818879:
-                    changeColor(player, PluginVars.arrData.get(0), "&0", "preto");
-                    break;
-                case 98619139:
-                    changeColor(player, PluginVars.arrData.get(10), "&a", "verde");
-                    break;
-                case 3178592:
-                    changeColor(player, PluginVars.arrData.get(6), "&6", "dourado");
-                    break;
-                case 3027034:
-                    changeColor(player, PluginVars.arrData.get(9), "&9", "azul");
-                    break;
-                case 3002044:
-                    changeColor(player, PluginVars.arrData.get(11), "&b", "azul " + light);
-                    break;
-                case 112785:
-                    changeColor(player, PluginVars.arrData.get(12), "&c", "tomate");
-                    break;
-                case -734239628:
-                    changeColor(player, PluginVars.arrData.get(14), "&e", "amarelo");
-                    break;
-                case -976943172:
-                    changeColor(player, PluginVars.arrData.get(13), "&d", "rosa");
-                    break;
-                case -1092352334:
-                    changeColor(player, PluginVars.arrData.get(5), "&5", "roxo");
-                    break;
-                case -1844766387:
-                    changeColor(player, PluginVars.arrData.get(2), "&2", "verde " + dark);
-                    break;
-                default:
-                    changeColor(player, PluginVars.arrData.get(15), "&f", "branco");
-                    break;
-            }
-        }
-    }
-
-    private void changeColor(final Player player, final String team, final String nameColor, final String color) {
-        final String playerName = player.getName();
-        PluginVars.glowingColor.put(playerName, nameColor);
-        sc.getTeam(team).addEntry(playerName);
-        player.sendMessage(PluginMSGs.M_GLOW_COLOR.replace(PluginConstants.AMOUNT, color));
     }
 
     private void changeGod(final Player player) {

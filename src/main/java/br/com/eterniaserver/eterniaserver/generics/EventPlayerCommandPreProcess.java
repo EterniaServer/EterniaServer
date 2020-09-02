@@ -19,8 +19,7 @@ public class EventPlayerCommandPreProcess implements Listener {
         String message = event.getMessage().toLowerCase();
 
         if (message.equalsIgnoreCase("/tps")) {
-            double[] tps = Bukkit.getTPS();
-            player.sendMessage(PluginMSGs.MSG_TPS.replace(PluginConstants.TPS, Long.toString(Math.round(tps[0]))));
+            player.sendMessage(PluginMSGs.MSG_TPS.replace(PluginConstants.TPS, String.format("%.2f", Bukkit.getTPS()[0])));
             event.setCancelled(true);
             return;
         }

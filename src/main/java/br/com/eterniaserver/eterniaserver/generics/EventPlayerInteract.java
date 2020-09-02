@@ -51,7 +51,7 @@ public class EventPlayerInteract implements Listener {
 
             if (e.getClickedBlock() != null && list.contains(e.getClickedBlock().getType())) {
                 final Location location = e.getClickedBlock().getLocation();
-                location.getNearbyEntities(1, 1, 1).forEach(k -> {
+                location.getNearbyEntities(2, 2, 2).forEach(k -> {
                     if (k instanceof Minecart) {
                         e.setCancelled(true);
                     }
