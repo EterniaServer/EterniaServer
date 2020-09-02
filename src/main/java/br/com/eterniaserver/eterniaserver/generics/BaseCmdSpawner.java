@@ -1,11 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,15 +28,15 @@ public class BaseCmdSpawner extends BaseCommand {
         final Inventory inventory = targetP.getInventory();
         final String spawnerName = spawner.toUpperCase();
 
-        if (Vars.entityList.contains(spawnerName)) {
+        if (PluginVars.entityList.contains(spawnerName)) {
             EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
             if (inventory.firstEmpty() == -1) {
-                player.sendMessage(MSG.MSG_SPAWNER_INVFULL);
+                player.sendMessage(PluginMSGs.MSG_SPAWNER_INVFULL);
             } else {
                 inventory.addItem(getSpawner(spawnerName, value));
-                player.sendMessage(UtilInternMethods.putName(targetP, MSG.MSG_SPAWNER_SENT.replace(Constants.VALUE, String.valueOf(value)).replace(Constants.TYPE, spawnerName)));
-                targetP.sendMessage(UtilInternMethods.putName(player, MSG.MSG_SPAWNER_RECEIVED.replace(Constants.TYPE, spawnerName).replace(Constants.VALUE, String.valueOf(value))));
+                player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.MSG_SPAWNER_SENT.replace(PluginConstants.VALUE, String.valueOf(value)).replace(PluginConstants.TYPE, spawnerName)));
+                targetP.sendMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_SPAWNER_RECEIVED.replace(PluginConstants.TYPE, spawnerName).replace(PluginConstants.VALUE, String.valueOf(value))));
             }
         } else {
             sendTypes(player);
@@ -64,9 +62,9 @@ public class BaseCmdSpawner extends BaseCommand {
 
     private void sendTypes(final CommandSender player) {
         StringBuilder str = new StringBuilder();
-        for (String entity : Vars.entityList) str.append(ChatColor.DARK_AQUA).append(entity).append(ChatColor.DARK_GRAY).append(", ");
+        for (String entity : PluginVars.entityList) str.append(ChatColor.DARK_AQUA).append(entity).append(ChatColor.DARK_GRAY).append(", ");
         str.append(ChatColor.GRAY).append("algumas entidades não funcionam");
-        player.sendMessage(MSG.MSG_SPAWNER_GIVE.replace(Constants.TYPE, str.toString()));
+        player.sendMessage(PluginMSGs.MSG_SPAWNER_GIVE.replace(PluginConstants.TYPE, str.toString()));
     }
 
 }

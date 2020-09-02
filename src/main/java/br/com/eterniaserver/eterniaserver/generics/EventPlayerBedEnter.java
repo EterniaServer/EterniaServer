@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -21,8 +20,8 @@ public class EventPlayerBedEnter implements Listener {
             final Player player = event.getPlayer();
             final String playerName = player.getName();
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - UtilInternMethods.getCooldown(playerName)) > 6) {
-                Vars.bedCooldown.put(playerName, System.currentTimeMillis());
-                Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_PLAYER_SKIP));
+                PluginVars.bedCooldown.put(playerName, System.currentTimeMillis());
+                Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_PLAYER_SKIP));
             }
         }
     }

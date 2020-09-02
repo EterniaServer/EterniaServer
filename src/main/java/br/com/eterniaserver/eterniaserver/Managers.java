@@ -18,11 +18,11 @@ import br.com.eterniaserver.eterniaserver.generics.BaseCmdRewards;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdSpawner;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp;
-import br.com.eterniaserver.eterniaserver.generics.PluginTick;
+import br.com.eterniaserver.eterniaserver.generics.PluginTicks;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdKit;
-import br.com.eterniaserver.eterniaserver.generics.Vars;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 
 import org.bukkit.Bukkit;
 
@@ -85,13 +85,13 @@ public class Managers {
     }
 
     private void loadCompletions() {
-        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("colors", Vars.colorsString);
-        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("entidades", Vars.entityList);
+        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("colors", PluginVars.colorsString);
+        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("entidades", PluginVars.entityList);
     }
 
     private void loadBedManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.bed"), "Bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new UtilAccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 40);
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new UtilAccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt(PluginConstants.SERVER_CHECKS) * 40);
         }
     }
 
@@ -163,10 +163,10 @@ public class Managers {
     private void loadPlayerChecks() {
         sendModuleStatus(true, "PlayerChecks");
         if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
-            new PluginTick(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 20);
+            new PluginTicks(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.serverConfig.getInt(PluginConstants.SERVER_CHECKS) * 20);
             return;
         }
-        new PluginTick(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt(Constants.SERVER_CHECKS) * 20);
+        new PluginTicks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt(PluginConstants.SERVER_CHECKS) * 20);
     }
 
     private void loadRewardsManager() {
@@ -191,10 +191,10 @@ public class Managers {
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
-            Bukkit.getConsoleSender().sendMessage(MSG.MSG_MODULE_ENABLE.replace(Constants.MODULE, module));
+            Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_MODULE_ENABLE.replace(PluginConstants.MODULE, module));
             return true;
         }
-        Bukkit.getConsoleSender().sendMessage(MSG.MSG_MODULE_DISABLE.replace(Constants.MODULE, module));
+        Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_MODULE_DISABLE.replace(PluginConstants.MODULE, module));
         return false;
     }
 

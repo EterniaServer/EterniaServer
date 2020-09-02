@@ -3,8 +3,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
@@ -40,8 +38,8 @@ public class BaseCmdExperience extends BaseCommand {
         final Player targetP = target.getPlayer();
 
         targetP.setLevel(money);
-        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.M_XP_SET.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.M_XP_RSET.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_XP_SET.replace(PluginConstants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, PluginMSGs.M_XP_RSET.replace(PluginConstants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("take")
@@ -53,8 +51,8 @@ public class BaseCmdExperience extends BaseCommand {
         final Player targetP = target.getPlayer();
 
         targetP.setLevel(targetP.getLevel() - money);
-        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.M_XP_REMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.M_XP_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_XP_REMOVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, PluginMSGs.M_XP_RREMOVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("give")
@@ -66,8 +64,8 @@ public class BaseCmdExperience extends BaseCommand {
         final Player targetP = target.getPlayer();
 
         targetP.setLevel(targetP.getLevel() + money);
-        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.M_XP_GIVE.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.M_XP_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_XP_GIVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, PluginMSGs.M_XP_RECEIVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("check")
@@ -78,7 +76,7 @@ public class BaseCmdExperience extends BaseCommand {
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(APIExperience.getExp(UUIDFetcher.getUUIDOf(player.getName())));
-        player.sendMessage(MSG.M_XP_CHECK.replace(Constants.AMOUNT, String.valueOf(player.getLevel())));
+        player.sendMessage(PluginMSGs.M_XP_CHECK.replace(PluginConstants.AMOUNT, String.valueOf(player.getLevel())));
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -97,12 +95,12 @@ public class BaseCmdExperience extends BaseCommand {
             item.setLore(Collections.singletonList(String.valueOf(xpWant)));
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
-            player.sendMessage(MSG.M_XP_BOTTLE);
+            player.sendMessage(PluginMSGs.M_XP_BOTTLE);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpReal - xpWant);
         } else {
-            player.sendMessage(MSG.M_XP_INSUFFICIENT);
+            player.sendMessage(PluginMSGs.M_XP_INSUFFICIENT);
         }
     }
 
@@ -117,9 +115,9 @@ public class BaseCmdExperience extends BaseCommand {
         if (APIExperience.getExp(uuid) >= xpla) {
             APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
-            player.sendMessage(MSG.M_XP_WITHDRAW.replace(Constants.AMOUNT, String.valueOf(player.getLevel())));
+            player.sendMessage(PluginMSGs.M_XP_WITHDRAW.replace(PluginConstants.AMOUNT, String.valueOf(player.getLevel())));
         } else {
-            player.sendMessage(MSG.M_XP_INSUFFICIENT);
+            player.sendMessage(PluginMSGs.M_XP_INSUFFICIENT);
         }
     }
 
@@ -133,12 +131,12 @@ public class BaseCmdExperience extends BaseCommand {
             int xp = UtilInternMethods.getXPForLevel(xpla);
             int xpto = UtilInternMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
-            player.sendMessage(MSG.M_XP_DEPOSIT.replace(Constants.AMOUNT, String.valueOf(xpla)));
+            player.sendMessage(PluginMSGs.M_XP_DEPOSIT.replace(PluginConstants.AMOUNT, String.valueOf(xpla)));
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);
         } else {
-            player.sendMessage(MSG.M_XP_INSUFFICIENT);
+            player.sendMessage(PluginMSGs.M_XP_INSUFFICIENT);
         }
     }
 

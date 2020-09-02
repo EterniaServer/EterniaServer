@@ -13,7 +13,7 @@ public class EventPlayerDeath implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (EterniaServer.serverConfig.getBoolean("modules.teleports")) {
             final Player player = event.getEntity();
-            Vars.back.put(player.getName(), player.getLocation());
+            PluginVars.back.put(player.getName(), player.getLocation());
         }
     }
 

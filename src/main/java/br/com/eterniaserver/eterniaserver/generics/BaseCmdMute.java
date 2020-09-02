@@ -3,8 +3,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -19,12 +17,12 @@ public class BaseCmdMute extends BaseCommand {
     @CommandAlias("mutechannels|muteall")
     @CommandPermission("eternia.mute.channels")
     public void muteChannels(Player sender) {
-        if (Vars.chatMuted) {
+        if (PluginVars.chatMuted) {
             UtilInternMethods.setChatMuted(false);
-            Bukkit.broadcastMessage(UtilInternMethods.putName(sender, MSG.M_CHAT_D));
+            Bukkit.broadcastMessage(UtilInternMethods.putName(sender, PluginMSGs.M_CHAT_D));
         } else {
             UtilInternMethods.setChatMuted(true);
-            Bukkit.broadcastMessage(UtilInternMethods.putName(sender, MSG.M_CHAT_E));
+            Bukkit.broadcastMessage(UtilInternMethods.putName(sender, PluginMSGs.M_CHAT_E));
         }
     }
 
@@ -41,9 +39,9 @@ public class BaseCmdMute extends BaseCommand {
         cal.setTime(new Date());
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
-        Bukkit.broadcastMessage(UtilInternMethods.putName(targetP, MSG.M_CHAT_MUTEBROAD).replace(Constants.MESSAGE, message));
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.TIME_STR, time, Constants.UUID_STR, uuid.toString()));
-        Vars.playerProfile.get(uuid).muted = time;
+        Bukkit.broadcastMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_CHAT_MUTEBROAD).replace(PluginConstants.MESSAGE, message));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.TIME_STR, time, PluginConstants.UUID_STR, uuid.toString()));
+        PluginVars.playerProfile.get(uuid).muted = time;
     }
 
     @CommandAlias("unmute|desilenciar")
@@ -54,9 +52,9 @@ public class BaseCmdMute extends BaseCommand {
         final long time = System.currentTimeMillis();
         final String playerName = target.getPlayer().getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        Vars.playerProfile.get(uuid).muted = time;
-        Bukkit.broadcastMessage(UtilInternMethods.putName(target.getPlayer(), MSG.M_CHAT_UNMUTEBROAD));
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.TIME_STR, time, Constants.UUID_STR, uuid.toString()));
+        PluginVars.playerProfile.get(uuid).muted = time;
+        Bukkit.broadcastMessage(UtilInternMethods.putName(target.getPlayer(), PluginMSGs.M_CHAT_UNMUTEBROAD));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.TIME_STR, time, PluginConstants.UUID_STR, uuid.toString()));
     }
 
     @CommandAlias("tempmute|mutetemporario")
@@ -70,9 +68,9 @@ public class BaseCmdMute extends BaseCommand {
         final long timeInMillis = cal.getTimeInMillis();
         final String targetName = target.getPlayer().getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(targetName);
-        Bukkit.broadcastMessage(UtilInternMethods.putName(target.getPlayer(), MSG.M_CHAT_MUTET.replace(Constants.TIME, String.valueOf(time)).replace(Constants.MESSAGE, message)));
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.TIME_STR, timeInMillis, Constants.UUID_STR, uuid.toString()));
-        Vars.playerProfile.get(uuid).muted = timeInMillis;
+        Bukkit.broadcastMessage(UtilInternMethods.putName(target.getPlayer(), PluginMSGs.M_CHAT_MUTET.replace(PluginConstants.TIME, String.valueOf(time)).replace(PluginConstants.MESSAGE, message)));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.TIME_STR, timeInMillis, PluginConstants.UUID_STR, uuid.toString()));
+        PluginVars.playerProfile.get(uuid).muted = timeInMillis;
     }
 
 }

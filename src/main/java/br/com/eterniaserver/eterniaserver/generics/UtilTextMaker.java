@@ -3,9 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import java.util.ArrayList;
 
 import br.com.eterniaserver.eterniaserver.objects.ChatObject;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
 
@@ -39,7 +37,7 @@ public class UtilTextMaker {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.message;
 			msg = UtilInternMethods.setPlaceholders(p, msg);
-			if (msg.contains(Constants.MESSAGE)) msg = msg.replace(Constants.MESSAGE, message.getMessageSent());
+			if (msg.contains(PluginConstants.MESSAGE)) msg = msg.replace(PluginConstants.MESSAGE, message.getMessageSent());
 			if (p.hasPermission("eternia.chat.mention") && msg.contains("@")) {
 				int lenght = msg.length();
 				for (int v = 0; v < lenght; v++) {
@@ -47,12 +45,12 @@ public class UtilTextMaker {
 					if (Character.toString(msg.charAt(v)).equals("@")) {
 						if (lenght > v + 16) playerName = msg.substring(v, v + 16).split(" ")[0];
 						else playerName = msg.substring(v, v + lenght - 1).split(" ")[0];
-						msg = msg.replace(playerName, Vars.colors.get(3) + playerName + Vars.colors.get(15));
-						if (Vars.playersName.containsKey(playerName)) {
-							Player player = Bukkit.getPlayer(Vars.playersName.get(playerName));
+						msg = msg.replace(playerName, PluginVars.colors.get(3) + playerName + PluginVars.colors.get(15));
+						if (PluginVars.playersName.containsKey(playerName)) {
+							Player player = Bukkit.getPlayer(PluginVars.playersName.get(playerName));
 							if (player != null && player.isOnline()) {
 								player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-								player.sendTitle(MSG.getColor(p.getDisplayName()), MSG.getColor("&7mencionou você&8!"), 10, 40, 10);
+								player.sendTitle(PluginMSGs.getColor(p.getDisplayName()), PluginMSGs.getColor("&7mencionou você&8!"), 10, 40, 10);
 							}
 						}
 						break;
@@ -66,17 +64,17 @@ public class UtilTextMaker {
 				TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 				if (chatObject.getHover() != null) {
 					ArrayList<TextComponent> tcs = new ArrayList<>();
-					tcs.add(new TextComponent(UtilInternMethods.setPlaceholders(p, MSG.getColor(chatObject.getHover()))));
+					tcs.add(new TextComponent(UtilInternMethods.setPlaceholders(p, PluginMSGs.getColor(chatObject.getHover()))));
 					textComp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 				}
 				if (chatObject.getColor() != null) {
 					textComp.setColor(chatObject.getColor().asBungee());
 				}
 				if (chatObject.getSuggest() != null) {
-					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, UtilInternMethods.setPlaceholders(p, MSG.getColor(chatObject.getSuggest()))));
+					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, UtilInternMethods.setPlaceholders(p, PluginMSGs.getColor(chatObject.getSuggest()))));
 				}
 				if (chatObject.getRun() != null) {
-					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, UtilInternMethods.setPlaceholders(p, MSG.getColor(chatObject.getRun()))));
+					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, UtilInternMethods.setPlaceholders(p, PluginMSGs.getColor(chatObject.getRun()))));
 				}
 				if (chatObject.isText()) {
 					setTextAttr(textComp, p);
@@ -90,7 +88,7 @@ public class UtilTextMaker {
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
 		if (EventAsyncPlayerChat.version116) {
 			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
-			TextComponent component = new TextComponent(string.replace("[item]", Vars.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + Vars.colors.get(15)));
+			TextComponent component = new TextComponent(string.replace("[item]", PluginVars.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + PluginVars.colors.get(15)));
 			component.setHoverEvent(event);
 			return component;
 		}
@@ -112,7 +110,7 @@ public class UtilTextMaker {
 	public void addHover(TextComponent text, String s) {
 		if(s == null) return;
 		ArrayList<TextComponent> tcs = new ArrayList<>();
-		tcs.add(new TextComponent(MSG.getColor(s)));
+		tcs.add(new TextComponent(PluginMSGs.getColor(s)));
 		text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 	}
 
@@ -131,16 +129,16 @@ public class UtilTextMaker {
 	}
 
 	public String getConfigString(Player p, String extra) {
-		return EterniaServer.groupConfig.getString (Vars.uufi.get(p.getName()).getName() + "." + extra);
+		return EterniaServer.groupConfig.getString (PluginVars.uufi.get(p.getName()).getName() + "." + extra);
 	}
 
 	public boolean getConfigBoolean(Player p, String extra) {
-		return EterniaServer.groupConfig.getBoolean(Vars.uufi.get(p.getName()).getName() + "." + extra);
+		return EterniaServer.groupConfig.getBoolean(PluginVars.uufi.get(p.getName()).getName() + "." + extra);
 	}
 
 	public String customPlaceholder(Player p, String s2) {
 		String stringMessage = s2;
-		for(UtilCustomPlaceholder cp: Vars.customPlaceholders) {
+		for(UtilCustomPlaceholder cp: PluginVars.customPlaceholders) {
 			String id = cp.getId();
 			if(!stringMessage.contains("{" + id + "}")) continue;
 			SubPlaceholder bestPlaceholder = UtilInternMethods.getSubPlaceholder(p, cp);

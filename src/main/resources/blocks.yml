@@ -45,3 +45,9 @@ blocks:
   "GRANITE":
     "0.002":
       - 'sf give %player_name% COPPER_DUST'
+farm:
+  "CARROT":
+    "0.001":
+      - 'crates givekey %player_name% farm'
+    "0.00005":
+      - 'crates givekey %player_name% farmraros'

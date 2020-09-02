@@ -4,8 +4,6 @@ import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -28,7 +26,7 @@ public class BaseCmdEconomy extends BaseCommand {
 
     private long time = 0;
     private List<UUID> lista;
-    final boolean nickEnable = MSG.ECO_BALLIST.contains("%player_displayname%");
+    final boolean nickEnable = PluginMSGs.ECO_BALLIST.contains("%player_displayname%");
 
     @Default
     @Syntax("<página>")
@@ -47,8 +45,8 @@ public class BaseCmdEconomy extends BaseCommand {
         final Player targetP = target.getPlayer();
 
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.ECO_SET.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.ECO_RSET.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_SET.replace(PluginConstants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, PluginMSGs.ECO_RSET.replace(PluginConstants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("take")
@@ -60,8 +58,8 @@ public class BaseCmdEconomy extends BaseCommand {
         final Player targetP = target.getPlayer();
 
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.ECO_REMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.ECO_RREMOVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_REMOVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, PluginMSGs.ECO_RREMOVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
     }
 
     @Subcommand("give")
@@ -72,8 +70,8 @@ public class BaseCmdEconomy extends BaseCommand {
     public void onGive(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
         final Player targetP = target.getPlayer();
         APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
-        sender.sendMessage(UtilInternMethods.putName(targetP, MSG.ECO_GIVE.replace(Constants.AMOUNT, String.valueOf(money))));
-        targetP.sendMessage(UtilInternMethods.putName(sender, MSG.ECO_RECEIVE.replace(Constants.AMOUNT, String.valueOf(money))));
+        sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_GIVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
+        targetP.sendMessage(UtilInternMethods.putName(sender, PluginMSGs.ECO_RECEIVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
     }
 
     @CommandAlias("money")
@@ -84,13 +82,13 @@ public class BaseCmdEconomy extends BaseCommand {
     public void onMoney(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
-            player.sendMessage(MSG.ECO_MONEY.replace(Constants.AMOUNT, Vars.df2.format(money)));
+            player.sendMessage(PluginMSGs.ECO_MONEY.replace(PluginConstants.AMOUNT, PluginVars.df2.format(money)));
         } else {
             if (player.hasPermission("eternia.money.admin")) {
                 double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
-                player.sendMessage(MSG.ECO_OTHER.replace(Constants.AMOUNT, Vars.df2.format(money)));
+                player.sendMessage(PluginMSGs.ECO_OTHER.replace(PluginConstants.AMOUNT, PluginVars.df2.format(money)));
             } else {
-                player.sendMessage(MSG.MSG_NO_PERM);
+                player.sendMessage(PluginMSGs.MSG_NO_PERM);
             }
         }
     }
@@ -110,13 +108,13 @@ public class BaseCmdEconomy extends BaseCommand {
             if (APIEconomy.getMoney(uuid) >= value) {
                 APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetName), value);
                 APIEconomy.removeMoney(uuid, value);
-                player.sendMessage(UtilInternMethods.putName(targetP, MSG.ECO_PAY.replace(Constants.AMOUNT, String.valueOf(value))));
-                targetP.sendMessage(UtilInternMethods.putName(player, MSG.ECO_PAY_ME.replace(Constants.AMOUNT, String.valueOf(value))));
+                player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_PAY.replace(PluginConstants.AMOUNT, String.valueOf(value))));
+                targetP.sendMessage(UtilInternMethods.putName(player, PluginMSGs.ECO_PAY_ME.replace(PluginConstants.AMOUNT, String.valueOf(value))));
             } else {
-                player.sendMessage(MSG.ECO_PAY_NO);
+                player.sendMessage(PluginMSGs.ECO_PAY_NO);
             }
         } else {
-            player.sendMessage(MSG.ECO_AUTO);
+            player.sendMessage(PluginMSGs.ECO_AUTO);
         }
     }
 
@@ -131,13 +129,13 @@ public class BaseCmdEconomy extends BaseCommand {
                 if (EterniaLib.getMySQL()) {
                     EterniaLib.getConnections().executeSQLQuery(connection -> {
                         final PreparedStatement getHashMap = connection.prepareStatement(
-                                "SELECT " + Constants.UUID_STR +
-                                        " FROM " + Configs.TABLE_PLAYER +
-                                        " ORDER BY " + Constants.BALANCE_STR + " DESC LIMIT 10;");
+                                "SELECT " + PluginConstants.UUID_STR +
+                                        " FROM " + PluginConfigs.TABLE_PLAYER +
+                                        " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 10;");
                         final ResultSet resultSet = getHashMap.executeQuery();
                         final List<UUID> tempList = new ArrayList<>();
                         while (resultSet.next()) {
-                            tempList.add(UUID.fromString(resultSet.getString(Constants.UUID_STR)));
+                            tempList.add(UUID.fromString(resultSet.getString(PluginConstants.UUID_STR)));
                         }
                         time = System.currentTimeMillis();
                         lista = tempList;
@@ -147,12 +145,12 @@ public class BaseCmdEconomy extends BaseCommand {
                     });
                 } else {
                     try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
-                            "SELECT " + Constants.UUID_STR +
-                                    " FROM " + Configs.TABLE_PLAYER +
-                                    " ORDER BY " + Constants.BALANCE_STR + " DESC LIMIT 10;"); ResultSet resultSet = getHashMap.executeQuery()) {
+                            "SELECT " + PluginConstants.UUID_STR +
+                                    " FROM " + PluginConfigs.TABLE_PLAYER +
+                                    " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 10;"); ResultSet resultSet = getHashMap.executeQuery()) {
                         final List<UUID> tempList = new ArrayList<>();
                         while (resultSet.next()) {
-                            tempList.add(UUID.fromString(resultSet.getString(Constants.UUID_STR)));
+                            tempList.add(UUID.fromString(resultSet.getString(PluginConstants.UUID_STR)));
                         }
                         time = System.currentTimeMillis();
                         lista = tempList;
@@ -168,13 +166,13 @@ public class BaseCmdEconomy extends BaseCommand {
     private void showBaltop(CommandSender sender) {
         lista.forEach((user -> {
             final String playerName;
-            if (nickEnable) playerName = Vars.playerProfile.get(user).getPlayerDisplayName();
-            else playerName = Vars.playerProfile.get(user).getPlayerName();
-            sender.sendMessage(MSG.ECO_BALLIST
-                    .replace(Constants.POSITION, String.valueOf(lista.indexOf(user) + 1))
-                    .replace(Constants.PLAYER, playerName)
+            if (nickEnable) playerName = PluginVars.playerProfile.get(user).getPlayerDisplayName();
+            else playerName = PluginVars.playerProfile.get(user).getPlayerName();
+            sender.sendMessage(PluginMSGs.ECO_BALLIST
+                    .replace(PluginConstants.POSITION, String.valueOf(lista.indexOf(user) + 1))
+                    .replace(PluginConstants.PLAYER, playerName)
                     .replace("%player_name%", playerName)
-                    .replace(Constants.AMOUNT, Vars.df2.format(APIEconomy.getMoney(user))));
+                    .replace(PluginConstants.AMOUNT, PluginVars.df2.format(APIEconomy.getMoney(user))));
         }));
     }
 

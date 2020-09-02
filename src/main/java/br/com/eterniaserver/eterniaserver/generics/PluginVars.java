@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Vars {
+public class PluginVars {
 
-    private Vars() {
+    private PluginVars() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -76,6 +76,5 @@ public class Vars {
     protected static final Map<String, String> glowingColor = new HashMap<>();
     protected static final Map<String, String> tell = new HashMap<>();
     protected static final Map<String, List<Player>> ignoredPlayer = new HashMap<>();
-
 
 }

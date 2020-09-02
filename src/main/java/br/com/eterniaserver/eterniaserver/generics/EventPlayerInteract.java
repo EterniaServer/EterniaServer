@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import com.google.common.collect.ImmutableList;
@@ -36,10 +35,10 @@ public class EventPlayerInteract implements Listener {
                 final String[] isso = lore.get(0).split(":");
                 final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
 
-                if (Vars.teleports.containsKey(player)) {
-                    player.sendMessage(MSG.MSG_IN_TELEPORT);
+                if (PluginVars.teleports.containsKey(player)) {
+                    player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
                 } else {
-                    Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.M_HOME_DONE));
+                    PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
                 }
                 e.setCancelled(true);
             }

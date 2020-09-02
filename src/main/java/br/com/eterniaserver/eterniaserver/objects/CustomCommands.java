@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -41,10 +41,10 @@ public class CustomCommands extends AbstractCommand {
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, line));
             }
             for (String line : messagesStrings) {
-                player.sendMessage(MSG.getColor(UtilInternMethods.setPlaceholders(player, line)));
+                player.sendMessage(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(player, line)));
             }
         } else {
-            player.sendMessage(MSG.MSG_NO_PERM);
+            player.sendMessage(PluginMSGs.MSG_NO_PERM);
         }
     }
 

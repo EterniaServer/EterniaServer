@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -12,14 +11,14 @@ public class UtilCustomPlaceholdersFilter {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		for (UtilCustomPlaceholder cp: Vars.customPlaceholders) {
+		for (UtilCustomPlaceholder cp: PluginVars.customPlaceholders) {
 			for (int i = 0; i < message.size(); i++) {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();
 				if (objMsg.contains("{" + cp.getId() + "}")) {
 					SubPlaceholder bestPlaceholder = UtilInternMethods.getSubPlaceholder(p, cp);
 					if (cp.isNotIndependent() && bestPlaceholder != null) {
-						chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", MSG.getColor(UtilInternMethods.setPlaceholders(p, bestPlaceholder.getValue()))));
+						chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", PluginMSGs.getColor(UtilInternMethods.setPlaceholders(p, bestPlaceholder.getValue()))));
 					} else {
 						putplaceholders(objMsg, cp, chatObj, bestPlaceholder, message, i, p);
 					}
@@ -36,7 +35,7 @@ public class UtilCustomPlaceholdersFilter {
 			String hover = bestPlaceholder.getHover();
 			String suggest = bestPlaceholder.getSuggest();
 			String run = bestPlaceholder.getRun();
-			message.getChatObjects().add(i + 1, new ChatObject(MSG.getColor(UtilInternMethods.setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
+			message.getChatObjects().add(i + 1, new ChatObject(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
 			if (bestPlaceholder.isText()) {
 				message.getChatObjects().get(i + 1).setIsText(true);
 			}

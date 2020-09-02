@@ -22,15 +22,15 @@ public class APIFly {
     }
 
     public static boolean isOnPvP(UUID uuid) {
-        return Vars.playerProfile.get(uuid).isOnPvP();
+        return PluginVars.playerProfile.get(uuid).isOnPvP();
     }
 
     public static int getPvPCooldown(UUID uuid) {
-        return Vars.playerProfile.get(uuid).getOnPvP();
+        return PluginVars.playerProfile.get(uuid).getOnPvP();
     }
 
     public static void setIsOnPvP(UUID uuid) {
-        Vars.playerProfile.get(uuid).setIsOnPvP();
+        PluginVars.playerProfile.get(uuid).setIsOnPvP();
     }
 
 }

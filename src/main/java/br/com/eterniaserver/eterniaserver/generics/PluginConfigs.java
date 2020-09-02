@@ -5,9 +5,9 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import java.util.List;
 
 
-public class Configs {
+public class PluginConfigs {
 
-    private Configs() {
+    private PluginConfigs() {
         throw new IllegalStateException("Utility class");
     }
 

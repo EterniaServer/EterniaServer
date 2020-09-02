@@ -1,8 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 
 import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
@@ -28,12 +26,12 @@ public class UtilInternMethods {
     }
 
     public static void setChatMuted(boolean bool) {
-        Vars.chatMuted = bool;
+        PluginVars.chatMuted = bool;
     }
 
     public static long getCooldown(String name) {
-        if (!Vars.bedCooldown.containsKey(name)) return 0;
-        else return Vars.bedCooldown.get(name);
+        if (!PluginVars.bedCooldown.containsKey(name)) return 0;
+        else return PluginVars.bedCooldown.get(name);
     }
 
     public static void addUUIF(Player p) {
@@ -41,12 +39,12 @@ public class UtilInternMethods {
             if(s.equals("groups")) continue;
             int priority = EterniaServer.groupConfig.getInt(s + ".priority");
             if(EterniaServer.groupConfig.getString(s + ".perm").equals("") || p.hasPermission(EterniaServer.groupConfig.getString(s + ".perm"))) {
-                if(Vars.uufi.containsKey(p.getName())) {
-                    if(Vars.uufi.get(p.getName()).getPriority() < priority) {
-                        Vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+                if(PluginVars.uufi.containsKey(p.getName())) {
+                    if(PluginVars.uufi.get(p.getName()).getPriority() < priority) {
+                        PluginVars.uufi.put(p.getName(), new FormatInfo(priority, s));
                     }
                 } else {
-                    Vars.uufi.put(p.getName(), new FormatInfo(priority, s));
+                    PluginVars.uufi.put(p.getName(), new FormatInfo(priority, s));
                 }
             }
         }
@@ -57,7 +55,7 @@ public class UtilInternMethods {
             if (p.hasPermission("eternia.chat.staff")) {
                 String format = EterniaServer.chatConfig.getString("staff.format");
                 format = UtilInternMethods.setPlaceholders(player, format);
-                format = MSG.getColor(format.replace(Constants.MESSAGE, message));
+                format = PluginMSGs.getColor(format.replace(PluginConstants.MESSAGE, message));
                 p.sendMessage(format);
             }
         }
@@ -67,31 +65,31 @@ public class UtilInternMethods {
         int pes = 0;
         final String format = getFormat(message, player);
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (Vars.ignoredPlayer.get(player.getName()) != null && Vars.ignoredPlayer.get(player.getName()).contains(p)) return;
-            final Boolean b = Vars.spy.get(p.getName());
+            if (PluginVars.ignoredPlayer.get(player.getName()) != null && PluginVars.ignoredPlayer.get(player.getName()).contains(p)) return;
+            final Boolean b = PluginVars.spy.get(p.getName());
             if ((player.getWorld() == p.getWorld() && p.getLocation().distanceSquared(player.getLocation()) <= Math.pow(radius, 2)) || radius <= 0) {
                 pes += 1;
                 p.sendMessage(format);
             } else if (p.hasPermission("eternia.spy") && Boolean.TRUE.equals(b)) {
-                p.sendMessage(MSG.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
+                p.sendMessage(PluginMSGs.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
             }
         }
         if (pes <= 1) {
-            player.sendMessage(MSG.M_CHAT_NOONE);
+            player.sendMessage(PluginMSGs.M_CHAT_NOONE);
         }
     }
 
     private static String getFormat(String message, final Player player) {
         String format = UtilInternMethods.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
         if (player.hasPermission("eternia.chat.color")) {
-            return MSG.getColor(format.replace(Constants.MESSAGE, message));
+            return PluginMSGs.getColor(format.replace(PluginConstants.MESSAGE, message));
         } else {
-            return(format.replace(Constants.MESSAGE, message));
+            return(format.replace(PluginConstants.MESSAGE, message));
         }
     }
 
     public static void removeUUIF(Player p) {
-        Vars.uufi.remove(p.getName());
+        PluginVars.uufi.remove(p.getName());
     }
 
     public static String setPlaceholders(Player p, String s) {
@@ -130,23 +128,23 @@ public class UtilInternMethods {
     public static void sendPrivate(final Player player, final Player target, final String s) {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();
-        Vars.tell.put(target.getName(), player.getName());
-        player.sendMessage(MSG.M_CHAT_TO.
-                replace(Constants.PLAYER, playerDisplay).
-                replace(Constants.TARGET, targetDisplay).
-                replace(Constants.MESSAGE, s));
-        target.sendMessage(MSG.M_CHAT_FROM.
-                replace(Constants.PLAYER, targetDisplay).
-                replace(Constants.TARGET, playerDisplay).
-                replace(Constants.MESSAGE, s));
-        for (String p : Vars.spy.keySet()) {
-            final Boolean b = Vars.spy.getOrDefault(p, false);
+        PluginVars.tell.put(target.getName(), player.getName());
+        player.sendMessage(PluginMSGs.M_CHAT_TO.
+                replace(PluginConstants.PLAYER, playerDisplay).
+                replace(PluginConstants.TARGET, targetDisplay).
+                replace(PluginConstants.MESSAGE, s));
+        target.sendMessage(PluginMSGs.M_CHAT_FROM.
+                replace(PluginConstants.PLAYER, targetDisplay).
+                replace(PluginConstants.TARGET, playerDisplay).
+                replace(PluginConstants.MESSAGE, s));
+        for (String p : PluginVars.spy.keySet()) {
+            final Boolean b = PluginVars.spy.getOrDefault(p, false);
             if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {
                 final Player spyPlayer = Bukkit.getPlayerExact(p);
                 if (spyPlayer != null && spyPlayer.isOnline()) {
-                    spyPlayer.sendMessage(MSG.getColor("&8[&7SPY-&6P&8] &8" + playerDisplay + " -> " + targetDisplay + ": " + s));
+                    spyPlayer.sendMessage(PluginMSGs.getColor("&8[&7SPY-&6P&8] &8" + playerDisplay + " -> " + targetDisplay + ": " + s));
                 } else {
-                    Vars.spy.remove(p);
+                    PluginVars.spy.remove(p);
                 }
             }
         }

@@ -1,8 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,8 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
-import java.util.Arrays;
 
 public class EventPlayerCommandPreProcess implements Listener {
 
@@ -23,7 +19,8 @@ public class EventPlayerCommandPreProcess implements Listener {
         String message = event.getMessage().toLowerCase();
 
         if (message.equalsIgnoreCase("/tps")) {
-            player.sendMessage(MSG.MSG_TPS.replace(Constants.TPS, Arrays.toString(Bukkit.getServer().getTPS())));
+            double[] tps = Bukkit.getTPS();
+            player.sendMessage(PluginMSGs.MSG_TPS.replace(PluginConstants.TPS, Long.toString(Math.round(tps[0]))));
             event.setCancelled(true);
             return;
         }

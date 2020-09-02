@@ -10,7 +10,7 @@ public class EventPlayerRespawn implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (Vars.locations.containsKey("warp.spawn") && EterniaServer.serverConfig.getBoolean("modules.teleports")) event.setRespawnLocation(Vars.locations.get("warp.spawn"));
+        if (PluginVars.locations.containsKey("warp.spawn") && EterniaServer.serverConfig.getBoolean("modules.teleports")) event.setRespawnLocation(PluginVars.locations.get("warp.spawn"));
     }
 
 }

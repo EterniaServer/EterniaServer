@@ -10,7 +10,7 @@ public class UtilJsonSender {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		if(e.isCancelled()) return;
-		if(!Vars.uufi.containsKey(e.getPlayer().getName())) return;
+		if(!PluginVars.uufi.containsKey(e.getPlayer().getName())) return;
 		UtilTextMaker tm = new UtilTextMaker(message, e.getPlayer());
 		tm.convertMessageToComponents();
 		Bukkit.spigot().broadcast(tm.getText());

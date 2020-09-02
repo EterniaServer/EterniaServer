@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.dependencies.vault;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
-import br.com.eterniaserver.eterniaserver.generics.Vars;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -37,7 +37,7 @@ public class VaultMethods implements Economy {
 
     @Override
     public String format(double amount) {
-        return Vars.df2.format(amount);
+        return PluginVars.df2.format(amount);
     }
 
     @Override

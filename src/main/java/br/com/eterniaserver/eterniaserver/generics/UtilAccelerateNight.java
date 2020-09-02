@@ -1,9 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
@@ -19,8 +17,8 @@ public class UtilAccelerateNight extends BukkitRunnable {
     public UtilAccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
-            Bukkit.broadcastMessage(MSG.MSG_SKIPPING.replace(Constants.WORLD, world.getName()));
+        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - PluginVars.nightTime) > 300) {
+            Bukkit.broadcastMessage(PluginMSGs.MSG_SKIPPING.replace(PluginConstants.WORLD, world.getName()));
         }
     }
 
@@ -29,7 +27,7 @@ public class UtilAccelerateNight extends BukkitRunnable {
         final long time = world.getTime();
         final int sleeping = UtilAccelerateWorld.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
-        double base = Configs.BED_SPEED;
+        double base = PluginConfigs.BED_SPEED;
         if (sleeping > 0) {
             int x = players / sleeping;
             double timeRate = base / x;
@@ -37,21 +35,21 @@ public class UtilAccelerateNight extends BukkitRunnable {
                 world.setStorm(false);
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
-                Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
-                Bukkit.broadcastMessage(MSG.MSG_SKIP_NIGHT);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> PluginVars.skippingWorlds.remove(world), 20);
+                Bukkit.broadcastMessage(PluginMSGs.MSG_SKIP_NIGHT);
                 changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {
                 world.setTime(time + (int) timeRate);
             }
-        } else if (Vars.skippingWorlds.contains(world)) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
+        } else if (PluginVars.skippingWorlds.contains(world)) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> PluginVars.skippingWorlds.remove(world), 20);
             this.cancel();
         }
     }
 
     private static void changeNightTime(final long time) {
-        Vars.nightTime = time;
+        PluginVars.nightTime = time;
     }
 
 }

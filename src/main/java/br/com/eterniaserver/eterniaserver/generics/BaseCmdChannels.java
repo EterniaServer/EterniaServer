@@ -2,8 +2,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
@@ -48,15 +46,15 @@ public class BaseCmdChannels extends BaseCommand {
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (messages != null && messages.length == 0) {
-            Vars.playerProfile.get(uuid).chatChannel = channel;
-            player.sendMessage(MSG.M_CHAT_C.replace(Constants.CHANNEL_NAME, channelName));
+            PluginVars.playerProfile.get(uuid).chatChannel = channel;
+            player.sendMessage(PluginMSGs.M_CHAT_C.replace(PluginConstants.CHANNEL_NAME, channelName));
         } else {
-            int o = Vars.playerProfile.get(uuid).chatChannel;
-            Vars.playerProfile.get(uuid).chatChannel = channel;
+            int o = PluginVars.playerProfile.get(uuid).chatChannel;
+            PluginVars.playerProfile.get(uuid).chatChannel = channel;
             StringBuilder sb = new StringBuilder();
             for (String arg : messages) sb.append(arg).append(" ");
             player.chat(sb.substring(0, sb.length() - 1));
-            Vars.playerProfile.get(uuid).chatChannel = o;
+            PluginVars.playerProfile.get(uuid).chatChannel = o;
         }
     }
 

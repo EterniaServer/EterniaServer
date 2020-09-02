@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 
 import org.bukkit.entity.Player;
@@ -45,11 +44,11 @@ public class UtilColors {
 		String m = message.getMessageSent();
 		for (String s : perms) {
 			if (s.equals("&")) {
-				m = MSG.getColor(m);
+				m = PluginMSGs.getColor(m);
 				break;
 			}
 			if (m.contains(s)) {
-				m = m.replace(s, MSG.getColor(s));
+				m = m.replace(s, PluginMSGs.getColor(s));
 			}
 		}
 

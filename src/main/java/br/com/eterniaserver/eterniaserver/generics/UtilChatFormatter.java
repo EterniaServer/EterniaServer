@@ -1,9 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.objects.ChatObject;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 
@@ -15,14 +13,14 @@ public class UtilChatFormatter {
 
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
-		if (!Vars.uufi.containsKey(p.getName())) return;
+		if (!PluginVars.uufi.containsKey(p.getName())) return;
 		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) UtilInternMethods.addUUIF(p);
-		FormatInfo fi = Vars.uufi.get(p.getName());
+		FormatInfo fi = PluginVars.uufi.get(p.getName());
 		if (EterniaServer.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
-			ChatObject msg = new ChatObject(Constants.MESSAGE);
+			ChatObject msg = new ChatObject(PluginConstants.MESSAGE);
 			msg.setColor(ChatColor.getByChar(EterniaServer.groupConfig.getString(fi.getName() + ".chatColor").toCharArray()[0]));
 			String total = parse(p, EterniaServer.groupConfig.getString(fi.getName() + ".format"));
-			int i = total.indexOf(Constants.MESSAGE);
+			int i = total.indexOf(PluginConstants.MESSAGE);
 			int i2 = i + 9;
 			String prefix = total.substring(0, i);
 			message.get(0).setMessage(prefix);
@@ -37,7 +35,7 @@ public class UtilChatFormatter {
 
 	public String parse(Player p, String s) {
 		if (s.contains("&")) {
-			s = MSG.getColor(s);
+			s = PluginMSGs.getColor(s);
 		}
 		s = UtilInternMethods.setPlaceholders(p, s);
 		return s;

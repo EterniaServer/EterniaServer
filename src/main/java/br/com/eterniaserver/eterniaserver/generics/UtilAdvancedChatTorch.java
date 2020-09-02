@@ -1,8 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import org.bukkit.Bukkit;
 
 public class UtilAdvancedChatTorch {
@@ -13,11 +11,11 @@ public class UtilAdvancedChatTorch {
 	}
 
 	public void registerCustomPlaceholders() {
-		Vars.customPlaceholders.clear();
+		PluginVars.customPlaceholders.clear();
 		for (String id: EterniaServer.placeholderConfig.getKeys(false)) {
 			if (!id.equals("customplaceholders")) {
 				UtilCustomPlaceholder cp = new UtilCustomPlaceholder(id);
-				Vars.customPlaceholders.add(cp);
+				PluginVars.customPlaceholders.add(cp);
 			}
 		}
 	}
@@ -26,10 +24,10 @@ public class UtilAdvancedChatTorch {
 		for(Object s: EterniaServer.groupConfig.getKeys(false)) {
 			if (!s.equals("groups")) {
 				if (!EterniaServer.groupConfig.contains(s.toString())) {
-					Bukkit.getConsoleSender().sendMessage(MSG.MSG_ERROR.replace(Constants.ERROR, "nenhum grupo encontrado"));
+					Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_ERROR.replace(PluginConstants.ERROR, "nenhum grupo encontrado"));
 				}
 				if (!EterniaServer.groupConfig.contains(s.toString() + ".perm")) {
-					Bukkit.getConsoleSender().sendMessage(MSG.MSG_ERROR.replace(Constants.ERROR, "permissão para o grupo não encontrada"));
+					Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_ERROR.replace(PluginConstants.ERROR, "permissão para o grupo não encontrada"));
 				}
 			}
 		}

@@ -1,11 +1,11 @@
-package br.com.eterniaserver.eterniaserver.strings;
+package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.ChatColor;
 
-public class MSG {
+public class PluginMSGs {
 
-    private MSG() {
+    private PluginMSGs() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -20,7 +20,6 @@ public class MSG {
     public static final String MSG_LEAVE = putPrefix("server.leave");
     public static final String MSG_TIMING = putPrefix("server.timing");
     public static final String MSG_NETHER_TRAP = putPrefix("server.nether-trap");
-    public static final String MSG_NO_NEGATIVE = putPrefix("server.neg");
     public static final String MSG_ERROR = putPrefix("server.chat-error");
 
     public static final String MSG_SPAWN_CREATED = putPrefix("teleport.spawn.created");

@@ -11,8 +11,6 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.NBTItem;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -43,9 +41,9 @@ public class BaseCmdItem extends BaseCommand {
             NBTItem nbtItem = new NBTItem(item);
             nbtItem.setString(key, value);
             player.getInventory().setItemInMainHand(nbtItem.getItem());
-            player.sendMessage(MSG.ITEM_ADDKEY.replace(Constants.KEY, key).replace(Constants.VALUE, value));
+            player.sendMessage(PluginMSGs.ITEM_ADDKEY.replace(PluginConstants.KEY, key).replace(PluginConstants.VALUE, value));
         } else {
-            player.sendMessage(MSG.ITEM_NO);
+            player.sendMessage(PluginMSGs.ITEM_NO);
         }
     }
 
@@ -59,9 +57,9 @@ public class BaseCmdItem extends BaseCommand {
             if (item != null && item.getType() != Material.AIR) {
                 item.getLore().clear();
                 player.getInventory().setItemInMainHand(item);
-                player.sendMessage(MSG.ITEM_LORE_CLEAR);
+                player.sendMessage(PluginMSGs.ITEM_LORE_CLEAR);
             } else {
-                player.sendMessage(MSG.ITEM_NO);
+                player.sendMessage(PluginMSGs.ITEM_NO);
             }
         }
 
@@ -72,9 +70,9 @@ public class BaseCmdItem extends BaseCommand {
             if (item != null && item.getType() != Material.AIR) {
                 item.getItemMeta().setDisplayName(item.getI18NDisplayName());
                 player.getInventory().setItemInMainHand(item);
-                player.sendMessage(MSG.ITEM_NAME_CLEAR);
+                player.sendMessage(PluginMSGs.ITEM_NAME_CLEAR);
             } else {
-                player.sendMessage(MSG.ITEM_NO);
+                player.sendMessage(PluginMSGs.ITEM_NO);
             }
         }
 
@@ -88,7 +86,7 @@ public class BaseCmdItem extends BaseCommand {
     public void onItemAddLore(Player player, String name) {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item != null && item.getType() != Material.AIR) {
-            name = MSG.getColor(name);
+            name = PluginMSGs.getColor(name);
             List<String> lore = item.getLore();
             if (lore != null) {
                 lore.add(name);
@@ -97,9 +95,9 @@ public class BaseCmdItem extends BaseCommand {
                 item.setLore(List.of(name));
             }
             player.getInventory().setItemInMainHand(item);
-            player.sendMessage(MSG.ITEM_LORE_ADD.replace("%name%", name));
+            player.sendMessage(PluginMSGs.ITEM_LORE_ADD.replace("%name%", name));
         } else {
-            player.sendMessage(MSG.ITEM_NO);
+            player.sendMessage(PluginMSGs.ITEM_NO);
         }
     }
 
@@ -113,12 +111,12 @@ public class BaseCmdItem extends BaseCommand {
         public void onItemSetLore(Player player, String name) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item != null && item.getType() != Material.AIR) {
-                name = MSG.getColor(name);
+                name = PluginMSGs.getColor(name);
                 item.setLore(List.of(name));
                 player.getInventory().setItemInMainHand(item);
-                player.sendMessage(MSG.ITEM_LORE_SET.replace("%name%", name));
+                player.sendMessage(PluginMSGs.ITEM_LORE_SET.replace("%name%", name));
             } else {
-                player.sendMessage(MSG.ITEM_NO);
+                player.sendMessage(PluginMSGs.ITEM_NO);
             }
         }
 
@@ -129,14 +127,14 @@ public class BaseCmdItem extends BaseCommand {
         public void onItemSetName(Player player, String name) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item != null && item.getType() != Material.AIR) {
-                name = MSG.getColor(name);
+                name = PluginMSGs.getColor(name);
                 ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName(name);
                 item.setItemMeta(meta);
                 player.getInventory().setItemInMainHand(item);
-                player.sendMessage(MSG.ITEM_NAME_SET.replace("%name%", name));
+                player.sendMessage(PluginMSGs.ITEM_NAME_SET.replace("%name%", name));
             } else {
-                player.sendMessage(MSG.ITEM_NO);
+                player.sendMessage(PluginMSGs.ITEM_NO);
             }
         }
 

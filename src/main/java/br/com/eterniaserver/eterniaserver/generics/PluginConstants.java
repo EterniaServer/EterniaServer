@@ -1,12 +1,11 @@
-package br.com.eterniaserver.eterniaserver.strings;
+package br.com.eterniaserver.eterniaserver.generics;
 
-public class Constants {
+public class PluginConstants {
 
-    private Constants() {
+    private PluginConstants() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final String COMMANDS = "%command%";
     public static final String MESSAGE = "%message%";
     public static final String PLAYER = "%player_displayname%";
     public static final String TARGET = "%target_displayname%";

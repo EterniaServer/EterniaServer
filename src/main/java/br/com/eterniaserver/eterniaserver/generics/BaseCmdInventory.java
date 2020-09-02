@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.NBTItem;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -37,7 +36,7 @@ public class BaseCmdInventory extends BaseCommand {
             if (player.hasPermission("eternia.enderchest.other")) {
                 player.openInventory(target.getPlayer().getEnderChest());
             } else {
-                player.sendMessage(MSG.MSG_NO_PERM);
+                player.sendMessage(PluginMSGs.MSG_NO_PERM);
             }
         }
     }
@@ -48,7 +47,7 @@ public class BaseCmdInventory extends BaseCommand {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         if (itemStack != null && itemStack.getType() != Material.AIR) {
-            player.sendMessage(MSG.ITEM_NO);
+            player.sendMessage(PluginMSGs.ITEM_NO);
             return;
         }
 
@@ -57,7 +56,7 @@ public class BaseCmdInventory extends BaseCommand {
         }
         dropHelmet(player);
         setHelmet(player);
-        player.sendMessage(MSG.ITEM_HELMET);
+        player.sendMessage(PluginMSGs.ITEM_HELMET);
     }
 
     private void dropHelmet(Player player) {

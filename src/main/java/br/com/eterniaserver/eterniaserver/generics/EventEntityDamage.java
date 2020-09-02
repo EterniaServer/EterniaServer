@@ -12,7 +12,7 @@ public class EventEntityDamage implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             final Player player = (Player) event.getEntity();
-            if (Vars.god.contains(player.getName())) {
+            if (PluginVars.god.contains(player.getName())) {
                 event.setCancelled(true);
             }
         }

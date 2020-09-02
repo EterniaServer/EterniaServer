@@ -1,10 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,8 +29,8 @@ public class EventEntityInventoryClick implements Listener {
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
-            player.sendMessage(MSG.MSG_SPAWNER_NAME);
-            player.sendMessage(UtilInternMethods.putName(player, MSG.MSG_SPAWNER_LOG));
+            player.sendMessage(PluginMSGs.MSG_SPAWNER_NAME);
+            player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_SPAWNER_LOG));
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
@@ -107,15 +105,15 @@ public class EventEntityInventoryClick implements Listener {
     private void permGui(final Player player, final String permString) {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (!Vars.cashItem.containsKey(uuid)) {
+        if (!PluginVars.cashItem.containsKey(uuid)) {
             if (EterniaServer.cashConfig.contains(permString)) {
                 final int cost = EterniaServer.cashConfig.getInt(permString + ".cost");
                 if (APICash.hasCash(uuid, cost)) {
-                    player.sendMessage(MSG.M_CASH_COST.replace(Constants.AMOUNT, String.valueOf(cost)));
-                    player.sendMessage(MSG.M_CASH);
-                    Vars.cashItem.put(uuid, permString);
+                    player.sendMessage(PluginMSGs.M_CASH_COST.replace(PluginConstants.AMOUNT, String.valueOf(cost)));
+                    player.sendMessage(PluginMSGs.M_CASH);
+                    PluginVars.cashItem.put(uuid, permString);
                 } else {
-                    player.sendMessage(MSG.M_CASH_NO);
+                    player.sendMessage(PluginMSGs.M_CASH_NO);
                 }
             } else {
                 player.closeInventory();
@@ -126,8 +124,8 @@ public class EventEntityInventoryClick implements Listener {
                 player.openInventory(gui);
             }
         } else {
-            player.sendMessage(MSG.M_CASH_ALREADY);
-            player.sendMessage(MSG.M_CASH);
+            player.sendMessage(PluginMSGs.M_CASH_ALREADY);
+            player.sendMessage(PluginMSGs.M_CASH);
         }
     }
 

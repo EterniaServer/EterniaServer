@@ -3,8 +3,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import br.com.eterniaserver.acf.BaseCommand;
@@ -31,9 +29,9 @@ public class BaseCmdHome extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (existHome(nome.toLowerCase(), uuid)) {
             delHome(nome.toLowerCase(), playerName);
-            player.sendMessage(MSG.M_HOME_DELETED);
+            player.sendMessage(PluginMSGs.M_HOME_DELETED);
         } else {
-            player.sendMessage(MSG.M_HOME_NO);
+            player.sendMessage(PluginMSGs.M_HOME_NO);
         }
     }
 
@@ -43,20 +41,20 @@ public class BaseCmdHome extends BaseCommand {
     public void onHome(Player player, String nome, @Optional OnlinePlayer target) {
         if (target == null) {
             Location location = getHome(nome.toLowerCase(), player.getName());
-            if (locationExists(location, player) && !Vars.teleports.containsKey(player)) {
-                Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.M_HOME_DONE));
-            } else if (Vars.teleports.containsKey(player)) {
-                player.sendMessage(MSG.MSG_IN_TELEPORT);
+            if (locationExists(location, player) && !PluginVars.teleports.containsKey(player)) {
+                PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
+            } else if (PluginVars.teleports.containsKey(player)) {
+                player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
             }
         } else if (player.hasPermission("eternia.home.other")) {
             Location location = getHome(nome.toLowerCase(), target.getPlayer().getName());
-            if (locationExists(location, player) && !Vars.teleports.containsKey(player)) {
-                Vars.teleports.put(player, new PlayerTeleport(player, location, MSG.M_HOME_DONE));
-            } else if (Vars.teleports.containsKey(player)) {
-                player.sendMessage(MSG.MSG_IN_TELEPORT);
+            if (locationExists(location, player) && !PluginVars.teleports.containsKey(player)) {
+                PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
+            } else if (PluginVars.teleports.containsKey(player)) {
+                player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
             }
         } else {
-            player.sendMessage(MSG.MSG_NO_PERM);
+            player.sendMessage(PluginMSGs.MSG_NO_PERM);
         }
     }
 
@@ -69,18 +67,18 @@ public class BaseCmdHome extends BaseCommand {
             if (player.hasPermission("eternia.homes.other")) {
                 List<String> list = getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
                 for (String line : list) {
-                    accounts.append(line).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
+                    accounts.append(line).append(PluginVars.colors.get(8)).append(", ").append(PluginVars.colors.get(3));
                 }
-                player.sendMessage(MSG.M_HOME_LIST.replace(Constants.HOMES, MSG.getColor(accounts.toString())));
+                player.sendMessage(PluginMSGs.M_HOME_LIST.replace(PluginConstants.HOMES, PluginMSGs.getColor(accounts.toString())));
             } else {
-                player.sendMessage(MSG.MSG_NO_PERM);
+                player.sendMessage(PluginMSGs.MSG_NO_PERM);
             }
         } else {
             List<String> list = getHomes(UUIDFetcher.getUUIDOf(player.getName()));
             for (String line : list) {
-                accounts.append(line).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
+                accounts.append(line).append(PluginVars.colors.get(8)).append(", ").append(PluginVars.colors.get(3));
             }
-            player.sendMessage(MSG.M_HOME_LIST.replace(Constants.HOMES, MSG.getColor(accounts.toString())));
+            player.sendMessage(PluginMSGs.M_HOME_LIST.replace(PluginConstants.HOMES, PluginMSGs.getColor(accounts.toString())));
         }
     }
 
@@ -95,13 +93,13 @@ public class BaseCmdHome extends BaseCommand {
 
         nome = nome.replaceAll("[^a-zA-Z0-9]", "");
         if (nome.length() > 10) {
-            player.sendMessage(MSG.M_HOME_EXCEEDED);
+            player.sendMessage(PluginMSGs.M_HOME_EXCEEDED);
             return;
         }
 
         if (canHome(uuid) < i || (existHome(nome.toLowerCase(), uuid))) {
             setHome(player.getLocation(), nome.toLowerCase(), playerName);
-            player.sendMessage(MSG.M_HOME_CREATED);
+            player.sendMessage(PluginMSGs.M_HOME_CREATED);
             return;
         }
 
@@ -116,12 +114,12 @@ public class BaseCmdHome extends BaseCommand {
         item.setItemMeta(meta);
         PlayerInventory inventory = player.getInventory();
         inventory.addItem(item);
-        player.sendMessage(MSG.M_HOME_LIMIT);
+        player.sendMessage(PluginMSGs.M_HOME_LIMIT);
     }
 
     private boolean locationExists(final Location location, final Player player) {
-        if (location == Vars.error) {
-            player.sendMessage(MSG.M_HOME_NO);
+        if (location == PluginVars.error) {
+            player.sendMessage(PluginMSGs.M_HOME_NO);
             return false;
         }
         return true;
@@ -131,7 +129,7 @@ public class BaseCmdHome extends BaseCommand {
         final String homeName = home + "." + jogador;
         final UUID uuid = UUIDFetcher.getUUIDOf(jogador);
 
-        Vars.locations.put(homeName, loc);
+        PluginVars.locations.put(homeName, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
 
@@ -153,18 +151,18 @@ public class BaseCmdHome extends BaseCommand {
         if (!t) {
             result.append(home);
             values.add(home);
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.HOMES_STR, result.toString(), Constants.UUID_STR, uuid.toString()));
-            EQueries.executeQuery(Constants.getQueryInsert(Configs.TABLE_LOCATIONS, Constants.NAME_STR, homeName, Constants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.HOMES_STR, result.toString(), PluginConstants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(PluginConfigs.TABLE_LOCATIONS, PluginConstants.NAME_STR, homeName, PluginConstants.LOCATION_STR, saveloc));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_LOCATIONS, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, homeName));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_LOCATIONS, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, homeName));
         }
-        Vars.playerProfile.get(uuid).homes = values;
+        PluginVars.playerProfile.get(uuid).homes = values;
     }
 
     public void delHome(String home, String jogador) {
         final UUID uuid = UUIDFetcher.getUUIDOf(jogador);
         final String homeName = home + "." + jogador;
-        Vars.locations.remove(homeName);
+        PluginVars.locations.remove(homeName);
         StringBuilder nova = new StringBuilder();
 
         List<String> newValues = new ArrayList<>();
@@ -178,13 +176,13 @@ public class BaseCmdHome extends BaseCommand {
                 else nova.append(value);
             }
         }
-        Vars.playerProfile.get(uuid).homes = newValues;
-        EQueries.executeQuery(Constants.getQueryUpdate(Configs.TABLE_PLAYER, Constants.HOMES_STR, nova.toString(), Constants.UUID_STR, uuid.toString()));
-        EQueries.executeQuery(Constants.getQueryDelete(Configs.TABLE_LOCATIONS, Constants.NAME_STR, homeName));
+        PluginVars.playerProfile.get(uuid).homes = newValues;
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.HOMES_STR, nova.toString(), PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(PluginConstants.getQueryDelete(PluginConfigs.TABLE_LOCATIONS, PluginConstants.NAME_STR, homeName));
     }
 
     public Location getHome(String home, String jogador) {
-        return Vars.locations.getOrDefault(home + "." + jogador, Vars.error);
+        return PluginVars.locations.getOrDefault(home + "." + jogador, PluginVars.error);
     }
 
     public boolean existHome(String home, UUID uuid) {
@@ -198,7 +196,7 @@ public class BaseCmdHome extends BaseCommand {
     }
 
     public List<String> getHomes(UUID uuid) {
-        return Vars.playerProfile.get(uuid).getHomes();
+        return PluginVars.playerProfile.get(uuid).getHomes();
     }
 
 }

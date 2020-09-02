@@ -1,9 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.strings.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.strings.MSG;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
 
@@ -16,11 +14,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class PluginTick extends BukkitRunnable {
+public class PluginTicks extends BukkitRunnable {
 
     private final EterniaServer plugin;
 
-    public PluginTick(EterniaServer plugin) {
+    public PluginTicks(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
@@ -39,79 +37,79 @@ public class PluginTick extends BukkitRunnable {
 
     private void refreshPlayers(Player player) {
         UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        Vars.playersName.put("@" + player.getName(), uuid);
-        Vars.playersName.put("@" + player.getDisplayName(), uuid);
+        PluginVars.playersName.put("@" + player.getName(), uuid);
+        PluginVars.playersName.put("@" + player.getDisplayName(), uuid);
     }
 
     private void tpaTime(final String playerName) {
-        if (Vars.tpaRequests.containsKey(playerName) && Vars.tpaTime.containsKey(playerName) &&
-                TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.tpaTime.get(playerName)) >= 25) {
-            Vars.tpaRequests.remove(playerName);
-            Vars.tpaTime.remove(playerName);
+        if (PluginVars.tpaRequests.containsKey(playerName) && PluginVars.tpaTime.containsKey(playerName) &&
+                TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.tpaTime.get(playerName)) >= 25) {
+            PluginVars.tpaRequests.remove(playerName);
+            PluginVars.tpaTime.remove(playerName);
         }
     }
 
     private void checkNetherTrap(final Player player, final Location location, final String playerName) {
         if (location.getBlock().getType() == Material.NETHER_PORTAL) {
-            if (!Vars.playersInPortal.containsKey(playerName)) {
-                Vars.playersInPortal.put(playerName, 7);
-            } else if (Vars.playersInPortal.get(playerName) <= 1) {
+            if (!PluginVars.playersInPortal.containsKey(playerName)) {
+                PluginVars.playersInPortal.put(playerName, 7);
+            } else if (PluginVars.playersInPortal.get(playerName) <= 1) {
                 if (location.getBlock().getType() == Material.NETHER_PORTAL) {
                     runSync(() -> PaperLib.teleportAsync(player, getWarp()));
-                    player.sendMessage(MSG.MSG_WARP_DONE);
+                    player.sendMessage(PluginMSGs.MSG_WARP_DONE);
                 }
-            } else if (Vars.playersInPortal.get(playerName) > 1) {
-                Vars.playersInPortal.put(playerName, Vars.playersInPortal.get(playerName) - 1);
-                if (Vars.playersInPortal.get(playerName) < 5) {
-                    player.sendMessage(MSG.MSG_NETHER_TRAP.replace(Constants.COOLDOWN, String.valueOf(Vars.playersInPortal.get(playerName))));
+            } else if (PluginVars.playersInPortal.get(playerName) > 1) {
+                PluginVars.playersInPortal.put(playerName, PluginVars.playersInPortal.get(playerName) - 1);
+                if (PluginVars.playersInPortal.get(playerName) < 5) {
+                    player.sendMessage(PluginMSGs.MSG_NETHER_TRAP.replace(PluginConstants.COOLDOWN, String.valueOf(PluginVars.playersInPortal.get(playerName))));
                 }
             }
         } else {
-            Vars.playersInPortal.remove(playerName);
+            PluginVars.playersInPortal.remove(playerName);
         }
     }
 
     private void checkAFK(final Player player, final String playerName) {
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.afkTime.get(playerName)) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.get(playerName)) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
             if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
-                if (!Vars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                    Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_AFK_BROAD));
-                    runSync(() -> player.kickPlayer(MSG.MSG_AFK_KICKED));
+                if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
+                    Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_BROAD));
+                    runSync(() -> player.kickPlayer(PluginMSGs.MSG_AFK_KICKED));
                 }
             } else {
-                Bukkit.broadcastMessage(UtilInternMethods.putName(player, MSG.MSG_AFK_ENABLE));
-                Vars.afk.add(playerName);
+                Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_ENABLE));
+                PluginVars.afk.add(playerName);
             }
         }
     }
 
     private void getPlayersInTp(final Player player) {
-        if (Vars.teleports.containsKey(player)) {
-            final PlayerTeleport playerTeleport = Vars.teleports.get(player);
+        if (PluginVars.teleports.containsKey(player)) {
+            final PlayerTeleport playerTeleport = PluginVars.teleports.get(player);
             if (!player.hasPermission("eternia.timing.bypass")) {
                 if (!playerTeleport.hasMoved()) {
                     if (playerTeleport.getCountdown() == 0) {
                         runSync(()-> PaperLib.teleportAsync(player, playerTeleport.getWantLocation()));
                         player.sendMessage(playerTeleport.getMessage());
-                        Vars.teleports.remove(player);
+                        PluginVars.teleports.remove(player);
                     } else {
-                        player.sendMessage(MSG.MSG_TELEPORT_TIMING.replace(Constants.COOLDOWN, String.valueOf(playerTeleport.getCountdown())));
+                        player.sendMessage(PluginMSGs.MSG_TELEPORT_TIMING.replace(PluginConstants.COOLDOWN, String.valueOf(playerTeleport.getCountdown())));
                         playerTeleport.decreaseCountdown();
                     }
                 } else {
-                    player.sendMessage(MSG.MSG_TELEPORT_MOVE);
-                    Vars.teleports.remove(player);
+                    player.sendMessage(PluginMSGs.MSG_TELEPORT_MOVE);
+                    PluginVars.teleports.remove(player);
                 }
             } else {
                 runSync(()-> PaperLib.teleportAsync(player, playerTeleport.getWantLocation()));
                 player.sendMessage(playerTeleport.getMessage());
-                Vars.teleports.remove(player);
+                PluginVars.teleports.remove(player);
             }
         }
     }
 
     private Location getWarp() {
-        return Vars.locations.getOrDefault("warp.spawn", Vars.error);
+        return PluginVars.locations.getOrDefault("warp.spawn", PluginVars.error);
     }
 
     public void runSync(Runnable runnable) {
