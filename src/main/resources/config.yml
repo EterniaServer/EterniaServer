@@ -87,9 +87,6 @@ money:
   nick: 500000
   singular: 'Eternia'
   plural: 'Eternias'
-  server-account:
-    enable: true
-    account: 'yurinogueira'
 
 # This commands will be blocked.
 blocked-commands:
