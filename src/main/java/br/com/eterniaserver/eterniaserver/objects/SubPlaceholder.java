@@ -19,22 +19,28 @@ public class SubPlaceholder {
 	}
 
 	public SubPlaceholder(String name, ConfigurationSection section) {
+
 		this.name = name;
 		this.priority = section.getInt("priority");
 		this.perm = section.getString("perm");
 		this.value = section.getString("value");
+
 		if(section.contains("hoverText")) {
 			hover = section.getString("hoverText");
 		}
+
 		if(section.contains("suggestCmd")) {
 			suggest = section.getString("suggestCmd");
 		}
+
 		if(section.contains("runCmd")) {
 			run = section.getString("runCmd");
 		}
+
 		if(section.contains("useGroupEvents") && section.getBoolean("useGroupEvents")) {
 			isText = true;
 		}
+
 	}
 
 	public String getHover() {

@@ -16,6 +16,8 @@ public class PluginConfigs {
     public static final String TABLE_REWARD = EterniaServer.serverConfig.getString("sql.table-rewards");
     public static final String TABLE_LOCATIONS = EterniaServer.serverConfig.getString("sql.table-locations");
 
+    public static final boolean MODULE_ECONOMY = EterniaServer.serverConfig.getBoolean("modules.economy");
+
     protected static final int BED_SPEED = EterniaServer.serverConfig.getInt("bed.speed");
     protected static final List<?> BED_BANNED_WORLD = EterniaServer.serverConfig.getList("bed.blacklisted-worlds");
 
