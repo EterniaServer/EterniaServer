@@ -38,6 +38,7 @@ public class EterniaServer extends JavaPlugin {
     public static final YamlConfiguration placeholderConfig = new YamlConfiguration();
     public static final YamlConfiguration groupConfig = new YamlConfiguration();
     public static final YamlConfiguration cashConfig = new YamlConfiguration();
+    public static final YamlConfiguration scheduleConfig = new YamlConfiguration();
 
     private final Files files = new Files(this);
 

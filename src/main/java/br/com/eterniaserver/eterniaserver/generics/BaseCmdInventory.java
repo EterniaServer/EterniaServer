@@ -46,7 +46,7 @@ public class BaseCmdInventory extends BaseCommand {
     public void onHat(Player player) {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
-        if (itemStack != null && itemStack.getType() != Material.AIR) {
+        if (itemStack.getType() == Material.AIR) {
             player.sendMessage(PluginMSGs.ITEM_NO);
             return;
         }

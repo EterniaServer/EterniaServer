@@ -44,9 +44,9 @@ public class UtilTextMaker {
 					String playerName;
 					if (Character.toString(msg.charAt(v)).equals("@")) {
 						if (lenght > v + 16) playerName = msg.substring(v, v + 16).split(" ")[0];
-						else playerName = msg.substring(v, v + lenght - 1).split(" ")[0];
-						msg = msg.replace(playerName, PluginVars.colors.get(3) + playerName + PluginVars.colors.get(15));
+						else playerName = msg.substring(v, v + lenght).split(" ")[0];
 						if (PluginVars.playersName.containsKey(playerName)) {
+							msg = msg.replace(playerName, PluginVars.colors.get(3) + playerName + PluginVars.colors.get(15));
 							Player player = Bukkit.getPlayer(PluginVars.playersName.get(playerName));
 							if (player != null && player.isOnline()) {
 								player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));

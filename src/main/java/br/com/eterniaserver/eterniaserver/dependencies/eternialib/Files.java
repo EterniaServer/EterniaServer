@@ -62,6 +62,10 @@ public class Files {
         loadFile("cashgui.yml", EterniaServer.cashConfig);
     }
 
+    public void loadSchedules() {
+        loadFile("schedule.yml", EterniaServer.scheduleConfig);
+    }
+
     public void loadDatabase() {
         new Table();
     }

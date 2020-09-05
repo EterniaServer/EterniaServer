@@ -5,6 +5,7 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdGlow;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdItem;
+import br.com.eterniaserver.eterniaserver.generics.PluginTimer;
 import br.com.eterniaserver.eterniaserver.generics.UtilAccelerateWorld;
 import br.com.eterniaserver.eterniaserver.generics.UtilAdvancedChatTorch;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdCash;
@@ -27,6 +28,12 @@ import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 
 import org.bukkit.Bukkit;
+
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Managers {
 
@@ -55,6 +62,7 @@ public class Managers {
         loadRewardsManager();
         loadSpawnersManager();
         loadTeleportsManager();
+        loadScheduleTasks();
 
     }
 
@@ -190,6 +198,20 @@ public class Managers {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.teleports"), "Teleports")) {
             EterniaLib.getManager().registerCommand(new BaseCmdWarp());
             EterniaLib.getManager().registerCommand(new BaseCmdTeleport());
+        }
+    }
+
+    private void loadScheduleTasks() {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.schedule"), "Schedule")) {
+            plugin.getFiles().loadSchedules();
+            long start = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.of(
+                    EterniaServer.scheduleConfig.getInt("schedule.hour"),
+                    EterniaServer.scheduleConfig.getInt("schedule.minute"),
+                    EterniaServer.scheduleConfig.getInt("schedule.second")));
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.scheduleWithFixedDelay(new PluginTimer(plugin), start, TimeUnit.HOURS.toMillis(
+                    EterniaServer.scheduleConfig.getInt("schedule.delay")
+            ), TimeUnit.MILLISECONDS);
         }
     }
 

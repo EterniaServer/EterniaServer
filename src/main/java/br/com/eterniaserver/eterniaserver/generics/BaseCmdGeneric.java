@@ -1,14 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
-import br.com.eterniaserver.acf.annotation.Default;
-import br.com.eterniaserver.acf.annotation.Description;
-import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Optional;
-import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
@@ -20,15 +15,12 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,12 +69,13 @@ public class BaseCmdGeneric extends BaseCommand {
             final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_LOCATIONS), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
             temp.forEach((k, v) -> {
                 final String[] split = v.split(":");
-                final Location loc = new Location(Bukkit.getWorld(split[0]),
+                Location loc = new Location(Bukkit.getWorld(split[0]),
                         Double.parseDouble(split[1]),
                         (Double.parseDouble(split[2]) + 1),
                         Double.parseDouble(split[3]),
                         Float.parseFloat(split[4]),
                         Float.parseFloat(split[5]));
+                loc = getCenter(loc);
                 PluginVars.locations.put(k, loc);
             });
         }
@@ -91,12 +84,13 @@ public class BaseCmdGeneric extends BaseCommand {
             final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_LOCATIONS), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
             temp.forEach((k, v) -> {
                 final String[] split = v.split(":");
-                final Location loc = new Location(Bukkit.getWorld(split[0]),
+                Location loc = new Location(Bukkit.getWorld(split[0]),
                         Double.parseDouble(split[1]),
                         (Double.parseDouble(split[2]) + 1),
                         Double.parseDouble(split[3]),
                         Float.parseFloat(split[4]),
                         Float.parseFloat(split[5]));
+                loc = getCenter(loc);
                 PluginVars.locations.put(k, loc);
             });
         }
@@ -393,6 +387,19 @@ public class BaseCmdGeneric extends BaseCommand {
 
     private void sendConsole(String message) {
         Bukkit.getConsoleSender().sendMessage(message);
+    }
+
+    public Location getCenter(Location loc) {
+        return new Location(loc.getWorld(),
+                getRelativeCoord(loc.getBlockX()),
+                getRelativeCoord(loc.getBlockY()),
+                getRelativeCoord(loc.getBlockZ()));
+    }
+
+    private double getRelativeCoord(int i) {
+        double d = i;
+        d = d < 0 ? d - .5 : d + .5;
+        return d;
     }
 
 }

@@ -29,6 +29,7 @@ modules:
   spawners: true
   teleports: true
   rewards: true
+  schedule: true
 
 # Placeholders for PlaceholderAPI.
 placeholders:
