@@ -11,7 +11,7 @@ public class APIFly {
     }
 
     public static void changeFlyState(Player player) {
-        if (player.getAllowFlight() && player.isFlying()) {
+        if (player.getAllowFlight()) {
             player.setAllowFlight(false);
             player.setFlying(false);
             return;

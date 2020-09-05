@@ -206,6 +206,17 @@ public class BaseCmdGeneric extends BaseCommand {
         player.sendMessage(PluginMSGs.FLY_DISABLED);
     }
 
+    @CommandAlias("flydebug")
+    @CommandPermission("eternia.admin")
+    public void onFlyDebug() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!player.hasPermission("eternia.fly")) {
+                player.setFlying(false);
+                player.setAllowFlight(false);
+            }
+        }
+    }
+
     @CommandAlias("feed|saciar")
     @Syntax("<jogador>")
     @CommandPermission("eternia.feed")
