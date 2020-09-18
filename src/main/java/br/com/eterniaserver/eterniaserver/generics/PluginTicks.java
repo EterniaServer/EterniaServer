@@ -6,7 +6,6 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -42,14 +41,18 @@ public class PluginTicks extends BukkitRunnable {
     }
 
     private void optimizedMoveEvent(Player player) {
-        if (playerLocationMap.get(player).distanceSquared(player.getLocation()) != 0) {
-            final String playerName = player.getName();
-            PluginVars.afkTime.put(playerName, System.currentTimeMillis());
-            if (PluginVars.afk.contains(playerName)) {
-                PluginVars.afk.remove(playerName);
-                Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
+        Location location = player.getLocation();
+        if (location.getWorld().getName().equals(playerLocationMap.get(player).getWorld().getName())) {
+            if (playerLocationMap.get(player).distanceSquared(location) != 0) {
+                final String playerName = player.getName();
+                PluginVars.afkTime.put(playerName, System.currentTimeMillis());
+                if (PluginVars.afk.contains(playerName)) {
+                    PluginVars.afk.remove(playerName);
+                    Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
+                }
             }
         }
+        playerLocationMap.put(player, location);
     }
 
     private void refreshPlayers(Player player) {

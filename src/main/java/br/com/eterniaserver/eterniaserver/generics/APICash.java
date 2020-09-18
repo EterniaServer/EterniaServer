@@ -13,6 +13,11 @@ public class APICash {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Get the cash balance of the player
+     * @param uuid of player
+     * @return the cash balance
+     */
     public static int getCash(UUID uuid) {
         if (PluginVars.playerProfile.containsKey(uuid)) {
             return PluginVars.playerProfile.get(uuid).cash;
@@ -33,10 +38,21 @@ public class APICash {
         }
     }
 
+    /**
+     * Check if the player has cash enough
+     * @param uuid of player
+     * @param amount the amount of cash needed
+     * @return if has or not
+     */
     public static boolean hasCash(UUID uuid, int amount) {
         return getCash(uuid) >= amount;
     }
 
+    /**
+     * Defines the cash balance of the player
+     * @param uuid of player
+     * @param amount the amount of cash to set
+     */
     public static void setCash(UUID uuid, int amount) {
         if (PluginVars.playerProfile.containsKey(uuid)) {
             PluginVars.playerProfile.get(uuid).cash = amount;
@@ -58,10 +74,20 @@ public class APICash {
         }
     }
 
+    /**
+     * Add cash to player account
+     * @param uuid of player
+     * @param amount the amount of cash to add
+     */
     public static void addCash(UUID uuid, int amount) {
         setCash(uuid, getCash(uuid) + amount);
     }
 
+    /**
+     * Remove cash to player account
+     * @param uuid of player
+     * @param amount the amount of cash to remove
+     */
     public static void removeCash(UUID uuid, int amount) {
         setCash(uuid, getCash(uuid) - amount);
     }

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.dependencies.papi;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import br.com.eterniaserver.eterniaserver.generics.APICash;
 import br.com.eterniaserver.eterniaserver.generics.APIPlayer;

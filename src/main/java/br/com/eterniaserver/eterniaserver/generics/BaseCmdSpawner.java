@@ -47,7 +47,7 @@ public class BaseCmdSpawner extends BaseCommand {
         ItemStack item = new ItemStack(Material.SPAWNER);
         ItemMeta meta = item.getItemMeta();
         item.setAmount(value);
-        String mobFormatted = spawnerName.substring(0, 1) + spawnerName.substring(1);
+        String mobFormatted = spawnerName.charAt(0) + spawnerName.substring(1);
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
         List<String> newLore = new ArrayList<>();
         if (EterniaServer.serverConfig.getBoolean("spawners.enable-lore")) {
