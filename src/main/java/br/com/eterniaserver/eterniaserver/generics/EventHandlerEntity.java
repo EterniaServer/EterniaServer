@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -16,7 +18,30 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public class EventEntityInventoryClick implements Listener {
+public class EventHandlerEntity implements Listener {
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            final Player player = (Player) event.getEntity();
+            if (PluginVars.god.contains(player.getName())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+            final Player player = (Player) event.getDamager();
+            if (player.isFlying() && !player.hasPermission("eternia.fly.bypass")) {
+                player.sendMessage(PluginMSGs.FLY_PVP_DISABLED);
+                APIFly.setIsOnPvP(UUIDFetcher.getUUIDOf(player.getName()));
+                player.setAllowFlight(false);
+                player.setFlying(false);
+            }
+        }
+    }
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
@@ -128,5 +153,6 @@ public class EventEntityInventoryClick implements Listener {
             player.sendMessage(PluginMSGs.M_CASH);
         }
     }
+
 
 }

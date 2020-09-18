@@ -24,6 +24,7 @@ server:
   load-data: '&3%module% &7carregados &3%amount% &7de arquivos&8.'
   no-money: '&7Você não possui todo esse dinheiro&8, &3%money%&8.'
   neg: '&7O valor não pode ser negativo&8.'
+  entities-removeds: '&7Foram removidas &3%amount%&7 entidades&8.'
 glow:
   brilho: '&7Brilhando&8!'
   desbrilho: '&7Desbrilhando :(&8!'

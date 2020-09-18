@@ -11,15 +11,42 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class EventPlayerBlockBreak implements Listener {
+public class EventHandlerBlock implements Listener {
+
+    @EventHandler (priority = EventPriority.LOWEST)
+    public void onPlayerSignChange(SignChangeEvent event) {
+        if (event.getPlayer().hasPermission("eternia.sign.color")) {
+            for (byte i = 0; i < 4; i++) {
+                event.setLine(i, PluginMSGs.getColor(event.getLine(i)));
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerBlockPlace(BlockPlaceEvent event) {
+        final Block block = event.getBlockPlaced();
+        if (block.getType() == Material.SPAWNER && EterniaServer.serverConfig.getBoolean("modules.spawners")) {
+            final ItemMeta meta = event.getItemInHand().getItemMeta();
+            if (meta != null) {
+                final String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
+                final EntityType entity = EntityType.valueOf(entityName);
+                CreatureSpawner spawner = (CreatureSpawner) block.getState();
+                spawner.setSpawnedType(entity);
+                spawner.update();
+            }
+        }
+    }
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerBlockBreak(BlockBreakEvent event) {
@@ -135,5 +162,6 @@ public class EventPlayerBlockBreak implements Listener {
     private boolean isBlackListWorld(final String worldName) {
         return EterniaServer.serverConfig.getStringList("spawners.blacklisted-worlds").contains(worldName);
     }
+
 
 }

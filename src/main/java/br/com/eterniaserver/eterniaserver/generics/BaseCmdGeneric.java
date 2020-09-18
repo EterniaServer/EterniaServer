@@ -65,7 +65,7 @@ public class BaseCmdGeneric extends BaseCommand {
         }
         sendConsole(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Player Profiles").replace(PluginConstants.AMOUNT, String.valueOf(PluginVars.playerProfile.size())));
 
-        if (EterniaServer.serverConfig.getBoolean("modules.home")) {
+        if (EterniaServer.serverConfig.getBoolean("modules.home") || EterniaServer.serverConfig.getBoolean("modules.teleports")) {
             final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_LOCATIONS), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
             temp.forEach((k, v) -> {
                 final String[] split = v.split(":");
@@ -75,22 +75,9 @@ public class BaseCmdGeneric extends BaseCommand {
                         Double.parseDouble(split[3]),
                         Float.parseFloat(split[4]),
                         Float.parseFloat(split[5]));
-                loc = getCenter(loc);
-                PluginVars.locations.put(k, loc);
-            });
-        }
-
-        if (EterniaServer.serverConfig.getBoolean("modules.teleports")) {
-            final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_LOCATIONS), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
-            temp.forEach((k, v) -> {
-                final String[] split = v.split(":");
-                Location loc = new Location(Bukkit.getWorld(split[0]),
-                        Double.parseDouble(split[1]),
-                        (Double.parseDouble(split[2]) + 1),
-                        Double.parseDouble(split[3]),
-                        Float.parseFloat(split[4]),
-                        Float.parseFloat(split[5]));
-                loc = getCenter(loc);
+                if (k.contains(".")) {
+                    loc = getCenter(loc);
+                }
                 PluginVars.locations.put(k, loc);
             });
         }
@@ -170,7 +157,7 @@ public class BaseCmdGeneric extends BaseCommand {
             return;
         }
 
-        if (targetS != null) {
+        if (targetS != null && player.hasPermission("eternia.fly.others")) {
 
             final Player target = targetS.getPlayer();
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());

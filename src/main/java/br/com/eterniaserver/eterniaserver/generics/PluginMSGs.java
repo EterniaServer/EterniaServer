@@ -21,6 +21,7 @@ public class PluginMSGs {
     public static final String MSG_TIMING = putPrefix("server.timing");
     public static final String MSG_NETHER_TRAP = putPrefix("server.nether-trap");
     public static final String MSG_ERROR = putPrefix("server.chat-error");
+    public static final String REMOVED_ENTITIES = putPrefix("server.entities-removeds");
 
     public static final String MSG_SPAWN_CREATED = putPrefix("teleport.spawn.created");
     public static final String MSG_SPAWN_NO_EXISTS = putPrefix("teleport.spawn.no-exists");

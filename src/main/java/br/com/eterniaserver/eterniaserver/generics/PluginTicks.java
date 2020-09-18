@@ -6,17 +6,21 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PluginTicks extends BukkitRunnable {
 
     private final EterniaServer plugin;
+    private final Map<Player, Location> playerLocationMap = new HashMap<>();
 
     public PluginTicks(EterniaServer plugin) {
         this.plugin = plugin;
@@ -26,12 +30,25 @@ public class PluginTicks extends BukkitRunnable {
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Location location = player.getLocation();
+            if (!playerLocationMap.containsKey(player)) playerLocationMap.put(player, location);
             final String playerName = player.getName();
             tpaTime(playerName);
             checkNetherTrap(player, location, playerName);
             checkAFK(player, playerName);
             getPlayersInTp(player);
             refreshPlayers(player);
+            optimizedMoveEvent(player);
+        }
+    }
+
+    private void optimizedMoveEvent(Player player) {
+        if (playerLocationMap.get(player).distanceSquared(player.getLocation()) != 0) {
+            final String playerName = player.getName();
+            PluginVars.afkTime.put(playerName, System.currentTimeMillis());
+            if (PluginVars.afk.contains(playerName)) {
+                PluginVars.afk.remove(playerName);
+                Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
+            }
         }
     }
 
@@ -52,7 +69,7 @@ public class PluginTicks extends BukkitRunnable {
     private void checkNetherTrap(final Player player, final Location location, final String playerName) {
         if (location.getBlock().getType() == Material.NETHER_PORTAL) {
             if (!PluginVars.playersInPortal.containsKey(playerName)) {
-                PluginVars.playersInPortal.put(playerName, 7);
+                PluginVars.playersInPortal.put(playerName, 10);
             } else if (PluginVars.playersInPortal.get(playerName) <= 1) {
                 if (location.getBlock().getType() == Material.NETHER_PORTAL) {
                     runSync(() -> PaperLib.teleportAsync(player, getWarp()));
@@ -112,7 +129,7 @@ public class PluginTicks extends BukkitRunnable {
         return PluginVars.locations.getOrDefault("warp.spawn", PluginVars.error);
     }
 
-    public void runSync(Runnable runnable) {
+    private void runSync(Runnable runnable) {
         if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
             Bukkit.getScheduler().runTask(plugin, runnable);
             return;

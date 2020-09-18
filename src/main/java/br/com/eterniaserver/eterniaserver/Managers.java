@@ -5,6 +5,7 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdGlow;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdItem;
+import br.com.eterniaserver.eterniaserver.generics.PluginClear;
 import br.com.eterniaserver.eterniaserver.generics.PluginTimer;
 import br.com.eterniaserver.eterniaserver.generics.UtilAccelerateWorld;
 import br.com.eterniaserver.eterniaserver.generics.UtilAdvancedChatTorch;
@@ -58,6 +59,7 @@ public class Managers {
         loadExperienceManager();
         loadHomesManager();
         loadPlayerChecks();
+        loadClearManager();
         loadKitManager();
         loadRewardsManager();
         loadSpawnersManager();
@@ -179,6 +181,12 @@ public class Managers {
             return;
         }
         new PluginTicks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt(PluginConstants.SERVER_CHECKS) * 20);
+    }
+
+    private void loadClearManager() {
+        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.clear"), "Mob Control")) {
+            new PluginClear().runTaskTimer(plugin, 20L, 600L);
+        }
     }
 
     private void loadRewardsManager() {

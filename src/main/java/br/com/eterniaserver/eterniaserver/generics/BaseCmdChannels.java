@@ -30,6 +30,7 @@ public class BaseCmdChannels extends BaseCommand {
 
     @Subcommand("global")
     @CommandAlias("g|global")
+    @CommandCompletion("@players")
     @Description(" Fale ou vá para o canal global")
     public void toGlobal(Player player, @Optional String[] messages) {
         changeChannel(1, "Global", player, messages);

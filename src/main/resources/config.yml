@@ -1,113 +1,91 @@
-#  _______ .___________. _______ .______      .__   __.  __       ___
-# |   ____||           ||   ____||   _  \     |  \ |  | |  |     /   \
-# |  |__   `---|  |----`|  |__   |  |_)  |    |   \|  | |  |    /  ^  \
-# |   __|      |  |     |   __|  |      /     |  . `  | |  |   /  /_\  \
-# |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
-# |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
+#  _______ .___________. _______ .______  .__   __.  __       ___
+# |   ____||           ||   ____||   _  \ |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  ||   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      / |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._||__| \__| |__| /__/     \__\
 
-# bed contain the bed module to skip night.
-# block-reward will enable or disable the rewards for break certain
-# types of blocks.
-# commands will enable or disable the custom commands module.
-# economy will enable or disable the economy module.
-# experience will enable or disable the experience module.
-# generic will enable or disable the common commands.
-# home will enable or disable the home module.
-# spawners will enable or disable to get and place spawners.
-# teleports will enable or disable warps, teleportoplayer and others.
+# RISK LEVELS :
+# DANGER = Don't touch it unless you know what you're doing.
+# WARN = Be careful to not break anything.
+# SAFE = Settings only, this can alter the functioning of certain things.
+
+# This is to define which modules will be active.
 modules:
-  bed: true
-  block-reward: true
-  cash: true
-  chat: true
-  commands: true
-  economy: true
-  elevator: true
-  experience: true
-  home: true
-  kits: true
-  spawners: true
-  teleports: true
-  rewards: true
-  schedule: true
+  bed: true # SAFE
+  block-reward: true # SAFE
+  cash: true # SAFE
+  chat: true # SAFE
+  clear: true # SAFE
+  commands: true # SAFE
+  economy: true # SAFE
+  elevator: true # SAFE
+  experience: true # SAFE
+  home: true # SAFE
+  kits: true # SAFE
+  spawners: true # SAFE
+  teleports: true # SAFE
+  rewards: true # SAFE
+  schedule: true # SAFE
 
-# Placeholders for PlaceholderAPI.
+# This is to change certain placeholders of the plugin.
 placeholders:
-  afk: '&9 AFK'
-  godmode: '&9 GOD'
+  afk: '&9 AFK' # SAFE
+  godmode: '&9 GOD' # SAFE
 
-# async-check will enable the async method.
-# don't know what you're doing.
-# checks is the interval between checks, like afk, anti nether trap, cooldowns
-# don't touch this, if you don't know what you're doing.
-# afk-timer is the time in seconds for player be kicked by afk.
-# cooldown is the interval between the player being teleported when using a
-# command that teleports him.
+# Main plugin settings.
 server:
-  async-check: true
-  checks: 1
-  afk-timer: 900
-  afk-kick: true
-  cooldown: 4
-  pvp-time: 15
+  async-check: true # WARN        | If your server only has 1 core just turn this off.
+  checks: 1 # DANGER              | The interval between checks, like afk, cooldowns and etc..
+  schedule-threads: 1 # DANGER    | Only change in case of extreme use of schedules. Probably never need to change this.
+  afk-timer: 900 # SAFE           | The time in seconds for player be kicked by afk.
+  afk-kick: true # SAFE           | Define if the player will be kicked by afk.
+  cooldown: 4 # SAFE              | Interval between the player being teleported when using a command.
+  pvp-time: 15 # SAFE             | Time that player will be in PvP after cause combat damage to another player.
+  clear-range: 1 # SAFE           | The range to get arounds chunks to clear mobs.
 
-# The blocks you choose will be able to be elevators if have another of the
-# same type above or bellow.
-# max is the max distance.
-# min is the min distance.
+# Elevator module settings.
 elevator:
-  block:
+  block: # SAFE                   | List of blocks that served as an elevator.
     - 'IRON_BLOCK'
-  max: 50
-  min: 2
+  max: 50 # SAFE                  | Maximum height between elevators.
+  min: 2 # SAFE                   | Minimum height between elevators.
 
-# With this you can choose between using MySQL or SQLite and
-# define the name of each table.
+# WARN                            | Name of SQLite or MySQL tables.
 sql:
   table-kits: 'es_kits'
   table-player: 'es_players'
   table-rewards: 'es_rewards'
   table-locations: 'es_locations'
 
-# speed is how faster the night will pass (this will be divided by the (players
-# online divided by the players sleeping))
-# blacklisted-worlds will set which worlds could not skip the night sleeping.
+# Bed module settings.
 bed:
-  speed: 100
-  blacklisted-worlds:
+  speed: 100 # SAFE               | The speed that the night will pass. (Varies based on number of players)
+  blacklisted-worlds: # SAFE      | List of worlds that CAN'T pass the night.
     - 'evento'
+    - 'world_evento'
 
-# start is the amount of money the player will have when starting.
-# back is the cost of the /back command.
-# singular is the name of the currency in the singular.
-# plural is the name of the currency in the plural.
+# Economy module settings.
 money:
-  start: 300
-  back: 1000
-  nick: 500000
-  singular: 'Eternia'
-  plural: 'Eternias'
+  start: 300 # SAFE               | Initial balance.
+  back: 1000 # SAFE               | /back cost. (Requires teleport module to be active)
+  nick: 500000 # SAFE             | /nick cost. (Requires chat module to be active)
+  singular: 'Eternia' # SAFE      | Singular name of the currency.
+  plural: 'Eternias' # SAFE       | Plural name of the currency.
 
-# This commands will be blocked.
+# SAFE                            | List of commands that will be blocked.
 blocked-commands:
   - '/op'
   - '/deop'
   - '/stop'
 
-# mob-name-color is the color of the mobs name in the mobspawner.
-# enable-lore will enable or disable lore of mobspawners.
-# lore is the lore of mobspawner.
-# drop-in-inventory will make the mobspawner go to the inventory instead of
-# the ground.
-# drop-chance is the chance of drop a mobspawner, 1.0 == 100%.
-# prevent-anvil will block the option to rename a mobspawner.
-# blacklisted-worlds will block to get a mobspawner in the listed worlds.
-# log will report to console all mobspawners placed.
+# Spawners module settings.
 spawners:
-  mob-name-color: '&e'
-  drop-in-inventory: true
-  drop-chance: 1.0
-  prevent-anvil: true
-  blacklisted-worlds:
+  mob-name-color: '&e' # WARN     | The color of mob's name. (This can break existing spawners)
+  drop-in-inventory: true # SAFE  | Defines whether spawners drop.
+  drop-chance: 1.0 # SAFE         | The chance of drop a spawner.
+  prevent-anvil: true # WARN      | Block the option to rename a mobspawner. (I recommend to not change this)
+  blacklisted-worlds: # SAFE      | List of worlds that CAN'T get spawners.
     - 'evento'
-  log: true
+    - 'world_evento'
+  log: true # SAFE                | Logs when a spawner is placed.
