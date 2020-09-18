@@ -162,12 +162,12 @@ public class BaseCmdGeneric extends BaseCommand {
             final Player target = targetS.getPlayer();
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
 
-            if (APIFly.isOnPvP(uuid)) {
-                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid)))));
+            if (APIPlayer.isOnPvP(uuid)) {
+                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIPlayer.getPvPCooldown(uuid)))));
                 return;
             }
 
-            APIFly.changeFlyState(target);
+            APIPlayer.changeFlyState(target);
             if (target.isFlying()) {
                 target.sendMessage(UtilInternMethods.putName(player, PluginMSGs.FLY_ENABLED_BY));
                 player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_ENABLED_FOR));
@@ -180,12 +180,12 @@ public class BaseCmdGeneric extends BaseCommand {
 
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
-        if (APIFly.isOnPvP(uuid)) {
-            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIFly.getPvPCooldown(uuid))));
+        if (APIPlayer.isOnPvP(uuid)) {
+            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIPlayer.getPvPCooldown(uuid))));
             return;
         }
 
-        APIFly.changeFlyState(player);
+        APIPlayer.changeFlyState(player);
         if (player.isFlying()) {
             player.sendMessage(PluginMSGs.FLY_ENABLED);
             return;

@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
 
+import br.com.eterniaserver.eterniaserver.events.ServerHandler;
 import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
@@ -86,7 +87,7 @@ public class UtilTextMaker {
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
-		if (EventHandlerServer.version116) {
+		if (ServerHandler.version116) {
 			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
 			TextComponent component = new TextComponent(string.replace("[item]", PluginVars.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + PluginVars.colors.get(15)));
 			component.setHoverEvent(event);

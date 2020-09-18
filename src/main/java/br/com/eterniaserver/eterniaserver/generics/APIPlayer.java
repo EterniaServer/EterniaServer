@@ -1,6 +1,10 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
+
+import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +28,18 @@ public class APIPlayer {
         return isAFK(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
     }
 
+    public static void removeFromAFK(String playerName) {
+        PluginVars.afkTime.remove(playerName);
+    }
+
+    public static void putAfk(String playerName) {
+        PluginVars.afkTime.put(playerName, System.currentTimeMillis());
+    }
+
+    public static boolean hasProfile(UUID uuid) {
+        return PluginVars.playerProfile.containsKey(uuid);
+    }
+
     public static String getGlowColor(String playerName) {
         return PluginVars.glowingColor.getOrDefault(playerName, "");
     }
@@ -34,6 +50,95 @@ public class APIPlayer {
 
     public static String isGodPlaceholder(String playerName) {
         return isGod(playerName) ? EterniaServer.serverConfig.getString("placeholders.godmode") : "";
+    }
+
+    public static long getMutedTime(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).muted;
+    }
+
+    public static String getDisplayName(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).getPlayerDisplayName();
+    }
+
+    public static int getChannel(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).chatChannel;
+    }
+
+    public static boolean isTell(String playerName) {
+        return PluginVars.chatLocked.containsKey(playerName);
+    }
+
+    public static String getTellingPlayerName(String playerName) {
+        return PluginVars.chatLocked.get(playerName);
+    }
+
+    public static boolean hasIgnoreds(String playerName) {
+        return PluginVars.ignoredPlayer.containsKey(playerName);
+    }
+
+    public static boolean areIgnored(String playerName, Player target) {
+        return PluginVars.ignoredPlayer.get(playerName).contains(target);
+    }
+
+    public static boolean isTeleporting(Player player) {
+        return PluginVars.teleports.containsKey(player);
+    }
+
+    public static long getAndUpdateTimePlayed(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).updateTimePlayed();
+    }
+
+    public static void changeFlyState(Player player) {
+        if (player.getAllowFlight()) {
+            player.setAllowFlight(false);
+            player.setFlying(false);
+            return;
+        }
+
+        player.setAllowFlight(true);
+        player.setFlying(true);
+    }
+
+    public static boolean isOnPvP(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).isOnPvP();
+    }
+
+    public static int getPvPCooldown(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).getOnPvP();
+    }
+
+    public static void setIsOnPvP(UUID uuid) {
+        PluginVars.playerProfile.get(uuid).setIsOnPvP();
+    }
+
+    public static void updatePlayerProfile(UUID uuid, Player player, long time) {
+        final String playerName = player.getName();
+        PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
+        if (playerProfile.playerName == null) {
+            final PlayerProfile newPlayerProfile = new PlayerProfile(playerName, time, time, 0);
+            newPlayerProfile.cash = playerProfile.cash;
+            newPlayerProfile.balance = playerProfile.balance;
+            newPlayerProfile.xp = playerProfile.xp;
+            newPlayerProfile.muted = time;
+            EQueries.executeQuery(
+                    "UPDATE " + PluginConfigs.TABLE_PLAYER +
+                            " SET player_name='" + playerName +
+                            "', player_display='" + playerName +
+                            "', time='" + player.getFirstPlayed() +
+                            "', last='" + time +
+                            "', hours='" + 0 +
+                            "', muted='" + time +
+                            "' WHERE uuid='" + uuid.toString() + "'");
+            playerProfile = newPlayerProfile;
+            PluginVars.playerProfile.put(uuid, newPlayerProfile);
+        }
+        playerProfile.lastLogin = time;
+        if (!playerProfile.getPlayerName().equals(playerName)) {
+            playerProfile.setPlayerName(playerName);
+            PluginVars.playerProfile.put(uuid, playerProfile);
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.PLAYER_NAME_STR, playerName, PluginConstants.UUID_STR, uuid.toString()));
+        }
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.LAST_STR, time, PluginConstants.UUID_STR, uuid.toString()));
     }
 
 }

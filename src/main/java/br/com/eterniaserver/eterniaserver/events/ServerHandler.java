@@ -1,9 +1,18 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.UtilChatFormatter;
+import br.com.eterniaserver.eterniaserver.generics.UtilColors;
+import br.com.eterniaserver.eterniaserver.generics.UtilCustomPlaceholdersFilter;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
+import br.com.eterniaserver.eterniaserver.generics.UtilJsonSender;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
+
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
@@ -23,7 +32,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EventHandlerServer implements Listener {
+public class ServerHandler implements Listener {
 
     public static boolean version116;
     private final UtilChatFormatter cf;
@@ -35,7 +44,7 @@ public class EventHandlerServer implements Listener {
     private String message;
     private String message2;
 
-    public EventHandlerServer() {
+    public ServerHandler() {
 
         this.cp = new UtilCustomPlaceholdersFilter();
         this.js = new UtilJsonSender();
@@ -84,12 +93,12 @@ public class EventHandlerServer implements Listener {
         if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
-            if (PluginVars.chatMuted && !player.hasPermission("eternia.mute.bypass")) {
+            if (APIServer.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
                 player.sendMessage(PluginMSGs.M_CHATMUTED);
                 e.setCancelled(true);
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-                final long time = PluginVars.playerProfile.get(uuid).muted;
+                final long time = APIPlayer.getMutedTime(uuid);
                 if (UtilInternMethods.stayMuted(time)) {
                     player.sendMessage(PluginMSGs.M_CHAT_MUTED.replace(PluginConstants.TIME, UtilInternMethods.getTimeLeft(time)));
                     e.setCancelled(true);
@@ -102,7 +111,7 @@ public class EventHandlerServer implements Listener {
 
     private boolean getChannel(AsyncPlayerChatEvent e, Player player, String message, UUID uuid) {
         message = canHex(player, message);
-        switch (PluginVars.playerProfile.get(uuid).chatChannel) {
+        switch (APIPlayer.getChannel(uuid)) {
             case 0:
                 UtilInternMethods.sendLocal(message, player, EterniaServer.chatConfig.getInt("local.range"));
                 return true;
@@ -124,10 +133,10 @@ public class EventHandlerServer implements Listener {
 
     private void sendTell(Player sender, final String msg) {
         final String playerName = sender.getName();
-        if (PluginVars.chatLocked.containsKey(playerName)) {
-            final Player target = Bukkit.getPlayer(PluginVars.chatLocked.get(playerName));
+        if (APIPlayer.isTell(playerName)) {
+            final Player target = Bukkit.getPlayer(APIPlayer.getTellingPlayerName(playerName));
             if (target != null && target.isOnline()) {
-                if (PluginVars.ignoredPlayer.get(playerName) != null && PluginVars.ignoredPlayer.get(playerName).contains(target)) {
+                if (APIPlayer.hasIgnoreds(playerName) && APIPlayer.areIgnored(playerName, target)) {
                     sender.sendMessage(PluginMSGs.M_CHAT_IGNORE);
                     return;
                 }
