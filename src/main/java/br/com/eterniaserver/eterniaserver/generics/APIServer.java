@@ -5,12 +5,15 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 public class APIServer {
+
+    private static int version = 0;
 
     private APIServer() {
         throw new IllegalStateException("Utility class");
@@ -40,6 +43,10 @@ public class APIServer {
         PluginVars.teleports.put(player, playerTeleport);
     }
 
+    public static Object[] listWarp() {
+        return PluginVars.locations.keySet().toArray();
+    }
+
     public static void putBackLocation(String playerName, Location location) {
         PluginVars.back.put(playerName, location);
     }
@@ -52,8 +59,20 @@ public class APIServer {
         return PluginVars.locations.getOrDefault(warpName, PluginVars.error);
     }
 
+    public static void putWarp(String warpName, Location location) {
+        PluginVars.locations.put(warpName, location);
+    }
+
+    public static void removeWarp(String warpName) {
+        PluginVars.locations.remove(warpName);
+    }
+
     public static void putBedCooldown(String playerName) {
         PluginVars.bedCooldown.put(playerName, System.currentTimeMillis());
+    }
+
+    public static void putGlowing(String playerName, String nameColor) {
+        PluginVars.glowingColor.put(playerName, nameColor);
     }
 
     public static void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
@@ -82,6 +101,17 @@ public class APIServer {
                 }
             }
         }
+    }
+
+    public static int getVersion() {
+        if (version == 0) {
+            String bukkitVersion = Bukkit.getBukkitVersion();
+            if (bukkitVersion.contains("1.16")) version = 116;
+            else if (bukkitVersion.contains("1.15")) version = 115;
+            else if (bukkitVersion.contains("1.14")) version = 114;
+            else version = 113;
+        }
+        return version;
     }
 
 }

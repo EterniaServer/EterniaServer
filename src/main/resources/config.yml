@@ -72,6 +72,8 @@ money:
   nick: 500000 # SAFE             | /nick cost. (Requires chat module to be active)
   singular: 'Eternia' # SAFE      | Singular name of the currency.
   plural: 'Eternias' # SAFE       | Plural name of the currency.
+  blacklisted-baltop:
+    - 'yurinogueira'
 
 # SAFE                            | List of commands that will be blocked.
 blocked-commands:

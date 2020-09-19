@@ -63,6 +63,10 @@ public class APIPlayer {
         return PluginVars.playerProfile.get(uuid).getPlayerDisplayName();
     }
 
+    public static String getName(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).getPlayerName();
+    }
+
     public static int getChannel(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).chatChannel;
     }

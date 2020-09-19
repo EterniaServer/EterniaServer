@@ -34,7 +34,6 @@ import java.util.regex.Pattern;
 
 public class ServerHandler implements Listener {
 
-    public static boolean version116;
     private final UtilChatFormatter cf;
     private final UtilJsonSender js;
     private final UtilCustomPlaceholdersFilter cp;
@@ -49,14 +48,13 @@ public class ServerHandler implements Listener {
         this.cp = new UtilCustomPlaceholdersFilter();
         this.js = new UtilJsonSender();
         this.cf = new UtilChatFormatter();
-        version116 = Bukkit.getBukkitVersion().contains("1.16");
 
         final List<String> list = EterniaServer.msgConfig.getStringList("server.motd");
         if (list.get(0) != null && list.get(1) != null) {
             this.isNull = false;
             message = ChatColor.translateAlternateColorCodes('&', list.get(0));
             message2 = ChatColor.translateAlternateColorCodes('&', list.get(1));
-            if (Bukkit.getBukkitVersion().contains("1.16")) {
+            if (APIServer.getVersion() >= 116) {
                 message = matcherMessage(message);
                 message2 = matcherMessage(message2);
             }
@@ -148,7 +146,7 @@ public class ServerHandler implements Listener {
     }
 
     private String canHex(final Player player, String message) {
-        if (version116 && player.hasPermission("eternia.chat.color.hex")) {
+        if (APIServer.getVersion() >= 116 && player.hasPermission("eternia.chat.color.hex")) {
             Matcher matcher = colorPattern.matcher(message);
             if (matcher.find()) {
                 StringBuffer buffer = new StringBuffer();

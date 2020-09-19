@@ -87,7 +87,7 @@ public class UtilTextMaker {
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
-		if (ServerHandler.version116) {
+		if (APIServer.getVersion() >= 116) {
 			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
 			TextComponent component = new TextComponent(string.replace("[item]", PluginVars.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + PluginVars.colors.get(15)));
 			component.setHoverEvent(event);

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.eternialib.EterniaLib;
@@ -8,6 +8,14 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConfigs;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 @CommandAlias("eco")
 @CommandPermission("eternia.money.user")
-public class BaseCmdEconomy extends BaseCommand {
+public class Economy extends BaseCommand {
 
     private long time = 0;
     private List<UUID> lista;
@@ -43,7 +51,6 @@ public class BaseCmdEconomy extends BaseCommand {
     @Description(" Define o saldo de um jogador")
     public void onSet(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
         final Player targetP = target.getPlayer();
-
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_SET.replace(PluginConstants.AMOUNT, String.valueOf(money))));
         targetP.sendMessage(UtilInternMethods.putName(sender, PluginMSGs.ECO_RSET.replace(PluginConstants.AMOUNT, String.valueOf(money))));
@@ -56,7 +63,6 @@ public class BaseCmdEconomy extends BaseCommand {
     @Description(" Retira uma quantia de saldo de um jogador")
     public void onRemove(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
         final Player targetP = target.getPlayer();
-
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_REMOVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
         targetP.sendMessage(UtilInternMethods.putName(sender, PluginMSGs.ECO_RREMOVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
@@ -131,11 +137,17 @@ public class BaseCmdEconomy extends BaseCommand {
                         final PreparedStatement getHashMap = connection.prepareStatement(
                                 "SELECT " + PluginConstants.UUID_STR +
                                         " FROM " + PluginConfigs.TABLE_PLAYER +
-                                        " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 10;");
+                                        " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 20;");
                         final ResultSet resultSet = getHashMap.executeQuery();
                         final List<UUID> tempList = new ArrayList<>();
+                        UUID uuid;
                         while (resultSet.next()) {
-                            tempList.add(UUID.fromString(resultSet.getString(PluginConstants.UUID_STR)));
+                            if (tempList.size() < 10) {
+                                uuid = UUID.fromString(resultSet.getString(PluginConstants.UUID_STR));
+                                if (!EterniaServer.serverConfig.getStringList("money.blacklisted-baltop").contains(UUIDFetcher.getNameOf(uuid))) {
+                                    tempList.add(uuid);
+                                }
+                            }
                         }
                         time = System.currentTimeMillis();
                         lista = tempList;
@@ -147,10 +159,16 @@ public class BaseCmdEconomy extends BaseCommand {
                     try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
                             "SELECT " + PluginConstants.UUID_STR +
                                     " FROM " + PluginConfigs.TABLE_PLAYER +
-                                    " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 10;"); ResultSet resultSet = getHashMap.executeQuery()) {
+                                    " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 20;"); ResultSet resultSet = getHashMap.executeQuery()) {
                         final List<UUID> tempList = new ArrayList<>();
+                        UUID uuid;
                         while (resultSet.next()) {
-                            tempList.add(UUID.fromString(resultSet.getString(PluginConstants.UUID_STR)));
+                            if (tempList.size() < 10) {
+                                uuid = UUID.fromString(resultSet.getString(PluginConstants.UUID_STR));
+                                if (!EterniaServer.serverConfig.getStringList("money.blacklisted-baltop").contains(UUIDFetcher.getNameOf(uuid))) {
+                                    tempList.add(uuid);
+                                }
+                            }
                         }
                         time = System.currentTimeMillis();
                         lista = tempList;
@@ -166,8 +184,8 @@ public class BaseCmdEconomy extends BaseCommand {
     private void showBaltop(CommandSender sender) {
         lista.forEach((user -> {
             final String playerName;
-            if (nickEnable) playerName = PluginVars.playerProfile.get(user).getPlayerDisplayName();
-            else playerName = PluginVars.playerProfile.get(user).getPlayerName();
+            if (nickEnable) playerName = APIPlayer.getDisplayName(user);
+            else playerName = APIPlayer.getName(user);
             sender.sendMessage(PluginMSGs.ECO_BALLIST
                     .replace(PluginConstants.POSITION, String.valueOf(lista.indexOf(user) + 1))
                     .replace(PluginConstants.PLAYER, playerName)

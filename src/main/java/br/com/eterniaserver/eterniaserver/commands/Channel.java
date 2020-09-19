@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @CommandAlias("ch|channels")
 @CommandPermission("eternia.chat.channels")
-public class Channels extends BaseCommand {
+public class Channel extends BaseCommand {
 
     @Default
     @HelpCommand
@@ -34,6 +34,7 @@ public class Channels extends BaseCommand {
 
     @Subcommand("local")
     @CommandAlias("l|local")
+    @Syntax("<msg>")
     @Description(" Fale ou vá para o canal local")
     public void toLocal(Player player, @Optional String[] messages) {
         changeChannel(0, "Local", player, messages);
@@ -41,6 +42,7 @@ public class Channels extends BaseCommand {
 
     @Subcommand("global")
     @CommandAlias("g|global")
+    @Syntax("<msg>")
     @CommandCompletion("@players")
     @Description(" Fale ou vá para o canal global")
     public void toGlobal(Player player, @Optional String[] messages) {
@@ -49,6 +51,7 @@ public class Channels extends BaseCommand {
 
     @Subcommand("staff")
     @CommandAlias("s|a|staff")
+    @Syntax("<msg>")
     @CommandPermission("eternia.chat.staff")
     @Description(" Fale ou vá para o canal de staffs")
     public void toStaff(Player player, @Optional String[] messages) {

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.CommandHelp;
@@ -11,6 +11,10 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -18,18 +22,18 @@ import org.bukkit.scoreboard.Scoreboard;
 
 @CommandAlias("glow")
 @CommandPermission("eternia.glow")
-public class BaseCmdGlow extends BaseCommand {
+public class Glow extends BaseCommand {
 
-    private final Scoreboard sc;
+    private final Scoreboard scoreboard;
 
-    public BaseCmdGlow() {
+    public Glow() {
         Scoreboard sc = Bukkit.getScoreboardManager().getMainScoreboard();
         for (int i = 0; i < 16; i++) {
             if (sc.getTeam(PluginVars.arrData.get(i)) == null) {
                 sc.registerNewTeam(PluginVars.arrData.get(i)).setColor(PluginVars.colors.get(i));
             }
         }
-        this.sc = sc;
+        this.scoreboard = sc;
     }
 
     @Subcommand("help")
@@ -113,8 +117,8 @@ public class BaseCmdGlow extends BaseCommand {
 
     private void changeColor(final Player player, final String team, final String nameColor, final String color) {
         final String playerName = player.getName();
-        PluginVars.glowingColor.put(playerName, nameColor);
-        sc.getTeam(team).addEntry(playerName);
+        scoreboard.getTeam(team).addEntry(playerName);
+        APIServer.putGlowing(playerName, nameColor);
         player.sendMessage(PluginMSGs.M_GLOW_COLOR.replace(PluginConstants.AMOUNT, color));
     }
 

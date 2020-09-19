@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.CommandHelp;
@@ -13,6 +13,9 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,7 +23,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("gamemode|gm")
 @CommandPermission("eternia.gamemode")
 @Description(" Altera o modo de jogo de um jogador")
-public class BaseCmdGamemode extends BaseCommand {
+public class Gamemode extends BaseCommand {
 
     @Default
     @HelpCommand

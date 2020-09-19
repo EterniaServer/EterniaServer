@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -6,6 +6,10 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
+import br.com.eterniaserver.eterniaserver.generics.APIExperience;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -19,7 +23,7 @@ import java.util.UUID;
 
 @CommandAlias("xp")
 @CommandPermission("eternia.xp.user")
-public class BaseCmdExperience extends BaseCommand {
+public class Experience extends BaseCommand {
 
     @Default
     @HelpCommand

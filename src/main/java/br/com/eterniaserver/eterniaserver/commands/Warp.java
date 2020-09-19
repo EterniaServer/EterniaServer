@@ -1,6 +1,14 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConfigs;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
@@ -10,18 +18,18 @@ import br.com.eterniaserver.paperlib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class BaseCmdWarp extends BaseCommand {
+public class Warp extends BaseCommand {
 
     @CommandAlias("spawn")
     @Syntax("<jogador>")
     @CommandPermission("eternia.spawn")
     public void onSpawn(Player player, @Optional OnlinePlayer target) {
-        final Location location = getWarp("spawn");
+        final Location location = APIServer.getWarp("warp.spawn");
         if (target == null) {
-            if (PluginVars.teleports.containsKey(player)) {
+            if (APIPlayer.isTeleporting(player)) {
                 player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
             } else if (spawnExists(location, player)) {
-                PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.MSG_WARP_DONE));
+                APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.MSG_WARP_DONE));
             }
         } else {
             final Player targetP = target.getPlayer();
@@ -41,21 +49,21 @@ public class BaseCmdWarp extends BaseCommand {
     @CommandPermission("eternia.shop.player")
     public void onShop(Player player, @Optional String target) {
         if (target == null) {
-               final Location location = getWarp("shop");
+               final Location location = APIServer.getWarp("warp.shop");
                if (player.hasPermission("eternia.warp.shop")) {
-                   if (shopExists(location, player) && !PluginVars.teleports.containsKey(player)) {
-                       PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.MSG_WARP_DONE));
-                   } else if (PluginVars.teleports.containsKey(player)) {
+                   if (shopExists(location, player) && !APIPlayer.isTeleporting(player)) {
+                       APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.MSG_WARP_DONE));
+                   } else if (APIPlayer.isTeleporting(player)) {
                        player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
                    }
                } else {
                    player.sendMessage(PluginMSGs.MSG_NO_PERM);
                }
         } else {
-            final Location location = getShop(target.toLowerCase());
-            if (shopExists(location, player) && !PluginVars.teleports.containsKey(player)) {
-                PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.MSG_SHOP_DONE));
-            } else if (PluginVars.teleports.containsKey(player)) {
+            final Location location = APIServer.getWarp(target.toLowerCase());
+            if (shopExists(location, player) && !APIPlayer.isTeleporting(player)) {
+                APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.MSG_SHOP_DONE));
+            } else if (APIPlayer.isTeleporting(player)) {
                 player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
             }
         }
@@ -87,7 +95,7 @@ public class BaseCmdWarp extends BaseCommand {
     @Syntax("<warp>")
     @CommandPermission("eternia.delwarp")
     public void onDelWarp(Player player, String nome) {
-        if (PluginVars.locations.containsKey("warp." + nome.toLowerCase())) {
+        if (!APIServer.getWarp("warp." + nome.toLowerCase()).equals(PluginVars.error)) {
             delWarp(nome.toLowerCase());
             player.sendMessage(PluginMSGs.MSG_WARP_DELETED);
         } else {
@@ -99,7 +107,7 @@ public class BaseCmdWarp extends BaseCommand {
     @CommandPermission("eternia.listwarp")
     public void onListWarp(Player player) {
         StringBuilder string = new StringBuilder();
-        Object[] list = PluginVars.locations.keySet().toArray();
+        Object[] list = APIServer.listWarp();
         int size = list.length;
         for (int i = 0; i < size; i++) {
             String line = list[i].toString();
@@ -122,10 +130,10 @@ public class BaseCmdWarp extends BaseCommand {
     @CommandPermission("eternia.warp")
     public void onWarp(Player player, String nome) {
         if (player.hasPermission("eternia.warp." + nome.toLowerCase())) {
-            final Location location = getWarp(nome.toLowerCase());
-            if (warpExists(location, player, nome) && !PluginVars.teleports.containsKey(player)) {
-                PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.MSG_WARP_DONE));
-            } else if (PluginVars.teleports.containsKey(player)) {
+            final Location location = APIServer.getWarp("warp." + nome.toLowerCase());
+            if (warpExists(location, player, nome) && !APIPlayer.isTeleporting(player)) {
+                APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.MSG_WARP_DONE));
+            } else if (APIPlayer.isTeleporting(player)) {
                 player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
             }
         } else {
@@ -164,12 +172,12 @@ public class BaseCmdWarp extends BaseCommand {
                 ":" + ((int) loc.getZ()) +
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
-        if (PluginVars.locations.containsKey(shop)) {
+        if (!APIServer.getWarp(shop).equals(PluginVars.error)) {
             EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_LOCATIONS, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, shop));
         } else {
             EQueries.executeQuery(PluginConstants.getQueryInsert(PluginConfigs.TABLE_LOCATIONS, PluginConstants.NAME_STR, shop, PluginConstants.LOCATION_STR, saveloc));
         }
-        PluginVars.locations.put(shop, loc);
+        APIServer.putWarp(shop, loc);
     }
 
     public void setWarp(Location loc, String warp) {
@@ -180,26 +188,18 @@ public class BaseCmdWarp extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         final String warpName = "warp." + warp;
-        if (PluginVars.locations.containsKey(warpName)) {
+        if (!APIServer.getWarp(warpName).equals(PluginVars.error)) {
             EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_LOCATIONS, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, warpName));
         } else {
             EQueries.executeQuery(PluginConstants.getQueryInsert(PluginConfigs.TABLE_LOCATIONS, PluginConstants.NAME_STR, warpName, PluginConstants.LOCATION_STR, saveloc));
         }
-        PluginVars.locations.put(warpName, loc);
+        APIServer.putWarp(warpName, loc);
     }
 
     public void delWarp(String warp) {
         final String warpName = "warp." + warp;
-        PluginVars.locations.remove(warpName);
+        APIServer.removeWarp(warpName);
         EQueries.executeQuery(PluginConstants.getQueryDelete(PluginConfigs.TABLE_LOCATIONS, PluginConstants.NAME_STR, warpName));
-    }
-
-    public Location getShop(String shop) {
-        return PluginVars.locations.getOrDefault(shop, PluginVars.error);
-    }
-
-    public Location getWarp(String warp) {
-        return PluginVars.locations.getOrDefault("warp." + warp, PluginVars.error);
     }
 
 }
