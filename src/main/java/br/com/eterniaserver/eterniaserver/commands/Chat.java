@@ -1,16 +1,20 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
-import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,14 +24,12 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class BaseCmdChat extends BaseCommand {
+public class Chat extends BaseCommand {
 
     private final EterniaServer plugin;
-    private final int money;
 
-    public BaseCmdChat(EterniaServer plugin) {
+    public Chat(EterniaServer plugin) {
         this.plugin = plugin;
-        this.money = EterniaServer.serverConfig.getInt("money.nick");
     }
 
     @CommandAlias("limparchat|chatclear|clearchat")
@@ -67,10 +69,10 @@ public class BaseCmdChat extends BaseCommand {
         if (target != null && target.isOnline()) {
             final String targetName = target.getName();
             List<Player> ignoreds;
-            if (PluginVars.ignoredPlayer.get(targetName) == null) {
+            if (!APIPlayer.hasIgnoreds(targetName)) {
                 ignoreds = new ArrayList<>();
             } else {
-                ignoreds = PluginVars.ignoredPlayer.get(targetName);
+                ignoreds = APIPlayer.getIgnoreds(targetName);
                 if (ignoreds.contains(player)) {
                     player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CHAT_DENY));
                     ignoreds.remove(player);
@@ -78,7 +80,7 @@ public class BaseCmdChat extends BaseCommand {
                 }
             }
             ignoreds.add(player);
-            PluginVars.ignoredPlayer.put(target.getName(), ignoreds);
+            APIPlayer.putIgnored(targetName, ignoreds);
             player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CHAT_IGNORE));
         }
     }
@@ -87,12 +89,11 @@ public class BaseCmdChat extends BaseCommand {
     @CommandPermission("eternia.spy")
     public void onSpy(Player player) {
         final String playerName = player.getName();
-        final Boolean b = PluginVars.spy.getOrDefault(playerName, false);
-        if (Boolean.TRUE.equals(b)) {
-            PluginVars.spy.put(playerName, false);
+        if (APIServer.isSpying(playerName)) {
+            APIServer.disableSpy(playerName);
             player.sendMessage(PluginMSGs.M_CHAT_SPY_D);
         } else {
-            PluginVars.spy.put(playerName, true);
+            APIServer.putSpy(playerName);
             player.sendMessage(PluginMSGs.M_CHAT_SPY_E);
         }
     }
@@ -104,12 +105,12 @@ public class BaseCmdChat extends BaseCommand {
         string = string.replaceAll("[^a-zA-Z0-9]", "");
         if (!player.hasPermission("eternia.nickname.others")) {
             if (target == null) {
-                playerNick(player, string);
+                APIPlayer.playerNick(player, string);
             } else {
                 player.sendMessage(PluginMSGs.MSG_NO_PERM);
             }
         } else {
-            staffNick(target, player, string);
+            APIPlayer.staffNick(target, player, string);
         }
     }
 
@@ -119,21 +120,15 @@ public class BaseCmdChat extends BaseCommand {
     public void onNickAccept(Player player) {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        final PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
 
-        if (playerProfile.nickRequest) {
-            if (APIEconomy.hasMoney(uuid, money)) {
-                APIEconomy.removeMoney(uuid, money);
-                player.setDisplayName(playerProfile.tempNick);
-                player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.M_CHAT_NEWNICK));
-                playerProfile.playerDisplayName = playerProfile.tempNick;
+        if (APIPlayer.hasNickRequest(uuid)) {
+            if (APIEconomy.hasMoney(uuid, EterniaServer.serverConfig.getInt("money.nick"))) {
+                APIEconomy.removeMoney(uuid, EterniaServer.serverConfig.getInt("money.nick"));
+                APIPlayer.updateNickName(player, uuid);
             } else {
                 player.sendMessage(PluginMSGs.MSG_NO_MONEY);
             }
-            playerProfile.tempNick = null;
-            playerProfile.nickRequest = false;
-            PluginVars.playerProfile.put(uuid, playerProfile);
-            saveToSQL(uuid);
+            APIPlayer.removeNickRequest(uuid);
         } else {
             player.sendMessage(PluginMSGs.M_CHAT_NO_CHANGE);
         }
@@ -144,12 +139,9 @@ public class BaseCmdChat extends BaseCommand {
     @CommandPermission("eternia.nickname")
     public void onNickDeny(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        final PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
 
-        if (playerProfile.nickRequest) {
-            playerProfile.tempNick = null;
-            playerProfile.nickRequest = false;
-            PluginVars.playerProfile.put(uuid, playerProfile);
+        if (APIPlayer.hasNickRequest(uuid)) {
+            APIPlayer.removeNickRequest(uuid);
             player.sendMessage(PluginMSGs.M_CHAT_NICK_DENY);
         } else {
             player.sendMessage(PluginMSGs.M_CHAT_NO_CHANGE);
@@ -163,10 +155,10 @@ public class BaseCmdChat extends BaseCommand {
         if (isMuted(sender)) return;
 
         final String playerName = sender.getName();
-        if (PluginVars.tell.containsKey(playerName) && msg != null) {
-            final Player target = Bukkit.getPlayer(PluginVars.tell.get(playerName));
+        if (APIPlayer.receivedTell(playerName) && msg != null) {
+            final Player target = Bukkit.getPlayer(APIPlayer.getTellSender(playerName));
             if (target != null && target.isOnline()) {
-                if (PluginVars.ignoredPlayer.get(playerName) != null && PluginVars.ignoredPlayer.get(playerName).contains(target)) {
+                if (APIPlayer.hasIgnoreds(playerName) && APIPlayer.areIgnored(playerName, target)) {
                     sender.sendMessage(PluginMSGs.M_CHAT_IGNORE);
                     return;
                 }
@@ -188,13 +180,13 @@ public class BaseCmdChat extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
         if (targets == null) {
-            PluginVars.playerProfile.get(uuid).chatChannel = 0;
+            APIPlayer.setChannel(uuid, 0);
             player.sendMessage(PluginMSGs.M_CHAT_C.replace(PluginConstants.CHANNEL_NAME, "Local"));
             return;
         }
 
-        if (PluginVars.chatLocked.containsKey(playerName)) {
-            PluginVars.chatLocked.remove(playerName);
+        if (APIPlayer.isTell(playerName)) {
+            APIPlayer.removeTelling(playerName);
             player.sendMessage(PluginMSGs.MSG_CHAT_UNLOCKED);
             return;
         }
@@ -202,13 +194,13 @@ public class BaseCmdChat extends BaseCommand {
         final Player target = targets.getPlayer();
 
         if (msg == null || msg.length() == 0) {
-            PluginVars.chatLocked.put(playerName, target.getName());
-            PluginVars.playerProfile.get(uuid).chatChannel = 3;
+            APIPlayer.setTelling(playerName, target.getName());
+            APIPlayer.setChannel(uuid, 3);
             player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.MSG_CHAT_LOCKED));
             return;
         }
 
-        if (PluginVars.ignoredPlayer.get(playerName) != null && PluginVars.ignoredPlayer.get(player.getName()).contains(target)) {
+        if (APIPlayer.hasIgnoreds(playerName) && APIPlayer.areIgnored(player.getName(), target)) {
             player.sendMessage(PluginMSGs.M_CHAT_IGNORED);
             return;
         }
@@ -218,72 +210,12 @@ public class BaseCmdChat extends BaseCommand {
 
     private boolean isMuted(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        final long time = PluginVars.playerProfile.get(uuid).muted;
+        final long time = APIPlayer.getMutedTime(uuid);
         if (UtilInternMethods.stayMuted(time)) {
             player.sendMessage(PluginMSGs.M_CHAT_MUTED.replace(PluginConstants.TIME, UtilInternMethods.getTimeLeft(time)));
             return true;
         }
         return false;
-    }
-
-    private void playerNick(final Player player, final String string) {
-        final String playerName = player.getName();
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-
-        if (string.equals(PluginConstants.CLEAR_STR)) {
-            player.setDisplayName(playerName);
-            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
-            return;
-        }
-
-        if (player.hasPermission("eternia.chat.color.nick")) {
-            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, PluginMSGs.getColor(string)).replace(PluginConstants.AMOUNT, String.valueOf(money)));
-        } else {
-            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, string).replace(PluginConstants.AMOUNT, String.valueOf(money)));
-        }
-
-        final PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
-
-        playerProfile.tempNick = string;
-        playerProfile.nickRequest = true;
-        PluginVars.playerProfile.put(uuid, playerProfile);
-        player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY_2);
-    }
-
-    private void staffNick(final OnlinePlayer target, final Player player, final String string) {
-        if (target != null) {
-            changeNickName(target.getPlayer(), player, string);
-            return;
-        }
-
-        if (string.equals(PluginConstants.CLEAR_STR)) {
-            final String playerName = player.getName();
-            final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-            player.setDisplayName(playerName);
-            PluginVars.playerProfile.get(uuid).playerDisplayName = playerName;
-            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
-            saveToSQL(uuid);
-            return;
-        }
-
-        player.setDisplayName(PluginMSGs.getColor(string));
-    }
-
-    private void changeNickName(final Player target, final Player player, final String string) {
-        final String targetName = target.getName();
-        if (string.equals(PluginConstants.CLEAR_STR)) {
-            target.setDisplayName(targetName);
-            target.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
-            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
-        } else {
-            target.setDisplayName(string);
-            player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CHAT_NEWNICK));
-            target.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CHAT_NEWNICK));
-        }
-    }
-
-    private void saveToSQL(UUID uuid) {
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.PLAYER_DISPLAY_STR, PluginVars.playerProfile.get(uuid).getPlayerDisplayName(), PluginConstants.UUID_STR, uuid.toString()));
     }
 
 }

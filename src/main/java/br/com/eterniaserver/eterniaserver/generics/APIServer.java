@@ -28,6 +28,14 @@ public class APIServer {
         PluginVars.spy.put(playerName, true);
     }
 
+    public static void disableSpy(String playerName) {
+        PluginVars.spy.put(playerName, false);
+    }
+
+    public static boolean isSpying(String playerName) {
+        return PluginVars.spy.getOrDefault(playerName, false);
+    }
+
     public static void putInTeleport(Player player, PlayerTeleport playerTeleport) {
         PluginVars.teleports.put(player, playerTeleport);
     }

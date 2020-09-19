@@ -9,9 +9,9 @@ import br.com.eterniaserver.eterniaserver.generics.PluginClear;
 import br.com.eterniaserver.eterniaserver.generics.PluginTimer;
 import br.com.eterniaserver.eterniaserver.generics.UtilAccelerateWorld;
 import br.com.eterniaserver.eterniaserver.generics.UtilAdvancedChatTorch;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdCash;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdChannels;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdChat;
+import br.com.eterniaserver.eterniaserver.commands.Cash;
+import br.com.eterniaserver.eterniaserver.commands.Channels;
+import br.com.eterniaserver.eterniaserver.commands.Chat;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience;
 import br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric;
@@ -122,16 +122,16 @@ public class Managers {
     private void loadCashManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.cash"), "Cash")) {
             plugin.getFiles().loadCashGui();
-            EterniaLib.getManager().registerCommand(new BaseCmdCash());
+            EterniaLib.getManager().registerCommand(new Cash());
         }
     }
 
     private void loadChatManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.chat"), "Chat")) {
             plugin.getFiles().loadChat();
-            EterniaLib.getManager().registerCommand(new BaseCmdChannels());
+            EterniaLib.getManager().registerCommand(new Channels());
             EterniaLib.getManager().registerCommand(new BaseCmdMute());
-            EterniaLib.getManager().registerCommand(new BaseCmdChat(plugin));
+            EterniaLib.getManager().registerCommand(new Chat(plugin));
             new UtilAdvancedChatTorch();
         }
     }

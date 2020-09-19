@@ -1,9 +1,9 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -79,7 +79,7 @@ public class BlockHandler implements Listener {
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.block-reward") && EterniaServer.blockConfig.contains("blocks." + materialName)) {
-            winReward(materialName, player);
+            randomizeAndReward(materialName, player, "blocks.");
         }
 
         if (EterniaServer.serverConfig.getBoolean("modules.block-reward") && EterniaServer.blockConfig.contains("farm." + materialName)) {
@@ -94,36 +94,22 @@ public class BlockHandler implements Listener {
             Ageable ageable = (Ageable) blockData;
             if (ageable.getAge() == ageable.getMaximumAge()) {
                 String materialName = block.getType().name().toUpperCase();
-                double randomNumber = Math.random();
-                double lowestNumberAboveRandom = 1.1;
-                final String blockConfig = "farm.";
-                for (String key : EterniaServer.blockConfig.getConfigurationSection(blockConfig + materialName).getKeys(false)) {
-                    double current = Double.parseDouble(key);
-                    if (current < lowestNumberAboveRandom && current > randomNumber) {
-                        lowestNumberAboveRandom = current;
-                    }
-                }
-                if (lowestNumberAboveRandom <= 1) {
-                    for (String command : EterniaServer.blockConfig.getStringList(blockConfig + materialName + "." + lowestNumberAboveRandom)) {
-                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, command));
-                    }
-                }
+                randomizeAndReward(materialName, player, "farm.");
             }
         }
     }
 
-    private void winReward(final String materialName, final Player player) {
+    private void randomizeAndReward(String materialName, Player player, String config) {
         double randomNumber = Math.random();
         double lowestNumberAboveRandom = 1.1;
-        final String blockConfig = "blocks.";
-        for (String key : EterniaServer.blockConfig.getConfigurationSection(blockConfig + materialName).getKeys(false)) {
+        for (String key : EterniaServer.blockConfig.getConfigurationSection(config + materialName).getKeys(false)) {
             double current = Double.parseDouble(key);
             if (current < lowestNumberAboveRandom && current > randomNumber) {
                 lowestNumberAboveRandom = current;
             }
         }
         if (lowestNumberAboveRandom <= 1) {
-            for (String command : EterniaServer.blockConfig.getStringList(blockConfig + materialName + "." + lowestNumberAboveRandom)) {
+            for (String command : EterniaServer.blockConfig.getStringList(config + materialName + "." + lowestNumberAboveRandom)) {
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, command));
             }
         }

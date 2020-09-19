@@ -1,9 +1,20 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.CommandHelp;
+import br.com.eterniaserver.acf.annotation.CommandAlias;
+import br.com.eterniaserver.acf.annotation.CommandCompletion;
+import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Default;
+import br.com.eterniaserver.acf.annotation.Description;
+import br.com.eterniaserver.acf.annotation.HelpCommand;
+import br.com.eterniaserver.acf.annotation.Optional;
+import br.com.eterniaserver.acf.annotation.Subcommand;
+import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
-import br.com.eterniaserver.acf.annotation.*;
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 
 import org.bukkit.entity.Player;
 
@@ -11,7 +22,7 @@ import java.util.UUID;
 
 @CommandAlias("ch|channels")
 @CommandPermission("eternia.chat.channels")
-public class BaseCmdChannels extends BaseCommand {
+public class Channels extends BaseCommand {
 
     @Default
     @HelpCommand
@@ -47,15 +58,15 @@ public class BaseCmdChannels extends BaseCommand {
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (messages != null && messages.length == 0) {
-            PluginVars.playerProfile.get(uuid).chatChannel = channel;
+            APIPlayer.setChannel(uuid, channel);
             player.sendMessage(PluginMSGs.M_CHAT_C.replace(PluginConstants.CHANNEL_NAME, channelName));
         } else {
-            int o = PluginVars.playerProfile.get(uuid).chatChannel;
-            PluginVars.playerProfile.get(uuid).chatChannel = channel;
+            int defaultChannel = APIPlayer.getChannel(uuid);
+            APIPlayer.setChannel(uuid, channel);
             StringBuilder sb = new StringBuilder();
             for (String arg : messages) sb.append(arg).append(" ");
             player.chat(sb.substring(0, sb.length() - 1));
-            PluginVars.playerProfile.get(uuid).chatChannel = o;
+            APIPlayer.setChannel(uuid, defaultChannel);
         }
     }
 

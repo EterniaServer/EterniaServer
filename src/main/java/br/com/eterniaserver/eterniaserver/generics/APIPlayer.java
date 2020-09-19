@@ -1,6 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
@@ -8,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class APIPlayer {
@@ -64,16 +67,44 @@ public class APIPlayer {
         return PluginVars.playerProfile.get(uuid).chatChannel;
     }
 
+    public static void setChannel(UUID uuid, int channel) {
+        PluginVars.playerProfile.get(uuid).chatChannel = channel;
+    }
+
+    public static boolean receivedTell(String playerName) {
+        return PluginVars.tell.containsKey(playerName);
+    }
+
+    public static String getTellSender(String playerName) {
+        return PluginVars.tell.get(playerName);
+    }
+
     public static boolean isTell(String playerName) {
         return PluginVars.chatLocked.containsKey(playerName);
+    }
+
+    public static void setTelling(String playerName, String targetName) {
+        PluginVars.chatLocked.put(playerName, targetName);
     }
 
     public static String getTellingPlayerName(String playerName) {
         return PluginVars.chatLocked.get(playerName);
     }
 
+    public static void removeTelling(String playerName) {
+        PluginVars.chatLocked.remove(playerName);
+    }
+
     public static boolean hasIgnoreds(String playerName) {
         return PluginVars.ignoredPlayer.containsKey(playerName);
+    }
+
+    public static List<Player> getIgnoreds(String playerName) {
+        return PluginVars.ignoredPlayer.get(playerName);
+    }
+
+    public static void putIgnored(String playerName, List<Player> list) {
+        PluginVars.ignoredPlayer.put(playerName, list);
     }
 
     public static boolean areIgnored(String playerName, Player target) {
@@ -139,6 +170,83 @@ public class APIPlayer {
             EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.PLAYER_NAME_STR, playerName, PluginConstants.UUID_STR, uuid.toString()));
         }
         EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.LAST_STR, time, PluginConstants.UUID_STR, uuid.toString()));
+    }
+
+    public static boolean hasNickRequest(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).nickRequest;
+    }
+
+    public static void updateNickName(Player player, UUID uuid) {
+        PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
+        player.setDisplayName(playerProfile.tempNick);
+        player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.M_CHAT_NEWNICK));
+        playerProfile.playerDisplayName = playerProfile.tempNick;
+        saveToSQL(uuid);
+    }
+
+    public static void removeNickRequest(UUID uuid) {
+        PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
+        playerProfile.tempNick = null;
+        playerProfile.nickRequest = false;
+    }
+
+    public static void playerNick(final Player player, final String string) {
+        final String playerName = player.getName();
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+
+        if (string.equals(PluginConstants.CLEAR_STR)) {
+            player.setDisplayName(playerName);
+            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
+            return;
+        }
+
+        if (player.hasPermission("eternia.chat.color.nick")) {
+            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, PluginMSGs.getColor(string)).replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("money.nick"))));
+        } else {
+            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, string).replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("money.nick"))));
+        }
+
+        final PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
+
+        playerProfile.tempNick = string;
+        playerProfile.nickRequest = true;
+        player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY_2);
+    }
+
+    public static void staffNick(final OnlinePlayer target, final Player player, final String string) {
+        if (target != null) {
+            changeNickName(target.getPlayer(), player, string);
+            return;
+        }
+
+        if (string.equals(PluginConstants.CLEAR_STR)) {
+            final String playerName = player.getName();
+            final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+            player.setDisplayName(playerName);
+            PluginVars.playerProfile.get(uuid).playerDisplayName = playerName;
+            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
+            saveToSQL(uuid);
+            return;
+        }
+
+        player.setDisplayName(PluginMSGs.getColor(string));
+    }
+
+    private static void changeNickName(final Player target, final Player player, final String string) {
+        final String targetName = target.getName();
+        if (string.equals(PluginConstants.CLEAR_STR)) {
+            target.setDisplayName(targetName);
+            target.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
+            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
+        } else {
+            target.setDisplayName(string);
+            player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CHAT_NEWNICK));
+            target.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CHAT_NEWNICK));
+        }
+    }
+
+    private static void saveToSQL(UUID uuid) {
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.PLAYER_DISPLAY_STR, PluginVars.playerProfile.get(uuid).getPlayerDisplayName(), PluginConstants.UUID_STR, uuid.toString()));
     }
 
 }
