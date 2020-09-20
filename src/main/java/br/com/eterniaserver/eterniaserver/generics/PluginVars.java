@@ -13,8 +13,10 @@ import org.bukkit.World;
 import java.util.ArrayList;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class PluginVars {
@@ -52,8 +54,9 @@ public class PluginVars {
 
     protected static final List<UtilCustomPlaceholder> customPlaceholders = new ArrayList<>();
     protected static final List<World> skippingWorlds = new ArrayList<>();
-    protected static final List<String> god = new ArrayList<>();
-    protected static final List<String> afk = new ArrayList<>();
+
+    protected static final Set<String> god = new HashSet<>();
+    protected static final Set<String> afk = new HashSet<>();
 
     protected static final Map<Player, PlayerTeleport> teleports = new HashMap<>();
     protected static final Map<String, UUID> playersName = new HashMap<>();

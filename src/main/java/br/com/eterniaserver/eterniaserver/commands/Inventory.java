@@ -1,15 +1,16 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class BaseCmdInventory extends BaseCommand {
+public class Inventory extends BaseCommand {
 
     @CommandAlias("workbench|craftingtable")
     @CommandPermission("eternia.workbench")

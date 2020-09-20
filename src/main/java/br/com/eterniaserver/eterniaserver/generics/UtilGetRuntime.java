@@ -4,11 +4,11 @@ import java.lang.management.ManagementFactory;
 
 public class UtilGetRuntime {
 
-    long freemem;
-    long totalmem;
-    int seconds;
-    int minutes;
-    int hours;
+    public long freemem;
+    public long totalmem;
+    public int seconds;
+    public int minutes;
+    public int hours;
 
     public void recalculateRuntime() {
         Runtime runtime = Runtime.getRuntime();

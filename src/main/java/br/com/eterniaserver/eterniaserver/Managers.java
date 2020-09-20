@@ -4,7 +4,7 @@ import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.Gamemode;
 import br.com.eterniaserver.eterniaserver.commands.Glow;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdItem;
+import br.com.eterniaserver.eterniaserver.commands.Item;
 import br.com.eterniaserver.eterniaserver.generics.PluginClear;
 import br.com.eterniaserver.eterniaserver.generics.PluginTimer;
 import br.com.eterniaserver.eterniaserver.generics.UtilAccelerateWorld;
@@ -14,16 +14,16 @@ import br.com.eterniaserver.eterniaserver.commands.Channel;
 import br.com.eterniaserver.eterniaserver.commands.Chat;
 import br.com.eterniaserver.eterniaserver.commands.Economy;
 import br.com.eterniaserver.eterniaserver.commands.Experience;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdHome;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdMute;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdRewards;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdSpawner;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport;
+import br.com.eterniaserver.eterniaserver.commands.Generic;
+import br.com.eterniaserver.eterniaserver.commands.Home;
+import br.com.eterniaserver.eterniaserver.commands.Inventory;
+import br.com.eterniaserver.eterniaserver.commands.Mute;
+import br.com.eterniaserver.eterniaserver.commands.Reward;
+import br.com.eterniaserver.eterniaserver.commands.Spawner;
+import br.com.eterniaserver.eterniaserver.commands.Teleport;
 import br.com.eterniaserver.eterniaserver.commands.Warp;
 import br.com.eterniaserver.eterniaserver.generics.PluginTicks;
-import br.com.eterniaserver.eterniaserver.generics.BaseCmdKit;
+import br.com.eterniaserver.eterniaserver.commands.Kit;
 import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
@@ -130,7 +130,7 @@ public class Managers {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.chat"), "Chat")) {
             plugin.getFiles().loadChat();
             EterniaLib.getManager().registerCommand(new Channel());
-            EterniaLib.getManager().registerCommand(new BaseCmdMute());
+            EterniaLib.getManager().registerCommand(new Mute());
             EterniaLib.getManager().registerCommand(new Chat(plugin));
             new UtilAdvancedChatTorch();
         }
@@ -154,23 +154,23 @@ public class Managers {
 
     private void loadGenericManager() {
         sendModuleStatus(true, "Generic");
-        EterniaLib.getManager().registerCommand(new BaseCmdInventory());
-        EterniaLib.getManager().registerCommand(new BaseCmdGeneric(plugin));
+        EterniaLib.getManager().registerCommand(new Inventory());
+        EterniaLib.getManager().registerCommand(new Generic(plugin));
         EterniaLib.getManager().registerCommand(new Gamemode());
         EterniaLib.getManager().registerCommand(new Glow());
-        EterniaLib.getManager().registerCommand(new BaseCmdItem());
+        EterniaLib.getManager().registerCommand(new Item());
     }
 
     private void loadHomesManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.home"), "Homes")) {
-            EterniaLib.getManager().registerCommand(new BaseCmdHome());
+            EterniaLib.getManager().registerCommand(new Home());
         }
     }
 
     private void loadKitManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.kits"), "Kits")) {
             plugin.getFiles().loadKits();
-            EterniaLib.getManager().registerCommand(new BaseCmdKit());
+            EterniaLib.getManager().registerCommand(new Kit());
         }
     }
 
@@ -192,20 +192,20 @@ public class Managers {
     private void loadRewardsManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
             plugin.getFiles().loadRewards();
-            EterniaLib.getManager().registerCommand(new BaseCmdRewards());
+            EterniaLib.getManager().registerCommand(new Reward());
         }
     }
 
     private void loadSpawnersManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.spawners"), "Spawners")) {
-            EterniaLib.getManager().registerCommand(new BaseCmdSpawner());
+            EterniaLib.getManager().registerCommand(new Spawner());
         }
     }
 
     private void loadTeleportsManager() {
         if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.teleports"), "Teleports")) {
             EterniaLib.getManager().registerCommand(new Warp());
-            EterniaLib.getManager().registerCommand(new BaseCmdTeleport());
+            EterniaLib.getManager().registerCommand(new Teleport());
         }
     }
 

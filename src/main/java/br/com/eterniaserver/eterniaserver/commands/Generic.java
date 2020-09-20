@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
@@ -9,6 +9,13 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConfigs;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.UtilGetRuntime;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.acf.BaseCommand;
@@ -29,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class BaseCmdGeneric extends BaseCommand {
+public class Generic extends BaseCommand {
 
     private final EterniaServer plugin;
     private final UtilGetRuntime getRuntime;
@@ -43,7 +50,7 @@ public class BaseCmdGeneric extends BaseCommand {
     private final ItemStack diamondi = new ItemStack(Material.DIAMOND);
     private final ItemStack esmeraldai = new ItemStack(Material.EMERALD);
 
-    public BaseCmdGeneric(EterniaServer plugin) {
+    public Generic(EterniaServer plugin) {
         this.plugin = plugin;
 
         this.getRuntime = new UtilGetRuntime();
@@ -63,7 +70,7 @@ public class BaseCmdGeneric extends BaseCommand {
                 e.printStackTrace();
             }
         }
-        sendConsole(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Player Profiles").replace(PluginConstants.AMOUNT, String.valueOf(PluginVars.playerProfile.size())));
+        sendConsole(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Player Profiles").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getProfileMapSize())));
 
         if (EterniaServer.serverConfig.getBoolean("modules.home") || EterniaServer.serverConfig.getBoolean("modules.teleports")) {
             final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_LOCATIONS), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
@@ -75,10 +82,7 @@ public class BaseCmdGeneric extends BaseCommand {
                         Double.parseDouble(split[3]),
                         Float.parseFloat(split[4]),
                         Float.parseFloat(split[5]));
-                if (k.contains(".")) {
-                    loc = getCenter(loc);
-                }
-                PluginVars.locations.put(k, loc);
+                APIServer.putLocation(k, loc);
             });
         }
     }
@@ -303,23 +307,23 @@ public class BaseCmdGeneric extends BaseCommand {
     @CommandPermission("eternia.afk")
     public void onAFK(Player player) {
         final String playerName = player.getName();
-        if (PluginVars.afk.contains(playerName)) {
+        if (APIPlayer.isAFK(playerName)) {
             Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
-            PluginVars.afk.remove(playerName);
+            APIPlayer.removeFromAFK(playerName);
         } else {
-            PluginVars.afk.add(playerName);
+            APIPlayer.putAfk(playerName);
             Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_ENABLE));
         }
     }
 
     private void changeGod(final Player player) {
         final String playerName = player.getName();
-        if (PluginVars.god.contains(playerName)) {
+        if (APIPlayer.isGod(playerName)) {
             player.sendMessage(PluginMSGs.MSG_GOD_DISABLE);
-            PluginVars.god.remove(playerName);
+            APIPlayer.removeGod(playerName);
         } else {
             player.sendMessage(PluginMSGs.MSG_GOD_ENABLE);
-            PluginVars.god.add(playerName);
+            APIPlayer.putGod(playerName);
         }
     }
 
@@ -338,7 +342,7 @@ public class BaseCmdGeneric extends BaseCommand {
 
     private void sendProfile(Player player, Player target) {
         final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
-        final long millis = PluginVars.playerProfile.get(uuid).updateTimePlayed();
+        final long millis = APIPlayer.getAndUpdateTimePlayed(uuid);
         String hms = PluginMSGs.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
@@ -346,8 +350,8 @@ public class BaseCmdGeneric extends BaseCommand {
         for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
             player.sendMessage(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(target, line)));
         }
-        player.sendMessage(PluginMSGs.MSG_PROFILE_REGISTER.replace(PluginConstants.PLAYER_DATA, sdf.format(new Date(PluginVars.playerProfile.get(uuid).firstLogin))));
-        player.sendMessage(PluginMSGs.MSG_PROFILE_LAST.replace(PluginConstants.PLAYER_LAST, sdf.format(new Date(PluginVars.playerProfile.get(uuid).lastLogin))));
+        player.sendMessage(PluginMSGs.MSG_PROFILE_REGISTER.replace(PluginConstants.PLAYER_DATA, sdf.format(new Date(APIPlayer.getFirstLoginLong(uuid)))));
+        player.sendMessage(PluginMSGs.MSG_PROFILE_LAST.replace(PluginConstants.PLAYER_LAST, sdf.format(new Date(APIPlayer.getLastLogin(uuid)))));
         player.sendMessage(PluginMSGs.MSG_PROFILE_HOURS.replace(PluginConstants.HOURS, hms));
         player.sendMessage(PluginMSGs.MSG_PROFILE_TITLE);
     }
@@ -379,7 +383,7 @@ public class BaseCmdGeneric extends BaseCommand {
                 playerProfile.muted = resultSet.getLong(PluginConstants.MUTED_STR);
                 playerProfile.playerDisplayName = resultSet.getString(PluginConstants.PLAYER_DISPLAY_STR);
             }
-            PluginVars.playerProfile.put(UUID.fromString(resultSet.getString(PluginConstants.UUID_STR)), playerProfile);
+            APIServer.putProfile(UUID.fromString(resultSet.getString(PluginConstants.UUID_STR)), playerProfile);
         }
     }
 

@@ -102,17 +102,17 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (APIServer.hasWarp("warp.spawn") && EterniaServer.serverConfig.getBoolean("modules.teleports")) {
+        if (APIServer.hasLocation("warp.spawn") && EterniaServer.serverConfig.getBoolean("modules.teleports")) {
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10) {
-                event.setSpawnLocation(APIServer.getWarp("warp.spawn"));
+                event.setSpawnLocation(APIServer.getLocation("warp.spawn"));
             }
         }
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (APIServer.hasWarp("warp.spawn") && EterniaServer.serverConfig.getBoolean("modules.teleports")) {
-            event.setRespawnLocation(APIServer.getWarp("warp.spawn"));
+        if (APIServer.hasLocation("warp.spawn") && EterniaServer.serverConfig.getBoolean("modules.teleports")) {
+            event.setRespawnLocation(APIServer.getLocation("warp.spawn"));
         }
     }
 
@@ -225,7 +225,7 @@ public class PlayerHandler implements Listener {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
         if (!APIPlayer.hasProfile(uuid)) {
-            PaperLib.teleportAsync(player, APIServer.getWarp("warp.spawn"));
+            PaperLib.teleportAsync(player, APIServer.getLocation("warp.spawn"));
             APIServer.playerProfileCreate(uuid, playerName, player.getFirstPlayed());
         } else {
             APIPlayer.updatePlayerProfile(uuid, player, System.currentTimeMillis());

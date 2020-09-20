@@ -51,6 +51,14 @@ public class APIPlayer {
         return PluginVars.god.contains(playerName);
     }
 
+    public static void putGod(String playerName) {
+        PluginVars.god.add(playerName);
+    }
+
+    public static void removeGod(String playerName) {
+        PluginVars.god.remove(playerName);
+    }
+
     public static String isGodPlaceholder(String playerName) {
         return isGod(playerName) ? EterniaServer.serverConfig.getString("placeholders.godmode") : "";
     }
@@ -59,12 +67,43 @@ public class APIPlayer {
         return PluginVars.playerProfile.get(uuid).muted;
     }
 
+    public static void putMutedTime(UUID uuid, long time) {
+        PluginVars.playerProfile.get(uuid).muted = time;
+    }
+
     public static String getDisplayName(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).getPlayerDisplayName();
     }
 
     public static String getName(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).getPlayerName();
+    }
+
+    public static void updateHome(UUID uuid, List<String> values) {
+        PluginVars.playerProfile.get(uuid).homes = values;
+    }
+
+    public static boolean hasTpaRequest(String playerName) {
+        return PluginVars.tpaRequests.containsKey(playerName);
+    }
+
+    public static String getTpaSender(String playerName) {
+        return PluginVars.tpaRequests.get(playerName);
+    }
+
+    public static void removeTpaRequest(String playerName) {
+        PluginVars.tpaTime.remove(playerName);
+        PluginVars.tpaRequests.remove(playerName);
+    }
+
+    public static void putTpaRequest(String targetName, String playerName) {
+        PluginVars.tpaRequests.remove(targetName);
+        PluginVars.tpaRequests.put(targetName, playerName);
+        PluginVars.tpaTime.put(targetName, System.currentTimeMillis());
+    }
+
+    public static List<String> getHomes(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).homes;
     }
 
     public static int getChannel(UUID uuid) {
@@ -121,6 +160,14 @@ public class APIPlayer {
 
     public static long getAndUpdateTimePlayed(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).updateTimePlayed();
+    }
+
+    public static long getLastLogin(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).lastLogin;
+    }
+
+    public static long getFirstLoginLong(UUID uuid) {
+        return PluginVars.playerProfile.get(uuid).firstLogin;
     }
 
     public static void changeFlyState(Player player) {

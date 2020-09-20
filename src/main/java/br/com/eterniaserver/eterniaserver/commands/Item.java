@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.CommandHelp;
@@ -12,6 +12,8 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.NBTItem;
 
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +23,7 @@ import java.util.List;
 
 @CommandAlias("item")
 @CommandPermission("eternia.item")
-public class BaseCmdItem extends BaseCommand {
+public class Item extends BaseCommand {
 
     @Default
     @HelpCommand
@@ -37,7 +39,7 @@ public class BaseCmdItem extends BaseCommand {
     @Description(" Adiciona uma chave e um valor NBT ao item")
     public void onItemAddKey(Player player, String key, String value) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() != Material.AIR) {
+        if (item.getType() != Material.AIR) {
             NBTItem nbtItem = new NBTItem(item);
             nbtItem.setString(key, value);
             player.getInventory().setItemInMainHand(nbtItem.getItem());
@@ -54,7 +56,7 @@ public class BaseCmdItem extends BaseCommand {
         @Description(" Remove a lore do item")
         public void onItemClearLore(Player player) {
             ItemStack item = player.getInventory().getItemInMainHand();
-            if (item != null && item.getType() != Material.AIR) {
+            if (item.getType() != Material.AIR && item.getLore() != null) {
                 item.getLore().clear();
                 player.getInventory().setItemInMainHand(item);
                 player.sendMessage(PluginMSGs.ITEM_LORE_CLEAR);
@@ -67,7 +69,7 @@ public class BaseCmdItem extends BaseCommand {
         @Description(" Remove o nome do item")
         public void onItemClearName(Player player) {
             ItemStack item = player.getInventory().getItemInMainHand();
-            if (item != null && item.getType() != Material.AIR) {
+            if (item.getType() != Material.AIR) {
                 item.getItemMeta().setDisplayName(item.getI18NDisplayName());
                 player.getInventory().setItemInMainHand(item);
                 player.sendMessage(PluginMSGs.ITEM_NAME_CLEAR);
@@ -85,7 +87,7 @@ public class BaseCmdItem extends BaseCommand {
     @Description(" Adiciona uma linha de lore ao item")
     public void onItemAddLore(Player player, String name) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item != null && item.getType() != Material.AIR) {
+        if (item.getType() != Material.AIR) {
             name = PluginMSGs.getColor(name);
             List<String> lore = item.getLore();
             if (lore != null) {
@@ -110,7 +112,7 @@ public class BaseCmdItem extends BaseCommand {
         @Description(" Define a lore de um item")
         public void onItemSetLore(Player player, String name) {
             ItemStack item = player.getInventory().getItemInMainHand();
-            if (item != null && item.getType() != Material.AIR) {
+            if (item.getType() != Material.AIR) {
                 name = PluginMSGs.getColor(name);
                 item.setLore(List.of(name));
                 player.getInventory().setItemInMainHand(item);
@@ -126,7 +128,7 @@ public class BaseCmdItem extends BaseCommand {
         @Description(" Define o nome de um item")
         public void onItemSetName(Player player, String name) {
             ItemStack item = player.getInventory().getItemInMainHand();
-            if (item != null && item.getType() != Material.AIR) {
+            if (item.getType() != Material.AIR) {
                 name = PluginMSGs.getColor(name);
                 ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName(name);

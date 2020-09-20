@@ -1,7 +1,14 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
@@ -12,7 +19,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class BaseCmdTeleport extends BaseCommand {
+public class Teleport extends BaseCommand {
 
     private final double backMoney = EterniaServer.serverConfig.getInt("money.back");
 
@@ -27,14 +34,13 @@ public class BaseCmdTeleport extends BaseCommand {
     @CommandPermission("eternia.tpa")
     public void onTeleportAccept(Player player) {
         final String playerName = player.getName();
-        if (PluginVars.tpaRequests.containsKey(playerName)) {
-            final Player target = Bukkit.getPlayer(PluginVars.tpaRequests.get(playerName));
+        if (APIPlayer.hasTpaRequest(playerName)) {
+            final Player target = Bukkit.getPlayer(APIPlayer.getTpaSender(playerName));
             if (target != null) {
                 target.sendMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_TELEPORT_ACCEPT));
-                PluginVars.teleports.put(target, new PlayerTeleport(target, player.getLocation(), PluginMSGs.MSG_TELEPORT_DONE));
+                APIServer.putInTeleport(target, new PlayerTeleport(target, player.getLocation(), PluginMSGs.MSG_TELEPORT_DONE));
             }
-            PluginVars.tpaTime.remove(playerName);
-            PluginVars.tpaRequests.remove(playerName);
+            APIPlayer.removeTpaRequest(playerName);
         } else {
             player.sendMessage(PluginMSGs.MSG_TELEPORT_NO_REQUEST);
         }
@@ -44,17 +50,14 @@ public class BaseCmdTeleport extends BaseCommand {
     @CommandPermission("eternia.tpa")
     public void onTeleportDeny(Player player) {
         final String playerName = player.getName();
-        final Player target = Bukkit.getPlayer(UUIDFetcher.getUUIDOf(PluginVars.tpaRequests.get(playerName)));
+        final Player target = Bukkit.getPlayer(UUIDFetcher.getUUIDOf(APIPlayer.getTpaSender(playerName)));
         if (target != null && target.isOnline()) {
             player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.MSG_TELEPORT_DENY));
-            PluginVars.tpaRequests.remove(playerName);
-            PluginVars.tpaTime.remove(playerName);
             target.sendMessage(PluginMSGs.MSG_TELEPORT_DENIED);
         } else {
-            PluginVars.tpaRequests.remove(playerName);
-            PluginVars.tpaTime.remove(playerName);
             player.sendMessage(PluginMSGs.MSG_TELEPORT_NO_REQUEST);
         }
+        APIPlayer.removeTpaRequest(playerName);
     }
 
     @CommandAlias("tpa|teleportoplayer")
@@ -63,16 +66,14 @@ public class BaseCmdTeleport extends BaseCommand {
     @CommandPermission("eternia.tpa")
     public void onTeleportToPlayer(Player player, OnlinePlayer target) {
         final Player targetP = target.getPlayer();
-        if (PluginVars.teleports.containsKey(player)) {
+        if (APIPlayer.isTeleporting(player)) {
             player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
         } else {
             if (targetP != player) {
                 final String playerName = player.getName();
                 final String targetName = targetP.getName();
-                if (!PluginVars.tpaRequests.containsKey(targetName)) {
-                    PluginVars.tpaRequests.remove(targetName);
-                    PluginVars.tpaRequests.put(targetName, playerName);
-                    PluginVars.tpaTime.put(targetName, System.currentTimeMillis());
+                if (!APIPlayer.hasTpaRequest(targetName)) {
+                    APIPlayer.putTpaRequest(targetName, playerName);
                     targetP.sendMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_TELEPORT_RECEIVED));
                     player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.MSG_TELEPORT_SENT));
                 } else {
@@ -89,12 +90,12 @@ public class BaseCmdTeleport extends BaseCommand {
     public void onBack(Player player) {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (PluginVars.back.containsKey(playerName)) {
+        if (APIServer.hasBackLocation(playerName)) {
             if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!(EterniaServer.serverConfig.getBoolean("modules.economy")) && canBack(player))) {
-                PluginVars.teleports.put(player, new PlayerTeleport(player, PluginVars.back.get(playerName), PluginMSGs.MSG_BACK_FREE));
+                APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_FREE));
             } else if (APIEconomy.getMoney(uuid) >= backMoney && canBack(player)) {
                 APIEconomy.removeMoney(uuid, backMoney);
-                PluginVars.teleports.put(player, new PlayerTeleport(player, PluginVars.back.get(playerName), PluginMSGs.MSG_BACK_COST));
+                APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_COST));
             } else if (canBack(player)){
                 player.sendMessage(PluginMSGs.MSG_NO_MONEY.replace(PluginConstants.VALUE, String.valueOf(backMoney)));
             }
@@ -104,7 +105,7 @@ public class BaseCmdTeleport extends BaseCommand {
     }
 
     private boolean canBack(final Player player) {
-        if (PluginVars.teleports.containsKey(player)) {
+        if (APIPlayer.isTeleporting(player)) {
             player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
             return false;
         }

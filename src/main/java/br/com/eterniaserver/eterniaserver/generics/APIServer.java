@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class APIServer {
@@ -51,19 +52,27 @@ public class APIServer {
         PluginVars.back.put(playerName, location);
     }
 
-    public static boolean hasWarp(String warpName) {
+    public static boolean hasBackLocation(String playerName) {
+        return PluginVars.back.containsKey(playerName);
+    }
+
+    public static Location getBackLocation(String playerName) {
+        return PluginVars.back.get(playerName);
+    }
+
+    public static boolean hasLocation(String warpName) {
         return PluginVars.locations.containsKey(warpName);
     }
 
-    public static Location getWarp(String warpName) {
+    public static Location getLocation(String warpName) {
         return PluginVars.locations.getOrDefault(warpName, PluginVars.error);
     }
 
-    public static void putWarp(String warpName, Location location) {
+    public static void putLocation(String warpName, Location location) {
         PluginVars.locations.put(warpName, location);
     }
 
-    public static void removeWarp(String warpName) {
+    public static void removeLocation(String warpName) {
         PluginVars.locations.remove(warpName);
     }
 
@@ -73,6 +82,14 @@ public class APIServer {
 
     public static void putGlowing(String playerName, String nameColor) {
         PluginVars.glowingColor.put(playerName, nameColor);
+    }
+
+    public static void putProfile(UUID uuid, PlayerProfile playerProfile) {
+        PluginVars.playerProfile.put(uuid, playerProfile);
+    }
+
+    public static int getProfileMapSize() {
+        return PluginVars.playerProfile.size();
     }
 
     public static void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
@@ -103,6 +120,14 @@ public class APIServer {
         }
     }
 
+    public static long getKitCooldown(String kit) {
+        return PluginVars.kitsCooldown.get(kit);
+    }
+
+    public static void putKitCooldown(String kit, long time) {
+        PluginVars.kitsCooldown.put(kit, time);
+    }
+
     public static int getVersion() {
         if (version == 0) {
             String bukkitVersion = Bukkit.getBukkitVersion();
@@ -112,6 +137,22 @@ public class APIServer {
             else version = 113;
         }
         return version;
+    }
+
+    public static void updateRewardMap(Map<String, String> map) {
+        map.forEach(PluginVars.rewards::put);
+    }
+
+    public static int getRewardMapSize() {
+        return PluginVars.rewards.size();
+    }
+
+    public static boolean hasReward(String key) {
+        return PluginVars.rewards.containsKey(key);
+    }
+
+    public static String getReward(String key) {
+        return PluginVars.rewards.get(key);
     }
 
 }

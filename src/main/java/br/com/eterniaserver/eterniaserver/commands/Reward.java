@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -6,31 +6,35 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConfigs;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.security.SecureRandom;
-import java.util.Map;
 
 @SuppressWarnings("squid:S2245")
-public class BaseCmdRewards extends BaseCommand {
+public class Reward extends BaseCommand {
 
     private final SecureRandom random = new SecureRandom();
     private final byte[] bytes = new byte[20];
 
-    public BaseCmdRewards() {
-        Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_REWARD), PluginConstants.CODE_STR, PluginConstants.CODE_GROUP_STR);
-        temp.forEach(PluginVars.rewards::put);
-        Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Keys").replace(PluginConstants.AMOUNT, String.valueOf(temp.size())));
+    public Reward() {
+        APIServer.updateRewardMap(EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_REWARD), PluginConstants.CODE_STR, PluginConstants.CODE_GROUP_STR));
+        Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Keys").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getRewardMapSize())));
     }
 
     @CommandAlias("usekey|usarkey|usarchave")
     @Syntax("<chave>")
     @CommandPermission("eternia.usekey")
     public void onUseKey(Player player, String key) {
-        if (PluginVars.rewards.containsKey(key)) {
-            giveReward(PluginVars.rewards.get(key), player);
+        if (APIServer.hasReward(key)) {
+            giveReward(APIServer.getReward(key), player);
             deleteKey(key);
         } else {
             player.sendMessage(PluginMSGs.MSG_REWARD_INVALID);

@@ -1,12 +1,19 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.commands;
 
+import br.com.eterniaserver.acf.annotation.CommandAlias;
+import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Optional;
+import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginConfigs;
+import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
-
 import br.com.eterniaserver.acf.BaseCommand;
-import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import org.bukkit.ChatColor;
@@ -17,9 +24,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
-public class BaseCmdHome extends BaseCommand {
+public class Home extends BaseCommand {
 
     @CommandAlias("delhome|delhouse|delcasa")
     @Syntax("<home>")
@@ -40,17 +50,17 @@ public class BaseCmdHome extends BaseCommand {
     @CommandPermission("eternia.home")
     public void onHome(Player player, String nome, @Optional OnlinePlayer target) {
         if (target == null) {
-            Location location = getHome(nome.toLowerCase(), player.getName());
-            if (locationExists(location, player) && !PluginVars.teleports.containsKey(player)) {
-                PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
-            } else if (PluginVars.teleports.containsKey(player)) {
+            Location location = APIServer.getLocation(nome.toLowerCase() + "." + player.getName());
+            if (locationExists(location, player) && !APIPlayer.isTeleporting(player)) {
+                APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
+            } else if (APIPlayer.isTeleporting(player)) {
                 player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
             }
         } else if (player.hasPermission("eternia.home.other")) {
-            Location location = getHome(nome.toLowerCase(), target.getPlayer().getName());
-            if (locationExists(location, player) && !PluginVars.teleports.containsKey(player)) {
-                PluginVars.teleports.put(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
-            } else if (PluginVars.teleports.containsKey(player)) {
+            Location location = APIServer.getLocation(nome.toLowerCase() + "." + target.getPlayer().getName());
+            if (locationExists(location, player) && !APIPlayer.isTeleporting(player)) {
+                APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
+            } else if (APIPlayer.isTeleporting(player)) {
                 player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
             }
         } else {
@@ -65,7 +75,7 @@ public class BaseCmdHome extends BaseCommand {
         StringBuilder accounts = new StringBuilder();
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
-                List<String> list = getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
+                List<String> list = APIPlayer.getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
                 for (String line : list) {
                     accounts.append(line).append(PluginVars.colors.get(8)).append(", ").append(PluginVars.colors.get(3));
                 }
@@ -74,7 +84,7 @@ public class BaseCmdHome extends BaseCommand {
                 player.sendMessage(PluginMSGs.MSG_NO_PERM);
             }
         } else {
-            List<String> list = getHomes(UUIDFetcher.getUUIDOf(player.getName()));
+            List<String> list = APIPlayer.getHomes(UUIDFetcher.getUUIDOf(player.getName()));
             for (String line : list) {
                 accounts.append(line).append(PluginVars.colors.get(8)).append(", ").append(PluginVars.colors.get(3));
             }
@@ -129,11 +139,11 @@ public class BaseCmdHome extends BaseCommand {
         final String homeName = home + "." + jogador;
         final UUID uuid = UUIDFetcher.getUUIDOf(jogador);
 
-        PluginVars.locations.put(homeName, loc);
+        APIServer.putLocation(homeName, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
 
-        List<String> values = getHomes(uuid);
+        List<String> values = APIPlayer.getHomes(uuid);
         int size = values.size();
         for (int i = 0; i < size; i++) {
             final String value = values.get(i);
@@ -156,17 +166,17 @@ public class BaseCmdHome extends BaseCommand {
         } else {
             EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_LOCATIONS, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, homeName));
         }
-        PluginVars.playerProfile.get(uuid).homes = values;
+        APIPlayer.updateHome(uuid, values);
     }
 
     public void delHome(String home, String jogador) {
         final UUID uuid = UUIDFetcher.getUUIDOf(jogador);
         final String homeName = home + "." + jogador;
-        PluginVars.locations.remove(homeName);
+        APIServer.removeLocation(homeName);
         StringBuilder nova = new StringBuilder();
 
         List<String> newValues = new ArrayList<>();
-        List<String> values = getHomes(uuid);
+        List<String> values = APIPlayer.getHomes(uuid);
         int size = values.size();
         for (int i = 0; i < size; i++) {
             final String value = values.get(i);
@@ -176,27 +186,19 @@ public class BaseCmdHome extends BaseCommand {
                 else nova.append(value);
             }
         }
-        PluginVars.playerProfile.get(uuid).homes = newValues;
+        APIPlayer.updateHome(uuid, newValues);
         EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.HOMES_STR, nova.toString(), PluginConstants.UUID_STR, uuid.toString()));
         EQueries.executeQuery(PluginConstants.getQueryDelete(PluginConfigs.TABLE_LOCATIONS, PluginConstants.NAME_STR, homeName));
     }
 
-    public Location getHome(String home, String jogador) {
-        return PluginVars.locations.getOrDefault(home + "." + jogador, PluginVars.error);
-    }
-
     public boolean existHome(String home, UUID uuid) {
-        List<String> homes = getHomes(uuid);
+        List<String> homes = APIPlayer.getHomes(uuid);
         for (String line : homes) if (line.equals(home)) return true;
         return false;
     }
 
     public int canHome(UUID uuid) {
-        return getHomes(uuid) != null ? getHomes(uuid).size() : 0;
-    }
-
-    public List<String> getHomes(UUID uuid) {
-        return PluginVars.playerProfile.get(uuid).getHomes();
+        return APIPlayer.getHomes(uuid) != null ? APIPlayer.getHomes(uuid).size() : 0;
     }
 
 }
