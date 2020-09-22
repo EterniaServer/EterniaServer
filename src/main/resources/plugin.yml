@@ -4,5 +4,7 @@ name: EterniaServer
 version: '${project.version}'
 author: Yuri Nogueira
 description: Blablabla
+load: STARTUP
 api-version: '1.13'
+website: www.eterniaserver.com.br
 depend: [EterniaLib, Vault, PlaceholderAPI]

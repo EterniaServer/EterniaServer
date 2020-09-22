@@ -22,8 +22,8 @@ public class PlayerTeleport {
     }
 
     public boolean hasMoved() {
-        if (firstLocation.getWorld() != player.getLocation().getWorld()) return true;
-        return firstLocation.distanceSquared(player.getLocation()) != 0;
+        final Location location = player.getLocation();
+        return !(firstLocation.getBlockX() == location.getBlockX() && firstLocation.getBlockY() == location.getBlockY() && firstLocation.getBlockZ() == location.getBlockZ());
     }
 
     public int getCountdown() {

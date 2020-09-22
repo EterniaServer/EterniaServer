@@ -27,11 +27,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * For a How-To on how to use AbstractCommand see this post @ http://forums.bukkit.org/threads/195990/
@@ -64,22 +61,6 @@ public abstract class AbstractCommand implements CommandExecutor {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
-    }
-
-    private final class ReflectCommand extends Command {
-
-        private final AbstractCommand exe;
-
-        protected ReflectCommand(String command, AbstractCommand exe) {
-            super(command);
-            this.exe = exe;
-        }
-
-        @Override
-        public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
-            return exe.onCommand(sender, this, commandLabel, args);
-        }
-
     }
 
 }

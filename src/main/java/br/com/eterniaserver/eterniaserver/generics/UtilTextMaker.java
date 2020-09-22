@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -38,27 +39,22 @@ public class UtilTextMaker {
 			String msg = chatObject.message;
 			msg = UtilInternMethods.setPlaceholders(p, msg);
 			if (msg.contains(PluginConstants.MESSAGE)) msg = msg.replace(PluginConstants.MESSAGE, message.getMessageSent());
-			if (p.hasPermission("eternia.chat.mention") && msg.contains("@")) {
-				int lenght = msg.length();
-				for (int v = 0; v < lenght; v++) {
-					String playerName;
-					if (Character.toString(msg.charAt(v)).equals("@")) {
-						if (lenght > v + 16) playerName = msg.substring(v, v + 16).split(" ")[0];
-						else playerName = msg.substring(v, v + lenght).split(" ")[0];
-						if (PluginVars.playersName.containsKey(playerName)) {
-							msg = msg.replace(playerName, PluginVars.colors.get(3) + playerName + PluginVars.colors.get(15));
-							Player player = Bukkit.getPlayer(PluginVars.playersName.get(playerName));
-							if (player != null && player.isOnline()) {
-								player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-								player.sendTitle(PluginMSGs.getColor(p.getDisplayName()), PluginMSGs.getColor("&7mencionou você&8!"), 10, 40, 10);
-							}
+			if (p.hasPermission("eternia.chat.mention")) {
+				String[] splited = msg.split(" ");
+				for (String msgSplited : splited) {
+					if (msgSplited.contains("@") && PluginVars.playersName.containsKey(msgSplited)) {
+						msg = msg.replace(msgSplited, PluginVars.colors.get(3) + msgSplited + PluginVars.colors.get(15));
+						Player player = Bukkit.getPlayer(PluginVars.playersName.get(msgSplited));
+						if (player != null && player.isOnline()) {
+							player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
+							player.sendTitle(PluginMSGs.getColor(p.getDisplayName()), PluginVars.colors.get(7) + "mencionou você" + PluginVars.colors.get(8) + "!", 10, 40, 10);
 						}
 						break;
 					}
 				}
 			}
 			ItemStack itemStack = p.getInventory().getItemInMainHand();
-			if (p.hasPermission("eternia.chat.item") && msg.contains("[item]") && (itemStack != null && !itemStack.getType().equals(Material.AIR))) {
+			if (p.hasPermission("eternia.chat.item") && msg.contains("[item]") && !itemStack.getType().equals(Material.AIR)) {
 				baseComp[i] = sendItemInHand(msg, itemStack);
 			} else {
 				TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));

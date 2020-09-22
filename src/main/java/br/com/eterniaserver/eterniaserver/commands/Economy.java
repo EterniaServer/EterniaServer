@@ -49,7 +49,7 @@ public class Economy extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.money.admin")
     @Description(" Define o saldo de um jogador")
-    public void onSet(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
+    public void onSet(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=2147483647")  Double money) {
         final Player targetP = target.getPlayer();
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_SET.replace(PluginConstants.AMOUNT, String.valueOf(money))));
@@ -61,7 +61,7 @@ public class Economy extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.money.admin")
     @Description(" Retira uma quantia de saldo de um jogador")
-    public void onRemove(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
+    public void onRemove(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=2147483647")  Double money) {
         final Player targetP = target.getPlayer();
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_REMOVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
@@ -73,7 +73,7 @@ public class Economy extends BaseCommand {
     @Syntax("<jogador> <quantia>")
     @CommandPermission("eternia.money.admin")
     @Description(" Dar uma quantia de saldo a um jogador")
-    public void onGive(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double money) {
+    public void onGive(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=2147483647")  Double money) {
         final Player targetP = target.getPlayer();
         APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         sender.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.ECO_GIVE.replace(PluginConstants.AMOUNT, String.valueOf(money))));
@@ -104,7 +104,7 @@ public class Economy extends BaseCommand {
     @CommandCompletion("@players 100")
     @Syntax("<jogador> <quantia>")
     @Description(" Paga uma quantia a um jogador")
-    public void onPay(Player player, OnlinePlayer target, @Conditions("limits:min=1,max=9999999")  Double value) {
+    public void onPay(Player player, OnlinePlayer target, @Conditions("limits:min=1,max=2147483647")  Double value) {
         final String playerName = player.getName();
         final Player targetP = target.getPlayer();
         final String targetName = targetP.getName();

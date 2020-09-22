@@ -73,6 +73,7 @@ public class PluginVars {
     protected static final Map<String, Location> back = new HashMap<>();
     protected static final Map<String, Long> tpaTime = new HashMap<>();
     protected static final Map<String, Long> afkTime = new HashMap<>();
+    protected static final Map<Player, Location> playerLocationMap = new HashMap<>();
     protected static final Map<String, Long> bedCooldown = new HashMap<>();
     protected static final Map<String, String> rewards = new HashMap<>();
     protected static final Map<String, String> tpaRequests = new HashMap<>();

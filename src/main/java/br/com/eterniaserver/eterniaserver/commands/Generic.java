@@ -73,16 +73,18 @@ public class Generic extends BaseCommand {
         sendConsole(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Player Profiles").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getProfileMapSize())));
 
         if (EterniaServer.serverConfig.getBoolean("modules.home") || EterniaServer.serverConfig.getBoolean("modules.teleports")) {
-            final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_LOCATIONS), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
-            temp.forEach((k, v) -> {
-                final String[] split = v.split(":");
-                Location loc = new Location(Bukkit.getWorld(split[0]),
-                        Double.parseDouble(split[1]),
-                        (Double.parseDouble(split[2]) + 1),
-                        Double.parseDouble(split[3]),
-                        Float.parseFloat(split[4]),
-                        Float.parseFloat(split[5]));
-                APIServer.putLocation(k, loc);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+                final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_LOCATIONS), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
+                temp.forEach((k, v) -> {
+                    final String[] split = v.split(":");
+                    Location loc = new Location(Bukkit.getWorld(split[0]),
+                            Double.parseDouble(split[1]),
+                            (Double.parseDouble(split[2]) + 1),
+                            Double.parseDouble(split[3]),
+                            Float.parseFloat(split[4]),
+                            Float.parseFloat(split[5]));
+                    APIServer.putLocation(k, loc);
+                });
             });
         }
     }
@@ -201,10 +203,8 @@ public class Generic extends BaseCommand {
     @CommandPermission("eternia.admin")
     public void onFlyDebug() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!player.hasPermission("eternia.fly")) {
-                player.setFlying(false);
-                player.setAllowFlight(false);
-            }
+            player.setFlying(false);
+            player.setAllowFlight(false);
         }
     }
 
@@ -309,9 +309,9 @@ public class Generic extends BaseCommand {
         final String playerName = player.getName();
         if (APIPlayer.isAFK(playerName)) {
             Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
-            APIPlayer.removeFromAFK(playerName);
+            APIPlayer.removeAfk(playerName);
         } else {
-            APIPlayer.putAfk(playerName);
+            APIPlayer.putInAfk(player);
             Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_ENABLE));
         }
     }

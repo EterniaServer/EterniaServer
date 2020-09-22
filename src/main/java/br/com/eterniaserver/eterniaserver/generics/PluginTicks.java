@@ -11,15 +11,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PluginTicks extends BukkitRunnable {
 
     private final EterniaServer plugin;
-    private final Map<Player, Location> playerLocationMap = new HashMap<>();
 
     public PluginTicks(EterniaServer plugin) {
         this.plugin = plugin;
@@ -28,31 +25,33 @@ public class PluginTicks extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
+
             Location location = player.getLocation();
-            if (!playerLocationMap.containsKey(player)) playerLocationMap.put(player, location);
-            final String playerName = player.getName();
+            String playerName = player.getName();
+
             tpaTime(playerName);
             checkNetherTrap(player, location, playerName);
             checkAFK(player, playerName);
             getPlayersInTp(player);
             refreshPlayers(player);
-            optimizedMoveEvent(player);
+            optimizedMoveEvent(player, location);
+
         }
     }
 
-    private void optimizedMoveEvent(Player player) {
-        Location location = player.getLocation();
-        if (location.getWorld().getName().equals(playerLocationMap.get(player).getWorld().getName())) {
-            if (playerLocationMap.get(player).distanceSquared(location) != 0) {
-                final String playerName = player.getName();
-                PluginVars.afkTime.put(playerName, System.currentTimeMillis());
-                if (PluginVars.afk.contains(playerName)) {
-                    PluginVars.afk.remove(playerName);
-                    Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
-                }
+    private void optimizedMoveEvent(Player player, Location location) {
+        Location firstLocation = PluginVars.playerLocationMap.getOrDefault(player, location);
+
+        if (!(firstLocation.getBlockX() == location.getBlockX() && firstLocation.getBlockY() == location.getBlockY() && firstLocation.getBlockZ() == location.getBlockZ())) {
+            final String playerName = player.getName();
+            PluginVars.afkTime.put(playerName, System.currentTimeMillis());
+            if (PluginVars.afk.contains(playerName)) {
+                PluginVars.afk.remove(playerName);
+                Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
             }
         }
-        playerLocationMap.put(player, location);
+
+        PluginVars.playerLocationMap.put(player, location);
     }
 
     private void refreshPlayers(Player player) {
@@ -71,29 +70,29 @@ public class PluginTicks extends BukkitRunnable {
 
     private void checkNetherTrap(final Player player, final Location location, final String playerName) {
         if (location.getBlock().getType() == Material.NETHER_PORTAL) {
-            if (!PluginVars.playersInPortal.containsKey(playerName)) {
+            int time = PluginVars.playersInPortal.getOrDefault(playerName, -1);
+            if (time == -1) {
                 PluginVars.playersInPortal.put(playerName, 10);
-            } else if (PluginVars.playersInPortal.get(playerName) <= 1) {
-                if (location.getBlock().getType() == Material.NETHER_PORTAL) {
-                    runSync(() -> PaperLib.teleportAsync(player, getWarp()));
-                    player.sendMessage(PluginMSGs.MSG_WARP_DONE);
-                }
-            } else if (PluginVars.playersInPortal.get(playerName) > 1) {
-                PluginVars.playersInPortal.put(playerName, PluginVars.playersInPortal.get(playerName) - 1);
-                if (PluginVars.playersInPortal.get(playerName) < 5) {
-                    player.sendMessage(PluginMSGs.MSG_NETHER_TRAP.replace(PluginConstants.COOLDOWN, String.valueOf(PluginVars.playersInPortal.get(playerName))));
+            } else if (PluginVars.playersInPortal.get(playerName) == 1) {
+                runSync(() -> PaperLib.teleportAsync(player, getWarp()));
+                player.sendMessage(PluginMSGs.MSG_WARP_DONE);
+            } else if (time > 1) {
+                PluginVars.playersInPortal.put(playerName, time - 1);
+                if ((time - 1) < 5) {
+                    player.sendMessage(PluginMSGs.MSG_NETHER_TRAP.replace(PluginConstants.COOLDOWN, String.valueOf(time - 1)));
                 }
             }
         } else {
-            PluginVars.playersInPortal.remove(playerName);
+            PluginVars.playersInPortal.put(playerName, -1);
         }
     }
 
     private void checkAFK(final Player player, final String playerName) {
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.get(playerName)) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.getOrDefault(playerName, System.currentTimeMillis())) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
             if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
                 if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                     Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_BROAD));
+                    PluginVars.afkTime.remove(playerName);
                     runSync(() -> player.kickPlayer(PluginMSGs.MSG_AFK_KICKED));
                 }
             } else {

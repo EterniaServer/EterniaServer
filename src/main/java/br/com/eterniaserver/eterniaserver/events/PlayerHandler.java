@@ -224,6 +224,9 @@ public class PlayerHandler implements Listener {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
+        event.setJoinMessage(null);
+        Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_JOIN));
+
         if (!APIPlayer.hasProfile(uuid)) {
             PaperLib.teleportAsync(player, APIServer.getLocation("warp.spawn"));
             APIServer.playerProfileCreate(uuid, playerName, player.getFirstPlayed());
@@ -243,9 +246,6 @@ public class PlayerHandler implements Listener {
 
         APIServer.playerKitsCreate(playerName);
         APIPlayer.putAfk(playerName);
-
-        event.setJoinMessage(null);
-        Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_JOIN));
     }
 
     private void elevatorUp(final Player player, final int i) {

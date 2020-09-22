@@ -93,7 +93,7 @@ public class Teleport extends BaseCommand {
         if (APIServer.hasBackLocation(playerName)) {
             if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!(EterniaServer.serverConfig.getBoolean("modules.economy")) && canBack(player))) {
                 APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_FREE));
-            } else if (APIEconomy.getMoney(uuid) >= backMoney && canBack(player)) {
+            } else if (APIEconomy.getMoney(uuid) >= backMoney && canBack(player) && !player.hasPermission("eternia.backfree")) {
                 APIEconomy.removeMoney(uuid, backMoney);
                 APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_COST));
             } else if (canBack(player)){

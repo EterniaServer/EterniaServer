@@ -8,11 +8,14 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Map;
 import java.util.UUID;
 
 public class APIServer {
+
+    private static Scoreboard scoreboard;
 
     private static int version = 0;
 
@@ -50,6 +53,19 @@ public class APIServer {
 
     public static void putBackLocation(String playerName, Location location) {
         PluginVars.back.put(playerName, location);
+    }
+
+    public static Scoreboard getScoreboard() {
+        if (scoreboard == null) {
+            Scoreboard tempScoreBoard = Bukkit.getScoreboardManager().getMainScoreboard();
+            for (int i = 0; i < 16; i++) {
+                if (tempScoreBoard.getTeam(PluginVars.arrData.get(i)) == null) {
+                    tempScoreBoard.registerNewTeam(PluginVars.arrData.get(i)).setColor(PluginVars.colors.get(i));
+                }
+            }
+            scoreboard = tempScoreBoard;
+        }
+        return scoreboard;
     }
 
     public static boolean hasBackLocation(String playerName) {

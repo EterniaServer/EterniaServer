@@ -113,6 +113,10 @@ public class APICash {
     }
 
     public static int getCashGuiSize() {
+        if (cashGui == null) {
+            cashGui = new UtilCashGui().get();
+        }
+
         return cashGui.getMenuGui().size();
     }
 
@@ -121,10 +125,6 @@ public class APICash {
     }
 
     public static void menuGui(final Player player, int slotInt) {
-        if (cashGui == null) {
-            cashGui = new UtilCashGui().get();
-        }
-
         switch (slotInt) {
             case 10:
                 player.closeInventory();
