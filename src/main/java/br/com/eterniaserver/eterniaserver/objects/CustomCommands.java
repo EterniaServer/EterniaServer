@@ -1,9 +1,10 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.Configs;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,7 +29,7 @@ public class CustomCommands extends AbstractCommand {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (EterniaServer.serverConfig.getBoolean("modules.commands") && EterniaServer.cmdConfig.contains("commands." + commandString)) {
+        if (Configs.instance.moduleCommands && EterniaServer.cmdConfig.contains("commands." + commandString)) {
             checkCommands((Player) sender, commandString);
             return true;
         }

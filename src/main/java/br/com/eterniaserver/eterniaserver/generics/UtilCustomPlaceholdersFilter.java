@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 

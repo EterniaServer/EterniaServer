@@ -1,7 +1,5 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
-import br.com.eterniaserver.eterniaserver.objects.ChatObject;
-
 import java.util.ArrayList;
 import java.util.List;
 

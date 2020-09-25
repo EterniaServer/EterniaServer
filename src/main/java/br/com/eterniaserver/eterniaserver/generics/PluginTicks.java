@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
@@ -88,8 +89,8 @@ public class PluginTicks extends BukkitRunnable {
     }
 
     private void checkAFK(final Player player, final String playerName) {
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.getOrDefault(playerName, System.currentTimeMillis())) >= EterniaServer.serverConfig.getInt("server.afk-timer")) {
-            if (EterniaServer.serverConfig.getBoolean("server.afk-kick")) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.getOrDefault(playerName, System.currentTimeMillis())) >= Configs.instance.afkTimer) {
+            if (Configs.instance.afkKick) {
                 if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
                     Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_BROAD));
                     PluginVars.afkTime.remove(playerName);
@@ -132,7 +133,7 @@ public class PluginTicks extends BukkitRunnable {
     }
 
     private void runSync(Runnable runnable) {
-        if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
+        if (Configs.instance.asyncCheck) {
             Bukkit.getScheduler().runTask(plugin, runnable);
             return;
         }

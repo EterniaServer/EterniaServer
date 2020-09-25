@@ -1,0 +1,235 @@
+#  _______ .___________. _______ .______      .__   __.  __       ___
+# |   ____||           ||   ____||   _  \     |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  |    |   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      /     |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
+
+# Messages
+server:
+  prefix: '&8[&aE&9S&8] '
+  motd:
+    - '&l#333832◢◤◢◤◢◤ &l#a7d95b✙ &l#69de3bE&l#46e33dt&l#3ee66ee&l#46e89fr&l#50ebc4n&l#5bebedi&l#61b4f0a&l#677ff2S&l#7469f5e&l#825ff7r&l#ab5cfav&l#c962fce&l#f36affr &l#ff5cc9S&l#ff579a&l#ff4b6fu&l#ff454er&l#ff4b41v&l#ff583bi&l#ff8250v&l#ffa959a&l#ffcc4al &l#ffe77c✙ &l#333832◥◣◥◣◥◣'
+    - '&r#71b32aVanilla #b5ac2ecom #b8813eextras#74bdbb!!!'
+  join: '&3%player_displayname% &8[&a+&8]'
+  chat-error: '&7Erro no chat&8: &3%error%&8.'
+  leave: '&3%player_displayname% &8[&c-&8]'
+  no-perm: '&7Você não tem permissão para isso&8.'
+  nether-trap: '&7Armadilha encontrada&8, &7se teleportando para o spawn em&3 %cooldown% &7segundos&8.'
+  no-papi: '&3PlaceholderAPI &7não encontrado&8, &7iniciando no modo sem &3PAPI&8.'
+  no-vault: '&3Vault&7 não encontrado&8, &7iniciando no modo sem &3Vault&8.'
+  no-discordsrv: '&3DiscordSRV &7não encontrado&8, &7iniciando no modo sem &3DiscordSRV&8.'
+  timing: '&7Você deve esperar &3%cooldown% &7segundos para poder usar esse comando novamente&8.'
+  telep: '&7Você já está em um teleporte&8, &7espere acabar&8.'
+  load-data: '&3%module% &7carregados &3%amount% &7de arquivos&8.'
+  no-money: '&7Você não possui todo esse dinheiro&8, &3%money%&8.'
+  neg: '&7O valor não pode ser negativo&8.'
+  entities-removeds: '&7Foram removidas &3%amount%&7 entidades&8.'
+glow:
+  brilho: '&7Brilhando&8!'
+  desbrilho: '&7Desbrilhando :(&8!'
+  color: '&7Agora o seu brilho será %amount%&8.'
+cash:
+  no-cash: '&7Você não possui todo esse cash&8.'
+  cost: '&7Isso irá lhe custar &3%amount% &7de cash&8.'
+  use: '&7Use &6/cash accept &7ou &6/cash deny&7 para aceitar ou negar a compra&8.'
+  already: '&7Você já tem uma compra pendente&8.'
+  no-buy: '&7Você não possui uma compra&8.'
+  sucess: '&7Compra confirmada&8!'
+  canc: '&7Compra cancelada&8.'
+  reload: '&7Gui reiniciada&8.'
+  balance-other: '&7O jogador possui &3%amount% &7de cash&8.'
+  no-player: '&7Jogador não encontrado&8.'
+  balance: '&7Você possui &3%amount% &7de cash&8.'
+  receive: '&7Você recebeu &3%amount% &7de cash&8.'
+  send: '&7Você enviou &3%amount% &7de cash para &3%player_displayname%&8.'
+  removed: '&7Você perdeu &3%amount% &7de cash&8.'
+  remove: '&7Você removeu &3%amount% &7de cash para &3%player_displayname%&8.'
+chat:
+  tell:
+    to-player: '&8[&6P&8] &6%player_displayname% &8-> &6%target_displayname%&8: &6%message%'
+    from-player: '&8[&6P&8] &6%player_displayname% &8<- &6%target_displayname%&8: &6%message%'
+    no-one: '&7Você não possui ninguém para responder&8.'
+    locked: '&7Você travou o chat com &3%player_displayname%&8.'
+    unlocked: '&7Chat destravado&8.'
+  global-advice: '&7%advice%'
+  noone: '&7Não há ninguém para ti ouvir&8.'
+  spye: '&7Spy ativado&8.'
+  spyd: '&7Spy desativado&8.'
+  muted: '&7Você está mutado até&8: &3%time% segundos&8.'
+  mutebroad: '&3%player_displayname% &7foi mutado por &3%message%&8.'
+  mutetbroad: '&3%player_displayname% &7foi mutado em &3%time% minutos &7por &3%message%&8.'
+  unmutebroad: '&3%player_displayname% &7foi desmutado&8.'
+  remove-nick: '&7Apelido removido&8.'
+  newnick: '&7Novo apelido definido como &3%player_displayname%&8.'
+  channelc: '&7Você entrou no canal &3%channel_name%&8.'
+  chatmuted: '&7O chat está mutado&8!'
+  cm-e: '&7Todos os canais foram mutados por &3%player_displayname%&8!'
+  cm-d: '&7Todos os canais foram desmutados por &3%player_displayname%&8!'
+  nick-money: '&7Você quer trocar seu nick para &3%new_name% &7isso irá custar &3%amount%&7 E$&8.'
+  nick-money-2: '&7Utilize &6/nickaccept &7para aceitar e &6/nickdeny &7para negar&8.'
+  no-change: '&7Você não tem nenhum pedido para mudança de nick&8.'
+  nick-deny: '&7Você negou alterar seu nick&8.'
+  ignored: '&7Esse jogador está ti ignorando&8.'
+  ignore-sucess: '&7Você agora está ignorando o jogador &3%player_displayname%&8.'
+  ignore-remove: '&7Parando de ignorar o jogador &3%player_displayname%&8.'
+replaces:
+  mem: '&7Memória&8: &3%use_memory%MB&8/&3%max_memory%MB&8.'
+  online: '&7Tempo online&8: &3%hours% horas %minutes% minutos %seconds% segundos&8.'
+  tps: '&7TPS&8: &3%server_tps%&8.'
+modules:
+  enable: '&7Modulo de &3%module% &7habilitado&8.'
+  disable: '&7Modulo de &3%module% &7desabilitado&8.'
+bed:
+  skip-night: '&7A noite passou &3normalmente&8.'
+  night-skipping: '&7Passando a noite em &3%world_name%&8.'
+  player-leave: '&3%player_displayname% &7desistiu de ir dormir&8.'
+  player-s: '&3%player_displayname% &7está dormindo&8, &7durma também para a noite passar mais rapidamente&8.'
+eco:
+  auto-pay: '&7Você não pode se pagar&8.'
+  pay-nomoney: '&7Você não possui todo esse dinheiro&8.'
+  pay: '&7Você pagou &3%amount% &7para &3%player_displayname%&8.'
+  pay-me: '&7Você recebeu &3%amount% &7de &3%player_displayname%&8.'
+  money-other: '&7O jogador possui &3%amount%&8.'
+  money: '&7Você possui &3%amount%&8.'
+  baltop: '&7Top Money&8:'
+  ballist: "&3%position% &8- &3%player_displayname% &8- &7Saldo&8 - &3%amount%&8."
+  eco-give: '&7Você deu &3%amount%&7 para &3%player_displayname%&8.'
+  eco-receive: '&7Você recebeu &3%amount%&7 de &3%player_displayname%&8.'
+  eco-remove: '&7Você retirou &3%amount%&7 de &3%player_displayname%&8.'
+  eco-rremove: '&7Você perdeu &3%amount%&7 por &3%player_displayname%&8.'
+  eco-set: '&7Você definiu para &3%amount%&7 o saldo de &3%player_displayname%&8.'
+  eco-rset: '&7Seu saldo foi definido para &3%amount%&7 por &3%player_displayname%&8.'
+experience:
+  check: '&7Você possui &3%amount% &7leveis guardados&8.'
+  bottleexp: '&7Toma ai sua garrafinha&8!'
+  deposit: '&7Pronto você guardou &3%amount% &7leveis&8.'
+  insufficient: '&7Você não tem EXP suficiênte&8.'
+  withdraw: '&7Pronto seu nível agora é &3%amount%&8.'
+  xp-give: '&7Você deu &3%amount%&7 de XP para &3%player_displayname%&8.'
+  xp-receive: '&7Você recebeu &3%amount%&7 de XP de &3%player_displayname%&8.'
+  xp-remove: '&7Você retirou &3%amount%&7 de XP de &3%player_displayname%&8.'
+  xp-rremove: '&7Você perdeu &3%amount%&7 de XP por &3%player_displayname%&8.'
+  xp-set: '&7Você definiu para &3%amount%&7 o saldo de XP de &3%player_displayname%&8.'
+  xpo-rset: '&7Seu saldo de XP foi definido para &3%amount%&7 por &3%player_displayname%&8.'
+item:
+  name:
+    clear: '&7Você limpou o nome do item&8.'
+    set: '&7Você alterou o nome do item para &3%name%&8.'
+  lore:
+    add: '&7Você adicionou mais uma linha a lore do item &3%name%&8.'
+    set: '&7Você definiu a lore do item para &3%name%&8.'
+    clear: '&7Você limpou a lore do item&8.'
+  addkey: '&7Adicionado uma chave e um valor ao item&8. &7Chave&8: &3%key% &8| &7Valor&8: &3%value%&8.'
+  no: '&7Você não possui nenhum item em sua mão&8.'
+  helmet: '&7Tome seu novo caçapete&8.'
+generic:
+  afk:
+    broadcast-kicked: '&3%player_displayname% &7estava AFK e foi kickado por isso&8.'
+    disabled: '&3%player_displayname% &7não está mais AFK&8.'
+    enabled: '&3%player_displayname% &7agora está AFK&8.'
+    kicked: '&7Você foi kickado por está afk&8.'
+  others:
+    condenser: '&7:)&8.'
+    invalid: '&7Não pode ser maior que &310 &7nem menor que &31&8.'
+    feeded: '&7Você se saciou&8.'
+    feeded-target: '&7Você saciou o jogador &3%player_displayname%&8.'
+    god-disabled: '&7Godmode desativado&8.'
+    god-enabled: '&7Godmode ativado&8.'
+    reload-finish: '&7EterniaServer plugin reiniciado com sucesso&8'
+    reload-start: '&7Reiniciando EterniaServer plugin&8.'
+  fly:
+    getpvp: '&7Você entrou em PvP&8, &7por isso seu voar foi desativado&8.'
+    pvp: '&7Você está em PvP&8, &7por isso não pode habilitar o voar&8, &7aguarde &3%amount% &7segundos&8.'
+    target-pvp: '&3%player_displayname% &7está em PvP&8,&7 por isso não pode habilitar o voar&8, &7aguarde &3%amount% &7segundos&8.'
+    disabled: '&7Voar desativado&8.'
+    disabled-by: '&7O seu voar foi desativado por &3%player_displayname%&8.'
+    disabled-for: '&7Você desativou o voar de &3%player_displayname%&8.'
+    enabled: '&7Voar ativado&8.'
+    enabled-by: '&7O seu voar foi ativado por &3%player_displayname%&8.'
+    enabled-for: '&7Você ativou o voar de &3%player_displayname%&8.'
+  profile:
+    title: '&8[&aE&9S&8]=======[&3Perfil&8]=======[&aP&9P&8]'
+    register: '&7Data de registro&8: &3%player_register_data%&8.'
+    last: '&7Ultimo login&8: &3%player_last_login%&8.'
+    hours: '&7Tempo de jogo&8: &3%hours%&8.'
+    # PAPI Supported for custom \/
+    custom:
+      - '&7Nome&8: &3%player_displayname%&8.'
+      - '&7Nome Real&8: &3%player_name%&8.'
+  gm:
+    changed: '&7Seu modo de jogo foi alterado para &3%gamemode%&8.'
+    changed-target: '&7Você alterou o modo de jogo de &3%player_displayname% &7para &3%gamemode%&8.'
+    use: '&7Use &6/gamemode &3<modo> <jogador>&8.'
+  simp:
+    received-lightning: '&7Você foi punido por &3%player_displayname% &7com as forças divinas&8!'
+    sent-lightning: '&7Você puniu &3%player_displayname% &7com as forças divinas&8!'
+    suicide: '&3%message% &7disse &3%player_displayname% &7antes de tirar sua própria vida&8.'
+    weather-changed: '&7Clima alterado&8.'
+home:
+  created: '&7Home definida&8.'
+  deleted: '&7Home deletada com sucesso&8.'
+  done: '&7Você foi até sua home&8.'
+  exceeded: '&7O nome da sua home é grande demais&8.'
+  list: '&7Homes&8: &3%homes%&7use &6/home &3<nome> &7para ir até elas&8.'
+  limit: '&7Máximo de homes&8,&7 delete alguma&8, &7ou use essa bussola&8.'
+  no-exists: '&7Essa home não existe&8.'
+kit:
+  list: '&7Kits&8: &3%kits%&8.'
+  no-exists: '&7O kit &3%kit_name% &7não existe&8.'
+reward:
+  created: '&7Criou a chave&8: &3%key%&8.'
+  invalid: '&7Chave inexistente&8.'
+  no-exists: '&7Nenhum reward com o nome de &3%group% &7encontrado&8.'
+spawner:
+  give:
+    sent: '&7Você enviou &3%value% &7spawners de &3%type% &7para &3%player_displayname%&8.'
+    received: '&7Você recebeu &3%value% &7spawners de &3%type% &7por &3%player_displayname%&8.'
+    types: '&7Os tipos válidos são&8: &3%type%&8.'
+  log:
+    change-name: '&3%player_displayname% &7tentou alterar o nome de um spawner&8.'
+    placed: '&3%player_displayname% &7acabou de colocar um spawner de &3%mob_type%&8.'
+  others:
+    blocked: '&7É proibido retirar spawns nesse mundo&8.'
+    change-name: '&7Não tente alterar o nome do spawner&8.'
+    failed: '&7Você não conseguiu dropar o spawner&8.'
+    inv-full: '&7Inventário cheio&8.'
+    need-silktouch: '&7Você não possui silk touch ou algo do tipo&8.'
+teleport:
+  back:
+    free: '&7Você voltou aonde estava de graça&8.'
+    no-free: '&7Você voltou aonde estava e pagou por isso&8.'
+    no-money: '&7Você não possui eternias suficiêntes&8,&7 você precisa de &3%value%&8.'
+    no-tp: '&7Você ainda não se teleportou&8.'
+  shop:
+    created: '&7Loja definida&8.'
+    done: '&7Você foi até a loja de desse jogador&8.'
+    no-exists: '&7Esse jogador não possui loja&8.'
+  spawn:
+    created: '&7Spawn definido&8.'
+    no-exists: '&7O Spawn ainda não foi definido&8.'
+    tp-target: '&7Você teleportou &3%player_displayname%&8.'
+    tp-you: '&3%player_name% &7teleportou você até o spawn&8.'
+  tp:
+    all: '&3%s &7teleportou a todos até si&8.'
+    move: '&7Você se moveu por isso o teleporte foi cancelado&8.'
+    timing: '&7Você será teleportado em &3%cooldown% &7segundos&8.'
+  tpa:
+    accept: '&3%player_displayname% &7aceitou seu pedido de tpa&8.'
+    denied: '&7Seu pedido de tpa foi negado&8.'
+    deny: '&7Você negou o tpa de &3%player_displayname%&8.'
+    done: '&7Você foi até o jogador.'
+    exists: '&7Essa pessoa já tem um pedido de teleporte ativo&8.'
+    no-request: '&7Você não tem nenhum pedido de tpa&8.'
+    received: '&3%player_displayname% &7lhe enviou um pedido de tpa&8, &7use &6/tpaccept &7ou &6/tpdeny &7para aceitar ou negar o tpa&8.'
+    sent: '&7Você enviou um pedido de tpa ao &3%player_displayname%&8.'
+    yourself: '&7Você não pode dar tpa em você mesmo&8.'
+  warp:
+    created: '&7Você criou a warp &3%warp_name%&8.'
+    deleted: '&7Warp deletada'
+    done: '&7Bem-vindo a warp&8.'
+    list: '&7Warps&8: &3%value%&8.'
+    no-exists: '&7Não existe nenhuma warp com o nome &3%warp_name%&8.'
+other:
+  new-nick: '&7Seu apelido alternativo é &3%s&8.'
+  del-nick: '&7Apelido alternativo removido&8.'

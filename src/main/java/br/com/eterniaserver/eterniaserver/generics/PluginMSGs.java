@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.ChatColor;
 
@@ -9,7 +10,6 @@ public class PluginMSGs {
         throw new IllegalStateException("Utility class");
     }
 
-    public static final String M_SERVER_PREFIX = getColor(EterniaServer.msgConfig.getString("server.prefix"));
     public static final String MSG_MODULE_ENABLE = putPrefix("modules.enable");
     public static final String MSG_MODULE_DISABLE = putPrefix("modules.disable");
     public static final String MSG_NO_MONEY = putPrefix("server.no-money");
@@ -115,20 +115,6 @@ public class PluginMSGs {
     public static final String ITEM_NO = putPrefix("item.no");
     public static final String ITEM_HELMET = putPrefix("item.helmet");
 
-    public static final String ECO_MONEY = putPrefix("eco.money");
-    public static final String ECO_OTHER = putPrefix("eco.money-other");
-    public static final String ECO_PAY_NO = putPrefix("eco.pay-nomoney");
-    public static final String ECO_AUTO = putPrefix("eco.auto-pay");
-    public static final String ECO_PAY = putPrefix("eco.pay");
-    public static final String ECO_PAY_ME = putPrefix("eco.pay-me");
-    public static final String ECO_BALLIST = putPrefix("eco.ballist");
-    public static final String ECO_SET = putPrefix("eco.eco-set");
-    public static final String ECO_RSET = putPrefix("eco.eco-rset");
-    public static final String ECO_REMOVE = putPrefix("eco.eco-remove");
-    public static final String ECO_RREMOVE = putPrefix("eco.eco-rremove");
-    public static final String ECO_GIVE = putPrefix("eco.eco-give");
-    public static final String ECO_RECEIVE = putPrefix("eco.eco-receive");
-
     public static final String MSG_PLAYER_SKIP = putPrefix("bed.player-s");
     public static final String MSG_SKIP_NIGHT = putPrefix("bed.skip-night");
     public static final String MSG_SKIPPING = putPrefix("bed.night-skipping");
@@ -174,28 +160,12 @@ public class PluginMSGs {
     public static final String M_KIT_NO_EXISTS = putPrefix("kit.no-exists");
     public static final String M_KIT_LIST = putPrefix("kit.list");
 
-    public static final String M_CASH = putPrefix("cash.use");
-    public static final String M_CASH_COST = putPrefix("cash.cost");
-    public static final String M_CASH_NO = putPrefix("cash.no-cash");
-    public static final String M_CASH_ALREADY = putPrefix("cash.already");
-    public static final String M_CASH_BALANCE_OTHER = putPrefix("cash.balance-other");
-    public static final String M_CASH_NO_PLAYER = putPrefix("cash.no-player");
-    public static final String M_CASH_BALANCE = putPrefix("cash.balance");
-    public static final String M_CASH_SUCESS = putPrefix("cash.sucess");
-    public static final String M_CASH_NO_BUY = putPrefix("cash.no-buy");
-    public static final String M_CASH_CANCEL = putPrefix("cash.canc");
-    public static final String M_CASH_RECEIVED = putPrefix("cash.receive");
-    public static final String M_CASH_SEND = putPrefix("cash.send");
-    public static final String M_CASH_REMOVED = putPrefix("cash.removed");
-    public static final String M_CASH_REMOVE = putPrefix("cash.remove");
-
     public static final String M_GLOW_ENABLED = putPrefix("glow.brilho");
     public static final String M_GLOW_DISABLED = putPrefix("glow.desbrilho");
     public static final String M_GLOW_COLOR = putPrefix("glow.color");
 
     public static final String M_GM_CHANGED = putPrefix("generic.gm.changed");
     public static final String M_GM_TARGET = putPrefix("generic.gm.changed-target");
-    public static final String M_GM_USE = putPrefix("generic.gm.use");
 
     public static final String M_XP_CHECK = putPrefix("experience.check");
     public static final String M_XP_BOTTLE = putPrefix("experience.bottleexp");
@@ -213,7 +183,7 @@ public class PluginMSGs {
     private static String putPrefix(String path) {
         String message = EterniaServer.msgConfig.getString(path);
         if (message == null) message = "&7Erro&8, &7texto &3" + path + "&7não encontrado&8.";
-        return M_SERVER_PREFIX + getColor(message);
+        return Configs.instance.serverPrefix + getColor(message);
     }
 
     public static String getColor(String string) {

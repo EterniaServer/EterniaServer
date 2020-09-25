@@ -6,16 +6,12 @@ import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
-import br.com.eterniaserver.eterniaserver.generics.APIServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginConfigs;
-import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
-import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -161,10 +157,10 @@ public class Home extends BaseCommand {
         if (!t) {
             result.append(home);
             values.add(home);
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.HOMES_STR, result.toString(), PluginConstants.UUID_STR, uuid.toString()));
-            EQueries.executeQuery(PluginConstants.getQueryInsert(PluginConfigs.TABLE_LOCATIONS, PluginConstants.NAME_STR, homeName, PluginConstants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.HOMES_STR, result.toString(), PluginConstants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tableLocations, PluginConstants.NAME_STR, homeName, PluginConstants.LOCATION_STR, saveloc));
         } else {
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_LOCATIONS, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, homeName));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tableLocations, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, homeName));
         }
         APIPlayer.updateHome(uuid, values);
     }
@@ -187,8 +183,8 @@ public class Home extends BaseCommand {
             }
         }
         APIPlayer.updateHome(uuid, newValues);
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.HOMES_STR, nova.toString(), PluginConstants.UUID_STR, uuid.toString()));
-        EQueries.executeQuery(PluginConstants.getQueryDelete(PluginConfigs.TABLE_LOCATIONS, PluginConstants.NAME_STR, homeName));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.HOMES_STR, nova.toString(), PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(PluginConstants.getQueryDelete(Configs.instance.tableLocations, PluginConstants.NAME_STR, homeName));
     }
 
     public boolean existHome(String home, UUID uuid) {

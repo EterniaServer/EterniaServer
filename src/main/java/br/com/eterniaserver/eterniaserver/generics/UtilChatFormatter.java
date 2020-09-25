@@ -1,10 +1,9 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
+import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;

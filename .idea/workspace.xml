@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dc8928b3-7c98-46ef-b296-204e60e61a63" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/bug[1].md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/ideia[1].md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig[1].xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler[1].xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/yuri.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings[1].xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories[1].xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__br_com_eterniaserver_EterniaLib_1_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__br_com_eterniaserver_EterniaLib_1_1_22.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_destroystokyo_paper_paper_api_1_16_2_R0_1_SNAPSHOT.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_destroystokyo_paper_paper_api_1_16_2_R0_1_SNAPSHOT2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_MilkBowl_VaultAPI_1_7.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_MilkBowl_VaultAPI_1_72.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_1_3_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_1_3_92.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_21_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_21_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_json_simple_json_simple_1_1_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_json_simple_json_simple_1_1_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_62.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_102.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__me_clip_placeholderapi_2_10_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__me_clip_placeholderapi_2_10_92.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_md_5_bungeecord_chat_1_16_R0_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_md_5_bungeecord_chat_1_16_R0_32.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bukkit_bukkit_1_13_1_R0_1_SNAPSHOT.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bukkit_bukkit_1_13_1_R0_1_SNAPSHOT2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_19_0_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_19_0_02.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_8_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_8_0_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_analysis_8_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_analysis_8_0_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_commons_8_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_commons_8_0_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_tree_8_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_tree_8_0_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_252.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_26.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_262.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc[1].xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules[1].xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs[1].xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace[1].xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EterniaServer.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/Configs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/enums/MessagesEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/CustomizableMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/blocks[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/cashgui[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/chat[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/commands[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/customplaceholders[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/groups[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/kits[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/messages[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/plugin[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/rewards[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/schedule[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/blocks.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/blocks[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/cashgui.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/cashgui[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/chat.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/chat[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/commands.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/commands[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/customplaceholders.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/customplaceholders[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/groups.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/groups[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/kits.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/kits[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/messages.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/messages[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/plugin[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/rewards.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/rewards[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/schedule.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/schedule[1].yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/EterniaServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/EterniaServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/Managers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Cash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Cash.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Channel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Channel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Chat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Economy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Economy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Generic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Generic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Glow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Glow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Home.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Home.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Kit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Kit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Mute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Mute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Reward.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Reward.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Spawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Spawner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Teleport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Teleport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Warp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Warp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/eternialib/Files.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/eternialib/Files.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/eternialib/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/eternialib/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/papi/PlaceHolders.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/papi/PlaceHolders.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/vault/VaultHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/vault/VaultHook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/vault/VaultMethods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/vault/VaultMethods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/BlockHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/BlockHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/EntityHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/EntityHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/PlayerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/PlayerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APICash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APICash.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIEconomy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIEconomy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIExperience.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIExperience.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginClear.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginClear.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginConfigs.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginMSGs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginMSGs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginTicks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginTicks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginVars.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginVars.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilAccelerateNight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilAccelerateNight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilAccelerateWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilAccelerateWorld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilChatFormatter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilChatFormatter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilColors.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilCustomPlaceholder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilCustomPlaceholder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilCustomPlaceholdersFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilCustomPlaceholdersFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilInternMethods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilInternMethods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilJsonSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilJsonSender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilTextMaker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilTextMaker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/ChatMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/ChatMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/CustomCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/CustomCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/PlayerProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/PlayerProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/PlayerTeleport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/PlayerTeleport.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.2\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1hzSItt7kRzyIGIpDI44IPqJM58" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dc8928b3-7c98-46ef-b296-204e60e61a63" name="Default Changelist" comment="" />
+      <created>1601012370130</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1601012370130</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1601013624673">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1601013624673" />
+    <state x="695" y="375" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1601013947173">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="695" y="375" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1920.1040@0.0.1920.1040" timestamp="1601013947173" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1601014041123">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1601014041123" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1601014041123">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1601014041123" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1601014041122">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1601014041122" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1601014041123">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1601014041123" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1601012441594">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1601012441594" />
+  </component>
+</project>

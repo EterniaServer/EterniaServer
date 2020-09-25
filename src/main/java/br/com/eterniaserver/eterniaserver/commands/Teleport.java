@@ -1,27 +1,19 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
-import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
-import br.com.eterniaserver.eterniaserver.generics.APIServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
-import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 public class Teleport extends BaseCommand {
-
-    private final double backMoney = EterniaServer.serverConfig.getInt("money.back");
 
     @CommandAlias("tpall|teleportall")
     @CommandPermission("eternia.tpall")
@@ -91,13 +83,13 @@ public class Teleport extends BaseCommand {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (APIServer.hasBackLocation(playerName)) {
-            if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!(EterniaServer.serverConfig.getBoolean("modules.economy")) && canBack(player))) {
+            if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!Configs.instance.moduleEconomy && canBack(player))) {
                 APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_FREE));
-            } else if (APIEconomy.getMoney(uuid) >= backMoney && canBack(player) && !player.hasPermission("eternia.backfree")) {
-                APIEconomy.removeMoney(uuid, backMoney);
+            } else if (APIEconomy.getMoney(uuid) >= Configs.instance.backCost && canBack(player) && !player.hasPermission("eternia.backfree")) {
+                APIEconomy.removeMoney(uuid, Configs.instance.backCost);
                 APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_COST));
             } else if (canBack(player)){
-                player.sendMessage(PluginMSGs.MSG_NO_MONEY.replace(PluginConstants.VALUE, String.valueOf(backMoney)));
+                player.sendMessage(PluginMSGs.MSG_NO_MONEY.replace(PluginConstants.VALUE, String.valueOf(Configs.instance.backCost)));
             }
         } else {
             player.sendMessage(PluginMSGs.MSG_BACK_NO_TELEPORT);

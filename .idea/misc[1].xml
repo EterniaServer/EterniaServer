@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0">
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.strings.Constants COMMANDS" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_AUTO" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_BALLIST" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_GIVE" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_MONEY" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_OTHER" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_PAY" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_PAY_ME" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_PAY_NO" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_RECEIVE" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_REMOVE" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_RREMOVE" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_RSET" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs ECO_SET" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.objects.CustomizableMessage id" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginMSGs M_GM_USE" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginConstants POSITION" />
+      <entry_point TYPE="field" FQNAME="br.com.eterniaserver.eterniaserver.generics.PluginConstants SERVER_CHECKS" />
+    </entry_points>
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.AbstractCommand" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.AbstractCommand" method="AbstractCommand" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.AccelerateNight" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.AccelerateNight" method="AccelerateNight" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.AccelerateWorld" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.AccelerateWorld" method="AccelerateWorld" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.AdvancedChatTorch" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.AdvancedChatTorch" method="AdvancedChatTorch" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" method="Cash" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.CashGui" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.CashGui" method="CashGui" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Channels" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="ChatCommands" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatFormatter" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.ChatMessage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.ChatMessage" method="ChatMessage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatObject" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatObject" method="ChatObject" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Checks" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Colors" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.CustomCommands" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.CustomCommands" method="CustomCommands" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.CustomPlaceholder" method="CustomPlaceholder" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.CustomPlaceholdersFilter" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" method="ecoHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" method="Economy" />
+    <pattern value="br.com.eterniaserver.eterniaserver.EterniaServer" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="Experience" />
+    <pattern value="br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files" />
+    <pattern value="br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files" method="Files" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.FormatInfo" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.FormatInfo" method="FormatInfo" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Gamemode" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.SubPlaceholder" method="getName" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.SubPlaceholder" method="getPerm" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.GetRuntime" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Glow" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Glow" method="Glow" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.HomeSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.HomeSystem" method="HomeSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Inventory" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.JsonSender" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Local" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnAsyncPlayerPreLogin" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnEntityDamage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnEntityDamageByEntity" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnEntityInventoryClick" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerBedEnter" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerBedLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerBlockBreak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerBlockPlace" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerCommandPreProcess" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerDeath" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerInteract" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerJoin" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerJump" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerMove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerRespawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerSignChange" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerTeleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerToggleSneak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.PlaceHolders" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Simplifications" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.SpawnerGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Staff" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.TeleportSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.VaultMethods" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.InternMethods" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.KitSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.KitSystem" method="KitSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.Managers" />
+    <pattern value="br.com.eterniaserver.eterniaserver.Managers" method="Managers" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Mute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Mute" method="Mute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Mute" method="muteChannels" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Gamemode" method="onAdventure" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" method="onAFK" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnAsyncPlayerChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnAsyncPlayerChat" method="OnAsyncPlayerChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnAsyncPlayerPreLogin" method="onAsyncPlayerPreLogin" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.TeleportSystem" method="onBack" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" method="onBaltop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" method="onBlocks" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="onBottleLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onBroadcast" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" method="onCash" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" method="onCashAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" method="onCashBalance" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" method="onCashDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" method="onCashGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" method="onCashPay" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Cash" method="onCashRemove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="onCheckLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onClearChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Gamemode" method="onCreative" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.HomeSystem" method="onDelHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="onDelWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="onDepositLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Inventory" method="onEnderChest" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnEntityDamage" method="onEntityDamage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnEntityDamageByEntity" method="onEntityDamageByEntity" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnEntityInventoryClick" method="onEntityInventoryClick" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" method="onFeed" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" method="onFly" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.RewardsSystem" method="onGenKey" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" method="onGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="onGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Glow" method="onGlow" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Glow" method="onGlowColor" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" method="onGod" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Inventory" method="onHat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.HomeSystem" method="onHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.HomeSystem" method="onHomes" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onIgnore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" method="onItemRename" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.KitSystem" method="onKit" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.KitSystem" method="onKits" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="onListWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Replaces" method="onMem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Replaces" method="onMemAll" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" method="onMoney" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Mute" method="onMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onNickAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onNickDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onNickname" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Inventory" method="onOpenInventory" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" method="onPay" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerBedEnter" method="onPlayerBedEnter" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerBedLeave" method="onPlayerBedLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerBlockBreak" method="onPlayerBlockBreak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerBlockPlace" method="onPlayerBlockPlace" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnAsyncPlayerChat" method="onPlayerChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerCommandPreProcess" method="onPlayerCommandPreProcess" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerDeath" method="onPlayerDeath" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerInteract" method="onPlayerInteract" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerJoin" method="onPlayerJoin" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerJump" method="onPlayerJump" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerLeave" method="onPlayerLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerMove" method="onPlayerMove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerRespawn" method="onPlayerRespawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerSignChange" method="onPlayerSignChange" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerTeleport" method="onPlayerTeleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnPlayerToggleSneak" method="onPlayerToggleSneak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Replaces" method="onProfile" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Simplifications" method="onRain" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" method="onReload" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" method="onRemove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onResp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnServerListPing" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnServerListPing" method="OnServerListPing" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.OnServerListPing" method="onServerListPing" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Economy" method="onSet" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="onSet" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.HomeSystem" method="onSetHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="onSetShop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="onSetSpawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="onSetWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="onShop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="onSpawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.SpawnerGive" method="onSpawnerGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Gamemode" method="onSpectator" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Replaces" method="onSpeed" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onSpy" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Simplifications" method="onSuicide" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Simplifications" method="onSun" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Gamemode" method="onSurvival" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="onTake" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.TeleportSystem" method="onTeleportAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.TeleportSystem" method="onTeleportAll" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.TeleportSystem" method="onTeleportDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.TeleportSystem" method="onTeleportToPlayer" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onTell" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Mute" method="onTempMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Simplifications" method="onThor" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Mute" method="onUnMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onUnVanish" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.RewardsSystem" method="onUseKey" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.ChatCommands" method="onVanish" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="onWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="onWithdrawLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Inventory" method="onWorkbench" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Others" method="Others" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.PlayerProfile" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.PlayerProfile" method="PlayerProfile" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.PlayerTeleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.PlayerTeleport" method="PlayerTeleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.InternMethods" method="putName" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.ReflectCommand" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.ReflectCommand" method="ReflectCommand" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Replaces" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Replaces" method="Replaces" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.RewardsSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.RewardsSystem" method="RewardsSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Gamemode" method="showGamemode" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.SubPlaceholder" />
+    <pattern value="br.com.eterniaserver.eterniaserver.utils.SubPlaceholder" method="SubPlaceholder" />
+    <pattern value="br.com.eterniaserver.eterniaserver.dependencies.eternialib.Table" />
+    <pattern value="br.com.eterniaserver.eterniaserver.dependencies.eternialib.Table" method="Table" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.TextMaker" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.TextMaker" method="TextMaker" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Channels" method="toGlobal" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Channels" method="toLocal" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Channels" method="toStaff" />
+    <pattern value="br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook" />
+    <pattern value="br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook" method="VaultHook" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.WarpSystem" method="WarpSystem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.Experience" method="xpHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.InternMethods" method="InternMethods" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdCash" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChannels" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdRewards" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdSpawner" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens.Clear" />
+    <pattern value="br.com.eterniaserver.eterniaserver.strings.Constants" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy" method="ecoHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventAsyncPlayerChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventEntityDamage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventEntityDamageByEntity" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventEntityInventoryClick" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerBedEnter" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerBedLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerBlockBreak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerBlockPlace" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerCommandPreProcess" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerDeath" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerInteract" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerJoin" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerJump" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerMove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerRespawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerSignChange" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerTeleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerToggleSneak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventServerListPing" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Glow" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens.Set" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdMute" method="muteChannels" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode" method="onAdventure" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onAFK" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport" method="onBack" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy" method="onBaltop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onBlocks" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" method="onBottleLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onBroadcast" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdCash" method="onCash" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdCash" method="onCashAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdCash" method="onCashBalance" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdCash" method="onCashDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdCash" method="onCashGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdCash" method="onCashPay" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdCash" method="onCashRemove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" method="onCheckLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onClearChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode" method="onCreative" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdHome" method="onDelHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" method="onDelWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" method="onDepositLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory" method="onEnderChest" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventEntityDamage" method="onEntityDamage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventEntityDamageByEntity" method="onEntityDamageByEntity" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventEntityInventoryClick" method="onEntityInventoryClick" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onFeed" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onFly" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdRewards" method="onGenKey" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy" method="onGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" method="onGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Glow" method="onGlow" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Glow" method="onGlowColor" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onGod" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory" method="onHat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdHome" method="onHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdHome" method="onHomes" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onIgnore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens" method="onItemAddKey" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens" method="onItemAddLore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens.Clear" method="onItemClearLore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens.Clear" method="onItemClearName" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens.Set" method="onItemSetLore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric.Itens.Set" method="onItemSetName" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" method="onListWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onMem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onMemAll" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy" method="onMoney" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdMute" method="onMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onNickAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onNickDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onNickname" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory" method="onOpenInventory" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy" method="onPay" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerBedEnter" method="onPlayerBedEnter" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerBedLeave" method="onPlayerBedLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerBlockBreak" method="onPlayerBlockBreak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerBlockPlace" method="onPlayerBlockPlace" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventAsyncPlayerChat" method="onPlayerChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerCommandPreProcess" method="onPlayerCommandPreProcess" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerDeath" method="onPlayerDeath" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerInteract" method="onPlayerInteract" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerJoin" method="onPlayerJoin" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerJump" method="onPlayerJump" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerLeave" method="onPlayerLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerMove" method="onPlayerMove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerRespawn" method="onPlayerRespawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerSignChange" method="onPlayerSignChange" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerTeleport" method="onPlayerTeleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventPlayerToggleSneak" method="onPlayerToggleSneak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onProfile" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onRain" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onReload" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy" method="onRemove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onResp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.EventServerListPing" method="onServerListPing" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdEconomy" method="onSet" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" method="onSet" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdHome" method="onSetHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" method="onSetShop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" method="onSetSpawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" method="onSetWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" method="onShop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" method="onSpawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdSpawner" method="onSpawnerGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode" method="onSpectator" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onSpeed" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onSpy" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onSuicide" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onSun" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode" method="onSurvival" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" method="onTake" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport" method="onTeleportAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport" method="onTeleportAll" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport" method="onTeleportDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdTeleport" method="onTeleportToPlayer" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onTell" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdMute" method="onTempMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGeneric" method="onThor" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdMute" method="onUnMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onUnVanish" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdRewards" method="onUseKey" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChat" method="onVanish" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdWarp" method="onWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" method="onWithdrawLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdInventory" method="onWorkbench" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdGamemode" method="showGamemode" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChannels" method="toGlobal" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChannels" method="toLocal" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdChannels" method="toStaff" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.BaseCmdExperience" method="xpHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.BlockHandler" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Channel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.ChatMessage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.ChatMessage" method="ChatMessage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.ChatObject" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.ChatObject" method="ChatObject" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item.Clear" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.CustomizableMessage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Economy" method="ecoHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Economy" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.EntityHandler" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Gamemode" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="getCenter" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.PlayerProfile" method="getHomes" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.SubPlaceholder" method="getName" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Glow" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Home" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item.Set" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.UtilCashGui" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Inventory" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Kit" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Mute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Mute" method="muteChannels" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Gamemode" method="onAdventure" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onAFK" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.ServerHandler" method="onAsyncPlayerChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Teleport" method="onBack" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Economy" method="onBaltop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onBlocks" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" method="onBottleLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onBroadcast" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" method="onCash" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" method="onCashAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" method="onCashBalance" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" method="onCashDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" method="onCashGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" method="onCashHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" method="onCashPay" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Cash" method="onCashRemove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Channel" method="onChannels" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" method="onCheckLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onClearChat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Gamemode" method="onCreative" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.ServerHandler" method="onCreatureSpawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Home" method="onDelHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" method="onDelWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" method="onDepositLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Inventory" method="onEnderChest" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.EntityHandler" method="onEntityDamage" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.EntityHandler" method="onEntityDamageByEntity" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.EntityHandler" method="onEntityInventoryClick" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onFeed" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onFly" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onFlyDebug" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Reward" method="onGenKey" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Economy" method="onGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" method="onGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Glow" method="onGlow" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Glow" method="onGlowColor" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onGod" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Inventory" method="onHat" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Gamemode" method="onHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Glow" method="onHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item" method="onHelp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Home" method="onHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Home" method="onHomes" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onIgnore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item" method="onItemAddKey" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item" method="onItemAddLore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item.Clear" method="onItemClearLore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item.Clear" method="onItemClearName" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item.Set" method="onItemSetLore" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Item.Set" method="onItemSetName" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Kit" method="onKit" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Kit" method="onKits" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" method="onListWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onMem" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onMemAll" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Economy" method="onMoney" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Mute" method="onMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onNickAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onNickDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onNickname" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Inventory" method="onOpenInventory" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Economy" method="onPay" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerBedEnter" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerBedLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.BlockHandler" method="onPlayerBlockBreak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.BlockHandler" method="onPlayerBlockPlace" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerCommandPreProcess" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerDeath" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerInteract" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerJoin" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerJump" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerLeave" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerRespawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.BlockHandler" method="onPlayerSignChange" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerSpawnLocation" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerTeleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" method="onPlayerToggleSneak" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onProfile" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onRain" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onReload" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Economy" method="onRemove" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onResp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.ServerHandler" method="onServerListPing" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Economy" method="onSet" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" method="onSet" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Home" method="onSetHome" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" method="onSetShop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" method="onSetSpawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" method="onSetWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" method="onShop" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" method="onSpawn" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Spawner" method="onSpawnerGive" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Gamemode" method="onSpectator" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onSpeed" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onSpy" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onSuicide" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onSun" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Gamemode" method="onSurvival" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" method="onTake" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Teleport" method="onTeleportAccept" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Teleport" method="onTeleportAll" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Teleport" method="onTeleportDeny" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Teleport" method="onTeleportToPlayer" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onTell" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Mute" method="onTempMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Generic" method="onThor" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Mute" method="onUnMute" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onUnVanish" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Reward" method="onUseKey" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Chat" method="onVanish" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" method="onWarp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" method="onWithdrawLevel" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Inventory" method="onWorkbench" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.PlayerHandler" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.PluginConstants" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.PluginMSGs" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.UtilInternMethods" method="putName" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Reward" />
+    <pattern value="br.com.eterniaserver.eterniaserver.events.ServerHandler" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Spawner" />
+    <pattern value="br.com.eterniaserver.eterniaserver.objects.SubPlaceholder" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Teleport" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Channel" method="toGlobal" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Channel" method="toLocal" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Channel" method="toStaff" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.UtilInternMethods" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.UtilTextMaker" />
+    <pattern value="br.com.eterniaserver.eterniaserver.generics.UtilTextMaker" method="UtilTextMaker" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Warp" />
+    <pattern value="br.com.eterniaserver.eterniaserver.commands.Experience" method="xpHelp" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="false" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>

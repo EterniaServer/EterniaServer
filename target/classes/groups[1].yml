@@ -1,0 +1,30 @@
+#  _______ .___________. _______ .______      .__   __.  __       ___
+# |   ____||           ||   ____||   _  \     |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  |    |   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      /     |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
+
+# priority is the priority of the group.
+# perm is the permission the player needs to be in the group.
+# format is the format of global.
+# useChatColor will change the color of message.
+# chatColor is the color of message.
+# on_click and on_hover are json objects.
+default:
+  priority: 1
+  perm: eternia.chat.default
+  format: '{canal}{clan}{sufix}{prefix}%player_displayname% {marry} &8➤&r %message%'
+  useChatColor: true
+  chatColor: f
+  on_click:
+    suggest_command: true
+    suggested_command: '/msg %player_name%'
+    run_command: false
+    runned_command: '/info %player_name%'
+  on_hover:
+    show_text: true
+    text_shown: |-
+      &7Nome real&8: &3%player_name%
+      &7Clique para enviar
+      &7uma mensagem.

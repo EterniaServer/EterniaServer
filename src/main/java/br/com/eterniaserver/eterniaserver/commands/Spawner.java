@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
-import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
@@ -17,9 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Spawner extends BaseCommand {
 
@@ -51,15 +48,7 @@ public class Spawner extends BaseCommand {
         ItemStack item = new ItemStack(Material.SPAWNER);
         ItemMeta meta = item.getItemMeta();
         item.setAmount(value);
-        String mobFormatted = spawnerName.charAt(0) + spawnerName.substring(1);
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
-        List<String> newLore = new ArrayList<>();
-        if (EterniaServer.serverConfig.getBoolean("spawners.enable-lore")) {
-            for (String line : EterniaServer.serverConfig.getStringList("spawners.lore")) {
-                newLore.add(ChatColor.translateAlternateColorCodes('&', line.replace("%s", mobFormatted)));
-            }
-            meta.setLore(newLore);
-        }
+        meta.setDisplayName(PluginVars.colors.get(8) + "[" + Configs.instance.mobSpawnerColor + spawnerName + PluginVars.colors.get(7) + " Spawner" +  PluginVars.colors.get(8) + "]");
         item.setItemMeta(meta);
         return item;
     }

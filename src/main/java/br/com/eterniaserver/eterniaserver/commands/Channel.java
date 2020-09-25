@@ -12,10 +12,10 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
+
 import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-
 import org.bukkit.entity.Player;
 
 import java.util.UUID;

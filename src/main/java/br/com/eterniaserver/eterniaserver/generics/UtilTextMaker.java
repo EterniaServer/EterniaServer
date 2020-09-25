@@ -1,13 +1,11 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
+import br.com.eterniaserver.eterniaserver.objects.ChatObject;
 import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
-
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;

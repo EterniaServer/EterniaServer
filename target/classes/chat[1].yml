@@ -1,0 +1,18 @@
+#  _______ .___________. _______ .______      .__   __.  __       ___
+# |   ____||           ||   ____||   _  \     |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  |    |   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      /     |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \----.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._____||__| \__| |__| /__/     \__\
+
+# autoUpdateGroups will update all players' groups whenever someone logs in.
+chat:
+  autoUpdateGroups: false
+# range is the distance for one player to be able to read the other's message.
+# format is the format of chat.
+local:
+  range: 64
+  format: '&8[&eL&8] %vault_suffix% &e%player_displayname%&8 ➤&r &e%message%'
+# format is the format of chat.
+staff:
+  format: '&8[&bS&8] %vault_prefix%%player_displayname%&8 ➤&r &b%message%'

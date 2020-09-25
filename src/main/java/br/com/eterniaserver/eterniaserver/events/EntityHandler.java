@@ -1,12 +1,12 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Configs;
+
 import br.com.eterniaserver.eterniaserver.generics.APICash;
 import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,12 +45,12 @@ public class EntityHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
-        if (e.isCancelled()) return;
+        if (!Configs.instance.moduleCash && !Configs.instance.moduleSpawners) return;
 
         final Player player = (Player) e.getWhoClicked();
         final ItemStack itemStack = e.getCurrentItem();
-        if (itemStack != null && (EterniaServer.serverConfig.getBoolean("spawners.prevent-anvil")
-                && EterniaServer.serverConfig.getBoolean("modules.spawners")
+        if (itemStack != null && (Configs.instance.preventAnvil
+                && Configs.instance.moduleSpawners
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
@@ -58,7 +58,7 @@ public class EntityHandler implements Listener {
             player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_SPAWNER_LOG));
         }
 
-        if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
+        if (Configs.instance.moduleCash) {
             switch (e.getView().getTitle()) {
                 case "Cash":
                     APICash.menuGui(player, e.getSlot());

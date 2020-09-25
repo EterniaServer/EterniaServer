@@ -4,7 +4,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommands;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -18,10 +17,6 @@ public class Files {
 
     public Files(EterniaServer plugin) {
         this.plugin = plugin;
-    }
-
-    public void loadConfigs() {
-        loadFile("config.yml", EterniaServer.serverConfig);
     }
 
     public void loadMessages() {

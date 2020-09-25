@@ -2,32 +2,9 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eterniaserver.commands.Gamemode;
-import br.com.eterniaserver.eterniaserver.commands.Glow;
-import br.com.eterniaserver.eterniaserver.commands.Item;
-import br.com.eterniaserver.eterniaserver.generics.PluginClear;
-import br.com.eterniaserver.eterniaserver.generics.PluginTimer;
-import br.com.eterniaserver.eterniaserver.generics.UtilAccelerateWorld;
-import br.com.eterniaserver.eterniaserver.generics.UtilAdvancedChatTorch;
-import br.com.eterniaserver.eterniaserver.commands.Cash;
-import br.com.eterniaserver.eterniaserver.commands.Channel;
-import br.com.eterniaserver.eterniaserver.commands.Chat;
-import br.com.eterniaserver.eterniaserver.commands.Economy;
-import br.com.eterniaserver.eterniaserver.commands.Experience;
-import br.com.eterniaserver.eterniaserver.commands.Generic;
-import br.com.eterniaserver.eterniaserver.commands.Home;
-import br.com.eterniaserver.eterniaserver.commands.Inventory;
-import br.com.eterniaserver.eterniaserver.commands.Mute;
-import br.com.eterniaserver.eterniaserver.commands.Reward;
-import br.com.eterniaserver.eterniaserver.commands.Spawner;
-import br.com.eterniaserver.eterniaserver.commands.Teleport;
-import br.com.eterniaserver.eterniaserver.commands.Warp;
-import br.com.eterniaserver.eterniaserver.generics.PluginTicks;
-import br.com.eterniaserver.eterniaserver.commands.Kit;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
-import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 
+import br.com.eterniaserver.eterniaserver.commands.*;
+import br.com.eterniaserver.eterniaserver.generics.*;
 import org.bukkit.Bukkit;
 
 import java.time.LocalTime;
@@ -89,8 +66,8 @@ public class Managers {
             if (c.getConfigValue("min", 0) > value) {
                 throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
             }
-            if (c.getConfigValue("max", 2147483647) < value) {
-                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 2147483647));
+            if (c.getConfigValue("max", 3) < value) {
+                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
             }
         });
 
@@ -102,32 +79,32 @@ public class Managers {
     }
 
     private void loadBedManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.bed"), "Bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new UtilAccelerateWorld(plugin), 0L, (long) EterniaServer.serverConfig.getInt(PluginConstants.SERVER_CHECKS) * 40);
+        if (sendModuleStatus(Configs.instance.moduleBed, "Bed")) {
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new UtilAccelerateWorld(plugin), 0L, (long) Configs.instance.pluginTicks * 40);
         }
     }
 
     private void loadBlockRewardsManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.block-reward"), "Block-Reward")) {
+        if (sendModuleStatus(Configs.instance.moduleBlock, "Block-Reward")) {
             plugin.getFiles().loadBlocksRewards();
         }
     }
 
     private void loadCommandsManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.commands"), "Commands")) {
+        if (sendModuleStatus(Configs.instance.moduleCommands, "Commands")) {
             plugin.getFiles().loadCommands();
         }
     }
 
     private void loadCashManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.cash"), "Cash")) {
+        if (sendModuleStatus(Configs.instance.moduleCash, "Cash")) {
             plugin.getFiles().loadCashGui();
             EterniaLib.getManager().registerCommand(new Cash());
         }
     }
 
     private void loadChatManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.chat"), "Chat")) {
+        if (sendModuleStatus(Configs.instance.moduleChat, "Chat")) {
             plugin.getFiles().loadChat();
             EterniaLib.getManager().registerCommand(new Channel());
             EterniaLib.getManager().registerCommand(new Mute());
@@ -137,19 +114,18 @@ public class Managers {
     }
 
     private void loadEconomyManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.economy"), "Economy")) {
+        if (sendModuleStatus(Configs.instance.moduleEconomy, "Economy")) {
             EterniaLib.getManager().registerCommand(new Economy());
         }
     }
 
     private void loadElevatorManager() {
-        sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.elevator"), "Elevator");
+        sendModuleStatus(Configs.instance.moduleElevator, "Elevator");
     }
 
     private void loadExperienceManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.experience"), "Experience")) {
+        if (sendModuleStatus(Configs.instance.moduleExperience, "Experience"))
             EterniaLib.getManager().registerCommand(new Experience());
-        }
     }
 
     private void loadGenericManager() {
@@ -162,13 +138,13 @@ public class Managers {
     }
 
     private void loadHomesManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.home"), "Homes")) {
+        if (sendModuleStatus(Configs.instance.moduleHomes, "Homes")) {
             EterniaLib.getManager().registerCommand(new Home());
         }
     }
 
     private void loadKitManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.kits"), "Kits")) {
+        if (sendModuleStatus(Configs.instance.moduleKits, "Kits")) {
             plugin.getFiles().loadKits();
             EterniaLib.getManager().registerCommand(new Kit());
         }
@@ -176,41 +152,41 @@ public class Managers {
 
     private void loadPlayerChecks() {
         sendModuleStatus(true, "PlayerChecks");
-        if (EterniaServer.serverConfig.getBoolean("server.async-check")) {
-            new PluginTicks(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.serverConfig.getInt(PluginConstants.SERVER_CHECKS) * 20);
+        if (Configs.instance.asyncCheck) {
+            new PluginTicks(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) Configs.instance.pluginTicks * 20);
             return;
         }
-        new PluginTicks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.serverConfig.getInt(PluginConstants.SERVER_CHECKS) * 20);
+        new PluginTicks(plugin).runTaskTimer(plugin, 20L, (long) Configs.instance.pluginTicks * 20);
     }
 
     private void loadClearManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.clear"), "Mob Control")) {
+        if (sendModuleStatus(Configs.instance.moduleClear, "Mob Control")) {
             new PluginClear().runTaskTimer(plugin, 20L, 600L);
         }
     }
 
     private void loadRewardsManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.rewards"), "Rewards")) {
+        if (sendModuleStatus(Configs.instance.moduleRewards, "Rewards")) {
             plugin.getFiles().loadRewards();
             EterniaLib.getManager().registerCommand(new Reward());
         }
     }
 
     private void loadSpawnersManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.spawners"), "Spawners")) {
+        if (sendModuleStatus(Configs.instance.moduleSpawners, "Spawners")) {
             EterniaLib.getManager().registerCommand(new Spawner());
         }
     }
 
     private void loadTeleportsManager() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.teleports"), "Teleports")) {
+        if (sendModuleStatus(Configs.instance.moduleTeleports, "Teleports")) {
             EterniaLib.getManager().registerCommand(new Warp());
             EterniaLib.getManager().registerCommand(new Teleport());
         }
     }
 
     private void loadScheduleTasks() {
-        if (sendModuleStatus(EterniaServer.serverConfig.getBoolean("modules.schedule"), "Schedule")) {
+        if (sendModuleStatus(Configs.instance.moduleSchedule, "Schedule")) {
             plugin.getFiles().loadSchedules();
             long start = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.of(
                     EterniaServer.scheduleConfig.getInt("schedule.hour"),

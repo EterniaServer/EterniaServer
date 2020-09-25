@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 import java.util.ArrayList;
 
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 

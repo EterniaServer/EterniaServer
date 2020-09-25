@@ -1,9 +1,11 @@
 package br.com.eterniaserver.eterniaserver.events;
 
+import br.com.eterniaserver.eterniaserver.Configs;
+
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,8 +39,10 @@ public class BlockHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
+        if (!Configs.instance.moduleSpawners) return;
+
         final Block block = event.getBlockPlaced();
-        if (block.getType() == Material.SPAWNER && EterniaServer.serverConfig.getBoolean("modules.spawners")) {
+        if (block.getType() == Material.SPAWNER) {
             final ItemMeta meta = event.getItemInHand().getItemMeta();
             if (meta != null) {
                 final String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
@@ -52,7 +56,7 @@ public class BlockHandler implements Listener {
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerBlockBreak(BlockBreakEvent event) {
-        if (event.isCancelled()) return;
+        if (!Configs.instance.moduleSpawners && !Configs.instance.moduleBlock) return;
 
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
@@ -60,8 +64,7 @@ public class BlockHandler implements Listener {
         final String materialName = material.name().toUpperCase();
         final String worldName = player.getWorld().getName();
 
-        if (EterniaServer.serverConfig.getBoolean("modules.spawners") && material == Material.SPAWNER &&
-                !isBlackListWorld(worldName) && player.hasPermission("eternia.spawners.break")) {
+        if (Configs.instance.moduleSpawners && material == Material.SPAWNER && !isBlackListWorld(worldName) && player.hasPermission("eternia.spawners.break")) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("eternia.spawners.nosilk")) {
                 giveSpawner(player, material, block);
@@ -78,11 +81,13 @@ public class BlockHandler implements Listener {
             event.setCancelled(true);
         }
 
-        if (EterniaServer.serverConfig.getBoolean("modules.block-reward") && EterniaServer.blockConfig.contains("blocks." + materialName)) {
+        if (!Configs.instance.moduleBlock) return;
+
+        if (EterniaServer.blockConfig.contains("blocks." + materialName)) {
             randomizeAndReward(materialName, player, "blocks.");
         }
 
-        if (EterniaServer.serverConfig.getBoolean("modules.block-reward") && EterniaServer.blockConfig.contains("farm." + materialName)) {
+        if (EterniaServer.blockConfig.contains("farm." + materialName)) {
             winFarmReward(block, player);
         }
 
@@ -117,8 +122,8 @@ public class BlockHandler implements Listener {
 
     private void giveSpawner(final Player player, final Material material, Block block) {
         double random = Math.random();
-        if (random < EterniaServer.serverConfig.getDouble("spawners.drop-chance")) {
-            if (EterniaServer.serverConfig.getBoolean("spawners.drop-in-inventory")) {
+        if (random < Configs.instance.dropChance) {
+            if (Configs.instance.invDrop) {
                 if (player.getInventory().firstEmpty() != -1) {
                     player.getInventory().addItem(getSpawner(block, material));
                     block.getDrops().clear();
@@ -140,15 +145,14 @@ public class BlockHandler implements Listener {
         final CreatureSpawner spawner = (CreatureSpawner) block.getState();
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
-        String mob = spawner.getSpawnedType().toString().replace("_", " ");
-        String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', ("&8[" + EterniaServer.serverConfig.getString("spawners.mob-name-color") + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted))));
+        String mobFormatted = spawner.getSpawnedType().toString();
+        meta.setDisplayName(PluginVars.colors.get(8) + "[" + Configs.instance.mobSpawnerColor + mobFormatted + PluginVars.colors.get(7) + " Spawner" +  PluginVars.colors.get(8) + "]");
         item.setItemMeta(meta);
         return item;
     }
 
     private boolean isBlackListWorld(final String worldName) {
-        return EterniaServer.serverConfig.getStringList("spawners.blacklisted-worlds").contains(worldName);
+        return Configs.instance.blacklistedWorldsSpawners.contains(worldName);
     }
 
 

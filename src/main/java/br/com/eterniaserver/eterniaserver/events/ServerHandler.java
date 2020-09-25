@@ -1,18 +1,11 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
-import br.com.eterniaserver.eterniaserver.generics.APIServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.UtilChatFormatter;
-import br.com.eterniaserver.eterniaserver.generics.UtilColors;
-import br.com.eterniaserver.eterniaserver.generics.UtilCustomPlaceholdersFilter;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
-import br.com.eterniaserver.eterniaserver.generics.UtilJsonSender;
-import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
+import br.com.eterniaserver.eterniaserver.Configs;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
@@ -66,7 +59,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (EterniaServer.serverConfig.getBoolean("modules.clear")) {
+        if (Configs.instance.moduleClear) {
             int amount = 0;
             EntityType entity = event.getEntityType();
             for (Entity e : event.getEntity().getLocation().getChunk().getEntities()) {
@@ -88,7 +81,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
+        if (Configs.instance.moduleChat) {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
             if (APIServer.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {

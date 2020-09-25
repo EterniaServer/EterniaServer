@@ -14,14 +14,16 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.MessagesEnum;
+
 import br.com.eterniaserver.eterniaserver.generics.APICash;
 import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
-import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
-
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -58,16 +60,20 @@ public class Cash extends BaseCommand {
     @Description(" Mostra o saldo atual de cash de um jogador")
     public void onCashBalance(Player player, @Optional String playerName) {
         if (playerName == null) {
-            player.sendMessage(PluginMSGs.M_CASH_BALANCE.replace(PluginConstants.AMOUNT, String.valueOf(APICash.getCash(UUIDFetcher.getUUIDOf(player.getName())))));
+            Configs.instance.sendMessage(player, MessagesEnum.CashBalance, String.valueOf(APICash.getCash(UUIDFetcher.getUUIDOf(player.getName()))));
             return;
         }
 
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        final OfflinePlayer target = Bukkit.getOfflinePlayer(uuid);
 
         if (APIPlayer.hasProfile(uuid)) {
-            player.sendMessage(PluginMSGs.M_CASH_BALANCE_OTHER.replace(PluginConstants.AMOUNT, String.valueOf(APICash.getCash(uuid))));
+            String displayName = target.isOnline() ? target.getPlayer().getDisplayName() : playerName;
+            Configs.instance.sendMessage(player, MessagesEnum.CashBalanceOther, playerName, displayName, String.valueOf(APICash.getCash(uuid)));
+            return;
         }
-        else player.sendMessage(PluginMSGs.M_CASH_NO_PLAYER);
+
+        Configs.instance.sendMessage(player, MessagesEnum.ServerNoPlayer);
     }
 
     @Subcommand("accept")
@@ -76,7 +82,7 @@ public class Cash extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (!APICash.isBuying(uuid)) {
-            player.sendMessage(PluginMSGs.M_CASH_NO_BUY);
+            Configs.instance.sendMessage(player, MessagesEnum.CashNothingToBuy);
             return;
         }
 
@@ -93,7 +99,7 @@ public class Cash extends BaseCommand {
         }
 
         APICash.removeCash(uuid, EterniaServer.cashConfig.getInt(cashString + ".cost"));
-        player.sendMessage(PluginMSGs.M_CASH_SUCESS);
+        Configs.instance.sendMessage(player, MessagesEnum.CashBought);
         APICash.removeCashBuy(uuid);
     }
 
@@ -103,11 +109,11 @@ public class Cash extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (!APICash.isBuying(uuid)) {
-            player.sendMessage(PluginMSGs.M_CASH_NO_BUY);
+            Configs.instance.sendMessage(player, MessagesEnum.CashNothingToBuy);
             return;
         }
 
-        player.sendMessage(PluginMSGs.M_CASH_CANCEL);
+        Configs.instance.sendMessage(player, MessagesEnum.CashCanceled);
         APICash.removeCashBuy(uuid);
     }
 
@@ -126,8 +132,8 @@ public class Cash extends BaseCommand {
 
         APICash.removeCash(uuid, value);
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(PluginMSGs.M_CASH_RECEIVED.replace(PluginConstants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CASH_SEND).replace(PluginConstants.AMOUNT, String.valueOf(value)));
+        Configs.instance.sendMessage(target, MessagesEnum.CashReceveid, String.valueOf(value), player.getName(), player.getDisplayName());
+        Configs.instance.sendMessage(player, MessagesEnum.CashSent, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
     @Subcommand("give")
@@ -138,8 +144,9 @@ public class Cash extends BaseCommand {
     public void onCashGive(CommandSender player, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
         final Player target = targetP.getPlayer();
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(PluginMSGs.M_CASH_RECEIVED.replace(PluginConstants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CASH_SEND).replace(PluginConstants.AMOUNT, String.valueOf(value)));
+        final String senderDisplay = (player instanceof Player) ? ((Player) player).getDisplayName() : player.getName();
+        Configs.instance.sendMessage(target, MessagesEnum.CashReceveid, String.valueOf(value), player.getName(), senderDisplay);
+        Configs.instance.sendMessage(player, MessagesEnum.CashSent, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
     @Subcommand("remove")
@@ -150,8 +157,9 @@ public class Cash extends BaseCommand {
     public void onCashRemove(CommandSender player, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
         final Player target = targetP.getPlayer();
         APICash.removeCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        target.sendMessage(PluginMSGs.M_CASH_REMOVED.replace(PluginConstants.AMOUNT, String.valueOf(value)));
-        player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CASH_REMOVE).replace(PluginConstants.AMOUNT, String.valueOf(value)));
+        final String senderDisplay = (player instanceof Player) ? ((Player) player).getDisplayName() : player.getName();
+        Configs.instance.sendMessage(target, MessagesEnum.CashLost, String.valueOf(value), player.getName(), senderDisplay);
+        Configs.instance.sendMessage(player, MessagesEnum.CashRemoved, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
 }

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
-
 import org.bukkit.Bukkit;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;

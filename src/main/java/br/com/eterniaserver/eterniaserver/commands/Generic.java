@@ -9,18 +9,13 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
-import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
-import br.com.eterniaserver.eterniaserver.generics.APIServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginConfigs;
-import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.UtilGetRuntime;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -57,14 +52,14 @@ public class Generic extends BaseCommand {
 
         if (EterniaLib.getMySQL()) {
             EterniaLib.getConnections().executeSQLQuery(connection -> {
-                final PreparedStatement getHashMap = connection.prepareStatement(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_PLAYER));
+                final PreparedStatement getHashMap = connection.prepareStatement(PluginConstants.getQuerySelectAll(Configs.instance.tablePlayer));
                 final ResultSet resultSet = getHashMap.executeQuery();
                 getPlayersProfiles(resultSet);
                 getHashMap.close();
                 resultSet.close();
             });
         } else {
-            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_PLAYER)); ResultSet resultSet = getHashMap.executeQuery()) {
+            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(PluginConstants.getQuerySelectAll(Configs.instance.tablePlayer)); ResultSet resultSet = getHashMap.executeQuery()) {
                 getPlayersProfiles(resultSet);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -72,9 +67,9 @@ public class Generic extends BaseCommand {
         }
         sendConsole(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Player Profiles").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getProfileMapSize())));
 
-        if (EterniaServer.serverConfig.getBoolean("modules.home") || EterniaServer.serverConfig.getBoolean("modules.teleports")) {
+        if (Configs.instance.moduleHomes || Configs.instance.moduleTeleports) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-                final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_LOCATIONS), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
+                final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(Configs.instance.tableLocations), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
                 temp.forEach((k, v) -> {
                     final String[] split = v.split(":");
                     Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -131,7 +126,6 @@ public class Generic extends BaseCommand {
     @CommandPermission("eternia.reload")
     public void onReload(CommandSender sender) {
         sender.sendMessage(PluginMSGs.MSG_RELOAD_START);
-        plugin.getFiles().loadConfigs();
         plugin.getFiles().loadMessages();
         plugin.getFiles().loadBlocksRewards();
         plugin.getFiles().loadCommands();
@@ -169,7 +163,7 @@ public class Generic extends BaseCommand {
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
 
             if (APIPlayer.isOnPvP(uuid)) {
-                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIPlayer.getPvPCooldown(uuid)))));
+                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(Configs.instance.pvpTime - APIPlayer.getPvPCooldown(uuid)))));
                 return;
             }
 
@@ -187,7 +181,7 @@ public class Generic extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (APIPlayer.isOnPvP(uuid)) {
-            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("server.pvp-time") - APIPlayer.getPvPCooldown(uuid))));
+            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(Configs.instance.pvpTime - APIPlayer.getPvPCooldown(uuid))));
             return;
         }
 
@@ -364,22 +358,22 @@ public class Generic extends BaseCommand {
                     resultSet.getLong(PluginConstants.LAST_STR),
                     resultSet.getLong(PluginConstants.HOURS_STR)
             );
-            if (EterniaServer.serverConfig.getBoolean("modules.cash")) {
+            if (Configs.instance.moduleCash) {
                 playerProfile.cash = resultSet.getInt(PluginConstants.CASH_STR);
             }
-            if (EterniaServer.serverConfig.getBoolean("modules.economy")) {
+            if (Configs.instance.moduleEconomy) {
                 playerProfile.balance = resultSet.getDouble(PluginConstants.BALANCE_STR);
             }
-            if (EterniaServer.serverConfig.getBoolean("modules.experience")) {
+            if (Configs.instance.moduleExperience) {
                 playerProfile.xp = resultSet.getInt(PluginConstants.XP_STR);
             }
-            if (EterniaServer.serverConfig.getBoolean("modules.home")) {
+            if (Configs.instance.moduleHomes) {
                 String result = resultSet.getString(PluginConstants.HOMES_STR);
                 if (result != null) {
                     playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
                 }
             }
-            if (EterniaServer.serverConfig.getBoolean("modules.chat")) {
+            if (Configs.instance.moduleChat) {
                 playerProfile.muted = resultSet.getLong(PluginConstants.MUTED_STR);
                 playerProfile.playerDisplayName = resultSet.getString(PluginConstants.PLAYER_DISPLAY_STR);
             }

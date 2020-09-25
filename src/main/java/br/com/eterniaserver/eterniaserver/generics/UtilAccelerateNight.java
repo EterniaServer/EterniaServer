@@ -1,7 +1,8 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Configs;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;
@@ -27,10 +28,9 @@ public class UtilAccelerateNight extends BukkitRunnable {
         final long time = world.getTime();
         final int sleeping = UtilAccelerateWorld.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
-        double base = PluginConfigs.BED_SPEED;
         if (sleeping > 0) {
             int x = players / sleeping;
-            double timeRate = base / x;
+            int timeRate =  Configs.instance.nightSpeed / x;
             if (time >= (1200 - timeRate * 1.5) && time <= 1200) {
                 world.setStorm(false);
                 world.setThundering(false);
@@ -40,7 +40,7 @@ public class UtilAccelerateNight extends BukkitRunnable {
                 changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {
-                world.setTime(time + (int) timeRate);
+                world.setTime(time + timeRate);
             }
         } else if (PluginVars.skippingWorlds.contains(world)) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> PluginVars.skippingWorlds.remove(world), 20);

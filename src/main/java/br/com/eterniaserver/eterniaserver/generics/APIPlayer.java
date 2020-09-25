@@ -3,9 +3,9 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.Configs;
 
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
@@ -30,7 +30,7 @@ public class APIPlayer {
     }
 
     public static String isAFKPlaceholder(String playerName) {
-        return isAFK(playerName) ? EterniaServer.serverConfig.getString("placeholders.afk") : "";
+        return isAFK(playerName) ? Configs.instance.afkPlaceholder : "";
     }
 
     public static void removeFromAFK(String playerName) {
@@ -71,7 +71,7 @@ public class APIPlayer {
     }
 
     public static String isGodPlaceholder(String playerName) {
-        return isGod(playerName) ? EterniaServer.serverConfig.getString("placeholders.godmode") : "";
+        return isGod(playerName) ? Configs.instance.godPlaceholder : "";
     }
 
     public static long getMutedTime(UUID uuid) {
@@ -214,7 +214,7 @@ public class APIPlayer {
             newPlayerProfile.xp = playerProfile.xp;
             newPlayerProfile.muted = time;
             EQueries.executeQuery(
-                    "UPDATE " + PluginConfigs.TABLE_PLAYER +
+                    "UPDATE " + Configs.instance.tablePlayer +
                             " SET player_name='" + playerName +
                             "', player_display='" + playerName +
                             "', time='" + player.getFirstPlayed() +
@@ -229,9 +229,9 @@ public class APIPlayer {
         if (!playerProfile.getPlayerName().equals(playerName)) {
             playerProfile.setPlayerName(playerName);
             PluginVars.playerProfile.put(uuid, playerProfile);
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.PLAYER_NAME_STR, playerName, PluginConstants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.PLAYER_NAME_STR, playerName, PluginConstants.UUID_STR, uuid.toString()));
         }
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.LAST_STR, time, PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.LAST_STR, time, PluginConstants.UUID_STR, uuid.toString()));
     }
 
     public static boolean hasNickRequest(UUID uuid) {
@@ -263,9 +263,9 @@ public class APIPlayer {
         }
 
         if (player.hasPermission("eternia.chat.color.nick")) {
-            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, PluginMSGs.getColor(string)).replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("money.nick"))));
+            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, PluginMSGs.getColor(string)).replace(PluginConstants.AMOUNT, String.valueOf(Configs.instance.nickCost)));
         } else {
-            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, string).replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.serverConfig.getInt("money.nick"))));
+            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, string).replace(PluginConstants.AMOUNT, String.valueOf(Configs.instance.nickCost)));
         }
 
         final PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
@@ -308,7 +308,7 @@ public class APIPlayer {
     }
 
     private static void saveToSQL(UUID uuid) {
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.PLAYER_DISPLAY_STR, PluginVars.playerProfile.get(uuid).getPlayerDisplayName(), PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.PLAYER_DISPLAY_STR, PluginVars.playerProfile.get(uuid).getPlayerDisplayName(), PluginConstants.UUID_STR, uuid.toString()));
     }
 
 }

@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
-
 import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
 import me.clip.placeholderapi.PlaceholderAPI;
 

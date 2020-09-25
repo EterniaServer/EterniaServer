@@ -1,11 +1,13 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eterniaserver.Configs;
+
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
-
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -110,28 +112,26 @@ public class APIServer {
 
     public static void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(PluginConstants.getQueryInsert(PluginConfigs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance, muted)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "', '" + EterniaServer.serverConfig.getDouble("money.start") + "', '" + time + "')"));
+        EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "', '" + time + "')"));
         final PlayerProfile playerProfile = new PlayerProfile(
                 playerName,
                 firstPlayed,
                 time,
                 0
         );
-        playerProfile.balance = EterniaServer.serverConfig.getDouble("money.start");
+        playerProfile.balance = Configs.instance.startMoney;
         playerProfile.muted = time;
         PluginVars.playerProfile.put(uuid, playerProfile);
     }
 
     public static void playerKitsCreate(String playerName) {
-        if (EterniaServer.serverConfig.getBoolean("modules.kits")) {
-            final long time = System.currentTimeMillis();
-            for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(false)) {
-                final String kitName = kit + "." + playerName;
-                if (!PluginVars.kitsCooldown.containsKey(kitName)) {
-                    EQueries.executeQuery(PluginConstants.getQueryInsert(PluginConfigs.TABLE_KITS, PluginConstants.NAME_STR, kitName, PluginConstants.COOLDOWN_STR, time));
-                    PluginVars.kitsCooldown.put(kitName, time);
-                }
+        final long time = System.currentTimeMillis();
+        for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(false)) {
+            final String kitName = kit + "." + playerName;
+            if (!PluginVars.kitsCooldown.containsKey(kitName)) {
+                EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tableKits, PluginConstants.NAME_STR, kitName, PluginConstants.COOLDOWN_STR, time));
+                PluginVars.kitsCooldown.put(kitName, time);
             }
         }
     }
@@ -169,6 +169,21 @@ public class APIServer {
 
     public static String getReward(String key) {
         return PluginVars.rewards.get(key);
+    }
+
+    public static void logError(String errorMsg, int level) {
+        String errorLevel;
+        switch (level) {
+            case 1:
+                errorLevel = ChatColor.GREEN + "Leve";
+                break;
+            case 2:
+                errorLevel = ChatColor.YELLOW + "Aviso";
+                break;
+            default:
+                errorLevel = ChatColor.RED + "Erro";
+        }
+        Bukkit.getConsoleSender().sendMessage("$8[$aE$9S$8] " + errorLevel + "$8:$3" + errorMsg + "$8.");
     }
 
 }

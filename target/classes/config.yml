@@ -1,0 +1,93 @@
+#  _______ .___________. _______ .______  .__   __.  __       ___
+# |   ____||           ||   ____||   _  \ |  \ |  | |  |     /   \
+# |  |__   `---|  |----`|  |__   |  |_)  ||   \|  | |  |    /  ^  \
+# |   __|      |  |     |   __|  |      / |  . `  | |  |   /  /_\  \
+# |  |____     |  |     |  |____ |  |\  \.|  |\   | |  |  /  _____  \
+# |_______|    |__|     |_______|| _| `._||__| \__| |__| /__/     \__\
+
+# RISK LEVELS :
+# DANGER = Don't touch it unless you know what you're doing.
+# WARN = Be careful to not break anything.
+# SAFE = Settings only, this can alter the functioning of certain things.
+
+# This is to define which modules will be active.
+modules:
+  bed: true # SAFE
+  block-reward: true # SAFE
+  cash: true # SAFE
+  chat: true # SAFE
+  clear: true # SAFE
+  commands: true # SAFE
+  economy: true # SAFE
+  elevator: true # SAFE
+  experience: true # SAFE
+  home: true # SAFE
+  kits: true # SAFE
+  spawners: true # SAFE
+  teleports: true # SAFE
+  rewards: true # SAFE
+  schedule: true # SAFE
+
+# This is to change certain placeholders of the plugin.
+placeholders:
+  afk: '&9 AFK' # SAFE
+  godmode: '&9 GOD' # SAFE
+
+# Main plugin settings.
+server:
+  async-check: true # WARN        | If your server only has 1 core just turn this off.
+  checks: 1 # DANGER              | The interval between checks, like afk, cooldowns and etc..
+  schedule-threads: 1 # DANGER    | Only change in case of extreme use of schedules. Probably never need to change this.
+  afk-timer: 900 # SAFE           | The time in seconds for player be kicked by afk.
+  afk-kick: true # SAFE           | Define if the player will be kicked by afk.
+  cooldown: 4 # SAFE              | Interval between the player being teleported when using a command.
+  pvp-time: 15 # SAFE             | Time that player will be in PvP after cause combat damage to another player.
+  clear-range: 1 # SAFE           | The range to get arounds chunks to clear mobs.
+
+# Elevator module settings.
+elevator:
+  block: # SAFE                   | List of blocks that served as an elevator.
+    - 'IRON_BLOCK'
+  max: 50 # SAFE                  | Maximum height between elevators.
+  min: 2 # SAFE                   | Minimum height between elevators.
+
+# WARN                            | Name of SQLite or MySQL tables.
+sql:
+  table-kits: 'es_kits'
+  table-player: 'es_players'
+  table-rewards: 'es_rewards'
+  table-locations: 'es_locations'
+
+# Bed module settings.
+bed:
+  speed: 100 # SAFE               | The speed that the night will pass. (Varies based on number of players)
+  blacklisted-worlds: # SAFE      | List of worlds that CAN'T pass the night.
+    - 'evento'
+    - 'world_evento'
+
+# Economy module settings.
+money:
+  start: 300 # SAFE               | Initial balance.
+  back: 1000 # SAFE               | /back cost. (Requires teleport module to be active)
+  nick: 500000 # SAFE             | /nick cost. (Requires chat module to be active)
+  singular: 'Eternia' # SAFE      | Singular name of the currency.
+  plural: 'Eternias' # SAFE       | Plural name of the currency.
+  blacklisted-baltop:
+    - 'yurinogueira'
+
+# SAFE                            | List of commands that will be blocked.
+blocked-commands:
+  - '/op'
+  - '/deop'
+  - '/stop'
+
+# Spawners module settings.
+spawners:
+  mob-name-color: '&e' # WARN     | The color of mob's name. (This can break existing spawners)
+  drop-in-inventory: true # SAFE  | Defines whether spawners drop.
+  drop-chance: 1.0 # SAFE         | The chance of drop a spawner.
+  prevent-anvil: true # WARN      | Block the option to rename a mobspawner. (I recommend to not change this)
+  blacklisted-worlds: # SAFE      | List of worlds that CAN'T get spawners.
+    - 'evento'
+    - 'world_evento'
+  log: true # SAFE                | Logs when a spawner is placed.

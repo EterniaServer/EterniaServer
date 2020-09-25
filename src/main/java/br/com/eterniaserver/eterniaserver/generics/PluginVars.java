@@ -1,20 +1,20 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
-import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -26,7 +26,7 @@ public class PluginVars {
     }
 
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
-    public static final DecimalFormat df2 = new DecimalFormat(".##");
+    protected static final NumberFormat df2 = NumberFormat.getInstance(new Locale("pt", "BR"));
 
     public static final List<String> arrData = List.of("tblack", "tdarkblue", "tdarkgreen", "tdarkaqua", "tdarkred",
             "tdarkpurple", "tgold", "tlightgray", "tdarkgray", "tblue", "tgreen", "taqua", "tred", "tpurple", "tyellow",

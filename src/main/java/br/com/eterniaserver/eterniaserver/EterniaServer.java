@@ -6,13 +6,11 @@ import br.com.eterniaserver.eterniaserver.events.BlockHandler;
 import br.com.eterniaserver.eterniaserver.events.EntityHandler;
 import br.com.eterniaserver.eterniaserver.events.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.events.ServerHandler;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
-    public static final YamlConfiguration serverConfig = new YamlConfiguration();
     public static final YamlConfiguration msgConfig = new YamlConfiguration();
     public static final YamlConfiguration cmdConfig = new YamlConfiguration();
     public static final YamlConfiguration rewardsConfig = new YamlConfiguration();
@@ -29,7 +27,8 @@ public class EterniaServer extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        files.loadConfigs();
+        new Configs();
+
         files.loadMessages();
         files.loadDatabase();
         files.loadPlaceHolders();

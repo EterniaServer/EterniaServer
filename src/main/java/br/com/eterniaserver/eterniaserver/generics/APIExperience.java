@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import java.util.UUID;
@@ -23,15 +24,15 @@ public class APIExperience {
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(PluginConstants.getQueryInsert(PluginConfigs.TABLE_PLAYER, "(uuid, player_name, time, last, hours, balance, xp)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + PluginConfigs.BALANCE_START + "', '" + 0 + "')"));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance, xp)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "', '" + 0 + "')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
-            playerProfile.balance = PluginConfigs.BALANCE_START;
+            playerProfile.balance = Configs.instance.startMoney;
             PluginVars.playerProfile.put(uuid, playerProfile);
             return 0;
         }
@@ -44,7 +45,7 @@ public class APIExperience {
      */
     public static void setExp(UUID uuid, int amount) {
         PluginVars.playerProfile.get(uuid).xp = amount;
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_PLAYER, PluginConstants.XP_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.XP_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
     }
 
     /**

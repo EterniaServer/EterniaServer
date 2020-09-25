@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="998f36e1-48b8-4c51-a80a-8e16d347b45d" name="Default Changelist" comment="Correções.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/Configs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/enums/MessagesEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/CustomizableMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/EterniaServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/EterniaServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/Managers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Cash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Cash.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Chat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Economy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Economy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Generic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Generic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Glow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Glow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Home.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Home.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Kit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Kit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Mute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Mute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Reward.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Reward.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Spawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Spawner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Teleport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Teleport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Warp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/commands/Warp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/eternialib/Files.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/eternialib/Files.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/eternialib/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/eternialib/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/vault/VaultHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/vault/VaultHook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/vault/VaultMethods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/dependencies/vault/VaultMethods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/BlockHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/BlockHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/EntityHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/EntityHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/PlayerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/PlayerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/events/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APICash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APICash.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIEconomy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIEconomy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIExperience.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIExperience.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/APIServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginClear.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginClear.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginConfigs.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginMSGs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginMSGs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginTicks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginTicks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginVars.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/PluginVars.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilAccelerateNight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilAccelerateNight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilAccelerateWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilAccelerateWorld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilTextMaker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/generics/UtilTextMaker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/CustomCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/CustomCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/PlayerProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/PlayerProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/PlayerTeleport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/br/com/eterniaserver/eterniaserver/objects/PlayerTeleport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="staging" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/yurinogueira/EterniaServer.git" />
+      </set>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$APPLICATION_HOME_DIR$/plugins/maven/lib/maven3" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1gDdoJH4iqXLuzkqu3ChF2PzVxY" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.importing" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="br.com.eterniaserver.eterniaserver.generics" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="998f36e1-48b8-4c51-a80a-8e16d347b45d" name="Default Changelist" comment="" />
+      <created>1597653271027</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1597653271027</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Testes">
+      <created>1597731351375</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1597731351375</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update Lib">
+      <created>1597777598841</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1597777598841</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Sistema de Voar refeito.">
+      <created>1597827750340</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1597827750340</updated>
+    </task>
+    <task id="LOCAL-00004" summary="travis.yml">
+      <created>1597828686031</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1597828686031</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Ops...">
+      <created>1597828774440</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1597828774440</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Ops...">
+      <created>1597829576877</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1597829576877</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Removendo github workflow">
+      <created>1597829861752</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1597829861752</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Ajeitando mensagens.">
+      <created>1597835279055</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1597835279055</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Sonar analyze">
+      <created>1597886091019</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1597886091019</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Ajeitando Badges">
+      <created>1597886425334</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1597886425334</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Ajeitando Chat">
+      <created>1597894798559</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1597894798559</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Test patch com adição de algumas coisas asyncronas.">
+      <created>1597902307517</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1597902307517</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Evitando problemas.">
+      <created>1597915426902</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1597915426902</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Correções">
+      <created>1598172432585</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1598172432585</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Pei">
+      <created>1598256472428</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1598256472428</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Anti SQL Injector">
+      <created>1598265030618</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1598265030618</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Consertando duplicatas.">
+      <created>1598267636401</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1598267636401</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Pei">
+      <created>1598360075313</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1598360075313</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Adicionada permissão para o jogador poder voar em combate caso tenha permissão.">
+      <created>1598363627233</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1598363627233</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Adicionado novos comandos.">
+      <created>1598664055457</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1598664055457</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Ops">
+      <created>1598683743504</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1598683743505</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Refatorando.">
+      <created>1598708976529</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1598708976529</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Refatorando.">
+      <created>1598765524159</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1598765524159</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Adicionado o /item addkey">
+      <created>1598821641771</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1598821641771</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Corrigindo imports.">
+      <created>1598821737034</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1598821737034</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Refatorando">
+      <created>1598849383465</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1598849383465</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Alterando de ItemNull">
+      <created>1598852685964</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1598852685964</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Remove duplication">
+      <created>1598853154542</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1598853154542</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Refatorando.">
+      <created>1598972690893</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1598972690893</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Ops">
+      <created>1598981823737</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1598981823737</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Pei">
+      <created>1598987779580</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1598987779580</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Break farm.">
+      <created>1599034684394</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1599034684394</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Clarifying">
+      <created>1599077241612</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1599077241612</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Schedule Module">
+      <created>1599294261375</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1599294261375</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Fly Debug">
+      <created>1599295695984</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1599295695984</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Add support to others economies by vault">
+      <created>1599308157521</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1599308157521</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Add support to others economies by vault">
+      <created>1599308209895</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1599308209895</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Juntando os eventos em handlers">
+      <created>1600441146952</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1600441146952</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Corrigindo erro no novo &quot;MoveEvent&quot;">
+      <created>1600445040982</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1600445040982</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Implementando novas coisas para a API.">
+      <created>1600452758861</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1600452758861</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Refatorando">
+      <created>1600491551648</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1600491551649</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Refatorando">
+      <created>1600557036207</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1600557036207</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Refatorando">
+      <created>1600561420728</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1600561420728</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Correções.">
+      <created>1600748859050</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1600748859050</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Ajeitando Chat" />
+    <MESSAGE value="Test patch com adição de algumas coisas asyncronas." />
+    <MESSAGE value="Evitando problemas." />
+    <MESSAGE value="Correções" />
+    <MESSAGE value="Anti SQL Injector" />
+    <MESSAGE value="Consertando duplicatas." />
+    <MESSAGE value="Adicionada permissão para o jogador poder voar em combate caso tenha permissão." />
+    <MESSAGE value="Adicionado novos comandos." />
+    <MESSAGE value="Adicionado o /item addkey" />
+    <MESSAGE value="Corrigindo imports." />
+    <MESSAGE value="Alterando de ItemNull" />
+    <MESSAGE value="Remove duplication" />
+    <MESSAGE value="Refatorando." />
+    <MESSAGE value="Ops" />
+    <MESSAGE value="Pei" />
+    <MESSAGE value="Break farm." />
+    <MESSAGE value="Clarifying" />
+    <MESSAGE value="Schedule Module" />
+    <MESSAGE value="Fly Debug" />
+    <MESSAGE value="Add support to others economies by vault" />
+    <MESSAGE value="Juntando os eventos em handlers" />
+    <MESSAGE value="Corrigindo erro no novo &quot;MoveEvent&quot;" />
+    <MESSAGE value="Implementando novas coisas para a API." />
+    <MESSAGE value="Refatorando" />
+    <MESSAGE value="Correções." />
+    <option name="LAST_COMMIT_MESSAGE" value="Correções." />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="727" y="416" width="496" height="270" key="#Updates" timestamp="1598362325646">
+      <screen x="51" y="27" width="1869" height="1053" />
+    </state>
+    <state x="727" y="416" width="496" height="270" key="#Updates/51.27.1869.1053@51.27.1869.1053" timestamp="1598362325646" />
+    <state x="762" y="232" width="374" height="583" key="#com.intellij.ide.util.MemberChooser" timestamp="1599575768506">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="762" y="232" width="374" height="583" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1044@0.0.1920.1044" timestamp="1599575768506" />
+    <state x="794" y="261" width="374" height="592" key="#com.intellij.ide.util.MemberChooser/53.27.1867.1053@53.27.1867.1053" timestamp="1597901323375" />
+    <state x="699" y="417" width="566" height="217" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1600753312204">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="699" y="417" width="566" height="217" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1920.1044@0.0.1920.1044" timestamp="1600753312204" />
+    <state x="731" y="448" width="509" height="217" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/51.27.1869.1053@51.27.1869.1053" timestamp="1598363524606" />
+    <state x="107" y="0" width="1686" height="1042" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1600751720980">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="107" y="0" width="1686" height="1042" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1044@0.0.1920.1044" timestamp="1600751720980" />
+    <state x="719" y="302" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1597901406585">
+      <screen x="53" y="27" width="1867" height="1053" />
+    </state>
+    <state x="719" y="302" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/53.27.1867.1053@53.27.1867.1053" timestamp="1597901406585" />
+    <state x="697" y="365" width="572" height="315" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1600890791084">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="697" y="365" width="572" height="315" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1920.1044@0.0.1920.1044" timestamp="1600890791084" />
+    <state x="729" y="395" width="595" height="324" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/51.27.1869.1053@51.27.1869.1053" timestamp="1598684927152" />
+    <state x="730" y="395" width="502" height="324" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/53.27.1867.1053@53.27.1867.1053" timestamp="1597962805840" />
+    <state x="736" y="282" width="424" height="482" key="FileChooserDialogImpl" timestamp="1600558150001">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="736" y="282" width="424" height="482" key="FileChooserDialogImpl/0.0.1920.1044@0.0.1920.1044" timestamp="1600558150001" />
+    <state x="769" y="311" width="424" height="491" key="FileChooserDialogImpl/53.27.1867.1053@53.27.1867.1053" timestamp="1597779361279" />
+    <state width="1878" height="188" key="GridCell.Tab.0.bottom" timestamp="1600960673918">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state width="1878" height="188" key="GridCell.Tab.0.bottom/0.0.1920.1044@0.0.1920.1044" timestamp="1600960673918" />
+    <state width="1826" height="197" key="GridCell.Tab.0.bottom/48.0.1872.1080@48.0.1872.1080" timestamp="1600627143309" />
+    <state width="1823" height="201" key="GridCell.Tab.0.bottom/51.27.1869.1053@51.27.1869.1053" timestamp="1598710994469" />
+    <state width="1821" height="225" key="GridCell.Tab.0.bottom/53.27.1867.1053@53.27.1867.1053" timestamp="1597967716524" />
+    <state width="1878" height="188" key="GridCell.Tab.0.center" timestamp="1600960673917">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state width="1878" height="188" key="GridCell.Tab.0.center/0.0.1920.1044@0.0.1920.1044" timestamp="1600960673917" />
+    <state width="1826" height="197" key="GridCell.Tab.0.center/48.0.1872.1080@48.0.1872.1080" timestamp="1600627143308" />
+    <state width="1823" height="201" key="GridCell.Tab.0.center/51.27.1869.1053@51.27.1869.1053" timestamp="1598710994469" />
+    <state width="1821" height="225" key="GridCell.Tab.0.center/53.27.1867.1053@53.27.1867.1053" timestamp="1597967716523" />
+    <state width="1878" height="188" key="GridCell.Tab.0.left" timestamp="1600960673917">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state width="1878" height="188" key="GridCell.Tab.0.left/0.0.1920.1044@0.0.1920.1044" timestamp="1600960673917" />
+    <state width="1826" height="197" key="GridCell.Tab.0.left/48.0.1872.1080@48.0.1872.1080" timestamp="1600627143308" />
+    <state width="1823" height="201" key="GridCell.Tab.0.left/51.27.1869.1053@51.27.1869.1053" timestamp="1598710994469" />
+    <state width="1821" height="225" key="GridCell.Tab.0.left/53.27.1867.1053@53.27.1867.1053" timestamp="1597967716523" />
+    <state width="1878" height="188" key="GridCell.Tab.0.right" timestamp="1600960673918">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state width="1878" height="188" key="GridCell.Tab.0.right/0.0.1920.1044@0.0.1920.1044" timestamp="1600960673918" />
+    <state width="1826" height="197" key="GridCell.Tab.0.right/48.0.1872.1080@48.0.1872.1080" timestamp="1600627143309" />
+    <state width="1823" height="201" key="GridCell.Tab.0.right/51.27.1869.1053@51.27.1869.1053" timestamp="1598710994469" />
+    <state width="1821" height="225" key="GridCell.Tab.0.right/53.27.1867.1053@53.27.1867.1053" timestamp="1597967716524" />
+    <state x="493" y="180" width="924" height="682" key="Maven.ArtifactSearchDialog" timestamp="1598925265061">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="493" y="180" width="924" height="682" key="Maven.ArtifactSearchDialog/0.0.1920.1044@0.0.1920.1044" timestamp="1598925265061" />
+    <state x="427" y="103" width="1024" height="843" key="SettingsEditor" timestamp="1598919150216">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="427" y="103" key="SettingsEditor/0.0.1920.1044@0.0.1920.1044" timestamp="1598919150216" />
+    <state x="467" y="131" width="1024" height="843" key="SettingsEditor/51.27.1869.1053@51.27.1869.1053" timestamp="1598594668409" />
+    <state x="469" y="131" width="1024" height="852" key="SettingsEditor/53.27.1867.1053@53.27.1867.1053" timestamp="1597908308883" />
+    <state x="543" y="260" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1600748861911">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="543" y="260" width="800" height="526" key="Vcs.Push.Dialog.v2/0.0.1920.1044@0.0.1920.1044" timestamp="1600748861911" />
+    <state x="580" y="289" width="800" height="526" key="Vcs.Push.Dialog.v2/51.27.1869.1053@51.27.1869.1053" timestamp="1598708978827" />
+    <state x="581" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/53.27.1867.1053@53.27.1867.1053" timestamp="1597915430385" />
+    <state x="780" y="468" width="413" height="177" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1597779351559">
+      <screen x="53" y="27" width="1867" height="1053" />
+    </state>
+    <state x="780" y="468" width="413" height="177" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/53.27.1867.1053@53.27.1867.1053" timestamp="1597779351559" />
+    <state x="717" y="216" width="476" height="610" key="git4idea.branch.GitSmartOperationDialog" timestamp="1598987768168">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="717" y="216" width="476" height="610" key="git4idea.branch.GitSmartOperationDialog/0.0.1920.1044@0.0.1920.1044" timestamp="1598987768168" />
+    <state x="318" y="127" width="1239" height="803" key="new project wizard" timestamp="1599099480431">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="318" y="127" key="new project wizard/0.0.1920.1044@0.0.1920.1044" timestamp="1599099480431" />
+    <state x="362" y="155" width="1239" height="803" key="new project wizard/53.27.1867.1053@53.27.1867.1053" timestamp="1597732483649" />
+    <state x="614" y="223" key="run.anything.popup" timestamp="1600558984919">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="614" y="223" key="run.anything.popup/0.0.1920.1044@0.0.1920.1044" timestamp="1600558984919" />
+    <state x="649" y="252" key="run.anything.popup/51.27.1869.1053@51.27.1869.1053" timestamp="1598708259901" />
+    <state x="650" y="252" key="run.anything.popup/53.27.1867.1053@53.27.1867.1053" timestamp="1597729984474" />
+    <state x="613" y="230" width="691" height="673" key="search.everywhere.popup" timestamp="1600753946028">
+      <screen x="0" y="0" width="1920" height="1044" />
+    </state>
+    <state x="613" y="230" width="691" height="673" key="search.everywhere.popup/0.0.1920.1044@0.0.1920.1044" timestamp="1600753946028" />
+    <state x="648" y="259" width="672" height="678" key="search.everywhere.popup/51.27.1869.1053@51.27.1869.1053" timestamp="1598662020635" />
+  </component>
+</project>

@@ -10,13 +10,12 @@ import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
+
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.PluginVars;
-
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 

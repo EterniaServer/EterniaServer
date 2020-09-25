@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -34,17 +34,16 @@ public class PluginClear extends BukkitRunnable {
     }
 
     private Collection<Chunk> around(Chunk origin) {
-        int radius = EterniaServer.serverConfig.getInt("server.clear-range");
         World world = origin.getWorld();
 
-        int length = (radius * 2) + 1;
+        int length = (Configs.instance.clearRange * 2) + 1;
         Set<Chunk> chunks = new HashSet<>(length * length);
 
         int cX = origin.getX();
         int cZ = origin.getZ();
 
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
+        for (int x = -Configs.instance.clearRange; x <= Configs.instance.clearRange; x++) {
+            for (int z = -Configs.instance.clearRange; z <= Configs.instance.clearRange; z++) {
                 chunks.add(world.getChunkAt(cX + x, cZ + z));
             }
         }

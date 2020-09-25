@@ -1,15 +1,14 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.EQueries;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginConfigs;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,7 +19,7 @@ public class Kit extends BaseCommand {
 
     public Kit() {
 
-        final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(PluginConfigs.TABLE_KITS), PluginConstants.NAME_STR, PluginConstants.COOLDOWN_STR);
+        final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(Configs.instance.tableKits), PluginConstants.NAME_STR, PluginConstants.COOLDOWN_STR);
         temp.forEach((k, v) -> APIServer.putKitCooldown(k, Long.parseLong(v)));
 
         Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Kits").replace(PluginConstants.AMOUNT, String.valueOf(temp.size())));
@@ -66,7 +65,7 @@ public class Kit extends BaseCommand {
             player.sendMessage(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(player, line)));
         }
         APIServer.putKitCooldown(kitName, time);
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(PluginConfigs.TABLE_KITS, PluginConstants.COOLDOWN_STR, time, PluginConstants.NAME_STR, kitName));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tableKits, PluginConstants.COOLDOWN_STR, time, PluginConstants.NAME_STR, kitName));
     }
 
 }
