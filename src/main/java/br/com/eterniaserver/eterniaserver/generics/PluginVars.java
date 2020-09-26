@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
+import br.com.eterniaserver.eterniaserver.objects.CashGui;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -24,6 +25,8 @@ public class PluginVars {
     private PluginVars() {
         throw new IllegalStateException("Utility class");
     }
+
+    protected static CashGui cashGui;
 
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     protected static final NumberFormat df2 = NumberFormat.getInstance(new Locale("pt", "BR"));
