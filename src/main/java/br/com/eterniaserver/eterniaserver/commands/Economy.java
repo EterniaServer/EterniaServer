@@ -16,7 +16,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eterniaserver.enums.MessagesEnum;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.Configs;
 
 import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
@@ -58,8 +58,8 @@ public class Economy extends BaseCommand {
         final Player targetP = target.getPlayer();
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.instance.sendMessage(sender, MessagesEnum.EcoSetFrom, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.instance.sendMessage(targetP, MessagesEnum.EcoSeted, String.valueOf(money), sender.getName(), playerDisplay);
+        Configs.instance.sendMessage(sender, Messages.EcoSetFrom, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        Configs.instance.sendMessage(targetP, Messages.EcoSeted, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("take")
@@ -71,8 +71,8 @@ public class Economy extends BaseCommand {
         final Player targetP = target.getPlayer();
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.instance.sendMessage(sender, MessagesEnum.EcoRemoveFrom, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.instance.sendMessage(targetP, MessagesEnum.EcoRemoved, String.valueOf(money), sender.getName(), playerDisplay);
+        Configs.instance.sendMessage(sender, Messages.EcoRemoveFrom, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        Configs.instance.sendMessage(targetP, Messages.EcoRemoved, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("give")
@@ -84,8 +84,8 @@ public class Economy extends BaseCommand {
         final Player targetP = target.getPlayer();
         APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.instance.sendMessage(sender, MessagesEnum.EcoGiveFrom, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.instance.sendMessage(targetP, MessagesEnum.EcoGived, String.valueOf(money), sender.getName(), playerDisplay);
+        Configs.instance.sendMessage(sender, Messages.EcoGiveFrom, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        Configs.instance.sendMessage(targetP, Messages.EcoGived, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @CommandAlias("money")
@@ -96,7 +96,7 @@ public class Economy extends BaseCommand {
     public void onMoney(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
-            Configs.instance.sendMessage(player, MessagesEnum.EcoBalance, APIEconomy.format(money));
+            Configs.instance.sendMessage(player, Messages.EcoBalance, APIEconomy.format(money));
             return;
         }
 
@@ -104,11 +104,11 @@ public class Economy extends BaseCommand {
             Player targetP = target.getPlayer();
             String targetName = targetP.getName();
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(targetName));
-            Configs.instance.sendMessage(player, MessagesEnum.EcoBalanceOther, APIEconomy.format(money), targetName, targetP.getDisplayName());
+            Configs.instance.sendMessage(player, Messages.EcoBalanceOther, APIEconomy.format(money), targetName, targetP.getDisplayName());
             return;
         }
 
-        Configs.instance.sendMessage(player, MessagesEnum.ServerNoPerm);
+        Configs.instance.sendMessage(player, Messages.ServerNoPerm);
     }
 
     @CommandAlias("pay")
@@ -126,13 +126,13 @@ public class Economy extends BaseCommand {
             if (APIEconomy.getMoney(uuid) >= value) {
                 APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetName), value);
                 APIEconomy.removeMoney(uuid, value);
-                Configs.instance.sendMessage(player, MessagesEnum.EcoPay, String.valueOf(value), targetName, targetP.getDisplayName());
-                Configs.instance.sendMessage(targetP, MessagesEnum.EcoPayReceived, String.valueOf(value), playerName, player.getDisplayName());
+                Configs.instance.sendMessage(player, Messages.EcoPay, String.valueOf(value), targetName, targetP.getDisplayName());
+                Configs.instance.sendMessage(targetP, Messages.EcoPayReceived, String.valueOf(value), playerName, player.getDisplayName());
             } else {
-                Configs.instance.sendMessage(player, MessagesEnum.EcoNoMoney);
+                Configs.instance.sendMessage(player, Messages.EcoNoMoney);
             }
         } else {
-            Configs.instance.sendMessage(player, MessagesEnum.EcoAutoPay);
+            Configs.instance.sendMessage(player, Messages.EcoAutoPay);
         }
     }
 
@@ -197,7 +197,7 @@ public class Economy extends BaseCommand {
         lista.forEach((user -> {
             final String playerName = APIPlayer.getName(user);
             final String playerDisplay = APIPlayer.getDisplayName(user);
-            Configs.instance.sendMessage(sender, MessagesEnum.EcoBaltopList, false,
+            Configs.instance.sendMessage(sender, Messages.EcoBaltopList, false,
                     String.valueOf(lista.indexOf(user) + 1),
                     playerName,
                     playerDisplay,

@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
-public enum MessagesEnum {
+public enum Messages {
 
     ServerNoPerm,
     ServerNoPlayer,
@@ -26,6 +26,31 @@ public enum MessagesEnum {
     CashReceveid,
     CashSent,
     CashLost,
-    CashRemoved
+    CashRemoved,
+    CashCost,
+    CashChoose,
+    CashNoHas,
+    CashAlreadyBuying,
+    AfkBroadcastKick,
+    AfkEnter,
+    AfkLeave,
+    AfkKicked,
+    AfkAutoEnter,
+    GlowEnabled,
+    GlowDisabled,
+    GlowColorChanged,
+    ExpSetFrom,
+    ExpSeted,
+    ExpRemoveFrom,
+    ExpRemoved,
+    ExpGiveFrom,
+    ExpGived,
+    ExpBalance,
+    ExpBottled,
+    ExpInsufficient,
+    ExpDeposit,
+    ExpWithdraw,
+    GamemodeSeted,
+    GamemodeSetFrom
 
 }

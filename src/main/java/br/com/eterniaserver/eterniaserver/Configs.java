@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver;
 
-import br.com.eterniaserver.eterniaserver.enums.MessagesEnum;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
@@ -88,6 +88,11 @@ public class Configs {
     public boolean preventAnvil;
     public List<String> blacklistedWorldsSpawners = new ArrayList<>();
 
+    public String gmSpectator;
+    public String gmSurvival;
+    public String gmCreative;
+    public String gmAdventure;
+
     private final String dataLayerFolderPath = "plugins" + File.separator + "EterniaServer";
     private final String messagesFilePath = dataLayerFolderPath + File.separator + "messages.yml";
     private final String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
@@ -154,6 +159,11 @@ public class Configs {
         this.dropChance = config.getDouble("spawners.drop-chance", 1.0);
         this.preventAnvil = config.getBoolean("spawners.prevent-anvil", true);
         this.blacklistedWorldsSpawners.add("world_evento");
+
+        this.gmAdventure = config.getString("const.gmadventure", "aventura");
+        this.gmCreative = config.getString("const.gmcreative", "criativo");
+        this.gmSpectator = config.getString("const.gmspectator", "espectador");
+        this.gmSurvival = config.getString("const.gmsurvival", "sobrevivência");
 
         List<String> defaultMaterialBlocksList = new ArrayList<>();
         for (Material config_siege_block : this.elevatorMaterials) {
@@ -260,6 +270,11 @@ public class Configs {
         outConfig.set("spawners.prevent-anvil", this.preventAnvil);
         outConfig.set("spawners.blacklisted-worlds", tempBlockWorldSpawners);
 
+        outConfig.set("const.gmadventure", this.gmAdventure);
+        outConfig.set("const.gmcreative", this.gmCreative);
+        outConfig.set("const.gmspectator", this.gmSpectator);
+        outConfig.set("const.gmsurvival", this.gmSurvival);
+
         this.serverPrefix = serverPrefix.replace('$', (char) 0x00A7);
         this.afkPlaceholder = afkPlaceholder.replace('$', (char) 0x00A7);
         this.godPlaceholder = godPlaceholder.replace('$', (char) 0x00A7);
@@ -273,67 +288,96 @@ public class Configs {
     }
 
     private void loadMessages() {
-        MessagesEnum[] economiesID = MessagesEnum.values();
-        messages = new String[MessagesEnum.values().length];
+        Messages[] economiesID = Messages.values();
+        messages = new String[Messages.values().length];
 
         Map<String, CustomizableMessage> defaults = new HashMap<>();
 
-        this.addDefault(defaults, MessagesEnum.ServerNoPerm, "Você não possui permissão para isso$8.", null);
-        this.addDefault(defaults, MessagesEnum.ServerNoPlayer, "Esse jogador não existe$8.", null);
-        this.addDefault(defaults, MessagesEnum.EcoPay, "Você pagou $3{0} $7para $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.EcoPayReceived, "Você recebeu $3{0} $7de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.EcoNoMoney, "Você não possui todo esse dinheiro$8.", null);
-        this.addDefault(defaults, MessagesEnum.EcoAutoPay, "Você não pode pagar a si mesmo$8.", null);
-        this.addDefault(defaults, MessagesEnum.EcoSetFrom, "Você definiu para $3{0} $7o saldo de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.EcoSeted, "O seu saldo foi definido para $3{0} $7por $3{2}$8.", "0: quantia de money; 1: nome de quem alterou; 2: apelido de quem alterou");
-        this.addDefault(defaults, MessagesEnum.EcoRemoveFrom, "Você removeu $3{0} $7do saldo de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.EcoRemoved, "Foi retirado $3{0} $7do seu saldo por $3{2}$8.", "0: quantia de money; 1: nome de quem removeu; 2: apelido de quem alterou");
-        this.addDefault(defaults, MessagesEnum.EcoGiveFrom, "Você deu $3{0} $7de saldo de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.EcoGived, "Foi recebeu $3{0} $7de saldo por $3{2}$8.", "0: quantia de money; 1: nome de quem deu; 2: apelido de quem alterou");
-        this.addDefault(defaults, MessagesEnum.EcoBalance, "Você possui $3{0}$8.", "0: quantia de money");
-        this.addDefault(defaults, MessagesEnum.EcoBalanceOther,  "O $3{2} $7possui $3{0}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.EcoBaltopTitle, "Top money$8:", null);
-        this.addDefault(defaults, MessagesEnum.EcoBaltopList, "$3{0} $8- $3{2} $8- $7Saldo$8: $3{3}", "0: posição do jogador; 1: nome do jogador; 2: apelido do jogador; 3: saldo do jogador");
-        this.addDefault(defaults, MessagesEnum.CashBalance, "Você possui $3{0} $7de cash$8.", "0: quantia de cash");
-        this.addDefault(defaults, MessagesEnum.CashBalanceOther, "$3{2} $7possui $3{0} $7de cash$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.CashNothingToBuy, "Você não possui nada para comprar$8.", null);
-        this.addDefault(defaults, MessagesEnum.CashBought, "Compra confirmada com sucesso$8.", null);
-        this.addDefault(defaults, MessagesEnum.CashCanceled, "Compra cancelada com sucesso$8.", null);
-        this.addDefault(defaults, MessagesEnum.CashReceveid, "Você recebeu $3{0}$7 de cash por $3{2}$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.CashSent, "Você enviou $3{0}$7 de cash para $3{2}$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.CashLost, "Você perdeu $3{0}$7 de cash por $3{2}$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, MessagesEnum.CashRemoved, "Você removeu $3{0}$7 de cash de $3{2}$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.ServerNoPerm, "Você não possui permissão para isso$8.", null);
+        this.addDefault(defaults, Messages.ServerNoPlayer, "Esse jogador não existe$8.", null);
+        this.addDefault(defaults, Messages.EcoPay, "Você pagou $3{0} $7para $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.EcoPayReceived, "Você recebeu $3{0} $7de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.EcoNoMoney, "Você não possui todo esse dinheiro$8.", null);
+        this.addDefault(defaults, Messages.EcoAutoPay, "Você não pode pagar a si mesmo$8.", null);
+        this.addDefault(defaults, Messages.EcoSetFrom, "Você definiu para $3{0} $7o saldo de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.EcoSeted, "O seu saldo foi definido para $3{0} $7por $3{2}$8.", "0: quantia de money; 1: nome de quem alterou; 2: apelido de quem alterou");
+        this.addDefault(defaults, Messages.EcoRemoveFrom, "Você removeu $3{0} $7do saldo de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.EcoRemoved, "Foi retirado $3{0} $7do seu saldo por $3{2}$8.", "0: quantia de money; 1: nome de quem removeu; 2: apelido de quem alterou");
+        this.addDefault(defaults, Messages.EcoGiveFrom, "Você deu $3{0} $7de saldo de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.EcoGived, "Foi recebeu $3{0} $7de saldo por $3{2}$8.", "0: quantia de money; 1: nome de quem deu; 2: apelido de quem alterou");
+        this.addDefault(defaults, Messages.EcoBalance, "Você possui $3{0}$8.", "0: quantia de money");
+        this.addDefault(defaults, Messages.EcoBalanceOther,  "O $3{2} $7possui $3{0}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.EcoBaltopTitle, "Top money$8:", null);
+        this.addDefault(defaults, Messages.EcoBaltopList, "$3{0} $8- $3{2} $8- $7Saldo$8: $3{3}", "0: posição do jogador; 1: nome do jogador; 2: apelido do jogador; 3: saldo do jogador");
+        this.addDefault(defaults, Messages.CashBalance, "Você possui $3{0} $7de cash$8.", "0: quantia de cash");
+        this.addDefault(defaults, Messages.CashBalanceOther, "$3{2} $7possui $3{0} $7de cash$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.CashNothingToBuy, "Você não possui nada para comprar$8.", null);
+        this.addDefault(defaults, Messages.CashBought, "Compra confirmada com sucesso$8.", null);
+        this.addDefault(defaults, Messages.CashCanceled, "Compra cancelada com sucesso$8.", null);
+        this.addDefault(defaults, Messages.CashReceveid, "Você recebeu $3{0}$7 de cash por $3{2}$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.CashSent, "Você enviou $3{0}$7 de cash para $3{2}$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.CashLost, "Você perdeu $3{0}$7 de cash por $3{2}$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.CashRemoved, "Você removeu $3{0}$7 de cash de $3{2}$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.CashCost, "Isso irá custar $3{0}$7 de cash$8.", "0: quantia de cash");
+        this.addDefault(defaults, Messages.CashChoose, "Use $6/cash accept $7ou $6/cash deny$7 para aceitar ou negar a compra$8.", null);
+        this.addDefault(defaults, Messages.CashNoHas, "Você não possui $3{0}$7 de cash$8.", "0: quantia de cash");
+        this.addDefault(defaults, Messages.CashAlreadyBuying, "Você já possui uma compra em andamento$8.", null);
+        this.addDefault(defaults, Messages.AfkBroadcastKick, "$3{1} $7estava AFK e foi kickado$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.AfkKicked, "Você foi kickado por estar AFK$8.", null);
+        this.addDefault(defaults, Messages.AfkAutoEnter, "$3{1}$7 ficou ausente agora está AFK$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.AfkLeave, "$3{1} $7saiu do modo AFK$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.AfkEnter, "$3{1} $7entrou no modo AFK$8.", null);
+        this.addDefault(defaults, Messages.GlowEnabled, "Glow ativado$8.", null);
+        this.addDefault(defaults, Messages.GlowDisabled, "Glow desativado$8.", null);
+        this.addDefault(defaults, Messages.GlowColorChanged, "Cor do glow alterada para $3{0}$8.", "0: cor do glow");
+        this.addDefault(defaults, Messages.ExpSetFrom, "Você definiu para $3{0} $7o saldo de exp de $3{2}$8.", "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.ExpSeted, "O seu saldo de exp foi definido para $3{0} $7por $3{2}$8.", "0: quantia de exp; 1: nome de quem alterou; 2: apelido de quem alterou");
+        this.addDefault(defaults, Messages.ExpRemoveFrom, "Você removeu $3{0} $7do saldo de exp de $3{2}$8.", "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.ExpRemoved, "Foi retirado $3{0} $7do seu saldo de exp por $3{2}$8.", "0: quantia de exp; 1: nome de quem removeu; 2: apelido de quem alterou");
+        this.addDefault(defaults, Messages.ExpGiveFrom, "Você deu $3{0} $7de saldo de exp de $3{2}$8.", "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.ExpGived, "Foi recebeu $3{0} $7de saldo de exp por $3{2}$8.", "0: quantia de exp; 1: nome de quem deu; 2: apelido de quem alterou");
+        this.addDefault(defaults, Messages.ExpBalance, "Você possui $3{0}$7 de exp$8.", "0: quantia de exp");
+        this.addDefault(defaults, Messages.ExpBottled, "Tome sua garrafinha$8.", null);
+        this.addDefault(defaults, Messages.ExpInsufficient, "Você não possui tudo isso de exp$8.", null);
+        this.addDefault(defaults, Messages.ExpWithdraw, "Você sacou $3{0}$7 níveis$8.", "0: quantia de nível");
+        this.addDefault(defaults, Messages.ExpDeposit, "Você depositou $3{0}$7 níveis$8.", "0: quantia de nível");
+        this.addDefault(defaults, Messages.GamemodeSeted, "Seu modo de jogo foi definido para {0}$8.", "0: modo de jogo");
+        this.addDefault(defaults, Messages.GamemodeSetFrom, "O modo de jogo de $3{2}$7 foi definido para {0}$8.", "0: modo de jogo; 1: nome do jogador; 2: apelido do jogador");
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 
-        for (MessagesEnum messagesEnum : economiesID) {
-            CustomizableMessage messageData = defaults.get(messagesEnum.name());
+        for (Messages messages : economiesID) {
+            CustomizableMessage messageData = defaults.get(messages.name());
 
             String path;
 
-            if (messagesEnum.name().contains("Eco")) {
+            if (messages.name().contains("Eco")) {
                 path = "eco.";
-            } else if (messagesEnum.name().contains("Server")) {
+            } else if (messages.name().contains("Server")) {
                 path = "server.";
-            } else if (messagesEnum.name().contains("Cash")) {
+            } else if (messages.name().contains("Cash")) {
                 path = "cash.";
+            } else if (messages.name().contains("Afk")) {
+                path = "afk.";
+            } else if (messages.name().contains("Exp")) {
+                path = "exp.";
             } else {
                 path = "generic.";
             }
 
             if (messageData == null) {
-                messageData = new CustomizableMessage(messagesEnum, this.serverPrefix +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
-                APIServer.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
+                messageData = new CustomizableMessage(messages, this.serverPrefix +"Mensagem faltando para $3" + messages.name() + "$8.", null);
+                APIServer.logError("Entrada para a mensagem " + messages.name(), 2);
             }
 
-            messages[messagesEnum.ordinal()] = config.getString(path + messagesEnum.name() + ".text", messageData.text);
-            config.set(path + messagesEnum.name() + ".text", messages[messagesEnum.ordinal()]);
+            this.messages[messages.ordinal()] = config.getString(path + messages.name() + ".text", messageData.text);
+            config.set(path + messages.name() + ".text", this.messages[messages.ordinal()]);
 
-            messages[messagesEnum.ordinal()] = messages[messagesEnum.ordinal()].replace('$', (char) 0x00A7);
+            this.messages[messages.ordinal()] = this.messages[messages.ordinal()].replace('$', (char) 0x00A7);
 
             if (messageData.notes != null) {
-                messageData.notes = config.getString(path + messagesEnum.name() + ".notes", messageData.notes);
-                config.set(path + messagesEnum.name() + ".notes", messageData.notes);
+                messageData.notes = config.getString(path + messages.name() + ".notes", messageData.notes);
+                config.set(path + messages.name() + ".notes", messageData.notes);
             }
 
         }
@@ -348,20 +392,20 @@ public class Configs {
         System.gc();
     }
 
-    private void addDefault(Map<String, CustomizableMessage> defaults, MessagesEnum id, String text, String notes) {
+    private void addDefault(Map<String, CustomizableMessage> defaults, Messages id, String text, String notes) {
         CustomizableMessage message = new CustomizableMessage(id, text, notes);
         defaults.put(id.name(), message);
     }
 
-    public void sendMessage(CommandSender player, MessagesEnum messagesId, String... args) {
+    public void sendMessage(CommandSender player, Messages messagesId, String... args) {
         sendMessage(player, messagesId, true, args);
     }
 
-    public void sendMessage(CommandSender player, MessagesEnum messagesId, boolean prefix, String... args) {
+    public void sendMessage(CommandSender player, Messages messagesId, boolean prefix, String... args) {
         player.sendMessage(getMessage(messagesId, prefix, args));
     }
 
-    public String getMessage(MessagesEnum messagesId, boolean prefix, String... args) {
+    public String getMessage(Messages messagesId, boolean prefix, String... args) {
         String message = messages[messagesId.ordinal()];
 
         for (int i = 0; i < args.length; i++) {

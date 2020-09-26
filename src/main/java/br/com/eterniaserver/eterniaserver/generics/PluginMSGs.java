@@ -86,11 +86,6 @@ public class PluginMSGs {
     public static final String MSG_MEM_ONLINE = putPrefix("replaces.online");
     public static final String MSG_TPS = putPrefix("replaces.tps");
 
-    public static final String MSG_AFK_ENABLE = putPrefix("generic.afk.enabled");
-    public static final String MSG_AFK_DISABLE = putPrefix("generic.afk.disabled");
-    public static final String MSG_AFK_KICKED = putPrefix("generic.afk.kicked");
-    public static final String MSG_AFK_BROAD = putPrefix("generic.afk.broadcast-kicked");
-
     public static final String FLY_PVP_DISABLED = putPrefix("generic.fly.getpvp");
     public static final String FLY_IN_PVP = putPrefix("generic.fly.pvp");
     public static final String FLY_TARGET_IN_PVP = putPrefix("generic.fly.target-pvp");
@@ -159,26 +154,6 @@ public class PluginMSGs {
 
     public static final String M_KIT_NO_EXISTS = putPrefix("kit.no-exists");
     public static final String M_KIT_LIST = putPrefix("kit.list");
-
-    public static final String M_GLOW_ENABLED = putPrefix("glow.brilho");
-    public static final String M_GLOW_DISABLED = putPrefix("glow.desbrilho");
-    public static final String M_GLOW_COLOR = putPrefix("glow.color");
-
-    public static final String M_GM_CHANGED = putPrefix("generic.gm.changed");
-    public static final String M_GM_TARGET = putPrefix("generic.gm.changed-target");
-
-    public static final String M_XP_CHECK = putPrefix("experience.check");
-    public static final String M_XP_BOTTLE = putPrefix("experience.bottleexp");
-    public static final String M_XP_INSUFFICIENT = putPrefix("experience.insufficient");
-    public static final String M_XP_WITHDRAW = putPrefix("experience.withdraw");
-    public static final String M_XP_DEPOSIT = putPrefix("experience.deposit");
-
-    public static final String M_XP_SET = putPrefix("experience.xp-set");
-    public static final String M_XP_RSET = putPrefix("experience.xp-rset");
-    public static final String M_XP_REMOVE = putPrefix("experience.xp-remove");
-    public static final String M_XP_RREMOVE = putPrefix("experience.xp-rremove");
-    public static final String M_XP_GIVE = putPrefix("experience.xp-give");
-    public static final String M_XP_RECEIVE = putPrefix("experience.xp-receive");
 
     private static String putPrefix(String path) {
         String message = EterniaServer.msgConfig.getString(path);

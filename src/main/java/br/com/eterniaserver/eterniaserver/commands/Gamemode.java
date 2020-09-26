@@ -13,6 +13,8 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.Configs;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
@@ -38,16 +40,11 @@ public class Gamemode extends BaseCommand {
     @Description(" Define o modo de jogo de um jogador como sobrevivência")
     @Syntax("<jogador>")
     public void onSurvival(CommandSender player, @Optional OnlinePlayer target) {
-        final String survivalString = "Sobrevivência";
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
-            playerZin.setGameMode(GameMode.SURVIVAL);
-            player.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, survivalString));
+            setGamemode(playerZin, GameMode.SURVIVAL, 0);
         } else if (target != null) {
-            final Player targetP = target.getPlayer();
-            targetP.setGameMode(GameMode.SURVIVAL);
-            targetP.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, survivalString));
-            player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_GM_TARGET.replace(PluginConstants.GM, survivalString)));
+            setGamemode(player, target.getPlayer(), GameMode.SURVIVAL, 0);
         }
     }
 
@@ -56,16 +53,11 @@ public class Gamemode extends BaseCommand {
     @Description(" Define o modo de jogo de um jogador como criativo")
     @Syntax("<jogador>")
     public void onCreative(CommandSender player, @Optional OnlinePlayer target) {
-        final String creativeString = "Criativo";
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
-            playerZin.setGameMode(GameMode.CREATIVE);
-            playerZin.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, creativeString));
+            setGamemode(playerZin, GameMode.CREATIVE, 1);
         } else if (target != null) {
-            final Player targetP = target.getPlayer();
-            targetP.setGameMode(GameMode.CREATIVE);
-            targetP.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, creativeString));
-            player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_GM_TARGET.replace(PluginConstants.GM, creativeString)));
+            setGamemode(player, target.getPlayer(), GameMode.CREATIVE, 1);
         }
     }
 
@@ -74,16 +66,11 @@ public class Gamemode extends BaseCommand {
     @Description(" Define o modo de jogo de um jogador como aventura")
     @Syntax("<jogador>")
     public void onAdventure(CommandSender player, @Optional OnlinePlayer target) {
-        final String adventureString = "Aventura";
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
-            playerZin.setGameMode(GameMode.ADVENTURE);
-            playerZin.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, adventureString));
+            setGamemode(playerZin, GameMode.ADVENTURE, 2);
         } else if (target != null) {
-            final Player targetP = target.getPlayer();
-            targetP.setGameMode(GameMode.ADVENTURE);
-            targetP.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, adventureString));
-            player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_GM_TARGET.replace(PluginConstants.GM, adventureString)));
+            setGamemode(player, target.getPlayer(), GameMode.ADVENTURE, 2);
         }
     }
 
@@ -92,16 +79,37 @@ public class Gamemode extends BaseCommand {
     @Description(" Define o modo de jogo de um jogador como espectador")
     @Syntax("<jogador>")
     public void onSpectator(CommandSender player, @Optional OnlinePlayer target) {
-        final String spectatorString = "Espectador";
         final Player playerZin = (Player) player;
         if (target == null && playerZin != null) {
-            playerZin.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, spectatorString));
+            setGamemode(playerZin, GameMode.SPECTATOR, 3);
         } else if (target != null) {
-            final Player targetP = target.getPlayer();
-            targetP.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(PluginMSGs.M_GM_CHANGED.replace(PluginConstants.GM, spectatorString));
-            player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.M_GM_TARGET.replace(PluginConstants.GM, spectatorString)));
+            setGamemode(player, target.getPlayer(), GameMode.SPECTATOR, 3);
+        }
+    }
+
+    private void setGamemode(Player player, GameMode gameMode, int type) {
+        final String typeName = getType(type);
+        player.setGameMode(gameMode);
+        Configs.instance.sendMessage(player, Messages.GamemodeSeted, typeName);
+    }
+
+    private void setGamemode(CommandSender player, Player target, GameMode gameMode, int type) {
+        final String typeName = getType(type);
+        target.setGameMode(gameMode);
+        Configs.instance.sendMessage(target, Messages.GamemodeSeted, typeName);
+        Configs.instance.sendMessage(player, Messages.GamemodeSetFrom, typeName, target.getName(), target.getDisplayName());
+    }
+
+    private String getType(int type) {
+        switch (type) {
+            case 0:
+                return Configs.instance.gmSurvival;
+            case 1:
+                return Configs.instance.gmCreative;
+            case 2:
+                return Configs.instance.gmAdventure;
+            default:
+                return Configs.instance.gmSpectator;
         }
     }
 

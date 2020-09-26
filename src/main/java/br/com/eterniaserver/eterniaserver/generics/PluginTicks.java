@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
 
@@ -48,7 +49,7 @@ public class PluginTicks extends BukkitRunnable {
             PluginVars.afkTime.put(playerName, System.currentTimeMillis());
             if (PluginVars.afk.contains(playerName)) {
                 PluginVars.afk.remove(playerName);
-                Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
+                Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AfkLeave, true, playerName, player.getDisplayName()));
             }
         }
 
@@ -92,12 +93,15 @@ public class PluginTicks extends BukkitRunnable {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.getOrDefault(playerName, System.currentTimeMillis())) >= Configs.instance.afkTimer) {
             if (Configs.instance.afkKick) {
                 if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                    Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_BROAD));
+                    Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AfkBroadcastKick, true, playerName, player.getDisplayName()));
                     PluginVars.afkTime.remove(playerName);
-                    runSync(() -> player.kickPlayer(PluginMSGs.MSG_AFK_KICKED));
+                    runSync(() -> player.kickPlayer(Configs.instance.getMessage(Messages.AfkKicked, true)));
+                } else if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates") && player.hasPermission("eternia.afk")) {
+                    Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AfkAutoEnter, false, playerName, player.getDisplayName()));
+                    APIPlayer.putAfk(playerName);
                 }
             } else {
-                Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_ENABLE));
+                Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AfkAutoEnter, false, playerName, player.getDisplayName()));
                 PluginVars.afk.add(playerName);
             }
         }

@@ -18,14 +18,14 @@
 
 package br.com.eterniaserver.eterniaserver.objects;
 
-import br.com.eterniaserver.eterniaserver.enums.MessagesEnum;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 public class CustomizableMessage {
-    public final MessagesEnum id;
+    public final Messages id;
     public final String text;
     public String notes;
 
-    public CustomizableMessage(MessagesEnum id, String text, String notes) {
+    public CustomizableMessage(Messages id, String text, String notes) {
         this.id = id;
         this.text = text;
         this.notes = notes;

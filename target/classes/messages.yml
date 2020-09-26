@@ -29,22 +29,6 @@ glow:
   brilho: '&7Brilhando&8!'
   desbrilho: '&7Desbrilhando :(&8!'
   color: '&7Agora o seu brilho será %amount%&8.'
-cash:
-  no-cash: '&7Você não possui todo esse cash&8.'
-  cost: '&7Isso irá lhe custar &3%amount% &7de cash&8.'
-  use: '&7Use &6/cash accept &7ou &6/cash deny&7 para aceitar ou negar a compra&8.'
-  already: '&7Você já tem uma compra pendente&8.'
-  no-buy: '&7Você não possui uma compra&8.'
-  sucess: '&7Compra confirmada&8!'
-  canc: '&7Compra cancelada&8.'
-  reload: '&7Gui reiniciada&8.'
-  balance-other: '&7O jogador possui &3%amount% &7de cash&8.'
-  no-player: '&7Jogador não encontrado&8.'
-  balance: '&7Você possui &3%amount% &7de cash&8.'
-  receive: '&7Você recebeu &3%amount% &7de cash&8.'
-  send: '&7Você enviou &3%amount% &7de cash para &3%player_displayname%&8.'
-  removed: '&7Você perdeu &3%amount% &7de cash&8.'
-  remove: '&7Você removeu &3%amount% &7de cash para &3%player_displayname%&8.'
 chat:
   tell:
     to-player: '&8[&6P&8] &6%player_displayname% &8-> &6%target_displayname%&8: &6%message%'
@@ -85,21 +69,6 @@ bed:
   night-skipping: '&7Passando a noite em &3%world_name%&8.'
   player-leave: '&3%player_displayname% &7desistiu de ir dormir&8.'
   player-s: '&3%player_displayname% &7está dormindo&8, &7durma também para a noite passar mais rapidamente&8.'
-eco:
-  auto-pay: '&7Você não pode se pagar&8.'
-  pay-nomoney: '&7Você não possui todo esse dinheiro&8.'
-  pay: '&7Você pagou &3%amount% &7para &3%player_displayname%&8.'
-  pay-me: '&7Você recebeu &3%amount% &7de &3%player_displayname%&8.'
-  money-other: '&7O jogador possui &3%amount%&8.'
-  money: '&7Você possui &3%amount%&8.'
-  baltop: '&7Top Money&8:'
-  ballist: "&3%position% &8- &3%player_displayname% &8- &7Saldo&8 - &3%amount%&8."
-  eco-give: '&7Você deu &3%amount%&7 para &3%player_displayname%&8.'
-  eco-receive: '&7Você recebeu &3%amount%&7 de &3%player_displayname%&8.'
-  eco-remove: '&7Você retirou &3%amount%&7 de &3%player_displayname%&8.'
-  eco-rremove: '&7Você perdeu &3%amount%&7 por &3%player_displayname%&8.'
-  eco-set: '&7Você definiu para &3%amount%&7 o saldo de &3%player_displayname%&8.'
-  eco-rset: '&7Seu saldo foi definido para &3%amount%&7 por &3%player_displayname%&8.'
 experience:
   check: '&7Você possui &3%amount% &7leveis guardados&8.'
   bottleexp: '&7Toma ai sua garrafinha&8!'
@@ -124,11 +93,6 @@ item:
   no: '&7Você não possui nenhum item em sua mão&8.'
   helmet: '&7Tome seu novo caçapete&8.'
 generic:
-  afk:
-    broadcast-kicked: '&3%player_displayname% &7estava AFK e foi kickado por isso&8.'
-    disabled: '&3%player_displayname% &7não está mais AFK&8.'
-    enabled: '&3%player_displayname% &7agora está AFK&8.'
-    kicked: '&7Você foi kickado por está afk&8.'
   others:
     condenser: '&7:)&8.'
     invalid: '&7Não pode ser maior que &310 &7nem menor que &31&8.'

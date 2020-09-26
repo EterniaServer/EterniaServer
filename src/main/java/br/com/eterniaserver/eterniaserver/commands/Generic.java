@@ -14,6 +14,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import org.bukkit.Bukkit;
@@ -302,11 +303,11 @@ public class Generic extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (APIPlayer.isAFK(playerName)) {
-            Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_DISABLE));
+            Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AfkLeave, true, playerName, player.getDisplayName()));
             APIPlayer.removeAfk(playerName);
         } else {
             APIPlayer.putInAfk(player);
-            Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_AFK_ENABLE));
+            Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AfkEnter, true, playerName, player.getDisplayName()));
         }
     }
 

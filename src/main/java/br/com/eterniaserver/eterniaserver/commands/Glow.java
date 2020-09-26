@@ -11,6 +11,8 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 
+import br.com.eterniaserver.eterniaserver.Configs;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
@@ -35,10 +37,10 @@ public class Glow extends BaseCommand {
     @Description(" Ativa ou desativa o glow")
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
-            player.sendMessage(PluginMSGs.M_GLOW_ENABLED);
+            Configs.instance.sendMessage(player, Messages.GlowEnabled);
         } else {
+            Configs.instance.sendMessage(player, Messages.GlowDisabled);
             player.removePotionEffect(PotionEffectType.GLOWING);
-            player.sendMessage(PluginMSGs.M_GLOW_DISABLED);
         }
         player.setGlowing(!player.isGlowing());
     }
@@ -106,7 +108,7 @@ public class Glow extends BaseCommand {
         final String playerName = player.getName();
         APIServer.getScoreboard().getTeam(team).addEntry(playerName);
         APIServer.putGlowing(playerName, nameColor);
-        player.sendMessage(PluginMSGs.M_GLOW_COLOR.replace(PluginConstants.AMOUNT, color));
+        Configs.instance.sendMessage(player, Messages.GlowColorChanged, color);
     }
 
 

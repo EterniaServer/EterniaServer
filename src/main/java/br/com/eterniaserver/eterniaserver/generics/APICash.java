@@ -3,10 +3,11 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Configs;
-
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CashGui;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -175,11 +176,11 @@ public class APICash {
             if (EterniaServer.cashConfig.contains(permString)) {
                 final int cost = EterniaServer.cashConfig.getInt(permString + ".cost");
                 if (APICash.hasCash(uuid, cost)) {
-                    player.sendMessage(PluginMSGs.M_CASH_COST.replace(PluginConstants.AMOUNT, String.valueOf(cost)));
-                    player.sendMessage(PluginMSGs.M_CASH);
+                    Configs.instance.sendMessage(player, Messages.CashCost, String.valueOf(cost));
+                    Configs.instance.sendMessage(player, Messages.CashChoose);
                     PluginVars.cashItem.put(uuid, permString);
                 } else {
-                    player.sendMessage(PluginMSGs.M_CASH_NO);
+                    Configs.instance.sendMessage(player, Messages.CashNoHas);
                 }
             } else {
                 player.closeInventory();
@@ -190,8 +191,8 @@ public class APICash {
                 player.openInventory(gui);
             }
         } else {
-            player.sendMessage(PluginMSGs.M_CASH_ALREADY);
-            player.sendMessage(PluginMSGs.M_CASH);
+            Configs.instance.sendMessage(player, Messages.CashAlreadyBuying);
+            Configs.instance.sendMessage(player, Messages.CashChoose);
         }
     }
 
