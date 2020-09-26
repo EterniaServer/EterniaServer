@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3aaaf41-a8f5-4a17-a028-1d5d7d6642ba" name="Default Changelist" comment="Refatorando ainda.">
+    <list default="true" id="a3aaaf41-a8f5-4a17-a028-1d5d7d6642ba" name="Default Changelist" comment="Refatorando.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,7 +54,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -72,7 +72,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601103131283</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Refatorando.">
+      <created>1601104121387</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1601104121387</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -89,7 +96,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refatorando ainda." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refatorando ainda." />
+    <MESSAGE value="Refatorando." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refatorando." />
   </component>
   <component name="WindowStateProjectService">
     <state x="552" y="161" key="#Plugins" timestamp="1601101410160">
@@ -112,14 +120,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1601092996306" />
-    <state x="461" y="165" key="SettingsEditor" timestamp="1601090258116">
+    <state x="461" y="165" key="SettingsEditor" timestamp="1601104456617">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1601090258116" />
-    <state x="0" y="0" key="Vcs.Push.Dialog.v2" timestamp="1601103599063">
+    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1601104456617" />
+    <state x="0" y="0" key="Vcs.Push.Dialog.v2" timestamp="1601104125401">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="0" y="0" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1601103599063" />
+    <state x="0" y="0" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1601104125401" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1601102724686">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
