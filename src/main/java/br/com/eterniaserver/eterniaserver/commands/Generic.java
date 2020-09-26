@@ -303,11 +303,11 @@ public class Generic extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (APIPlayer.isAFK(playerName)) {
-            Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AfkLeave, true, playerName, player.getDisplayName()));
+            Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
             APIPlayer.removeAfk(playerName);
         } else {
             APIPlayer.putInAfk(player);
-            Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AfkEnter, true, playerName, player.getDisplayName()));
+            Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AFK_ENTER, true, playerName, player.getDisplayName()));
         }
     }
 

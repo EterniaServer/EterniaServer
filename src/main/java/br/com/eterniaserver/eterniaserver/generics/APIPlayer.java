@@ -15,173 +15,169 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class APIPlayer {
+public interface APIPlayer {
 
-    private APIPlayer() {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static String getFirstLogin(UUID uuid) {
+    static String getFirstLogin(UUID uuid) {
         return PluginVars.playerProfile.containsKey(uuid) ? new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(PluginVars.playerProfile.get(uuid).firstLogin)) : "Sem registro";
     }
 
-    public static boolean isAFK(String playerName) {
+    static boolean isAFK(String playerName) {
         return PluginVars.afk.contains(playerName);
     }
 
-    public static String isAFKPlaceholder(String playerName) {
+    static String isAFKPlaceholder(String playerName) {
         return isAFK(playerName) ? Configs.instance.afkPlaceholder : "";
     }
 
-    public static void removeFromAFK(String playerName) {
+    static void removeFromAFK(String playerName) {
         PluginVars.afkTime.remove(playerName);
     }
 
-    public static void putAfk(String playerName) {
+    static void putAfk(String playerName) {
         PluginVars.afkTime.put(playerName, System.currentTimeMillis());
     }
 
-    public static void putInAfk(Player player) {
+    static void putInAfk(Player player) {
         PluginVars.afk.add(player.getName());
         PluginVars.playerLocationMap.put(player, player.getLocation());
     }
 
-    public static void removeAfk(String playerName) {
+    static void removeAfk(String playerName) {
         PluginVars.afk.remove(playerName);
     }
 
-    public static boolean hasProfile(UUID uuid) {
+    static boolean hasProfile(UUID uuid) {
         return PluginVars.playerProfile.containsKey(uuid);
     }
 
-    public static String getGlowColor(String playerName) {
+    static String getGlowColor(String playerName) {
         return PluginVars.glowingColor.getOrDefault(playerName, "");
     }
 
-    public static boolean isGod(String playerName) {
+    static boolean isGod(String playerName) {
         return PluginVars.god.contains(playerName);
     }
 
-    public static void putGod(String playerName) {
+    static void putGod(String playerName) {
         PluginVars.god.add(playerName);
     }
 
-    public static void removeGod(String playerName) {
+    static void removeGod(String playerName) {
         PluginVars.god.remove(playerName);
     }
 
-    public static String isGodPlaceholder(String playerName) {
+    static String isGodPlaceholder(String playerName) {
         return isGod(playerName) ? Configs.instance.godPlaceholder : "";
     }
 
-    public static long getMutedTime(UUID uuid) {
+    static long getMutedTime(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).muted;
     }
 
-    public static void putMutedTime(UUID uuid, long time) {
+    static void putMutedTime(UUID uuid, long time) {
         PluginVars.playerProfile.get(uuid).muted = time;
     }
 
-    public static String getDisplayName(UUID uuid) {
+    static String getDisplayName(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).getPlayerDisplayName();
     }
 
-    public static String getName(UUID uuid) {
+    static String getName(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).getPlayerName();
     }
 
-    public static void updateHome(UUID uuid, List<String> values) {
+    static void updateHome(UUID uuid, List<String> values) {
         PluginVars.playerProfile.get(uuid).homes = values;
     }
 
-    public static boolean hasTpaRequest(String playerName) {
+    static boolean hasTpaRequest(String playerName) {
         return PluginVars.tpaRequests.containsKey(playerName);
     }
 
-    public static String getTpaSender(String playerName) {
+    static String getTpaSender(String playerName) {
         return PluginVars.tpaRequests.get(playerName);
     }
 
-    public static void removeTpaRequest(String playerName) {
+    static void removeTpaRequest(String playerName) {
         PluginVars.tpaTime.remove(playerName);
         PluginVars.tpaRequests.remove(playerName);
     }
 
-    public static void putTpaRequest(String targetName, String playerName) {
+    static void putTpaRequest(String targetName, String playerName) {
         PluginVars.tpaRequests.remove(targetName);
         PluginVars.tpaRequests.put(targetName, playerName);
         PluginVars.tpaTime.put(targetName, System.currentTimeMillis());
     }
 
-    public static List<String> getHomes(UUID uuid) {
+    static List<String> getHomes(UUID uuid) {
         return Objects.requireNonNullElseGet(PluginVars.playerProfile.get(uuid).homes, ArrayList::new);
     }
 
-    public static int getChannel(UUID uuid) {
+    static int getChannel(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).chatChannel;
     }
 
-    public static void setChannel(UUID uuid, int channel) {
+    static void setChannel(UUID uuid, int channel) {
         PluginVars.playerProfile.get(uuid).chatChannel = channel;
     }
 
-    public static boolean receivedTell(String playerName) {
+    static boolean receivedTell(String playerName) {
         return PluginVars.tell.containsKey(playerName);
     }
 
-    public static String getTellSender(String playerName) {
+    static String getTellSender(String playerName) {
         return PluginVars.tell.get(playerName);
     }
 
-    public static boolean isTell(String playerName) {
+    static boolean isTell(String playerName) {
         return PluginVars.chatLocked.containsKey(playerName);
     }
 
-    public static void setTelling(String playerName, String targetName) {
+    static void setTelling(String playerName, String targetName) {
         PluginVars.chatLocked.put(playerName, targetName);
     }
 
-    public static String getTellingPlayerName(String playerName) {
+    static String getTellingPlayerName(String playerName) {
         return PluginVars.chatLocked.get(playerName);
     }
 
-    public static void removeTelling(String playerName) {
+    static void removeTelling(String playerName) {
         PluginVars.chatLocked.remove(playerName);
     }
 
-    public static boolean hasIgnoreds(String playerName) {
+    static boolean hasIgnoreds(String playerName) {
         return PluginVars.ignoredPlayer.containsKey(playerName);
     }
 
-    public static List<Player> getIgnoreds(String playerName) {
+    static List<Player> getIgnoreds(String playerName) {
         return PluginVars.ignoredPlayer.get(playerName);
     }
 
-    public static void putIgnored(String playerName, List<Player> list) {
+    static void putIgnored(String playerName, List<Player> list) {
         PluginVars.ignoredPlayer.put(playerName, list);
     }
 
-    public static boolean areIgnored(String playerName, Player target) {
+    static boolean areIgnored(String playerName, Player target) {
         return PluginVars.ignoredPlayer.get(playerName).contains(target);
     }
 
-    public static boolean isTeleporting(Player player) {
+    static boolean isTeleporting(Player player) {
         return PluginVars.teleports.containsKey(player);
     }
 
-    public static long getAndUpdateTimePlayed(UUID uuid) {
+    static long getAndUpdateTimePlayed(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).updateTimePlayed();
     }
 
-    public static long getLastLogin(UUID uuid) {
+    static long getLastLogin(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).lastLogin;
     }
 
-    public static long getFirstLoginLong(UUID uuid) {
+    static long getFirstLoginLong(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).firstLogin;
     }
 
-    public static void changeFlyState(Player player) {
+    static void changeFlyState(Player player) {
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
             player.setFlying(false);
@@ -192,19 +188,19 @@ public class APIPlayer {
         player.setFlying(true);
     }
 
-    public static boolean isOnPvP(UUID uuid) {
+    static boolean isOnPvP(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).isOnPvP();
     }
 
-    public static int getPvPCooldown(UUID uuid) {
+    static int getPvPCooldown(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).getOnPvP();
     }
 
-    public static void setIsOnPvP(UUID uuid) {
+    static void setIsOnPvP(UUID uuid) {
         PluginVars.playerProfile.get(uuid).setIsOnPvP();
     }
 
-    public static void updatePlayerProfile(UUID uuid, Player player, long time) {
+    static void updatePlayerProfile(UUID uuid, Player player, long time) {
         final String playerName = player.getName();
         PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
         if (playerProfile.playerName == null) {
@@ -234,11 +230,11 @@ public class APIPlayer {
         EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.LAST_STR, time, PluginConstants.UUID_STR, uuid.toString()));
     }
 
-    public static boolean hasNickRequest(UUID uuid) {
+    static boolean hasNickRequest(UUID uuid) {
         return PluginVars.playerProfile.get(uuid).nickRequest;
     }
 
-    public static void updateNickName(Player player, UUID uuid) {
+    static void updateNickName(Player player, UUID uuid) {
         PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
         player.setDisplayName(playerProfile.tempNick);
         player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.M_CHAT_NEWNICK));
@@ -246,13 +242,13 @@ public class APIPlayer {
         saveToSQL(uuid);
     }
 
-    public static void removeNickRequest(UUID uuid) {
+    static void removeNickRequest(UUID uuid) {
         PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
         playerProfile.tempNick = null;
         playerProfile.nickRequest = false;
     }
 
-    public static void playerNick(final Player player, final String string) {
+    static void playerNick(final Player player, final String string) {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
@@ -275,7 +271,7 @@ public class APIPlayer {
         player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY_2);
     }
 
-    public static void staffNick(final OnlinePlayer target, final Player player, final String string) {
+    static void staffNick(final OnlinePlayer target, final Player player, final String string) {
         if (target != null) {
             changeNickName(target.getPlayer(), player, string);
             return;

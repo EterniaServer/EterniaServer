@@ -4,11 +4,15 @@ import br.com.eterniaserver.eterniaserver.objects.CashGui;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
+
+import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -26,7 +30,10 @@ public class PluginVars {
         throw new IllegalStateException("Utility class");
     }
 
-    protected static CashGui cashGui;
+    private static Scoreboard scoreboard;
+    private static int version = 0;
+    private static CashGui cashGui;
+    private static Economy econ;
 
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     protected static final NumberFormat df2 = NumberFormat.getInstance(new Locale("pt", "BR"));
@@ -83,5 +90,37 @@ public class PluginVars {
     protected static final Map<String, String> glowingColor = new HashMap<>();
     protected static final Map<String, String> tell = new HashMap<>();
     protected static final Map<String, List<Player>> ignoredPlayer = new HashMap<>();
+
+    protected static Scoreboard getScoreboard() {
+        return scoreboard;
+    }
+
+    protected static void setScoreboard(Scoreboard sc) {
+        if (scoreboard == null) scoreboard = sc;
+    }
+
+    protected static CashGui getCashGui() {
+        return cashGui;
+    }
+
+    protected static void setCashGui(CashGui cashG) {
+        if (cashGui == null) cashGui = cashG;
+    }
+
+    protected static int getVersion() {
+        return version;
+    }
+
+    protected static void setVersion(int ver) {
+        if (version == 0) version = ver;
+    }
+
+    protected static Economy getEcon() {
+        return econ;
+    }
+
+    public static void setEcon(Economy economy) {
+        if (econ == null) econ = economy;
+    }
 
 }

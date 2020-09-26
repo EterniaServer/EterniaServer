@@ -108,48 +108,48 @@ public interface APICash {
     }
 
     static int getCashGuiSize() {
-        if (PluginVars.cashGui == null) {
-            PluginVars.cashGui = new UtilCashGui().get();
+        if (PluginVars.getCashGui() == null) {
+            PluginVars.setCashGui(new UtilCashGui().get());
         }
 
-        return PluginVars.cashGui.getMenuGui().size();
+        return PluginVars.getCashGui().getMenuGui().size();
     }
 
     static ItemStack getItemCashGui(int id) {
-        return PluginVars.cashGui.getMenuGui().get(id);
+        return PluginVars.getCashGui().getMenuGui().get(id);
     }
 
     static void menuGui(final Player player, int slotInt) {
         switch (slotInt) {
             case 10:
                 player.closeInventory();
-                Inventory gui = Bukkit.getServer().createInventory(player, PluginVars.cashGui.getPermGui().size(), "Perm");
-                for (int i = 0; i < PluginVars.cashGui.getPermGui().size(); i++) {
-                    gui.setItem(i, PluginVars.cashGui.getPermGui().get(i));
+                Inventory gui = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getPermGui().size(), "Perm");
+                for (int i = 0; i < PluginVars.getCashGui().getPermGui().size(); i++) {
+                    gui.setItem(i, PluginVars.getCashGui().getPermGui().get(i));
                 }
                 player.openInventory(gui);
                 break;
             case 12:
                 player.closeInventory();
-                Inventory paco = Bukkit.getServer().createInventory(player, PluginVars.cashGui.getPacoteGui().size(), "Pacotes");
-                for (int i = 0; i < PluginVars.cashGui.getPacoteGui().size(); i++) {
-                    paco.setItem(i, PluginVars.cashGui.getPacoteGui().get(i));
+                Inventory paco = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getPacoteGui().size(), "Pacotes");
+                for (int i = 0; i < PluginVars.getCashGui().getPacoteGui().size(); i++) {
+                    paco.setItem(i, PluginVars.getCashGui().getPacoteGui().get(i));
                 }
                 player.openInventory(paco);
                 break;
             case 14:
                 player.closeInventory();
-                Inventory tag = Bukkit.getServer().createInventory(player, PluginVars.cashGui.getTagGui().size(), "Tags");
-                for (int i = 0; i < PluginVars.cashGui.getTagGui().size(); i++) {
-                    tag.setItem(i, PluginVars.cashGui.getTagGui().get(i));
+                Inventory tag = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getTagGui().size(), "Tags");
+                for (int i = 0; i < PluginVars.getCashGui().getTagGui().size(); i++) {
+                    tag.setItem(i, PluginVars.getCashGui().getTagGui().get(i));
                 }
                 player.openInventory(tag);
                 break;
             case 16:
                 player.closeInventory();
-                Inventory spawner = Bukkit.getServer().createInventory(player, PluginVars.cashGui.getSpawnerGui().size(), "Spawners");
-                for (int i = 0; i < PluginVars.cashGui.getSpawnerGui().size(); i++) {
-                    spawner.setItem(i, PluginVars.cashGui.getSpawnerGui().get(i));
+                Inventory spawner = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getSpawnerGui().size(), "Spawners");
+                for (int i = 0; i < PluginVars.getCashGui().getSpawnerGui().size(); i++) {
+                    spawner.setItem(i, PluginVars.getCashGui().getSpawnerGui().get(i));
                 }
                 player.openInventory(spawner);
                 break;
@@ -159,8 +159,8 @@ public interface APICash {
     }
 
     static void permGui(final Player player, final String permString) {
-        if (PluginVars.cashGui == null) {
-            PluginVars.cashGui = new UtilCashGui().get();
+        if (PluginVars.getCashGui() == null) {
+            PluginVars.setCashGui(new UtilCashGui().get());
         }
 
         final String playerName = player.getName();
@@ -169,23 +169,23 @@ public interface APICash {
             if (EterniaServer.cashConfig.contains(permString)) {
                 final int cost = EterniaServer.cashConfig.getInt(permString + ".cost");
                 if (APICash.hasCash(uuid, cost)) {
-                    Configs.instance.sendMessage(player, Messages.CashCost, String.valueOf(cost));
-                    Configs.instance.sendMessage(player, Messages.CashChoose);
+                    Configs.instance.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
+                    Configs.instance.sendMessage(player, Messages.CASH_CHOOSE);
                     PluginVars.cashItem.put(uuid, permString);
                 } else {
-                    Configs.instance.sendMessage(player, Messages.CashNoHas);
+                    Configs.instance.sendMessage(player, Messages.CASH_NO_HAS);
                 }
             } else {
                 player.closeInventory();
-                Inventory gui = Bukkit.getServer().createInventory(player, PluginVars.cashGui.getMenuGui().size(), "Cash");
-                for (int i = 0; i < PluginVars.cashGui.getMenuGui().size(); i++) {
-                    gui.setItem(i, PluginVars.cashGui.getMenuGui().get(i));
+                Inventory gui = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getMenuGui().size(), "Cash");
+                for (int i = 0; i < PluginVars.getCashGui().getMenuGui().size(); i++) {
+                    gui.setItem(i, PluginVars.getCashGui().getMenuGui().get(i));
                 }
                 player.openInventory(gui);
             }
         } else {
-            Configs.instance.sendMessage(player, Messages.CashAlreadyBuying);
-            Configs.instance.sendMessage(player, Messages.CashChoose);
+            Configs.instance.sendMessage(player, Messages.CASH_ALREADY_BUYING);
+            Configs.instance.sendMessage(player, Messages.CASH_CHOOSE);
         }
     }
 

@@ -15,9 +15,6 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -90,14 +87,14 @@ public class Gamemode extends BaseCommand {
     private void setGamemode(Player player, GameMode gameMode, int type) {
         final String typeName = getType(type);
         player.setGameMode(gameMode);
-        Configs.instance.sendMessage(player, Messages.GamemodeSeted, typeName);
+        Configs.instance.sendMessage(player, Messages.GAMEMODE_SETED, typeName);
     }
 
     private void setGamemode(CommandSender player, Player target, GameMode gameMode, int type) {
         final String typeName = getType(type);
         target.setGameMode(gameMode);
-        Configs.instance.sendMessage(target, Messages.GamemodeSeted, typeName);
-        Configs.instance.sendMessage(player, Messages.GamemodeSetFrom, typeName, target.getName(), target.getDisplayName());
+        Configs.instance.sendMessage(target, Messages.GAMEMODE_SETED, typeName);
+        Configs.instance.sendMessage(player, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
     }
 
     private String getType(int type) {

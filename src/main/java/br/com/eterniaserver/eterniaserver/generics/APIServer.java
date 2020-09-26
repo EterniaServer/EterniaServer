@@ -15,102 +15,94 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.Map;
 import java.util.UUID;
 
-public class APIServer {
+public interface APIServer {
 
-    private static Scoreboard scoreboard;
-
-    private static int version = 0;
-
-    private APIServer() {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static boolean isChatMuted() {
+    static boolean isChatMuted() {
         return PluginVars.chatMuted;
     }
 
-    public static void removeFromSpy(String playerName) {
+    static void removeFromSpy(String playerName) {
         PluginVars.spy.remove(playerName);
     }
 
-    public static void putSpy(String playerName) {
+    static void putSpy(String playerName) {
         PluginVars.spy.put(playerName, true);
     }
 
-    public static void disableSpy(String playerName) {
+    static void disableSpy(String playerName) {
         PluginVars.spy.put(playerName, false);
     }
 
-    public static boolean isSpying(String playerName) {
+    static boolean isSpying(String playerName) {
         return PluginVars.spy.getOrDefault(playerName, false);
     }
 
-    public static void putInTeleport(Player player, PlayerTeleport playerTeleport) {
+    static void putInTeleport(Player player, PlayerTeleport playerTeleport) {
         PluginVars.teleports.put(player, playerTeleport);
     }
 
-    public static Object[] listWarp() {
+    static Object[] listWarp() {
         return PluginVars.locations.keySet().toArray();
     }
 
-    public static void putBackLocation(String playerName, Location location) {
+    static void putBackLocation(String playerName, Location location) {
         PluginVars.back.put(playerName, location);
     }
 
-    public static Scoreboard getScoreboard() {
-        if (scoreboard == null) {
+    static Scoreboard getScoreboard() {
+        if (PluginVars.getScoreboard() == null) {
             Scoreboard tempScoreBoard = Bukkit.getScoreboardManager().getMainScoreboard();
             for (int i = 0; i < 16; i++) {
                 if (tempScoreBoard.getTeam(PluginVars.arrData.get(i)) == null) {
                     tempScoreBoard.registerNewTeam(PluginVars.arrData.get(i)).setColor(PluginVars.colors.get(i));
                 }
             }
-            scoreboard = tempScoreBoard;
+            PluginVars.setScoreboard(tempScoreBoard);
         }
-        return scoreboard;
+        return PluginVars.getScoreboard();
     }
 
-    public static boolean hasBackLocation(String playerName) {
+    static boolean hasBackLocation(String playerName) {
         return PluginVars.back.containsKey(playerName);
     }
 
-    public static Location getBackLocation(String playerName) {
+    static Location getBackLocation(String playerName) {
         return PluginVars.back.get(playerName);
     }
 
-    public static boolean hasLocation(String warpName) {
+    static boolean hasLocation(String warpName) {
         return PluginVars.locations.containsKey(warpName);
     }
 
-    public static Location getLocation(String warpName) {
+    static Location getLocation(String warpName) {
         return PluginVars.locations.getOrDefault(warpName, PluginVars.error);
     }
 
-    public static void putLocation(String warpName, Location location) {
+    static void putLocation(String warpName, Location location) {
         PluginVars.locations.put(warpName, location);
     }
 
-    public static void removeLocation(String warpName) {
+    static void removeLocation(String warpName) {
         PluginVars.locations.remove(warpName);
     }
 
-    public static void putBedCooldown(String playerName) {
+    static void putBedCooldown(String playerName) {
         PluginVars.bedCooldown.put(playerName, System.currentTimeMillis());
     }
 
-    public static void putGlowing(String playerName, String nameColor) {
+    static void putGlowing(String playerName, String nameColor) {
         PluginVars.glowingColor.put(playerName, nameColor);
     }
 
-    public static void putProfile(UUID uuid, PlayerProfile playerProfile) {
+    static void putProfile(UUID uuid, PlayerProfile playerProfile) {
         PluginVars.playerProfile.put(uuid, playerProfile);
     }
 
-    public static int getProfileMapSize() {
+    static int getProfileMapSize() {
         return PluginVars.playerProfile.size();
     }
 
-    public static void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
+    static void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
         final long time = System.currentTimeMillis();
         EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
                 "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "', '" + time + "')"));
@@ -125,7 +117,7 @@ public class APIServer {
         PluginVars.playerProfile.put(uuid, playerProfile);
     }
 
-    public static void playerKitsCreate(String playerName) {
+    static void playerKitsCreate(String playerName) {
         final long time = System.currentTimeMillis();
         for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(false)) {
             final String kitName = kit + "." + playerName;
@@ -136,42 +128,42 @@ public class APIServer {
         }
     }
 
-    public static long getKitCooldown(String kit) {
+    static long getKitCooldown(String kit) {
         return PluginVars.kitsCooldown.get(kit);
     }
 
-    public static void putKitCooldown(String kit, long time) {
+    static void putKitCooldown(String kit, long time) {
         PluginVars.kitsCooldown.put(kit, time);
     }
 
-    public static int getVersion() {
-        if (version == 0) {
+    static int getVersion() {
+        if (PluginVars.getVersion() == 0) {
             String bukkitVersion = Bukkit.getBukkitVersion();
-            if (bukkitVersion.contains("1.16")) version = 116;
-            else if (bukkitVersion.contains("1.15")) version = 115;
-            else if (bukkitVersion.contains("1.14")) version = 114;
-            else version = 113;
+            if (bukkitVersion.contains("1.16")) PluginVars.setVersion(116);
+            else if (bukkitVersion.contains("1.15")) PluginVars.setVersion(115);
+            else if (bukkitVersion.contains("1.14")) PluginVars.setVersion(114);
+            else PluginVars.setVersion(113);
         }
-        return version;
+        return PluginVars.getVersion();
     }
 
-    public static void updateRewardMap(Map<String, String> map) {
+    static void updateRewardMap(Map<String, String> map) {
         map.forEach(PluginVars.rewards::put);
     }
 
-    public static int getRewardMapSize() {
+    static int getRewardMapSize() {
         return PluginVars.rewards.size();
     }
 
-    public static boolean hasReward(String key) {
+    static boolean hasReward(String key) {
         return PluginVars.rewards.containsKey(key);
     }
 
-    public static String getReward(String key) {
+    static String getReward(String key) {
         return PluginVars.rewards.get(key);
     }
 
-    public static void logError(String errorMsg, int level) {
+    static void logError(String errorMsg, int level) {
         String errorLevel;
         switch (level) {
             case 1:

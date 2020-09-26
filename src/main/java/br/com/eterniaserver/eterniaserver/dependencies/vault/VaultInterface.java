@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class VaultMethods implements Economy {
+public class VaultInterface implements Economy {
 
     @Override
     public boolean isEnabled() {

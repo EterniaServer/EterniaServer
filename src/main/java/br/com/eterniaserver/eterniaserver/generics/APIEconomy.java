@@ -3,29 +3,21 @@ package br.com.eterniaserver.eterniaserver.generics;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Configs;
-
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
-import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-public class APIEconomy {
-
-    public static Economy econ;
-
-    private APIEconomy() {
-        throw new IllegalStateException("Utility class");
-    }
+public interface APIEconomy {
 
     /**
      * Get the amount formated
      * @param amount to format
      * @return the formated string value
      */
-    public static String format(double amount) {
+    static String format(double amount) {
         return PluginVars.df2.format(amount);
     }
 
@@ -33,11 +25,11 @@ public class APIEconomy {
      * Get the singular name of current
      * @return the name
      */
-    public static String singularName() {
+    static String singularName() {
         if (Configs.instance.moduleEconomy) {
             return Configs.instance.singularName;
         } else {
-            return econ.currencyNameSingular();
+            return PluginVars.getEcon().currencyNameSingular();
         }
     }
 
@@ -45,11 +37,11 @@ public class APIEconomy {
      * Get the plural name of current
      * @return the name
      */
-    public static String pluralName() {
+    static String pluralName() {
         if (Configs.instance.moduleEconomy) {
             return Configs.instance.pluralName;
         } else {
-            return econ.currencyNamePlural();
+            return PluginVars.getEcon().currencyNamePlural();
         }
     }
 
@@ -57,11 +49,11 @@ public class APIEconomy {
      * Check if player has account
      * @param uuid uuid of player
      */
-    public static boolean hasAccount(UUID uuid) {
+    static boolean hasAccount(UUID uuid) {
         if (Configs.instance.moduleEconomy) {
             return PluginVars.playerProfile.containsKey(uuid);
         } else {
-            return econ.hasAccount(Bukkit.getOfflinePlayer(uuid));
+            return PluginVars.getEcon().hasAccount(Bukkit.getOfflinePlayer(uuid));
         }
     }
 
@@ -69,7 +61,7 @@ public class APIEconomy {
      * Create a account for the player
      * @param uuid uuid of player
      */
-    public static void createAccount(UUID uuid) {
+    static void createAccount(UUID uuid) {
         if (Configs.instance.moduleEconomy) {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
@@ -84,7 +76,7 @@ public class APIEconomy {
             playerProfile.balance = Configs.instance.startMoney;
             PluginVars.playerProfile.put(uuid, playerProfile);
         } else {
-            econ.createPlayerAccount(Bukkit.getOfflinePlayer(uuid));
+            PluginVars.getEcon().createPlayerAccount(Bukkit.getOfflinePlayer(uuid));
         }
     }
 
@@ -93,7 +85,7 @@ public class APIEconomy {
      * @param uuid of player
      * @return the balance
      */
-    public static double getMoney(UUID uuid) {
+    static double getMoney(UUID uuid) {
         if (Configs.instance.moduleEconomy) {
             if (PluginVars.playerProfile.containsKey(uuid)) {
                 return PluginVars.playerProfile.get(uuid).balance;
@@ -113,7 +105,7 @@ public class APIEconomy {
                 return Configs.instance.startMoney;
             }
         } else {
-            return econ.getBalance(Bukkit.getOfflinePlayer(uuid));
+            return PluginVars.getEcon().getBalance(Bukkit.getOfflinePlayer(uuid));
         }
     }
 
@@ -123,11 +115,11 @@ public class APIEconomy {
      * @param amount the amount of money needed
      * @return if has or not
      */
-    public static boolean hasMoney(UUID uuid, double amount) {
+    static boolean hasMoney(UUID uuid, double amount) {
         if (Configs.instance.moduleEconomy) {
             return getMoney(uuid) >= amount;
         } else {
-            return econ.has(Bukkit.getOfflinePlayer(uuid), amount);
+            return PluginVars.getEcon().has(Bukkit.getOfflinePlayer(uuid), amount);
         }
     }
 
@@ -136,7 +128,7 @@ public class APIEconomy {
      * @param uuid of player
      * @param amount the amount of money to set
      */
-    public static void setMoney(UUID uuid, double amount) {
+    static void setMoney(UUID uuid, double amount) {
         if (Configs.instance.moduleEconomy) {
             if (PluginVars.playerProfile.containsKey(uuid)) {
                 PluginVars.playerProfile.get(uuid).balance = amount;
@@ -158,9 +150,9 @@ public class APIEconomy {
             }
         } else {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-            double balance = econ.getBalance(offlinePlayer);
-            econ.withdrawPlayer(offlinePlayer, balance);
-            econ.depositPlayer(offlinePlayer, amount);
+            double balance = PluginVars.getEcon().getBalance(offlinePlayer);
+            PluginVars.getEcon().withdrawPlayer(offlinePlayer, balance);
+            PluginVars.getEcon().depositPlayer(offlinePlayer, amount);
         }
     }
 
@@ -169,11 +161,11 @@ public class APIEconomy {
      * @param uuid of player
      * @param amount the amount of money to give
      */
-    public static void addMoney(UUID uuid, double amount) {
+    static void addMoney(UUID uuid, double amount) {
         if (Configs.instance.moduleEconomy) {
             setMoney(uuid, getMoney(uuid) + amount);
         } else {
-            econ.depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+            PluginVars.getEcon().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
         }
     }
 
@@ -182,11 +174,11 @@ public class APIEconomy {
      * @param uuid of player
      * @param amount the amount of money to give
      */
-    public static void removeMoney(UUID uuid, double amount) {
+    static void removeMoney(UUID uuid, double amount) {
         if (Configs.instance.moduleEconomy) {
             setMoney(uuid, getMoney(uuid) - amount);
         } else {
-            econ.withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+            PluginVars.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
         }
     }
 
