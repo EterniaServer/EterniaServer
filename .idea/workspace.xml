@@ -23,7 +23,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a3aaaf41-a8f5-4a17-a028-1d5d7d6642ba" name="Default Changelist" comment="Refatorando.">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_destroystokyo_paper_paper_api_1_16_3_R0_1_SNAPSHOT.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/bug[1].md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/ideia[1].md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/blocks.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cashgui.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/chat.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/commands.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/customplaceholders.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/groups.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kits.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/messages.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rewards.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/schedule.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +97,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601104121387</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Refatorando.">
+      <created>1601104463138</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1601104463138</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
