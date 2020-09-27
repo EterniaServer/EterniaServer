@@ -59,7 +59,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (Configs.instance.moduleClear) {
+        if (Configs.getInstance().moduleClear) {
             int amount = 0;
             EntityType entity = event.getEntityType();
             for (Entity e : event.getEntity().getLocation().getChunk().getEntities()) {
@@ -81,7 +81,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        if (Configs.instance.moduleChat) {
+        if (Configs.getInstance().moduleChat) {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
             if (APIServer.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {

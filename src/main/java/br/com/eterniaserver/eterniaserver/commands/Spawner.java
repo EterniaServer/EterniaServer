@@ -48,7 +48,7 @@ public class Spawner extends BaseCommand {
         ItemStack item = new ItemStack(Material.SPAWNER);
         ItemMeta meta = item.getItemMeta();
         item.setAmount(value);
-        meta.setDisplayName(PluginVars.colors.get(8) + "[" + Configs.instance.mobSpawnerColor + spawnerName + PluginVars.colors.get(7) + " Spawner" +  PluginVars.colors.get(8) + "]");
+        meta.setDisplayName(PluginVars.colors.get(8) + "[" + Configs.getInstance().mobSpawnerColor + spawnerName + PluginVars.colors.get(7) + " Spawner" +  PluginVars.colors.get(8) + "]");
         item.setItemMeta(meta);
         return item;
     }

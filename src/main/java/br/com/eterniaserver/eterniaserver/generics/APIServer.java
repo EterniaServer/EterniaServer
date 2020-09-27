@@ -105,15 +105,15 @@ public interface APIServer {
 
     static void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "', '" + time + "')"));
+        EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "', '" + Configs.getInstance().startMoney + "', '" + time + "')"));
         final PlayerProfile playerProfile = new PlayerProfile(
                 playerName,
                 firstPlayed,
                 time,
                 0
         );
-        playerProfile.balance = Configs.instance.startMoney;
+        playerProfile.balance = Configs.getInstance().startMoney;
         playerProfile.muted = time;
         PluginVars.playerProfile.put(uuid, playerProfile);
     }
@@ -123,7 +123,7 @@ public interface APIServer {
         for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(false)) {
             final String kitName = kit + "." + playerName;
             if (!PluginVars.kitsCooldown.containsKey(kitName)) {
-                EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tableKits, PluginConstants.NAME_STR, kitName, PluginConstants.COOLDOWN_STR, time));
+                EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tableKits, PluginConstants.NAME_STR, kitName, PluginConstants.COOLDOWN_STR, time));
                 PluginVars.kitsCooldown.put(kitName, time);
             }
         }

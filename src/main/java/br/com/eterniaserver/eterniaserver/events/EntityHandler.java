@@ -45,12 +45,12 @@ public class EntityHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
-        if (!Configs.instance.moduleCash && !Configs.instance.moduleSpawners) return;
+        if (!Configs.getInstance().moduleCash && !Configs.getInstance().moduleSpawners) return;
 
         final Player player = (Player) e.getWhoClicked();
         final ItemStack itemStack = e.getCurrentItem();
-        if (itemStack != null && (Configs.instance.preventAnvil
-                && Configs.instance.moduleSpawners
+        if (itemStack != null && (Configs.getInstance().preventAnvil
+                && Configs.getInstance().moduleSpawners
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
@@ -58,7 +58,7 @@ public class EntityHandler implements Listener {
             player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_SPAWNER_LOG));
         }
 
-        if (Configs.instance.moduleCash) {
+        if (Configs.getInstance().moduleCash) {
             switch (e.getView().getTitle()) {
                 case "Cash":
                     APICash.menuGui(player, e.getSlot());

@@ -20,15 +20,15 @@ public interface APIExperience {
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance, xp)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "', '" + 0 + "')"));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tablePlayer, "(uuid, player_name, time, last, hours, balance, xp)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.getInstance().startMoney + "', '" + 0 + "')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
-            playerProfile.balance = Configs.instance.startMoney;
+            playerProfile.balance = Configs.getInstance().startMoney;
             PluginVars.playerProfile.put(uuid, playerProfile);
             return 0;
         }
@@ -41,7 +41,7 @@ public interface APIExperience {
      */
      static void setExp(UUID uuid, int amount) {
         PluginVars.playerProfile.get(uuid).xp = amount;
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.XP_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tablePlayer, PluginConstants.XP_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
      }
 
     /**

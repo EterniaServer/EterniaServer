@@ -42,8 +42,8 @@ public class Experience extends BaseCommand {
         final Player targetP = target.getPlayer();
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
         targetP.setLevel(money);
-        Configs.instance.sendMessage(sender, Messages.EXP_SET_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.instance.sendMessage(targetP, Messages.EXP_SETED, String.valueOf(money), sender.getName(), playerDisplay);
+        Configs.getInstance().sendMessage(sender, Messages.EXP_SET_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        Configs.getInstance().sendMessage(targetP, Messages.EXP_SETED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("take")
@@ -55,8 +55,8 @@ public class Experience extends BaseCommand {
         final Player targetP = target.getPlayer();
         targetP.setLevel(targetP.getLevel() - money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.instance.sendMessage(sender, Messages.EXP_REMOVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.instance.sendMessage(targetP, Messages.EXP_REMOVED, String.valueOf(money), sender.getName(), playerDisplay);
+        Configs.getInstance().sendMessage(sender, Messages.EXP_REMOVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        Configs.getInstance().sendMessage(targetP, Messages.EXP_REMOVED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("give")
@@ -68,8 +68,8 @@ public class Experience extends BaseCommand {
         final Player targetP = target.getPlayer();
         targetP.setLevel(targetP.getLevel() + money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.instance.sendMessage(sender, Messages.EXP_GIVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.instance.sendMessage(targetP, Messages.EXP_GIVED, String.valueOf(money), sender.getName(), playerDisplay);
+        Configs.getInstance().sendMessage(sender, Messages.EXP_GIVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        Configs.getInstance().sendMessage(targetP, Messages.EXP_GIVED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("check")
@@ -80,7 +80,7 @@ public class Experience extends BaseCommand {
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(APIExperience.getExp(UUIDFetcher.getUUIDOf(player.getName())));
-        Configs.instance.sendMessage(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
+        Configs.getInstance().sendMessage(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -99,12 +99,12 @@ public class Experience extends BaseCommand {
             item.setLore(Collections.singletonList(String.valueOf(xpWant)));
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
-            Configs.instance.sendMessage(player, Messages.EXP_BOTTLED);
+            Configs.getInstance().sendMessage(player, Messages.EXP_BOTTLED);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpReal - xpWant);
         } else {
-            Configs.instance.sendMessage(player, Messages.EXP_INSUFFICIENT);
+            Configs.getInstance().sendMessage(player, Messages.EXP_INSUFFICIENT);
         }
     }
 
@@ -119,9 +119,9 @@ public class Experience extends BaseCommand {
         if (APIExperience.getExp(uuid) >= xpla) {
             APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
-            Configs.instance.sendMessage(player, Messages.EXP_WITHDRAW, String.valueOf(level));
+            Configs.getInstance().sendMessage(player, Messages.EXP_WITHDRAW, String.valueOf(level));
         } else {
-            Configs.instance.sendMessage(player, Messages.EXP_BOTTLED);
+            Configs.getInstance().sendMessage(player, Messages.EXP_BOTTLED);
         }
     }
 
@@ -135,12 +135,12 @@ public class Experience extends BaseCommand {
             int xp = UtilInternMethods.getXPForLevel(xpla);
             int xpto = UtilInternMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
-            Configs.instance.sendMessage(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
+            Configs.getInstance().sendMessage(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);
         } else {
-            Configs.instance.sendMessage(player, Messages.EXP_BOTTLED);
+            Configs.getInstance().sendMessage(player, Messages.EXP_BOTTLED);
         }
     }
 

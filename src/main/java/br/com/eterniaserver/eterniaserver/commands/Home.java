@@ -157,10 +157,10 @@ public class Home extends BaseCommand {
         if (!t) {
             result.append(home);
             values.add(home);
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.HOMES_STR, result.toString(), PluginConstants.UUID_STR, uuid.toString()));
-            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tableLocations, PluginConstants.NAME_STR, homeName, PluginConstants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tablePlayer, PluginConstants.HOMES_STR, result.toString(), PluginConstants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tableLocations, PluginConstants.NAME_STR, homeName, PluginConstants.LOCATION_STR, saveloc));
         } else {
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tableLocations, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, homeName));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tableLocations, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, homeName));
         }
         APIPlayer.updateHome(uuid, values);
     }
@@ -183,8 +183,8 @@ public class Home extends BaseCommand {
             }
         }
         APIPlayer.updateHome(uuid, newValues);
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.HOMES_STR, nova.toString(), PluginConstants.UUID_STR, uuid.toString()));
-        EQueries.executeQuery(PluginConstants.getQueryDelete(Configs.instance.tableLocations, PluginConstants.NAME_STR, homeName));
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tablePlayer, PluginConstants.HOMES_STR, nova.toString(), PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(PluginConstants.getQueryDelete(Configs.getInstance().tableLocations, PluginConstants.NAME_STR, homeName));
     }
 
     public boolean existHome(String home, UUID uuid) {

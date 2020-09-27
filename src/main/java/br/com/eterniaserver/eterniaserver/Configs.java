@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 public class Configs {
 
-    public static Configs instance;
+    private static Configs instance;
 
     protected Configs() {
 
@@ -467,6 +468,10 @@ public class Configs {
             return this.serverPrefix + message;
         }
         return message;
+    }
+
+    public static Configs getInstance() {
+        return instance;
     }
 
 }

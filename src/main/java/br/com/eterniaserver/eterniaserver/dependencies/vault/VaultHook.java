@@ -13,10 +13,10 @@ import org.bukkit.plugin.ServicesManager;
 public class VaultHook {
 
     public VaultHook(EterniaServer plugin) {
-        if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && Configs.instance.moduleEconomy) {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && Configs.getInstance().moduleEconomy) {
             ServicesManager servicesManager = plugin.getServer().getServicesManager();
             servicesManager.register(Economy.class, new VaultInterface(), plugin, ServicePriority.High);
-        } else if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && !Configs.instance.moduleEconomy) {
+        } else if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && !Configs.getInstance().moduleEconomy) {
             RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp != null) {
                 PluginVars.setEcon(rsp.getProvider());

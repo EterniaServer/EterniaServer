@@ -39,7 +39,7 @@ public class UtilAccelerateWorld implements Runnable {
     }
 
     private boolean isBlacklisted(final World world) {
-        return Configs.instance.blacklistedWorldsBed.contains(world.getName());
+        return Configs.getInstance().blacklistedWorldsBed.contains(world.getName());
     }
 
     private boolean isNight(final World world) {

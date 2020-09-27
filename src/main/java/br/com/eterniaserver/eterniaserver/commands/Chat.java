@@ -118,8 +118,8 @@ public class Chat extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
         if (APIPlayer.hasNickRequest(uuid)) {
-            if (APIEconomy.hasMoney(uuid, Configs.instance.nickCost)) {
-                APIEconomy.removeMoney(uuid, Configs.instance.nickCost);
+            if (APIEconomy.hasMoney(uuid, Configs.getInstance().nickCost)) {
+                APIEconomy.removeMoney(uuid, Configs.getInstance().nickCost);
                 APIPlayer.updateNickName(player, uuid);
             } else {
                 player.sendMessage(PluginMSGs.MSG_NO_MONEY);

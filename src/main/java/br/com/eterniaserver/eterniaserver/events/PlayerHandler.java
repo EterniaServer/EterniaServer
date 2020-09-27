@@ -45,7 +45,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!Configs.instance.moduleHomes && !Configs.instance.moduleExperience && !Configs.instance.moduleSpawners) return;
+        if (!Configs.getInstance().moduleHomes && !Configs.getInstance().moduleExperience && !Configs.getInstance().moduleSpawners) return;
 
         final Player player = event.getPlayer();
         final Action action = event.getAction();
@@ -53,7 +53,7 @@ public class PlayerHandler implements Listener {
         if (action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
             final ItemStack is = player.getInventory().getItemInMainHand();
             final List<String> lore = is.getLore();
-            if (Configs.instance.moduleHomes && is.getType().equals(Material.COMPASS)
+            if (Configs.getInstance().moduleHomes && is.getType().equals(Material.COMPASS)
                     && lore != null) {
                 final String[] isso = lore.get(0).split(":");
                 final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
@@ -65,7 +65,7 @@ public class PlayerHandler implements Listener {
                 }
                 event.setCancelled(true);
             }
-            if (Configs.instance.moduleExperience && is.getType().equals(Material.EXPERIENCE_BOTTLE)
+            if (Configs.getInstance().moduleExperience && is.getType().equals(Material.EXPERIENCE_BOTTLE)
                     && lore != null) {
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                 player.giveExp(Integer.parseInt(lore.get(0)));
@@ -79,7 +79,7 @@ public class PlayerHandler implements Listener {
                 });
             }
         }
-        if (Configs.instance.moduleSpawners && event.getClickedBlock() != null
+        if (Configs.getInstance().moduleSpawners && event.getClickedBlock() != null
                 && action.equals(Action.RIGHT_CLICK_BLOCK) && event.getItem() != null
                 && event.getClickedBlock().getType() == Material.SPAWNER
                 && !player.hasPermission("eternia.change-spawner")) {
@@ -89,7 +89,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.NORMAL)
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (Configs.instance.moduleTeleports) {
+        if (Configs.getInstance().moduleTeleports) {
             final Player player = event.getEntity();
             APIServer.putBackLocation(player.getName(), player.getLocation());
         }
@@ -97,7 +97,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (Configs.instance.moduleTeleports && APIServer.hasLocation("warp.spawn")) {
+        if (Configs.getInstance().moduleTeleports && APIServer.hasLocation("warp.spawn")) {
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10) {
                 event.setSpawnLocation(APIServer.getLocation("warp.spawn"));
             }
@@ -106,7 +106,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (Configs.instance.moduleTeleports && APIServer.hasLocation("warp.spawn")) {
+        if (Configs.getInstance().moduleTeleports && APIServer.hasLocation("warp.spawn")) {
             event.setRespawnLocation(APIServer.getLocation("warp.spawn"));
         }
     }
@@ -117,8 +117,8 @@ public class PlayerHandler implements Listener {
         final String playerName = player.getName();
         APIPlayer.removeFromAFK(playerName);
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.HOURS_STR, APIPlayer.getAndUpdateTimePlayed(uuid), PluginConstants.UUID_STR, uuid.toString()));
-        if (Configs.instance.moduleChat) {
+        EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tablePlayer, PluginConstants.HOURS_STR, APIPlayer.getAndUpdateTimePlayed(uuid), PluginConstants.UUID_STR, uuid.toString()));
+        if (Configs.getInstance().moduleChat) {
             UtilInternMethods.removeUUIF(player);
             if (player.hasPermission("eternia.spy")) {
                 APIServer.removeFromSpy(playerName);
@@ -137,7 +137,7 @@ public class PlayerHandler implements Listener {
             event.setCancelled(true);
             return;
         }
-        for (String line : Configs.instance.blockedCommands) {
+        for (String line : Configs.getInstance().blockedCommands) {
             if (message.startsWith(line)) {
                 event.setCancelled(true);
                 return;
@@ -147,7 +147,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
-        if (!Configs.instance.moduleBed) return;
+        if (!Configs.getInstance().moduleBed) return;
 
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             final Player player = event.getPlayer();
@@ -161,7 +161,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerBedLeave(PlayerBedLeaveEvent event) {
-        if (!Configs.instance.moduleBed) return;
+        if (!Configs.getInstance().moduleBed) return;
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();
@@ -174,7 +174,7 @@ public class PlayerHandler implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
         final Player player = event.getPlayer();
-        if (Configs.instance.moduleTeleports) {
+        if (Configs.getInstance().moduleTeleports) {
             APIServer.putBackLocation(player.getName(), player.getLocation());
         }
     }
@@ -182,14 +182,14 @@ public class PlayerHandler implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         final Player player = event.getPlayer();
-        if (Configs.instance.moduleElevator && player.hasPermission("eternia.elevator") && !player.isSneaking()) {
+        if (Configs.getInstance().moduleElevator && player.hasPermission("eternia.elevator") && !player.isSneaking()) {
             Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
-            for (Material value : Configs.instance.elevatorMaterials) {
+            for (Material value : Configs.getInstance().elevatorMaterials) {
                 if (value == material) {
-                    block = block.getRelative(BlockFace.DOWN, Configs.instance.elevatorMin);
+                    block = block.getRelative(BlockFace.DOWN, Configs.getInstance().elevatorMin);
                     int i;
-                    for (i = Configs.instance.elevatorMax; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.DOWN)) --i;
+                    for (i = Configs.getInstance().elevatorMax; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.DOWN)) --i;
                     elevatorDown(player, i);
                     break;
                 }
@@ -200,14 +200,14 @@ public class PlayerHandler implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerJump(PlayerJumpEvent event) {
         final Player player = event.getPlayer();
-        if (Configs.instance.moduleTeleports && player.hasPermission("eternia.elevator")) {
+        if (Configs.getInstance().moduleTeleports && player.hasPermission("eternia.elevator")) {
             Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
-            for (Material value : Configs.instance.elevatorMaterials) {
+            for (Material value : Configs.getInstance().elevatorMaterials) {
                 if (value == material) {
-                    block = block.getRelative(BlockFace.UP, Configs.instance.elevatorMin);
+                    block = block.getRelative(BlockFace.UP, Configs.getInstance().elevatorMin);
                     int i;
-                    for (i = Configs.instance.elevatorMax; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) -- i;
+                    for (i = Configs.getInstance().elevatorMax; i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) -- i;
                     elevatorUp(player, i);
                     break;
                 }
@@ -231,7 +231,7 @@ public class PlayerHandler implements Listener {
             APIPlayer.updatePlayerProfile(uuid, player, System.currentTimeMillis());
         }
 
-        if (Configs.instance.moduleChat) {
+        if (Configs.getInstance().moduleChat) {
             UtilInternMethods.addUUIF(player);
             if (player.hasPermission("eternia.spy")) {
                 APIServer.putSpy(playerName);
@@ -248,7 +248,7 @@ public class PlayerHandler implements Listener {
     private void elevatorUp(final Player player, final int i) {
         if (i > 0) {
             Location location = player.getLocation();
-            location.setY((location.getY() + Configs.instance.elevatorMax + 3.0D - (double) i) - 1);
+            location.setY((location.getY() + Configs.getInstance().elevatorMax + 3.0D - (double) i) - 1);
             PaperLib.teleportAsync(player, location);
             player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
         }
@@ -257,7 +257,7 @@ public class PlayerHandler implements Listener {
     private void elevatorDown(final Player player, final int i) {
         if (i > 0) {
             Location location = player.getLocation();
-            location.setY((location.getY() - Configs.instance.elevatorMax - 3.0D + (double) i) + 1);
+            location.setY((location.getY() - Configs.getInstance().elevatorMax - 3.0D + (double) i) + 1);
             PaperLib.teleportAsync(player, location);
             player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.D));
         }

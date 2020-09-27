@@ -49,7 +49,7 @@ public class PluginTicks extends BukkitRunnable {
             PluginVars.afkTime.put(playerName, System.currentTimeMillis());
             if (PluginVars.afk.contains(playerName)) {
                 PluginVars.afk.remove(playerName);
-                Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
+                Bukkit.broadcastMessage(Configs.getInstance().getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
             }
         }
 
@@ -90,18 +90,18 @@ public class PluginTicks extends BukkitRunnable {
     }
 
     private void checkAFK(final Player player, final String playerName) {
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.getOrDefault(playerName, System.currentTimeMillis())) >= Configs.instance.afkTimer) {
-            if (Configs.instance.afkKick) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.getOrDefault(playerName, System.currentTimeMillis())) >= Configs.getInstance().afkTimer) {
+            if (Configs.getInstance().afkKick) {
                 if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                    Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AFK_BROADCAST_KICK, true, playerName, player.getDisplayName()));
+                    Bukkit.broadcastMessage(Configs.getInstance().getMessage(Messages.AFK_BROADCAST_KICK, true, playerName, player.getDisplayName()));
                     PluginVars.afkTime.remove(playerName);
-                    runSync(() -> player.kickPlayer(Configs.instance.getMessage(Messages.AFK_KICKED, true)));
+                    runSync(() -> player.kickPlayer(Configs.getInstance().getMessage(Messages.AFK_KICKED, true)));
                 } else if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates") && player.hasPermission("eternia.afk")) {
-                    Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AFK_AUTO_ENTER, false, playerName, player.getDisplayName()));
+                    Bukkit.broadcastMessage(Configs.getInstance().getMessage(Messages.AFK_AUTO_ENTER, false, playerName, player.getDisplayName()));
                     APIPlayer.putAfk(playerName);
                 }
             } else {
-                Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AFK_AUTO_ENTER, false, playerName, player.getDisplayName()));
+                Bukkit.broadcastMessage(Configs.getInstance().getMessage(Messages.AFK_AUTO_ENTER, false, playerName, player.getDisplayName()));
                 PluginVars.afk.add(playerName);
             }
         }
@@ -137,7 +137,7 @@ public class PluginTicks extends BukkitRunnable {
     }
 
     private void runSync(Runnable runnable) {
-        if (Configs.instance.asyncCheck) {
+        if (Configs.getInstance().asyncCheck) {
             Bukkit.getScheduler().runTask(plugin, runnable);
             return;
         }

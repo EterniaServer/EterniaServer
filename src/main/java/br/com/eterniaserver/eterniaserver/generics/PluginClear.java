@@ -36,14 +36,14 @@ public class PluginClear extends BukkitRunnable {
     private Collection<Chunk> around(Chunk origin) {
         World world = origin.getWorld();
 
-        int length = (Configs.instance.clearRange * 2) + 1;
+        int length = (Configs.getInstance().clearRange * 2) + 1;
         Set<Chunk> chunks = new HashSet<>(length * length);
 
         int cX = origin.getX();
         int cZ = origin.getZ();
 
-        for (int x = -Configs.instance.clearRange; x <= Configs.instance.clearRange; x++) {
-            for (int z = -Configs.instance.clearRange; z <= Configs.instance.clearRange; z++) {
+        for (int x = -Configs.getInstance().clearRange; x <= Configs.getInstance().clearRange; x++) {
+            for (int z = -Configs.getInstance().clearRange; z <= Configs.getInstance().clearRange; z++) {
                 chunks.add(world.getChunkAt(cX + x, cZ + z));
             }
         }

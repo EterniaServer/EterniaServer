@@ -158,7 +158,7 @@ public class PluginMSGs {
     private static String putPrefix(String path) {
         String message = EterniaServer.msgConfig.getString(path);
         if (message == null) message = "&7Erro&8, &7texto &3" + path + "&7não encontrado&8.";
-        return Configs.instance.serverPrefix + getColor(message);
+        return Configs.getInstance().serverPrefix + getColor(message);
     }
 
     public static String getColor(String string) {

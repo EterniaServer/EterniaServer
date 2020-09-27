@@ -29,7 +29,7 @@ public class CustomCommands extends AbstractCommand {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (Configs.instance.moduleCommands && EterniaServer.cmdConfig.contains("commands." + commandString)) {
+        if (Configs.getInstance().moduleCommands && EterniaServer.cmdConfig.contains("commands." + commandString)) {
             checkCommands((Player) sender, commandString);
             return true;
         }

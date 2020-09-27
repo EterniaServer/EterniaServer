@@ -27,15 +27,15 @@ public interface APICash {
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "', '" + 0 +"')"));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.getInstance().startMoney + "', '" + 0 +"')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
-            playerProfile.balance = Configs.instance.startMoney;
+            playerProfile.balance = Configs.getInstance().startMoney;
             PluginVars.playerProfile.put(uuid, playerProfile);
             return 0;
         }
@@ -59,19 +59,19 @@ public interface APICash {
     static void setCash(UUID uuid, int amount) {
         if (PluginVars.playerProfile.containsKey(uuid)) {
             PluginVars.playerProfile.get(uuid).cash = amount;
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.CASH_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tablePlayer, PluginConstants.CASH_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "', '" + 0 +"')"));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.getInstance().startMoney + "', '" + 0 +"')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
-            playerProfile.balance = Configs.instance.startMoney;
+            playerProfile.balance = Configs.getInstance().startMoney;
             PluginVars.playerProfile.put(uuid, playerProfile);
             setCash(uuid, amount);
         }
@@ -169,11 +169,11 @@ public interface APICash {
             if (EterniaServer.cashConfig.contains(permString)) {
                 final int cost = EterniaServer.cashConfig.getInt(permString + ".cost");
                 if (APICash.hasCash(uuid, cost)) {
-                    Configs.instance.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
-                    Configs.instance.sendMessage(player, Messages.CASH_CHOOSE);
+                    Configs.getInstance().sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
+                    Configs.getInstance().sendMessage(player, Messages.CASH_CHOOSE);
                     PluginVars.cashItem.put(uuid, permString);
                 } else {
-                    Configs.instance.sendMessage(player, Messages.CASH_NO_HAS);
+                    Configs.getInstance().sendMessage(player, Messages.CASH_NO_HAS);
                 }
             } else {
                 player.closeInventory();
@@ -184,8 +184,8 @@ public interface APICash {
                 player.openInventory(gui);
             }
         } else {
-            Configs.instance.sendMessage(player, Messages.CASH_ALREADY_BUYING);
-            Configs.instance.sendMessage(player, Messages.CASH_CHOOSE);
+            Configs.getInstance().sendMessage(player, Messages.CASH_ALREADY_BUYING);
+            Configs.getInstance().sendMessage(player, Messages.CASH_CHOOSE);
         }
     }
 

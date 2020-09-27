@@ -30,7 +30,7 @@ public class UtilAccelerateNight extends BukkitRunnable {
         final int players = plugin.getServer().getMaxPlayers();
         if (sleeping > 0) {
             int x = players / sleeping;
-            int timeRate =  Configs.instance.nightSpeed / x;
+            int timeRate =  Configs.getInstance().nightSpeed / x;
             if (time >= (1200 - timeRate * 1.5) && time <= 1200) {
                 world.setStorm(false);
                 world.setThundering(false);

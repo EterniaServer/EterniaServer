@@ -53,14 +53,14 @@ public class Generic extends BaseCommand {
 
         if (EterniaLib.getMySQL()) {
             EterniaLib.getConnections().executeSQLQuery(connection -> {
-                final PreparedStatement getHashMap = connection.prepareStatement(PluginConstants.getQuerySelectAll(Configs.instance.tablePlayer));
+                final PreparedStatement getHashMap = connection.prepareStatement(PluginConstants.getQuerySelectAll(Configs.getInstance().tablePlayer));
                 final ResultSet resultSet = getHashMap.executeQuery();
                 getPlayersProfiles(resultSet);
                 getHashMap.close();
                 resultSet.close();
             });
         } else {
-            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(PluginConstants.getQuerySelectAll(Configs.instance.tablePlayer)); ResultSet resultSet = getHashMap.executeQuery()) {
+            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(PluginConstants.getQuerySelectAll(Configs.getInstance().tablePlayer)); ResultSet resultSet = getHashMap.executeQuery()) {
                 getPlayersProfiles(resultSet);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -68,9 +68,9 @@ public class Generic extends BaseCommand {
         }
         sendConsole(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Player Profiles").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getProfileMapSize())));
 
-        if (Configs.instance.moduleHomes || Configs.instance.moduleTeleports) {
+        if (Configs.getInstance().moduleHomes || Configs.getInstance().moduleTeleports) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-                final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(Configs.instance.tableLocations), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
+                final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(Configs.getInstance().tableLocations), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
                 temp.forEach((k, v) -> {
                     final String[] split = v.split(":");
                     Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -164,7 +164,7 @@ public class Generic extends BaseCommand {
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
 
             if (APIPlayer.isOnPvP(uuid)) {
-                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(Configs.instance.pvpTime - APIPlayer.getPvPCooldown(uuid)))));
+                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(Configs.getInstance().pvpTime - APIPlayer.getPvPCooldown(uuid)))));
                 return;
             }
 
@@ -182,7 +182,7 @@ public class Generic extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (APIPlayer.isOnPvP(uuid)) {
-            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(Configs.instance.pvpTime - APIPlayer.getPvPCooldown(uuid))));
+            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(Configs.getInstance().pvpTime - APIPlayer.getPvPCooldown(uuid))));
             return;
         }
 
@@ -303,11 +303,11 @@ public class Generic extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (APIPlayer.isAFK(playerName)) {
-            Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
+            Bukkit.broadcastMessage(Configs.getInstance().getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
             APIPlayer.removeAfk(playerName);
         } else {
             APIPlayer.putInAfk(player);
-            Bukkit.broadcastMessage(Configs.instance.getMessage(Messages.AFK_ENTER, true, playerName, player.getDisplayName()));
+            Bukkit.broadcastMessage(Configs.getInstance().getMessage(Messages.AFK_ENTER, true, playerName, player.getDisplayName()));
         }
     }
 
@@ -359,22 +359,22 @@ public class Generic extends BaseCommand {
                     resultSet.getLong(PluginConstants.LAST_STR),
                     resultSet.getLong(PluginConstants.HOURS_STR)
             );
-            if (Configs.instance.moduleCash) {
+            if (Configs.getInstance().moduleCash) {
                 playerProfile.cash = resultSet.getInt(PluginConstants.CASH_STR);
             }
-            if (Configs.instance.moduleEconomy) {
+            if (Configs.getInstance().moduleEconomy) {
                 playerProfile.balance = resultSet.getDouble(PluginConstants.BALANCE_STR);
             }
-            if (Configs.instance.moduleExperience) {
+            if (Configs.getInstance().moduleExperience) {
                 playerProfile.xp = resultSet.getInt(PluginConstants.XP_STR);
             }
-            if (Configs.instance.moduleHomes) {
+            if (Configs.getInstance().moduleHomes) {
                 String result = resultSet.getString(PluginConstants.HOMES_STR);
                 if (result != null) {
                     playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
                 }
             }
-            if (Configs.instance.moduleChat) {
+            if (Configs.getInstance().moduleChat) {
                 playerProfile.muted = resultSet.getLong(PluginConstants.MUTED_STR);
                 playerProfile.playerDisplayName = resultSet.getString(PluginConstants.PLAYER_DISPLAY_STR);
             }

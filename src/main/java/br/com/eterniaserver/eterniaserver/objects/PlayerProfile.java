@@ -43,7 +43,7 @@ public class PlayerProfile {
 
     public boolean isOnPvP() {
         if (onPvP == 0) return false;
-        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP) < Configs.instance.pvpTime;
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP) < Configs.getInstance().pvpTime;
     }
 
     public void setIsOnPvP() {

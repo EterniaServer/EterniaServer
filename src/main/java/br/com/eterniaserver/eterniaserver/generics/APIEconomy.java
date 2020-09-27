@@ -26,8 +26,8 @@ public interface APIEconomy {
      * @return the name
      */
     static String singularName() {
-        if (Configs.instance.moduleEconomy) {
-            return Configs.instance.singularName;
+        if (Configs.getInstance().moduleEconomy) {
+            return Configs.getInstance().singularName;
         } else {
             return PluginVars.getEcon().currencyNameSingular();
         }
@@ -38,8 +38,8 @@ public interface APIEconomy {
      * @return the name
      */
     static String pluralName() {
-        if (Configs.instance.moduleEconomy) {
-            return Configs.instance.pluralName;
+        if (Configs.getInstance().moduleEconomy) {
+            return Configs.getInstance().pluralName;
         } else {
             return PluginVars.getEcon().currencyNamePlural();
         }
@@ -50,7 +50,7 @@ public interface APIEconomy {
      * @param uuid uuid of player
      */
     static boolean hasAccount(UUID uuid) {
-        if (Configs.instance.moduleEconomy) {
+        if (Configs.getInstance().moduleEconomy) {
             return PluginVars.playerProfile.containsKey(uuid);
         } else {
             return PluginVars.getEcon().hasAccount(Bukkit.getOfflinePlayer(uuid));
@@ -62,18 +62,18 @@ public interface APIEconomy {
      * @param uuid uuid of player
      */
     static void createAccount(UUID uuid) {
-        if (Configs.instance.moduleEconomy) {
+        if (Configs.getInstance().moduleEconomy) {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "')"));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tablePlayer, "(uuid, player_name, time, last, hours, balance)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.getInstance().startMoney + "')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
-            playerProfile.balance = Configs.instance.startMoney;
+            playerProfile.balance = Configs.getInstance().startMoney;
             PluginVars.playerProfile.put(uuid, playerProfile);
         } else {
             PluginVars.getEcon().createPlayerAccount(Bukkit.getOfflinePlayer(uuid));
@@ -86,23 +86,23 @@ public interface APIEconomy {
      * @return the balance
      */
     static double getMoney(UUID uuid) {
-        if (Configs.instance.moduleEconomy) {
+        if (Configs.getInstance().moduleEconomy) {
             if (PluginVars.playerProfile.containsKey(uuid)) {
                 return PluginVars.playerProfile.get(uuid).balance;
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
-                EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "')"));
+                EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tablePlayer, "(uuid, player_name, time, last, hours, balance)",
+                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.getInstance().startMoney + "')"));
                 final PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
                         time,
                         time,
                         0
                 );
-                playerProfile.balance = Configs.instance.startMoney;
+                playerProfile.balance = Configs.getInstance().startMoney;
                 PluginVars.playerProfile.put(uuid, playerProfile);
-                return Configs.instance.startMoney;
+                return Configs.getInstance().startMoney;
             }
         } else {
             return PluginVars.getEcon().getBalance(Bukkit.getOfflinePlayer(uuid));
@@ -116,7 +116,7 @@ public interface APIEconomy {
      * @return if has or not
      */
     static boolean hasMoney(UUID uuid, double amount) {
-        if (Configs.instance.moduleEconomy) {
+        if (Configs.getInstance().moduleEconomy) {
             return getMoney(uuid) >= amount;
         } else {
             return PluginVars.getEcon().has(Bukkit.getOfflinePlayer(uuid), amount);
@@ -129,22 +129,22 @@ public interface APIEconomy {
      * @param amount the amount of money to set
      */
     static void setMoney(UUID uuid, double amount) {
-        if (Configs.instance.moduleEconomy) {
+        if (Configs.getInstance().moduleEconomy) {
             if (PluginVars.playerProfile.containsKey(uuid)) {
                 PluginVars.playerProfile.get(uuid).balance = amount;
-                EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.instance.tablePlayer, PluginConstants.BALANCE_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
+                EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tablePlayer, PluginConstants.BALANCE_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
-                EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.instance.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.instance.startMoney + "')"));
+                EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tablePlayer, "(uuid, player_name, time, last, hours, balance)",
+                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + Configs.getInstance().startMoney + "')"));
                 final PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
                         time,
                         time,
                         0
                 );
-                playerProfile.balance = Configs.instance.startMoney;
+                playerProfile.balance = Configs.getInstance().startMoney;
                 PluginVars.playerProfile.put(uuid, playerProfile);
                 setMoney(uuid, amount);
             }
@@ -162,7 +162,7 @@ public interface APIEconomy {
      * @param amount the amount of money to give
      */
     static void addMoney(UUID uuid, double amount) {
-        if (Configs.instance.moduleEconomy) {
+        if (Configs.getInstance().moduleEconomy) {
             setMoney(uuid, getMoney(uuid) + amount);
         } else {
             PluginVars.getEcon().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
@@ -175,7 +175,7 @@ public interface APIEconomy {
      * @param amount the amount of money to give
      */
     static void removeMoney(UUID uuid, double amount) {
-        if (Configs.instance.moduleEconomy) {
+        if (Configs.getInstance().moduleEconomy) {
             setMoney(uuid, getMoney(uuid) - amount);
         } else {
             PluginVars.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);

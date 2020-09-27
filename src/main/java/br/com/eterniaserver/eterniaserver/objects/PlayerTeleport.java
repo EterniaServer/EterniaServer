@@ -18,7 +18,7 @@ public class PlayerTeleport {
         this.firstLocation = player.getLocation();
         this.wantLocation = wantLocation;
         this.message = message;
-        this.cooldown = Configs.instance.cooldown;
+        this.cooldown = Configs.getInstance().cooldown;
     }
 
     public boolean hasMoved() {

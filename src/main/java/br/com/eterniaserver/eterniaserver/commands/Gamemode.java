@@ -87,26 +87,26 @@ public class Gamemode extends BaseCommand {
     private void setGamemode(Player player, GameMode gameMode, int type) {
         final String typeName = getType(type);
         player.setGameMode(gameMode);
-        Configs.instance.sendMessage(player, Messages.GAMEMODE_SETED, typeName);
+        Configs.getInstance().sendMessage(player, Messages.GAMEMODE_SETED, typeName);
     }
 
     private void setGamemode(CommandSender player, Player target, GameMode gameMode, int type) {
         final String typeName = getType(type);
         target.setGameMode(gameMode);
-        Configs.instance.sendMessage(target, Messages.GAMEMODE_SETED, typeName);
-        Configs.instance.sendMessage(player, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
+        Configs.getInstance().sendMessage(target, Messages.GAMEMODE_SETED, typeName);
+        Configs.getInstance().sendMessage(player, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
     }
 
     private String getType(int type) {
         switch (type) {
             case 0:
-                return Configs.instance.gmSurvival;
+                return Configs.getInstance().gmSurvival;
             case 1:
-                return Configs.instance.gmCreative;
+                return Configs.getInstance().gmCreative;
             case 2:
-                return Configs.instance.gmAdventure;
+                return Configs.getInstance().gmAdventure;
             default:
-                return Configs.instance.gmSpectator;
+                return Configs.getInstance().gmSpectator;
         }
     }
 

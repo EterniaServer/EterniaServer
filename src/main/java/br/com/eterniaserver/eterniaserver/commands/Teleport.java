@@ -83,13 +83,13 @@ public class Teleport extends BaseCommand {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (APIServer.hasBackLocation(playerName)) {
-            if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!Configs.instance.moduleEconomy && canBack(player))) {
+            if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!Configs.getInstance().moduleEconomy && canBack(player))) {
                 APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_FREE));
-            } else if (APIEconomy.getMoney(uuid) >= Configs.instance.backCost && canBack(player) && !player.hasPermission("eternia.backfree")) {
-                APIEconomy.removeMoney(uuid, Configs.instance.backCost);
+            } else if (APIEconomy.getMoney(uuid) >= Configs.getInstance().backCost && canBack(player) && !player.hasPermission("eternia.backfree")) {
+                APIEconomy.removeMoney(uuid, Configs.getInstance().backCost);
                 APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_COST));
             } else if (canBack(player)){
-                player.sendMessage(PluginMSGs.MSG_NO_MONEY.replace(PluginConstants.VALUE, String.valueOf(Configs.instance.backCost)));
+                player.sendMessage(PluginMSGs.MSG_NO_MONEY.replace(PluginConstants.VALUE, String.valueOf(Configs.getInstance().backCost)));
             }
         } else {
             player.sendMessage(PluginMSGs.MSG_BACK_NO_TELEPORT);
