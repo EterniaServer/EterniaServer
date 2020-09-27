@@ -52,7 +52,7 @@ public class Inventory extends BaseCommand {
             return;
         }
 
-        if (new NBTItem(itemStack).hasKey("EterniaLock")) {
+        if (new NBTItem(itemStack).hasKey("EterniaLock").equals(Boolean.TRUE)) {
             return;
         }
         dropHelmet(player);

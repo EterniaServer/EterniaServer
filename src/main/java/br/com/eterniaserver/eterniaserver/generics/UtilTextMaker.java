@@ -34,7 +34,7 @@ public class UtilTextMaker {
 		BaseComponent[] baseComp = new BaseComponent[message.size()];
 		for(int i = 0; i < message.size(); i++) {
 			ChatObject chatObject = message.getChatObjects().get(i);
-			String msg = chatObject.message;
+			String msg = chatObject.getMessage();
 			msg = UtilInternMethods.setPlaceholders(p, msg);
 			if (msg.contains(PluginConstants.MESSAGE)) msg = msg.replace(PluginConstants.MESSAGE, message.getMessageSent());
 			if (p.hasPermission("eternia.chat.mention")) {

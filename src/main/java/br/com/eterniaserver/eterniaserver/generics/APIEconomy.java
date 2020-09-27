@@ -73,7 +73,7 @@ public interface APIEconomy {
                     time,
                     0
             );
-            playerProfile.balance = EterniaServer.configs.startMoney;
+            playerProfile.setBalance(EterniaServer.configs.startMoney);
             PluginVars.playerProfile.put(uuid, playerProfile);
         } else {
             PluginVars.getEcon().createPlayerAccount(Bukkit.getOfflinePlayer(uuid));
@@ -88,7 +88,7 @@ public interface APIEconomy {
     static double getMoney(UUID uuid) {
         if (EterniaServer.configs.moduleEconomy) {
             if (PluginVars.playerProfile.containsKey(uuid)) {
-                return PluginVars.playerProfile.get(uuid).balance;
+                return PluginVars.playerProfile.get(uuid).getBalance();
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
@@ -100,7 +100,7 @@ public interface APIEconomy {
                         time,
                         0
                 );
-                playerProfile.balance = EterniaServer.configs.startMoney;
+                playerProfile.setBalance(EterniaServer.configs.startMoney);
                 PluginVars.playerProfile.put(uuid, playerProfile);
                 return EterniaServer.configs.startMoney;
             }
@@ -131,7 +131,7 @@ public interface APIEconomy {
     static void setMoney(UUID uuid, double amount) {
         if (EterniaServer.configs.moduleEconomy) {
             if (PluginVars.playerProfile.containsKey(uuid)) {
-                PluginVars.playerProfile.get(uuid).balance = amount;
+                PluginVars.playerProfile.get(uuid).setBalance(amount);
                 EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.BALANCE_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
             } else {
                 final long time = System.currentTimeMillis();
@@ -144,7 +144,7 @@ public interface APIEconomy {
                         time,
                         0
                 );
-                playerProfile.balance = EterniaServer.configs.startMoney;
+                playerProfile.setBalance(EterniaServer.configs.startMoney);
                 PluginVars.playerProfile.put(uuid, playerProfile);
                 setMoney(uuid, amount);
             }

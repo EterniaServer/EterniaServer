@@ -112,8 +112,8 @@ public interface APIServer {
                 time,
                 0
         );
-        playerProfile.balance = EterniaServer.configs.startMoney;
-        playerProfile.muted = time;
+        playerProfile.setBalance(EterniaServer.configs.startMoney);
+        playerProfile.setMuted(time);
         PluginVars.playerProfile.put(uuid, playerProfile);
     }
 

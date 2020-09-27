@@ -18,7 +18,7 @@ import java.util.UUID;
 public interface APIPlayer {
 
     static String getFirstLogin(UUID uuid) {
-        return PluginVars.playerProfile.containsKey(uuid) ? new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(PluginVars.playerProfile.get(uuid).firstLogin)) : "Sem registro";
+        return PluginVars.playerProfile.containsKey(uuid) ? new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(PluginVars.playerProfile.get(uuid).getFirstLogin())) : "Sem registro";
     }
 
     static boolean isAFK(String playerName) {
@@ -71,11 +71,11 @@ public interface APIPlayer {
     }
 
     static long getMutedTime(UUID uuid) {
-        return PluginVars.playerProfile.get(uuid).muted;
+        return PluginVars.playerProfile.get(uuid).getMuted();
     }
 
     static void putMutedTime(UUID uuid, long time) {
-        PluginVars.playerProfile.get(uuid).muted = time;
+        PluginVars.playerProfile.get(uuid).setMuted(time);
     }
 
     static String getDisplayName(UUID uuid) {
@@ -86,8 +86,11 @@ public interface APIPlayer {
         return PluginVars.playerProfile.get(uuid).getPlayerName();
     }
 
-    static void updateHome(UUID uuid, List<String> values) {
-        PluginVars.playerProfile.get(uuid).homes = values;
+    static void updateHome(UUID uuid, String home) {
+        PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
+        if (!playerProfile.getHomes().contains(home)) {
+            playerProfile.getHomes().add(home);
+        }
     }
 
     static boolean hasTpaRequest(String playerName) {
@@ -110,15 +113,15 @@ public interface APIPlayer {
     }
 
     static List<String> getHomes(UUID uuid) {
-        return Objects.requireNonNullElseGet(PluginVars.playerProfile.get(uuid).homes, ArrayList::new);
+        return PluginVars.playerProfile.get(uuid).getHomes();
     }
 
     static int getChannel(UUID uuid) {
-        return PluginVars.playerProfile.get(uuid).chatChannel;
+        return PluginVars.playerProfile.get(uuid).getChatChannel();
     }
 
     static void setChannel(UUID uuid, int channel) {
-        PluginVars.playerProfile.get(uuid).chatChannel = channel;
+        PluginVars.playerProfile.get(uuid).setChatChannel(channel);
     }
 
     static boolean receivedTell(String playerName) {
@@ -170,11 +173,11 @@ public interface APIPlayer {
     }
 
     static long getLastLogin(UUID uuid) {
-        return PluginVars.playerProfile.get(uuid).lastLogin;
+        return PluginVars.playerProfile.get(uuid).getLastLogin();
     }
 
     static long getFirstLoginLong(UUID uuid) {
-        return PluginVars.playerProfile.get(uuid).firstLogin;
+        return PluginVars.playerProfile.get(uuid).getFirstLogin();
     }
 
     static void changeFlyState(Player player) {
@@ -203,12 +206,12 @@ public interface APIPlayer {
     static void updatePlayerProfile(UUID uuid, Player player, long time) {
         final String playerName = player.getName();
         PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
-        if (playerProfile.playerName == null) {
+        if (playerProfile.getPlayerName() == null) {
             final PlayerProfile newPlayerProfile = new PlayerProfile(playerName, time, time, 0);
-            newPlayerProfile.cash = playerProfile.cash;
-            newPlayerProfile.balance = playerProfile.balance;
-            newPlayerProfile.xp = playerProfile.xp;
-            newPlayerProfile.muted = time;
+            newPlayerProfile.setCash(playerProfile.getCash());
+            newPlayerProfile.setBalance(playerProfile.getBalance());
+            newPlayerProfile.setXp(playerProfile.getXp());
+            newPlayerProfile.setMuted(time);
             EQueries.executeQuery(
                     "UPDATE " + EterniaServer.configs.tablePlayer +
                             " SET player_name='" + playerName +
@@ -221,7 +224,7 @@ public interface APIPlayer {
             playerProfile = newPlayerProfile;
             PluginVars.playerProfile.put(uuid, newPlayerProfile);
         }
-        playerProfile.lastLogin = time;
+        playerProfile.setLastLogin(time);
         if (!playerProfile.getPlayerName().equals(playerName)) {
             playerProfile.setPlayerName(playerName);
             PluginVars.playerProfile.put(uuid, playerProfile);
@@ -231,21 +234,21 @@ public interface APIPlayer {
     }
 
     static boolean hasNickRequest(UUID uuid) {
-        return PluginVars.playerProfile.get(uuid).nickRequest;
+        return PluginVars.playerProfile.get(uuid).isNickRequest();
     }
 
     static void updateNickName(Player player, UUID uuid) {
         PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
-        player.setDisplayName(playerProfile.tempNick);
+        player.setDisplayName(playerProfile.getTempNick());
         player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.M_CHAT_NEWNICK));
-        playerProfile.playerDisplayName = playerProfile.tempNick;
+        playerProfile.setPlayerDisplayName(playerProfile.getTempNick());
         saveToSQL(uuid);
     }
 
     static void removeNickRequest(UUID uuid) {
         PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
-        playerProfile.tempNick = null;
-        playerProfile.nickRequest = false;
+        playerProfile.setTempNick(null);
+        playerProfile.setNickRequest(false);
     }
 
     static void playerNick(final Player player, final String string) {
@@ -266,8 +269,8 @@ public interface APIPlayer {
 
         final PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
 
-        playerProfile.tempNick = string;
-        playerProfile.nickRequest = true;
+        playerProfile.setTempNick(string);
+        playerProfile.setNickRequest(true);
         player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY_2);
     }
 
@@ -281,7 +284,7 @@ public interface APIPlayer {
             final String playerName = player.getName();
             final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
             player.setDisplayName(playerName);
-            PluginVars.playerProfile.get(uuid).playerDisplayName = playerName;
+            PluginVars.playerProfile.get(uuid).setPlayerDisplayName(playerName);
             player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
             saveToSQL(uuid);
             return;

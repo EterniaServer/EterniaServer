@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 
 public class ChatObject {
 
-	public String message;
+	private String message;
 	String hover;
 	String suggest;
 

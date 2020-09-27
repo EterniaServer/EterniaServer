@@ -110,16 +110,16 @@ public class Generic extends BaseCommand {
     @CommandPermission("eternia.mem")
     public void onMem(CommandSender player) {
         getRuntime.recalculateRuntime();
-        player.sendMessage(PluginMSGs.MSG_MEM.replace(PluginConstants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(PluginConstants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
-        player.sendMessage(PluginMSGs.MSG_MEM_ONLINE.replace(PluginConstants.HOURS, String.valueOf(getRuntime.hours)).replace(PluginConstants.MINUTE, String.valueOf(getRuntime.minutes)).replace(PluginConstants.SECONDS, String.valueOf(getRuntime.seconds)));
+        player.sendMessage(PluginMSGs.MSG_MEM.replace(PluginConstants.MEM_USE, String.valueOf(getRuntime.getFreemem())).replace(PluginConstants.MEM_MAX, String.valueOf(getRuntime.getTotalmem())));
+        player.sendMessage(PluginMSGs.MSG_MEM_ONLINE.replace(PluginConstants.HOURS, String.valueOf(getRuntime.getHours())).replace(PluginConstants.MINUTE, String.valueOf(getRuntime.getMinutes())).replace(PluginConstants.SECONDS, String.valueOf(getRuntime.getSeconds())));
     }
 
     @CommandAlias("memall|memoryall")
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
-        sendConsole(PluginMSGs.MSG_MEM.replace(PluginConstants.MEM_USE, String.valueOf(getRuntime.freemem)).replace(PluginConstants.MEM_MAX, String.valueOf(getRuntime.totalmem)));
-        sendConsole(PluginMSGs.MSG_MEM_ONLINE.replace(PluginConstants.HOURS, String.valueOf(getRuntime.hours)).replace(PluginConstants.MINUTE, String.valueOf(getRuntime.minutes)).replace(PluginConstants.SECONDS, String.valueOf(getRuntime.seconds)));
+        sendConsole(PluginMSGs.MSG_MEM.replace(PluginConstants.MEM_USE, String.valueOf(getRuntime.getFreemem())).replace(PluginConstants.MEM_MAX, String.valueOf(getRuntime.getTotalmem())));
+        sendConsole(PluginMSGs.MSG_MEM_ONLINE.replace(PluginConstants.HOURS, String.valueOf(getRuntime.getHours())).replace(PluginConstants.MINUTE, String.valueOf(getRuntime.getMinutes())).replace(PluginConstants.SECONDS, String.valueOf(getRuntime.getSeconds())));
     }
 
     @CommandAlias("reloadeternia|eterniareload")
@@ -359,23 +359,27 @@ public class Generic extends BaseCommand {
                     resultSet.getLong(PluginConstants.HOURS_STR)
             );
             if (EterniaServer.configs.moduleCash) {
-                playerProfile.cash = resultSet.getInt(PluginConstants.CASH_STR);
+                playerProfile.setCash(resultSet.getInt(PluginConstants.CASH_STR));
             }
             if (EterniaServer.configs.moduleEconomy) {
-                playerProfile.balance = resultSet.getDouble(PluginConstants.BALANCE_STR);
+                playerProfile.setBalance(resultSet.getDouble(PluginConstants.BALANCE_STR));
             }
             if (EterniaServer.configs.moduleExperience) {
-                playerProfile.xp = resultSet.getInt(PluginConstants.XP_STR);
+                playerProfile.setXp(resultSet.getInt(PluginConstants.XP_STR));
             }
             if (EterniaServer.configs.moduleHomes) {
                 String result = resultSet.getString(PluginConstants.HOMES_STR);
                 if (result != null) {
-                    playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
+                    for (String home : result.split(":")) {
+                        if (!playerProfile.getHomes().contains(home)) {
+                            playerProfile.getHomes().add(home);
+                        }
+                    }
                 }
             }
             if (EterniaServer.configs.moduleChat) {
-                playerProfile.muted = resultSet.getLong(PluginConstants.MUTED_STR);
-                playerProfile.playerDisplayName = resultSet.getString(PluginConstants.PLAYER_DISPLAY_STR);
+                playerProfile.setMuted(resultSet.getLong(PluginConstants.MUTED_STR));
+                playerProfile.setPlayerDisplayName(resultSet.getString(PluginConstants.PLAYER_DISPLAY_STR));
             }
             APIServer.putProfile(UUID.fromString(resultSet.getString(PluginConstants.UUID_STR)), playerProfile);
         }

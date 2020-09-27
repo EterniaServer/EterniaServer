@@ -16,7 +16,7 @@ public interface APIExperience {
      */
     static Integer getExp(UUID uuid) {
         if (PluginVars.playerProfile.containsKey(uuid)) {
-            return PluginVars.playerProfile.get(uuid).xp;
+            return PluginVars.playerProfile.get(uuid).getXp();
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
@@ -28,7 +28,7 @@ public interface APIExperience {
                     time,
                     0
             );
-            playerProfile.balance = EterniaServer.configs.startMoney;
+            playerProfile.setBalance(EterniaServer.configs.startMoney);
             PluginVars.playerProfile.put(uuid, playerProfile);
             return 0;
         }
@@ -40,7 +40,7 @@ public interface APIExperience {
      * @param amount to set
      */
      static void setExp(UUID uuid, int amount) {
-        PluginVars.playerProfile.get(uuid).xp = amount;
+        PluginVars.playerProfile.get(uuid).setXp(amount);
         EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.XP_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
      }
 

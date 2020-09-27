@@ -22,7 +22,7 @@ public interface APICash {
      */
     static int getCash(UUID uuid) {
         if (PluginVars.playerProfile.containsKey(uuid)) {
-            return PluginVars.playerProfile.get(uuid).cash;
+            return PluginVars.playerProfile.get(uuid).getCash();
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
@@ -34,7 +34,7 @@ public interface APICash {
                     time,
                     0
             );
-            playerProfile.balance = EterniaServer.configs.startMoney;
+            playerProfile.setBalance(EterniaServer.configs.startMoney);
             PluginVars.playerProfile.put(uuid, playerProfile);
             return 0;
         }
@@ -57,7 +57,7 @@ public interface APICash {
      */
     static void setCash(UUID uuid, int amount) {
         if (PluginVars.playerProfile.containsKey(uuid)) {
-            PluginVars.playerProfile.get(uuid).cash = amount;
+            PluginVars.playerProfile.get(uuid).setCash(amount);
             EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.CASH_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
         } else {
             final long time = System.currentTimeMillis();
@@ -70,7 +70,7 @@ public interface APICash {
                     time,
                     0
             );
-            playerProfile.balance = EterniaServer.configs.startMoney;
+            playerProfile.setBalance(EterniaServer.configs.startMoney);
             PluginVars.playerProfile.put(uuid, playerProfile);
             setCash(uuid, amount);
         }

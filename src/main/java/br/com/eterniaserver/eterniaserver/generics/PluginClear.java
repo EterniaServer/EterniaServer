@@ -10,11 +10,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PluginClear extends BukkitRunnable {
 
@@ -51,7 +47,7 @@ public class PluginClear extends BukkitRunnable {
     }
 
     private void cleanupChunk(Chunk chunk) {
-        Map<EntityType, Integer> entityIntegerMap = new HashMap<>();
+        Map<EntityType, Integer> entityIntegerMap = new EnumMap<>(EntityType.class);
         for (Entity e : chunk.getEntities()) {
             if (e instanceof Item) return;
             int amount = entityIntegerMap.getOrDefault(e.getType(), 0);

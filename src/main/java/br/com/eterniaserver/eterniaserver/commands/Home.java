@@ -156,13 +156,13 @@ public class Home extends BaseCommand {
                 ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
         if (!t) {
             result.append(home);
+            APIPlayer.updateHome(uuid, home);
             values.add(home);
             EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.HOMES_STR, result.toString(), PluginConstants.UUID_STR, uuid.toString()));
             EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tableLocations, PluginConstants.NAME_STR, homeName, PluginConstants.LOCATION_STR, saveloc));
         } else {
             EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tableLocations, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, homeName));
         }
-        APIPlayer.updateHome(uuid, values);
     }
 
     public void delHome(String home, String jogador) {
@@ -171,18 +171,16 @@ public class Home extends BaseCommand {
         APIServer.removeLocation(homeName);
         StringBuilder nova = new StringBuilder();
 
-        List<String> newValues = new ArrayList<>();
         List<String> values = APIPlayer.getHomes(uuid);
         int size = values.size();
         for (int i = 0; i < size; i++) {
             final String value = values.get(i);
             if (!value.equals(home)) {
-                newValues.add(value);
                 if (i + 1 != size) nova.append(value).append(":");
                 else nova.append(value);
             }
         }
-        APIPlayer.updateHome(uuid, newValues);
+        APIPlayer.getHomes(uuid).remove(home);
         EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.HOMES_STR, nova.toString(), PluginConstants.UUID_STR, uuid.toString()));
         EQueries.executeQuery(PluginConstants.getQueryDelete(EterniaServer.configs.tableLocations, PluginConstants.NAME_STR, homeName));
     }

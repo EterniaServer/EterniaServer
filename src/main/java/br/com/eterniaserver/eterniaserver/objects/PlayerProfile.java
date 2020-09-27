@@ -8,25 +8,25 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayerProfile {
 
-    public String playerName;
-    public String playerDisplayName;
+    private String playerName;
+    private String playerDisplayName;
 
-    public List<String> homes;
+    private List<String> homes;
 
-    public final long firstLogin;
-    public long lastLogin;
-    public long hours;
+    private final long firstLogin;
+    private long lastLogin;
+    private long hours;
 
-    public double balance = 0.0;
-    public int cash = 0;
-    public int xp = 0;
+    private double balance = 0.0;
+    private int cash = 0;
+    private int xp = 0;
 
-    public long onPvP;
+    private long onPvP;
 
-    public int chatChannel = 0;
-    public boolean nickRequest = false;
-    public String tempNick;
-    public long muted = System.currentTimeMillis();
+    private int chatChannel = 0;
+    private boolean nickRequest = false;
+    private String tempNick;
+    private long muted = System.currentTimeMillis();
 
     public PlayerProfile(String playerName, long firstLogin, long lastLogin, long hours) {
         this.playerName = playerName;
@@ -51,7 +51,10 @@ public class PlayerProfile {
     }
 
     public List<String> getHomes() {
-        return homes != null ? homes : new ArrayList<>();
+        if (homes == null) {
+            homes = new ArrayList<>();
+        }
+        return homes;
     }
 
     public int getOnPvP() {
@@ -69,6 +72,86 @@ public class PlayerProfile {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    public boolean isNickRequest() {
+        return nickRequest;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public int getCash() {
+        return cash;
+    }
+
+    public int getChatChannel() {
+        return chatChannel;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public long getFirstLogin() {
+        return firstLogin;
+    }
+
+    public long getHours() {
+        return hours;
+    }
+
+    public long getLastLogin() {
+        return lastLogin;
+    }
+
+    public long getMuted() {
+        return muted;
+    }
+
+    public String getTempNick() {
+        return tempNick;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void setCash(int cash) {
+        this.cash = cash;
+    }
+
+    public void setChatChannel(int chatChannel) {
+        this.chatChannel = chatChannel;
+    }
+
+    public void setHours(long hours) {
+        this.hours = hours;
+    }
+
+    public void setLastLogin(long lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public void setMuted(long muted) {
+        this.muted = muted;
+    }
+
+    public void setNickRequest(boolean nickRequest) {
+        this.nickRequest = nickRequest;
+    }
+
+    public void setPlayerDisplayName(String playerDisplayName) {
+        this.playerDisplayName = playerDisplayName;
+    }
+
+    public void setTempNick(String tempNick) {
+        this.tempNick = tempNick;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
     }
 
 }

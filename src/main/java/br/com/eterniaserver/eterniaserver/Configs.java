@@ -20,6 +20,10 @@ import java.util.Map;
 
 public class Configs {
 
+    private static final String dataLayerFolderPath = "plugins" + File.separator + "EterniaServer";
+    private static final String messagesFilePath = dataLayerFolderPath + File.separator + "messages.yml";
+    private static final String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
+
     private String[] messages;
 
     public final boolean moduleBed;
@@ -100,12 +104,7 @@ public class Configs {
     public final String cnYellow;
     public final String cnWhite;
 
-    private final String dataLayerFolderPath = "plugins" + File.separator + "EterniaServer";
-    private final String messagesFilePath = dataLayerFolderPath + File.separator + "messages.yml";
-
     protected Configs() {
-
-        final String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(configFilePath));
         FileConfiguration outConfig = new YamlConfiguration();
@@ -201,23 +200,23 @@ public class Configs {
         List<String> tempBlockedCommands = config.getStringList("blocked-commands");
         List<String> tempBlockWorldSpawners = config.getStringList("spawners.blacklisted-worlds");
 
-        if (tempBlockMaterials.size() == 0) {
+        if (tempBlockMaterials.isEmpty()) {
             tempBlockMaterials = defaultMaterialBlocksList;
         }
 
-        if (tempBlockBaltop.size() == 0) {
+        if (tempBlockBaltop.isEmpty()) {
             tempBlockBaltop = new ArrayList<>(blacklistedBaltop);
         }
 
-        if (tempBlockWorld.size() == 0) {
+        if (tempBlockWorld.isEmpty()) {
             tempBlockWorld = new ArrayList<>(blacklistedWorldsBed);
         }
 
-        if (tempBlockedCommands.size() == 0) {
+        if (tempBlockedCommands.isEmpty()) {
             tempBlockedCommands = new ArrayList<>(blockedCommands);
         }
 
-        if (tempBlockWorldSpawners.size() == 0) {
+        if (tempBlockWorldSpawners.isEmpty()) {
             tempBlockWorldSpawners = new ArrayList<>(blacklistedWorldsSpawners);
         }
 
@@ -414,9 +413,9 @@ public class Configs {
 
             this.messages[messages.ordinal()] = this.messages[messages.ordinal()].replace('$', (char) 0x00A7);
 
-            if (messageData.notes != null) {
-                messageData.notes = config.getString(path + messages.name() + ".notes", messageData.notes);
-                config.set(path + messages.name() + ".notes", messageData.notes);
+            if (messageData.getNotes() != null) {
+                messageData.setNotes(config.getString(path + messages.name() + ".notes", messageData.getNotes()));
+                config.set(path + messages.name() + ".notes", messageData.getNotes());
             }
 
         }

@@ -23,11 +23,19 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 public class CustomizableMessage {
     public final Messages id;
     public final String text;
-    public String notes;
+    private String notes;
 
     public CustomizableMessage(Messages id, String text, String notes) {
         this.id = id;
         this.text = text;
+        this.notes = notes;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 }
