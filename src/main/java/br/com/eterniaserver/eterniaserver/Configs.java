@@ -20,9 +20,9 @@ import java.util.Map;
 
 public class Configs {
 
-    private static final String dataLayerFolderPath = "plugins" + File.separator + "EterniaServer";
-    private static final String messagesFilePath = dataLayerFolderPath + File.separator + "messages.yml";
-    private static final String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
+    private static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
+    private static final String MESSAGES_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "messages.yml";
+    private static final String CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "config.yml";
 
     private String[] messages;
 
@@ -106,7 +106,7 @@ public class Configs {
 
     protected Configs() {
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(configFilePath));
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(CONFIG_FILE_PATH));
         FileConfiguration outConfig = new YamlConfiguration();
 
         this.moduleBed = config.getBoolean("module.bed", true);
@@ -317,9 +317,9 @@ public class Configs {
         outConfig.set("strings.cn.white", this.cnWhite);
 
         try {
-            outConfig.save(configFilePath);
+            outConfig.save(CONFIG_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + dataLayerFolderPath, 3);
+            APIServer.logError("Impossível de criar arquivos em " + DATA_LAYER_FOLDER_PATH, 3);
         }
         loadMessages();
 
@@ -382,48 +382,48 @@ public class Configs {
         this.addDefault(defaults, Messages.GAMEMODE_SETED, "Seu modo de jogo foi definido para {0}$8.", "0: modo de jogo");
         this.addDefault(defaults, Messages.GAMEMODE_SET_FROM, "O modo de jogo de $3{2}$7 foi definido para {0}$8.", "0: modo de jogo; 1: nome do jogador; 2: apelido do jogador");
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(MESSAGES_FILE_PATH));
 
-        for (Messages messages : economiesID) {
-            CustomizableMessage messageData = defaults.get(messages.name());
+        for (Messages messagesEnum : economiesID) {
+            CustomizableMessage messageData = defaults.get(messagesEnum.name());
 
             String path;
 
-            if (messages.name().contains("ECO")) {
+            if (messagesEnum.name().contains("ECO")) {
                 path = "eco.";
-            } else if (messages.name().contains("SERVER")) {
+            } else if (messagesEnum.name().contains("SERVER")) {
                 path = "server.";
-            } else if (messages.name().contains("CASH")) {
+            } else if (messagesEnum.name().contains("CASH")) {
                 path = "cash.";
-            } else if (messages.name().contains("AFK")) {
+            } else if (messagesEnum.name().contains("AFK")) {
                 path = "afk.";
-            } else if (messages.name().contains("EXP")) {
+            } else if (messagesEnum.name().contains("EXP")) {
                 path = "exp.";
             } else {
                 path = "generic.";
             }
 
             if (messageData == null) {
-                messageData = new CustomizableMessage(messages, this.serverPrefix +"Mensagem faltando para $3" + messages.name() + "$8.", null);
-                APIServer.logError("Entrada para a mensagem " + messages.name(), 2);
+                messageData = new CustomizableMessage(messagesEnum, this.serverPrefix +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
+                APIServer.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
             }
 
-            this.messages[messages.ordinal()] = config.getString(path + messages.name() + ".text", messageData.text);
-            config.set(path + messages.name() + ".text", this.messages[messages.ordinal()]);
+            this.messages[messagesEnum.ordinal()] = config.getString(path + messagesEnum.name() + ".text", messageData.text);
+            config.set(path + messagesEnum.name() + ".text", this.messages[messagesEnum.ordinal()]);
 
-            this.messages[messages.ordinal()] = this.messages[messages.ordinal()].replace('$', (char) 0x00A7);
+            this.messages[messagesEnum.ordinal()] = this.messages[messagesEnum.ordinal()].replace('$', (char) 0x00A7);
 
             if (messageData.getNotes() != null) {
-                messageData.setNotes(config.getString(path + messages.name() + ".notes", messageData.getNotes()));
-                config.set(path + messages.name() + ".notes", messageData.getNotes());
+                messageData.setNotes(config.getString(path + messagesEnum.name() + ".notes", messageData.getNotes()));
+                config.set(path + messagesEnum.name() + ".notes", messageData.getNotes());
             }
 
         }
 
         try {
-            config.save(messagesFilePath);
+            config.save(MESSAGES_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + dataLayerFolderPath, 3);
+            APIServer.logError("Impossível de criar arquivos em " + DATA_LAYER_FOLDER_PATH, 3);
         }
 
         defaults.clear();

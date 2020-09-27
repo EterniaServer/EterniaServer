@@ -97,10 +97,8 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation("warp.spawn")) {
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10) {
-                event.setSpawnLocation(APIServer.getLocation("warp.spawn"));
-            }
+        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation("warp.spawn") && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
+            event.setSpawnLocation(APIServer.getLocation("warp.spawn"));
         }
     }
 

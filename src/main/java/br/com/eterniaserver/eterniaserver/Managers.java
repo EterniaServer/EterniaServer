@@ -22,8 +22,6 @@ public class Managers {
 
     public Managers(EterniaServer plugin) {
 
-        EterniaLib.getManager().enableUnstableAPI("help");
-        
         this.plugin = plugin;
 
         loadConditions();

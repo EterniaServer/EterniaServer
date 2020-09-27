@@ -43,7 +43,7 @@ public class PluginTimer extends TimerTask {
                 runDay("schedule.days.saturday");
                 break;
             default:
-                System.out.println("wtf?");
+                APIServer.logError("Talvez você não seja da terra", 3);
         }
     }
 
