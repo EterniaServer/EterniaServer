@@ -36,9 +36,9 @@ public class Glow extends BaseCommand {
     @Description(" Ativa ou desativa o glow")
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
-            Configs.instance.sendMessage(player, Messages.GLOW_ENABLED);
+            Configs.getInstance().sendMessage(player, Messages.GLOW_ENABLED);
         } else {
-            Configs.instance.sendMessage(player, Messages.GLOW_DISABLED);
+            Configs.getInstance().sendMessage(player, Messages.GLOW_DISABLED);
             player.removePotionEffect(PotionEffectType.GLOWING);
         }
         player.setGlowing(!player.isGlowing());
@@ -53,7 +53,7 @@ public class Glow extends BaseCommand {
         final String playerName = player.getName();
         APIServer.getScoreboard().getTeam(colors.name()).addEntry(playerName);
         APIServer.putGlowing(playerName, colors.getColorStr());
-        Configs.instance.sendMessage(player, Messages.GLOW_COLOR_CHANGED, colors.getName());
+        Configs.getInstance().sendMessage(player, Messages.GLOW_COLOR_CHANGED, colors.getName());
     }
 
 }
