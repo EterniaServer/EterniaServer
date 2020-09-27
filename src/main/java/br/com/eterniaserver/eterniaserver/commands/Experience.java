@@ -5,7 +5,7 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
-import br.com.eterniaserver.eterniaserver.Configs;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIExperience;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
@@ -42,8 +42,8 @@ public class Experience extends BaseCommand {
         final Player targetP = target.getPlayer();
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
         targetP.setLevel(money);
-        Configs.getInstance().sendMessage(sender, Messages.EXP_SET_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.getInstance().sendMessage(targetP, Messages.EXP_SETED, String.valueOf(money), sender.getName(), playerDisplay);
+        EterniaServer.configs.sendMessage(sender, Messages.EXP_SET_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        EterniaServer.configs.sendMessage(targetP, Messages.EXP_SETED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("take")
@@ -55,8 +55,8 @@ public class Experience extends BaseCommand {
         final Player targetP = target.getPlayer();
         targetP.setLevel(targetP.getLevel() - money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.getInstance().sendMessage(sender, Messages.EXP_REMOVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.getInstance().sendMessage(targetP, Messages.EXP_REMOVED, String.valueOf(money), sender.getName(), playerDisplay);
+        EterniaServer.configs.sendMessage(sender, Messages.EXP_REMOVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        EterniaServer.configs.sendMessage(targetP, Messages.EXP_REMOVED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("give")
@@ -68,8 +68,8 @@ public class Experience extends BaseCommand {
         final Player targetP = target.getPlayer();
         targetP.setLevel(targetP.getLevel() + money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.getInstance().sendMessage(sender, Messages.EXP_GIVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.getInstance().sendMessage(targetP, Messages.EXP_GIVED, String.valueOf(money), sender.getName(), playerDisplay);
+        EterniaServer.configs.sendMessage(sender, Messages.EXP_GIVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        EterniaServer.configs.sendMessage(targetP, Messages.EXP_GIVED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("check")
@@ -80,7 +80,7 @@ public class Experience extends BaseCommand {
         player.setLevel(0);
         player.setExp(0);
         player.giveExp(APIExperience.getExp(UUIDFetcher.getUUIDOf(player.getName())));
-        Configs.getInstance().sendMessage(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
+        EterniaServer.configs.sendMessage(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
         player.setLevel(lvl);
         player.setExp(xp);
     }
@@ -99,12 +99,12 @@ public class Experience extends BaseCommand {
             item.setLore(Collections.singletonList(String.valueOf(xpWant)));
             PlayerInventory inventory = player.getInventory();
             inventory.addItem(item);
-            Configs.getInstance().sendMessage(player, Messages.EXP_BOTTLED);
+            EterniaServer.configs.sendMessage(player, Messages.EXP_BOTTLED);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpReal - xpWant);
         } else {
-            Configs.getInstance().sendMessage(player, Messages.EXP_INSUFFICIENT);
+            EterniaServer.configs.sendMessage(player, Messages.EXP_INSUFFICIENT);
         }
     }
 
@@ -119,9 +119,9 @@ public class Experience extends BaseCommand {
         if (APIExperience.getExp(uuid) >= xpla) {
             APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
-            Configs.getInstance().sendMessage(player, Messages.EXP_WITHDRAW, String.valueOf(level));
+            EterniaServer.configs.sendMessage(player, Messages.EXP_WITHDRAW, String.valueOf(level));
         } else {
-            Configs.getInstance().sendMessage(player, Messages.EXP_BOTTLED);
+            EterniaServer.configs.sendMessage(player, Messages.EXP_BOTTLED);
         }
     }
 
@@ -135,12 +135,12 @@ public class Experience extends BaseCommand {
             int xp = UtilInternMethods.getXPForLevel(xpla);
             int xpto = UtilInternMethods.getXPForLevel(xpAtual);
             APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
-            Configs.getInstance().sendMessage(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
+            EterniaServer.configs.sendMessage(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xpto - xp);
         } else {
-            Configs.getInstance().sendMessage(player, Messages.EXP_BOTTLED);
+            EterniaServer.configs.sendMessage(player, Messages.EXP_BOTTLED);
         }
     }
 

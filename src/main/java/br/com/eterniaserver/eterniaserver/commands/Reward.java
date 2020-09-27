@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.EQueries;
-import br.com.eterniaserver.eterniaserver.Configs;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
@@ -24,7 +23,7 @@ public class Reward extends BaseCommand {
     private final byte[] bytes = new byte[20];
 
     public Reward() {
-        APIServer.updateRewardMap(EQueries.getMapString(PluginConstants.getQuerySelectAll(Configs.getInstance().tableRewards), PluginConstants.CODE_STR, PluginConstants.CODE_GROUP_STR));
+        APIServer.updateRewardMap(EQueries.getMapString(PluginConstants.getQuerySelectAll(EterniaServer.configs.tableRewards), PluginConstants.CODE_STR, PluginConstants.CODE_GROUP_STR));
         Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Keys").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getRewardMapSize())));
     }
 
@@ -55,11 +54,11 @@ public class Reward extends BaseCommand {
     }
 
     private void createKey(final String grupo, String key) {
-        EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tableRewards, PluginConstants.CODE_STR, key, PluginConstants.CODE_GROUP_STR, grupo));
+        EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tableRewards, PluginConstants.CODE_STR, key, PluginConstants.CODE_GROUP_STR, grupo));
     }
 
     private void deleteKey(final String key) {
-        EQueries.executeQuery(PluginConstants.getQueryDelete(Configs.getInstance().tableRewards, PluginConstants.CODE_STR, key));
+        EQueries.executeQuery(PluginConstants.getQueryDelete(EterniaServer.configs.tableRewards, PluginConstants.CODE_STR, key));
     }
 
     private void giveReward(String group, Player player) {

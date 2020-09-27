@@ -22,12 +22,12 @@ public class EterniaServer extends JavaPlugin {
     public static final YamlConfiguration cashConfig = new YamlConfiguration();
     public static final YamlConfiguration scheduleConfig = new YamlConfiguration();
 
+    public static final Configs configs = new Configs();
+
     private final Files files = new Files(this);
 
     @Override
     public void onEnable() {
-
-        new Configs();
 
         files.loadMessages();
         files.loadDatabase();

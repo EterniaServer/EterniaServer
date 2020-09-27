@@ -1,7 +1,5 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
-import br.com.eterniaserver.eterniaserver.Configs;
-
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
@@ -29,7 +27,7 @@ public class CustomCommands extends AbstractCommand {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (Configs.getInstance().moduleCommands && EterniaServer.cmdConfig.contains("commands." + commandString)) {
+        if (EterniaServer.configs.moduleCommands && EterniaServer.cmdConfig.contains("commands." + commandString)) {
             checkCommands((Player) sender, commandString);
             return true;
         }

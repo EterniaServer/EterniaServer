@@ -1,11 +1,11 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.Bukkit;
@@ -83,13 +83,13 @@ public class Teleport extends BaseCommand {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (APIServer.hasBackLocation(playerName)) {
-            if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!Configs.getInstance().moduleEconomy && canBack(player))) {
+            if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!EterniaServer.configs.moduleEconomy && canBack(player))) {
                 APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_FREE));
-            } else if (APIEconomy.getMoney(uuid) >= Configs.getInstance().backCost && canBack(player) && !player.hasPermission("eternia.backfree")) {
-                APIEconomy.removeMoney(uuid, Configs.getInstance().backCost);
+            } else if (APIEconomy.getMoney(uuid) >= EterniaServer.configs.backCost && canBack(player) && !player.hasPermission("eternia.backfree")) {
+                APIEconomy.removeMoney(uuid, EterniaServer.configs.backCost);
                 APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), PluginMSGs.MSG_BACK_COST));
             } else if (canBack(player)){
-                player.sendMessage(PluginMSGs.MSG_NO_MONEY.replace(PluginConstants.VALUE, String.valueOf(Configs.getInstance().backCost)));
+                player.sendMessage(PluginMSGs.MSG_NO_MONEY.replace(PluginConstants.VALUE, String.valueOf(EterniaServer.configs.backCost)));
             }
         } else {
             player.sendMessage(PluginMSGs.MSG_BACK_NO_TELEPORT);

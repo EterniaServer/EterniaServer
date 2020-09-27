@@ -16,8 +16,8 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.Configs;
 
 import br.com.eterniaserver.eterniaserver.generics.APIEconomy;
 import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
@@ -58,8 +58,8 @@ public class Economy extends BaseCommand {
         final Player targetP = target.getPlayer();
         APIEconomy.setMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.getInstance().sendMessage(sender, Messages.ECO_SET_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.getInstance().sendMessage(targetP, Messages.ECO_SETED, String.valueOf(money), sender.getName(), playerDisplay);
+        EterniaServer.configs.sendMessage(sender, Messages.ECO_SET_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        EterniaServer.configs.sendMessage(targetP, Messages.ECO_SETED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("take")
@@ -71,8 +71,8 @@ public class Economy extends BaseCommand {
         final Player targetP = target.getPlayer();
         APIEconomy.removeMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.getInstance().sendMessage(sender, Messages.ECO_REMOVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.getInstance().sendMessage(targetP, Messages.ECO_REMOVED, String.valueOf(money), sender.getName(), playerDisplay);
+        EterniaServer.configs.sendMessage(sender, Messages.ECO_REMOVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        EterniaServer.configs.sendMessage(targetP, Messages.ECO_REMOVED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @Subcommand("give")
@@ -84,8 +84,8 @@ public class Economy extends BaseCommand {
         final Player targetP = target.getPlayer();
         APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetP.getName()), money);
         String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        Configs.getInstance().sendMessage(sender, Messages.ECO_GIVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        Configs.getInstance().sendMessage(targetP, Messages.ECO_GIVED, String.valueOf(money), sender.getName(), playerDisplay);
+        EterniaServer.configs.sendMessage(sender, Messages.ECO_GIVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
+        EterniaServer.configs.sendMessage(targetP, Messages.ECO_GIVED, String.valueOf(money), sender.getName(), playerDisplay);
     }
 
     @CommandAlias("money")
@@ -96,7 +96,7 @@ public class Economy extends BaseCommand {
     public void onMoney(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
-            Configs.getInstance().sendMessage(player, Messages.ECO_BALANCE, APIEconomy.format(money));
+            EterniaServer.configs.sendMessage(player, Messages.ECO_BALANCE, APIEconomy.format(money));
             return;
         }
 
@@ -104,11 +104,11 @@ public class Economy extends BaseCommand {
             Player targetP = target.getPlayer();
             String targetName = targetP.getName();
             double money = APIEconomy.getMoney(UUIDFetcher.getUUIDOf(targetName));
-            Configs.getInstance().sendMessage(player, Messages.ECO_BALANCE_OTHER, APIEconomy.format(money), targetName, targetP.getDisplayName());
+            EterniaServer.configs.sendMessage(player, Messages.ECO_BALANCE_OTHER, APIEconomy.format(money), targetName, targetP.getDisplayName());
             return;
         }
 
-        Configs.getInstance().sendMessage(player, Messages.SERVER_NO_PERM);
+        EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
     }
 
     @CommandAlias("pay")
@@ -126,13 +126,13 @@ public class Economy extends BaseCommand {
             if (APIEconomy.getMoney(uuid) >= value) {
                 APIEconomy.addMoney(UUIDFetcher.getUUIDOf(targetName), value);
                 APIEconomy.removeMoney(uuid, value);
-                Configs.getInstance().sendMessage(player, Messages.ECO_PAY, String.valueOf(value), targetName, targetP.getDisplayName());
-                Configs.getInstance().sendMessage(targetP, Messages.ECO_PAY_RECEIVED, String.valueOf(value), playerName, player.getDisplayName());
+                EterniaServer.configs.sendMessage(player, Messages.ECO_PAY, String.valueOf(value), targetName, targetP.getDisplayName());
+                EterniaServer.configs.sendMessage(targetP, Messages.ECO_PAY_RECEIVED, String.valueOf(value), playerName, player.getDisplayName());
             } else {
-                Configs.getInstance().sendMessage(player, Messages.ECO_NO_MONEY);
+                EterniaServer.configs.sendMessage(player, Messages.ECO_NO_MONEY);
             }
         } else {
-            Configs.getInstance().sendMessage(player, Messages.ECO_AUTO_PAY);
+            EterniaServer.configs.sendMessage(player, Messages.ECO_AUTO_PAY);
         }
     }
 
@@ -148,7 +148,7 @@ public class Economy extends BaseCommand {
                     EterniaLib.getConnections().executeSQLQuery(connection -> {
                         final PreparedStatement getHashMap = connection.prepareStatement(
                                 "SELECT " + PluginConstants.UUID_STR +
-                                        " FROM " + Configs.getInstance().tablePlayer +
+                                        " FROM " + EterniaServer.configs.tablePlayer +
                                         " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 20;");
                         final ResultSet resultSet = getHashMap.executeQuery();
                         final List<UUID> tempList = new ArrayList<>();
@@ -156,7 +156,7 @@ public class Economy extends BaseCommand {
                         while (resultSet.next()) {
                             if (tempList.size() < 10) {
                                 uuid = UUID.fromString(resultSet.getString(PluginConstants.UUID_STR));
-                                if (!Configs.getInstance().blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
+                                if (!EterniaServer.configs.blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
                                     tempList.add(uuid);
                                 }
                             }
@@ -170,14 +170,14 @@ public class Economy extends BaseCommand {
                 } else {
                     try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
                             "SELECT " + PluginConstants.UUID_STR +
-                                    " FROM " + Configs.getInstance().tablePlayer +
+                                    " FROM " + EterniaServer.configs.tablePlayer +
                                     " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 20;"); ResultSet resultSet = getHashMap.executeQuery()) {
                         final List<UUID> tempList = new ArrayList<>();
                         UUID uuid;
                         while (resultSet.next()) {
                             if (tempList.size() < 10) {
                                 uuid = UUID.fromString(resultSet.getString(PluginConstants.UUID_STR));
-                                if (!Configs.getInstance().blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
+                                if (!EterniaServer.configs.blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
                                     tempList.add(uuid);
                                 }
                             }
@@ -197,7 +197,7 @@ public class Economy extends BaseCommand {
         lista.forEach((user -> {
             final String playerName = APIPlayer.getName(user);
             final String playerDisplay = APIPlayer.getDisplayName(user);
-            Configs.getInstance().sendMessage(sender, Messages.ECO_BALTOP_LIST, false,
+            EterniaServer.configs.sendMessage(sender, Messages.ECO_BALTOP_LIST, false,
                     String.valueOf(lista.indexOf(user) + 1),
                     playerName,
                     playerDisplay,

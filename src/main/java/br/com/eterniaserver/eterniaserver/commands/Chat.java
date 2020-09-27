@@ -6,7 +6,6 @@ import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
@@ -118,8 +117,8 @@ public class Chat extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
         if (APIPlayer.hasNickRequest(uuid)) {
-            if (APIEconomy.hasMoney(uuid, Configs.getInstance().nickCost)) {
-                APIEconomy.removeMoney(uuid, Configs.getInstance().nickCost);
+            if (APIEconomy.hasMoney(uuid, EterniaServer.configs.nickCost)) {
+                APIEconomy.removeMoney(uuid, EterniaServer.configs.nickCost);
                 APIPlayer.updateNickName(player, uuid);
             } else {
                 player.sendMessage(PluginMSGs.MSG_NO_MONEY);

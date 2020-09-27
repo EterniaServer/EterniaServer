@@ -20,8 +20,6 @@ import java.util.Map;
 
 public class Configs {
 
-    private static Configs instance;
-
     private String[] messages;
 
     public final boolean moduleBed;
@@ -128,8 +126,8 @@ public class Configs {
         this.moduleRewards = config.getBoolean("module.rewards", true);
         this.moduleSchedule = config.getBoolean("module.schedule", true);
 
-        this.afkPlaceholder = config.getString("placeholders.afk", "$9 AFK").replace('$', (char) 0x00A7);;
-        this.godPlaceholder = config.getString("placeholders.godmode", "$9 GOD").replace('$', (char) 0x00A7);;
+        this.afkPlaceholder = config.getString("placeholders.afk", "$9 AFK").replace('$', (char) 0x00A7);
+        this.godPlaceholder = config.getString("placeholders.godmode", "$9 GOD").replace('$', (char) 0x00A7);
 
         this.tableKits = config.getString("sql.table-kits", "es_kits");
         this.tablePlayer = config.getString("sql.table-player", "es_players");
@@ -144,7 +142,7 @@ public class Configs {
         this.cooldown = config.getInt("server.cooldown", 4);
         this.pvpTime = config.getInt("server.pvp-time", 15);
         this.clearRange = config.getInt("server.clear-range", 1);
-        this.serverPrefix = config.getString("server.prefix", "$8[$aE$9S$8]$7 ").replace('$', (char) 0x00A7);;
+        this.serverPrefix = config.getString("server.prefix", "$8[$aE$9S$8]$7 ").replace('$', (char) 0x00A7);
 
         this.elevatorMaterials.add(Material.IRON_BLOCK);
         this.elevatorMax = config.getInt("elevator.max", 50);
@@ -326,8 +324,6 @@ public class Configs {
         }
         loadMessages();
 
-        instance = this;
-
     }
 
     private void loadMessages() {
@@ -459,10 +455,6 @@ public class Configs {
             return this.serverPrefix + message;
         }
         return message;
-    }
-
-    public static Configs getInstance() {
-        return instance;
     }
 
 }

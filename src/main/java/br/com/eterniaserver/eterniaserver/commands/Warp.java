@@ -1,11 +1,11 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.eternialib.EQueries;
-import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
@@ -167,9 +167,9 @@ public class Warp extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (!APIServer.getLocation(shop).equals(PluginVars.error)) {
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tableLocations, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, shop));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tableLocations, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, shop));
         } else {
-            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tableLocations, PluginConstants.NAME_STR, shop, PluginConstants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tableLocations, PluginConstants.NAME_STR, shop, PluginConstants.LOCATION_STR, saveloc));
         }
         APIServer.putLocation(shop, loc);
     }
@@ -183,9 +183,9 @@ public class Warp extends BaseCommand {
                 ":" + ((int) loc.getPitch());
         final String warpName = "warp." + warp;
         if (!APIServer.getLocation(warpName).equals(PluginVars.error)) {
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(Configs.getInstance().tableLocations, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, warpName));
+            EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tableLocations, PluginConstants.LOCATION_STR, saveloc, PluginConstants.NAME_STR, warpName));
         } else {
-            EQueries.executeQuery(PluginConstants.getQueryInsert(Configs.getInstance().tableLocations, PluginConstants.NAME_STR, warpName, PluginConstants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tableLocations, PluginConstants.NAME_STR, warpName, PluginConstants.LOCATION_STR, saveloc));
         }
         APIServer.putLocation(warpName, loc);
     }
@@ -193,7 +193,7 @@ public class Warp extends BaseCommand {
     public void delWarp(String warp) {
         final String warpName = "warp." + warp;
         APIServer.removeLocation(warpName);
-        EQueries.executeQuery(PluginConstants.getQueryDelete(Configs.getInstance().tableLocations, PluginConstants.NAME_STR, warpName));
+        EQueries.executeQuery(PluginConstants.getQueryDelete(EterniaServer.configs.tableLocations, PluginConstants.NAME_STR, warpName));
     }
 
 }

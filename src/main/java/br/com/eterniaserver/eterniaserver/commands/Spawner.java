@@ -1,10 +1,10 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
-import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.PluginVars;
@@ -48,7 +48,7 @@ public class Spawner extends BaseCommand {
         ItemStack item = new ItemStack(Material.SPAWNER);
         ItemMeta meta = item.getItemMeta();
         item.setAmount(value);
-        meta.setDisplayName(PluginVars.colors.get(8) + "[" + Configs.getInstance().mobSpawnerColor + spawnerName + PluginVars.colors.get(7) + " Spawner" +  PluginVars.colors.get(8) + "]");
+        meta.setDisplayName(PluginVars.colors.get(8) + "[" + EterniaServer.configs.mobSpawnerColor + spawnerName + PluginVars.colors.get(7) + " Spawner" +  PluginVars.colors.get(8) + "]");
         item.setItemMeta(meta);
         return item;
     }

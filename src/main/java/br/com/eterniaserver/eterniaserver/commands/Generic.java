@@ -9,7 +9,6 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
-import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
@@ -53,14 +52,14 @@ public class Generic extends BaseCommand {
 
         if (EterniaLib.getMySQL()) {
             EterniaLib.getConnections().executeSQLQuery(connection -> {
-                final PreparedStatement getHashMap = connection.prepareStatement(PluginConstants.getQuerySelectAll(Configs.getInstance().tablePlayer));
+                final PreparedStatement getHashMap = connection.prepareStatement(PluginConstants.getQuerySelectAll(EterniaServer.configs.tablePlayer));
                 final ResultSet resultSet = getHashMap.executeQuery();
                 getPlayersProfiles(resultSet);
                 getHashMap.close();
                 resultSet.close();
             });
         } else {
-            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(PluginConstants.getQuerySelectAll(Configs.getInstance().tablePlayer)); ResultSet resultSet = getHashMap.executeQuery()) {
+            try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(PluginConstants.getQuerySelectAll(EterniaServer.configs.tablePlayer)); ResultSet resultSet = getHashMap.executeQuery()) {
                 getPlayersProfiles(resultSet);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -68,9 +67,9 @@ public class Generic extends BaseCommand {
         }
         sendConsole(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Player Profiles").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getProfileMapSize())));
 
-        if (Configs.getInstance().moduleHomes || Configs.getInstance().moduleTeleports) {
+        if (EterniaServer.configs.moduleHomes || EterniaServer.configs.moduleTeleports) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-                final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(Configs.getInstance().tableLocations), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
+                final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(EterniaServer.configs.tableLocations), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
                 temp.forEach((k, v) -> {
                     final String[] split = v.split(":");
                     Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -164,7 +163,7 @@ public class Generic extends BaseCommand {
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
 
             if (APIPlayer.isOnPvP(uuid)) {
-                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(Configs.getInstance().pvpTime - APIPlayer.getPvPCooldown(uuid)))));
+                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.configs.pvpTime - APIPlayer.getPvPCooldown(uuid)))));
                 return;
             }
 
@@ -182,7 +181,7 @@ public class Generic extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (APIPlayer.isOnPvP(uuid)) {
-            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(Configs.getInstance().pvpTime - APIPlayer.getPvPCooldown(uuid))));
+            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.configs.pvpTime - APIPlayer.getPvPCooldown(uuid))));
             return;
         }
 
@@ -303,11 +302,11 @@ public class Generic extends BaseCommand {
     public void onAFK(Player player) {
         final String playerName = player.getName();
         if (APIPlayer.isAFK(playerName)) {
-            Bukkit.broadcastMessage(Configs.getInstance().getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
             APIPlayer.removeAfk(playerName);
         } else {
             APIPlayer.putInAfk(player);
-            Bukkit.broadcastMessage(Configs.getInstance().getMessage(Messages.AFK_ENTER, true, playerName, player.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.AFK_ENTER, true, playerName, player.getDisplayName()));
         }
     }
 
@@ -359,22 +358,22 @@ public class Generic extends BaseCommand {
                     resultSet.getLong(PluginConstants.LAST_STR),
                     resultSet.getLong(PluginConstants.HOURS_STR)
             );
-            if (Configs.getInstance().moduleCash) {
+            if (EterniaServer.configs.moduleCash) {
                 playerProfile.cash = resultSet.getInt(PluginConstants.CASH_STR);
             }
-            if (Configs.getInstance().moduleEconomy) {
+            if (EterniaServer.configs.moduleEconomy) {
                 playerProfile.balance = resultSet.getDouble(PluginConstants.BALANCE_STR);
             }
-            if (Configs.getInstance().moduleExperience) {
+            if (EterniaServer.configs.moduleExperience) {
                 playerProfile.xp = resultSet.getInt(PluginConstants.XP_STR);
             }
-            if (Configs.getInstance().moduleHomes) {
+            if (EterniaServer.configs.moduleHomes) {
                 String result = resultSet.getString(PluginConstants.HOMES_STR);
                 if (result != null) {
                     playerProfile.homes = new ArrayList<>(Arrays.asList(result.split(":")));
                 }
             }
-            if (Configs.getInstance().moduleChat) {
+            if (EterniaServer.configs.moduleChat) {
                 playerProfile.muted = resultSet.getLong(PluginConstants.MUTED_STR);
                 playerProfile.playerDisplayName = resultSet.getString(PluginConstants.PLAYER_DISPLAY_STR);
             }

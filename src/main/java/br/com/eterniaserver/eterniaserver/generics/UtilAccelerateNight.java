@@ -1,7 +1,5 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Configs;
-
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
@@ -30,7 +28,7 @@ public class UtilAccelerateNight extends BukkitRunnable {
         final int players = plugin.getServer().getMaxPlayers();
         if (sleeping > 0) {
             int x = players / sleeping;
-            int timeRate =  Configs.getInstance().nightSpeed / x;
+            int timeRate = EterniaServer.configs.nightSpeed / x;
             if (time >= (1200 - timeRate * 1.5) && time <= 1200) {
                 world.setStorm(false);
                 world.setThundering(false);

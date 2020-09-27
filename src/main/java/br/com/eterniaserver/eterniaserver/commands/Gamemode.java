@@ -13,7 +13,7 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
-import br.com.eterniaserver.eterniaserver.Configs;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -87,26 +87,26 @@ public class Gamemode extends BaseCommand {
     private void setGamemode(Player player, GameMode gameMode, int type) {
         final String typeName = getType(type);
         player.setGameMode(gameMode);
-        Configs.getInstance().sendMessage(player, Messages.GAMEMODE_SETED, typeName);
+        EterniaServer.configs.sendMessage(player, Messages.GAMEMODE_SETED, typeName);
     }
 
     private void setGamemode(CommandSender player, Player target, GameMode gameMode, int type) {
         final String typeName = getType(type);
         target.setGameMode(gameMode);
-        Configs.getInstance().sendMessage(target, Messages.GAMEMODE_SETED, typeName);
-        Configs.getInstance().sendMessage(player, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
+        EterniaServer.configs.sendMessage(target, Messages.GAMEMODE_SETED, typeName);
+        EterniaServer.configs.sendMessage(player, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
     }
 
     private String getType(int type) {
         switch (type) {
             case 0:
-                return Configs.getInstance().gmSurvival;
+                return EterniaServer.configs.gmSurvival;
             case 1:
-                return Configs.getInstance().gmCreative;
+                return EterniaServer.configs.gmCreative;
             case 2:
-                return Configs.getInstance().gmAdventure;
+                return EterniaServer.configs.gmAdventure;
             default:
-                return Configs.getInstance().gmSpectator;
+                return EterniaServer.configs.gmSpectator;
         }
     }
 

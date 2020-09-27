@@ -11,11 +11,10 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 
-import br.com.eterniaserver.eterniaserver.Configs;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
@@ -36,9 +35,9 @@ public class Glow extends BaseCommand {
     @Description(" Ativa ou desativa o glow")
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
-            Configs.getInstance().sendMessage(player, Messages.GLOW_ENABLED);
+            EterniaServer.configs.sendMessage(player, Messages.GLOW_ENABLED);
         } else {
-            Configs.getInstance().sendMessage(player, Messages.GLOW_DISABLED);
+            EterniaServer.configs.sendMessage(player, Messages.GLOW_DISABLED);
             player.removePotionEffect(PotionEffectType.GLOWING);
         }
         player.setGlowing(!player.isGlowing());
@@ -53,7 +52,7 @@ public class Glow extends BaseCommand {
         final String playerName = player.getName();
         APIServer.getScoreboard().getTeam(colors.name()).addEntry(playerName);
         APIServer.putGlowing(playerName, colors.getColorStr());
-        Configs.getInstance().sendMessage(player, Messages.GLOW_COLOR_CHANGED, colors.getName());
+        EterniaServer.configs.sendMessage(player, Messages.GLOW_COLOR_CHANGED, colors.getName());
     }
 
 }

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eterniaserver.Configs;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.generics.*;
@@ -59,7 +58,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (Configs.getInstance().moduleClear) {
+        if (EterniaServer.configs.moduleClear) {
             int amount = 0;
             EntityType entity = event.getEntityType();
             for (Entity e : event.getEntity().getLocation().getChunk().getEntities()) {
@@ -81,7 +80,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        if (Configs.getInstance().moduleChat) {
+        if (EterniaServer.configs.moduleChat) {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
             if (APIServer.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {

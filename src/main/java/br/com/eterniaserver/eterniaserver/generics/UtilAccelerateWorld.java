@@ -1,7 +1,5 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Configs;
-
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -39,7 +37,7 @@ public class UtilAccelerateWorld implements Runnable {
     }
 
     private boolean isBlacklisted(final World world) {
-        return Configs.getInstance().blacklistedWorldsBed.contains(world.getName());
+        return EterniaServer.configs.blacklistedWorldsBed.contains(world.getName());
     }
 
     private boolean isNight(final World world) {

@@ -1,6 +1,5 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
-import br.com.eterniaserver.eterniaserver.Configs;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.ChatColor;
 
@@ -158,7 +157,7 @@ public class PluginMSGs {
     private static String putPrefix(String path) {
         String message = EterniaServer.msgConfig.getString(path);
         if (message == null) message = "&7Erro&8, &7texto &3" + path + "&7não encontrado&8.";
-        return Configs.getInstance().serverPrefix + getColor(message);
+        return EterniaServer.configs.serverPrefix + getColor(message);
     }
 
     public static String getColor(String string) {

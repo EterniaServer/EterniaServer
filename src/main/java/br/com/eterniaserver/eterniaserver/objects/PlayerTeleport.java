@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
-import br.com.eterniaserver.eterniaserver.Configs;
-
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -18,7 +17,7 @@ public class PlayerTeleport {
         this.firstLocation = player.getLocation();
         this.wantLocation = wantLocation;
         this.message = message;
-        this.cooldown = Configs.getInstance().cooldown;
+        this.cooldown = EterniaServer.configs.cooldown;
     }
 
     public boolean hasMoved() {
