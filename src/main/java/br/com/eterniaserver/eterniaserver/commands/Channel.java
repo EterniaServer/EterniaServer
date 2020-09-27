@@ -13,6 +13,8 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
@@ -37,7 +39,7 @@ public class Channel extends BaseCommand {
     @Syntax("<msg>")
     @Description(" Fale ou vá para o canal local")
     public void toLocal(Player player, @Optional String[] messages) {
-        changeChannel(0, "Local", player, messages);
+        changeChannel(0, EterniaServer.configs.chLocal, player, messages);
     }
 
     @Subcommand("global")
@@ -46,7 +48,7 @@ public class Channel extends BaseCommand {
     @CommandCompletion("@players")
     @Description(" Fale ou vá para o canal global")
     public void toGlobal(Player player, @Optional String[] messages) {
-        changeChannel(1, "Global", player, messages);
+        changeChannel(1, EterniaServer.configs.chGlobal, player, messages);
     }
 
     @Subcommand("staff")
@@ -55,14 +57,14 @@ public class Channel extends BaseCommand {
     @CommandPermission("eternia.chat.staff")
     @Description(" Fale ou vá para o canal de staffs")
     public void toStaff(Player player, @Optional String[] messages) {
-        changeChannel(2, "Staff", player, messages);
+        changeChannel(2, EterniaServer.configs.chStaff, player, messages);
     }
 
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (messages != null && messages.length == 0) {
             APIPlayer.setChannel(uuid, channel);
-            player.sendMessage(PluginMSGs.M_CHAT_C.replace(PluginConstants.CHANNEL_NAME, channelName));
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channelName);
         } else {
             int defaultChannel = APIPlayer.getChannel(uuid);
             APIPlayer.setChannel(uuid, channel);

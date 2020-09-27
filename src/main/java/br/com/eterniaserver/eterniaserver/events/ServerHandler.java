@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 import net.md_5.bungee.api.ChatColor;
@@ -84,13 +85,13 @@ public class ServerHandler implements Listener {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
             if (APIServer.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
-                player.sendMessage(PluginMSGs.M_CHATMUTED);
+                EterniaServer.configs.sendMessage(player, Messages.CHAT_CHANNELS_MUTED);
                 e.setCancelled(true);
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = APIPlayer.getMutedTime(uuid);
                 if (UtilInternMethods.stayMuted(time)) {
-                    player.sendMessage(PluginMSGs.M_CHAT_MUTED.replace(PluginConstants.TIME, UtilInternMethods.getTimeLeft(time)));
+                    EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, UtilInternMethods.getTimeLeft(time));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
@@ -127,14 +128,14 @@ public class ServerHandler implements Listener {
             final Player target = Bukkit.getPlayer(APIPlayer.getTellingPlayerName(playerName));
             if (target != null && target.isOnline()) {
                 if (APIPlayer.hasIgnoreds(playerName) && APIPlayer.areIgnored(playerName, target)) {
-                    sender.sendMessage(PluginMSGs.M_CHAT_IGNORE);
+                    EterniaServer.configs.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
                     return;
                 }
                 UtilInternMethods.sendPrivate(sender, target, msg);
                 return;
             }
         }
-        sender.sendMessage(PluginMSGs.M_CHAT_R_NO);
+        EterniaServer.configs.sendMessage(sender, Messages.CHAT_NO_ONE_TO_RESP);
     }
 
     private String canHex(final Player player, String message) {

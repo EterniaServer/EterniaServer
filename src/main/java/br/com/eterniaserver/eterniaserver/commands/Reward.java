@@ -6,6 +6,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
@@ -35,7 +36,7 @@ public class Reward extends BaseCommand {
             giveReward(APIServer.getReward(key), player);
             deleteKey(key);
         } else {
-            player.sendMessage(PluginMSGs.MSG_REWARD_INVALID);
+            EterniaServer.configs.sendMessage(player, Messages.REWARD_INVALID_KEY, key);
         }
     }
 
@@ -47,9 +48,9 @@ public class Reward extends BaseCommand {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
-            sender.sendMessage(PluginMSGs.MSG_REWARD_CREATE.replace(PluginConstants.KEY, key));
+            EterniaServer.configs.sendMessage(sender, Messages.REWARD_CREATED, key);
         } else {
-            sender.sendMessage(PluginMSGs.MSG_REWARD_NO.replace(PluginConstants.GROUP, reward));
+            EterniaServer.configs.sendMessage(sender, Messages.REWARD_NOT_FOUND, reward);
         }
     }
 

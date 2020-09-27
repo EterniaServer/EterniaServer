@@ -20,23 +20,6 @@ public class PluginMSGs {
     public static final String MSG_ERROR = putPrefix("server.chat-error");
     public static final String REMOVED_ENTITIES = putPrefix("server.entities-removeds");
 
-    public static final String MSG_BACK_NO_TELEPORT = putPrefix("teleport.back.no-tp");
-    public static final String MSG_BACK_COST = putPrefix("teleport.back.no-free");
-    public static final String MSG_BACK_FREE = putPrefix("teleport.back.free");
-
-    public static final String MSG_TELEPORT_ALL = putPrefix("teleport.tp.all");
-    public static final String MSG_TELEPORT_MOVE = putPrefix("teleport.tp.move");
-    public static final String MSG_TELEPORT_TIMING = putPrefix("teleport.tp.timing");
-    public static final String MSG_TELEPORT_YOURSELF = putPrefix("teleport.tpa.yourself");
-    public static final String MSG_TELEPORT_EXISTS = putPrefix("teleport.tpa.exists");
-    public static final String MSG_TELEPORT_SENT = putPrefix("teleport.tpa.sent");
-    public static final String MSG_TELEPORT_RECEIVED = putPrefix("teleport.tpa.received");
-    public static final String MSG_TELEPORT_ACCEPT = putPrefix("teleport.tpa.accept");
-    public static final String MSG_TELEPORT_DONE = putPrefix("teleport.tpa.done");
-    public static final String MSG_TELEPORT_NO_REQUEST = putPrefix("teleport.tpa.no-request");
-    public static final String MSG_TELEPORT_DENY = putPrefix("teleport.tpa.deny");
-    public static final String MSG_TELEPORT_DENIED = putPrefix("teleport.tpa.denied");
-
     public static final String MSG_SPAWNER_GIVE = putPrefix("spawner.give.types");
     public static final String MSG_SPAWNER_SENT = putPrefix("spawner.give.sent");
     public static final String MSG_SPAWNER_RECEIVED = putPrefix("spawner.give.received");
@@ -60,10 +43,6 @@ public class PluginMSGs {
     public static final String MSG_SPEED = putPrefix("generic.others.invalid");
     public static final String MSG_CONDENSER = putPrefix("generic.others.condenser");
 
-    public static final String MSG_REWARD_INVALID = putPrefix("reward.invalid");
-    public static final String MSG_REWARD_NO = putPrefix("reward.no-exists");
-    public static final String MSG_REWARD_CREATE = putPrefix("reward.created");
-
     public static final String MSG_MEM = putPrefix("replaces.mem");
     public static final String MSG_MEM_ONLINE = putPrefix("replaces.online");
     public static final String MSG_TPS = putPrefix("replaces.tps");
@@ -80,8 +59,6 @@ public class PluginMSGs {
 
     public static final String MSG_GOD_ENABLE = putPrefix("generic.others.god-enabled");
     public static final String MSG_GOD_DISABLE = putPrefix("generic.others.god-disabled");
-    public static final String MSG_RELOAD_START = putPrefix("generic.others.reload-start");
-    public static final String MSG_RELOAD_FINISH = putPrefix("generic.others.reload-finish");
 
     public static final String ITEM_LORE_CLEAR = putPrefix("item.lore.clear");
     public static final String ITEM_LORE_ADD = putPrefix("item.lore.add");
@@ -106,33 +83,6 @@ public class PluginMSGs {
     public static final String M_HOME_CREATED = putPrefix("home.created");
     public static final String M_HOME_LIMIT = putPrefix("home.limit");
     public static final String M_HOME_EXCEEDED = putPrefix("home.exceeded");
-
-    public static final String M_CHAT_MUTED = putPrefix("chat.muted");
-    public static final String M_CHATMUTED = putPrefix("chat.chatmuted");
-    public static final String M_CHAT_D = putPrefix("chat.cm-d");
-    public static final String M_CHAT_E = putPrefix("chat.cm-e");
-    public static final String M_CHAT_MUTEBROAD = putPrefix("chat.mutebroad");
-    public static final String M_CHAT_UNMUTEBROAD = putPrefix("chat.unmutebroad");
-    public static final String M_CHAT_MUTET = putPrefix("chat.mutetbroad");
-    public static final String M_CHAT_NOONE = putPrefix("chat.noone");
-    public static final String M_CHAT_TO = getColor(EterniaServer.msgConfig.getString("chat.tell.to-player"));
-    public static final String M_CHAT_FROM = getColor(EterniaServer.msgConfig.getString("chat.tell.from-player"));
-    public static final String M_CHAT_R_NO = putPrefix("chat.tell.no-one");
-    public static final String MSG_CHAT_LOCKED = putPrefix("chat.tell.locked");
-    public static final String MSG_CHAT_UNLOCKED = putPrefix("chat.tell.unlocked");
-    public static final String M_CHAT_NO_CHANGE = putPrefix("chat.no-change");
-    public static final String M_CHAT_NICK_DENY = putPrefix("chat.nick-deny");
-    public static final String M_CHAT_NEWNICK = putPrefix("chat.newnick");
-    public static final String M_CHAT_REMOVE_NICK = putPrefix("chat.remove-nick");
-    public static final String M_CHAT_NICK_MONEY = putPrefix("chat.nick-money");
-    public static final String M_CHAT_NICK_MONEY_2 = putPrefix("chat.nick-money-2");
-    public static final String M_CHAT_SPY_D = putPrefix("chat.spyd");
-    public static final String M_CHAT_SPY_E = putPrefix("chat.spye");
-    public static final String M_CHAT_ADVICE = putPrefix("chat.global-advice");
-    public static final String M_CHAT_C = putPrefix("chat.channelc");
-    public static final String M_CHAT_IGNORED = putPrefix("chat.ignored");
-    public static final String M_CHAT_IGNORE = putPrefix("chat.ignore-sucess");
-    public static final String M_CHAT_DENY = putPrefix("chat.ignore-remove");
 
     public static final String M_KIT_NO_EXISTS = putPrefix("kit.no-exists");
     public static final String M_KIT_LIST = putPrefix("kit.list");

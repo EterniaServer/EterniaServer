@@ -32,6 +32,13 @@ public class EterniaServer extends JavaPlugin {
         files.loadMessages();
         files.loadDatabase();
         files.loadPlaceHolders();
+        files.loadBlocksRewards();
+        files.loadCommands();
+        files.loadCashGui();
+        files.loadChat();
+        files.loadKits();
+        files.loadRewards();
+        files.loadSchedules();
 
         new Managers(this);
         new VaultHook(this);
@@ -41,10 +48,6 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerHandler(), this);
         this.getServer().getPluginManager().registerEvents(new ServerHandler(), this);
 
-    }
-
-    public Files getFiles() {
-        return files;
     }
 
 }

@@ -5,7 +5,9 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
@@ -238,7 +240,7 @@ public interface APIPlayer {
     static void updateNickName(Player player, UUID uuid) {
         PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
         player.setDisplayName(playerProfile.getTempNick());
-        player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.M_CHAT_NEWNICK));
+        EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CHANGED, player.getDisplayName());
         playerProfile.setPlayerDisplayName(playerProfile.getTempNick());
         saveToSQL(uuid);
     }
@@ -255,21 +257,23 @@ public interface APIPlayer {
 
         if (string.equals(PluginConstants.CLEAR_STR)) {
             player.setDisplayName(playerName);
-            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CLEAR);
             return;
-        }
-
-        if (player.hasPermission("eternia.chat.color.nick")) {
-            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, PluginMSGs.getColor(string)).replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.configs.nickCost)));
-        } else {
-            player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY.replace(PluginConstants.NEW_NAME, string).replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.configs.nickCost)));
         }
 
         final PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
 
+        if (player.hasPermission("eternia.chat.color.nick")) {
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CHANGE_REQUEST, PluginMSGs.getColor(string), String.valueOf(EterniaServer.configs.nickCost));
+            playerProfile.setTempNick(string);
+        } else {
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CHANGE_REQUEST, string, String.valueOf(EterniaServer.configs.nickCost));
+            playerProfile.setTempNick(ChatColor.stripColor(string));
+        }
+
         playerProfile.setTempNick(string);
         playerProfile.setNickRequest(true);
-        player.sendMessage(PluginMSGs.M_CHAT_NICK_MONEY_2);
+        EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_USE);
     }
 
     static void staffNick(final OnlinePlayer target, final Player player, final String string) {
@@ -283,7 +287,7 @@ public interface APIPlayer {
             final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
             player.setDisplayName(playerName);
             PluginVars.playerProfile.get(uuid).setPlayerDisplayName(playerName);
-            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CLEAR);
             saveToSQL(uuid);
             return;
         }
@@ -294,13 +298,13 @@ public interface APIPlayer {
     private static void changeNickName(final Player target, final Player player, final String string) {
         final String targetName = target.getName();
         if (string.equals(PluginConstants.CLEAR_STR)) {
+            EterniaServer.configs.sendMessage(target, Messages.CHAT_NICK_CLEAR_BY, player.getName(), player.getDisplayName());
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CLEAR_FROM, targetName, target.getDisplayName());
             target.setDisplayName(targetName);
-            target.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
-            player.sendMessage(PluginMSGs.M_CHAT_REMOVE_NICK);
         } else {
+            EterniaServer.configs.sendMessage(target, Messages.CHAT_NICK_CHANGED_BY, string, player.getName(), player.getDisplayName());
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CHANGED_FROM, string, player.getName(), player.getDisplayName());
             target.setDisplayName(string);
-            player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CHAT_NEWNICK));
-            target.sendMessage(UtilInternMethods.putName(target, PluginMSGs.M_CHAT_NEWNICK));
         }
     }
 

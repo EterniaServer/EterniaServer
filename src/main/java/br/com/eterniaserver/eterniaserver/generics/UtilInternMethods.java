@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 import br.com.eterniaserver.eterniaserver.objects.SubPlaceholder;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -74,7 +75,7 @@ public class UtilInternMethods {
             }
         }
         if (pes <= 1) {
-            player.sendMessage(PluginMSGs.M_CHAT_NOONE);
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_NO_ONE_NEAR);
         }
     }
 
@@ -128,14 +129,8 @@ public class UtilInternMethods {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();
         PluginVars.tell.put(target.getName(), player.getName());
-        player.sendMessage(PluginMSGs.M_CHAT_TO.
-                replace(PluginConstants.PLAYER, playerDisplay).
-                replace(PluginConstants.TARGET, targetDisplay).
-                replace(PluginConstants.MESSAGE, s));
-        target.sendMessage(PluginMSGs.M_CHAT_FROM.
-                replace(PluginConstants.PLAYER, targetDisplay).
-                replace(PluginConstants.TARGET, playerDisplay).
-                replace(PluginConstants.MESSAGE, s));
+        player.sendMessage(EterniaServer.configs.getMessage(Messages.CHAT_TELL_TO, false, player.getName(), playerDisplay, target.getName(), targetDisplay));
+        target.sendMessage(EterniaServer.configs.getMessage(Messages.CHAT_TELL_FROM, false, player.getName(), playerDisplay, target.getName(), targetDisplay));
         for (String p : PluginVars.spy.keySet()) {
             final Boolean b = PluginVars.spy.getOrDefault(p, false);
             if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {

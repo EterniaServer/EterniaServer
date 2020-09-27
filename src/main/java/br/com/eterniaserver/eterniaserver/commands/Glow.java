@@ -18,7 +18,6 @@ import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-
 @CommandAlias("glow")
 @CommandPermission("eternia.glow")
 public class Glow extends BaseCommand {

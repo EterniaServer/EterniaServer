@@ -86,30 +86,25 @@ public class Managers {
     }
 
     private void loadBlockRewardsManager() {
-        if (sendModuleStatus(EterniaServer.configs.moduleBlock, "Block-Reward")) {
-            plugin.getFiles().loadBlocksRewards();
-        }
+        sendModuleStatus(EterniaServer.configs.moduleBlock, "Block-Reward");
     }
 
     private void loadCommandsManager() {
-        if (sendModuleStatus(EterniaServer.configs.moduleCommands, "Commands")) {
-            plugin.getFiles().loadCommands();
-        }
+        sendModuleStatus(EterniaServer.configs.moduleCommands, "Commands");
     }
 
     private void loadCashManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleCash, "Cash")) {
-            plugin.getFiles().loadCashGui();
             EterniaLib.getManager().registerCommand(new Cash());
         }
     }
 
     private void loadChatManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleChat, "Chat")) {
-            plugin.getFiles().loadChat();
             EterniaLib.getManager().registerCommand(new Channel());
             EterniaLib.getManager().registerCommand(new Mute());
             EterniaLib.getManager().registerCommand(new Chat(plugin));
+            EterniaLib.getManager().registerCommand(new Nick());
             new UtilAdvancedChatTorch();
         }
     }
@@ -146,7 +141,6 @@ public class Managers {
 
     private void loadKitManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleKits, "Kits")) {
-            plugin.getFiles().loadKits();
             EterniaLib.getManager().registerCommand(new Kit());
         }
     }
@@ -168,7 +162,6 @@ public class Managers {
 
     private void loadRewardsManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleRewards, "Rewards")) {
-            plugin.getFiles().loadRewards();
             EterniaLib.getManager().registerCommand(new Reward());
         }
     }
@@ -188,7 +181,6 @@ public class Managers {
 
     private void loadScheduleTasks() {
         if (sendModuleStatus(EterniaServer.configs.moduleSchedule, "Schedule")) {
-            plugin.getFiles().loadSchedules();
             long start = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.of(
                     EterniaServer.scheduleConfig.getInt("schedule.hour"),
                     EterniaServer.scheduleConfig.getInt("schedule.minute"),

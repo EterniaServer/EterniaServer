@@ -170,15 +170,6 @@ public class PlayerHandler implements Listener {
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
-    public void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (event.isCancelled()) return;
-        final Player player = event.getPlayer();
-        if (EterniaServer.configs.moduleTeleports) {
-            APIServer.putBackLocation(player.getName(), player.getLocation());
-        }
-    }
-
-    @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         final Player player = event.getPlayer();
         if (EterniaServer.configs.moduleElevator && player.hasPermission("eternia.elevator") && !player.isSneaking()) {

@@ -116,11 +116,11 @@ public class PluginTicks extends BukkitRunnable {
                         player.sendMessage(playerTeleport.getMessage());
                         PluginVars.teleports.remove(player);
                     } else {
-                        player.sendMessage(PluginMSGs.MSG_TELEPORT_TIMING.replace(PluginConstants.COOLDOWN, String.valueOf(playerTeleport.getCountdown())));
+                        EterniaServer.configs.sendMessage(player, Messages.TELEPORT_TIMING, String.valueOf(playerTeleport.getCountdown()));
                         playerTeleport.decreaseCountdown();
                     }
                 } else {
-                    player.sendMessage(PluginMSGs.MSG_TELEPORT_MOVE);
+                    EterniaServer.configs.sendMessage(player, Messages.TELEPORT_MOVED);
                     PluginVars.teleports.remove(player);
                 }
             } else {

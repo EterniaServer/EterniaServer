@@ -122,20 +122,6 @@ public class Generic extends BaseCommand {
         sendConsole(PluginMSGs.MSG_MEM_ONLINE.replace(PluginConstants.HOURS, String.valueOf(getRuntime.getHours())).replace(PluginConstants.MINUTE, String.valueOf(getRuntime.getMinutes())).replace(PluginConstants.SECONDS, String.valueOf(getRuntime.getSeconds())));
     }
 
-    @CommandAlias("reloadeternia|eterniareload")
-    @CommandPermission("eternia.reload")
-    public void onReload(CommandSender sender) {
-        sender.sendMessage(PluginMSGs.MSG_RELOAD_START);
-        plugin.getFiles().loadMessages();
-        plugin.getFiles().loadBlocksRewards();
-        plugin.getFiles().loadCommands();
-        plugin.getFiles().loadChat();
-        plugin.getFiles().loadKits();
-        plugin.getFiles().loadRewards();
-        plugin.getFiles().loadDatabase();
-        sender.sendMessage(PluginMSGs.MSG_RELOAD_FINISH);
-    }
-
     @CommandAlias("god")
     @Syntax("<jogador>")
     @CommandPermission("eternia.god")

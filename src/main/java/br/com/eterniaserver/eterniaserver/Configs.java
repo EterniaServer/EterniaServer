@@ -104,6 +104,10 @@ public class Configs {
     public final String cnYellow;
     public final String cnWhite;
 
+    public final String chLocal;
+    public final String chGlobal;
+    public final String chStaff;
+
     protected Configs() {
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(CONFIG_FILE_PATH));
@@ -188,6 +192,10 @@ public class Configs {
         this.cnLightPurple = config.getString("strings.cn.lightpurple", "Rosa");
         this.cnYellow = config.getString("strings.cn.yellow", "Amarelo");
         this.cnWhite = config.getString("strings.cn.white", "Branco");
+
+        this.chLocal = config.getString("strings.ch.local", "Local");
+        this.chGlobal = config.getString("strings.ch.global", "Global");
+        this.chStaff = config.getString("strings.ch.staff", "Staff");
 
         List<String> defaultMaterialBlocksList = new ArrayList<>();
         for (Material material : this.elevatorMaterials) {
@@ -316,6 +324,10 @@ public class Configs {
         outConfig.set("strings.cn.yellow", this.cnYellow);
         outConfig.set("strings.cn.white", this.cnWhite);
 
+        outConfig.set("strings.ch.local", this.chLocal);
+        outConfig.set("strings.ch.global", this.chGlobal);
+        outConfig.set("strings.ch.staff", this.chStaff);
+
         try {
             outConfig.save(CONFIG_FILE_PATH);
         } catch (IOException exception) {
@@ -397,29 +409,63 @@ public class Configs {
         this.addDefault(defaults, Messages.WARP_SHOP_PLAYER_TELEPORTED, "Você foi teleportado até a loja de$3{0}$8.", "0: nome da loja");
         this.addDefault(defaults, Messages.WARP_SHOP_NOT_FOUND, "$3{1}$7 não possui loja$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.WARP_SHOP_CENTRAL_NOT_FOUND, "$3Loja $7não encontrada$8.", null);
+        this.addDefault(defaults, Messages.TELEPORT_ALL_PLAYERS, "$3{1}$7 teleportou todos jogadores até si$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_NOT_REQUESTED, "Nenhum pedido de teleporte solicitado$8.", null);
+        this.addDefault(defaults, Messages.TELEPORT_TARGET_ACCEPT, "$3{1}$7 aceitou o seu pedido de tpa$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_GOING_TO_PLAYER, "Você foi teleportado até $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_ACCEPT, "Você aceitou o pedido de tpa de $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_TARGET_OFFLINE, "O usuário que fez o pedido de tpa estáo offline$8.", null);
+        this.addDefault(defaults, Messages.TELEPORT_TARGET_DENIED, "$3{1}$7 negou o seu pedido de tpa$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_DENIED, "Você negou o pedido de tpa de $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_CANT_YOURSELF, "Você não pode enviar um pedido para si mesmo$8.", null);
+        this.addDefault(defaults, Messages.TELEPORT_ALREADY_REQUESTED, "$3{1}$7 já possui um pedido de tpa$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_SENT, "Você enviou um pedido de tpa para $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_RECEIVED, "Você recebeu um pedido de tpa de $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.TELEPORT_MOVED, "Você se moveu e por isso o teleporte foi cancelado$8.", null);
+        this.addDefault(defaults, Messages.TELEPORT_TIMING, "Você irá ser teleportado em $3{0}$7 segundos$8.", "0: tempo para ser teleportado");
+        this.addDefault(defaults, Messages.TELEPORT_BACK_NOT_DIED, "Você ainda não morreu para poder usar esse comando$8.", null);
+        this.addDefault(defaults, Messages.TELEPORT_BACK_WITH_COST, "Você foi teleportado até o local de sua morte por $3{0}$8.", "0: custo do back");
+        this.addDefault(defaults, Messages.TELEPORT_BACK_WITHOUT_COST, "Você foi teleportado até o local de sua morte de graça$8.", null);
+        this.addDefault(defaults, Messages.REWARD_INVALID_KEY, "$3{0}$7 não é uma chave válida$8.", "0: chave");
+        this.addDefault(defaults, Messages.REWARD_CREATED, "Reward criado com sucesso chave $3{0}$8.", "0: chave");
+        this.addDefault(defaults, Messages.REWARD_NOT_FOUND, "Não foi encontrado nenhum reward com o nome de $3{0}$8.", "0: reward");
+        this.addDefault(defaults, Messages.CHAT_NICK_CHANGED, "O seu nick foi alterado com sucesso para $3{0}$8.", "0: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_NICK_CHANGED_BY, "$3{2}$7alterou seu nick para $3{0}$8.", "0: novo apelido; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_NICK_CHANGED_FROM, "Você alterou o apelido de $3{2}$7 para $3{0}", "0: novo apelido; 1: nome do jogador 2: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_NICK_CLEAR, "Seu apelido foi removido$8.", null);
+        this.addDefault(defaults, Messages.CHAT_NICK_CLEAR_BY, "Seu apelido foi removido por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_NICK_CLEAR_FROM, "Você removeu o apelido de $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_NICK_CHANGE_REQUEST, "Seu apelido será definido como $3{0}$7 por $3{1}$8.", "0: apelido do jogador; 1: custo");
+        this.addDefault(defaults, Messages.CHAT_NICK_USE, "Para aceitar seu novo apelido use $6/nick accept $7ou $6/nick deny$8.", null);
+        this.addDefault(defaults, Messages.CHAT_NICK_NOT_REQUESTED, "Você não tem nenhum pedido de mudança de apelido$8.", null);
+        this.addDefault(defaults, Messages.CHAT_NICK_DENIED, "Você cancelou a mudança de apelido$8.", null);
+        this.addDefault(defaults, Messages.CHAT_BROADCAST, "$7{0}", "0: mensagem");
+        this.addDefault(defaults, Messages.CHAT_IGNORE, "Você agora está ignorando o $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_UNIGNORE, "Você agora não está ignorando o $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_SPY_ENABLED, "Chat spy ativado$8.", null);
+        this.addDefault(defaults, Messages.CHAT_SPY_DISABLED, "Chat spy desativado$8.", null);
+        this.addDefault(defaults, Messages.CHAT_ARE_IGNORED, "Este usuário está ignorando você$8.", null);
+        this.addDefault(defaults, Messages.CHAT_NO_ONE_TO_RESP, "Você não possui ninguém para responder$8.", null);
+        this.addDefault(defaults, Messages.CHAT_CHANNEL_CHANGED, "Você foi para o canal $3{0}$8.", "0: nome do canal");
+        this.addDefault(defaults, Messages.CHAT_TELL_LOCKED, "Você travou a conversa privada com $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_TELL_UNLOCKED, "Você destravou a conversa privada com $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_ARE_MUTED, "Você está mutado pelos próximos $3{0}$8.", "0: tempo restante");
+        this.addDefault(defaults, Messages.CHAT_NO_ONE_NEAR, "Não há ninguém para ti ouvir$8.", null);
+        this.addDefault(defaults, Messages.CHAT_TELL_TO, "$8[$6P$8]$6 {1} -> {3} ➤ {0}", "0: mensagem; 1: nome do enviante; 2: apelido do enviante; 3: nome do recebinte; 4: apelido do recebinte");
+        this.addDefault(defaults, Messages.CHAT_TELL_FROM, "$8[$6P$8]$6 {1} <- {3} ➤ {0}", "0: mensagem; 1: nome do recebinte; 2: apelido do recebinte; 3: nome do enviante; 4: apelido do enviante");
+        this.addDefault(defaults, Messages.CHAT_CHANNELS_MUTED, "Todos os canais estão silenciados$8.", null);
+        this.addDefault(defaults, Messages.CHAT_CHANNELS_ENABLED, "$3{1}$7 mutou todos os canais$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_CHANNELS_DISABLED, "$3{1}$7 desmutou todos os canais$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.CHAT_BROADCAST_TEMP_MUTE, "$3{1}$7 foi mutado em $3{2}$7 por $3{4}$7 motivo$8:$3{5}", "0: nome do mutado; 1: apelido do mutado; 2: tempo mutado; 3: nome de quem mutou; 4: apelido de quem mutou; 5: motivo");
+        this.addDefault(defaults, Messages.CHAT_BROADCAST_UNMUTE, "$3{1}$7 foi desmutado por $3{3}$8.", "0: nome do mutado; 1: apelido do mutado; 2: nome de quem mutou; 3: apelido de quem mutou");
+        this.addDefault(defaults, Messages.CHAT_BROADCAST_MUTE, "$3{1}$7 foi mutado permanentemente por $3{3}$7 motivo$8:$3{4}", "0: nome do mutado; 1: apelido do mutado; 2: nome de quem mutou; 3: apelido de quem mutou; 4: motivo");
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(MESSAGES_FILE_PATH));
 
         for (Messages messagesEnum : economiesID) {
             CustomizableMessage messageData = defaults.get(messagesEnum.name());
 
-            String path;
-
-            if (messagesEnum.name().contains("ECO")) {
-                path = "eco.";
-            } else if (messagesEnum.name().contains("SERVER")) {
-                path = "server.";
-            } else if (messagesEnum.name().contains("CASH")) {
-                path = "cash.";
-            } else if (messagesEnum.name().contains("AFK")) {
-                path = "afk.";
-            } else if (messagesEnum.name().contains("EXP")) {
-                path = "exp.";
-            } else if (messagesEnum.name().contains("WARP")) {
-                path = "warp.";
-            } else {
-                path = "generic.";
-            }
+            final String path = getPath(messagesEnum);
 
             if (messageData == null) {
                 messageData = new CustomizableMessage(messagesEnum, this.serverPrefix +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
@@ -472,6 +518,29 @@ public class Configs {
             return this.serverPrefix + message;
         }
         return message;
+    }
+
+    private String getPath(Messages messagesEnum) {
+        switch (messagesEnum.name().split("_")[0].hashCode()) {
+            case -1852497085:
+                return "server.";
+            case -577575125:
+                return "teleport.";
+            case 64710:
+                return "afk.";
+            case 68465:
+                return "eco.";
+            case 69117:
+                return "exp.";
+            case 2061107:
+                return "cash.";
+            case 2067288:
+                return "chat.";
+            case 2656904:
+                return "warp.";
+            default:
+                return "generic.";
+        }
     }
 
 }
