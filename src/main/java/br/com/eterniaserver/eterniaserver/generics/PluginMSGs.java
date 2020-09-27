@@ -13,29 +13,12 @@ public class PluginMSGs {
     public static final String MSG_MODULE_DISABLE = putPrefix("modules.disable");
     public static final String MSG_NO_MONEY = putPrefix("server.no-money");
     public static final String MSG_LOAD_DATA = putPrefix("server.load-data");
-    public static final String MSG_NO_PERM = putPrefix("server.no-perm");
-    public static final String MSG_IN_TELEPORT = putPrefix("server.telep");
     public static final String MSG_JOIN = putPrefix("server.join");
     public static final String MSG_LEAVE = putPrefix("server.leave");
     public static final String MSG_TIMING = putPrefix("server.timing");
     public static final String MSG_NETHER_TRAP = putPrefix("server.nether-trap");
     public static final String MSG_ERROR = putPrefix("server.chat-error");
     public static final String REMOVED_ENTITIES = putPrefix("server.entities-removeds");
-
-    public static final String MSG_SPAWN_CREATED = putPrefix("teleport.spawn.created");
-    public static final String MSG_SPAWN_NO_EXISTS = putPrefix("teleport.spawn.no-exists");
-    public static final String MSG_SPAWN_TELEPORT_TARGET = putPrefix("teleport.spawn.tp-target");
-    public static final String SPAWN_BY = putPrefix("teleport.spawn.tp-you");
-
-    public static final String MSG_SHOP_CREATED = putPrefix("teleport.shop.created");
-    public static final String MSG_SHOP_DONE = putPrefix("teleport.shop.done");
-    public static final String MSG_SHOP_NO_EXISTS = putPrefix("teleport.shop.no-exists");
-
-    public static final String MSG_WARP_NO_EXISTS = putPrefix("teleport.warp.no-exists");
-    public static final String MSG_WARP_DELETED = putPrefix("teleport.warp.deleted");
-    public static final String MSG_WARP_CREATED = putPrefix("teleport.warp.created");
-    public static final String MSG_WARP_DONE = putPrefix("teleport.warp.done");
-    public static final String MSG_WARP_LIST = putPrefix("teleport.warp.list");
 
     public static final String MSG_BACK_NO_TELEPORT = putPrefix("teleport.back.no-tp");
     public static final String MSG_BACK_COST = putPrefix("teleport.back.no-free");

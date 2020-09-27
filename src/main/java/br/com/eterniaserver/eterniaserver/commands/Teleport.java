@@ -6,6 +6,7 @@ import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.Bukkit;
@@ -59,7 +60,7 @@ public class Teleport extends BaseCommand {
     public void onTeleportToPlayer(Player player, OnlinePlayer target) {
         final Player targetP = target.getPlayer();
         if (APIPlayer.isTeleporting(player)) {
-            player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
+            EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
         } else {
             if (targetP != player) {
                 final String playerName = player.getName();
@@ -98,7 +99,7 @@ public class Teleport extends BaseCommand {
 
     private boolean canBack(final Player player) {
         if (APIPlayer.isTeleporting(player)) {
-            player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
+            EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             return false;
         }
         return true;

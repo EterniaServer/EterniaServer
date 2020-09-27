@@ -5,6 +5,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
@@ -48,7 +49,7 @@ public class Kit extends BaseCommand {
                     player.sendMessage(PluginMSGs.MSG_TIMING.replace(PluginConstants.COOLDOWN, UtilInternMethods.getTimeLeft(cooldown, cd)));
                 }
             } else {
-                player.sendMessage(PluginMSGs.MSG_NO_PERM.replace(PluginConstants.KIT_NAME, kit));
+                EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
             player.sendMessage(PluginMSGs.M_KIT_NO_EXISTS.replace(PluginConstants.KIT_NAME, kit));

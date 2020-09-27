@@ -10,6 +10,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.ChatColor;
@@ -49,17 +50,17 @@ public class Home extends BaseCommand {
             if (locationExists(location, player) && !APIPlayer.isTeleporting(player)) {
                 APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
             } else if (APIPlayer.isTeleporting(player)) {
-                player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
+                EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             }
         } else if (player.hasPermission("eternia.home.other")) {
             Location location = APIServer.getLocation(nome.toLowerCase() + "." + target.getPlayer().getName());
             if (locationExists(location, player) && !APIPlayer.isTeleporting(player)) {
                 APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
             } else if (APIPlayer.isTeleporting(player)) {
-                player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
+                EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             }
         } else {
-            player.sendMessage(PluginMSGs.MSG_NO_PERM);
+            EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
         }
     }
 
@@ -76,7 +77,7 @@ public class Home extends BaseCommand {
                 }
                 player.sendMessage(PluginMSGs.M_HOME_LIST.replace(PluginConstants.HOMES, PluginMSGs.getColor(accounts.toString())));
             } else {
-                player.sendMessage(PluginMSGs.MSG_NO_PERM);
+                EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
             List<String> list = APIPlayer.getHomes(UUIDFetcher.getUUIDOf(player.getName()));

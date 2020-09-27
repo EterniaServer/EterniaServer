@@ -5,6 +5,8 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,7 +39,7 @@ public class Inventory extends BaseCommand {
             if (player.hasPermission("eternia.enderchest.other")) {
                 player.openInventory(target.getPlayer().getEnderChest());
             } else {
-                player.sendMessage(PluginMSGs.MSG_NO_PERM);
+                EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         }
     }

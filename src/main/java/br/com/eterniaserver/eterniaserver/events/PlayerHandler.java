@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
@@ -59,7 +60,7 @@ public class PlayerHandler implements Listener {
                 final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
 
                 if (APIPlayer.isTeleporting(player)) {
-                    player.sendMessage(PluginMSGs.MSG_IN_TELEPORT);
+                    EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
                 } else {
                     APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
                 }

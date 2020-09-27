@@ -10,6 +10,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -102,7 +103,7 @@ public class Chat extends BaseCommand {
             if (target == null) {
                 APIPlayer.playerNick(player, string);
             } else {
-                player.sendMessage(PluginMSGs.MSG_NO_PERM);
+                EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
             APIPlayer.staffNick(target, player, string);

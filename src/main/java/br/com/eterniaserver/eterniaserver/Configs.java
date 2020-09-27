@@ -333,6 +333,7 @@ public class Configs {
 
         this.addDefault(defaults, Messages.SERVER_NO_PERM, "Você não possui permissão para isso$8.", null);
         this.addDefault(defaults, Messages.SERVER_NO_PLAYER, "Esse jogador não existe$8.", null);
+        this.addDefault(defaults, Messages.SERVER_IN_TELEPORT, "Você já está em teleporte$8.", null);
         this.addDefault(defaults, Messages.ECO_PAY, "Você pagou $3{0} $7para $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
         this.addDefault(defaults, Messages.ECO_PAY_RECEIVED, "Você recebeu $3{0} $7de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
         this.addDefault(defaults, Messages.ECO_NO_MONEY, "Você não possui todo esse dinheiro$8.", null);
@@ -381,6 +382,21 @@ public class Configs {
         this.addDefault(defaults, Messages.EXP_DEPOSIT, "Você depositou $3{0}$7 níveis$8.", "0: quantia de nível");
         this.addDefault(defaults, Messages.GAMEMODE_SETED, "Seu modo de jogo foi definido para {0}$8.", "0: modo de jogo");
         this.addDefault(defaults, Messages.GAMEMODE_SET_FROM, "O modo de jogo de $3{2}$7 foi definido para {0}$8.", "0: modo de jogo; 1: nome do jogador; 2: apelido do jogador");
+        this.addDefault(defaults, Messages.WARP_TELEPORTED, "Você foi teleportado até o $3{0}$8.", "0: nome da warp");
+        this.addDefault(defaults, Messages.WARP_CREATED, "A warp $3{0}$7 foi criada com sucesso$8.", "0: nome da warp");
+        this.addDefault(defaults, Messages.WARP_DELETED, "A warp $3{0}$7 foi deletada$8.", "0: nome da warp");
+        this.addDefault(defaults, Messages.WARP_NOT_FOUND, "A warp $3{0}$7 não existe$8.", "0: nome da warp");
+        this.addDefault(defaults, Messages.WARP_LIST, "Warps$8: $3{0}$8.", "0: lista de warps");
+        this.addDefault(defaults, Messages.WARP_SPAWN_TELEPORTED, "Você foi teleportado até o $3Spawn$8.", null);
+        this.addDefault(defaults, Messages.WARP_SPAWN_TELEPORT_TARGET, "Você teleportou $3{1}$7 até o $3Spawn$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.WARP_SPAWN_TELEPORTED_BY, "Você foi teleportado até o $3Spawn$7 por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.WARP_SPAWN_CREATED, "$3Spawn $7definido com sucesso$8.", null);
+        this.addDefault(defaults, Messages.WARP_SPAWN_NOT_FOUND, "O $3Spawn $7não foi definido ainda$8.", null);
+        this.addDefault(defaults, Messages.WARP_SHOP_CREATED, "$3Loja $7definida com sucesso$8.", null);
+        this.addDefault(defaults, Messages.WARP_SHOP_TELEPORTED, "Você foi teleportado até a $3Loja$8.", null);
+        this.addDefault(defaults, Messages.WARP_SHOP_PLAYER_TELEPORTED, "Você foi teleportado até a loja de$3{0}$8.", "0: nome da loja");
+        this.addDefault(defaults, Messages.WARP_SHOP_NOT_FOUND, "$3{1}$7 não possui loja$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.WARP_SHOP_CENTRAL_NOT_FOUND, "$3Loja $7não encontrada$8.", null);
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(MESSAGES_FILE_PATH));
 
@@ -399,6 +415,8 @@ public class Configs {
                 path = "afk.";
             } else if (messagesEnum.name().contains("EXP")) {
                 path = "exp.";
+            } else if (messagesEnum.name().contains("WARP")) {
+                path = "warp.";
             } else {
                 path = "generic.";
             }

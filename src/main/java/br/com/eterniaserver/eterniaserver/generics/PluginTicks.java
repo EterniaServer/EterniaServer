@@ -76,7 +76,7 @@ public class PluginTicks extends BukkitRunnable {
                 PluginVars.playersInPortal.put(playerName, 10);
             } else if (PluginVars.playersInPortal.get(playerName) == 1) {
                 runSync(() -> PaperLib.teleportAsync(player, getWarp()));
-                player.sendMessage(PluginMSGs.MSG_WARP_DONE);
+                EterniaServer.configs.sendMessage(player, Messages.WARP_SPAWN_TELEPORTED);
             } else if (time > 1) {
                 PluginVars.playersInPortal.put(playerName, time - 1);
                 if ((time - 1) < 5) {

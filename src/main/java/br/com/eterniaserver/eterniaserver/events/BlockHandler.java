@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.PluginVars;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
@@ -72,7 +73,7 @@ public class BlockHandler implements Listener {
                 player.sendMessage(PluginMSGs.MSG_SPAWNER_SILK);
             }
         } else if (!player.hasPermission("eternia.spawners.break") && material == Material.SPAWNER) {
-            player.sendMessage(PluginMSGs.MSG_NO_PERM);
+            EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             event.setCancelled(true);
         } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {
             player.sendMessage(PluginMSGs.MSG_SPAWNER_BLOCKED);

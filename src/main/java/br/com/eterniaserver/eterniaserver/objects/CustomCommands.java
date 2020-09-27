@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.command.Command;
@@ -43,7 +44,7 @@ public class CustomCommands extends AbstractCommand {
                 player.sendMessage(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(player, line)));
             }
         } else {
-            player.sendMessage(PluginMSGs.MSG_NO_PERM);
+            EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
         }
     }
 

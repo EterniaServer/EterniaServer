@@ -153,7 +153,7 @@ public class Generic extends BaseCommand {
         final String worldName = player.getWorld().getName();
 
         if ((worldName.equals("evento") || worldName.equals("world_evento")) && !player.hasPermission("eternia.fly.evento")) {
-            player.sendMessage(PluginMSGs.MSG_NO_PERM);
+            EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             return;
         }
 
@@ -217,7 +217,7 @@ public class Generic extends BaseCommand {
                 player.sendMessage(PluginMSGs.MSG_FEEDED_TARGET.replace(PluginConstants.TARGET, targetP.getDisplayName()));
                 targetP.sendMessage(PluginMSGs.MSG_FEEDED);
             } else {
-                player.sendMessage(PluginMSGs.MSG_NO_PERM);
+                EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         }
     }
