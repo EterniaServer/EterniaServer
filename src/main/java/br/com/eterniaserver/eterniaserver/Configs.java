@@ -22,100 +22,92 @@ public class Configs {
 
     private static Configs instance;
 
-    protected Configs() {
-
-        loadConfig();
-        loadMessages();
-
-        instance = this;
-
-    }
-
     private String[] messages;
 
-    public boolean moduleBed;
-    public boolean moduleBlock;
-    public boolean moduleCash;
-    public boolean moduleChat;
-    public boolean moduleClear;
-    public boolean moduleCommands;
-    public boolean moduleEconomy;
-    public boolean moduleElevator;
-    public boolean moduleExperience;
-    public boolean moduleHomes;
-    public boolean moduleKits;
-    public boolean moduleSpawners;
-    public boolean moduleTeleports;
-    public boolean moduleRewards;
-    public boolean moduleSchedule;
+    public final boolean moduleBed;
+    public final boolean moduleBlock;
+    public final boolean moduleCash;
+    public final boolean moduleChat;
+    public final boolean moduleClear;
+    public final boolean moduleCommands;
+    public final boolean moduleEconomy;
+    public final boolean moduleElevator;
+    public final boolean moduleExperience;
+    public final boolean moduleHomes;
+    public final boolean moduleKits;
+    public final boolean moduleSpawners;
+    public final boolean moduleTeleports;
+    public final boolean moduleRewards;
+    public final boolean moduleSchedule;
 
-    public String afkPlaceholder;
-    public String godPlaceholder;
+    public final String afkPlaceholder;
+    public final String godPlaceholder;
 
-    public String tableKits;
-    public String tablePlayer;
-    public String tableRewards;
-    public String tableLocations;
+    public final String tableKits;
+    public final String tablePlayer;
+    public final String tableRewards;
+    public final String tableLocations;
 
-    public boolean asyncCheck;
-    public int pluginTicks;
-    public int scheduleThreads;
-    public int afkTimer;
-    public boolean afkKick;
-    public int cooldown;
-    public int pvpTime;
-    public int clearRange;
-    public String serverPrefix;
+    public final boolean asyncCheck;
+    public final int pluginTicks;
+    public final int scheduleThreads;
+    public final int afkTimer;
+    public final boolean afkKick;
+    public final int cooldown;
+    public final int pvpTime;
+    public final int clearRange;
+    public final String serverPrefix;
 
-    public List<Material> elevatorMaterials = new ArrayList<>();
-    public int elevatorMax;
-    public int elevatorMin;
+    public final List<Material> elevatorMaterials = new ArrayList<>();
+    public final int elevatorMax;
+    public final int elevatorMin;
 
-    public double startMoney;
-    public double backCost;
-    public double nickCost;
-    public String singularName;
-    public String pluralName;
-    public List<String> blacklistedBaltop = new ArrayList<>();
+    public final double startMoney;
+    public final double backCost;
+    public final double nickCost;
+    public final String singularName;
+    public final String pluralName;
+    public final List<String> blacklistedBaltop = new ArrayList<>();
 
-    public int nightSpeed;
-    public List<String> blacklistedWorldsBed = new ArrayList<>();
+    public final int nightSpeed;
+    public final List<String> blacklistedWorldsBed = new ArrayList<>();
 
-    public List<String> blockedCommands = new ArrayList<>();
+    public final List<String> blockedCommands = new ArrayList<>();
 
-    public ChatColor mobSpawnerColor;
-    public boolean invDrop;
-    public double dropChance;
-    public boolean preventAnvil;
-    public List<String> blacklistedWorldsSpawners = new ArrayList<>();
+    public final ChatColor mobSpawnerColor;
+    public final boolean invDrop;
+    public final double dropChance;
+    public final boolean preventAnvil;
+    public final List<String> blacklistedWorldsSpawners = new ArrayList<>();
 
-    public String gmSpectator;
-    public String gmSurvival;
-    public String gmCreative;
-    public String gmAdventure;
+    public final String gmSpectator;
+    public final String gmSurvival;
+    public final String gmCreative;
+    public final String gmAdventure;
 
-    public String cnBlack;
-    public String cnDarkBlue;
-    public String cnDarkGreen;
-    public String cnDarkAqua;
-    public String cnDarkRed;
-    public String cnDarkPurple;
-    public String cnGold;
-    public String cnGray;
-    public String cnDarkGray;
-    public String cnBlue;
-    public String cnGreen;
-    public String cnAqua;
-    public String cnRed;
-    public String cnLightPurple;
-    public String cnYellow;
-    public String cnWhite;
+    public final String cnBlack;
+    public final String cnDarkBlue;
+    public final String cnDarkGreen;
+    public final String cnDarkAqua;
+    public final String cnDarkRed;
+    public final String cnDarkPurple;
+    public final String cnGold;
+    public final String cnGray;
+    public final String cnDarkGray;
+    public final String cnBlue;
+    public final String cnGreen;
+    public final String cnAqua;
+    public final String cnRed;
+    public final String cnLightPurple;
+    public final String cnYellow;
+    public final String cnWhite;
 
     private final String dataLayerFolderPath = "plugins" + File.separator + "EterniaServer";
     private final String messagesFilePath = dataLayerFolderPath + File.separator + "messages.yml";
-    private final String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
 
-    private void loadConfig() {
+    protected Configs() {
+
+        final String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(configFilePath));
         FileConfiguration outConfig = new YamlConfiguration();
@@ -136,8 +128,8 @@ public class Configs {
         this.moduleRewards = config.getBoolean("module.rewards", true);
         this.moduleSchedule = config.getBoolean("module.schedule", true);
 
-        this.afkPlaceholder = config.getString("placeholders.afk", "&9 AFK");
-        this.godPlaceholder = config.getString("placeholders.godmode", "&9 GOD");
+        this.afkPlaceholder = config.getString("placeholders.afk", "$9 AFK").replace('$', (char) 0x00A7);;
+        this.godPlaceholder = config.getString("placeholders.godmode", "$9 GOD").replace('$', (char) 0x00A7);;
 
         this.tableKits = config.getString("sql.table-kits", "es_kits");
         this.tablePlayer = config.getString("sql.table-player", "es_players");
@@ -152,7 +144,7 @@ public class Configs {
         this.cooldown = config.getInt("server.cooldown", 4);
         this.pvpTime = config.getInt("server.pvp-time", 15);
         this.clearRange = config.getInt("server.clear-range", 1);
-        this.serverPrefix = config.getString("server.prefix", "$8[$aE$9S$8]$7 ");
+        this.serverPrefix = config.getString("server.prefix", "$8[$aE$9S$8]$7 ").replace('$', (char) 0x00A7);;
 
         this.elevatorMaterials.add(Material.IRON_BLOCK);
         this.elevatorMax = config.getInt("elevator.max", 50);
@@ -201,8 +193,8 @@ public class Configs {
         this.cnWhite = config.getString("strings.cn.white", "Branco");
 
         List<String> defaultMaterialBlocksList = new ArrayList<>();
-        for (Material config_siege_block : this.elevatorMaterials) {
-            defaultMaterialBlocksList.add(config_siege_block.name());
+        for (Material material : this.elevatorMaterials) {
+            defaultMaterialBlocksList.add(material.name());
         }
 
         List<String> tempBlockMaterials = config.getStringList("elevator.block");
@@ -216,22 +208,22 @@ public class Configs {
         }
 
         if (tempBlockBaltop.size() == 0) {
-            tempBlockBaltop = blacklistedBaltop;
+            tempBlockBaltop = new ArrayList<>(blacklistedBaltop);
         }
 
         if (tempBlockWorld.size() == 0) {
-            tempBlockWorld = blacklistedWorldsBed;
+            tempBlockWorld = new ArrayList<>(blacklistedWorldsBed);
         }
 
         if (tempBlockedCommands.size() == 0) {
-            tempBlockedCommands = blockedCommands;
+            tempBlockedCommands = new ArrayList<>(blockedCommands);
         }
 
         if (tempBlockWorldSpawners.size() == 0) {
-            tempBlockWorldSpawners = blacklistedWorldsSpawners;
+            tempBlockWorldSpawners = new ArrayList<>(blacklistedWorldsSpawners);
         }
 
-        this.elevatorMaterials = new ArrayList<>();
+        this.elevatorMaterials.clear();
         for (String material : tempBlockMaterials) {
             Material blockMaterial = Material.getMaterial(material);
             if (blockMaterial == null) {
@@ -240,13 +232,13 @@ public class Configs {
                 this.elevatorMaterials.add(blockMaterial);
             }
         }
-        this.blacklistedBaltop = new ArrayList<>();
+        this.blacklistedBaltop.clear();
         this.blacklistedBaltop.addAll(tempBlockBaltop);
-        this.blacklistedWorldsBed = new ArrayList<>();
+        this.blacklistedWorldsBed.clear();
         this.blacklistedWorldsBed.addAll(tempBlockWorld);
-        this.blockedCommands = new ArrayList<>();
+        this.blockedCommands.clear();
         this.blockedCommands.addAll(tempBlockedCommands);
-        this.blacklistedWorldsSpawners = new ArrayList<>();
+        this.blacklistedWorldsSpawners.clear();
         this.blacklistedWorldsSpawners.addAll(tempBlockWorldSpawners);
 
         outConfig.set("module.bed", this.moduleBed);
@@ -327,15 +319,14 @@ public class Configs {
         outConfig.set("strings.cn.yellow", this.cnYellow);
         outConfig.set("strings.cn.white", this.cnWhite);
 
-        this.serverPrefix = serverPrefix.replace('$', (char) 0x00A7);
-        this.afkPlaceholder = afkPlaceholder.replace('$', (char) 0x00A7);
-        this.godPlaceholder = godPlaceholder.replace('$', (char) 0x00A7);
-
         try {
             outConfig.save(configFilePath);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + dataLayerFolderPath, 3);
         }
+        loadMessages();
+
+        instance = this;
 
     }
 
