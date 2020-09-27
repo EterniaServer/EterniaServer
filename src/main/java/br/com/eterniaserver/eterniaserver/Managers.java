@@ -2,9 +2,10 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
-
 import br.com.eterniaserver.eterniaserver.commands.*;
+import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.generics.*;
+
 import org.bukkit.Bukkit;
 
 import java.time.LocalTime;
@@ -12,6 +13,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Managers {
 
@@ -74,7 +77,7 @@ public class Managers {
     }
 
     private void loadCompletions() {
-        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("colors", PluginVars.colorsString);
+        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("colors", Stream.of(Colors.values()).map(Enum::name).collect(Collectors.toList()));
         EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("entidades", PluginVars.entityList);
     }
 

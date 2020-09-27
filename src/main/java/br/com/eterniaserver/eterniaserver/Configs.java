@@ -93,6 +93,23 @@ public class Configs {
     public String gmCreative;
     public String gmAdventure;
 
+    public String cnBlack;
+    public String cnDarkBlue;
+    public String cnDarkGreen;
+    public String cnDarkAqua;
+    public String cnDarkRed;
+    public String cnDarkPurple;
+    public String cnGold;
+    public String cnGray;
+    public String cnDarkGray;
+    public String cnBlue;
+    public String cnGreen;
+    public String cnAqua;
+    public String cnRed;
+    public String cnLightPurple;
+    public String cnYellow;
+    public String cnWhite;
+
     private final String dataLayerFolderPath = "plugins" + File.separator + "EterniaServer";
     private final String messagesFilePath = dataLayerFolderPath + File.separator + "messages.yml";
     private final String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
@@ -160,10 +177,27 @@ public class Configs {
         this.preventAnvil = config.getBoolean("spawners.prevent-anvil", true);
         this.blacklistedWorldsSpawners.add("world_evento");
 
-        this.gmAdventure = config.getString("const.gmadventure", "aventura");
-        this.gmCreative = config.getString("const.gmcreative", "criativo");
-        this.gmSpectator = config.getString("const.gmspectator", "espectador");
-        this.gmSurvival = config.getString("const.gmsurvival", "sobrevivência");
+        this.gmAdventure = config.getString("strings.gm.adventure", "aventura");
+        this.gmCreative = config.getString("strings.gm.creative", "criativo");
+        this.gmSpectator = config.getString("strings.gm.spectator", "espectador");
+        this.gmSurvival = config.getString("strings.gm.survival", "sobrevivência");
+
+        this.cnBlack = config.getString("strings.cn.black", "Preto");
+        this.cnDarkBlue = config.getString("strings.cn.darkblue", "Azul Escuro");
+        this.cnDarkGreen = config.getString("strings.cn.darkgreen", "Verde Escuro");
+        this.cnDarkAqua = config.getString("strings.cn.darkaqua", "Ciano");
+        this.cnDarkRed = config.getString("strings.cn.darkred", "Vermelho Escuro");
+        this.cnDarkPurple = config.getString("strings.cn.darkpurple", "Roxo");
+        this.cnGold = config.getString("strings.cn.gold", "Laranja");
+        this.cnGray = config.getString("strings.cn.gray", "Cinza");
+        this.cnDarkGray = config.getString("strings.cn.darkgray", "Cinza Escuro");
+        this.cnBlue = config.getString("strings.cn.blue", "Azul");
+        this.cnGreen = config.getString("strings.cn.green", "Verde");
+        this.cnAqua = config.getString("strings.cn.aqua", "Azul Claro");
+        this.cnRed = config.getString("strings.cn.red", "Vermelho");
+        this.cnLightPurple = config.getString("strings.cn.lightpurple", "Rosa");
+        this.cnYellow = config.getString("strings.cn.yellow", "Amarelo");
+        this.cnWhite = config.getString("strings.cn.white", "Branco");
 
         List<String> defaultMaterialBlocksList = new ArrayList<>();
         for (Material config_siege_block : this.elevatorMaterials) {
@@ -270,10 +304,27 @@ public class Configs {
         outConfig.set("spawners.prevent-anvil", this.preventAnvil);
         outConfig.set("spawners.blacklisted-worlds", tempBlockWorldSpawners);
 
-        outConfig.set("const.gmadventure", this.gmAdventure);
-        outConfig.set("const.gmcreative", this.gmCreative);
-        outConfig.set("const.gmspectator", this.gmSpectator);
-        outConfig.set("const.gmsurvival", this.gmSurvival);
+        outConfig.set("strings.gm.adventure", this.gmAdventure);
+        outConfig.set("strings.gm.creative", this.gmCreative);
+        outConfig.set("strings.gm.spectator", this.gmSpectator);
+        outConfig.set("strings.gm.survival", this.gmSurvival);
+
+        outConfig.set("strings.cn.black", this.cnBlack);
+        outConfig.set("strings.cn.darkblue", this.cnDarkBlue);
+        outConfig.set("strings.cn.darkgreen", this.cnDarkGreen);
+        outConfig.set("strings.cn.darkaqua", this.cnDarkAqua);
+        outConfig.set("strings.cn.darkred", this.cnDarkRed);
+        outConfig.set("strings.cn.darkpurple", this.cnDarkPurple);
+        outConfig.set("strings.cn.gold", this.cnGold);
+        outConfig.set("strings.cn.gray", this.cnGray);
+        outConfig.set("strings.cn.darkgray", this.cnDarkGray);
+        outConfig.set("strings.cn.blue", this.cnBlue);
+        outConfig.set("strings.cn.green", this.cnGreen);
+        outConfig.set("strings.cn.aqua", this.cnAqua);
+        outConfig.set("strings.cn.red", this.cnRed);
+        outConfig.set("strings.cn.lightpurple", this.cnLightPurple);
+        outConfig.set("strings.cn.yellow", this.cnYellow);
+        outConfig.set("strings.cn.white", this.cnWhite);
 
         this.serverPrefix = serverPrefix.replace('$', (char) 0x00A7);
         this.afkPlaceholder = afkPlaceholder.replace('$', (char) 0x00A7);
@@ -351,15 +402,15 @@ public class Configs {
 
             String path;
 
-            if (messages.name().contains("Eco")) {
+            if (messages.name().contains("ECO")) {
                 path = "eco.";
-            } else if (messages.name().contains("Server")) {
+            } else if (messages.name().contains("SERVER")) {
                 path = "server.";
-            } else if (messages.name().contains("Cash")) {
+            } else if (messages.name().contains("CASH")) {
                 path = "cash.";
-            } else if (messages.name().contains("Afk")) {
+            } else if (messages.name().contains("AFK")) {
                 path = "afk.";
-            } else if (messages.name().contains("Exp")) {
+            } else if (messages.name().contains("EXP")) {
                 path = "exp.";
             } else {
                 path = "generic.";

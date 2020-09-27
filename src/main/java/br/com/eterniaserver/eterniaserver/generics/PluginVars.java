@@ -38,10 +38,6 @@ public class PluginVars {
     public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
     protected static final NumberFormat df2 = NumberFormat.getInstance(new Locale("pt", "BR"));
 
-    public static final List<String> arrData = List.of("tblack", "tdarkblue", "tdarkgreen", "tdarkaqua", "tdarkred",
-            "tdarkpurple", "tgold", "tlightgray", "tdarkgray", "tblue", "tgreen", "taqua", "tred", "tpurple", "tyellow",
-            "twhite");
-
     public static final List<String> entityList = List.of("BEE", "BLAZE", "CAT", "CAVE_SPIDER", "CHICKEN", "COD",
             "COW", "CREEPER", "DOLPHIN", "DONKEY", "DROWNED", "ELDER_GUARDIAN", "ENDER_DRAGON", "ENDERMAN", "ENDERMITE",
             "EVOKER", "FOX", "GHAST", "GIANT", "GUARDIAN", "HOGLIN", "HORSE", "HUSK", "ILLUSIONER", "IRON_GOLEM",

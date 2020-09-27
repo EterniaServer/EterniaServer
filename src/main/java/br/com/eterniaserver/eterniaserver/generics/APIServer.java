@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eterniaserver.Configs;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.Bukkit;
@@ -12,8 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public interface APIServer {
 
@@ -52,9 +52,10 @@ public interface APIServer {
     static Scoreboard getScoreboard() {
         if (PluginVars.getScoreboard() == null) {
             Scoreboard tempScoreBoard = Bukkit.getScoreboardManager().getMainScoreboard();
+            List<Colors> colors = Arrays.asList(Colors.values());
             for (int i = 0; i < 16; i++) {
-                if (tempScoreBoard.getTeam(PluginVars.arrData.get(i)) == null) {
-                    tempScoreBoard.registerNewTeam(PluginVars.arrData.get(i)).setColor(PluginVars.colors.get(i));
+                if (tempScoreBoard.getTeam(colors.get(i).name()) == null) {
+                    tempScoreBoard.registerNewTeam(colors.get(i).name()).setColor(PluginVars.colors.get(i));
                 }
             }
             PluginVars.setScoreboard(tempScoreBoard);
@@ -176,6 +177,15 @@ public interface APIServer {
                 errorLevel = ChatColor.RED + "Erro";
         }
         Bukkit.getConsoleSender().sendMessage("$8[$aE$9S$8] " + errorLevel + "$8:$3" + errorMsg + "$8.");
+    }
+
+    static Colors colorFromString(String colorName) {
+        for (Colors b : Colors.values()) {
+            if (b.name().equalsIgnoreCase(colorName)) {
+                return b;
+            }
+        }
+        return Colors.WHITE;
     }
 
 }
