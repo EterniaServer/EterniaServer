@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommands;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,10 +17,6 @@ public class Files {
 
     public Files(EterniaServer plugin) {
         this.plugin = plugin;
-    }
-
-    public void loadMessages() {
-        loadFile("messages.yml", EterniaServer.msgConfig);
     }
 
     public void loadChat() {
@@ -79,7 +75,7 @@ public class Files {
 
         if (!file.canRead()) {
             plugin.getServer().getConsoleSender().sendMessage(
-                    PluginMSGs.getColor("&8[&aE&9S&8] &7A jar do EterniaServer não possui o arquivo necessário&8: &3" + fileName + "&8."));
+                    APIServer.getColor("&8[&aE&9S&8] &7A jar do EterniaServer não possui o arquivo necessário&8: &3" + fileName + "&8."));
         } else try {
             yamlConfiguration.load(file);
         } catch (InvalidConfigurationException | IOException e) {

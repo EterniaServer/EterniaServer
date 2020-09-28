@@ -35,7 +35,7 @@ public class UtilTextMaker {
 		for(int i = 0; i < message.size(); i++) {
 			ChatObject chatObject = message.getChatObjects().get(i);
 			String msg = chatObject.getMessage();
-			msg = UtilInternMethods.setPlaceholders(p, msg);
+			msg = APIUnstable.setPlaceholders(p, msg);
 			if (msg.contains(PluginConstants.MESSAGE)) msg = msg.replace(PluginConstants.MESSAGE, message.getMessageSent());
 			if (p.hasPermission("eternia.chat.mention")) {
 				String[] splited = msg.split(" ");
@@ -45,7 +45,7 @@ public class UtilTextMaker {
 						Player player = Bukkit.getPlayer(PluginVars.playersName.get(msgSplited));
 						if (player != null && player.isOnline()) {
 							player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-							player.sendTitle(PluginMSGs.getColor(p.getDisplayName()), PluginVars.colors.get(7) + "mencionou você" + PluginVars.colors.get(8) + "!", 10, 40, 10);
+							player.sendTitle(APIServer.getColor(p.getDisplayName()), PluginVars.colors.get(7) + "mencionou você" + PluginVars.colors.get(8) + "!", 10, 40, 10);
 						}
 						break;
 					}
@@ -58,17 +58,17 @@ public class UtilTextMaker {
 				TextComponent textComp = new TextComponent(TextComponent.fromLegacyText(msg));
 				if (chatObject.getHover() != null) {
 					ArrayList<TextComponent> tcs = new ArrayList<>();
-					tcs.add(new TextComponent(UtilInternMethods.setPlaceholders(p, PluginMSGs.getColor(chatObject.getHover()))));
+					tcs.add(new TextComponent(APIUnstable.setPlaceholders(p, APIServer.getColor(chatObject.getHover()))));
 					textComp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 				}
 				if (chatObject.getColor() != null) {
 					textComp.setColor(chatObject.getColor().asBungee());
 				}
 				if (chatObject.getSuggest() != null) {
-					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, UtilInternMethods.setPlaceholders(p, PluginMSGs.getColor(chatObject.getSuggest()))));
+					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, APIUnstable.setPlaceholders(p, APIServer.getColor(chatObject.getSuggest()))));
 				}
 				if (chatObject.getRun() != null) {
-					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, UtilInternMethods.setPlaceholders(p, PluginMSGs.getColor(chatObject.getRun()))));
+					textComp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, APIUnstable.setPlaceholders(p, APIServer.getColor(chatObject.getRun()))));
 				}
 				if (chatObject.isText()) {
 					setTextAttr(textComp, p);
@@ -104,7 +104,7 @@ public class UtilTextMaker {
 	public void addHover(TextComponent text, String s) {
 		if(s == null) return;
 		ArrayList<TextComponent> tcs = new ArrayList<>();
-		tcs.add(new TextComponent(PluginMSGs.getColor(s)));
+		tcs.add(new TextComponent(APIServer.getColor(s)));
 		text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(tcs.toArray(new TextComponent[tcs.size() - 1]))));
 	}
 
@@ -135,7 +135,7 @@ public class UtilTextMaker {
 		for(UtilCustomPlaceholder cp: PluginVars.customPlaceholders) {
 			String id = cp.getId();
 			if(!stringMessage.contains("{" + id + "}")) continue;
-			SubPlaceholder bestPlaceholder = UtilInternMethods.getSubPlaceholder(p, cp);
+			SubPlaceholder bestPlaceholder = APIUnstable.getSubPlaceholder(p, cp);
 			if(bestPlaceholder != null) {
 				stringMessage = stringMessage.replace("{" + id + "}", bestPlaceholder.getValue());
 			} else {
@@ -143,7 +143,7 @@ public class UtilTextMaker {
 			}
 		}
 		s2 = stringMessage;
-		return UtilInternMethods.setPlaceholders(p, s2);
+		return APIUnstable.setPlaceholders(p, s2);
 	}
 
 }

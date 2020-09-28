@@ -8,7 +8,7 @@ import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIExperience;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -90,7 +90,7 @@ public class Experience extends BaseCommand {
     @Syntax("<quantia>")
     @Description(" Converte uma quantia de nível para uma garra de EXP")
     public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpWant) {
-        int xpReal = UtilInternMethods.getXPForLevel(player.getLevel());
+        int xpReal = APIServer.getXPForLevel(player.getLevel());
         if (xpWant > 0 && xpReal > xpWant) {
             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
             ItemMeta meta = item.getItemMeta();
@@ -115,7 +115,7 @@ public class Experience extends BaseCommand {
     public void onWithdrawLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer level) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
-        int xpla = UtilInternMethods.getXPForLevel(level);
+        int xpla = APIServer.getXPForLevel(level);
         if (APIExperience.getExp(uuid) >= xpla) {
             APIExperience.removeExp(uuid, xpla);
             player.giveExp(xpla);
@@ -132,8 +132,8 @@ public class Experience extends BaseCommand {
     public void onDepositLevel(Player player, @Conditions("limits:min=1,max=9999999")  Integer xpla) {
         int xpAtual = player.getLevel();
         if (xpAtual >= xpla) {
-            int xp = UtilInternMethods.getXPForLevel(xpla);
-            int xpto = UtilInternMethods.getXPForLevel(xpAtual);
+            int xp = APIServer.getXPForLevel(xpla);
+            int xpto = APIServer.getXPForLevel(xpAtual);
             APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
             EterniaServer.configs.sendMessage(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
             player.setLevel(0);

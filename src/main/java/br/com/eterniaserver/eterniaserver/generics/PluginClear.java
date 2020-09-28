@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -25,7 +26,7 @@ public class PluginClear extends BukkitRunnable {
             }
         }
         if (removed != 0) {
-            Bukkit.broadcastMessage(PluginMSGs.REMOVED_ENTITIES.replace(PluginConstants.AMOUNT, String.valueOf(removed)));
+            Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SERVER_REMOVED_ENTITIES, true, String.valueOf(removed)));
         }
     }
 

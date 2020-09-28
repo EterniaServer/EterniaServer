@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.generics;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import org.bukkit.Bukkit;
 
 public class UtilAdvancedChatTorch {
 
@@ -24,10 +23,10 @@ public class UtilAdvancedChatTorch {
 		for(Object s: EterniaServer.groupConfig.getKeys(false)) {
 			if (!s.equals("groups")) {
 				if (!EterniaServer.groupConfig.contains(s.toString())) {
-					Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_ERROR.replace(PluginConstants.ERROR, "nenhum grupo encontrado"));
+					APIServer.logError("Nenhum grupo definido", 3);
 				}
 				if (!EterniaServer.groupConfig.contains(s.toString() + ".perm")) {
-					Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_ERROR.replace(PluginConstants.ERROR, "permissão para o grupo não encontrada"));
+					APIServer.logError("Permissão para o grupo não definida", 2);
 				}
 			}
 		}

@@ -12,29 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
 
-public class UtilInternMethods {
+public interface APIUnstable {
 
-    private UtilInternMethods() {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static int getXPForLevel(int lvl) {
-        if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
-        else if (lvl > 15 && lvl < 31) return (int) ((2.5 * (lvl * lvl)) - (40.5 * lvl) + 360);
-        else if (lvl >= 31) return (int) ((4.5 * (lvl * lvl)) - (162.5 * lvl) + 2220);
-        else return 0;
-    }
-
-    public static void setChatMuted(boolean bool) {
-        PluginVars.chatMuted = bool;
-    }
-
-    public static long getCooldown(String name) {
-        if (!PluginVars.bedCooldown.containsKey(name)) return 0;
-        else return PluginVars.bedCooldown.get(name);
-    }
-
-    public static void addUUIF(Player p) {
+    static void addUUIF(Player p) {
         for (String s : EterniaServer.groupConfig.getKeys(false)) {
             if(s.equals("groups")) continue;
             int priority = EterniaServer.groupConfig.getInt(s + ".priority");
@@ -50,20 +30,20 @@ public class UtilInternMethods {
         }
     }
 
-    public static void sendStaff(String message, Player player) {
+    static void sendStaff(String message, Player player) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission("eternia.chat.staff")) {
                 String format = EterniaServer.chatConfig.getString("staff.format");
-                format = UtilInternMethods.setPlaceholders(player, format);
-                format = PluginMSGs.getColor(format.replace(PluginConstants.MESSAGE, message));
+                format = APIUnstable.setPlaceholders(player, format);
+                format = APIServer.getColor(format.replace(PluginConstants.MESSAGE, message));
                 p.sendMessage(format);
             }
         }
     }
 
-    public static void sendLocal(String message, Player player, int radius) {
+    static void sendLocal(String message, Player player, int radius) {
         int pes = 0;
-        final String format = getFormat(message, player);
+        final String format = getLocalFormat(message, player);
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (PluginVars.ignoredPlayer.get(player.getName()) != null && PluginVars.ignoredPlayer.get(player.getName()).contains(p)) return;
             final Boolean b = PluginVars.spy.get(p.getName());
@@ -71,7 +51,7 @@ public class UtilInternMethods {
                 pes += 1;
                 p.sendMessage(format);
             } else if (p.hasPermission("eternia.spy") && Boolean.TRUE.equals(b)) {
-                p.sendMessage(PluginMSGs.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
+                p.sendMessage(APIServer.getColor("&8[&7SPY&8-&eL&8] &8" + player.getDisplayName() + ": " + message));
             }
         }
         if (pes <= 1) {
@@ -79,38 +59,38 @@ public class UtilInternMethods {
         }
     }
 
-    private static String getFormat(String message, final Player player) {
-        String format = UtilInternMethods.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
+    private static String getLocalFormat(String message, final Player player) {
+        String format = APIUnstable.setPlaceholders(player, EterniaServer.chatConfig.getString("local.format"));
         if (player.hasPermission("eternia.chat.color")) {
-            return PluginMSGs.getColor(format.replace(PluginConstants.MESSAGE, message));
+            return APIServer.getColor(format.replace(PluginConstants.MESSAGE, message));
         } else {
             return(format.replace(PluginConstants.MESSAGE, message));
         }
     }
 
-    public static void removeUUIF(Player p) {
+    static void removeUUFI(Player p) {
         PluginVars.uufi.remove(p.getName());
     }
 
-    public static String setPlaceholders(Player p, String s) {
+    static String setPlaceholders(Player p, String s) {
         s = s.replace("%player_name%", p.getName());
         s = s.replace("%player_displayname%", p.getDisplayName());
         return PlaceholderAPI.setPlaceholders(p, s);
     }
 
-    public static String putName(Player player, Player target, String string) {
+    static String putName(Player player, Player target, String string) {
         return putName(player, string).replace("%target_name%", target.getName()).replace("%target_displayname%", target.getDisplayName());
     }
 
-    public static String putName(Player player, String string) {
+    static String putName(Player player, String string) {
         return string.replace("%player_name%", player.getName()).replace("%player_displayname%", player.getDisplayName());
     }
 
-    public static String putName(CommandSender player, String string) {
+    static String putName(CommandSender player, String string) {
         return string.replace("%player_name%", player.getName()).replace("%player_displayname%", player.getName());
     }
 
-    public static SubPlaceholder getSubPlaceholder(final Player player, final UtilCustomPlaceholder cp) {
+    static SubPlaceholder getSubPlaceholder(final Player player, final UtilCustomPlaceholder cp) {
         SubPlaceholder bestPlaceholder = null;
         for (SubPlaceholder subPlaceholder : cp.getPlaceholders()) {
             if (subPlaceholder.hasPerm(player)) {
@@ -125,7 +105,7 @@ public class UtilInternMethods {
         return bestPlaceholder;
     }
 
-    public static void sendPrivate(final Player player, final Player target, final String s) {
+    static void sendPrivate(final Player player, final Player target, final String s) {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();
         PluginVars.tell.put(target.getName(), player.getName());
@@ -136,7 +116,7 @@ public class UtilInternMethods {
             if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {
                 final Player spyPlayer = Bukkit.getPlayerExact(p);
                 if (spyPlayer != null && spyPlayer.isOnline()) {
-                    spyPlayer.sendMessage(PluginMSGs.getColor("&8[&7SPY-&6P&8] &8" + playerDisplay + " -> " + targetDisplay + ": " + s));
+                    spyPlayer.sendMessage(APIServer.getColor("&8[&7SPY-&6P&8] &8" + playerDisplay + " -> " + targetDisplay + ": " + s));
                 } else {
                     PluginVars.spy.remove(p);
                 }
@@ -144,19 +124,19 @@ public class UtilInternMethods {
         }
     }
 
-    public static String getTimeLeft(long cooldown) {
+    static String getTimeLeft(long cooldown) {
         return String.valueOf(TimeUnit.MILLISECONDS.toSeconds(cooldown - System.currentTimeMillis()));
     }
 
-    public static String getTimeLeft(long cooldown, long cd) {
+    static String getTimeLeft(long cooldown, long cd) {
         return String.valueOf(cooldown - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cd));
     }
 
-    public static boolean hasCooldown(long cooldown, int timeNeeded) {
+    static boolean hasCooldown(long cooldown, int timeNeeded) {
         return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown) >= timeNeeded;
     }
 
-    public static boolean stayMuted(long cooldown) {
+    static boolean stayMuted(long cooldown) {
         return cooldown - System.currentTimeMillis() > 0;
     }
 

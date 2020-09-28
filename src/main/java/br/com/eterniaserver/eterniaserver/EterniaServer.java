@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
-    public static final YamlConfiguration msgConfig = new YamlConfiguration();
     public static final YamlConfiguration cmdConfig = new YamlConfiguration();
     public static final YamlConfiguration rewardsConfig = new YamlConfiguration();
     public static final YamlConfiguration blockConfig = new YamlConfiguration();
@@ -29,7 +28,6 @@ public class EterniaServer extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        files.loadMessages();
         files.loadDatabase();
         files.loadPlaceHolders();
         files.loadBlocksRewards();

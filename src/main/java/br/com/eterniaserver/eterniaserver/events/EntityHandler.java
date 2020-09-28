@@ -3,10 +3,9 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APICash;
 import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,7 +35,7 @@ public class EntityHandler implements Listener {
             final Player player = (Player) event.getDamager();
             if (player.isFlying() && !player.hasPermission("eternia.fly.bypass")) {
                 APIPlayer.setIsOnPvP(UUIDFetcher.getUUIDOf(player.getName()));
-                player.sendMessage(PluginMSGs.FLY_PVP_DISABLED);
+                EterniaServer.configs.sendMessage(player, Messages.FLY_ENTER_PVP);
                 player.setAllowFlight(false);
                 player.setFlying(false);
             }
@@ -54,8 +53,7 @@ public class EntityHandler implements Listener {
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
-            player.sendMessage(PluginMSGs.MSG_SPAWNER_NAME);
-            player.sendMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_SPAWNER_LOG));
+            EterniaServer.configs.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
         }
 
         if (EterniaServer.configs.moduleCash) {

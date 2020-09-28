@@ -37,13 +37,13 @@ public class Chat extends BaseCommand {
     @CommandAlias("broadcast|advice|aviso")
     @CommandPermission("eternia.advice")
     public void onBroadcast(String message) {
-        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.CHAT_BROADCAST, true, PluginMSGs.getColor(message)));
+        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.CHAT_BROADCAST, true, APIServer.getColor(message)));
     }
 
     @CommandAlias("vanish|chupadadimensional")
     @CommandPermission("eternia.vanish")
     public void onVanish(Player player) {
-        Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_LEAVE));
+        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SERVER_LOGOUT, true, player.getName(), player.getDisplayName()));
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(plugin, player);
         }
@@ -52,7 +52,7 @@ public class Chat extends BaseCommand {
     @CommandAlias("unvanish|chupadadimensionalreversa")
     @CommandPermission("eternia.vanish")
     public void onUnVanish(Player player) {
-        Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_JOIN));
+        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SERVER_LOGIN, true, player.getName(), player.getDisplayName()));
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(plugin, player);
         }
@@ -108,7 +108,7 @@ public class Chat extends BaseCommand {
                     EterniaServer.configs.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
                     return;
                 }
-                UtilInternMethods.sendPrivate(sender, target, msg);
+                APIUnstable.sendPrivate(sender, target, msg);
                 return;
             }
         }
@@ -151,14 +151,14 @@ public class Chat extends BaseCommand {
             return;
         }
 
-        UtilInternMethods.sendPrivate(player, target, msg);
+        APIUnstable.sendPrivate(player, target, msg);
     }
 
     private boolean isMuted(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         final long time = APIPlayer.getMutedTime(uuid);
-        if (UtilInternMethods.stayMuted(time)) {
-            EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, UtilInternMethods.getTimeLeft(time));
+        if (APIUnstable.stayMuted(time)) {
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, APIUnstable.getTimeLeft(time));
             return true;
         }
         return false;

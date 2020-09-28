@@ -2,9 +2,9 @@ package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginVars;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
+import br.com.eterniaserver.eterniaserver.generics.APIUnstable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -31,7 +31,7 @@ public class BlockHandler implements Listener {
     public void onPlayerSignChange(SignChangeEvent event) {
         if (event.getPlayer().hasPermission("eternia.sign.color")) {
             for (byte i = 0; i < 4; i++) {
-                event.setLine(i, PluginMSGs.getColor(event.getLine(i)));
+                event.setLine(i, APIServer.getColor(event.getLine(i)));
             }
         }
     }
@@ -70,13 +70,13 @@ public class BlockHandler implements Listener {
                 event.setExpToDrop(0);
             } else {
                 event.setCancelled(true);
-                player.sendMessage(PluginMSGs.MSG_SPAWNER_SILK);
+                EterniaServer.configs.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
             }
         } else if (!player.hasPermission("eternia.spawners.break") && material == Material.SPAWNER) {
             EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             event.setCancelled(true);
         } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {
-            player.sendMessage(PluginMSGs.MSG_SPAWNER_BLOCKED);
+            EterniaServer.configs.sendMessage(player, Messages.SPAWNER_WORLD_BLOCKED);
             event.setCancelled(true);
         }
 
@@ -114,7 +114,7 @@ public class BlockHandler implements Listener {
         }
         if (lowestNumberAboveRandom <= 1) {
             for (String command : EterniaServer.blockConfig.getStringList(config + materialName + "." + lowestNumberAboveRandom)) {
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, command));
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIUnstable.setPlaceholders(player, command));
             }
         }
     }
@@ -127,7 +127,7 @@ public class BlockHandler implements Listener {
                     player.getInventory().addItem(getSpawner(block, material));
                     block.getDrops().clear();
                 } else {
-                    player.sendMessage(PluginMSGs.MSG_SPAWNER_INVFULL);
+                    EterniaServer.configs.sendMessage(player, Messages.SPAWNER_INV_FULL);
                     final Location loc = block.getLocation();
                     loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
                 }
@@ -136,7 +136,7 @@ public class BlockHandler implements Listener {
                 loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
             }
         } else {
-            player.sendMessage(PluginMSGs.MSG_SPAWNER_FAILED);
+            EterniaServer.configs.sendMessage(player, Messages.SPAWNER_DROP_FAILED);
         }
     }
 

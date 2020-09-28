@@ -80,7 +80,7 @@ public class PluginTicks extends BukkitRunnable {
             } else if (time > 1) {
                 PluginVars.playersInPortal.put(playerName, time - 1);
                 if ((time - 1) < 5) {
-                    player.sendMessage(PluginMSGs.MSG_NETHER_TRAP.replace(PluginConstants.COOLDOWN, String.valueOf(time - 1)));
+                    EterniaServer.configs.sendMessage(player, Messages.SERVER_NETHER_TRAP_TIMING, String.valueOf(time - 1));
                 }
             }
         } else {

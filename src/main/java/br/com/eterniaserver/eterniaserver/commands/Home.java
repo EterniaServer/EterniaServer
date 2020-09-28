@@ -35,9 +35,9 @@ public class Home extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (existHome(nome.toLowerCase(), uuid)) {
             delHome(nome.toLowerCase(), playerName);
-            player.sendMessage(PluginMSGs.M_HOME_DELETED);
+            EterniaServer.configs.sendMessage(player, Messages.HOME_DELETED, nome);
         } else {
-            player.sendMessage(PluginMSGs.M_HOME_NO);
+            EterniaServer.configs.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
         }
     }
 
@@ -47,15 +47,15 @@ public class Home extends BaseCommand {
     public void onHome(Player player, String nome, @Optional OnlinePlayer target) {
         if (target == null) {
             Location location = APIServer.getLocation(nome.toLowerCase() + "." + player.getName());
-            if (locationExists(location, player) && !APIPlayer.isTeleporting(player)) {
-                APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
+            if (locationExists(location, player, nome) && !APIPlayer.isTeleporting(player)) {
+                APIServer.putInTeleport(player, new PlayerTeleport(player, location, EterniaServer.configs.getMessage(Messages.HOME_GOING, true, nome)));
             } else if (APIPlayer.isTeleporting(player)) {
                 EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             }
         } else if (player.hasPermission("eternia.home.other")) {
             Location location = APIServer.getLocation(nome.toLowerCase() + "." + target.getPlayer().getName());
-            if (locationExists(location, player) && !APIPlayer.isTeleporting(player)) {
-                APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
+            if (locationExists(location, player, nome) && !APIPlayer.isTeleporting(player)) {
+                APIServer.putInTeleport(player, new PlayerTeleport(player, location, EterniaServer.configs.getMessage(Messages.HOME_GOING, true, nome)));
             } else if (APIPlayer.isTeleporting(player)) {
                 EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             }
@@ -72,19 +72,27 @@ public class Home extends BaseCommand {
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
                 List<String> list = APIPlayer.getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
-                for (String line : list) {
-                    accounts.append(line).append(PluginVars.colors.get(8)).append(", ").append(PluginVars.colors.get(3));
+                for (int i = 0; i < list.size(); i++) {
+                    if (i + 1 == list.size()) {
+                        accounts.append(ChatColor.DARK_AQUA).append(list.get(i));
+                    } else {
+                        accounts.append(ChatColor.DARK_AQUA).append(list.get(i)).append(ChatColor.DARK_GRAY).append(", ");
+                    }
                 }
-                player.sendMessage(PluginMSGs.M_HOME_LIST.replace(PluginConstants.HOMES, PluginMSGs.getColor(accounts.toString())));
+                EterniaServer.configs.sendMessage(player, Messages.HOME_LIST, accounts.toString());
             } else {
                 EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
             List<String> list = APIPlayer.getHomes(UUIDFetcher.getUUIDOf(player.getName()));
-            for (String line : list) {
-                accounts.append(line).append(PluginVars.colors.get(8)).append(", ").append(PluginVars.colors.get(3));
+            for (int i = 0; i < list.size(); i++) {
+                if (i + 1 == list.size()) {
+                    accounts.append(ChatColor.DARK_AQUA).append(list.get(i));
+                } else {
+                    accounts.append(ChatColor.DARK_AQUA).append(list.get(i)).append(ChatColor.DARK_GRAY).append(", ");
+                }
             }
-            player.sendMessage(PluginMSGs.M_HOME_LIST.replace(PluginConstants.HOMES, PluginMSGs.getColor(accounts.toString())));
+            EterniaServer.configs.sendMessage(player, Messages.HOME_LIST, accounts.toString());
         }
     }
 
@@ -99,13 +107,13 @@ public class Home extends BaseCommand {
 
         nome = nome.replaceAll("[^a-zA-Z0-9]", "");
         if (nome.length() > 10) {
-            player.sendMessage(PluginMSGs.M_HOME_EXCEEDED);
+            EterniaServer.configs.sendMessage(player, Messages.HOME_STRING_LIMIT, nome);
             return;
         }
 
         if (canHome(uuid) < i || (existHome(nome.toLowerCase(), uuid))) {
             setHome(player.getLocation(), nome.toLowerCase(), playerName);
-            player.sendMessage(PluginMSGs.M_HOME_CREATED);
+            EterniaServer.configs.sendMessage(player, Messages.HOME_CREATED);
             return;
         }
 
@@ -120,12 +128,12 @@ public class Home extends BaseCommand {
         item.setItemMeta(meta);
         PlayerInventory inventory = player.getInventory();
         inventory.addItem(item);
-        player.sendMessage(PluginMSGs.M_HOME_LIMIT);
+        EterniaServer.configs.sendMessage(player, Messages.HOME_LIMIT_REACHED);
     }
 
-    private boolean locationExists(final Location location, final Player player) {
+    private boolean locationExists(final Location location, final Player player, final String nome) {
         if (location == PluginVars.error) {
-            player.sendMessage(PluginMSGs.M_HOME_NO);
+            EterniaServer.configs.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
             return false;
         }
         return true;

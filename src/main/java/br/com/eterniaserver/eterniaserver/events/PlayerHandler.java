@@ -11,6 +11,7 @@ import br.com.eterniaserver.paperlib.PaperLib;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,7 +32,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
@@ -58,11 +58,13 @@ public class PlayerHandler implements Listener {
                     && lore != null) {
                 final String[] isso = lore.get(0).split(":");
                 final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
-
+                String nome = is.getItemMeta().getDisplayName();
+                nome = nome.replace("[", "").replace("]", "");
+                nome = ChatColor.stripColor(nome);
                 if (APIPlayer.isTeleporting(player)) {
                     EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
                 } else {
-                    APIServer.putInTeleport(player, new PlayerTeleport(player, location, PluginMSGs.M_HOME_DONE));
+                    APIServer.putInTeleport(player, new PlayerTeleport(player, location, EterniaServer.configs.getMessage(Messages.HOME_GOING, true, nome)));
                 }
                 event.setCancelled(true);
             }
@@ -118,13 +120,13 @@ public class PlayerHandler implements Listener {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.HOURS_STR, APIPlayer.getAndUpdateTimePlayed(uuid), PluginConstants.UUID_STR, uuid.toString()));
         if (EterniaServer.configs.moduleChat) {
-            UtilInternMethods.removeUUIF(player);
+            APIUnstable.removeUUFI(player);
             if (player.hasPermission("eternia.spy")) {
                 APIServer.removeFromSpy(playerName);
             }
         }
         event.setQuitMessage(null);
-        Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_LEAVE));
+        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SERVER_LOGOUT, true, playerName, player.getDisplayName()));
     }
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -132,7 +134,7 @@ public class PlayerHandler implements Listener {
         final Player player = event.getPlayer();
         String message = event.getMessage().toLowerCase();
         if (message.equalsIgnoreCase("/tps")) {
-            player.sendMessage(PluginMSGs.MSG_TPS.replace(PluginConstants.TPS, String.format("%.2f", Bukkit.getTPS()[0])));
+            EterniaServer.configs.sendMessage(player, Messages.SERVER_TPS, String.format("%.2f", Bukkit.getTPS()[0]));
             event.setCancelled(true);
             return;
         }
@@ -151,9 +153,9 @@ public class PlayerHandler implements Listener {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             final Player player = event.getPlayer();
             final String playerName = player.getName();
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - UtilInternMethods.getCooldown(playerName)) > 6) {
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - APIServer.getBedCooldown(playerName)) > 6) {
                 APIServer.putBedCooldown(playerName);
-                Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_PLAYER_SKIP));
+                Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.NIGHT_PLAYER_SLEEPING, true, playerName, player.getDisplayName()));
             }
         }
     }
@@ -164,7 +166,7 @@ public class PlayerHandler implements Listener {
 
         final Player player = event.getPlayer();
         final String playerName = player.getName();
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - UtilInternMethods.getCooldown(playerName)) > 6) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - APIServer.getBedCooldown(playerName)) > 6) {
             APIServer.putBedCooldown(playerName);
         }
     }
@@ -212,7 +214,7 @@ public class PlayerHandler implements Listener {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
         event.setJoinMessage(null);
-        Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_JOIN));
+        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SERVER_LOGIN, true, playerName, player.getDisplayName()));
 
         if (!APIPlayer.hasProfile(uuid)) {
             PaperLib.teleportAsync(player, APIServer.getLocation("warp.spawn"));
@@ -222,7 +224,7 @@ public class PlayerHandler implements Listener {
         }
 
         if (EterniaServer.configs.moduleChat) {
-            UtilInternMethods.addUUIF(player);
+            APIUnstable.addUUIF(player);
             if (player.hasPermission("eternia.spy")) {
                 APIServer.putSpy(playerName);
             }

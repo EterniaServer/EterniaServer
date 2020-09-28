@@ -7,7 +7,6 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +49,7 @@ public class Inventory extends BaseCommand {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         if (itemStack.getType() == Material.AIR) {
-            player.sendMessage(PluginMSGs.ITEM_NO);
+            EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
             return;
         }
 
@@ -59,7 +58,7 @@ public class Inventory extends BaseCommand {
         }
         dropHelmet(player);
         setHelmet(player);
-        player.sendMessage(PluginMSGs.ITEM_HELMET);
+        EterniaServer.configs.sendMessage(player, Messages.ITEM_HELMET);
     }
 
     private void dropHelmet(Player player) {

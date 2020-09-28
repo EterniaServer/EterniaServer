@@ -19,8 +19,8 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import br.com.eterniaserver.eterniaserver.generics.APICash;
 import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.APIUnstable;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -88,13 +88,13 @@ public class Cash extends BaseCommand {
         final String cashString = APICash.getCashBuy(uuid);
 
         for (String line : EterniaServer.cashConfig.getStringList(cashString + ".commands")) {
-            final String modifiedCommand = UtilInternMethods.setPlaceholders(player, line);
+            final String modifiedCommand = APIUnstable.setPlaceholders(player, line);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), modifiedCommand);
         }
 
         for (String line : EterniaServer.cashConfig.getStringList(cashString + ".messages")) {
-            final String modifiedText = UtilInternMethods.setPlaceholders(player, line);
-            player.sendMessage(PluginMSGs.getColor(modifiedText));
+            final String modifiedText = APIUnstable.setPlaceholders(player, line);
+            player.sendMessage(APIServer.getColor(modifiedText));
         }
 
         APICash.removeCash(uuid, EterniaServer.cashConfig.getInt(cashString + ".cost"));
@@ -125,7 +125,7 @@ public class Cash extends BaseCommand {
         final Player target = targetP.getPlayer();
 
         if (!APICash.hasCash(uuid, value)) {
-            player.sendMessage(PluginMSGs.MSG_NO_MONEY);
+            EterniaServer.configs.sendMessage(player, Messages.ECO_NO_MONEY);
             return;
         }
 

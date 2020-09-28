@@ -8,8 +8,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
+import br.com.eterniaserver.eterniaserver.generics.APIUnstable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -22,14 +21,14 @@ public class Kit extends BaseCommand {
         final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(EterniaServer.configs.tableKits), PluginConstants.NAME_STR, PluginConstants.COOLDOWN_STR);
         temp.forEach((k, v) -> APIServer.putKitCooldown(k, Long.parseLong(v)));
 
-        Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Kits").replace(PluginConstants.AMOUNT, String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(EterniaServer.configs.getMessage(Messages.SERVER_DATA_LOADED, true, "Kits", String.valueOf(temp.size())));
 
     }
 
     @CommandAlias("kits")
     @CommandPermission("eternia.kits")
     public void onKits(Player player) {
-        player.sendMessage(PluginMSGs.M_KIT_LIST.replace(PluginConstants.KITS, PluginMSGs.getColor(EterniaServer.kitConfig.getString("nameofkits"))));
+        EterniaServer.configs.sendMessage(player, Messages.KIT_LIST, APIServer.getColor(EterniaServer.kitConfig.getString("nameofkits")));
     }
 
     @CommandAlias("kit")
@@ -43,26 +42,26 @@ public class Kit extends BaseCommand {
                 final String kitName = kit + "." + player.getName();
                 final int cooldown = EterniaServer.kitConfig.getInt(kitString + kit + ".delay");
                 final long cd = APIServer.getKitCooldown(kitName);
-                if (UtilInternMethods.hasCooldown(cd, cooldown)) {
+                if (APIUnstable.hasCooldown(cd, cooldown)) {
                     giveKit(player, time, kitName, kit);
                 } else {
-                    player.sendMessage(PluginMSGs.MSG_TIMING.replace(PluginConstants.COOLDOWN, UtilInternMethods.getTimeLeft(cooldown, cd)));
+                    EterniaServer.configs.sendMessage(player, Messages.SERVER_TIMING, APIUnstable.getTimeLeft(cooldown, cd));
                 }
             } else {
                 EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
-            player.sendMessage(PluginMSGs.M_KIT_NO_EXISTS.replace(PluginConstants.KIT_NAME, kit));
+            EterniaServer.configs.sendMessage(player, Messages.KIT_NOT_FOUND, kit);
         }
     }
 
     private void giveKit(final Player player, final long time, final String kitName, final String kit) {
         final String kitString = "kits.";
         for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".command")) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, line));
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIUnstable.setPlaceholders(player, line));
         }
         for (String line : EterniaServer.kitConfig.getStringList(kitString + kit + ".text")) {
-            player.sendMessage(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(player, line)));
+            player.sendMessage(APIServer.getColor(APIUnstable.setPlaceholders(player, line)));
         }
         APIServer.putKitCooldown(kitName, time);
         EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tableKits, PluginConstants.COOLDOWN_STR, time, PluginConstants.NAME_STR, kitName));

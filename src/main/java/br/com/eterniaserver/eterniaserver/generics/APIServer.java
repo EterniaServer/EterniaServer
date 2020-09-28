@@ -9,10 +9,13 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 public interface APIServer {
 
@@ -185,6 +188,34 @@ public interface APIServer {
             }
         }
         return Colors.WHITE;
+    }
+
+    static String getColor(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    static List<Player> getSleeping(final World world) {
+        return world.getPlayers().stream().filter(Player::isSleeping).collect(toList());
+    }
+
+    static void changeNightTime(final long time) {
+        PluginVars.nightTime = time;
+    }
+
+    static void setChatMuted(boolean bool) {
+        PluginVars.chatMuted = bool;
+    }
+
+    static long getBedCooldown(String name) {
+        if (!PluginVars.bedCooldown.containsKey(name)) return 0;
+        else return PluginVars.bedCooldown.get(name);
+    }
+
+    static int getXPForLevel(int lvl) {
+        if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
+        else if (lvl > 15 && lvl < 31) return (int) ((2.5 * (lvl * lvl)) - (40.5 * lvl) + 360);
+        else if (lvl >= 31) return (int) ((4.5 * (lvl * lvl)) - (162.5 * lvl) + 2220);
+        else return 0;
     }
 
 }

@@ -13,7 +13,7 @@ public class UtilChatFormatter {
 	public void filter(AsyncPlayerChatEvent e, ChatMessage message) {
 		Player p = e.getPlayer();
 		if (!PluginVars.uufi.containsKey(p.getName())) return;
-		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) UtilInternMethods.addUUIF(p);
+		if (EterniaServer.chatConfig.getBoolean("chat.autoUpdateGroups", false)) APIUnstable.addUUIF(p);
 		FormatInfo fi = PluginVars.uufi.get(p.getName());
 		if (EterniaServer.groupConfig.getBoolean(fi.getName() + ".useChatColor")) {
 			ChatObject msg = new ChatObject(PluginConstants.MESSAGE);
@@ -34,9 +34,9 @@ public class UtilChatFormatter {
 
 	public String parse(Player p, String s) {
 		if (s.contains("&")) {
-			s = PluginMSGs.getColor(s);
+			s = APIServer.getColor(s);
 		}
-		s = UtilInternMethods.setPlaceholders(p, s);
+		s = APIUnstable.setPlaceholders(p, s);
 		return s;
 	}
 }

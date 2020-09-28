@@ -82,6 +82,8 @@ public class Configs {
     public final boolean preventAnvil;
     public final List<String> blacklistedWorldsSpawners = new ArrayList<>();
 
+    public final List<String> profileCustomMessages = new ArrayList<>();
+
     public final String gmSpectator;
     public final String gmSurvival;
     public final String gmCreative;
@@ -207,6 +209,11 @@ public class Configs {
         List<String> tempBlockWorld = config.getStringList("bed.blacklisted-worlds");
         List<String> tempBlockedCommands = config.getStringList("blocked-commands");
         List<String> tempBlockWorldSpawners = config.getStringList("spawners.blacklisted-worlds");
+        List<String> tempCustomProfileMessages = config.getStringList("profile.custom-messages");
+
+        if (tempCustomProfileMessages.isEmpty()) {
+            tempCustomProfileMessages = new ArrayList<>(profileCustomMessages);
+        }
 
         if (tempBlockMaterials.isEmpty()) {
             tempBlockMaterials = defaultMaterialBlocksList;
@@ -245,6 +252,8 @@ public class Configs {
         this.blockedCommands.addAll(tempBlockedCommands);
         this.blacklistedWorldsSpawners.clear();
         this.blacklistedWorldsSpawners.addAll(tempBlockWorldSpawners);
+        this.profileCustomMessages.clear();
+        this.profileCustomMessages.addAll(tempCustomProfileMessages);
 
         outConfig.set("module.bed", this.moduleBed);
         outConfig.set("module.block-reward", this.moduleBlock);
@@ -302,6 +311,8 @@ public class Configs {
         outConfig.set("spawners.prevent-anvil", this.preventAnvil);
         outConfig.set("spawners.blacklisted-worlds", tempBlockWorldSpawners);
 
+        outConfig.set("profile.custom-messages", tempCustomProfileMessages);
+
         outConfig.set("strings.gm.adventure", this.gmAdventure);
         outConfig.set("strings.gm.creative", this.gmCreative);
         outConfig.set("strings.gm.spectator", this.gmSpectator);
@@ -346,6 +357,17 @@ public class Configs {
         this.addDefault(defaults, Messages.SERVER_NO_PERM, "Você não possui permissão para isso$8.", null);
         this.addDefault(defaults, Messages.SERVER_NO_PLAYER, "Esse jogador não existe$8.", null);
         this.addDefault(defaults, Messages.SERVER_IN_TELEPORT, "Você já está em teleporte$8.", null);
+        this.addDefault(defaults, Messages.SERVER_MODULE_ENABLED, "Modulo de $3{0}$7 ativado e carregado$8.", "0: modulo");
+        this.addDefault(defaults, Messages.SERVER_MODULE_DISABLED, "Module de $3{0}$7 desativado$8.", "0: modulo");
+        this.addDefault(defaults, Messages.SERVER_DATA_LOADED, "Carregando $3{0} $7foram carregadas $3{1}$7 dados$8.", "0: modulo; 1: quantia de dados");
+        this.addDefault(defaults, Messages.SERVER_NETHER_TRAP_TIMING, "Trap de portal identificada$8, $7você irá ser teleportado em $3{0}$8.", "0: tempo");
+        this.addDefault(defaults, Messages.SERVER_REMOVED_ENTITIES, "Foram removidas $3{0}$7 entidades$8.", "0: quantia de entidades");
+        this.addDefault(defaults, Messages.SERVER_LOGIN, "$3{1} $8[$a+$8]", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.SERVER_LOGOUT, "$3{1} $8[$c-$8]", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.SERVER_TIMING, "Você não pode usar isso pelos próximos $3{0} $7segundos$8.", "0: tempo restante");
+        this.addDefault(defaults, Messages.SERVER_TPS, "TPS$8:$3 {0}$8.", "0: tps");
+        this.addDefault(defaults, Messages.SERVER_MOTD_1, "$l#333832◢◤◢◤◢◤ $l#a7d95b✙ $l#69de3bE$l#46e33dt$l#3ee66ee$l#46e89fr$l#50ebc4n$l#5bebedi$l#61b4f0a$l#677ff2S$l#7469f5e$l#825ff7r$l#ab5cfav$l#c962fce$l#f36affr $l#ff5cc9S$l#ff579a$l#ff4b6fu$l#ff454er$l#ff4b41v$l#ff583bi$l#ff8250v$l#ffa959a$l#ffcc4al $l#ffe77c✙ $l#333832◥◣◥◣◥◣", null);
+        this.addDefault(defaults, Messages.SERVER_MOTD_2, "$r#71b32aVanilla #b5ac2ecom #b8813eextras#74bdbb!!!", null);
         this.addDefault(defaults, Messages.ECO_PAY, "Você pagou $3{0} $7para $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
         this.addDefault(defaults, Messages.ECO_PAY_RECEIVED, "Você recebeu $3{0} $7de $3{2}$8.", "0: quantia de money; 1: nome do jogador; 2: apelido do jogador");
         this.addDefault(defaults, Messages.ECO_NO_MONEY, "Você não possui todo esse dinheiro$8.", null);
@@ -459,6 +481,60 @@ public class Configs {
         this.addDefault(defaults, Messages.CHAT_BROADCAST_TEMP_MUTE, "$3{1}$7 foi mutado em $3{2}$7 por $3{4}$7 motivo$8:$3{5}", "0: nome do mutado; 1: apelido do mutado; 2: tempo mutado; 3: nome de quem mutou; 4: apelido de quem mutou; 5: motivo");
         this.addDefault(defaults, Messages.CHAT_BROADCAST_UNMUTE, "$3{1}$7 foi desmutado por $3{3}$8.", "0: nome do mutado; 1: apelido do mutado; 2: nome de quem mutou; 3: apelido de quem mutou");
         this.addDefault(defaults, Messages.CHAT_BROADCAST_MUTE, "$3{1}$7 foi mutado permanentemente por $3{3}$7 motivo$8:$3{4}", "0: nome do mutado; 1: apelido do mutado; 2: nome de quem mutou; 3: apelido de quem mutou; 4: motivo");
+        this.addDefault(defaults, Messages.SPAWNER_INV_FULL, "O inventário do jogador está cheio$8.", null);
+        this.addDefault(defaults, Messages.SPAWNER_RECEIVED, "Você recebeu $3{3}$7 spawner de $3{0}$7 por $3{2}$8.", "0: mob; 1: nome do jogador; 2: apelido do jogador; 3: quantia");
+        this.addDefault(defaults, Messages.SPAWNER_SENT, "Você enviou $3{3} spawner de $3{0}$7 para $3{2}$8.", "0: mob; 1: nome do jogador; 2: apelido do jogador; 3: quantia");
+        this.addDefault(defaults, Messages.SPAWNER_SEND_TYPES, "Os tipos de spawners válidos são$8: $3{0}$8.", "0: tipos");
+        this.addDefault(defaults, Messages.SPAWNER_CANT_CHANGE_NAME, "Você não pode renomear spawners$8.", null);
+        this.addDefault(defaults, Messages.SPAWNER_WORLD_BLOCKED, "Você não pode quebrar spawners nesse mundo$8.", null);
+        this.addDefault(defaults, Messages.SPAWNER_DROP_FAILED, "Não foi dessa vez$8.", null);
+        this.addDefault(defaults, Messages.SPAWNER_SILK_REQUESTED, "Você precisa de uma picareta com toque suave para isso$8.", null);
+        this.addDefault(defaults, Messages.HOME_NOT_FOUND, "A home $3{0}$7 não existe$8.", "0: nome da home");
+        this.addDefault(defaults, Messages.HOME_DELETED, "Você deletou a home $3{0}$8.", "0: nome da home");
+        this.addDefault(defaults, Messages.HOME_LIMIT_REACHED, "Você alcançou o limite de homes$8, $7tome um bússola$8.", null);
+        this.addDefault(defaults, Messages.HOME_CREATED, "Home definida com sucesso$8.", null);
+        this.addDefault(defaults, Messages.HOME_STRING_LIMIT, "O nome $3{0}$7 pasou do limite de $310 $7caracteres permitidos$8.", "0: nome da home");
+        this.addDefault(defaults, Messages.HOME_GOING, "Você foi até a sua home $3{0}$8.", "0: nome da home");
+        this.addDefault(defaults, Messages.HOME_LIST, "Suas homes$8: $3{0}$8.", "0: lista de homes");
+        this.addDefault(defaults, Messages.ITEM_NOT_FOUND, "Nenhum item foi encontrado em sua mão$8.", null);
+        this.addDefault(defaults, Messages.ITEM_NBT_ADDKEY, "Foi adicionado a chave $3{0}$7 com valor $3{1}$7 ao item$8.", "0: chave; 1: valor");
+        this.addDefault(defaults, Messages.ITEM_CLEAR_LORE, "A lore do item foi removida$8.", null);
+        this.addDefault(defaults, Messages.ITEM_ADD_LORE, "Foi adicionada a linha $3{0}$7 a lore$8.", "0: nova linha de lore");
+        this.addDefault(defaults, Messages.ITEM_SET_LORE, "A lore foi limpa e definida como$3 {0}$8.", "0: lore");
+        this.addDefault(defaults, Messages.ITEM_SET_NAME, "O nome do item foi definido como $3{0}$8.", "0: nome do item");
+        this.addDefault(defaults, Messages.ITEM_HELMET, "Você equipou seu caçapete$8.", null);
+        this.addDefault(defaults, Messages.SPEED_SET, "Sua velocidade foi definida para $3{0}$8.", "0: nova velocidade");
+        this.addDefault(defaults, Messages.SPEED_LIMIT, "Você precisa escolher um valor entre $31 $7e $310$8.", null);
+        this.addDefault(defaults, Messages.PROFILE_TITLE, "$8[]====[$7Perfil$8]====[]", null);
+        this.addDefault(defaults, Messages.PROFILE_REGISTER_DATA, "$7Registro$8: $3{0}", "0: data de registro");
+        this.addDefault(defaults, Messages.PROFILE_LAST_LOGIN, "$7Ultimo login$8: $3{0}", "0: ultimo login");
+        this.addDefault(defaults, Messages.PROFILE_ACCOUNT_HOURS, "$7Horas de jogo$8: $3{0}", "0: horas registradas");
+        this.addDefault(defaults, Messages.GODMODE_ENABLED, "Você ativou o god mode$8.", null);
+        this.addDefault(defaults, Messages.GODMODE_DISABLED, "Você desativou o god mode$8.", null);
+        this.addDefault(defaults, Messages.SUICIDE_BROADCAST, "$3{1} disse$8: $3{2}$7 e logo após se matou$8.", "0: nome do jogador; 1: apelido do jogador; 2: mensagem");
+        this.addDefault(defaults, Messages.LIGHTNING_CURSOR, "THOR$8! (pausa dramática) $7FILHO DE ODIM$8!", null);
+        this.addDefault(defaults, Messages.LIGHTNING_TARGET, "Você castigou $3{1}$7 com as forças divinas$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.LIGHTNING_RECEIVED, "Você foi punido por $3{1}$7 os deuses não estão ao seu favor$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.ITEM_CONDENSER, "Compactando blocos$8.", null);
+        this.addDefault(defaults, Messages.FEED_YOURSELF, "Você se saciou$8.", null);
+        this.addDefault(defaults, Messages.FEED_TARGET, "Você saciou o $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.FEED_YOURSELF, "Você foi saciado por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.STATS_MEM, "Memória$8: $3{0}MB$8/$3{1}MB$8.", "0: memória usada; 1: memória total");
+        this.addDefault(defaults, Messages.STATS_HOURS, "Tempo online$8: $7Dias$8: $3{0} $7horas$8: $3{1} $7minutos$8:{2} $7segundos$8:$3{3}$8.", "0: dias; 1: horas; 2: minutos; 3: segundos");
+        this.addDefault(defaults, Messages.FLY_ENABLED, "Modo voar ativado$8.", null);
+        this.addDefault(defaults, Messages.FLY_DISABLED, "Modo voar desativado$8.", null);
+        this.addDefault(defaults, Messages.FLY_ENABLED_FROM, "Modo voar ativado para $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.FLY_ENABLED_BY, "Modo voar ativado por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.FLY_DISABLED_FROM, "Modo voar desativado para $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.FLY_DISABLED_BY, "Modo voar desativado por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.FLY_ARE_PVP, "Você está em combate$8, $7aguarde $3{0}$7 fora de combate para poder voar$8.", "0: tempo em combate");
+        this.addDefault(defaults, Messages.FLY_TARGET_ARE_PVP, "O alvo está em combate pelos próximos $3{0} $7segundos$8, $7logo não pode voar$8.", "0: tempo em combate");
+        this.addDefault(defaults, Messages.FLY_ENTER_PVP, "Você entrou em combate e seu voar foi desativado$8.", null);
+        this.addDefault(defaults, Messages.KIT_NOT_FOUND, "Nenhum kit com o nome de $3{0}$7 foi encontrado$8.", "0: nome do kit");
+        this.addDefault(defaults, Messages.KIT_LIST, "Kits$8: $3{0}$8.", "0: lista de kits");
+        this.addDefault(defaults, Messages.NIGHT_PLAYER_SLEEPING, "$3{1}$7 está dormindo$8, $7durma também para passar a noite mais rápido$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.NIGHT_SKIPPING, "A noite está passando em $3{0}$8.", "0: nome do mundo");
+        this.addDefault(defaults, Messages.NIGHT_SKIPPED, "A noite passou em $3{0}$8.", "0: nome do mundo");
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(MESSAGES_FILE_PATH));
 
@@ -514,9 +590,11 @@ public class Configs {
             String param = args[i];
             message = message.replace("{" + i + "}", param);
         }
+
         if (prefix) {
             return this.serverPrefix + message;
         }
+
         return message;
     }
 
@@ -536,6 +614,10 @@ public class Configs {
                 return "cash.";
             case 2067288:
                 return "chat.";
+            case 2223327:
+                return "home.";
+            case 2257683:
+                return "item.";
             case 2656904:
                 return "warp.";
             default:

@@ -15,9 +15,9 @@ public class UtilCustomPlaceholdersFilter {
 				ChatObject chatObj = message.get(i);
 				String objMsg = chatObj.getMessage();
 				if (objMsg.contains("{" + cp.getId() + "}")) {
-					SubPlaceholder bestPlaceholder = UtilInternMethods.getSubPlaceholder(p, cp);
+					SubPlaceholder bestPlaceholder = APIUnstable.getSubPlaceholder(p, cp);
 					if (cp.isNotIndependent() && bestPlaceholder != null) {
-						chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", PluginMSGs.getColor(UtilInternMethods.setPlaceholders(p, bestPlaceholder.getValue()))));
+						chatObj.setMessage(objMsg.replace("{" + cp.getId() + "}", APIServer.getColor(APIUnstable.setPlaceholders(p, bestPlaceholder.getValue()))));
 					} else {
 						putplaceholders(objMsg, cp, chatObj, bestPlaceholder, message, i, p);
 					}
@@ -34,7 +34,7 @@ public class UtilCustomPlaceholdersFilter {
 			String hover = bestPlaceholder.getHover();
 			String suggest = bestPlaceholder.getSuggest();
 			String run = bestPlaceholder.getRun();
-			message.getChatObjects().add(i + 1, new ChatObject(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
+			message.getChatObjects().add(i + 1, new ChatObject(APIServer.getColor(APIUnstable.setPlaceholders(p, bestPlaceholder.getValue())), hover, suggest, run));
 			if (bestPlaceholder.isText()) {
 				message.getChatObjects().get(i + 1).setIsText(true);
 			}

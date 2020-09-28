@@ -7,34 +7,6 @@ public class PluginConstants {
     }
 
     public static final String MESSAGE = "%message%";
-    public static final String PLAYER = "%player_displayname%";
-    public static final String TARGET = "%target_displayname%";
-    public static final String PLAYER_DATA = "%player_register_data%";
-    public static final String PLAYER_LAST = "%player_last_login%";
-    public static final String VALUE = "%value%";
-    public static final String WARP = "%warp_name%";
-    public static final String WORLD = "%world_name%";
-    public static final String MODULE = "%module%";
-    public static final String AMOUNT = "%amount%";
-    public static final String TYPE = "%type%";
-    public static final String GROUP = "%group%";
-    public static final String KEY = "%key%";
-    public static final String MEM_USE = "%use_memory%";
-    public static final String MEM_MAX = "%max_memory%";
-    public static final String HOURS = "%hours%";
-    public static final String MINUTE = "%minutes%";
-    public static final String SECONDS = "%seconds%";
-    public static final String TPS = "%server_tps%";
-    public static final String TIME = "%time%";
-    public static final String KITS = "%kits%";
-    public static final String KIT_NAME = "%kit_name%";
-    public static final String COOLDOWN = "%cooldown%";
-    public static final String GM = "%gamemode%";
-    public static final String HOMES = "%homes%";
-    public static final String NEW_NAME = "%new_name%";
-    public static final String ADVICE = "%advice%";
-    public static final String CHANNEL_NAME = "%channel_name%";
-    public static final String ERROR = "%error%";
     public static final String PRIMARY_KEY = "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ";
     public static final String NAME_STR = "name";
     public static final String LOCATION_STR = "location";

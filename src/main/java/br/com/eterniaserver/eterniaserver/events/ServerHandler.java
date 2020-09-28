@@ -20,7 +20,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +31,6 @@ public class ServerHandler implements Listener {
     private final UtilCustomPlaceholdersFilter cp;
     private final UtilColors c = new UtilColors();
     private final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
-    private final boolean isNull;
     private String message;
     private String message2;
 
@@ -42,17 +40,11 @@ public class ServerHandler implements Listener {
         this.js = new UtilJsonSender();
         this.cf = new UtilChatFormatter();
 
-        final List<String> list = EterniaServer.msgConfig.getStringList("server.motd");
-        if (list.get(0) != null && list.get(1) != null) {
-            this.isNull = false;
-            message = ChatColor.translateAlternateColorCodes('&', list.get(0));
-            message2 = ChatColor.translateAlternateColorCodes('&', list.get(1));
-            if (APIServer.getVersion() >= 116) {
-                message = matcherMessage(message);
-                message2 = matcherMessage(message2);
-            }
-        } else {
-            this.isNull = true;
+        message = ChatColor.translateAlternateColorCodes('&', EterniaServer.configs.getMessage(Messages.SERVER_MOTD_1, false));
+        message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.configs.getMessage(Messages.SERVER_MOTD_2, false));
+        if (APIServer.getVersion() >= 116) {
+            message = matcherMessage(message);
+            message2 = matcherMessage(message2);
         }
 
     }
@@ -76,7 +68,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onServerListPing(ServerListPingEvent event) {
-        if (!isNull) event.setMotd(message + "\n" + message2);
+        event.setMotd(message + "\n" + message2);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -90,8 +82,8 @@ public class ServerHandler implements Listener {
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = APIPlayer.getMutedTime(uuid);
-                if (UtilInternMethods.stayMuted(time)) {
-                    EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, UtilInternMethods.getTimeLeft(time));
+                if (APIUnstable.stayMuted(time)) {
+                    EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, APIUnstable.getTimeLeft(time));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
@@ -104,10 +96,10 @@ public class ServerHandler implements Listener {
         message = canHex(player, message);
         switch (APIPlayer.getChannel(uuid)) {
             case 0:
-                UtilInternMethods.sendLocal(message, player, EterniaServer.chatConfig.getInt("local.range"));
+                APIUnstable.sendLocal(message, player, EterniaServer.chatConfig.getInt("local.range"));
                 return true;
             case 2:
-                UtilInternMethods.sendStaff(message, player);
+                APIUnstable.sendStaff(message, player);
                 return true;
             case 3:
                 sendTell(player, message);
@@ -131,7 +123,7 @@ public class ServerHandler implements Listener {
                     EterniaServer.configs.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
                     return;
                 }
-                UtilInternMethods.sendPrivate(sender, target, msg);
+                APIUnstable.sendPrivate(sender, target, msg);
                 return;
             }
         }

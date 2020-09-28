@@ -4,6 +4,7 @@ import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.*;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.*;
 
 import org.bukkit.Bukkit;
@@ -194,10 +195,10 @@ public class Managers {
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
-            Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_MODULE_ENABLE.replace(PluginConstants.MODULE, module));
+            Bukkit.getConsoleSender().sendMessage(EterniaServer.configs.getMessage(Messages.SERVER_MODULE_ENABLED, true, module));
             return true;
         }
-        Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_MODULE_DISABLE.replace(PluginConstants.MODULE, module));
+        Bukkit.getConsoleSender().sendMessage(EterniaServer.configs.getMessage(Messages.SERVER_MODULE_DISABLED, true, module));
         return false;
     }
 

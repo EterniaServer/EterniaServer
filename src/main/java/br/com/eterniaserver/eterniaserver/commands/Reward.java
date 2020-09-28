@@ -9,8 +9,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.generics.APIServer;
 import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
+import br.com.eterniaserver.eterniaserver.generics.APIUnstable;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,7 +24,7 @@ public class Reward extends BaseCommand {
 
     public Reward() {
         APIServer.updateRewardMap(EQueries.getMapString(PluginConstants.getQuerySelectAll(EterniaServer.configs.tableRewards), PluginConstants.CODE_STR, PluginConstants.CODE_GROUP_STR));
-        Bukkit.getConsoleSender().sendMessage(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Keys").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getRewardMapSize())));
+        Bukkit.getConsoleSender().sendMessage(EterniaServer.configs.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(APIServer.getRewardMapSize())));
     }
 
     @CommandAlias("usekey|usarkey|usarchave")
@@ -67,7 +66,7 @@ public class Reward extends BaseCommand {
         for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection(rewardsConfig + group + ".commands").getKeys(false)) {
             if (Math.random() <= Double.parseDouble(percentage)) {
                 for (String command : EterniaServer.rewardsConfig.getStringList(rewardsConfig + group + ".commands." + percentage)) {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, command));
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIUnstable.setPlaceholders(player, command));
                 }
             }
         }

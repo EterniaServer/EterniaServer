@@ -65,7 +65,7 @@ public class Generic extends BaseCommand {
                 e.printStackTrace();
             }
         }
-        sendConsole(PluginMSGs.MSG_LOAD_DATA.replace(PluginConstants.MODULE, "Player Profiles").replace(PluginConstants.AMOUNT, String.valueOf(APIServer.getProfileMapSize())));
+        sendConsole(EterniaServer.configs.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(APIServer.getProfileMapSize())));
 
         if (EterniaServer.configs.moduleHomes || EterniaServer.configs.moduleTeleports) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
@@ -90,8 +90,9 @@ public class Generic extends BaseCommand {
         if (speed > 0 && speed < 11) {
             player.setFlySpeed((float) speed / 10);
             player.setWalkSpeed((float) speed / 10);
+            EterniaServer.configs.sendMessage(player, Messages.SPEED_SET, String.valueOf((float) speed / 10));
         } else {
-            player.sendMessage(PluginMSGs.MSG_SPEED);
+            EterniaServer.configs.sendMessage(player, Messages.SPEED_LIMIT);
         }
     }
 
@@ -110,16 +111,16 @@ public class Generic extends BaseCommand {
     @CommandPermission("eternia.mem")
     public void onMem(CommandSender player) {
         getRuntime.recalculateRuntime();
-        player.sendMessage(PluginMSGs.MSG_MEM.replace(PluginConstants.MEM_USE, String.valueOf(getRuntime.getFreemem())).replace(PluginConstants.MEM_MAX, String.valueOf(getRuntime.getTotalmem())));
-        player.sendMessage(PluginMSGs.MSG_MEM_ONLINE.replace(PluginConstants.HOURS, String.valueOf(getRuntime.getHours())).replace(PluginConstants.MINUTE, String.valueOf(getRuntime.getMinutes())).replace(PluginConstants.SECONDS, String.valueOf(getRuntime.getSeconds())));
+        EterniaServer.configs.sendMessage(player, Messages.STATS_MEM, String.valueOf(getRuntime.getFreemem()), String.valueOf(getRuntime.getTotalmem()));
+        EterniaServer.configs.sendMessage(player, Messages.STATS_HOURS, String.valueOf(getRuntime.getDays()), String.valueOf(getRuntime.getHours()), String.valueOf(getRuntime.getMinutes()), String.valueOf(getRuntime.getSeconds()));
     }
 
     @CommandAlias("memall|memoryall")
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
-        sendConsole(PluginMSGs.MSG_MEM.replace(PluginConstants.MEM_USE, String.valueOf(getRuntime.getFreemem())).replace(PluginConstants.MEM_MAX, String.valueOf(getRuntime.getTotalmem())));
-        sendConsole(PluginMSGs.MSG_MEM_ONLINE.replace(PluginConstants.HOURS, String.valueOf(getRuntime.getHours())).replace(PluginConstants.MINUTE, String.valueOf(getRuntime.getMinutes())).replace(PluginConstants.SECONDS, String.valueOf(getRuntime.getSeconds())));
+        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.STATS_MEM, true, String.valueOf(getRuntime.getFreemem()), String.valueOf(getRuntime.getTotalmem())));
+        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.STATS_HOURS, true, String.valueOf(getRuntime.getDays()), String.valueOf(getRuntime.getHours()), String.valueOf(getRuntime.getMinutes()), String.valueOf(getRuntime.getSeconds())));
     }
 
     @CommandAlias("god")
@@ -149,34 +150,34 @@ public class Generic extends BaseCommand {
             final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
 
             if (APIPlayer.isOnPvP(uuid)) {
-                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_TARGET_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.configs.pvpTime - APIPlayer.getPvPCooldown(uuid)))));
+                EterniaServer.configs.sendMessage(player, Messages.FLY_TARGET_ARE_PVP, String.valueOf(EterniaServer.configs.pvpTime - APIPlayer.getPvPCooldown(uuid)));
                 return;
             }
 
             APIPlayer.changeFlyState(target);
             if (target.isFlying()) {
-                target.sendMessage(UtilInternMethods.putName(player, PluginMSGs.FLY_ENABLED_BY));
-                player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_ENABLED_FOR));
+                EterniaServer.configs.sendMessage(target, Messages.FLY_ENABLED_BY, player.getName(), player.getDisplayName());
+                EterniaServer.configs.sendMessage(player, Messages.FLY_ENABLED_FROM, target.getName(), target.getDisplayName());
                 return;
             }
-            target.sendMessage(UtilInternMethods.putName(player, PluginMSGs.FLY_DISABLED_BY));
-            player.sendMessage(UtilInternMethods.putName(target, PluginMSGs.FLY_DISABLED_FOR));
+            EterniaServer.configs.sendMessage(target, Messages.FLY_DISABLED_BY, player.getName(), player.getDisplayName());
+            EterniaServer.configs.sendMessage(player, Messages.FLY_DISABLED_FROM, target.getName(), target.getDisplayName());
             return;
         }
 
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (APIPlayer.isOnPvP(uuid)) {
-            player.sendMessage(PluginMSGs.FLY_IN_PVP.replace(PluginConstants.AMOUNT, String.valueOf(EterniaServer.configs.pvpTime - APIPlayer.getPvPCooldown(uuid))));
+            EterniaServer.configs.sendMessage(player, Messages.FLY_ARE_PVP, String.valueOf(EterniaServer.configs.pvpTime - APIPlayer.getPvPCooldown(uuid)));
             return;
         }
 
         APIPlayer.changeFlyState(player);
         if (player.isFlying()) {
-            player.sendMessage(PluginMSGs.FLY_ENABLED);
+            EterniaServer.configs.sendMessage(player, Messages.FLY_ENABLED);
             return;
         }
-        player.sendMessage(PluginMSGs.FLY_DISABLED);
+        EterniaServer.configs.sendMessage(player, Messages.FLY_DISABLED);
     }
 
     @CommandAlias("flydebug")
@@ -194,14 +195,13 @@ public class Generic extends BaseCommand {
     public void onFeed(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             player.setFoodLevel(20);
-            player.sendMessage(PluginMSGs.MSG_FEEDED);
+            EterniaServer.configs.sendMessage(player, Messages.FEED_YOURSELF);
         } else {
             final Player targetP = target.getPlayer();
             if (player.hasPermission("eternia.feed.other")) {
                 targetP.setFoodLevel(20);
-                player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.MSG_FEEDED_TARGET));
-                player.sendMessage(PluginMSGs.MSG_FEEDED_TARGET.replace(PluginConstants.TARGET, targetP.getDisplayName()));
-                targetP.sendMessage(PluginMSGs.MSG_FEEDED);
+                EterniaServer.configs.sendMessage(player, Messages.FEED_RECEIVED, player.getName(), player.getDisplayName());
+                EterniaServer.configs.sendMessage(player, Messages.FEED_TARGET, targetP.getName(), targetP.getDisplayName());
             } else {
                 EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
             }
@@ -236,21 +236,7 @@ public class Generic extends BaseCommand {
         convertItems(gold, Material.GOLD_INGOT, Material.GOLD_BLOCK, player);
         convertItems(diamond, Material.DIAMOND, Material.DIAMOND_BLOCK, player);
         convertItems(esmeralda, Material.EMERALD, Material.EMERALD_BLOCK, player);
-        player.sendMessage(PluginMSGs.MSG_CONDENSER);
-    }
-
-    @CommandAlias("rain|chuva")
-    @CommandPermission("eternia.rain")
-    public void onRain(Player player) {
-        player.getWorld().setStorm(true);
-        player.sendMessage(PluginMSGs.MSG_WEATHER);
-    }
-
-    @CommandAlias("sun|sol")
-    @CommandPermission("eternia.sun")
-    public void onSun(Player player) {
-        player.getWorld().setStorm(false);
-        player.sendMessage(PluginMSGs.MSG_WEATHER);
+        EterniaServer.configs.sendMessage(player, Messages.ITEM_CONDENSER);
     }
 
     @CommandAlias("thor|lightning")
@@ -262,9 +248,10 @@ public class Generic extends BaseCommand {
         if (target != null) {
             final Player targetP = target.getPlayer();
             world.strikeLightning(targetP.getLocation());
-            player.sendMessage(UtilInternMethods.putName(targetP, PluginMSGs.MSG_LIGHTNING_SENT));
-            targetP.sendMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_LIGHTNING_RECEIVED));
+            EterniaServer.configs.sendMessage(targetP, Messages.LIGHTNING_RECEIVED, player.getName(), player.getDisplayName());
+            EterniaServer.configs.sendMessage(player, Messages.LIGHTNING_TARGET, targetP.getName(), targetP.getDisplayName());
         } else {
+            EterniaServer.configs.sendMessage(player, Messages.LIGHTNING_CURSOR);
             world.strikeLightning(player.getTargetBlock(null, 100).getLocation());
         }
     }
@@ -272,15 +259,9 @@ public class Generic extends BaseCommand {
     @CommandAlias("suicide|suicidio")
     @Syntax("<mensagem>")
     @CommandPermission("eternia.suicide")
-    public void onSuicide(Player player, String[] args) {
-        if (args.length >= 1) {
-            StringBuilder sb = new StringBuilder();
-            for (java.lang.String arg : args) sb.append(arg).append(" ");
-            player.setHealth(0);
-            Bukkit.broadcastMessage(UtilInternMethods.putName(player, PluginMSGs.MSG_SUICIDE.replace(PluginConstants.MESSAGE, sb.toString())));
-        } else {
-            player.setHealth(0);
-        }
+    public void onSuicide(Player player, String message) {
+        player.setHealth(0);
+        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SUICIDE_BROADCAST, true, player.getName(), player.getDisplayName(), message));
     }
 
     @CommandAlias("afk")
@@ -299,10 +280,10 @@ public class Generic extends BaseCommand {
     private void changeGod(final Player player) {
         final String playerName = player.getName();
         if (APIPlayer.isGod(playerName)) {
-            player.sendMessage(PluginMSGs.MSG_GOD_DISABLE);
+            EterniaServer.configs.sendMessage(player, Messages.GODMODE_DISABLED);
             APIPlayer.removeGod(playerName);
         } else {
-            player.sendMessage(PluginMSGs.MSG_GOD_ENABLE);
+            EterniaServer.configs.sendMessage(player, Messages.GODMODE_ENABLED);
             APIPlayer.putGod(playerName);
         }
     }
@@ -323,17 +304,17 @@ public class Generic extends BaseCommand {
     private void sendProfile(Player player, Player target) {
         final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
         final long millis = APIPlayer.getAndUpdateTimePlayed(uuid);
-        String hms = PluginMSGs.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
+        String hms = APIServer.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
-        player.sendMessage(PluginMSGs.MSG_PROFILE_TITLE);
-        for (String line : EterniaServer.msgConfig.getStringList("generic.profile.custom")) {
-            player.sendMessage(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(target, line)));
+        player.sendMessage(EterniaServer.configs.getMessage(Messages.PROFILE_TITLE, false));
+        for (String line : EterniaServer.configs.profileCustomMessages) {
+            player.sendMessage(APIServer.getColor(APIUnstable.setPlaceholders(target, line)));
         }
-        player.sendMessage(PluginMSGs.MSG_PROFILE_REGISTER.replace(PluginConstants.PLAYER_DATA, sdf.format(new Date(APIPlayer.getFirstLoginLong(uuid)))));
-        player.sendMessage(PluginMSGs.MSG_PROFILE_LAST.replace(PluginConstants.PLAYER_LAST, sdf.format(new Date(APIPlayer.getLastLogin(uuid)))));
-        player.sendMessage(PluginMSGs.MSG_PROFILE_HOURS.replace(PluginConstants.HOURS, hms));
-        player.sendMessage(PluginMSGs.MSG_PROFILE_TITLE);
+        player.sendMessage(EterniaServer.configs.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(APIPlayer.getFirstLoginLong(uuid)))));
+        player.sendMessage(EterniaServer.configs.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(APIPlayer.getLastLogin(uuid)))));
+        player.sendMessage(EterniaServer.configs.getMessage(Messages.PROFILE_ACCOUNT_HOURS, false, hms));
+        player.sendMessage(EterniaServer.configs.getMessage(Messages.PROFILE_TITLE, false));
     }
 
     private void getPlayersProfiles(ResultSet resultSet) throws SQLException {

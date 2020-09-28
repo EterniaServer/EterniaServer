@@ -264,7 +264,7 @@ public interface APIPlayer {
         final PlayerProfile playerProfile = PluginVars.playerProfile.get(uuid);
 
         if (player.hasPermission("eternia.chat.color.nick")) {
-            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CHANGE_REQUEST, PluginMSGs.getColor(string), String.valueOf(EterniaServer.configs.nickCost));
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CHANGE_REQUEST, APIServer.getColor(string), String.valueOf(EterniaServer.configs.nickCost));
             playerProfile.setTempNick(string);
         } else {
             EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_CHANGE_REQUEST, string, String.valueOf(EterniaServer.configs.nickCost));
@@ -292,7 +292,7 @@ public interface APIPlayer {
             return;
         }
 
-        player.setDisplayName(PluginMSGs.getColor(string));
+        player.setDisplayName(APIServer.getColor(string));
     }
 
     private static void changeNickName(final Player target, final Player player, final String string) {

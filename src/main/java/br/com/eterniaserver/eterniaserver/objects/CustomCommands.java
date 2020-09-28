@@ -2,8 +2,8 @@ package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.PluginMSGs;
-import br.com.eterniaserver.eterniaserver.generics.UtilInternMethods;
+import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.generics.APIUnstable;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,10 +38,10 @@ public class CustomCommands extends AbstractCommand {
     private void checkCommands(final Player player, final String cmd) {
         if (player.hasPermission("eternia." + cmd)) {
             for (String line : commandsStrings) {
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), UtilInternMethods.setPlaceholders(player, line));
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIUnstable.setPlaceholders(player, line));
             }
             for (String line : messagesStrings) {
-                player.sendMessage(PluginMSGs.getColor(UtilInternMethods.setPlaceholders(player, line)));
+                player.sendMessage(APIServer.getColor(APIUnstable.setPlaceholders(player, line)));
             }
         } else {
             EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
