@@ -14,7 +14,7 @@ import br.com.eterniaserver.eternialib.NBTItem;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -5,7 +5,7 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.*;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.core.*;
 
 import org.bukkit.Bukkit;
 

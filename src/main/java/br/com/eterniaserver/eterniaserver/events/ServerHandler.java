@@ -4,7 +4,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.core.*;
 import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 import net.md_5.bungee.api.ChatColor;
 

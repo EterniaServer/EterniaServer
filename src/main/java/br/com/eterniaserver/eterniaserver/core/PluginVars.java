@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.objects.CashGui;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
@@ -7,7 +7,6 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import net.milkbowl.vault.economy.Economy;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
@@ -35,7 +34,7 @@ public class PluginVars {
     private static CashGui cashGui;
     private static Economy econ;
 
-    public static final Location error = new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666);
+    private static Location error;
     protected static final NumberFormat df2 = NumberFormat.getInstance(new Locale("pt", "BR"));
 
     public static final List<String> entityList = List.of("BEE", "BLAZE", "CAT", "CAVE_SPIDER", "CHICKEN", "COD",
@@ -45,10 +44,6 @@ public class PluginVars {
             "RABBIT", "RAVAGER", "SALMON", "SHEEP", "SILVERFISH", "SKELETON", "SKELETON_HORSE", "SLIME", "SNOW_GOLEM",
             "SPIDER", "SQUID", "STRAY", "STRIDER", "TURTLE", "VEX", "VILLAGER", "VINDICATOR", "WITCH", "WITHER",
             "WITHER_SKELETON", "WOLF", "ZOGLIN", "ZOMBIE", "ZOMBIE_HORSE", "ZOMBIFIED_PIGLIN", "ZOMBIE_VILLAGER");
-
-    public static final List<String> colorsString = List.of("black", "darkblue",
-            "darkgreen", "darkaqua", "darkred", "darkpurple", "gold", "lightgray", "darkgray", "blue", "green",
-            "aqua", "red", "purple", "yellow", "white");
 
     public static final List<ChatColor> colors = List.of(ChatColor.BLACK, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN,
             ChatColor.DARK_AQUA, ChatColor.DARK_RED, ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GRAY,
@@ -119,4 +114,11 @@ public class PluginVars {
         if (econ == null) econ = economy;
     }
 
+    public static Location getError() {
+        return error;
+    }
+
+    public static void setError(Location location) {
+        error = location;
+    }
 }

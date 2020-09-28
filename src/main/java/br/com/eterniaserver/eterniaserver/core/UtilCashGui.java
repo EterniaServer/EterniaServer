@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.CashGui;

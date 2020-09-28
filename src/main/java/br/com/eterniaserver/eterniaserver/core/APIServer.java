@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eternialib.EQueries;
 
@@ -78,7 +78,7 @@ public interface APIServer {
     }
 
     static Location getLocation(String warpName) {
-        return PluginVars.locations.getOrDefault(warpName, PluginVars.error);
+        return PluginVars.locations.getOrDefault(warpName, PluginVars.getError());
     }
 
     static void putLocation(String warpName, Location location) {

@@ -4,7 +4,7 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.core.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
 

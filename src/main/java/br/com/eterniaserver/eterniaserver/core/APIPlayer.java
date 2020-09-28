@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EQueries;

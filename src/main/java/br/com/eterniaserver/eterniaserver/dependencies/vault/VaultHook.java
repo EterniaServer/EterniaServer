@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.dependencies.vault;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
+import br.com.eterniaserver.eterniaserver.core.PluginVars;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.plugin.RegisteredServiceProvider;

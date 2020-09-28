@@ -6,7 +6,7 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
+import br.com.eterniaserver.eterniaserver.core.PluginVars;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -132,7 +132,7 @@ public class PluginTicks extends BukkitRunnable {
     }
 
     private Location getWarp() {
-        return PluginVars.locations.getOrDefault("warp.spawn", PluginVars.error);
+        return PluginVars.locations.getOrDefault("warp.spawn", PluginVars.getError());
     }
 
     private void runSync(Runnable runnable) {

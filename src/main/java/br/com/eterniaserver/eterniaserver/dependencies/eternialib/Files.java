@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
-import br.com.eterniaserver.eterniaserver.generics.APIServer;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommands;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;

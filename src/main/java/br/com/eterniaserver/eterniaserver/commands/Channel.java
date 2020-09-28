@@ -15,7 +15,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.APIPlayer;
+import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;

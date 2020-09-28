@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.generics;
+package br.com.eterniaserver.eterniaserver.core;
 
 import java.lang.management.ManagementFactory;
 import java.util.concurrent.TimeUnit;

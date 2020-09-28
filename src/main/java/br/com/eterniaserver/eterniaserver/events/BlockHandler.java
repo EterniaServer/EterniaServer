@@ -2,9 +2,9 @@ package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.APIServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
-import br.com.eterniaserver.eterniaserver.generics.APIUnstable;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.core.PluginVars;
+import br.com.eterniaserver.eterniaserver.core.APIUnstable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.APIServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginVars;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.core.PluginVars;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 
 import org.bukkit.ChatColor;

@@ -14,7 +14,7 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.core.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -69,6 +69,7 @@ public class Generic extends BaseCommand {
 
         if (EterniaServer.configs.moduleHomes || EterniaServer.configs.moduleTeleports) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+                PluginVars.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
                 final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(EterniaServer.configs.tableLocations), PluginConstants.NAME_STR, PluginConstants.LOCATION_STR);
                 temp.forEach((k, v) -> {
                     final String[] split = v.split(":");

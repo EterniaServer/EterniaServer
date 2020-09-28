@@ -11,7 +11,7 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.generics.*;
+import br.com.eterniaserver.eterniaserver.core.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -132,7 +132,7 @@ public class Home extends BaseCommand {
     }
 
     private boolean locationExists(final Location location, final Player player, final String nome) {
-        if (location == PluginVars.error) {
+        if (location == PluginVars.getError()) {
             EterniaServer.configs.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
             return false;
         }

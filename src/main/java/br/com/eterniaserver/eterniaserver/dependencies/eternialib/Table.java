@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.generics.PluginConstants;
+import br.com.eterniaserver.eterniaserver.core.PluginConstants;
 
 public class Table {
 
