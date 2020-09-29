@@ -78,6 +78,13 @@ public class Warp extends BaseCommand {
         EterniaServer.configs.sendMessage(player, Messages.WARP_SHOP_CREATED);
     }
 
+    @CommandAlias("delshop|delloja")
+    @CommandPermission("eternia.setshop")
+    public void onDelShop(Player player) {
+        delShop(player.getName().toLowerCase());
+        EterniaServer.configs.sendMessage(player, Messages.WARP_SHOP_DELETED);
+    }
+
     @CommandAlias("setwarp")
     @Syntax("<warp>")
     @CommandPermission("eternia.setwarp")
@@ -203,6 +210,11 @@ public class Warp extends BaseCommand {
         final String warpName = "warp." + warp;
         APIServer.removeLocation(warpName);
         EQueries.executeQuery(PluginConstants.getQueryDelete(EterniaServer.configs.tableLocations, PluginConstants.NAME_STR, warpName));
+    }
+
+    public void delShop(String shop) {
+        APIServer.removeLocation(shop);
+        EQueries.executeQuery(PluginConstants.getQueryDelete(EterniaServer.configs.tableLocations, PluginConstants.NAME_STR, shop));
     }
 
 }

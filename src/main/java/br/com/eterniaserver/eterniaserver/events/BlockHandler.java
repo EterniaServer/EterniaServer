@@ -25,6 +25,10 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class BlockHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
@@ -82,11 +86,11 @@ public class BlockHandler implements Listener {
 
         if (!EterniaServer.configs.moduleBlock) return;
 
-        if (EterniaServer.blockConfig.contains("blocks." + materialName)) {
-            randomizeAndReward(materialName, player, "blocks.");
+        if (EterniaServer.configs.blockRewardsDrop.containsKey(materialName)) {
+            randomizeAndReward(player, EterniaServer.configs.blockRewardsDrop.get(materialName));
         }
 
-        if (EterniaServer.blockConfig.contains("farm." + materialName)) {
+        if (EterniaServer.configs.farmRewardsDrop.containsKey(materialName)) {
             winFarmReward(block, player);
         }
 
@@ -97,25 +101,22 @@ public class BlockHandler implements Listener {
         if (blockData instanceof Ageable) {
             Ageable ageable = (Ageable) blockData;
             if (ageable.getAge() == ageable.getMaximumAge()) {
-                String materialName = block.getType().name().toUpperCase();
-                randomizeAndReward(materialName, player, "farm.");
+                randomizeAndReward(player, EterniaServer.configs.farmRewardsDrop.get(block.getType().name().toUpperCase()));
             }
         }
     }
 
-    private void randomizeAndReward(String materialName, Player player, String config) {
+    private void randomizeAndReward(Player player, Map<Double, List<String>> map) {
         double randomNumber = Math.random();
-        double lowestNumberAboveRandom = 1.1;
-        for (String key : EterniaServer.blockConfig.getConfigurationSection(config + materialName).getKeys(false)) {
-            double current = Double.parseDouble(key);
-            if (current < lowestNumberAboveRandom && current > randomNumber) {
-                lowestNumberAboveRandom = current;
+        AtomicReference<List<String>> reward = new AtomicReference<>();
+        map.forEach((k, v) -> {
+            if (k > randomNumber) {
+                reward.set(v);
             }
-        }
-        if (lowestNumberAboveRandom <= 1) {
-            for (String command : EterniaServer.blockConfig.getStringList(config + materialName + "." + lowestNumberAboveRandom)) {
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIUnstable.setPlaceholders(player, command));
-            }
+        });
+        if (reward.get() == null) return;
+        for (String command : reward.get()) {
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIUnstable.setPlaceholders(player, command));
         }
     }
 

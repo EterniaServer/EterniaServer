@@ -1,14 +1,22 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface APIEconomy {
 
@@ -180,6 +188,95 @@ public interface APIEconomy {
         } else {
             PluginVars.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
         }
+    }
+
+    /**
+     * Check if the player is the top money
+     * @param uuid of player
+     * @return if the player was top money or not
+     */
+    static boolean isBaltop(UUID uuid) {
+        if (PluginVars.balltop == null) {
+            updateBaltop(20);
+        }
+        return PluginVars.balltop.equals(uuid);
+    }
+
+    /**
+     * Update the baltop list and return And
+     * return if the list was updated or not
+     * @param size the size of list
+     * @return if the list was updated or not
+     */
+    static CompletableFuture<Boolean> updateBaltop(int size) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (EterniaLib.getMySQL()) {
+                EterniaLib.getConnections().executeSQLQuery(connection -> {
+                    final PreparedStatement getHashMap = connection.prepareStatement(
+                            "SELECT " + PluginConstants.UUID_STR +
+                                    " FROM " + EterniaServer.configs.tablePlayer +
+                                    " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT " + size + ";");
+                    final ResultSet resultSet = getHashMap.executeQuery();
+                    final List<UUID> tempList = new ArrayList<>();
+                    UUID uuid;
+                    while (resultSet.next()) {
+                        if (tempList.size() < 10) {
+                            uuid = UUID.fromString(resultSet.getString(PluginConstants.UUID_STR));
+                            if (!EterniaServer.configs.blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
+                                tempList.add(uuid);
+                            }
+                        }
+                    }
+                    PluginVars.baltopTime = System.currentTimeMillis();
+                    PluginVars.baltopList.clear();
+                    PluginVars.baltopList.addAll(tempList);
+                    getHashMap.close();
+                    resultSet.close();
+                });
+            } else {
+                try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
+                        "SELECT " + PluginConstants.UUID_STR +
+                                " FROM " + EterniaServer.configs.tablePlayer +
+                                " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT " + size + ";"); ResultSet resultSet = getHashMap.executeQuery()) {
+                    final List<UUID> tempList = new ArrayList<>();
+                    UUID uuid;
+                    while (resultSet.next()) {
+                        if (tempList.size() < 10) {
+                            uuid = UUID.fromString(resultSet.getString(PluginConstants.UUID_STR));
+                            if (!EterniaServer.configs.blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
+                                if (tempList.isEmpty()) {
+                                    PluginVars.balltop = uuid;
+                                }
+                                tempList.add(uuid);
+                            }
+                        }
+                    }
+                    PluginVars.baltopTime = System.currentTimeMillis();
+                    PluginVars.baltopList.clear();
+                    PluginVars.baltopList.addAll(tempList);
+                } catch (SQLException ignored) {
+                    APIServer.logError("Erro ao se conectar com a database", 3);
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
+    /**
+     * Get the baltop list
+     * @return the baltop list
+     */
+    static List<UUID> getBaltopList() {
+        return PluginVars.baltopList;
+    }
+
+    /**
+     * Get the time from the last update
+     * @return the time in long
+     */
+    static long getBaltopTime() {
+        return PluginVars.baltopTime;
     }
 
 }

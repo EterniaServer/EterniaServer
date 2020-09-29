@@ -13,7 +13,6 @@ public class EterniaServer extends JavaPlugin {
 
     public static final YamlConfiguration cmdConfig = new YamlConfiguration();
     public static final YamlConfiguration rewardsConfig = new YamlConfiguration();
-    public static final YamlConfiguration blockConfig = new YamlConfiguration();
     public static final YamlConfiguration kitConfig = new YamlConfiguration();
     public static final YamlConfiguration chatConfig = new YamlConfiguration();
     public static final YamlConfiguration placeholderConfig = new YamlConfiguration();
@@ -30,7 +29,6 @@ public class EterniaServer extends JavaPlugin {
 
         files.loadDatabase();
         files.loadPlaceHolders();
-        files.loadBlocksRewards();
         files.loadCommands();
         files.loadCashGui();
         files.loadChat();

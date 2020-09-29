@@ -11,35 +11,23 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
-import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 import br.com.eterniaserver.eterniaserver.core.APIPlayer;
-import br.com.eterniaserver.eterniaserver.core.PluginConstants;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @CommandAlias("eco")
 @CommandPermission("eternia.money.user")
 public class Economy extends BaseCommand {
-
-    private long time = 0;
-    private List<UUID> lista;
 
     @Default
     @Syntax("<página>")
@@ -140,65 +128,19 @@ public class Economy extends BaseCommand {
     @Subcommand("baltop")
     @Description(" Verifica a lista de mais ricos")
     public void onBaltop(CommandSender sender) {
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time) <= 300) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - APIEconomy.getBaltopTime()) <= 300) {
             showBaltop(sender);
         } else {
-            CompletableFuture.runAsync(() -> {
-                if (EterniaLib.getMySQL()) {
-                    EterniaLib.getConnections().executeSQLQuery(connection -> {
-                        final PreparedStatement getHashMap = connection.prepareStatement(
-                                "SELECT " + PluginConstants.UUID_STR +
-                                        " FROM " + EterniaServer.configs.tablePlayer +
-                                        " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 20;");
-                        final ResultSet resultSet = getHashMap.executeQuery();
-                        final List<UUID> tempList = new ArrayList<>();
-                        UUID uuid;
-                        while (resultSet.next()) {
-                            if (tempList.size() < 10) {
-                                uuid = UUID.fromString(resultSet.getString(PluginConstants.UUID_STR));
-                                if (!EterniaServer.configs.blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
-                                    tempList.add(uuid);
-                                }
-                            }
-                        }
-                        time = System.currentTimeMillis();
-                        lista = tempList;
-                        getHashMap.close();
-                        resultSet.close();
-                        showBaltop(sender);
-                    });
-                } else {
-                    try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
-                            "SELECT " + PluginConstants.UUID_STR +
-                                    " FROM " + EterniaServer.configs.tablePlayer +
-                                    " ORDER BY " + PluginConstants.BALANCE_STR + " DESC LIMIT 20;"); ResultSet resultSet = getHashMap.executeQuery()) {
-                        final List<UUID> tempList = new ArrayList<>();
-                        UUID uuid;
-                        while (resultSet.next()) {
-                            if (tempList.size() < 10) {
-                                uuid = UUID.fromString(resultSet.getString(PluginConstants.UUID_STR));
-                                if (!EterniaServer.configs.blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
-                                    tempList.add(uuid);
-                                }
-                            }
-                        }
-                        time = System.currentTimeMillis();
-                        lista = tempList;
-                        showBaltop(sender);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            APIEconomy.updateBaltop(20).thenRun(() -> showBaltop(sender));
         }
     }
 
     private void showBaltop(CommandSender sender) {
-        lista.forEach((user -> {
+        APIEconomy.getBaltopList().forEach((user -> {
             final String playerName = APIPlayer.getName(user);
             final String playerDisplay = APIPlayer.getDisplayName(user);
             EterniaServer.configs.sendMessage(sender, Messages.ECO_BALTOP_LIST, false,
-                    String.valueOf(lista.indexOf(user) + 1),
+                    String.valueOf(APIEconomy.getBaltopList().indexOf(user) + 1),
                     playerName,
                     playerDisplay,
                     APIEconomy.format(APIEconomy.getMoney(user)));

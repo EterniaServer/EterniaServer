@@ -34,6 +34,9 @@ public class PluginVars {
     private static CashGui cashGui;
     private static Economy econ;
 
+    protected static UUID balltop;
+    protected static long baltopTime = 0;
+
     private static Location error;
     protected static final NumberFormat df2 = NumberFormat.getInstance(new Locale("pt", "BR"));
 
@@ -55,18 +58,19 @@ public class PluginVars {
 
     protected static final List<UtilCustomPlaceholder> customPlaceholders = new ArrayList<>();
     protected static final List<World> skippingWorlds = new ArrayList<>();
+    protected static final List<UUID> baltopList = new ArrayList<>();
 
     protected static final Set<String> god = new HashSet<>();
     protected static final Set<String> afk = new HashSet<>();
 
     protected static final Map<Player, PlayerTeleport> teleports = new HashMap<>();
-    protected static final Map<String, UUID> playersName = new HashMap<>();
-    protected static final Map<UUID, String> cashItem = new HashMap<>();
 
+    protected static final Map<UUID, String> cashItem = new HashMap<>();
     protected static final Map<UUID, PlayerProfile> playerProfile = new HashMap<>();
+
+    protected static final Map<String, UUID> playersName = new HashMap<>();
     protected static final Map<String, Location> locations = new HashMap<>();
     protected static final Map<String, String> chatLocked = new HashMap<>();
-
     protected static final Map<String, Long> kitsCooldown = new HashMap<>();
     protected static final Map<String, Boolean> spy = new HashMap<>();
     protected static final Map<String, Integer> playersInPortal = new HashMap<>();
@@ -121,4 +125,5 @@ public class PluginVars {
     public static void setError(Location location) {
         error = location;
     }
+
 }

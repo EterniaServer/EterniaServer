@@ -3,6 +3,7 @@ menu:
   10:
     material: 'OAK_SIGN'
     name: '&3Permissões&8.'
+    gui: 'Perm'
     lore:
       - '&7Compre permissões'
       - '&7para lhe ajudar'

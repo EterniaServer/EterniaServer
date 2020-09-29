@@ -45,10 +45,6 @@ public class Files {
         }
     }
 
-    public void loadBlocksRewards() {
-        loadFile("blocks.yml", EterniaServer.blockConfig);
-    }
-
     public void loadCashGui() {
         loadFile("cashgui.yml", EterniaServer.cashConfig);
     }

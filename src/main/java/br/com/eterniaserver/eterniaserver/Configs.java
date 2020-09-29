@@ -8,8 +8,10 @@ import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,8 @@ public class Configs {
     private static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
     private static final String MESSAGES_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "messages.yml";
     private static final String CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "config.yml";
+    private static final String BLOCKS_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
+    private static final String CASH_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "cash.yml";
 
     private String[] messages;
 
@@ -84,6 +88,8 @@ public class Configs {
 
     public final List<String> profileCustomMessages = new ArrayList<>();
 
+    public final String baltopTag;
+
     public final String gmSpectator;
     public final String gmSurvival;
     public final String gmCreative;
@@ -109,6 +115,12 @@ public class Configs {
     public final String chLocal;
     public final String chGlobal;
     public final String chStaff;
+
+    public final Map<String, Map<Double, List<String>>> blockRewardsDrop = new HashMap<>();
+    public final Map<String, Map<Double, List<String>>> farmRewardsDrop = new HashMap<>();
+
+    public final List<ItemStack> menuGui = new ArrayList<>();
+    public final Map<String, List<ItemStack>> othersGui = new HashMap<>();
 
     protected Configs() {
 
@@ -172,6 +184,8 @@ public class Configs {
         this.dropChance = config.getDouble("spawners.drop-chance", 1.0);
         this.preventAnvil = config.getBoolean("spawners.prevent-anvil", true);
         this.blacklistedWorldsSpawners.add("world_evento");
+
+        this.baltopTag = config.getString("strings.baltop", "&8[&2Magnata&8]");
 
         this.gmAdventure = config.getString("strings.gm.adventure", "aventura");
         this.gmCreative = config.getString("strings.gm.creative", "criativo");
@@ -255,6 +269,8 @@ public class Configs {
         this.profileCustomMessages.clear();
         this.profileCustomMessages.addAll(tempCustomProfileMessages);
 
+        outConfig.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
+
         outConfig.set("module.bed", this.moduleBed);
         outConfig.set("module.block-reward", this.moduleBlock);
         outConfig.set("module.cash", this.moduleCash);
@@ -313,6 +329,8 @@ public class Configs {
 
         outConfig.set("profile.custom-messages", tempCustomProfileMessages);
 
+        outConfig.set("strings.baltop", this.baltopTag);
+
         outConfig.set("strings.gm.adventure", this.gmAdventure);
         outConfig.set("strings.gm.creative", this.gmCreative);
         outConfig.set("strings.gm.spectator", this.gmSpectator);
@@ -339,12 +357,83 @@ public class Configs {
         outConfig.set("strings.ch.global", this.chGlobal);
         outConfig.set("strings.ch.staff", this.chStaff);
 
+        loadMessages();
+
+        // blocks.yml
+
+        FileConfiguration blocks = YamlConfiguration.loadConfiguration(new File(BLOCKS_FILE_PATH));
+        FileConfiguration outBlocks = new YamlConfiguration();
+
+        Map<Double, List<String>> tempBlockzinMap = new HashMap<>();
+        tempBlockzinMap.put(0.001, List.of("crates givekey %player_name% minerios"));
+        tempBlockzinMap.put(0.00005, List.of("crates givekey %player_name% mineriosraros"));
+        this.blockRewardsDrop.put("STONE", tempBlockzinMap);
+
+        Map<String, Map<Double, List<String>>> tempBlock = new HashMap<>();
+
+        ConfigurationSection configurationSection = blocks.getConfigurationSection("blocks");
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                Map<Double, List<String>> tempChanceMap = new HashMap<>();
+                ConfigurationSection section = blocks.getConfigurationSection("blocks." + key);
+                if (section != null) {
+                    for (String chance : section.getKeys(false)){
+                        tempChanceMap.put(Double.parseDouble(chance.replace('_', '.')), blocks.getStringList("blocks." + key + "." + chance));
+                    }
+                }
+                tempBlock.put(key, tempChanceMap);
+            }
+        }
+
+
+        if (tempBlock.isEmpty()) {
+            tempBlock = new HashMap<>(this.blockRewardsDrop);
+        }
+
+        this.blockRewardsDrop.clear();
+        tempBlock.forEach(this.blockRewardsDrop::put);
+
+        this.blockRewardsDrop.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("blocks." + k + '.' + l.toString().replace('.', '_'), b)));
+
+        Map<Double, List<String>> tempFarmMap = new HashMap<>();
+        tempFarmMap.put(0.001, List.of("crates givekey %player_name% farm"));
+        tempFarmMap.put(0.00005, List.of("crates givekey %player_name% farmraros"));
+        this.farmRewardsDrop.put("CARROT", tempFarmMap);
+
+        Map<String, Map<Double, List<String>>> tempFarm = new HashMap<>();
+
+        configurationSection = blocks.getConfigurationSection("farm");
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                Map<Double, List<String>> tempChanceMap = new HashMap<>();
+                ConfigurationSection section = blocks.getConfigurationSection("farm." + key);
+                if (section != null) {
+                    for (String chance : section.getKeys(false)) {
+                        tempChanceMap.put(Double.parseDouble(chance.replace('_', '.')), blocks.getStringList("farm." + key + "." + chance));
+                    }
+                }
+                tempFarm.put(key, tempChanceMap);
+            }
+        }
+
+        if (tempFarm.isEmpty()) {
+            tempFarm = new HashMap<>(this.farmRewardsDrop);
+        }
+
+        this.farmRewardsDrop.clear();
+        tempFarm.forEach(this.farmRewardsDrop::put);
+
+        this.farmRewardsDrop.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("farm." + k + "." + l.toString().replace('.', '_'), b)));
+        outBlocks.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
+
+        // SAVING
+
         try {
             outConfig.save(CONFIG_FILE_PATH);
+            outBlocks.save(BLOCKS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + DATA_LAYER_FOLDER_PATH, 3);
         }
-        loadMessages();
 
     }
 
@@ -427,6 +516,7 @@ public class Configs {
         this.addDefault(defaults, Messages.WARP_SPAWN_CREATED, "$3Spawn $7definido com sucesso$8.", null);
         this.addDefault(defaults, Messages.WARP_SPAWN_NOT_FOUND, "O $3Spawn $7não foi definido ainda$8.", null);
         this.addDefault(defaults, Messages.WARP_SHOP_CREATED, "$3Loja $7definida com sucesso$8.", null);
+        this.addDefault(defaults, Messages.WARP_SHOP_DELETED, "$3Loja $7deletada com sucesso$8.", null);
         this.addDefault(defaults, Messages.WARP_SHOP_TELEPORTED, "Você foi teleportado até a $3Loja$8.", null);
         this.addDefault(defaults, Messages.WARP_SHOP_PLAYER_TELEPORTED, "Você foi teleportado até a loja de$3{0}$8.", "0: nome da loja");
         this.addDefault(defaults, Messages.WARP_SHOP_NOT_FOUND, "$3{1}$7 não possui loja$8.", "0: nome do jogador; 1: apelido do jogador");
