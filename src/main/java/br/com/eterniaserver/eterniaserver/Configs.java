@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.core.PluginVars;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 
+import br.com.eterniaserver.eterniaserver.objects.KitObject;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -29,6 +30,7 @@ public class Configs {
     private static final String CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "config.yml";
     private static final String BLOCKS_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
     private static final String CASHGUI_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "cashgui.yml";
+    private static final String KITS_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "kits.yml";
 
     private String[] messages;
 
@@ -126,6 +128,8 @@ public class Configs {
     public final Map<String, Integer> guisInvert = new HashMap<>();
     public final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
 
+    public final Map<String, KitObject> kitList = new HashMap<>();
+
     protected Configs() {
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(CONFIG_FILE_PATH));
@@ -146,9 +150,6 @@ public class Configs {
         this.moduleTeleports = config.getBoolean("module.teleports", true);
         this.moduleRewards = config.getBoolean("module.rewards", true);
         this.moduleSchedule = config.getBoolean("module.schedule", true);
-
-        this.afkPlaceholder = config.getString("placeholders.afk", "$9 AFK").replace('$', (char) 0x00A7);
-        this.godPlaceholder = config.getString("placeholders.godmode", "$9 GOD").replace('$', (char) 0x00A7);
 
         this.tableKits = config.getString("sql.table-kits", "es_kits");
         this.tablePlayer = config.getString("sql.table-player", "es_players");
@@ -189,7 +190,10 @@ public class Configs {
         this.preventAnvil = config.getBoolean("spawners.prevent-anvil", true);
         this.blacklistedWorldsSpawners.add("world_evento");
 
-        this.baltopTag = config.getString("strings.baltop", "&8[&2Magnata&8]");
+        this.baltopTag = config.getString("strings.baltop", "$8[$2Magnata$8]").replace('$', (char) 0x00A7);
+
+        this.afkPlaceholder = config.getString("strings.afk", "$9 AFK").replace('$', (char) 0x00A7);
+        this.godPlaceholder = config.getString("strings.godmode", "$9 GOD").replace('$', (char) 0x00A7);
 
         this.gmAdventure = config.getString("strings.gm.adventure", "aventura");
         this.gmCreative = config.getString("strings.gm.creative", "criativo");
@@ -291,9 +295,6 @@ public class Configs {
         outConfig.set("module.rewards", this.moduleRewards);
         outConfig.set("module.schedule", this.moduleSchedule);
 
-        outConfig.set("placeholders.afk", this.afkPlaceholder);
-        outConfig.set("placeholders.godmode", this.afkPlaceholder);
-
         outConfig.set("sql.table-kits", this.tableKits);
         outConfig.set("sql.table-player", this.tablePlayer);
         outConfig.set("sql.table-rewards", this.tableRewards);
@@ -334,6 +335,9 @@ public class Configs {
         outConfig.set("profile.custom-messages", tempCustomProfileMessages);
 
         outConfig.set("strings.baltop", this.baltopTag);
+
+        outConfig.set("strings.afk", this.afkPlaceholder);
+        outConfig.set("strings.godmode", this.afkPlaceholder);
 
         outConfig.set("strings.gm.adventure", this.gmAdventure);
         outConfig.set("strings.gm.creative", this.gmCreative);
@@ -439,11 +443,8 @@ public class Configs {
             if (i == 10) {
                 ItemStack itemStack = new ItemStack(Material.OAK_SIGN);
                 ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Permissões&8."));
-                itemMeta.setLore(List.of(
-                        ChatColor.translateAlternateColorCodes('&', "&7Compre permissões"),
-                        ChatColor.translateAlternateColorCodes('&', "&7para lhe ajudar"),
-                        ChatColor.translateAlternateColorCodes('&', "&7nessa jornada&8.")));
+                itemMeta.setDisplayName("$7Permissões$8.".replace('$', (char) 0x00A7));
+                itemMeta.setLore(List.of( "$7Compre permissões".replace('$', (char) 0x00A7), "$7para lhe ajudar".replace('$', (char) 0x00A7), "$7nessa jornada$8.".replace('$', (char) 0x00A7)));
                 itemStack.setItemMeta(itemMeta);
                 guis.put(10, "Perm");
                 guisInvert.put("Perm", 10);
@@ -453,14 +454,10 @@ public class Configs {
                     if (j == 10) {
                         ItemStack is = new ItemStack(Material.EXPERIENCE_BOTTLE);
                         ItemMeta iss = is.getItemMeta();
-                        iss.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&725% Bônus de XP no McMMO!"));
-                        iss.setLore(List.of(
-                                ChatColor.translateAlternateColorCodes('&', "&aUpe mais rápido na sua especialidade! Não acumlativos!"),
-                                ChatColor.translateAlternateColorCodes('&', "&230 dias de duração!"),
-                                "",
-                                ChatColor.translateAlternateColorCodes('&', "&2Preço C$ 70")));
+                        iss.setDisplayName("$725% Bônus de XP no McMMO!".replace('$', (char) 0x00A7));
+                        iss.setLore(List.of("$aUpe mais rápido na sua especialidade! Não acumlativos!".replace('$', (char) 0x00A7),"$230 dias de duração!".replace('$', (char) 0x00A7), "", "$2Preço C$ 70".replace('$', (char) 0x00A7)));
                         is.setItemMeta(iss);
-                        tempList.add(new CashItem(is, 70, List.of(ChatColor.translateAlternateColorCodes('&', "&8[&aE&9S&8] &7parabéns pela aquisição&8!")), List.of("lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all true 30d"), false));
+                        tempList.add(new CashItem(is, 70, List.of( "$8[$aE$9S$8] $7parabéns pela aquisição$8!".replace('$', (char) 0x00A7)), List.of("lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all true 30d"), false));
                     } else {
                         tempList.add(new CashItem(getGlass(), 0, null, null, true));
                     }
@@ -480,7 +477,7 @@ public class Configs {
             if (cashGui.contains("menu." + i)) {
                 ItemStack itemStack = new ItemStack(Material.valueOf(cashGui.getString("menu." + i + ".material")));
                 ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', cashGui.getString("menu." + i + ".name")));
+                itemMeta.setDisplayName(cashGui.getString("menu." + i + ".name").replace('$', (char) 0x00A7));
                 List<String> listando = cashGui.getStringList("menu." + i + ".lore");
                 putColorOnList(listando);
                 itemMeta.setLore(listando);
@@ -494,7 +491,7 @@ public class Configs {
                     if (cashGui.contains("guis." + guiName + "." + j)) {
                         ItemStack guiItem = new ItemStack(Material.valueOf(cashGui.getString("guis." + guiName + "." + j + ".material")));
                         ItemMeta guiMeta = guiItem.getItemMeta();
-                        guiMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', cashGui.getString("guis." + guiName + "." + j + ".name")));
+                        guiMeta.setDisplayName(cashGui.getString("guis." + guiName + "." + j + ".name").replace('$', (char) 0x00A7));
                         List<String> listandoNovo = cashGui.getStringList("guis." + guiName + "." + j + ".lore");
                         putColorOnList(listandoNovo);
                         guiMeta.setLore(listandoNovo);
@@ -558,12 +555,44 @@ public class Configs {
             }
         }
 
+        // kits.yml
+
+        FileConfiguration kits = YamlConfiguration.loadConfiguration(new File(KITS_FILE_PATH));
+        FileConfiguration outKit = new YamlConfiguration();
+
+        this.kitList.put("pa", new KitObject(300, List.of("give %player_name% minecraft:golden_shovel 1"), List.of("$8[$aE$9S$8] $7Toma sua pá$8!".replace('$', (char) 0x00A7))));
+
+        Map<String, KitObject> tempKitList = new HashMap<>();
+        configurationSection = kits.getConfigurationSection("kits");
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                List<String> lista = kits.getStringList("kits." + key + ".text");
+                putColorOnList(lista);
+                tempKitList.put(key, new KitObject(kits.getInt("kits." + key + ".delay"), kits.getStringList("kits." + key + ".command"), lista));
+            }
+        }
+
+        if (tempKitList.isEmpty()) {
+            tempKitList = new HashMap<>(this.kitList);
+        }
+
+        this.kitList.clear();
+        tempKitList.forEach(this.kitList::put);
+
+        kitList.forEach((k, v) -> {
+            outKit.set("kits." + k + ".delay", v.getDelay());
+            outKit.set("kits." + k + ".command", v.getCommands());
+            outKit.set("kits." + k + ".text", v.getMessages());
+        });
+
+        outKit.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
         // SAVING
 
         try {
-            outCash.save(CASHGUI_FILE_PATH);
             outConfig.save(CONFIG_FILE_PATH);
             outBlocks.save(BLOCKS_FILE_PATH);
+            outCash.save(CASHGUI_FILE_PATH);
+            outKit.save(KITS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + DATA_LAYER_FOLDER_PATH, 3);
         }
@@ -572,14 +601,14 @@ public class Configs {
 
     private void putColorOnList(List<String> list) {
         for (int i = 0; i < list.size(); i++) {
-            list.set(i, ChatColor.translateAlternateColorCodes('&', list.get(i)));
+            list.set(i, list.get(i).replace('$', (char) 0x00A7));
         }
     }
 
     private ItemStack getGlass() {
         ItemStack itemStack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Loja de &aCash&8."));
+        itemMeta.setDisplayName("$7Loja de $aCash$8.".replace('$', (char) 0x00A7));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -736,6 +765,7 @@ public class Configs {
         this.addDefault(defaults, Messages.ITEM_NOT_FOUND, "Nenhum item foi encontrado em sua mão$8.", null);
         this.addDefault(defaults, Messages.ITEM_NBT_ADDKEY, "Foi adicionado a chave $3{0}$7 com valor $3{1}$7 ao item$8.", "0: chave; 1: valor");
         this.addDefault(defaults, Messages.ITEM_CLEAR_LORE, "A lore do item foi removida$8.", null);
+        this.addDefault(defaults, Messages.ITEM_CLEAR_NAME, "O nome do item foi removido$8.", null);
         this.addDefault(defaults, Messages.ITEM_ADD_LORE, "Foi adicionada a linha $3{0}$7 a lore$8.", "0: nova linha de lore");
         this.addDefault(defaults, Messages.ITEM_SET_LORE, "A lore foi limpa e definida como$3 {0}$8.", "0: lore");
         this.addDefault(defaults, Messages.ITEM_SET_NAME, "O nome do item foi definido como $3{0}$8.", "0: nome do item");
@@ -755,6 +785,7 @@ public class Configs {
         this.addDefault(defaults, Messages.ITEM_CONDENSER, "Compactando blocos$8.", null);
         this.addDefault(defaults, Messages.FEED_YOURSELF, "Você se saciou$8.", null);
         this.addDefault(defaults, Messages.FEED_TARGET, "Você saciou o $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.FEED_RECEIVED, "Você foi saciado por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.FEED_YOURSELF, "Você foi saciado por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.STATS_MEM, "Memória$8: $3{0}MB$8/$3{1}MB$8.", "0: memória usada; 1: memória total");
         this.addDefault(defaults, Messages.STATS_HOURS, "Tempo online$8: $7Dias$8: $3{0} $7horas$8: $3{1} $7minutos$8:{2} $7segundos$8:$3{3}$8.", "0: dias; 1: horas; 2: minutos; 3: segundos");

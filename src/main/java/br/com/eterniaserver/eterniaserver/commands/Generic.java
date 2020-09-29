@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Generic extends BaseCommand {
 
-    private final EterniaServer plugin;
     private final UtilGetRuntime getRuntime;
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -46,7 +45,6 @@ public class Generic extends BaseCommand {
     private final ItemStack esmeraldai = new ItemStack(Material.EMERALD);
 
     public Generic(EterniaServer plugin) {
-        this.plugin = plugin;
 
         this.getRuntime = new UtilGetRuntime();
 

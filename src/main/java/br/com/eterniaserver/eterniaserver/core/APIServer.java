@@ -122,7 +122,7 @@ public interface APIServer {
 
     static void playerKitsCreate(String playerName) {
         final long time = System.currentTimeMillis();
-        for (String kit : EterniaServer.kitConfig.getConfigurationSection("kits").getKeys(false)) {
+        for (String kit : EterniaServer.configs.kitList.keySet()) {
             final String kitName = kit + "." + playerName;
             if (!PluginVars.kitsCooldown.containsKey(kitName)) {
                 EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tableKits, PluginConstants.NAME_STR, kitName, PluginConstants.COOLDOWN_STR, time));

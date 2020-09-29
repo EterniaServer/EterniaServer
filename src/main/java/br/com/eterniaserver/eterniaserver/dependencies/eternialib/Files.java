@@ -29,10 +29,6 @@ public class Files {
         loadFile("rewards.yml", EterniaServer.rewardsConfig);
     }
 
-    public void loadKits() {
-        loadFile("kits.yml", EterniaServer.kitConfig);
-    }
-
     public void loadCommands() {
         loadFile("commands.yml", EterniaServer.cmdConfig);
         for (String keys : EterniaServer.cmdConfig.getConfigurationSection("commands").getKeys(false)) {

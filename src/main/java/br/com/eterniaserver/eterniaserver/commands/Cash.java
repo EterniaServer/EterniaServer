@@ -19,7 +19,6 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import br.com.eterniaserver.eterniaserver.core.APICash;
 import br.com.eterniaserver.eterniaserver.core.APIPlayer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.APIUnstable;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import org.bukkit.Bukkit;
