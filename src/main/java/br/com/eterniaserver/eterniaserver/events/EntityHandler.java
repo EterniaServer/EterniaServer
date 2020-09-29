@@ -57,33 +57,16 @@ public class EntityHandler implements Listener {
         }
 
         if (EterniaServer.configs.moduleCash) {
-            switch (e.getView().getTitle()) {
-                case "Cash":
-                    APICash.menuGui(player, e.getSlot());
-                    e.setCancelled(true);
-                    break;
-                case "Perm":
-                    e.setCancelled(chooseGUi(player, "guis.perm.", e.getSlot()));
-                    break;
-                case "Pacotes":
-                    e.setCancelled(chooseGUi(player, "guis.pacotes.", e.getSlot()));
-                    break;
-                case "Tags":
-                    e.setCancelled(chooseGUi(player, "guis.tags.", e.getSlot()));
-                    break;
-                case "Spawners":
-                    e.setCancelled(chooseGUi(player, "guis.spawners.", e.getSlot()));
-                    break;
-                default:
-                    break;
+            String title = e.getView().getTitle();
+            if ("Cash".equals(title)) {
+                APICash.menuGui(player, e.getSlot());
+                e.setCancelled(true);
+            } else if (EterniaServer.configs.guisInvert.containsKey(title)) {
+                APICash.permGui(player, title, e.getSlot());
+                e.setCancelled(true);
             }
         }
 
-    }
-
-    private boolean chooseGUi(Player player, String guiName, int slot) {
-        APICash.permGui(player, guiName + slot);
-        return true;
     }
 
 }

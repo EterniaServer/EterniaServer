@@ -21,6 +21,7 @@ import br.com.eterniaserver.eterniaserver.core.APICash;
 import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.APIUnstable;
+import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -44,10 +45,11 @@ public class Cash extends BaseCommand {
     @Default
     @Description(" Abre a GUI da loja de Cash")
     public void onCash(Player player) {
-        Inventory gui = Bukkit.getServer().createInventory(player, APICash.getCashGuiSize(), "Cash");
+        player.closeInventory();
+        Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.configs.menuGui.size(), "Cash");
 
-        for (int i = 0; i < APICash.getCashGuiSize(); i++) {
-            gui.setItem(i, APICash.getItemCashGui(i));
+        for (int i = 0; i < EterniaServer.configs.menuGui.size(); i++) {
+            gui.setItem(i, EterniaServer.configs.menuGui.get(i));
         }
 
         player.openInventory(gui);
@@ -85,19 +87,19 @@ public class Cash extends BaseCommand {
             return;
         }
 
-        final String cashString = APICash.getCashBuy(uuid);
+        final CashItem cashItem = APICash.getCashBuy(uuid);
 
-        for (String line : EterniaServer.cashConfig.getStringList(cashString + ".commands")) {
+        for (String line : cashItem.getCommands()) {
             final String modifiedCommand = APIUnstable.setPlaceholders(player, line);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), modifiedCommand);
         }
 
-        for (String line : EterniaServer.cashConfig.getStringList(cashString + ".messages")) {
+        for (String line : cashItem.getMessages()) {
             final String modifiedText = APIUnstable.setPlaceholders(player, line);
-            player.sendMessage(APIServer.getColor(modifiedText));
+            player.sendMessage(modifiedText);
         }
 
-        APICash.removeCash(uuid, EterniaServer.cashConfig.getInt(cashString + ".cost"));
+        APICash.removeCash(uuid, cashItem.getCost());
         EterniaServer.configs.sendMessage(player, Messages.CASH_BOUGHT);
         APICash.removeCashBuy(uuid);
     }

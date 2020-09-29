@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.PluginVars;
+import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 
 import org.bukkit.ChatColor;
@@ -12,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +28,7 @@ public class Configs {
     private static final String MESSAGES_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "messages.yml";
     private static final String CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "config.yml";
     private static final String BLOCKS_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
-    private static final String CASH_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "cash.yml";
+    private static final String CASHGUI_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "cashgui.yml";
 
     private String[] messages;
 
@@ -120,7 +122,9 @@ public class Configs {
     public final Map<String, Map<Double, List<String>>> farmRewardsDrop = new HashMap<>();
 
     public final List<ItemStack> menuGui = new ArrayList<>();
-    public final Map<String, List<ItemStack>> othersGui = new HashMap<>();
+    public final Map<Integer, String> guis = new HashMap<>();
+    public final Map<String, Integer> guisInvert = new HashMap<>();
+    public final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
 
     protected Configs() {
 
@@ -426,15 +430,158 @@ public class Configs {
         this.farmRewardsDrop.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("farm." + k + "." + l.toString().replace('.', '_'), b)));
         outBlocks.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
+        // cashgui.yml
+
+        FileConfiguration cashGui = YamlConfiguration.loadConfiguration(new File(CASHGUI_FILE_PATH));
+        FileConfiguration outCash = new YamlConfiguration();
+
+        for (int i = 0; i < 27; i++) {
+            if (i == 10) {
+                ItemStack itemStack = new ItemStack(Material.OAK_SIGN);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Permissões&8."));
+                itemMeta.setLore(List.of(
+                        ChatColor.translateAlternateColorCodes('&', "&7Compre permissões"),
+                        ChatColor.translateAlternateColorCodes('&', "&7para lhe ajudar"),
+                        ChatColor.translateAlternateColorCodes('&', "&7nessa jornada&8.")));
+                itemStack.setItemMeta(itemMeta);
+                guis.put(10, "Perm");
+                guisInvert.put("Perm", 10);
+                menuGui.add(itemStack);
+                List<CashItem> tempList = new ArrayList<>();
+                for (int j = 0; j < 36; j++) {
+                    if (j == 10) {
+                        ItemStack is = new ItemStack(Material.EXPERIENCE_BOTTLE);
+                        ItemMeta iss = is.getItemMeta();
+                        iss.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&725% Bônus de XP no McMMO!"));
+                        iss.setLore(List.of(
+                                ChatColor.translateAlternateColorCodes('&', "&aUpe mais rápido na sua especialidade! Não acumlativos!"),
+                                ChatColor.translateAlternateColorCodes('&', "&230 dias de duração!"),
+                                "",
+                                ChatColor.translateAlternateColorCodes('&', "&2Preço C$ 70")));
+                        is.setItemMeta(iss);
+                        tempList.add(new CashItem(is, 70, List.of(ChatColor.translateAlternateColorCodes('&', "&8[&aE&9S&8] &7parabéns pela aquisição&8!")), List.of("lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all true 30d"), false));
+                    } else {
+                        tempList.add(new CashItem(getGlass(), 0, null, null, true));
+                    }
+                }
+                this.othersGui.put(i, tempList);
+            } else {
+                this.menuGui.add(getGlass());
+            }
+        }
+
+        List<ItemStack> menuGuiTemp = new ArrayList<>();
+        Map<Integer, String> guisTemp = new HashMap<>();
+        Map<String, Integer> guisTempInvert = new HashMap<>();
+        Map<Integer, List<CashItem>> othersGuiTemp = new HashMap<>();
+
+        for (int i = 0; i < cashGui.getInt("menu.size"); i++) {
+            if (cashGui.contains("menu." + i)) {
+                ItemStack itemStack = new ItemStack(Material.valueOf(cashGui.getString("menu." + i + ".material")));
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', cashGui.getString("menu." + i + ".name")));
+                List<String> listando = cashGui.getStringList("menu." + i + ".lore");
+                putColorOnList(listando);
+                itemMeta.setLore(listando);
+                itemStack.setItemMeta(itemMeta);
+                menuGuiTemp.add(itemStack);
+                String guiName = cashGui.getString("menu." + i + ".gui");
+                guisTemp.put(i, guiName);
+                guisTempInvert.put(guiName, i);
+                List<CashItem> tempList = new ArrayList<>();
+                for (int j = 0; j < cashGui.getInt("guis." + guiName + ".size"); j++) {
+                    if (cashGui.contains("guis." + guiName + "." + j)) {
+                        ItemStack guiItem = new ItemStack(Material.valueOf(cashGui.getString("guis." + guiName + "." + j + ".material")));
+                        ItemMeta guiMeta = guiItem.getItemMeta();
+                        guiMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', cashGui.getString("guis." + guiName + "." + j + ".name")));
+                        List<String> listandoNovo = cashGui.getStringList("guis." + guiName + "." + j + ".lore");
+                        putColorOnList(listandoNovo);
+                        guiMeta.setLore(listandoNovo);
+                        guiItem.setItemMeta(guiMeta);
+                        List<String> commands = cashGui.getStringList("guis." + guiName + "." + j + ".commands");
+                        List<String> messages = cashGui.getStringList("guis." + guiName + "." + j + ".messages");
+                        putColorOnList(messages);
+                        tempList.add(new CashItem(guiItem, cashGui.getInt("guis." + guiName + "." + j + ".cost"), messages, commands, false));
+                    } else {
+                        tempList.add(new CashItem(getGlass(), 0, null, null, true));
+                    }
+                }
+                othersGuiTemp.put(i, tempList);
+            } else {
+                menuGuiTemp.add(getGlass());
+            }
+        }
+
+        if (othersGuiTemp.isEmpty()) {
+            menuGuiTemp = new ArrayList<>(this.menuGui);
+            guisTemp = new HashMap<>(guis);
+            guisTempInvert = new HashMap<>(guisInvert);
+            othersGuiTemp = new HashMap<>(othersGui);
+        }
+
+        this.menuGui.clear();
+        menuGui.addAll(menuGuiTemp);
+        this.guis.clear();
+        guisTemp.forEach(this.guis::put);
+        this.guisInvert.clear();
+        guisTempInvert.forEach(this.guisInvert::put);
+        othersGui.clear();
+        othersGuiTemp.forEach(this.othersGui::put);
+
+        outCash.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
+        outCash.set("menu.size", menuGuiTemp.size());
+        for (int i = 0; i < menuGuiTemp.size(); i++) {
+            ItemStack itemStack = menuGuiTemp.get(i);
+            if (!itemStack.isSimilar(getGlass())) {
+                outCash.set("menu." + i + ".material", itemStack.getType().name());
+                outCash.set("menu." + i + ".name", itemStack.getItemMeta().getDisplayName());
+                List<String> listando = itemStack.getLore();
+                outCash.set("menu." + i + ".lore", listando);
+                String guiName = guisTemp.get(i);
+                outCash.set("menu." + i + ".gui", guiName);
+                List<CashItem> cashItems = othersGuiTemp.get(i);
+                outCash.set("guis." + guiName + ".size", cashItems.size());
+                for (int j = 0; j < cashItems.size(); j++) {
+                    CashItem cashItem = cashItems.get(j);
+                    if (!cashItem.isGlass()) {
+                        outCash.set("guis." + guiName + "." + j + ".cost", cashItem.getCost());
+                        outCash.set("guis." + guiName + "." + j + ".material", cashItem.getItemStack().getType().name());
+                        outCash.set("guis." + guiName + "." + j + ".name", cashItem.getItemStack().getItemMeta().getDisplayName());
+                        outCash.set("guis." + guiName + "." + j + ".commands", cashItem.getCommands());
+                        List<String> lore = cashItem.getItemStack().getLore();
+                        outCash.set("guis." + guiName + "." + j + ".lore", lore);
+                        List<String> messages = cashItem.getMessages();
+                        outCash.set("guis." + guiName + "." + j + ".messages", messages);
+                    }
+                }
+            }
+        }
+
         // SAVING
 
         try {
+            outCash.save(CASHGUI_FILE_PATH);
             outConfig.save(CONFIG_FILE_PATH);
             outBlocks.save(BLOCKS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + DATA_LAYER_FOLDER_PATH, 3);
         }
 
+    }
+
+    private void putColorOnList(List<String> list) {
+        for (int i = 0; i < list.size(); i++) {
+            list.set(i, ChatColor.translateAlternateColorCodes('&', list.get(i)));
+        }
+    }
+
+    private ItemStack getGlass() {
+        ItemStack itemStack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7Loja de &aCash&8."));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     private void loadMessages() {
@@ -649,6 +796,12 @@ public class Configs {
             }
 
         }
+
+        // cashgui.yml
+
+
+
+        // SAVE
 
         try {
             config.save(MESSAGES_FILE_PATH);

@@ -45,10 +45,6 @@ public class Files {
         }
     }
 
-    public void loadCashGui() {
-        loadFile("cashgui.yml", EterniaServer.cashConfig);
-    }
-
     public void loadSchedules() {
         loadFile("schedule.yml", EterniaServer.scheduleConfig);
     }

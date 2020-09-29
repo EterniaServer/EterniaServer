@@ -4,13 +4,14 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface APICash {
@@ -98,7 +99,7 @@ public interface APICash {
         return PluginVars.cashItem.containsKey(uuid);
     }
 
-    static String getCashBuy(UUID uuid) {
+    static CashItem getCashBuy(UUID uuid) {
         return PluginVars.cashItem.get(uuid);
     }
 
@@ -106,80 +107,40 @@ public interface APICash {
         PluginVars.cashItem.remove(uuid);
     }
 
-    static int getCashGuiSize() {
-        if (PluginVars.getCashGui() == null) {
-            PluginVars.setCashGui(new UtilCashGui().get());
-        }
-
-        return PluginVars.getCashGui().getMenuGui().size();
-    }
-
-    static ItemStack getItemCashGui(int id) {
-        return PluginVars.getCashGui().getMenuGui().get(id);
-    }
-
     static void menuGui(final Player player, int slotInt) {
-        switch (slotInt) {
-            case 10:
-                player.closeInventory();
-                Inventory gui = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getPermGui().size(), "Perm");
-                for (int i = 0; i < PluginVars.getCashGui().getPermGui().size(); i++) {
-                    gui.setItem(i, PluginVars.getCashGui().getPermGui().get(i));
-                }
-                player.openInventory(gui);
-                break;
-            case 12:
-                player.closeInventory();
-                Inventory paco = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getPacoteGui().size(), "Pacotes");
-                for (int i = 0; i < PluginVars.getCashGui().getPacoteGui().size(); i++) {
-                    paco.setItem(i, PluginVars.getCashGui().getPacoteGui().get(i));
-                }
-                player.openInventory(paco);
-                break;
-            case 14:
-                player.closeInventory();
-                Inventory tag = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getTagGui().size(), "Tags");
-                for (int i = 0; i < PluginVars.getCashGui().getTagGui().size(); i++) {
-                    tag.setItem(i, PluginVars.getCashGui().getTagGui().get(i));
-                }
-                player.openInventory(tag);
-                break;
-            case 16:
-                player.closeInventory();
-                Inventory spawner = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getSpawnerGui().size(), "Spawners");
-                for (int i = 0; i < PluginVars.getCashGui().getSpawnerGui().size(); i++) {
-                    spawner.setItem(i, PluginVars.getCashGui().getSpawnerGui().get(i));
-                }
-                player.openInventory(spawner);
-                break;
-            default:
-                break;
+        if (EterniaServer.configs.guis.containsKey(slotInt)) {
+            player.closeInventory();
+            List<CashItem> itens = EterniaServer.configs.othersGui.get(slotInt);
+            Inventory gui = Bukkit.getServer().createInventory(player, itens.size(), EterniaServer.configs.guis.get(slotInt));
+            for (int i = 0; i < itens.size(); i++) {
+                gui.setItem(i, itens.get(i).getItemStack());
+            }
+            player.openInventory(gui);
         }
     }
 
-    static void permGui(final Player player, final String permString) {
-        if (PluginVars.getCashGui() == null) {
-            PluginVars.setCashGui(new UtilCashGui().get());
-        }
-
+    static void permGui(final Player player, final String title, int slot) {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (!PluginVars.cashItem.containsKey(uuid)) {
-            if (EterniaServer.cashConfig.contains(permString)) {
-                final int cost = EterniaServer.cashConfig.getInt(permString + ".cost");
+            CashItem cashItem = EterniaServer.configs.othersGui.get(EterniaServer.configs.guisInvert.get(title)).get(slot);
+            if (!cashItem.isGlass()) {
+                final int cost = cashItem.getCost();
                 if (APICash.hasCash(uuid, cost)) {
                     EterniaServer.configs.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
                     EterniaServer.configs.sendMessage(player, Messages.CASH_CHOOSE);
-                    PluginVars.cashItem.put(uuid, permString);
+                    PluginVars.cashItem.put(uuid, cashItem);
                 } else {
-                    EterniaServer.configs.sendMessage(player, Messages.CASH_NO_HAS);
+                    EterniaServer.configs.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(getCash(uuid)));
                 }
             } else {
                 player.closeInventory();
-                Inventory gui = Bukkit.getServer().createInventory(player, PluginVars.getCashGui().getMenuGui().size(), "Cash");
-                for (int i = 0; i < PluginVars.getCashGui().getMenuGui().size(); i++) {
-                    gui.setItem(i, PluginVars.getCashGui().getMenuGui().get(i));
+                Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.configs.menuGui.size(), "Cash");
+
+                for (int i = 0; i < EterniaServer.configs.menuGui.size(); i++) {
+                    gui.setItem(i, EterniaServer.configs.menuGui.get(i));
                 }
+
                 player.openInventory(gui);
             }
         } else {

@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.core;
 
-import br.com.eterniaserver.eterniaserver.objects.CashGui;
+import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -31,7 +31,6 @@ public class PluginVars {
 
     private static Scoreboard scoreboard;
     private static int version = 0;
-    private static CashGui cashGui;
     private static Economy econ;
 
     protected static UUID balltop;
@@ -65,7 +64,7 @@ public class PluginVars {
 
     protected static final Map<Player, PlayerTeleport> teleports = new HashMap<>();
 
-    protected static final Map<UUID, String> cashItem = new HashMap<>();
+    protected static final Map<UUID, CashItem> cashItem = new HashMap<>();
     protected static final Map<UUID, PlayerProfile> playerProfile = new HashMap<>();
 
     protected static final Map<String, UUID> playersName = new HashMap<>();
@@ -92,14 +91,6 @@ public class PluginVars {
 
     protected static void setScoreboard(Scoreboard sc) {
         if (scoreboard == null) scoreboard = sc;
-    }
-
-    protected static CashGui getCashGui() {
-        return cashGui;
-    }
-
-    protected static void setCashGui(CashGui cashG) {
-        if (cashGui == null) cashGui = cashG;
     }
 
     protected static int getVersion() {
