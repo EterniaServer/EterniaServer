@@ -134,7 +134,6 @@ public class Configs {
 
     public final Map<String, KitObject> kitList = new HashMap<>();
 
-    public final boolean autoUpdateGroups;
     public final int localRange;
     public final String localFormat;
     public final String globalFormat;
@@ -609,7 +608,6 @@ public class Configs {
         this.globalFormat = chatConfig.getString("format.global", "{canal}{clan}{sufix}{prefix}{player}{marry}{separator}").replace('$', (char) 0x00A7);
         this.staffFormat = chatConfig.getString("format.staff", "$8[$bS$8] %vault_prefix%%player_displayname%$8 ➤ $b%message%").replace('$', (char) 0x00A7);
         this.localRange = chatConfig.getInt("format.local-range", 64);
-        this.autoUpdateGroups = chatConfig.getBoolean("format.auto-update-groups", false);
 
         this.customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholdersObjects("eternia.chat.global", "%vault_prefix%", "", "", 3));
         this.customPlaceholdersObjectsMap.put("player", new CustomPlaceholdersObjects("eternia.chat.global", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
@@ -623,7 +621,6 @@ public class Configs {
         outChat.set("format.global", this.globalFormat);
         outChat.set("format.staff", this.staffFormat);
         outChat.set("format.local-range", this.localRange);
-        outChat.set("format.auto-update-groups", this.autoUpdateGroups);
 
         Map<String, CustomPlaceholdersObjects> tempCustomPlaceholdersMap = new HashMap<>();
         configurationSection = chatConfig.getConfigurationSection("placeholders");
