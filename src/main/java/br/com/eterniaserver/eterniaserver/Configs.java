@@ -21,10 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Configs {
 
@@ -509,9 +507,9 @@ public class Configs {
                         guiMeta.setLore(listandoNovo);
                         guiItem.setItemMeta(guiMeta);
                         List<String> commands = cashGui.getStringList("guis." + guiName + "." + j + ".commands");
-                        List<String> messages = cashGui.getStringList("guis." + guiName + "." + j + ".messages");
-                        putColorOnList(messages);
-                        tempList.add(new CashItem(guiItem, cashGui.getInt("guis." + guiName + "." + j + ".cost"), messages, commands, false));
+                        List<String> msgs = cashGui.getStringList("guis." + guiName + "." + j + ".messages");
+                        putColorOnList(msgs);
+                        tempList.add(new CashItem(guiItem, cashGui.getInt("guis." + guiName + "." + j + ".cost"), msgs, commands, false));
                     } else {
                         tempList.add(new CashItem(getGlass(), 0, null, null, true));
                     }
@@ -560,8 +558,8 @@ public class Configs {
                         outCash.set("guis." + guiName + "." + j + ".commands", cashItem.getCommands());
                         List<String> lore = cashItem.getItemStack().getLore();
                         outCash.set("guis." + guiName + "." + j + ".lore", lore);
-                        List<String> messages = cashItem.getMessages();
-                        outCash.set("guis." + guiName + "." + j + ".messages", messages);
+                        List<String> msgs = cashItem.getMessages();
+                        outCash.set("guis." + guiName + "." + j + ".messages", msgs);
                     }
                 }
             }

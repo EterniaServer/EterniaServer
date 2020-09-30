@@ -9,7 +9,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.PluginConstants;
-import br.com.eterniaserver.eterniaserver.core.APIUnstable;
+import br.com.eterniaserver.eterniaserver.core.APIChat;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -66,7 +66,7 @@ public class Reward extends BaseCommand {
         for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection(rewardsConfig + group + ".commands").getKeys(false)) {
             if (Math.random() <= Double.parseDouble(percentage)) {
                 for (String command : EterniaServer.rewardsConfig.getStringList(rewardsConfig + group + ".commands." + percentage)) {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIUnstable.setPlaceholders(player, command));
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
                 }
             }
         }

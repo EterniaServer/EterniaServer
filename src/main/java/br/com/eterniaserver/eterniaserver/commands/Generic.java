@@ -308,7 +308,7 @@ public class Generic extends BaseCommand {
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
         player.sendMessage(EterniaServer.configs.getMessage(Messages.PROFILE_TITLE, false));
         for (String line : EterniaServer.configs.profileCustomMessages) {
-            player.sendMessage(APIServer.getColor(APIUnstable.setPlaceholders(target, line)));
+            player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(target, line)));
         }
         player.sendMessage(EterniaServer.configs.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(APIPlayer.getFirstLoginLong(uuid)))));
         player.sendMessage(EterniaServer.configs.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(APIPlayer.getLastLogin(uuid)))));

@@ -5,7 +5,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.APIUnstable;
+import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.core.UtilGlobalFormat;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import net.md_5.bungee.api.ChatColor;
@@ -77,8 +77,8 @@ public class ServerHandler implements Listener {
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = APIPlayer.getMutedTime(uuid);
-                if (APIUnstable.stayMuted(time)) {
-                    EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, APIUnstable.getTimeLeft(time));
+                if (APIChat.stayMuted(time)) {
+                    EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, APIChat.getTimeLeft(time));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
@@ -91,10 +91,10 @@ public class ServerHandler implements Listener {
         message = canHex(player, message);
         switch (APIPlayer.getChannel(uuid)) {
             case 0:
-                APIUnstable.sendLocal(message, player, EterniaServer.configs.localRange);
+                APIChat.sendLocal(message, player, EterniaServer.configs.localRange);
                 return true;
             case 2:
-                APIUnstable.sendStaff(message, player);
+                APIChat.sendStaff(message, player);
                 return true;
             case 3:
                 sendTell(player, message);
@@ -115,7 +115,7 @@ public class ServerHandler implements Listener {
                     EterniaServer.configs.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
                     return;
                 }
-                APIUnstable.sendPrivate(sender, target, msg);
+                APIChat.sendPrivate(sender, target, msg);
                 return;
             }
         }

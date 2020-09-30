@@ -108,7 +108,7 @@ public class Chat extends BaseCommand {
                     EterniaServer.configs.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
                     return;
                 }
-                APIUnstable.sendPrivate(sender, target, msg);
+                APIChat.sendPrivate(sender, target, msg);
                 return;
             }
         }
@@ -151,14 +151,14 @@ public class Chat extends BaseCommand {
             return;
         }
 
-        APIUnstable.sendPrivate(player, target, msg);
+        APIChat.sendPrivate(player, target, msg);
     }
 
     private boolean isMuted(Player player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         final long time = APIPlayer.getMutedTime(uuid);
-        if (APIUnstable.stayMuted(time)) {
-            EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, APIUnstable.getTimeLeft(time));
+        if (APIChat.stayMuted(time)) {
+            EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, APIChat.getTimeLeft(time));
             return true;
         }
         return false;

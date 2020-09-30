@@ -19,7 +19,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import br.com.eterniaserver.eterniaserver.core.APICash;
 import br.com.eterniaserver.eterniaserver.core.APIPlayer;
-import br.com.eterniaserver.eterniaserver.core.APIUnstable;
+import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -89,12 +89,12 @@ public class Cash extends BaseCommand {
         final CashItem cashItem = APICash.getCashBuy(uuid);
 
         for (String line : cashItem.getCommands()) {
-            final String modifiedCommand = APIUnstable.setPlaceholders(player, line);
+            final String modifiedCommand = APIChat.setPlaceholders(player, line);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), modifiedCommand);
         }
 
         for (String line : cashItem.getMessages()) {
-            final String modifiedText = APIUnstable.setPlaceholders(player, line);
+            final String modifiedText = APIChat.setPlaceholders(player, line);
             player.sendMessage(modifiedText);
         }
 

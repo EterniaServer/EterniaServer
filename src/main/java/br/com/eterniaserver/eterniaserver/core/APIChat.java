@@ -9,13 +9,13 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
 
-public interface APIUnstable {
+public interface APIChat {
 
     static void sendStaff(String message, Player player) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission("eternia.chat.staff")) {
                 String format = EterniaServer.configs.staffFormat;
-                format = APIUnstable.setPlaceholders(player, format);
+                format = APIChat.setPlaceholders(player, format);
                 format = APIServer.getColor(format.replace(PluginConstants.MESSAGE, message));
                 p.sendMessage(format);
             }
@@ -41,7 +41,7 @@ public interface APIUnstable {
     }
 
     private static String getLocalFormat(String message, final Player player) {
-        String format = APIUnstable.setPlaceholders(player, EterniaServer.configs.localFormat);
+        String format = APIChat.setPlaceholders(player, EterniaServer.configs.localFormat);
         if (player.hasPermission("eternia.chat.color")) {
             return APIServer.getColor(format.replace(PluginConstants.MESSAGE, message));
         } else {

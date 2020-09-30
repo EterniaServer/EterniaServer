@@ -32,10 +32,8 @@ public class UtilGlobalFormat {
 	public BaseComponent[] customPlaceholder(Player player, String format, String message) {
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
 		EterniaServer.configs.customPlaceholdersObjectsMap.forEach((placeholder, object) -> {
-			if (format.contains("{" + placeholder + "}")) {
-				if (player.hasPermission(object.getPermission())) {
-					textComponentMap.put(object.getPriority(), getText(player, object));
-				}
+			if (format.contains("{" + placeholder + "}") && player.hasPermission(object.getPermission())) {
+				textComponentMap.put(object.getPriority(), getText(player, object));
 			}
 		});
 
@@ -84,14 +82,14 @@ public class UtilGlobalFormat {
 	}
 
 	public TextComponent getText(Player player, CustomPlaceholdersObjects objects) {
-		TextComponent textComponent = new TextComponent(APIServer.getColor(APIUnstable.setPlaceholders(player, objects.getValue())));
+		TextComponent textComponent = new TextComponent(APIServer.getColor(APIChat.setPlaceholders(player, objects.getValue())));
 		if (!objects.getHoverText().equals("")) {
 			List<TextComponent> textComponentList = new ArrayList<>();
-			textComponentList.add(new TextComponent(APIServer.getColor(APIUnstable.setPlaceholders(player, objects.getHoverText()))));
+			textComponentList.add(new TextComponent(APIServer.getColor(APIChat.setPlaceholders(player, objects.getHoverText()))));
 			textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(textComponentList.toArray(new TextComponent[textComponentList.size() - 1]))));
 		}
 		if (!objects.getSuggestCmd().equals("")) {
-			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, APIServer.getColor(APIUnstable.setPlaceholders(player, objects.getSuggestCmd()))));
+			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, APIServer.getColor(APIChat.setPlaceholders(player, objects.getSuggestCmd()))));
 		}
 		return textComponent;
 	}

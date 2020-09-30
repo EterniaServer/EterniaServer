@@ -8,7 +8,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.PluginConstants;
-import br.com.eterniaserver.eterniaserver.core.APIUnstable;
+import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.objects.KitObject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -42,7 +42,6 @@ public class Kit extends BaseCommand {
     @Syntax("<kit>")
     @CommandPermission("eternia.kit")
     public void onKit(Player player, String kit) {
-        final String kitString = "kits.";
         if (EterniaServer.configs.kitList.containsKey(kit)) {
             if (player.hasPermission("eternia.kit." + kit)) {
                 final long time = System.currentTimeMillis();
@@ -51,17 +50,17 @@ public class Kit extends BaseCommand {
                 int cooldown = kitObject.getDelay();
                 final long cd = APIServer.getKitCooldown(kitName);
 
-                if (APIUnstable.hasCooldown(cd, cooldown)) {
+                if (APIChat.hasCooldown(cd, cooldown)) {
                     for (String command : kitObject.getCommands()) {
-                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIUnstable.setPlaceholders(player, command));
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
                     }
                     for (String text : kitObject.getMessages()) {
-                        player.sendMessage(APIServer.getColor(APIUnstable.setPlaceholders(player, text)));
+                        player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(player, text)));
                     }
                     APIServer.putKitCooldown(kitName, time);
                     EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tableKits, PluginConstants.COOLDOWN_STR, time, PluginConstants.NAME_STR, kitName));
                 } else {
-                    EterniaServer.configs.sendMessage(player, Messages.SERVER_TIMING, APIUnstable.getTimeLeft(cooldown, cd));
+                    EterniaServer.configs.sendMessage(player, Messages.SERVER_TIMING, APIChat.getTimeLeft(cooldown, cd));
                 }
             } else {
                 EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
