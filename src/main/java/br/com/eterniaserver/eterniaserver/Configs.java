@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.PluginVars;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
+import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholdersObjects;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 
 import br.com.eterniaserver.eterniaserver.objects.KitObject;
@@ -20,8 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Configs {
 
@@ -31,6 +34,7 @@ public class Configs {
     private static final String BLOCKS_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
     private static final String CASHGUI_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "cashgui.yml";
     private static final String KITS_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "kits.yml";
+    private static final String CHAT_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "chat.yml";
 
     private String[] messages;
 
@@ -130,6 +134,14 @@ public class Configs {
 
     public final Map<String, KitObject> kitList = new HashMap<>();
 
+    public final boolean autoUpdateGroups;
+    public final int localRange;
+    public final String localFormat;
+    public final String globalFormat;
+    public final String staffFormat;
+
+    public final Map<String, CustomPlaceholdersObjects> customPlaceholdersObjectsMap = new HashMap<>();
+
     protected Configs() {
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(CONFIG_FILE_PATH));
@@ -220,6 +232,7 @@ public class Configs {
         this.chLocal = config.getString("strings.ch.local", "Local");
         this.chGlobal = config.getString("strings.ch.global", "Global");
         this.chStaff = config.getString("strings.ch.staff", "Staff");
+
 
         List<String> defaultMaterialBlocksList = new ArrayList<>();
         for (Material material : this.elevatorMaterials) {
@@ -386,7 +399,7 @@ public class Configs {
                 ConfigurationSection section = blocks.getConfigurationSection("blocks." + key);
                 if (section != null) {
                     for (String chance : section.getKeys(false)){
-                        tempChanceMap.put(Double.parseDouble(chance.replace('_', '.')), blocks.getStringList("blocks." + key + "." + chance));
+                        tempChanceMap.put(Double.parseDouble(chance.replace(',', '.')), blocks.getStringList("blocks." + key + "." + chance));
                     }
                 }
                 tempBlock.put(key, tempChanceMap);
@@ -401,7 +414,7 @@ public class Configs {
         this.blockRewardsDrop.clear();
         tempBlock.forEach(this.blockRewardsDrop::put);
 
-        this.blockRewardsDrop.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("blocks." + k + '.' + l.toString().replace('.', '_'), b)));
+        this.blockRewardsDrop.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("blocks." + k + '.' + String.format("%.10f", l).replace('.', ','), b)));
 
         Map<Double, List<String>> tempFarmMap = new HashMap<>();
         tempFarmMap.put(0.001, List.of("crates givekey %player_name% farm"));
@@ -417,7 +430,7 @@ public class Configs {
                 ConfigurationSection section = blocks.getConfigurationSection("farm." + key);
                 if (section != null) {
                     for (String chance : section.getKeys(false)) {
-                        tempChanceMap.put(Double.parseDouble(chance.replace('_', '.')), blocks.getStringList("farm." + key + "." + chance));
+                        tempChanceMap.put(Double.parseDouble(chance.replace(',', '.')), blocks.getStringList("farm." + key + "." + chance));
                     }
                 }
                 tempFarm.put(key, tempChanceMap);
@@ -431,7 +444,7 @@ public class Configs {
         this.farmRewardsDrop.clear();
         tempFarm.forEach(this.farmRewardsDrop::put);
 
-        this.farmRewardsDrop.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("farm." + k + "." + l.toString().replace('.', '_'), b)));
+        this.farmRewardsDrop.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("farm." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
         outBlocks.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         // cashgui.yml
@@ -579,16 +592,68 @@ public class Configs {
         this.kitList.clear();
         tempKitList.forEach(this.kitList::put);
 
-        kitList.forEach((k, v) -> {
+        tempKitList.forEach((k, v) -> {
             outKit.set("kits." + k + ".delay", v.getDelay());
             outKit.set("kits." + k + ".command", v.getCommands());
             outKit.set("kits." + k + ".text", v.getMessages());
         });
 
         outKit.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
+
+        // chat.yml
+
+        FileConfiguration chatConfig = YamlConfiguration.loadConfiguration(new File(CHAT_FILE_PATH));
+        FileConfiguration outChat = new YamlConfiguration();
+
+        this.localFormat = chatConfig.getString("format.local", "$8[$eL$8] %vault_suffix% $e%player_displayname%$8 ➤ $e%message%").replace('$', (char) 0x00A7);
+        this.globalFormat = chatConfig.getString("format.global", "{canal}{clan}{sufix}{prefix}{player}{marry}{separator}").replace('$', (char) 0x00A7);
+        this.staffFormat = chatConfig.getString("format.staff", "$8[$bS$8] %vault_prefix%%player_displayname%$8 ➤ $b%message%").replace('$', (char) 0x00A7);
+        this.localRange = chatConfig.getInt("format.local-range", 64);
+        this.autoUpdateGroups = chatConfig.getBoolean("format.auto-update-groups", false);
+
+        this.customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholdersObjects("eternia.chat.global", "%vault_prefix%", "", "", 3));
+        this.customPlaceholdersObjectsMap.put("player", new CustomPlaceholdersObjects("eternia.chat.global", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
+        this.customPlaceholdersObjectsMap.put("separator", new CustomPlaceholdersObjects("eternia.chat.global", " &8➤ ", "", "", 6));
+        this.customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholdersObjects("eternia.chat.global", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2));
+        this.customPlaceholdersObjectsMap.put("clan", new CustomPlaceholdersObjects("eternia.chat.global", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1));
+        this.customPlaceholdersObjectsMap.put("canal", new CustomPlaceholdersObjects("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0));
+        this.customPlaceholdersObjectsMap.put("marry", new CustomPlaceholdersObjects("eternia.chat.global", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5));
+
+        outChat.set("format.local", this.localFormat);
+        outChat.set("format.global", this.globalFormat);
+        outChat.set("format.staff", this.staffFormat);
+        outChat.set("format.local-range", this.localRange);
+        outChat.set("format.auto-update-groups", this.autoUpdateGroups);
+
+        Map<String, CustomPlaceholdersObjects> tempCustomPlaceholdersMap = new HashMap<>();
+        configurationSection = chatConfig.getConfigurationSection("placeholders");
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                tempCustomPlaceholdersMap.put(key, new CustomPlaceholdersObjects(chatConfig.getString("placeholders." + key + ".perm"), chatConfig.getString("placeholders." + key + ".value"), chatConfig.getString("placeholders." + key + ".hover-text"), chatConfig.getString("placeholders." + key + ".suggest-command"), chatConfig.getInt("placeholders." + key + ".priority")));
+            }
+        }
+
+        if (tempCustomPlaceholdersMap.isEmpty()) {
+            tempCustomPlaceholdersMap = new HashMap<>(customPlaceholdersObjectsMap);
+        }
+
+        this.customPlaceholdersObjectsMap.clear();
+        tempCustomPlaceholdersMap.forEach(this.customPlaceholdersObjectsMap::put);
+
+        tempCustomPlaceholdersMap.forEach((k, v) -> {
+            outChat.set("placeholders." + k + ".perm", v.getPermission());
+            outChat.set("placeholders." + k + ".value", v.getValue());
+            outChat.set("placeholders." + k + ".hover-text", v.getHoverText());
+            outChat.set("placeholders." + k + ".suggest-command", v.getSuggestCmd());
+            outChat.set("placeholders." + k + ".priority", v.getPriority());
+        });
+
+        outChat.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
+
         // SAVING
 
         try {
+            outChat.save(CHAT_FILE_PATH);
             outConfig.save(CONFIG_FILE_PATH);
             outBlocks.save(BLOCKS_FILE_PATH);
             outCash.save(CASHGUI_FILE_PATH);
@@ -827,10 +892,6 @@ public class Configs {
             }
 
         }
-
-        // cashgui.yml
-
-
 
         // SAVE
 

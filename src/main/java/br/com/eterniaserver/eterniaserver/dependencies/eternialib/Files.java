@@ -19,12 +19,6 @@ public class Files {
         this.plugin = plugin;
     }
 
-    public void loadChat() {
-        loadFile("chat.yml", EterniaServer.chatConfig);
-        loadFile("groups.yml", EterniaServer.groupConfig);
-        loadFile("customplaceholders.yml", EterniaServer.placeholderConfig);
-    }
-
     public void loadRewards() {
         loadFile("rewards.yml", EterniaServer.rewardsConfig);
     }

@@ -3,9 +3,11 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.APIPlayer;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.core.APIUnstable;
+import br.com.eterniaserver.eterniaserver.core.UtilGlobalFormat;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.*;
-import br.com.eterniaserver.eterniaserver.objects.ChatMessage;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
@@ -26,24 +28,17 @@ import java.util.regex.Pattern;
 
 public class ServerHandler implements Listener {
 
-    private final UtilChatFormatter cf;
-    private final UtilJsonSender js;
-    private final UtilCustomPlaceholdersFilter cp;
-    private final UtilColors c = new UtilColors();
+    private final UtilGlobalFormat utilGlobalFormat = new UtilGlobalFormat();
     private final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
-    private String message;
+    private String messageMotd;
     private String message2;
 
     public ServerHandler() {
 
-        this.cp = new UtilCustomPlaceholdersFilter();
-        this.js = new UtilJsonSender();
-        this.cf = new UtilChatFormatter();
-
-        message = ChatColor.translateAlternateColorCodes('&', EterniaServer.configs.getMessage(Messages.SERVER_MOTD_1, false));
+        messageMotd = ChatColor.translateAlternateColorCodes('&', EterniaServer.configs.getMessage(Messages.SERVER_MOTD_1, false));
         message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.configs.getMessage(Messages.SERVER_MOTD_2, false));
         if (APIServer.getVersion() >= 116) {
-            message = matcherMessage(message);
+            messageMotd = matcherMessage(messageMotd);
             message2 = matcherMessage(message2);
         }
 
@@ -68,7 +63,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onServerListPing(ServerListPingEvent event) {
-        event.setMotd(message + "\n" + message2);
+        event.setMotd(messageMotd + "\n" + message2);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -96,7 +91,7 @@ public class ServerHandler implements Listener {
         message = canHex(player, message);
         switch (APIPlayer.getChannel(uuid)) {
             case 0:
-                APIUnstable.sendLocal(message, player, EterniaServer.chatConfig.getInt("local.range"));
+                APIUnstable.sendLocal(message, player, EterniaServer.configs.localRange);
                 return true;
             case 2:
                 APIUnstable.sendStaff(message, player);
@@ -105,11 +100,8 @@ public class ServerHandler implements Listener {
                 sendTell(player, message);
                 return true;
             default:
-                ChatMessage messagex = new ChatMessage(message);
-                cf.filter(e, messagex);
-                c.filter(e, messagex);
-                cp.filter(e, messagex);
-                js.filter(e, messagex);
+                e.getRecipients().clear();
+                utilGlobalFormat.filter(player, message);
                 return false;
         }
     }

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
-import br.com.eterniaserver.eterniaserver.objects.FormatInfo;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -55,7 +54,6 @@ public class PluginVars {
     protected static boolean chatMuted = false;
     protected static long nightTime = System.currentTimeMillis();
 
-    protected static final List<UtilCustomPlaceholder> customPlaceholders = new ArrayList<>();
     protected static final List<World> skippingWorlds = new ArrayList<>();
     protected static final List<UUID> baltopList = new ArrayList<>();
 
@@ -73,7 +71,6 @@ public class PluginVars {
     protected static final Map<String, Long> kitsCooldown = new HashMap<>();
     protected static final Map<String, Boolean> spy = new HashMap<>();
     protected static final Map<String, Integer> playersInPortal = new HashMap<>();
-    protected static final Map<String, FormatInfo> uufi = new HashMap<>();
     protected static final Map<String, Location> back = new HashMap<>();
     protected static final Map<String, Long> tpaTime = new HashMap<>();
     protected static final Map<String, Long> afkTime = new HashMap<>();

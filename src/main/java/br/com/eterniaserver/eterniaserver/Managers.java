@@ -106,7 +106,6 @@ public class Managers {
             EterniaLib.getManager().registerCommand(new Mute());
             EterniaLib.getManager().registerCommand(new Chat(plugin));
             EterniaLib.getManager().registerCommand(new Nick());
-            new UtilAdvancedChatTorch();
         }
     }
 
