@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.core;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import java.util.UUID;
@@ -20,7 +21,7 @@ public interface APIExperience {
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, xp)",
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, xp)",
                     "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "', '" + 0 + "')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
@@ -41,7 +42,7 @@ public interface APIExperience {
      */
      static void setExp(UUID uuid, int amount) {
         PluginVars.playerProfile.get(uuid).setXp(amount);
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.XP_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.XP_STR, amount, Constants.UUID_STR, uuid.toString()));
      }
 
     /**

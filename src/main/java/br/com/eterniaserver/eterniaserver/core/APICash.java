@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.core;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
@@ -27,7 +28,7 @@ public interface APICash {
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
                     "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "', '" + 0 +"')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
@@ -59,11 +60,11 @@ public interface APICash {
     static void setCash(UUID uuid, int amount) {
         if (PluginVars.playerProfile.containsKey(uuid)) {
             PluginVars.playerProfile.get(uuid).setCash(amount);
-            EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.CASH_STR, amount, PluginConstants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.CASH_STR, amount, Constants.UUID_STR, uuid.toString()));
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, cash)",
                     "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "', '" + 0 +"')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
@@ -108,10 +109,10 @@ public interface APICash {
     }
 
     static void menuGui(final Player player, int slotInt) {
-        if (EterniaServer.configs.guis.containsKey(slotInt)) {
+        if (EterniaServer.cash.guis.containsKey(slotInt)) {
             player.closeInventory();
-            List<CashItem> itens = EterniaServer.configs.othersGui.get(slotInt);
-            Inventory gui = Bukkit.getServer().createInventory(player, itens.size(), EterniaServer.configs.guis.get(slotInt));
+            List<CashItem> itens = EterniaServer.cash.othersGui.get(slotInt);
+            Inventory gui = Bukkit.getServer().createInventory(player, itens.size(), EterniaServer.cash.guis.get(slotInt));
             for (int i = 0; i < itens.size(); i++) {
                 gui.setItem(i, itens.get(i).getItemStack());
             }
@@ -123,29 +124,29 @@ public interface APICash {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (!PluginVars.cashItem.containsKey(uuid)) {
-            CashItem cashItem = EterniaServer.configs.othersGui.get(EterniaServer.configs.guisInvert.get(title)).get(slot);
+            CashItem cashItem = EterniaServer.cash.othersGui.get(EterniaServer.cash.guisInvert.get(title)).get(slot);
             if (!cashItem.isGlass()) {
                 final int cost = cashItem.getCost();
                 if (APICash.hasCash(uuid, cost)) {
-                    EterniaServer.configs.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
-                    EterniaServer.configs.sendMessage(player, Messages.CASH_CHOOSE);
+                    EterniaServer.msg.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
+                    EterniaServer.msg.sendMessage(player, Messages.CASH_CHOOSE);
                     PluginVars.cashItem.put(uuid, cashItem);
                 } else {
-                    EterniaServer.configs.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(getCash(uuid)));
+                    EterniaServer.msg.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(getCash(uuid)));
                 }
             } else {
                 player.closeInventory();
-                Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.configs.menuGui.size(), "Cash");
+                Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.cash.menuGui.size(), "Cash");
 
-                for (int i = 0; i < EterniaServer.configs.menuGui.size(); i++) {
-                    gui.setItem(i, EterniaServer.configs.menuGui.get(i));
+                for (int i = 0; i < EterniaServer.cash.menuGui.size(); i++) {
+                    gui.setItem(i, EterniaServer.cash.menuGui.get(i));
                 }
 
                 player.openInventory(gui);
             }
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.CASH_ALREADY_BUYING);
-            EterniaServer.configs.sendMessage(player, Messages.CASH_CHOOSE);
+            EterniaServer.msg.sendMessage(player, Messages.CASH_ALREADY_BUYING);
+            EterniaServer.msg.sendMessage(player, Messages.CASH_CHOOSE);
         }
     }
 

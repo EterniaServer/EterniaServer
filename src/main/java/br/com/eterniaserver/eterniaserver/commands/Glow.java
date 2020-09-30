@@ -34,9 +34,9 @@ public class Glow extends BaseCommand {
     @Description(" Ativa ou desativa o glow")
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
-            EterniaServer.configs.sendMessage(player, Messages.GLOW_ENABLED);
+            EterniaServer.msg.sendMessage(player, Messages.GLOW_ENABLED);
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.GLOW_DISABLED);
+            EterniaServer.msg.sendMessage(player, Messages.GLOW_DISABLED);
             player.removePotionEffect(PotionEffectType.GLOWING);
         }
         player.setGlowing(!player.isGlowing());
@@ -51,7 +51,7 @@ public class Glow extends BaseCommand {
         final String playerName = player.getName();
         APIServer.getScoreboard().getTeam(colors.name()).addEntry(playerName);
         APIServer.putGlowing(playerName, colors.getColorStr());
-        EterniaServer.configs.sendMessage(player, Messages.GLOW_COLOR_CHANGED, colors.getName());
+        EterniaServer.msg.sendMessage(player, Messages.GLOW_COLOR_CHANGED, colors.getName());
     }
 
 }

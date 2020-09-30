@@ -62,7 +62,7 @@ public class Channel extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (messages != null && messages.length == 0) {
             APIPlayer.setChannel(uuid, channel);
-            EterniaServer.configs.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channelName);
+            EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channelName);
         } else {
             int defaultChannel = APIPlayer.getChannel(uuid);
             APIPlayer.setChannel(uuid, channel);

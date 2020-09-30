@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -14,9 +15,9 @@ public interface APIChat {
     static void sendStaff(String message, Player player) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission("eternia.chat.staff")) {
-                String format = EterniaServer.configs.staffFormat;
+                String format = EterniaServer.chat.staffFormat;
                 format = APIChat.setPlaceholders(player, format);
-                format = APIServer.getColor(format.replace(PluginConstants.MESSAGE, message));
+                format = APIServer.getColor(format.replace(Constants.MESSAGE, message));
                 p.sendMessage(format);
             }
         }
@@ -36,16 +37,16 @@ public interface APIChat {
             }
         }
         if (pes <= 1) {
-            EterniaServer.configs.sendMessage(player, Messages.CHAT_NO_ONE_NEAR);
+            EterniaServer.msg.sendMessage(player, Messages.CHAT_NO_ONE_NEAR);
         }
     }
 
     private static String getLocalFormat(String message, final Player player) {
-        String format = APIChat.setPlaceholders(player, EterniaServer.configs.localFormat);
+        String format = APIChat.setPlaceholders(player, EterniaServer.chat.localFormat);
         if (player.hasPermission("eternia.chat.color")) {
-            return APIServer.getColor(format.replace(PluginConstants.MESSAGE, message));
+            return APIServer.getColor(format.replace(Constants.MESSAGE, message));
         } else {
-            return(format.replace(PluginConstants.MESSAGE, message));
+            return(format.replace(Constants.MESSAGE, message));
         }
     }
 
@@ -59,8 +60,8 @@ public interface APIChat {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();
         PluginVars.tell.put(target.getName(), player.getName());
-        player.sendMessage(EterniaServer.configs.getMessage(Messages.CHAT_TELL_TO, false, player.getName(), playerDisplay, target.getName(), targetDisplay));
-        target.sendMessage(EterniaServer.configs.getMessage(Messages.CHAT_TELL_FROM, false, player.getName(), playerDisplay, target.getName(), targetDisplay));
+        player.sendMessage(EterniaServer.msg.getMessage(Messages.CHAT_TELL_TO, false, player.getName(), playerDisplay, target.getName(), targetDisplay));
+        target.sendMessage(EterniaServer.msg.getMessage(Messages.CHAT_TELL_FROM, false, player.getName(), playerDisplay, target.getName(), targetDisplay));
         for (String p : PluginVars.spy.keySet()) {
             final Boolean b = PluginVars.spy.getOrDefault(p, false);
             if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {

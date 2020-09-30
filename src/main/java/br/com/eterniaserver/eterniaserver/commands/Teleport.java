@@ -20,7 +20,7 @@ public class Teleport extends BaseCommand {
     @CommandPermission("eternia.tpall")
     public void onTeleportAll(Player player) {
         for (Player other : Bukkit.getOnlinePlayers()) if (other != player) other.teleport(player);
-        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.TELEPORT_ALL_PLAYERS, true, player.getName(), player.getDisplayName()));
+        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.TELEPORT_ALL_PLAYERS, true, player.getName(), player.getDisplayName()));
     }
 
     @CommandAlias("tpaccept|teleportaccept")
@@ -30,15 +30,15 @@ public class Teleport extends BaseCommand {
         if (APIPlayer.hasTpaRequest(playerName)) {
             final Player target = Bukkit.getPlayer(APIPlayer.getTpaSender(playerName));
             if (target != null) {
-                APIServer.putInTeleport(target, new PlayerTeleport(target, player.getLocation(), EterniaServer.configs.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, playerName, player.getDisplayName())));
-                EterniaServer.configs.sendMessage(target, Messages.TELEPORT_TARGET_ACCEPT, playerName, player.getDisplayName());
-                EterniaServer.configs.sendMessage(player, Messages.TELEPORT_ACCEPT, target.getName(), target.getDisplayName());
+                APIServer.putInTeleport(target, new PlayerTeleport(target, player.getLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, playerName, player.getDisplayName())));
+                EterniaServer.msg.sendMessage(target, Messages.TELEPORT_TARGET_ACCEPT, playerName, player.getDisplayName());
+                EterniaServer.msg.sendMessage(player, Messages.TELEPORT_ACCEPT, target.getName(), target.getDisplayName());
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.TELEPORT_TARGET_OFFLINE);
+                EterniaServer.msg.sendMessage(player, Messages.TELEPORT_TARGET_OFFLINE);
             }
             APIPlayer.removeTpaRequest(playerName);
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.TELEPORT_NOT_REQUESTED);
+            EterniaServer.msg.sendMessage(player, Messages.TELEPORT_NOT_REQUESTED);
         }
     }
 
@@ -49,14 +49,14 @@ public class Teleport extends BaseCommand {
         final Player target = Bukkit.getPlayer(UUIDFetcher.getUUIDOf(APIPlayer.getTpaSender(playerName)));
         if (APIPlayer.hasTpaRequest(playerName)) {
             if (target != null && target.isOnline()) {
-                EterniaServer.configs.sendMessage(target, Messages.TELEPORT_TARGET_DENIED, playerName, player.getDisplayName());
-                EterniaServer.configs.sendMessage(player, Messages.TELEPORT_DENIED, target.getName(), target.getDisplayName());
+                EterniaServer.msg.sendMessage(target, Messages.TELEPORT_TARGET_DENIED, playerName, player.getDisplayName());
+                EterniaServer.msg.sendMessage(player, Messages.TELEPORT_DENIED, target.getName(), target.getDisplayName());
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.TELEPORT_TARGET_OFFLINE);
+                EterniaServer.msg.sendMessage(player, Messages.TELEPORT_TARGET_OFFLINE);
             }
             APIPlayer.removeTpaRequest(playerName);
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.TELEPORT_NOT_REQUESTED);
+            EterniaServer.msg.sendMessage(player, Messages.TELEPORT_NOT_REQUESTED);
         }
     }
 
@@ -67,20 +67,20 @@ public class Teleport extends BaseCommand {
     public void onTeleportToPlayer(Player player, OnlinePlayer target) {
         final Player targetP = target.getPlayer();
         if (APIPlayer.isTeleporting(player)) {
-            EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
+            EterniaServer.msg.sendMessage(player, Messages.SERVER_IN_TELEPORT);
         } else {
             if (targetP != player) {
                 final String playerName = player.getName();
                 final String targetName = targetP.getName();
                 if (!APIPlayer.hasTpaRequest(targetName)) {
                     APIPlayer.putTpaRequest(targetName, playerName);
-                    EterniaServer.configs.sendMessage(targetP, Messages.TELEPORT_RECEIVED, playerName, player.getDisplayName());
-                    EterniaServer.configs.sendMessage(player, Messages.TELEPORT_SENT, targetName, targetP.getDisplayName());
+                    EterniaServer.msg.sendMessage(targetP, Messages.TELEPORT_RECEIVED, playerName, player.getDisplayName());
+                    EterniaServer.msg.sendMessage(player, Messages.TELEPORT_SENT, targetName, targetP.getDisplayName());
                 } else {
-                    EterniaServer.configs.sendMessage(player, Messages.TELEPORT_ALREADY_REQUESTED, targetName, targetP.getDisplayName());
+                    EterniaServer.msg.sendMessage(player, Messages.TELEPORT_ALREADY_REQUESTED, targetName, targetP.getDisplayName());
                 }
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.TELEPORT_CANT_YOURSELF);
+                EterniaServer.msg.sendMessage(player, Messages.TELEPORT_CANT_YOURSELF);
             }
         }
     }
@@ -92,21 +92,21 @@ public class Teleport extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (APIServer.hasBackLocation(playerName)) {
             if ((player.hasPermission("eternia.backfree") && canBack(player)) || (!EterniaServer.configs.moduleEconomy && canBack(player))) {
-                APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), EterniaServer.configs.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
+                APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), EterniaServer.msg.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
             } else if (APIEconomy.getMoney(uuid) >= EterniaServer.configs.backCost && canBack(player) && !player.hasPermission("eternia.backfree")) {
                 APIEconomy.removeMoney(uuid, EterniaServer.configs.backCost);
-                APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), EterniaServer.configs.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.configs.backCost))));
+                APIServer.putInTeleport(player, new PlayerTeleport(player, APIServer.getBackLocation(playerName), EterniaServer.msg.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.configs.backCost))));
             } else if (canBack(player)){
-                EterniaServer.configs.sendMessage(player, Messages.ECO_NO_MONEY);
+                EterniaServer.msg.sendMessage(player, Messages.ECO_NO_MONEY);
             }
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.TELEPORT_BACK_NOT_DIED);
+            EterniaServer.msg.sendMessage(player, Messages.TELEPORT_BACK_NOT_DIED);
         }
     }
 
     private boolean canBack(final Player player) {
         if (APIPlayer.isTeleporting(player)) {
-            EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
+            EterniaServer.msg.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             return false;
         }
         return true;

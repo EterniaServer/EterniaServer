@@ -38,7 +38,7 @@ public class Inventory extends BaseCommand {
             if (player.hasPermission("eternia.enderchest.other")) {
                 player.openInventory(target.getPlayer().getEnderChest());
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
+                EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         }
     }
@@ -49,7 +49,7 @@ public class Inventory extends BaseCommand {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         if (itemStack.getType() == Material.AIR) {
-            EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
+            EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
             return;
         }
 
@@ -58,7 +58,7 @@ public class Inventory extends BaseCommand {
         }
         dropHelmet(player);
         setHelmet(player);
-        EterniaServer.configs.sendMessage(player, Messages.ITEM_HELMET);
+        EterniaServer.msg.sendMessage(player, Messages.ITEM_HELMET);
     }
 
     private void dropHelmet(Player player) {

@@ -74,23 +74,23 @@ public class BlockHandler implements Listener {
                 event.setExpToDrop(0);
             } else {
                 event.setCancelled(true);
-                EterniaServer.configs.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
+                EterniaServer.msg.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
             }
         } else if (!player.hasPermission("eternia.spawners.break") && material == Material.SPAWNER) {
-            EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
+            EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
             event.setCancelled(true);
         } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {
-            EterniaServer.configs.sendMessage(player, Messages.SPAWNER_WORLD_BLOCKED);
+            EterniaServer.msg.sendMessage(player, Messages.SPAWNER_WORLD_BLOCKED);
             event.setCancelled(true);
         }
 
         if (!EterniaServer.configs.moduleBlock) return;
 
-        if (EterniaServer.configs.blockRewardsDrop.containsKey(materialName)) {
-            randomizeAndReward(player, EterniaServer.configs.blockRewardsDrop.get(materialName));
+        if (EterniaServer.block.blockRewardsDrop.containsKey(materialName)) {
+            randomizeAndReward(player, EterniaServer.block.blockRewardsDrop.get(materialName));
         }
 
-        if (EterniaServer.configs.farmRewardsDrop.containsKey(materialName)) {
+        if (EterniaServer.block.farmRewardsDrop.containsKey(materialName)) {
             winFarmReward(block, player);
         }
 
@@ -101,7 +101,7 @@ public class BlockHandler implements Listener {
         if (blockData instanceof Ageable) {
             Ageable ageable = (Ageable) blockData;
             if (ageable.getAge() == ageable.getMaximumAge()) {
-                randomizeAndReward(player, EterniaServer.configs.farmRewardsDrop.get(block.getType().name().toUpperCase()));
+                randomizeAndReward(player, EterniaServer.block.farmRewardsDrop.get(block.getType().name().toUpperCase()));
             }
         }
     }
@@ -128,7 +128,7 @@ public class BlockHandler implements Listener {
                     player.getInventory().addItem(getSpawner(block, material));
                     block.getDrops().clear();
                 } else {
-                    EterniaServer.configs.sendMessage(player, Messages.SPAWNER_INV_FULL);
+                    EterniaServer.msg.sendMessage(player, Messages.SPAWNER_INV_FULL);
                     final Location loc = block.getLocation();
                     loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
                 }
@@ -137,7 +137,7 @@ public class BlockHandler implements Listener {
                 loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
             }
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.SPAWNER_DROP_FAILED);
+            EterniaServer.msg.sendMessage(player, Messages.SPAWNER_DROP_FAILED);
         }
     }
 

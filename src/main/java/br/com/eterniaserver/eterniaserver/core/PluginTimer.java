@@ -24,25 +24,25 @@ public class PluginTimer extends TimerTask {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         switch (day) {
             case Calendar.SUNDAY:
-                runDay(EterniaServer.configs.scheduleMap.get("sunday"));
+                runDay(EterniaServer.schedule.scheduleMap.get("sunday"));
                 break;
             case Calendar.MONDAY:
-                runDay(EterniaServer.configs.scheduleMap.get("monday"));
+                runDay(EterniaServer.schedule.scheduleMap.get("monday"));
                 break;
             case Calendar.TUESDAY:
-                runDay(EterniaServer.configs.scheduleMap.get("tuesday"));
+                runDay(EterniaServer.schedule.scheduleMap.get("tuesday"));
                 break;
             case Calendar.WEDNESDAY:
-                runDay(EterniaServer.configs.scheduleMap.get("wednesday"));
+                runDay(EterniaServer.schedule.scheduleMap.get("wednesday"));
                 break;
             case Calendar.THURSDAY:
-                runDay(EterniaServer.configs.scheduleMap.get("thursday"));
+                runDay(EterniaServer.schedule.scheduleMap.get("thursday"));
                 break;
             case Calendar.FRIDAY:
-                runDay(EterniaServer.configs.scheduleMap.get("friday"));
+                runDay(EterniaServer.schedule.scheduleMap.get("friday"));
                 break;
             case Calendar.SATURDAY:
-                runDay(EterniaServer.configs.scheduleMap.get("saturday"));
+                runDay(EterniaServer.schedule.scheduleMap.get("saturday"));
                 break;
             default:
                 APIServer.logError("Talvez você não seja da terra", 3);

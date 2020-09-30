@@ -45,7 +45,7 @@ public class UtilCustomCommands extends AbstractCommand {
                 player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(player, line)));
             }
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
+            EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
         }
     }
 

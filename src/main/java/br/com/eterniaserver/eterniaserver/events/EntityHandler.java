@@ -35,7 +35,7 @@ public class EntityHandler implements Listener {
             final Player player = (Player) event.getDamager();
             if (player.isFlying() && !player.hasPermission("eternia.fly.bypass")) {
                 APIPlayer.setIsOnPvP(UUIDFetcher.getUUIDOf(player.getName()));
-                EterniaServer.configs.sendMessage(player, Messages.FLY_ENTER_PVP);
+                EterniaServer.msg.sendMessage(player, Messages.FLY_ENTER_PVP);
                 player.setAllowFlight(false);
                 player.setFlying(false);
             }
@@ -53,7 +53,7 @@ public class EntityHandler implements Listener {
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
-            EterniaServer.configs.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
+            EterniaServer.msg.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
         }
 
         if (EterniaServer.configs.moduleCash) {
@@ -61,7 +61,7 @@ public class EntityHandler implements Listener {
             if ("Cash".equals(title)) {
                 APICash.menuGui(player, e.getSlot());
                 e.setCancelled(true);
-            } else if (EterniaServer.configs.guisInvert.containsKey(title)) {
+            } else if (EterniaServer.cash.guisInvert.containsKey(title)) {
                 APICash.permGui(player, title, e.getSlot());
                 e.setCancelled(true);
             }

@@ -47,9 +47,9 @@ public class Item extends BaseCommand {
                 NBTItem nbtItem = new NBTItem(item);
                 nbtItem.setString(key, value);
                 player.getInventory().setItemInMainHand(nbtItem.getItem());
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_NBT_ADDKEY, key, value);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_NBT_ADDKEY, key, value);
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
             }
         }
 
@@ -62,9 +62,9 @@ public class Item extends BaseCommand {
                 NBTItem nbtItem = new NBTItem(item);
                 nbtItem.setInteger(key, value);
                 player.getInventory().setItemInMainHand(nbtItem.getItem());
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_NBT_ADDKEY, key, String.valueOf(value));
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_NBT_ADDKEY, key, String.valueOf(value));
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
             }
         }
 
@@ -80,9 +80,9 @@ public class Item extends BaseCommand {
             if (item.getType() != Material.AIR && item.getLore() != null) {
                 item.getLore().clear();
                 player.getInventory().setItemInMainHand(item);
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_CLEAR_LORE);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_CLEAR_LORE);
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
             }
         }
 
@@ -93,9 +93,9 @@ public class Item extends BaseCommand {
             if (item.getType() != Material.AIR) {
                 item.getItemMeta().setDisplayName(item.getI18NDisplayName());
                 player.getInventory().setItemInMainHand(item);
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_CLEAR_NAME);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_CLEAR_NAME);
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
             }
         }
 
@@ -118,9 +118,9 @@ public class Item extends BaseCommand {
                 item.setLore(List.of(name));
             }
             player.getInventory().setItemInMainHand(item);
-            EterniaServer.configs.sendMessage(player, Messages.ITEM_ADD_LORE, name);
+            EterniaServer.msg.sendMessage(player, Messages.ITEM_ADD_LORE, name);
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
+            EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
         }
     }
 
@@ -137,9 +137,9 @@ public class Item extends BaseCommand {
                 name = APIServer.getColor(name);
                 item.setLore(List.of(name));
                 player.getInventory().setItemInMainHand(item);
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_SET_LORE, name);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_SET_LORE, name);
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
             }
         }
 
@@ -155,9 +155,9 @@ public class Item extends BaseCommand {
                 meta.setDisplayName(name);
                 item.setItemMeta(meta);
                 player.getInventory().setItemInMainHand(item);
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_SET_NAME, name);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_SET_NAME, name);
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.ITEM_NOT_FOUND);
+                EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
             }
         }
 

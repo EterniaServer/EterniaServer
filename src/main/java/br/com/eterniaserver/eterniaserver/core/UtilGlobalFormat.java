@@ -25,13 +25,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UtilGlobalFormat {
 
 	public void filter(Player player, String message) {
-		BaseComponent[] baseComponents = customPlaceholder(player, EterniaServer.configs.globalFormat, message);
+		BaseComponent[] baseComponents = customPlaceholder(player, EterniaServer.chat.globalFormat, message);
 		Bukkit.spigot().broadcast(baseComponents);
 	}
 
 	public BaseComponent[] customPlaceholder(Player player, String format, String message) {
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
-		EterniaServer.configs.customPlaceholdersObjectsMap.forEach((placeholder, object) -> {
+		EterniaServer.chat.customPlaceholdersObjectsMap.forEach((placeholder, object) -> {
 			if (format.contains("{" + placeholder + "}") && player.hasPermission(object.getPermission())) {
 				textComponentMap.put(object.getPriority(), getText(player, object));
 			}

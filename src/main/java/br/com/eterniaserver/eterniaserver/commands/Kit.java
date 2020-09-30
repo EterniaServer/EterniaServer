@@ -7,7 +7,7 @@ import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.PluginConstants;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
 import org.bukkit.Bukkit;
@@ -20,10 +20,10 @@ public class Kit extends BaseCommand {
 
     public Kit() {
 
-        final Map<String, String> temp = EQueries.getMapString(PluginConstants.getQuerySelectAll(EterniaServer.configs.tableKits), PluginConstants.NAME_STR, PluginConstants.COOLDOWN_STR);
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.configs.tableKits), Constants.NAME_STR, Constants.COOLDOWN_STR);
         temp.forEach((k, v) -> APIServer.putKitCooldown(k, Long.parseLong(v)));
 
-        Bukkit.getConsoleSender().sendMessage(EterniaServer.configs.getMessage(Messages.SERVER_DATA_LOADED, true, "Kits", String.valueOf(temp.size())));
+        Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_DATA_LOADED, true, "Kits", String.valueOf(temp.size())));
 
     }
 
@@ -31,21 +31,21 @@ public class Kit extends BaseCommand {
     @CommandPermission("eternia.kits")
     public void onKits(Player player) {
         StringBuilder str = new StringBuilder();
-        for (String key : EterniaServer.configs.kitList.keySet()) {
+        for (String key : EterniaServer.kits.kitList.keySet()) {
             str.append(ChatColor.DARK_AQUA).append(key).append(ChatColor.DARK_GRAY).append(", ");
         }
         str.setLength(str.length() - 2);
-        EterniaServer.configs.sendMessage(player, Messages.KIT_LIST, str.toString());
+        EterniaServer.msg.sendMessage(player, Messages.KIT_LIST, str.toString());
     }
 
     @CommandAlias("kit")
     @Syntax("<kit>")
     @CommandPermission("eternia.kit")
     public void onKit(Player player, String kit) {
-        if (EterniaServer.configs.kitList.containsKey(kit)) {
+        if (EterniaServer.kits.kitList.containsKey(kit)) {
             if (player.hasPermission("eternia.kit." + kit)) {
                 final long time = System.currentTimeMillis();
-                CustomKit kitObject = EterniaServer.configs.kitList.get(kit);
+                CustomKit kitObject = EterniaServer.kits.kitList.get(kit);
                 final String kitName = kit + "." + player.getName();
                 int cooldown = kitObject.getDelay();
                 final long cd = APIServer.getKitCooldown(kitName);
@@ -58,15 +58,15 @@ public class Kit extends BaseCommand {
                         player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(player, text)));
                     }
                     APIServer.putKitCooldown(kitName, time);
-                    EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tableKits, PluginConstants.COOLDOWN_STR, time, PluginConstants.NAME_STR, kitName));
+                    EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableKits, Constants.COOLDOWN_STR, time, Constants.NAME_STR, kitName));
                 } else {
-                    EterniaServer.configs.sendMessage(player, Messages.SERVER_TIMING, APIChat.getTimeLeft(cooldown, cd));
+                    EterniaServer.msg.sendMessage(player, Messages.SERVER_TIMING, APIChat.getTimeLeft(cooldown, cd));
                 }
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
+                EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.KIT_NOT_FOUND, kit);
+            EterniaServer.msg.sendMessage(player, Messages.KIT_NOT_FOUND, kit);
         }
     }
 

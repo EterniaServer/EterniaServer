@@ -35,8 +35,8 @@ public class ServerHandler implements Listener {
 
     public ServerHandler() {
 
-        messageMotd = ChatColor.translateAlternateColorCodes('&', EterniaServer.configs.getMessage(Messages.SERVER_MOTD_1, false));
-        message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.configs.getMessage(Messages.SERVER_MOTD_2, false));
+        messageMotd = ChatColor.translateAlternateColorCodes('&', EterniaServer.msg.getMessage(Messages.SERVER_MOTD_1, false));
+        message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.msg.getMessage(Messages.SERVER_MOTD_2, false));
         if (APIServer.getVersion() >= 116) {
             messageMotd = matcherMessage(messageMotd);
             message2 = matcherMessage(message2);
@@ -72,13 +72,13 @@ public class ServerHandler implements Listener {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
             if (APIServer.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
-                EterniaServer.configs.sendMessage(player, Messages.CHAT_CHANNELS_MUTED);
+                EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNELS_MUTED);
                 e.setCancelled(true);
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = APIPlayer.getMutedTime(uuid);
                 if (APIChat.stayMuted(time)) {
-                    EterniaServer.configs.sendMessage(player, Messages.CHAT_ARE_MUTED, APIChat.getTimeLeft(time));
+                    EterniaServer.msg.sendMessage(player, Messages.CHAT_ARE_MUTED, APIChat.getTimeLeft(time));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
@@ -91,7 +91,7 @@ public class ServerHandler implements Listener {
         message = canHex(player, message);
         switch (APIPlayer.getChannel(uuid)) {
             case 0:
-                APIChat.sendLocal(message, player, EterniaServer.configs.localRange);
+                APIChat.sendLocal(message, player, EterniaServer.chat.localRange);
                 return true;
             case 2:
                 APIChat.sendStaff(message, player);
@@ -112,14 +112,14 @@ public class ServerHandler implements Listener {
             final Player target = Bukkit.getPlayer(APIPlayer.getTellingPlayerName(playerName));
             if (target != null && target.isOnline()) {
                 if (APIPlayer.hasIgnoreds(playerName) && APIPlayer.areIgnored(playerName, target)) {
-                    EterniaServer.configs.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
+                    EterniaServer.msg.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
                     return;
                 }
                 APIChat.sendPrivate(sender, target, msg);
                 return;
             }
         }
-        EterniaServer.configs.sendMessage(sender, Messages.CHAT_NO_ONE_TO_RESP);
+        EterniaServer.msg.sendMessage(sender, Messages.CHAT_NO_ONE_TO_RESP);
     }
 
     private String canHex(final Player player, String message) {

@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.*;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -62,9 +63,9 @@ public class PlayerHandler implements Listener {
                 nome = nome.replace("[", "").replace("]", "");
                 nome = ChatColor.stripColor(nome);
                 if (APIPlayer.isTeleporting(player)) {
-                    EterniaServer.configs.sendMessage(player, Messages.SERVER_IN_TELEPORT);
+                    EterniaServer.msg.sendMessage(player, Messages.SERVER_IN_TELEPORT);
                 } else {
-                    APIServer.putInTeleport(player, new PlayerTeleport(player, location, EterniaServer.configs.getMessage(Messages.HOME_GOING, true, nome)));
+                    APIServer.putInTeleport(player, new PlayerTeleport(player, location, EterniaServer.msg.getMessage(Messages.HOME_GOING, true, nome)));
                 }
                 event.setCancelled(true);
             }
@@ -118,12 +119,12 @@ public class PlayerHandler implements Listener {
         final String playerName = player.getName();
         APIPlayer.removeFromAFK(playerName);
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        EQueries.executeQuery(PluginConstants.getQueryUpdate(EterniaServer.configs.tablePlayer, PluginConstants.HOURS_STR, APIPlayer.getAndUpdateTimePlayed(uuid), PluginConstants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.HOURS_STR, APIPlayer.getAndUpdateTimePlayed(uuid), Constants.UUID_STR, uuid.toString()));
         if (EterniaServer.configs.moduleChat && player.hasPermission("eternia.spy")) {
             APIServer.removeFromSpy(playerName);
         }
         event.setQuitMessage(null);
-        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SERVER_LOGOUT, true, playerName, player.getDisplayName()));
+        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGOUT, true, playerName, player.getDisplayName()));
     }
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -131,7 +132,7 @@ public class PlayerHandler implements Listener {
         final Player player = event.getPlayer();
         String message = event.getMessage().toLowerCase();
         if (message.equalsIgnoreCase("/tps")) {
-            EterniaServer.configs.sendMessage(player, Messages.SERVER_TPS, String.format("%.2f", Bukkit.getTPS()[0]));
+            EterniaServer.msg.sendMessage(player, Messages.SERVER_TPS, String.format("%.2f", Bukkit.getTPS()[0]));
             event.setCancelled(true);
             return;
         }
@@ -152,7 +153,7 @@ public class PlayerHandler implements Listener {
             final String playerName = player.getName();
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - APIServer.getBedCooldown(playerName)) > 6) {
                 APIServer.putBedCooldown(playerName);
-                Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.NIGHT_PLAYER_SLEEPING, true, playerName, player.getDisplayName()));
+                Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.NIGHT_PLAYER_SLEEPING, true, playerName, player.getDisplayName()));
             }
         }
     }
@@ -211,7 +212,7 @@ public class PlayerHandler implements Listener {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
         event.setJoinMessage(null);
-        Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SERVER_LOGIN, true, playerName, player.getDisplayName()));
+        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGIN, true, playerName, player.getDisplayName()));
 
         if (!APIPlayer.hasProfile(uuid)) {
             PaperLib.teleportAsync(player, APIServer.getLocation("warp.spawn"));

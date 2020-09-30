@@ -1,11 +1,14 @@
-package br.com.eterniaserver.eterniaserver.core;
+package br.com.eterniaserver.eterniaserver;
 
-public class PluginConstants {
+import java.io.File;
 
-    private PluginConstants() {
+public class Constants {
+
+    private Constants() {
         throw new IllegalStateException("Utility class");
     }
 
+    public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
     public static final String MESSAGE = "%message%";
     public static final String PRIMARY_KEY = "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ";
     public static final String NAME_STR = "name";

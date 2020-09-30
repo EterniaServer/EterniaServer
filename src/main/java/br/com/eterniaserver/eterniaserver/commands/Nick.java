@@ -36,7 +36,7 @@ public class Nick extends BaseCommand {
             if (target == null) {
                 APIPlayer.playerNick(player, string);
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PERM);
+                EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
             APIPlayer.staffNick(target, player, string);
@@ -50,9 +50,9 @@ public class Nick extends BaseCommand {
 
         if (APIPlayer.hasNickRequest(uuid)) {
             APIPlayer.removeNickRequest(uuid);
-            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_DENIED);
+            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_DENIED);
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_NOT_REQUESTED);
+            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_NOT_REQUESTED);
         }
     }
 
@@ -67,11 +67,11 @@ public class Nick extends BaseCommand {
                 APIEconomy.removeMoney(uuid, EterniaServer.configs.nickCost);
                 APIPlayer.updateNickName(player, uuid);
             } else {
-                EterniaServer.configs.sendMessage(player, Messages.ECO_NO_MONEY);
+                EterniaServer.msg.sendMessage(player, Messages.ECO_NO_MONEY);
             }
             APIPlayer.removeNickRequest(uuid);
         } else {
-            EterniaServer.configs.sendMessage(player, Messages.CHAT_NICK_NOT_REQUESTED);
+            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_NOT_REQUESTED);
         }
     }
 

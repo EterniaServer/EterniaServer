@@ -87,14 +87,14 @@ public class Gamemode extends BaseCommand {
     private void setGamemode(Player player, GameMode gameMode, int type) {
         final String typeName = getType(type);
         player.setGameMode(gameMode);
-        EterniaServer.configs.sendMessage(player, Messages.GAMEMODE_SETED, typeName);
+        EterniaServer.msg.sendMessage(player, Messages.GAMEMODE_SETED, typeName);
     }
 
     private void setGamemode(CommandSender player, Player target, GameMode gameMode, int type) {
         final String typeName = getType(type);
         target.setGameMode(gameMode);
-        EterniaServer.configs.sendMessage(target, Messages.GAMEMODE_SETED, typeName);
-        EterniaServer.configs.sendMessage(player, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
+        EterniaServer.msg.sendMessage(target, Messages.GAMEMODE_SETED, typeName);
+        EterniaServer.msg.sendMessage(player, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
     }
 
     private String getType(int type) {

@@ -33,12 +33,12 @@ public class Spawner extends BaseCommand {
             EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
             if (inventory.firstEmpty() == -1) {
-                EterniaServer.configs.sendMessage(player, Messages.SPAWNER_INV_FULL);
+                EterniaServer.msg.sendMessage(player, Messages.SPAWNER_INV_FULL);
             } else {
                 inventory.addItem(getSpawner(spawnerName, value));
                 final String playerDisplay = player instanceof Player ? ((Player) player).getPlayer().getDisplayName() : player.getName();
-                EterniaServer.configs.sendMessage(targetP, Messages.SPAWNER_RECEIVED, spawnerName, player.getName(), playerDisplay, String.valueOf(value));
-                EterniaServer.configs.sendMessage(player, Messages.SPAWNER_SENT, spawnerName, targetP.getName(), targetP.getDisplayName(), String.valueOf(value));
+                EterniaServer.msg.sendMessage(targetP, Messages.SPAWNER_RECEIVED, spawnerName, player.getName(), playerDisplay, String.valueOf(value));
+                EterniaServer.msg.sendMessage(player, Messages.SPAWNER_SENT, spawnerName, targetP.getName(), targetP.getDisplayName(), String.valueOf(value));
             }
         } else {
             sendTypes(player);
@@ -64,7 +64,7 @@ public class Spawner extends BaseCommand {
             }
         }
         str.append(ChatColor.GRAY).append("algumas entidades não funcionam");
-        EterniaServer.configs.sendMessage(player, Messages.SPAWNER_SEND_TYPES, str.toString());
+        EterniaServer.msg.sendMessage(player, Messages.SPAWNER_SEND_TYPES, str.toString());
     }
 
 }

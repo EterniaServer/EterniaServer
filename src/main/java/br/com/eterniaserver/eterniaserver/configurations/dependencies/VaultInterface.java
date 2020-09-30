@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.dependencies.vault;
+package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 

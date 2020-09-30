@@ -48,7 +48,7 @@ public class PluginTicks extends BukkitRunnable {
             PluginVars.afkTime.put(playerName, System.currentTimeMillis());
             if (PluginVars.afk.contains(playerName)) {
                 PluginVars.afk.remove(playerName);
-                Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
+                Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
             }
         }
 
@@ -76,11 +76,11 @@ public class PluginTicks extends BukkitRunnable {
                 PluginVars.playersInPortal.put(playerName, 10);
             } else if (PluginVars.playersInPortal.get(playerName) == 1) {
                 runSync(() -> PaperLib.teleportAsync(player, getWarp()));
-                EterniaServer.configs.sendMessage(player, Messages.WARP_SPAWN_TELEPORTED);
+                EterniaServer.msg.sendMessage(player, Messages.WARP_SPAWN_TELEPORTED);
             } else if (time > 1) {
                 PluginVars.playersInPortal.put(playerName, time - 1);
                 if ((time - 1) < 5) {
-                    EterniaServer.configs.sendMessage(player, Messages.SERVER_NETHER_TRAP_TIMING, String.valueOf(time - 1));
+                    EterniaServer.msg.sendMessage(player, Messages.SERVER_NETHER_TRAP_TIMING, String.valueOf(time - 1));
                 }
             }
         } else {
@@ -92,15 +92,15 @@ public class PluginTicks extends BukkitRunnable {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PluginVars.afkTime.getOrDefault(playerName, System.currentTimeMillis())) >= EterniaServer.configs.afkTimer) {
             if (EterniaServer.configs.afkKick) {
                 if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates")) {
-                    Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.AFK_BROADCAST_KICK, true, playerName, player.getDisplayName()));
+                    Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_BROADCAST_KICK, true, playerName, player.getDisplayName()));
                     PluginVars.afkTime.remove(playerName);
-                    runSync(() -> player.kickPlayer(EterniaServer.configs.getMessage(Messages.AFK_KICKED, true)));
+                    runSync(() -> player.kickPlayer(EterniaServer.msg.getMessage(Messages.AFK_KICKED, true)));
                 } else if (!PluginVars.afk.contains(playerName) && !player.hasPermission("eternia.nokickbyafksorrymates") && player.hasPermission("eternia.afk")) {
-                    Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.AFK_AUTO_ENTER, false, playerName, player.getDisplayName()));
+                    Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_AUTO_ENTER, false, playerName, player.getDisplayName()));
                     APIPlayer.putAfk(playerName);
                 }
             } else {
-                Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.AFK_AUTO_ENTER, false, playerName, player.getDisplayName()));
+                Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_AUTO_ENTER, false, playerName, player.getDisplayName()));
                 PluginVars.afk.add(playerName);
             }
         }
@@ -116,11 +116,11 @@ public class PluginTicks extends BukkitRunnable {
                         player.sendMessage(playerTeleport.getMessage());
                         PluginVars.teleports.remove(player);
                     } else {
-                        EterniaServer.configs.sendMessage(player, Messages.TELEPORT_TIMING, String.valueOf(playerTeleport.getCountdown()));
+                        EterniaServer.msg.sendMessage(player, Messages.TELEPORT_TIMING, String.valueOf(playerTeleport.getCountdown()));
                         playerTeleport.decreaseCountdown();
                     }
                 } else {
-                    EterniaServer.configs.sendMessage(player, Messages.TELEPORT_MOVED);
+                    EterniaServer.msg.sendMessage(player, Messages.TELEPORT_MOVED);
                     PluginVars.teleports.remove(player);
                 }
             } else {

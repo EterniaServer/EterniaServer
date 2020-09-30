@@ -92,7 +92,7 @@ public class Managers {
 
     private void loadCommandsManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleCommands, "Commands")) {
-            EterniaServer.configs.customCommandMap.forEach((commandName, commandObject) -> new UtilCustomCommands(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands()));
+            EterniaServer.commands.customCommandMap.forEach((commandName, commandObject) -> new UtilCustomCommands(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands()));
         }
     }
 
@@ -184,20 +184,20 @@ public class Managers {
     private void loadScheduleTasks() {
         if (sendModuleStatus(EterniaServer.configs.moduleSchedule, "Schedule")) {
             long start = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.of(
-                    EterniaServer.configs.scheduleHour,
-                    EterniaServer.configs.scheduleMinute,
-                    EterniaServer.configs.scheduleSecond));
+                    EterniaServer.schedule.scheduleHour,
+                    EterniaServer.schedule.scheduleMinute,
+                    EterniaServer.schedule.scheduleSecond));
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.scheduleWithFixedDelay(new PluginTimer(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.configs.scheduleDelay), TimeUnit.MILLISECONDS);
+            scheduler.scheduleWithFixedDelay(new PluginTimer(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.schedule.scheduleDelay), TimeUnit.MILLISECONDS);
         }
     }
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
-            Bukkit.getConsoleSender().sendMessage(EterniaServer.configs.getMessage(Messages.SERVER_MODULE_ENABLED, true, module));
+            Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_MODULE_ENABLED, true, module));
             return true;
         }
-        Bukkit.getConsoleSender().sendMessage(EterniaServer.configs.getMessage(Messages.SERVER_MODULE_DISABLED, true, module));
+        Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_MODULE_DISABLED, true, module));
         return false;
     }
 

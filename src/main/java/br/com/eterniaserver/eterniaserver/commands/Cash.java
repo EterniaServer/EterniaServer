@@ -45,10 +45,10 @@ public class Cash extends BaseCommand {
     @Description(" Abre a GUI da loja de Cash")
     public void onCash(Player player) {
         player.closeInventory();
-        Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.configs.menuGui.size(), "Cash");
+        Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.cash.menuGui.size(), "Cash");
 
-        for (int i = 0; i < EterniaServer.configs.menuGui.size(); i++) {
-            gui.setItem(i, EterniaServer.configs.menuGui.get(i));
+        for (int i = 0; i < EterniaServer.cash.menuGui.size(); i++) {
+            gui.setItem(i, EterniaServer.cash.menuGui.get(i));
         }
 
         player.openInventory(gui);
@@ -60,7 +60,7 @@ public class Cash extends BaseCommand {
     @Description(" Mostra o saldo atual de cash de um jogador")
     public void onCashBalance(Player player, @Optional String playerName) {
         if (playerName == null) {
-            EterniaServer.configs.sendMessage(player, Messages.CASH_BALANCE, String.valueOf(APICash.getCash(UUIDFetcher.getUUIDOf(player.getName()))));
+            EterniaServer.msg.sendMessage(player, Messages.CASH_BALANCE, String.valueOf(APICash.getCash(UUIDFetcher.getUUIDOf(player.getName()))));
             return;
         }
 
@@ -69,11 +69,11 @@ public class Cash extends BaseCommand {
 
         if (APIPlayer.hasProfile(uuid)) {
             String displayName = target.isOnline() ? target.getPlayer().getDisplayName() : playerName;
-            EterniaServer.configs.sendMessage(player, Messages.CASH_BALANCE_OTHER, playerName, displayName, String.valueOf(APICash.getCash(uuid)));
+            EterniaServer.msg.sendMessage(player, Messages.CASH_BALANCE_OTHER, playerName, displayName, String.valueOf(APICash.getCash(uuid)));
             return;
         }
 
-        EterniaServer.configs.sendMessage(player, Messages.SERVER_NO_PLAYER);
+        EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PLAYER);
     }
 
     @Subcommand("accept")
@@ -82,7 +82,7 @@ public class Cash extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (!APICash.isBuying(uuid)) {
-            EterniaServer.configs.sendMessage(player, Messages.CASH_NOTHING_TO_BUY);
+            EterniaServer.msg.sendMessage(player, Messages.CASH_NOTHING_TO_BUY);
             return;
         }
 
@@ -99,7 +99,7 @@ public class Cash extends BaseCommand {
         }
 
         APICash.removeCash(uuid, cashItem.getCost());
-        EterniaServer.configs.sendMessage(player, Messages.CASH_BOUGHT);
+        EterniaServer.msg.sendMessage(player, Messages.CASH_BOUGHT);
         APICash.removeCashBuy(uuid);
     }
 
@@ -109,11 +109,11 @@ public class Cash extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
 
         if (!APICash.isBuying(uuid)) {
-            EterniaServer.configs.sendMessage(player, Messages.CASH_NOTHING_TO_BUY);
+            EterniaServer.msg.sendMessage(player, Messages.CASH_NOTHING_TO_BUY);
             return;
         }
 
-        EterniaServer.configs.sendMessage(player, Messages.CASH_CANCELED);
+        EterniaServer.msg.sendMessage(player, Messages.CASH_CANCELED);
         APICash.removeCashBuy(uuid);
     }
 
@@ -126,14 +126,14 @@ public class Cash extends BaseCommand {
         final Player target = targetP.getPlayer();
 
         if (!APICash.hasCash(uuid, value)) {
-            EterniaServer.configs.sendMessage(player, Messages.ECO_NO_MONEY);
+            EterniaServer.msg.sendMessage(player, Messages.ECO_NO_MONEY);
             return;
         }
 
         APICash.removeCash(uuid, value);
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        EterniaServer.configs.sendMessage(target, Messages.CASH_RECEVEID, String.valueOf(value), player.getName(), player.getDisplayName());
-        EterniaServer.configs.sendMessage(player, Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
+        EterniaServer.msg.sendMessage(target, Messages.CASH_RECEVEID, String.valueOf(value), player.getName(), player.getDisplayName());
+        EterniaServer.msg.sendMessage(player, Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
     @Subcommand("give")
@@ -145,8 +145,8 @@ public class Cash extends BaseCommand {
         final Player target = targetP.getPlayer();
         APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
         final String senderDisplay = (player instanceof Player) ? ((Player) player).getDisplayName() : player.getName();
-        EterniaServer.configs.sendMessage(target, Messages.CASH_RECEVEID, String.valueOf(value), player.getName(), senderDisplay);
-        EterniaServer.configs.sendMessage(player, Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
+        EterniaServer.msg.sendMessage(target, Messages.CASH_RECEVEID, String.valueOf(value), player.getName(), senderDisplay);
+        EterniaServer.msg.sendMessage(player, Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
     @Subcommand("remove")
@@ -158,8 +158,8 @@ public class Cash extends BaseCommand {
         final Player target = targetP.getPlayer();
         APICash.removeCash(UUIDFetcher.getUUIDOf(target.getName()), value);
         final String senderDisplay = (player instanceof Player) ? ((Player) player).getDisplayName() : player.getName();
-        EterniaServer.configs.sendMessage(target, Messages.CASH_LOST, String.valueOf(value), player.getName(), senderDisplay);
-        EterniaServer.configs.sendMessage(player, Messages.CASH_REMOVED, String.valueOf(value), target.getName(), target.getDisplayName());
+        EterniaServer.msg.sendMessage(target, Messages.CASH_LOST, String.valueOf(value), player.getName(), senderDisplay);
+        EterniaServer.msg.sendMessage(player, Messages.CASH_REMOVED, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
 }

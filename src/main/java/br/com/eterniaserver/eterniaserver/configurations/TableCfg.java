@@ -1,21 +1,21 @@
-package br.com.eterniaserver.eterniaserver.dependencies.eternialib;
+package br.com.eterniaserver.eterniaserver.configurations;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.PluginConstants;
+import br.com.eterniaserver.eterniaserver.Constants;
 
-public class Table {
+public class TableCfg {
 
-    public Table() {
+    public TableCfg() {
 
         if (EterniaLib.getMySQL()) {
-            EQueries.executeQuery(PluginConstants.getQueryCreateTable(EterniaServer.configs.tableKits,
-                    PluginConstants.PRIMARY_KEY +
+            EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableKits,
+                    Constants.PRIMARY_KEY +
                             "name VARCHAR(32), " +
                             "cooldown BIGINT(20))"), false);
-            EQueries.executeQuery(PluginConstants.getQueryCreateTable(EterniaServer.configs.tablePlayer,
-                    PluginConstants.PRIMARY_KEY +
+            EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tablePlayer,
+                    Constants.PRIMARY_KEY +
                             "uuid VARCHAR(36), " +
                             "player_name VARCHAR(16), " +
                             "player_display VARCHAR(16), " +
@@ -27,19 +27,19 @@ public class Table {
                             "xp BIGINT(20), " +
                             "muted BIGINT(20), " +
                             "homes VARCHAR(1024))"), false);
-            EQueries.executeQuery(PluginConstants.getQueryCreateTable(EterniaServer.configs.tableLocations,
-                    PluginConstants.PRIMARY_KEY +
+            EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableLocations,
+                    Constants.PRIMARY_KEY +
                             "name VARCHAR(32), " +
                             "location VARCHAR(64))"), false);
-            EQueries.executeQuery(PluginConstants.getQueryCreateTable(EterniaServer.configs.tableRewards,
-                    PluginConstants.PRIMARY_KEY +
+            EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableRewards,
+                    Constants.PRIMARY_KEY +
                             "code VARCHAR(16), " +
                             "group_name VARCHAR(16))"), false);
         } else {
-            EQueries.executeQuery(PluginConstants.getQueryCreateTable(EterniaServer.configs.tableKits,
+            EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableKits,
                     "(name VARCHAR(32), " +
                             "cooldown INTEGER)"), false);
-            EQueries.executeQuery(PluginConstants.getQueryCreateTable(EterniaServer.configs.tablePlayer,
+            EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tablePlayer,
                     "(uuid VARCHAR(36), " +
                             "player_name VARCHAR(16), " +
                             "player_display VARCHAR(16), " +
@@ -51,10 +51,10 @@ public class Table {
                             "xp INTEGER, " +
                             "muted INTEGER, " +
                             "homes VARCHAR(1024))"), false);
-            EQueries.executeQuery(PluginConstants.getQueryCreateTable(EterniaServer.configs.tableLocations,
+            EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableLocations,
                     "(name VARCHAR(32), " +
                             "location VARCHAR(64))"), false);
-            EQueries.executeQuery(PluginConstants.getQueryCreateTable(EterniaServer.configs.tableRewards,
+            EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableRewards,
                     "(code VARCHAR(16), " +
                             "group_name VARCHAR(16))"), false);
         }

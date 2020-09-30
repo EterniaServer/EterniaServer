@@ -26,7 +26,7 @@ public class PluginClear extends BukkitRunnable {
             }
         }
         if (removed != 0) {
-            Bukkit.broadcastMessage(EterniaServer.configs.getMessage(Messages.SERVER_REMOVED_ENTITIES, true, String.valueOf(removed)));
+            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_REMOVED_ENTITIES, true, String.valueOf(removed)));
         }
     }
 

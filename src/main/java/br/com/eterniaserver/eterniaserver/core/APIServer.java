@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.core;
 import br.com.eterniaserver.eternialib.EQueries;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -107,7 +108,7 @@ public interface APIServer {
 
     static void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
+        EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
                 "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "', '" + time + "')"));
         final PlayerProfile playerProfile = new PlayerProfile(
                 playerName,
@@ -122,10 +123,10 @@ public interface APIServer {
 
     static void playerKitsCreate(String playerName) {
         final long time = System.currentTimeMillis();
-        for (String kit : EterniaServer.configs.kitList.keySet()) {
+        for (String kit : EterniaServer.kits.kitList.keySet()) {
             final String kitName = kit + "." + playerName;
             if (!PluginVars.kitsCooldown.containsKey(kitName)) {
-                EQueries.executeQuery(PluginConstants.getQueryInsert(EterniaServer.configs.tableKits, PluginConstants.NAME_STR, kitName, PluginConstants.COOLDOWN_STR, time));
+                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableKits, Constants.NAME_STR, kitName, Constants.COOLDOWN_STR, time));
                 PluginVars.kitsCooldown.put(kitName, time);
             }
         }
@@ -160,6 +161,20 @@ public interface APIServer {
 
     static boolean hasReward(String key) {
         return PluginVars.rewards.containsKey(key);
+    }
+
+    static void addReward(String key, String reward) {
+        PluginVars.rewards.put(key, reward);
+    }
+
+    static void removeReward(String key) {
+        PluginVars.rewards.remove(key);
+    }
+
+    static void putColorOnList(List<String> list) {
+        for (int i = 0; i < list.size(); i++) {
+            list.set(i, list.get(i).replace('$', (char) 0x00A7));
+        }
     }
 
     static String getReward(String key) {
