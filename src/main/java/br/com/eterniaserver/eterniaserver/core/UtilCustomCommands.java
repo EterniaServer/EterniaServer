@@ -2,8 +2,6 @@ package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.objects.AbstractCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

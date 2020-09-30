@@ -41,34 +41,34 @@ public class UtilGlobalFormat {
 		BaseComponent[] baseComponents = new BaseComponent[textComponentMap.size() + messageSplited.length];
 
 		AtomicInteger integer = new AtomicInteger(0);
-		textComponentMap.forEach((id, component) -> {
-			baseComponents[integer.get()] = component;
-			integer.incrementAndGet();
-		});
+		textComponentMap.forEach((id, component) -> baseComponents[integer.getAndIncrement()] = component);
 
 		for (String actualMsg : messageSplited) {
-			if (actualMsg.contains("@") && PluginVars.playersName.containsKey(actualMsg)) {
-				Player target = Bukkit.getPlayer(PluginVars.playersName.get(actualMsg));
-				actualMsg = PluginVars.colors.get(3) + actualMsg + PluginVars.colors.get(15);
-				if (target != null && target.isOnline()) {
-					target.playNote(target.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-					target.sendTitle(APIServer.getColor(player.getDisplayName()), PluginVars.colors.get(7) + "mencionou você" + PluginVars.colors.get(8) + "!", 10, 40, 10);
-				}
-				baseComponents[integer.get()] = new TextComponent(actualMsg);
-			} else if (actualMsg.equals("[item]")) {
-				ItemStack itemStack = player.getInventory().getItemInMainHand();
-				if (!itemStack.getType().equals(Material.AIR)) {
-					baseComponents[integer.get()] = sendItemInHand(actualMsg, itemStack);
-				} else {
-					baseComponents[integer.get()] = new TextComponent(actualMsg);
-				}
-			} else {
-				baseComponents[integer.get()] = new TextComponent(actualMsg);
-			}
-			integer.incrementAndGet();
+			baseComponents[integer.getAndIncrement()] = getComponent(actualMsg, player);
 		}
 
 		return baseComponents;
+	}
+
+	private TextComponent getComponent(String actualMsg, Player player) {
+		if (actualMsg.contains("@") && PluginVars.playersName.containsKey(actualMsg)) {
+			Player target = Bukkit.getPlayer(PluginVars.playersName.get(actualMsg));
+			actualMsg = PluginVars.colors.get(3) + actualMsg + PluginVars.colors.get(15);
+			if (target != null && target.isOnline()) {
+				target.playNote(target.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
+				target.sendTitle(APIServer.getColor(player.getDisplayName()), PluginVars.colors.get(7) + "mencionou você" + PluginVars.colors.get(8) + "!", 10, 40, 10);
+			}
+			return new TextComponent(actualMsg + " ");
+		} else if (actualMsg.equals("[item]")) {
+			ItemStack itemStack = player.getInventory().getItemInMainHand();
+			if (!itemStack.getType().equals(Material.AIR)) {
+				return sendItemInHand(actualMsg + " ", itemStack);
+			} else {
+				return new TextComponent(actualMsg + " ");
+			}
+		} else {
+			return new TextComponent(actualMsg + " ");
+		}
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
