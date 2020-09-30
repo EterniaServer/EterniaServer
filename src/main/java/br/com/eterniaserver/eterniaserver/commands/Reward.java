@@ -43,7 +43,7 @@ public class Reward extends BaseCommand {
     @Syntax("<reward>")
     @CommandPermission("eternia.genkey")
     public void onGenKey(CommandSender sender, String reward) {
-        if (EterniaServer.rewardsConfig.getConfigurationSection("rewards." + reward) != null) {
+        if (EterniaServer.configs.rewardsMap.containsKey(reward)) {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
@@ -62,14 +62,13 @@ public class Reward extends BaseCommand {
     }
 
     private void giveReward(String group, Player player) {
-        final String rewardsConfig = "rewards.";
-        for (String percentage : EterniaServer.rewardsConfig.getConfigurationSection(rewardsConfig + group + ".commands").getKeys(false)) {
-            if (Math.random() <= Double.parseDouble(percentage)) {
-                for (String command : EterniaServer.rewardsConfig.getStringList(rewardsConfig + group + ".commands." + percentage)) {
+        EterniaServer.configs.rewardsMap.get(group).forEach((chance, lista) -> {
+            if (Math.random() <= chance) {
+                for (String command : lista) {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
                 }
             }
-        }
+        });
     }
 
 }

@@ -91,7 +91,9 @@ public class Managers {
     }
 
     private void loadCommandsManager() {
-        sendModuleStatus(EterniaServer.configs.moduleCommands, "Commands");
+        if (sendModuleStatus(EterniaServer.configs.moduleCommands, "Commands")) {
+            EterniaServer.configs.customCommandMap.forEach((commandName, commandObject) -> new UtilCustomCommands(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands()));
+        }
     }
 
     private void loadCashManager() {
@@ -182,13 +184,11 @@ public class Managers {
     private void loadScheduleTasks() {
         if (sendModuleStatus(EterniaServer.configs.moduleSchedule, "Schedule")) {
             long start = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.of(
-                    EterniaServer.scheduleConfig.getInt("schedule.hour"),
-                    EterniaServer.scheduleConfig.getInt("schedule.minute"),
-                    EterniaServer.scheduleConfig.getInt("schedule.second")));
+                    EterniaServer.configs.scheduleHour,
+                    EterniaServer.configs.scheduleMinute,
+                    EterniaServer.configs.scheduleSecond));
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.scheduleWithFixedDelay(new PluginTimer(plugin), start, TimeUnit.HOURS.toMillis(
-                    EterniaServer.scheduleConfig.getInt("schedule.delay")
-            ), TimeUnit.MILLISECONDS);
+            scheduler.scheduleWithFixedDelay(new PluginTimer(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.configs.scheduleDelay), TimeUnit.MILLISECONDS);
         }
     }
 

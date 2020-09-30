@@ -1,33 +1,24 @@
 package br.com.eterniaserver.eterniaserver;
 
-import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Files;
+import br.com.eterniaserver.eterniaserver.dependencies.eternialib.Table;
+import br.com.eterniaserver.eterniaserver.dependencies.papi.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.dependencies.vault.VaultHook;
 import br.com.eterniaserver.eterniaserver.events.BlockHandler;
 import br.com.eterniaserver.eterniaserver.events.EntityHandler;
 import br.com.eterniaserver.eterniaserver.events.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.events.ServerHandler;
-import org.bukkit.configuration.file.YamlConfiguration;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
-    public static final YamlConfiguration cmdConfig = new YamlConfiguration();
-    public static final YamlConfiguration rewardsConfig = new YamlConfiguration();
-    public static final YamlConfiguration scheduleConfig = new YamlConfiguration();
-
     public static final Configs configs = new Configs();
-
-    private final Files files = new Files(this);
 
     @Override
     public void onEnable() {
 
-        files.loadDatabase();
-        files.loadPlaceHolders();
-        files.loadCommands();
-        files.loadRewards();
-        files.loadSchedules();
-
+        new Table();
+        new PlaceHolders().register();
         new Managers(this);
         new VaultHook(this);
 

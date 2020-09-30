@@ -9,7 +9,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.PluginConstants;
 import br.com.eterniaserver.eterniaserver.core.APIChat;
-import br.com.eterniaserver.eterniaserver.objects.KitObject;
+import br.com.eterniaserver.eterniaserver.objects.CustomKit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -45,7 +45,7 @@ public class Kit extends BaseCommand {
         if (EterniaServer.configs.kitList.containsKey(kit)) {
             if (player.hasPermission("eternia.kit." + kit)) {
                 final long time = System.currentTimeMillis();
-                KitObject kitObject = EterniaServer.configs.kitList.get(kit);
+                CustomKit kitObject = EterniaServer.configs.kitList.get(kit);
                 final String kitName = kit + "." + player.getName();
                 int cooldown = kitObject.getDelay();
                 final long cd = APIServer.getKitCooldown(kitName);

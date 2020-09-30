@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholdersObjects;
+import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholders;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -81,7 +81,7 @@ public class UtilGlobalFormat {
 		return new TextComponent("sem suporte");
 	}
 
-	public TextComponent getText(Player player, CustomPlaceholdersObjects objects) {
+	public TextComponent getText(Player player, CustomPlaceholders objects) {
 		TextComponent textComponent = new TextComponent(APIServer.getColor(APIChat.setPlaceholders(player, objects.getValue())));
 		if (!objects.getHoverText().equals("")) {
 			List<TextComponent> textComponentList = new ArrayList<>();
