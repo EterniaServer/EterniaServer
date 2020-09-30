@@ -325,30 +325,34 @@ public class Generic extends BaseCommand {
                     resultSet.getLong(Constants.LAST_STR),
                     resultSet.getLong(Constants.HOURS_STR)
             );
-            if (EterniaServer.configs.moduleCash) {
-                playerProfile.setCash(resultSet.getInt(Constants.CASH_STR));
-            }
-            if (EterniaServer.configs.moduleEconomy) {
-                playerProfile.setBalance(resultSet.getDouble(Constants.BALANCE_STR));
-            }
-            if (EterniaServer.configs.moduleExperience) {
-                playerProfile.setXp(resultSet.getInt(Constants.XP_STR));
-            }
-            if (EterniaServer.configs.moduleHomes) {
-                String result = resultSet.getString(Constants.HOMES_STR);
-                if (result != null) {
-                    for (String home : result.split(":")) {
-                        if (!playerProfile.getHomes().contains(home)) {
-                            playerProfile.getHomes().add(home);
-                        }
+            getModules(playerProfile, resultSet);
+            APIServer.putProfile(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
+        }
+    }
+
+    private void getModules(PlayerProfile playerProfile, ResultSet resultSet) throws SQLException {
+        if (EterniaServer.configs.moduleCash) {
+            playerProfile.setCash(resultSet.getInt(Constants.CASH_STR));
+        }
+        if (EterniaServer.configs.moduleEconomy) {
+            playerProfile.setBalance(resultSet.getDouble(Constants.BALANCE_STR));
+        }
+        if (EterniaServer.configs.moduleExperience) {
+            playerProfile.setXp(resultSet.getInt(Constants.XP_STR));
+        }
+        if (EterniaServer.configs.moduleHomes) {
+            String result = resultSet.getString(Constants.HOMES_STR);
+            if (result != null) {
+                for (String home : result.split(":")) {
+                    if (!playerProfile.getHomes().contains(home)) {
+                        playerProfile.getHomes().add(home);
                     }
                 }
             }
-            if (EterniaServer.configs.moduleChat) {
-                playerProfile.setMuted(resultSet.getLong(Constants.MUTED_STR));
-                playerProfile.setPlayerDisplayName(resultSet.getString(Constants.PLAYER_DISPLAY_STR));
-            }
-            APIServer.putProfile(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
+        }
+        if (EterniaServer.configs.moduleChat) {
+            playerProfile.setMuted(resultSet.getLong(Constants.MUTED_STR));
+            playerProfile.setPlayerDisplayName(resultSet.getString(Constants.PLAYER_DISPLAY_STR));
         }
     }
 
