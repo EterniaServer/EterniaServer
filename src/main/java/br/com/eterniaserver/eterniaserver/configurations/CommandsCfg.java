@@ -16,13 +16,11 @@ import java.util.Map;
 
 public class CommandsCfg {
 
-    private static final String COMMANDS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "commands.yml";
-
     public final Map<String, CustomCommand> customCommandMap = new HashMap<>();
 
     public CommandsCfg() {
 
-        FileConfiguration commandsConfig = YamlConfiguration.loadConfiguration(new File(COMMANDS_FILE_PATH));
+        FileConfiguration commandsConfig = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_FILE_PATH));
         FileConfiguration outCommands = new YamlConfiguration();
 
         this.customCommandMap.put("discord", new CustomCommand("Informa o link do discord", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8.")));
@@ -56,7 +54,7 @@ public class CommandsCfg {
         outCommands.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         try {
-            outCommands.save(COMMANDS_FILE_PATH);
+            outCommands.save(Constants.COMMANDS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

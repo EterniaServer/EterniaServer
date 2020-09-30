@@ -14,13 +14,11 @@ import java.util.Map;
 
 public class RewardsCfg {
 
-    private static final String REWARDS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "rewards.yml";
-
     public final Map<String, Map<Double, List<String>>> rewardsMap = new HashMap<>();
 
     public RewardsCfg() {
 
-        FileConfiguration rewardsConfig = YamlConfiguration.loadConfiguration(new File(REWARDS_FILE_PATH));
+        FileConfiguration rewardsConfig = YamlConfiguration.loadConfiguration(new File(Constants.REWARDS_FILE_PATH));
         FileConfiguration outRewards = new YamlConfiguration();
 
         Map<Double, List<String>> tempRewardsMapP = new HashMap<>();
@@ -55,7 +53,7 @@ public class RewardsCfg {
         outRewards.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         try {
-            outRewards.save(REWARDS_FILE_PATH);
+            outRewards.save(Constants.REWARDS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

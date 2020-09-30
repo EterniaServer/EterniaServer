@@ -9,6 +9,17 @@ public class Constants {
     }
 
     public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
+    public static final String CONFIG_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "config.yml";
+    public static final String COMMANDS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "commands.yml";
+    public static final String KITS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "kits.yml";
+    public static final String MESSAGES_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String REWARDS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "rewards.yml";
+    public static final String SCHEDULE_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "schedule.yml";
+    public static final String CHAT_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "chat.yml";
+    public static final String CASHGUI_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "cashgui.yml";
+    public static final String BLOCKS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
+
+    public static final String WARP = "warp.";
     public static final String MESSAGE = "%message%";
     public static final String PRIMARY_KEY = "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ";
     public static final String NAME_STR = "name";

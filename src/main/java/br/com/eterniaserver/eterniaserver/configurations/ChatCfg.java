@@ -14,8 +14,6 @@ import java.util.Map;
 
 public class ChatCfg {
 
-    private static final String CHAT_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "chat.yml";
-
     public final int localRange;
     public final String localFormat;
     public final String globalFormat;
@@ -26,7 +24,7 @@ public class ChatCfg {
 
     public ChatCfg() {
 
-        FileConfiguration chatConfig = YamlConfiguration.loadConfiguration(new File(CHAT_FILE_PATH));
+        FileConfiguration chatConfig = YamlConfiguration.loadConfiguration(new File(Constants.CHAT_FILE_PATH));
         FileConfiguration outChat = new YamlConfiguration();
 
         this.localFormat = chatConfig.getString("format.local", "$8[$eL$8] %vault_suffix% $e%player_displayname%$8 ➤ $e%message%").replace('$', (char) 0x00A7);
@@ -73,7 +71,7 @@ public class ChatCfg {
         outChat.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         try {
-            outChat.save(CHAT_FILE_PATH);
+            outChat.save(Constants.CHAT_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

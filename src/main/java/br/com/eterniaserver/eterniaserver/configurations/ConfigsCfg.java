@@ -16,10 +16,6 @@ import java.util.List;
 
 public class ConfigsCfg {
 
-    private static final String CONFIG_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "config.yml";
-
-    private String[] messages;
-
     public final boolean moduleBed;
     public final boolean moduleBlock;
     public final boolean moduleCash;
@@ -108,7 +104,7 @@ public class ConfigsCfg {
 
     public ConfigsCfg() {
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(CONFIG_FILE_PATH));
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
         FileConfiguration outConfig = new YamlConfiguration();
 
         this.moduleBed = config.getBoolean("module.bed", true);
@@ -343,7 +339,7 @@ public class ConfigsCfg {
         outConfig.set("strings.ch.staff", this.chStaff);
 
         try {
-            outConfig.save(CONFIG_FILE_PATH);
+            outConfig.save(Constants.CONFIG_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

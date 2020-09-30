@@ -15,13 +15,11 @@ import java.util.Map;
 
 public class KitsCfg {
 
-    private static final String KITS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "kits.yml";
-
     public final Map<String, CustomKit> kitList = new HashMap<>();
 
     public KitsCfg() {
 
-        FileConfiguration kits = YamlConfiguration.loadConfiguration(new File(KITS_FILE_PATH));
+        FileConfiguration kits = YamlConfiguration.loadConfiguration(new File(Constants.KITS_FILE_PATH));
         FileConfiguration outKit = new YamlConfiguration();
 
         this.kitList.put("pa", new CustomKit(300, List.of("give %player_name% minecraft:golden_shovel 1"), List.of("$8[$aE$9S$8] $7Toma sua pá$8!".replace('$', (char) 0x00A7))));
@@ -52,7 +50,7 @@ public class KitsCfg {
         outKit.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         try {
-            outKit.save(KITS_FILE_PATH);
+            outKit.save(Constants.KITS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

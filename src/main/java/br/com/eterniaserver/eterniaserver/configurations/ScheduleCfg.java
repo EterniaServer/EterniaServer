@@ -15,8 +15,6 @@ import java.util.Map;
 
 public class ScheduleCfg {
 
-    private static final String SCHEDULE_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "schedule.yml";
-
     public final int scheduleHour;
     public final int scheduleMinute;
     public final int scheduleSecond;
@@ -26,7 +24,7 @@ public class ScheduleCfg {
 
     public ScheduleCfg() {
 
-        FileConfiguration scheduleConfig = YamlConfiguration.loadConfiguration(new File(SCHEDULE_FILE_PATH));
+        FileConfiguration scheduleConfig = YamlConfiguration.loadConfiguration(new File(Constants.SCHEDULE_FILE_PATH));
         FileConfiguration outSchedule = new YamlConfiguration();
 
         this.scheduleHour = scheduleConfig.getInt("schedule.hour", 10);
@@ -74,7 +72,7 @@ public class ScheduleCfg {
         outSchedule.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         try {
-            outSchedule.save(SCHEDULE_FILE_PATH);
+            outSchedule.save(Constants.SCHEDULE_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

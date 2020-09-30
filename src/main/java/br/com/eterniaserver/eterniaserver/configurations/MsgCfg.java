@@ -17,8 +17,6 @@ import java.util.Map;
 
 public class MsgCfg {
 
-    private static final String MESSAGES_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "messages.yml";
-
     private final String[] messages;
 
     public MsgCfg() {
@@ -212,7 +210,7 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.NIGHT_SKIPPING, "A noite está passando em $3{0}$8.", "0: nome do mundo");
         this.addDefault(defaults, Messages.NIGHT_SKIPPED, "A noite passou em $3{0}$8.", "0: nome do mundo");
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(MESSAGES_FILE_PATH));
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.MESSAGES_FILE_PATH));
 
         for (Messages messagesEnum : economiesID) {
             CustomizableMessage messageData = defaults.get(messagesEnum.name());
@@ -239,7 +237,7 @@ public class MsgCfg {
         // SAVE
 
         try {
-            config.save(MESSAGES_FILE_PATH);
+            config.save(Constants.MESSAGES_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

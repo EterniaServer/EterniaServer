@@ -18,8 +18,6 @@ import java.util.Map;
 
 public class CashCfg {
 
-    private static final String CASHGUI_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "cashgui.yml";
-
     public final List<ItemStack> menuGui = new ArrayList<>();
     public final Map<Integer, String> guis = new HashMap<>();
     public final Map<String, Integer> guisInvert = new HashMap<>();
@@ -27,7 +25,7 @@ public class CashCfg {
 
     public CashCfg() {
 
-        FileConfiguration cashGui = YamlConfiguration.loadConfiguration(new File(CASHGUI_FILE_PATH));
+        FileConfiguration cashGui = YamlConfiguration.loadConfiguration(new File(Constants.CASHGUI_FILE_PATH));
         FileConfiguration outCash = new YamlConfiguration();
 
         for (int i = 0; i < 27; i++) {
@@ -147,7 +145,7 @@ public class CashCfg {
         }
 
         try {
-            outCash.save(CASHGUI_FILE_PATH);
+            outCash.save(Constants.CASHGUI_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

@@ -44,29 +44,33 @@ public class Kit extends BaseCommand {
     public void onKit(Player player, String kit) {
         if (EterniaServer.kits.kitList.containsKey(kit)) {
             if (player.hasPermission("eternia.kit." + kit)) {
-                final long time = System.currentTimeMillis();
-                CustomKit kitObject = EterniaServer.kits.kitList.get(kit);
-                final String kitName = kit + "." + player.getName();
-                int cooldown = kitObject.getDelay();
-                final long cd = APIServer.getKitCooldown(kitName);
-
-                if (APIChat.hasCooldown(cd, cooldown)) {
-                    for (String command : kitObject.getCommands()) {
-                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
-                    }
-                    for (String text : kitObject.getMessages()) {
-                        player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(player, text)));
-                    }
-                    APIServer.putKitCooldown(kitName, time);
-                    EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableKits, Constants.COOLDOWN_STR, time, Constants.NAME_STR, kitName));
-                } else {
-                    EterniaServer.msg.sendMessage(player, Messages.SERVER_TIMING, APIChat.getTimeLeft(cooldown, cd));
-                }
+                giveKit(player, kit);
             } else {
                 EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
             EterniaServer.msg.sendMessage(player, Messages.KIT_NOT_FOUND, kit);
+        }
+    }
+
+    private void giveKit(Player player, String kit) {
+        final long time = System.currentTimeMillis();
+        CustomKit kitObject = EterniaServer.kits.kitList.get(kit);
+        final String kitName = kit + "." + player.getName();
+        int cooldown = kitObject.getDelay();
+        final long cd = APIServer.getKitCooldown(kitName);
+
+        if (APIChat.hasCooldown(cd, cooldown)) {
+            for (String command : kitObject.getCommands()) {
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
+            }
+            for (String text : kitObject.getMessages()) {
+                player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(player, text)));
+            }
+            APIServer.putKitCooldown(kitName, time);
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableKits, Constants.COOLDOWN_STR, time, Constants.NAME_STR, kitName));
+        } else {
+            EterniaServer.msg.sendMessage(player, Messages.SERVER_TIMING, APIChat.getTimeLeft(cooldown, cd));
         }
     }
 

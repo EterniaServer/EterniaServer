@@ -14,13 +14,11 @@ import java.util.Map;
 
 public class BlocksCfg {
 
-    private static final String BLOCKS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
-
     public final Map<String, Map<Double, List<String>>> blockRewardsDrop = new HashMap<>();
     public final Map<String, Map<Double, List<String>>> farmRewardsDrop = new HashMap<>();
 
     public BlocksCfg() {
-        FileConfiguration blocks = YamlConfiguration.loadConfiguration(new File(BLOCKS_FILE_PATH));
+        FileConfiguration blocks = YamlConfiguration.loadConfiguration(new File(Constants.BLOCKS_FILE_PATH));
         FileConfiguration outBlocks = new YamlConfiguration();
 
         Map<Double, List<String>> tempBlockzinMap = new HashMap<>();
@@ -30,20 +28,7 @@ public class BlocksCfg {
 
         Map<String, Map<Double, List<String>>> tempBlock = new HashMap<>();
 
-        ConfigurationSection configurationSection = blocks.getConfigurationSection("blocks");
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                Map<Double, List<String>> tempChanceMap = new HashMap<>();
-                ConfigurationSection section = blocks.getConfigurationSection("blocks." + key);
-                if (section != null) {
-                    for (String chance : section.getKeys(false)){
-                        tempChanceMap.put(Double.parseDouble(chance.replace(',', '.')), blocks.getStringList("blocks." + key + "." + chance));
-                    }
-                }
-                tempBlock.put(key, tempChanceMap);
-            }
-        }
-
+        loadBlocks(blocks, tempBlock, "blocks");
 
         if (tempBlock.isEmpty()) {
             tempBlock = new HashMap<>(this.blockRewardsDrop);
@@ -61,19 +46,7 @@ public class BlocksCfg {
 
         Map<String, Map<Double, List<String>>> tempFarm = new HashMap<>();
 
-        configurationSection = blocks.getConfigurationSection("farm");
-        if (configurationSection != null) {
-            for (String key : configurationSection.getKeys(false)) {
-                Map<Double, List<String>> tempChanceMap = new HashMap<>();
-                ConfigurationSection section = blocks.getConfigurationSection("farm." + key);
-                if (section != null) {
-                    for (String chance : section.getKeys(false)) {
-                        tempChanceMap.put(Double.parseDouble(chance.replace(',', '.')), blocks.getStringList("farm." + key + "." + chance));
-                    }
-                }
-                tempFarm.put(key, tempChanceMap);
-            }
-        }
+        loadBlocks(blocks, tempFarm, "farm");
 
         if (tempFarm.isEmpty()) {
             tempFarm = new HashMap<>(this.farmRewardsDrop);
@@ -86,11 +59,27 @@ public class BlocksCfg {
         outBlocks.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         try {
-            outBlocks.save(BLOCKS_FILE_PATH);
+            outBlocks.save(Constants.BLOCKS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
 
+    }
+
+    private void loadBlocks(FileConfiguration blocks, Map<String, Map<Double, List<String>>> tempBlock, String name) {
+        ConfigurationSection configurationSection = blocks.getConfigurationSection(name);
+        if (configurationSection != null) {
+            for (String key : configurationSection.getKeys(false)) {
+                Map<Double, List<String>> tempChanceMap = new HashMap<>();
+                ConfigurationSection section = blocks.getConfigurationSection(name + "." + key);
+                if (section != null) {
+                    for (String chance : section.getKeys(false)){
+                        tempChanceMap.put(Double.parseDouble(chance.replace(',', '.')), blocks.getStringList(name + "." + key + "." + chance));
+                    }
+                }
+                tempBlock.put(key, tempChanceMap);
+            }
+        }
     }
 
 }
