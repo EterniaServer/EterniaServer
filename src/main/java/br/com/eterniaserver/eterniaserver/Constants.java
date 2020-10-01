@@ -19,6 +19,9 @@ public class Constants {
     public static final String CASHGUI_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "cashgui.yml";
     public static final String BLOCKS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
 
+    public static final String KITS_STR = "kits.";
+    public static final String SPAWNERS_COLOR = "spawners.color";
+    public static final String COMMAND_STR = "commands.";
     public static final String REWARD_STR = "rewards.";
     public static final String SCHEDULE_STR = "schedule.days";
     public static final String MONEY_TABLE_PREFIX = "(uuid, player_name, time, last, hours, balance)";

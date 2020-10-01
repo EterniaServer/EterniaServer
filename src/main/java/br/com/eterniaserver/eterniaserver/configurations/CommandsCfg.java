@@ -30,10 +30,10 @@ public class CommandsCfg {
         ConfigurationSection configurationSection = commandsConfig.getConfigurationSection("commands");
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
-                tempCustomCommandMap.put(key, new CustomCommand(commandsConfig.getString("commands." + key + ".description"),
-                        commandsConfig.getStringList("commands." + key + ".aliases"),
-                        commandsConfig.getStringList("commands." + key + ".command"),
-                        commandsConfig.getStringList("commands." + key + ".text")));
+                tempCustomCommandMap.put(key, new CustomCommand(commandsConfig.getString(Constants.COMMAND_STR + key + ".description"),
+                        commandsConfig.getStringList(Constants.COMMAND_STR + key + ".aliases"),
+                        commandsConfig.getStringList(Constants.COMMAND_STR + key + ".command"),
+                        commandsConfig.getStringList(Constants.COMMAND_STR + key + ".text")));
             }
         }
 
@@ -45,10 +45,10 @@ public class CommandsCfg {
         tempCustomCommandMap.forEach(this.customCommandMap::put);
 
         tempCustomCommandMap.forEach((k, v) -> {
-            outCommands.set("commands." + k + ".description", v.getDescription());
-            outCommands.set("commands." + k + ".aliases", v.getAliases());
-            outCommands.set("commands." + k + ".command", v.getCommands());
-            outCommands.set("commands." + k + ".text", v.getText());
+            outCommands.set(Constants.COMMAND_STR + k + ".description", v.getDescription());
+            outCommands.set(Constants.COMMAND_STR + k + ".aliases", v.getAliases());
+            outCommands.set(Constants.COMMAND_STR + k + ".command", v.getCommands());
+            outCommands.set(Constants.COMMAND_STR + k + ".text", v.getText());
         });
 
         outCommands.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");

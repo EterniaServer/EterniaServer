@@ -156,7 +156,7 @@ public class ConfigsCfg {
         this.blockedCommands.add("/deop");
         this.blockedCommands.add("/stop");
 
-        this.mobSpawnerColor = PluginVars.colors.get(config.getInt("spawners.color", 13));
+        this.mobSpawnerColor = PluginVars.colors.get(config.getInt(Constants.SPAWNERS_COLOR, 13));
         this.invDrop = config.getBoolean("spawners.drop-in-inventory", true);
         this.dropChance = config.getDouble("spawners.drop-chance", 1.0);
         this.preventAnvil = config.getBoolean("spawners.prevent-anvil", true);
@@ -299,7 +299,7 @@ public class ConfigsCfg {
 
         outConfig.set("blocked-commands", tempBlockedCommands);
 
-        outConfig.set("spawners.color", config.getInt("spawners.color", 13));
+        outConfig.set(Constants.SPAWNERS_COLOR, config.getInt(Constants.SPAWNERS_COLOR, 13));
         outConfig.set("spawners.drop-in-inventory", this.invDrop);
         outConfig.set("spawners.drop-chance", this.dropChance);
         outConfig.set("spawners.prevent-anvil", this.preventAnvil);
