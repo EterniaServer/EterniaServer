@@ -69,32 +69,28 @@ public class Home extends BaseCommand {
     @Syntax("<jogador>")
     @CommandPermission("eternia.homes")
     public void onHomes(Player player, @Optional OnlinePlayer target) {
-        StringBuilder accounts = new StringBuilder();
         if (target != null) {
             if (player.hasPermission("eternia.homes.other")) {
-                List<String> list = APIPlayer.getHomes(UUIDFetcher.getUUIDOf(target.getPlayer().getName()));
-                for (int i = 0; i < list.size(); i++) {
-                    if (i + 1 == list.size()) {
-                        accounts.append(ChatColor.DARK_AQUA).append(list.get(i));
-                    } else {
-                        accounts.append(ChatColor.DARK_AQUA).append(list.get(i)).append(ChatColor.DARK_GRAY).append(", ");
-                    }
-                }
-                EterniaServer.msg.sendMessage(player, Messages.HOME_LIST, accounts.toString());
+                showHomes(target.getPlayer());
             } else {
                 EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
-            List<String> list = APIPlayer.getHomes(UUIDFetcher.getUUIDOf(player.getName()));
-            for (int i = 0; i < list.size(); i++) {
-                if (i + 1 == list.size()) {
-                    accounts.append(ChatColor.DARK_AQUA).append(list.get(i));
-                } else {
-                    accounts.append(ChatColor.DARK_AQUA).append(list.get(i)).append(ChatColor.DARK_GRAY).append(", ");
-                }
-            }
-            EterniaServer.msg.sendMessage(player, Messages.HOME_LIST, accounts.toString());
+            showHomes(player);
         }
+    }
+
+    private void showHomes(Player player) {
+        StringBuilder accounts = new StringBuilder();
+        List<String> list = APIPlayer.getHomes(UUIDFetcher.getUUIDOf(player.getName()));
+        for (int i = 0; i < list.size(); i++) {
+            if (i + 1 == list.size()) {
+                accounts.append(ChatColor.DARK_AQUA).append(list.get(i));
+            } else {
+                accounts.append(ChatColor.DARK_AQUA).append(list.get(i)).append(ChatColor.DARK_GRAY).append(", ");
+            }
+        }
+        EterniaServer.msg.sendMessage(player, Messages.HOME_LIST, accounts.toString());
     }
 
     @CommandAlias("sethome|sethouse|setcasa")
