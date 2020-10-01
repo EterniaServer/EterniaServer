@@ -32,13 +32,13 @@ public class ChatCfg {
         this.staffFormat = chatConfig.getString("format.staff", "$8[$bS$8] %vault_prefix%%player_displayname%$8 ➤ $b%message%").replace('$', (char) 0x00A7);
         this.localRange = chatConfig.getInt("format.local-range", 64);
 
-        this.customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholders("eternia.chat.global", "%vault_prefix%", "", "", 3));
-        this.customPlaceholdersObjectsMap.put("player", new CustomPlaceholders("eternia.chat.global", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
-        this.customPlaceholdersObjectsMap.put("separator", new CustomPlaceholders("eternia.chat.global", " &8➤ ", "", "", 6));
-        this.customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholders("eternia.chat.global", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2));
-        this.customPlaceholdersObjectsMap.put("clan", new CustomPlaceholders("eternia.chat.global", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1));
-        this.customPlaceholdersObjectsMap.put("canal", new CustomPlaceholders("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0));
-        this.customPlaceholdersObjectsMap.put("marry", new CustomPlaceholders("eternia.chat.global", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5));
+        this.customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholders(Constants.CHAT_GLOBAL_PERM, "%vault_prefix%", "", "", 3));
+        this.customPlaceholdersObjectsMap.put("player", new CustomPlaceholders(Constants.CHAT_GLOBAL_PERM, "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
+        this.customPlaceholdersObjectsMap.put("separator", new CustomPlaceholders(Constants.CHAT_GLOBAL_PERM, " &8➤ ", "", "", 6));
+        this.customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholders(Constants.CHAT_GLOBAL_PERM, "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2));
+        this.customPlaceholdersObjectsMap.put("clan", new CustomPlaceholders(Constants.CHAT_GLOBAL_PERM, "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1));
+        this.customPlaceholdersObjectsMap.put("canal", new CustomPlaceholders(Constants.CHAT_GLOBAL_PERM, "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0));
+        this.customPlaceholdersObjectsMap.put("marry", new CustomPlaceholders(Constants.CHAT_GLOBAL_PERM, "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5));
 
         outChat.set("format.local", this.localFormat);
         outChat.set("format.global", this.globalFormat);
@@ -49,7 +49,7 @@ public class ChatCfg {
         ConfigurationSection configurationSection = chatConfig.getConfigurationSection("placeholders");
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
-                tempCustomPlaceholdersMap.put(key, new CustomPlaceholders(chatConfig.getString("placeholders." + key + ".perm"), chatConfig.getString("placeholders." + key + ".value"), chatConfig.getString("placeholders." + key + ".hover-text"), chatConfig.getString("placeholders." + key + ".suggest-command"), chatConfig.getInt("placeholders." + key + ".priority")));
+                tempCustomPlaceholdersMap.put(key, new CustomPlaceholders(chatConfig.getString(Constants.PLACEHOLDER + key + ".perm"), chatConfig.getString(Constants.PLACEHOLDER + key + ".value"), chatConfig.getString(Constants.PLACEHOLDER + key + ".hover-text"), chatConfig.getString(Constants.PLACEHOLDER + key + ".suggest-command"), chatConfig.getInt(Constants.PLACEHOLDER + key + ".priority")));
             }
         }
 
@@ -61,11 +61,11 @@ public class ChatCfg {
         tempCustomPlaceholdersMap.forEach(this.customPlaceholdersObjectsMap::put);
 
         tempCustomPlaceholdersMap.forEach((k, v) -> {
-            outChat.set("placeholders." + k + ".perm", v.getPermission());
-            outChat.set("placeholders." + k + ".value", v.getValue());
-            outChat.set("placeholders." + k + ".hover-text", v.getHoverText());
-            outChat.set("placeholders." + k + ".suggest-command", v.getSuggestCmd());
-            outChat.set("placeholders." + k + ".priority", v.getPriority());
+            outChat.set(Constants.PLACEHOLDER + k + ".perm", v.getPermission());
+            outChat.set(Constants.PLACEHOLDER + k + ".value", v.getValue());
+            outChat.set(Constants.PLACEHOLDER + k + ".hover-text", v.getHoverText());
+            outChat.set(Constants.PLACEHOLDER + k + ".suggest-command", v.getSuggestCmd());
+            outChat.set(Constants.PLACEHOLDER + k + ".priority", v.getPriority());
         });
 
         outChat.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");

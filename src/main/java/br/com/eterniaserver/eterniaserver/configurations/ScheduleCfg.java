@@ -47,14 +47,14 @@ public class ScheduleCfg {
         this.scheduleMap.put("saturday", new HashMap<>(tempMapForAll));
 
         Map<String, Map<Integer, List<String>>> tempScheduleMap = new HashMap<>();
-        ConfigurationSection configurationSection = scheduleConfig.getConfigurationSection("schedule.days");
+        ConfigurationSection configurationSection = scheduleConfig.getConfigurationSection(Constants.SCHEDULE_STR);
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
                 Map<Integer, List<String>> tempTimesKeys = new HashMap<>();
-                ConfigurationSection section = scheduleConfig.getConfigurationSection("schedule.days." + key);
+                ConfigurationSection section = scheduleConfig.getConfigurationSection(Constants.SCHEDULE_STR + "." + key);
                 if (section != null) {
                     for (String times : section.getKeys(false)) {
-                        tempTimesKeys.put(Integer.parseInt(times), scheduleConfig.getStringList("schedule.days." + key + "." + times));
+                        tempTimesKeys.put(Integer.parseInt(times), scheduleConfig.getStringList(Constants.SCHEDULE_STR + "." + key + "." + times));
                     }
                 }
                 tempScheduleMap.put(key, tempTimesKeys);
@@ -68,7 +68,7 @@ public class ScheduleCfg {
         this.scheduleMap.clear();
         tempScheduleMap.forEach(this.scheduleMap::put);
 
-        tempScheduleMap.forEach((k, v) -> v.forEach((l, b) -> outSchedule.set("schedule.days." + k + "." + l, b)));
+        tempScheduleMap.forEach((k, v) -> v.forEach((l, b) -> outSchedule.set(Constants.SCHEDULE_STR + "." + k + "." + l, b)));
         outSchedule.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         try {

@@ -55,25 +55,8 @@ public class PlayerHandler implements Listener {
         if (action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
             final ItemStack is = player.getInventory().getItemInMainHand();
             final List<String> lore = is.getLore();
-            if (EterniaServer.configs.moduleHomes && is.getType().equals(Material.COMPASS)
-                    && lore != null) {
-                final String[] isso = lore.get(0).split(":");
-                final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
-                String nome = is.getItemMeta().getDisplayName();
-                nome = nome.replace("[", "").replace("]", "");
-                nome = ChatColor.stripColor(nome);
-                if (APIPlayer.isTeleporting(player)) {
-                    EterniaServer.msg.sendMessage(player, Messages.SERVER_IN_TELEPORT);
-                } else {
-                    APIServer.putInTeleport(player, new PlayerTeleport(player, location, EterniaServer.msg.getMessage(Messages.HOME_GOING, true, nome)));
-                }
-                event.setCancelled(true);
-            }
-            if (EterniaServer.configs.moduleExperience && is.getType().equals(Material.EXPERIENCE_BOTTLE)
-                    && lore != null) {
-                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                player.giveExp(Integer.parseInt(lore.get(0)));
-            }
+            event.setCancelled(loadHomes(is, lore, player));
+            loadModuleExp(is, lore, player);
             if (event.getClickedBlock() != null && list.contains(event.getClickedBlock().getType())) {
                 final Location location = event.getClickedBlock().getLocation();
                 location.getNearbyEntities(2, 2, 2).forEach(k -> {
@@ -91,6 +74,32 @@ public class PlayerHandler implements Listener {
         }
     }
 
+    private void loadModuleExp(ItemStack is, List<String> lore, Player player) {
+        if (EterniaServer.configs.moduleExperience && is.getType().equals(Material.EXPERIENCE_BOTTLE)
+                && lore != null) {
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            player.giveExp(Integer.parseInt(lore.get(0)));
+        }
+    }
+
+    private boolean loadHomes(ItemStack is, List<String> lore, Player player) {
+        if (EterniaServer.configs.moduleHomes && is.getType().equals(Material.COMPASS)
+                && lore != null) {
+            final String[] isso = lore.get(0).split(":");
+            final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
+            String nome = is.getItemMeta().getDisplayName();
+            nome = nome.replace("[", "").replace("]", "");
+            nome = ChatColor.stripColor(nome);
+            if (APIPlayer.isTeleporting(player)) {
+                EterniaServer.msg.sendMessage(player, Messages.SERVER_IN_TELEPORT);
+            } else {
+                APIServer.putInTeleport(player, new PlayerTeleport(player, location, EterniaServer.msg.getMessage(Messages.HOME_GOING, true, nome)));
+            }
+            return true;
+        }
+        return false;
+    }
+
     @EventHandler (priority = EventPriority.NORMAL)
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (EterniaServer.configs.moduleTeleports) {
@@ -101,15 +110,15 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation("warp.spawn") && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
-            event.setSpawnLocation(APIServer.getLocation("warp.spawn"));
+        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation(Constants.WARP_SPAWN) && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
+            event.setSpawnLocation(APIServer.getLocation(Constants.WARP_SPAWN));
         }
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation("warp.spawn")) {
-            event.setRespawnLocation(APIServer.getLocation("warp.spawn"));
+        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation(Constants.WARP_SPAWN)) {
+            event.setRespawnLocation(APIServer.getLocation(Constants.WARP_SPAWN));
         }
     }
 
@@ -215,7 +224,7 @@ public class PlayerHandler implements Listener {
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGIN, true, playerName, player.getDisplayName()));
 
         if (!APIPlayer.hasProfile(uuid)) {
-            PaperLib.teleportAsync(player, APIServer.getLocation("warp.spawn"));
+            PaperLib.teleportAsync(player, APIServer.getLocation(Constants.WARP_SPAWN));
             APIServer.playerProfileCreate(uuid, playerName, player.getFirstPlayed());
         } else {
             APIPlayer.updatePlayerProfile(uuid, player, System.currentTimeMillis());

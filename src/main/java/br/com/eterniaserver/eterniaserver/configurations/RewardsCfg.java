@@ -32,10 +32,10 @@ public class RewardsCfg {
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
                 Map<Double, List<String>> tempChanceMap = new HashMap<>();
-                ConfigurationSection section = rewardsConfig.getConfigurationSection("rewards." + key);
+                ConfigurationSection section = rewardsConfig.getConfigurationSection(Constants.REWARD_STR + key);
                 if (section != null) {
                     for (String chance : section.getKeys(false)) {
-                        tempChanceMap.put(Double.parseDouble(chance.replace(',', '.')), rewardsConfig.getStringList("rewards." + key + "." + chance));
+                        tempChanceMap.put(Double.parseDouble(chance.replace(',', '.')), rewardsConfig.getStringList(Constants.REWARD_STR + key + "." + chance));
                     }
                 }
                 tempRewardsMap.put(key, tempChanceMap);
@@ -49,7 +49,7 @@ public class RewardsCfg {
         this.rewardsMap.clear();
         tempRewardsMap.forEach(this.rewardsMap::put);
 
-        this.rewardsMap.forEach((k, v) -> v.forEach((l, b) -> outRewards.set("rewards." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
+        this.rewardsMap.forEach((k, v) -> v.forEach((l, b) -> outRewards.set(Constants.REWARD_STR + k + "." + String.format("%.10f", l).replace('.', ','), b)));
         outRewards.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
         try {
