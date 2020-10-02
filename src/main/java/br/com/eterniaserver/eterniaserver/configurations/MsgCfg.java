@@ -147,8 +147,8 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.CHAT_TELL_UNLOCKED, "Você destravou a conversa privada com $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.CHAT_ARE_MUTED, "Você está mutado pelos próximos $3{0}$8.", "0: tempo restante");
         this.addDefault(defaults, Messages.CHAT_NO_ONE_NEAR, "Não há ninguém para ti ouvir$8.", null);
-        this.addDefault(defaults, Messages.CHAT_TELL_TO, "$8[$6P$8]$6 {1} -> {3} ➤ {0}", "0: mensagem; 1: nome do enviante; 2: apelido do enviante; 3: nome do recebinte; 4: apelido do recebinte");
-        this.addDefault(defaults, Messages.CHAT_TELL_FROM, "$8[$6P$8]$6 {1} <- {3} ➤ {0}", "0: mensagem; 1: nome do recebinte; 2: apelido do recebinte; 3: nome do enviante; 4: apelido do enviante");
+        this.addDefault(defaults, Messages.CHAT_TELL_TO, "$8[$6P$8]$6 {2} -> {4} ➤ {0}", "0: mensagem; 1: nome do enviante; 2: apelido do enviante; 3: nome do recebinte; 4: apelido do recebinte");
+        this.addDefault(defaults, Messages.CHAT_TELL_FROM, "$8[$6P$8]$6 {2} <- {4} ➤ {0}", "0: mensagem; 1: nome do recebinte; 2: apelido do recebinte; 3: nome do enviante; 4: apelido do enviante");
         this.addDefault(defaults, Messages.CHAT_CHANNELS_MUTED, "Todos os canais estão silenciados$8.", null);
         this.addDefault(defaults, Messages.CHAT_CHANNELS_ENABLED, "$3{1}$7 mutou todos os canais$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.CHAT_CHANNELS_DISABLED, "$3{1}$7 desmutou todos os canais$8.", "0: nome do jogador; 1: apelido do jogador");

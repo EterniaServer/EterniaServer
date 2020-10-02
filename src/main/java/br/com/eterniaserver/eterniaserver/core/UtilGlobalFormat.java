@@ -10,6 +10,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;
@@ -25,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UtilGlobalFormat {
 
 	public void filter(Player player, String message) {
-		BaseComponent[] baseComponents = customPlaceholder(player, EterniaServer.chat.globalFormat, message);
+		BaseComponent[] baseComponents = customPlaceholder(player, EterniaServer.chat.globalFormat, message.replace('&', '§'));
 		Bukkit.spigot().broadcast(baseComponents);
 	}
 
@@ -38,6 +39,13 @@ public class UtilGlobalFormat {
 		});
 
 		String[] messageSplited = message.split(" ");
+
+		for (int i = 0; i < messageSplited.length; i++) {
+			if (i > 0) {
+				messageSplited[i] = ChatColor.getLastColors(messageSplited[i - 1]) + messageSplited[i];
+			}
+		}
+
 		BaseComponent[] baseComponents = new BaseComponent[textComponentMap.size() + messageSplited.length];
 
 		AtomicInteger integer = new AtomicInteger(0);

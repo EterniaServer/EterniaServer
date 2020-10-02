@@ -5,9 +5,14 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Mob;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -50,7 +55,9 @@ public class PluginClear extends BukkitRunnable {
     private void cleanupChunk(Chunk chunk) {
         Map<EntityType, Integer> entityIntegerMap = new EnumMap<>(EntityType.class);
         for (Entity e : chunk.getEntities()) {
-            if (e instanceof Item) return;
+            if (!(e instanceof Creature)) continue;
+
+
             int amount = entityIntegerMap.getOrDefault(e.getType(), 0);
 
             if (amount > 15) {

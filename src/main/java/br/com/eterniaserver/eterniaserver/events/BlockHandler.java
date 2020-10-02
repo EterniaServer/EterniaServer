@@ -59,6 +59,8 @@ public class BlockHandler implements Listener {
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerBlockBreak(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
+
         if (!EterniaServer.configs.moduleSpawners && !EterniaServer.configs.moduleBlock) return;
 
         final Player player = event.getPlayer();

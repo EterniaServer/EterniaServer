@@ -60,8 +60,8 @@ public interface APIChat {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();
         PluginVars.tell.put(target.getName(), player.getName());
-        player.sendMessage(EterniaServer.msg.getMessage(Messages.CHAT_TELL_TO, false, player.getName(), playerDisplay, target.getName(), targetDisplay));
-        target.sendMessage(EterniaServer.msg.getMessage(Messages.CHAT_TELL_FROM, false, player.getName(), playerDisplay, target.getName(), targetDisplay));
+        player.sendMessage(EterniaServer.msg.getMessage(Messages.CHAT_TELL_TO, false, s, player.getName(), playerDisplay, target.getName(), targetDisplay));
+        target.sendMessage(EterniaServer.msg.getMessage(Messages.CHAT_TELL_FROM, false, s, player.getName(), playerDisplay, target.getName(), targetDisplay));
         for (String p : PluginVars.spy.keySet()) {
             final Boolean b = PluginVars.spy.getOrDefault(p, false);
             if (Boolean.TRUE.equals(b) && !p.equals(player.getName()) && !p.equals(target.getName())) {
