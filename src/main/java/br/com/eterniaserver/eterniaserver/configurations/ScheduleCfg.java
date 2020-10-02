@@ -67,7 +67,10 @@ public class ScheduleCfg {
 
         this.scheduleMap.clear();
         tempScheduleMap.forEach(this.scheduleMap::put);
-
+        outSchedule.set("schedule.hour", this.scheduleHour);
+        outSchedule.set("schedule.minute", this.scheduleMinute);
+        outSchedule.set("schedule.second", this.scheduleSecond);
+        outSchedule.set("schedule.delay", this.scheduleDelay);
         tempScheduleMap.forEach((k, v) -> v.forEach((l, b) -> outSchedule.set(Constants.SCHEDULE_STR + "." + k + "." + l, b)));
         outSchedule.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 

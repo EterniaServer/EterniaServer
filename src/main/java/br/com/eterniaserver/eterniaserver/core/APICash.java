@@ -132,7 +132,7 @@ public interface APICash {
                     EterniaServer.msg.sendMessage(player, Messages.CASH_CHOOSE);
                     PluginVars.cashItem.put(uuid, cashItem);
                 } else {
-                    EterniaServer.msg.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(getCash(uuid)));
+                    EterniaServer.msg.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(cost));
                 }
             } else {
                 player.closeInventory();
