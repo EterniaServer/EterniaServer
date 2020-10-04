@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.core.UtilGlobalFormat;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
@@ -21,7 +22,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServerListPingEvent;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,11 +48,11 @@ public class ServerHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onCreatureSpawn(CreatureSpawnEvent event) {
+    public void onCreatureSpawn(PreCreatureSpawnEvent event) {
         if (EterniaServer.configs.moduleClear) {
             int amount = 0;
-            EntityType entity = event.getEntityType();
-            for (Entity e : event.getEntity().getLocation().getChunk().getEntities()) {
+            EntityType entity = event.getType();
+            for (Entity e : event.getSpawnLocation().getChunk().getEntities()) {
                 if (e instanceof Item) return;
                 if (!e.getType().equals(entity)) return;
                 if (amount > 15) {

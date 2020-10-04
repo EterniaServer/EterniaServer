@@ -26,11 +26,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UtilGlobalFormat {
 
 	public void filter(Player player, String message) {
-		BaseComponent[] baseComponents = customPlaceholder(player, EterniaServer.chat.globalFormat, message.replace('&', '§'));
+		BaseComponent[] baseComponents = customPlaceholder(player, EterniaServer.chat.globalFormat, message);
 		Bukkit.spigot().broadcast(baseComponents);
 	}
 
-	public BaseComponent[] customPlaceholder(Player player, String format, String message) {
+	private BaseComponent[] customPlaceholder(Player player, String format, String message) {
+		if (player.hasPermission("eternia.chat.color")) {
+			message = message.replace('&', '§');
+		}
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
 		EterniaServer.chat.customPlaceholdersObjectsMap.forEach((placeholder, object) -> {
 			if (format.contains("{" + placeholder + "}") && player.hasPermission(object.getPermission())) {
@@ -89,7 +92,7 @@ public class UtilGlobalFormat {
 		return new TextComponent("sem suporte");
 	}
 
-	public TextComponent getText(Player player, CustomPlaceholders objects) {
+	private TextComponent getText(Player player, CustomPlaceholders objects) {
 		TextComponent textComponent = new TextComponent(APIServer.getColor(APIChat.setPlaceholders(player, objects.getValue())));
 		if (!objects.getHoverText().equals("")) {
 			List<TextComponent> textComponentList = new ArrayList<>();
