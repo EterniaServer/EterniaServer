@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.configurations;
+package br.com.eterniaserver.eterniaserver.configurations.locales;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
@@ -234,12 +234,14 @@ public class MsgCfg {
 
         }
 
-        // SAVE
+        if (new File(Constants.DATA_LOCALE_FOLDER_PATH).mkdir()) {
+            APIServer.logError("Pasta de locales criada com sucesso", 1);
+        }
 
         try {
             config.save(Constants.MESSAGES_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
+            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
         }
 
         defaults.clear();

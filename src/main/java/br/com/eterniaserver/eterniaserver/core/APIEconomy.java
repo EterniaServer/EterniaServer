@@ -24,7 +24,7 @@ public interface APIEconomy {
     /**
      * Get the amount formated
      * @param amount to format
-     * @return the formated string value
+     * @return the formatted string value
      */
     static String format(double amount) {
         return PluginVars.df2.format(amount);
@@ -196,9 +196,9 @@ public interface APIEconomy {
      * @param uuid of player
      * @return if the player was top money or not
      */
-    static boolean isBaltop(UUID uuid) {
+    static boolean isBalanceTop(UUID uuid) {
         if (PluginVars.balltop == null) {
-            updateBaltop(20);
+            updateBalanceTop(20);
         }
         return PluginVars.balltop.equals(uuid);
     }
@@ -209,7 +209,7 @@ public interface APIEconomy {
      * @param size the size of list
      * @return if the list was updated or not
      */
-    static CompletableFuture<Boolean> updateBaltop(int size) {
+    static CompletableFuture<Boolean> updateBalanceTop(int size) {
         return CompletableFuture.supplyAsync(() -> {
             if (EterniaLib.getMySQL()) {
                 EterniaLib.getConnections().executeSQLQuery(connection -> {
@@ -218,7 +218,7 @@ public interface APIEconomy {
                                     " FROM " + EterniaServer.configs.tablePlayer +
                                     " ORDER BY " + "balance" + " DESC LIMIT " + size + ";");
                     final ResultSet resultSet = getHashMap.executeQuery();
-                    getBaltop(resultSet);
+                    checkBlacklist(resultSet);
                     getHashMap.close();
                     resultSet.close();
                 });
@@ -227,7 +227,7 @@ public interface APIEconomy {
                         "SELECT " + "uuid" +
                                 " FROM " + EterniaServer.configs.tablePlayer +
                                 " ORDER BY " + "balance" + " DESC LIMIT " + size + ";"); ResultSet resultSet = getHashMap.executeQuery()) {
-                    getBaltop(resultSet);
+                    checkBlacklist(resultSet);
                 } catch (SQLException ignored) {
                     APIServer.logError("Erro ao se conectar com a database", 3);
                     return false;
@@ -237,7 +237,23 @@ public interface APIEconomy {
         });
     }
 
-    private static void getBaltop(ResultSet resultSet) throws SQLException {
+    /**
+     * Get the baltop list
+     * @return the baltop list
+     */
+    static List<UUID> getBalanceTop() {
+        return PluginVars.baltopList;
+    }
+
+    /**
+     * Get the time from the last update
+     * @return the time in long
+     */
+    static long getBalanceTopTime() {
+        return PluginVars.baltopTime;
+    }
+
+    private static void checkBlacklist(ResultSet resultSet) throws SQLException {
         final List<UUID> tempList = new ArrayList<>();
         UUID uuid;
         while (resultSet.next()) {
@@ -251,22 +267,6 @@ public interface APIEconomy {
         PluginVars.baltopTime = System.currentTimeMillis();
         PluginVars.baltopList.clear();
         PluginVars.baltopList.addAll(tempList);
-    }
-
-    /**
-     * Get the baltop list
-     * @return the baltop list
-     */
-    static List<UUID> getBaltopList() {
-        return PluginVars.baltopList;
-    }
-
-    /**
-     * Get the time from the last update
-     * @return the time in long
-     */
-    static long getBaltopTime() {
-        return PluginVars.baltopTime;
     }
 
 }

@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.configurations;
+package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
@@ -125,7 +125,7 @@ public class CashCfg {
     private void loadMapFromArchive(FileConfiguration cashGui, Map<Integer, List<CashItem>> othersGuiTemp, List<ItemStack> menuGuiTemp, Map<Integer, String> guisTemp, Map<String, Integer> guisTempInvert) {
         for (int i = 0; i < cashGui.getInt("menu.size"); i++) {
             if (cashGui.contains("menu." + i)) {
-                ItemStack itemStack = new ItemStack(Material.valueOf(cashGui.getString("menu." + i + "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ")));
+                ItemStack itemStack = new ItemStack(Material.valueOf(cashGui.getString("menu." + i + ".material")));
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(cashGui.getString("menu." + i + ".name").replace('$', (char) 0x00A7));
                 List<String> listando = cashGui.getStringList("menu." + i + ".lore");
@@ -139,7 +139,7 @@ public class CashCfg {
                 List<CashItem> tempList = new ArrayList<>();
                 for (int j = 0; j < cashGui.getInt("guis." + guiName + ".size"); j++) {
                     if (cashGui.contains("guis." + guiName + "." + j)) {
-                        ItemStack guiItem = new ItemStack(Material.valueOf(cashGui.getString("guis." + guiName + "." + j + "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ")));
+                        ItemStack guiItem = new ItemStack(Material.valueOf(cashGui.getString("guis." + guiName + "." + j + ".material")));
                         ItemMeta guiMeta = guiItem.getItemMeta();
                         guiMeta.setDisplayName(cashGui.getString("guis." + guiName + "." + j + ".name").replace('$', (char) 0x00A7));
                         List<String> listandoNovo = cashGui.getStringList("guis." + guiName + "." + j + ".lore");

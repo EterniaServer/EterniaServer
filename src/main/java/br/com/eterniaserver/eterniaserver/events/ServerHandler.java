@@ -73,14 +73,14 @@ public class ServerHandler implements Listener {
         if (EterniaServer.configs.moduleChat) {
             final Player player = e.getPlayer();
             final String playerName = player.getName();
-            if (APIServer.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
+            if (APIChat.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
                 EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNELS_MUTED);
                 e.setCancelled(true);
             } else {
                 final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
                 final long time = APIPlayer.getMutedTime(uuid);
-                if (APIChat.stayMuted(time)) {
-                    EterniaServer.msg.sendMessage(player, Messages.CHAT_ARE_MUTED, APIChat.getTimeLeft(time));
+                if (APIServer.isInFutureCooldown(time)) {
+                    EterniaServer.msg.sendMessage(player, Messages.CHAT_ARE_MUTED, APIServer.getTimeLeftOfCooldown(time));
                     e.setCancelled(true);
                 } else {
                     e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
@@ -91,7 +91,7 @@ public class ServerHandler implements Listener {
 
     private boolean getChannel(AsyncPlayerChatEvent e, Player player, String message, UUID uuid) {
         message = canHex(player, message);
-        switch (APIPlayer.getChannel(uuid)) {
+        switch (APIChat.getChannel(uuid)) {
             case 0:
                 APIChat.sendLocal(message, player, EterniaServer.chat.localRange);
                 return true;
@@ -110,10 +110,10 @@ public class ServerHandler implements Listener {
 
     private void sendTell(Player sender, final String msg) {
         final String playerName = sender.getName();
-        if (APIPlayer.isTell(playerName)) {
-            final Player target = Bukkit.getPlayer(APIPlayer.getTellingPlayerName(playerName));
+        if (APIChat.isTell(playerName)) {
+            final Player target = Bukkit.getPlayer(APIChat.getTellingPlayerName(playerName));
             if (target != null && target.isOnline()) {
-                if (APIPlayer.hasIgnoreds(playerName) && APIPlayer.areIgnored(playerName, target)) {
+                if (APIChat.hasIgnores(playerName) && APIChat.areIgnored(playerName, target)) {
                     EterniaServer.msg.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
                     return;
                 }

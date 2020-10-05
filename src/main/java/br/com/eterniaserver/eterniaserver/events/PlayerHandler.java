@@ -130,7 +130,7 @@ public class PlayerHandler implements Listener {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "hours", APIPlayer.getAndUpdateTimePlayed(uuid), "uuid", uuid.toString()));
         if (EterniaServer.configs.moduleChat && player.hasPermission("eternia.spy")) {
-            APIServer.removeFromSpy(playerName);
+            APIChat.removeFromSpy(playerName);
         }
         event.setQuitMessage(null);
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGOUT, true, playerName, player.getDisplayName()));
@@ -232,7 +232,7 @@ public class PlayerHandler implements Listener {
 
         if (EterniaServer.configs.moduleChat) {
             if (player.hasPermission("eternia.spy")) {
-                APIServer.putSpy(playerName);
+                APIChat.putSpy(playerName);
             }
             if (APIPlayer.hasProfile(uuid)) {
                 player.setDisplayName(APIPlayer.getDisplayName(uuid));

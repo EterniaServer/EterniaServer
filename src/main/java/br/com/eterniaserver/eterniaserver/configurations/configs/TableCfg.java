@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.configurations;
+package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;

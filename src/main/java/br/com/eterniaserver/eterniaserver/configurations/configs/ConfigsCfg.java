@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.configurations;
+package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.core.APIServer;

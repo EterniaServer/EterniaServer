@@ -96,18 +96,39 @@ public interface APICash {
         setCash(uuid, getCash(uuid) - amount);
     }
 
+    /**
+     * Check if player is buying a product
+     * @param uuid of player
+     * @return if is or not
+     */
     static boolean isBuying(UUID uuid) {
         return PluginVars.cashItem.containsKey(uuid);
     }
 
+    /**
+     * Get the object of the product that the player
+     * is about to buy
+     * @param uuid of player
+     * @return the CashItem object
+     */
     static CashItem getCashBuy(UUID uuid) {
         return PluginVars.cashItem.get(uuid);
     }
 
+    /**
+     * Remove the product that the player
+     * is about to buy
+     * @param uuid of player
+     */
     static void removeCashBuy(UUID uuid) {
         PluginVars.cashItem.remove(uuid);
     }
 
+    /**
+     * Opens a specific cash GUI for the player
+     * @param player the player object
+     * @param slotInt of GUI
+     */
     static void menuGui(final Player player, int slotInt) {
         if (EterniaServer.cash.guis.containsKey(slotInt)) {
             player.closeInventory();
@@ -120,6 +141,13 @@ public interface APICash {
         }
     }
 
+    /**
+     * Defines which option the player chose
+     * from the current GUI
+     * @param player the player object
+     * @param title of GUI
+     * @param slot of GUI
+     */
     static void permGui(final Player player, final String title, int slot) {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);

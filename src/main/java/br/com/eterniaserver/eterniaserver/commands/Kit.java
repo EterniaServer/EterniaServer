@@ -62,7 +62,7 @@ public class Kit extends BaseCommand {
         int cooldown = kitObject.getDelay();
         final long cd = APIServer.getKitCooldown(kitName);
 
-        if (APIChat.hasCooldown(cd, cooldown)) {
+        if (APIServer.hasCooldown(cd, cooldown)) {
             for (String command : kitObject.getCommands()) {
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
             }
@@ -72,7 +72,7 @@ public class Kit extends BaseCommand {
             APIServer.putKitCooldown(kitName, time);
             EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableKits, "cooldown", time, "name", kitName));
         } else {
-            EterniaServer.msg.sendMessage(player, Messages.SERVER_TIMING, APIChat.getTimeLeft(cooldown, cd));
+            EterniaServer.msg.sendMessage(player, Messages.SERVER_TIMING, APIServer.getTimeLeftOfCooldown(cooldown, cd));
         }
     }
 

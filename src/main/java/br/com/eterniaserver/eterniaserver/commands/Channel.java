@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.CommandHelp;
+import br.com.eterniaserver.acf.annotation.CatchUnknown;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
@@ -12,10 +13,10 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
-
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIPlayer;
+
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -25,6 +26,7 @@ import java.util.UUID;
 public class Channel extends BaseCommand {
 
     @Default
+    @CatchUnknown
     @HelpCommand
     @Syntax("<página>")
     @Description(" Ajuda para o sistema de Canais")
@@ -61,15 +63,15 @@ public class Channel extends BaseCommand {
     private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
         if (messages != null && messages.length == 0) {
-            APIPlayer.setChannel(uuid, channel);
+            APIChat.setChannel(uuid, channel);
             EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channelName);
         } else {
-            int defaultChannel = APIPlayer.getChannel(uuid);
-            APIPlayer.setChannel(uuid, channel);
+            int defaultChannel = APIChat.getChannel(uuid);
+            APIChat.setChannel(uuid, channel);
             StringBuilder sb = new StringBuilder();
             for (String arg : messages) sb.append(arg).append(" ");
             player.chat(sb.substring(0, sb.length() - 1));
-            APIPlayer.setChannel(uuid, defaultChannel);
+            APIChat.setChannel(uuid, defaultChannel);
         }
     }
 

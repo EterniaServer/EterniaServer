@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.CommandHelp;
+import br.com.eterniaserver.acf.annotation.CatchUnknown;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
@@ -32,6 +33,7 @@ public class Economy extends BaseCommand {
     @Default
     @Syntax("<página>")
     @Description(" Ajuda para o /eco")
+    @CatchUnknown
     @HelpCommand
     public void ecoHelp(CommandHelp help) {
         help.showHelp();
@@ -128,19 +130,19 @@ public class Economy extends BaseCommand {
     @Subcommand("baltop")
     @Description(" Verifica a lista de mais ricos")
     public void onBaltop(CommandSender sender) {
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - APIEconomy.getBaltopTime()) <= 300) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - APIEconomy.getBalanceTopTime()) <= 300) {
             showBaltop(sender);
         } else {
-            APIEconomy.updateBaltop(20).thenRun(() -> showBaltop(sender));
+            APIEconomy.updateBalanceTop(20).thenRun(() -> showBaltop(sender));
         }
     }
 
     private void showBaltop(CommandSender sender) {
-        APIEconomy.getBaltopList().forEach((user -> {
+        APIEconomy.getBalanceTop().forEach((user -> {
             final String playerName = APIPlayer.getName(user);
             final String playerDisplay = APIPlayer.getDisplayName(user);
             EterniaServer.msg.sendMessage(sender, Messages.ECO_BALTOP_LIST, false,
-                    String.valueOf(APIEconomy.getBaltopList().indexOf(user) + 1),
+                    String.valueOf(APIEconomy.getBalanceTop().indexOf(user) + 1),
                     playerName,
                     playerDisplay,
                     APIEconomy.format(APIEconomy.getMoney(user)));

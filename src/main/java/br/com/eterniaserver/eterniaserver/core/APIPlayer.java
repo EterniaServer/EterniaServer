@@ -117,54 +117,6 @@ public interface APIPlayer {
         return PluginVars.playerProfile.get(uuid).getHomes();
     }
 
-    static int getChannel(UUID uuid) {
-        return PluginVars.playerProfile.get(uuid).getChatChannel();
-    }
-
-    static void setChannel(UUID uuid, int channel) {
-        PluginVars.playerProfile.get(uuid).setChatChannel(channel);
-    }
-
-    static boolean receivedTell(String playerName) {
-        return PluginVars.tell.containsKey(playerName);
-    }
-
-    static String getTellSender(String playerName) {
-        return PluginVars.tell.get(playerName);
-    }
-
-    static boolean isTell(String playerName) {
-        return PluginVars.chatLocked.containsKey(playerName);
-    }
-
-    static void setTelling(String playerName, String targetName) {
-        PluginVars.chatLocked.put(playerName, targetName);
-    }
-
-    static String getTellingPlayerName(String playerName) {
-        return PluginVars.chatLocked.get(playerName);
-    }
-
-    static void removeTelling(String playerName) {
-        PluginVars.chatLocked.remove(playerName);
-    }
-
-    static boolean hasIgnoreds(String playerName) {
-        return PluginVars.ignoredPlayer.containsKey(playerName);
-    }
-
-    static List<Player> getIgnoreds(String playerName) {
-        return PluginVars.ignoredPlayer.get(playerName);
-    }
-
-    static void putIgnored(String playerName, List<Player> list) {
-        PluginVars.ignoredPlayer.put(playerName, list);
-    }
-
-    static boolean areIgnored(String playerName, Player target) {
-        return PluginVars.ignoredPlayer.get(playerName).contains(target);
-    }
-
     static boolean isTeleporting(Player player) {
         return PluginVars.teleports.containsKey(player);
     }

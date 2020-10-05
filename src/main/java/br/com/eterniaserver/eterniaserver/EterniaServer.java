@@ -1,15 +1,16 @@
 package br.com.eterniaserver.eterniaserver;
 
-import br.com.eterniaserver.eterniaserver.configurations.BlocksCfg;
-import br.com.eterniaserver.eterniaserver.configurations.CashCfg;
-import br.com.eterniaserver.eterniaserver.configurations.ChatCfg;
-import br.com.eterniaserver.eterniaserver.configurations.CommandsCfg;
-import br.com.eterniaserver.eterniaserver.configurations.ConfigsCfg;
-import br.com.eterniaserver.eterniaserver.configurations.KitsCfg;
-import br.com.eterniaserver.eterniaserver.configurations.MsgCfg;
-import br.com.eterniaserver.eterniaserver.configurations.RewardsCfg;
-import br.com.eterniaserver.eterniaserver.configurations.ScheduleCfg;
-import br.com.eterniaserver.eterniaserver.configurations.TableCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.BlocksCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.CashCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.ChatCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.CommandsCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.ConfigsCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.KitsCfg;
+import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
+import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.RewardsCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.ScheduleCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.TableCfg;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.PlaceHolders;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.VaultHook;
 import br.com.eterniaserver.eterniaserver.events.BlockHandler;
@@ -23,6 +24,7 @@ public class EterniaServer extends JavaPlugin {
 
     public static final ConfigsCfg configs = new ConfigsCfg();
     public static final MsgCfg msg = new MsgCfg();
+    public static final CommandsLocaleCfg cmdsLocale = new CommandsLocaleCfg();
     public static final BlocksCfg block = new BlocksCfg();
     public static final CashCfg cash = new CashCfg();
     public static final KitsCfg kits = new KitsCfg();

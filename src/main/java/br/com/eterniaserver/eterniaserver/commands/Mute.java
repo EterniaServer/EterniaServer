@@ -14,6 +14,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
@@ -41,11 +42,11 @@ public class Mute extends BaseCommand {
     @CommandPermission("eternia.mute.channels")
     @Description(" Muta todos os canais")
     public void muteChannels(Player sender) {
-        if (APIServer.isChatMuted()) {
-            APIServer.setChatMuted(false);
+        if (APIChat.isChatMuted()) {
+            APIChat.setChatMuted(false);
             Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_CHANNELS_DISABLED, true, sender.getName(), sender.getDisplayName()));
         } else {
-            APIServer.setChatMuted(true);
+            APIChat.setChatMuted(true);
             Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_CHANNELS_ENABLED, true, sender.getName(), sender.getDisplayName()));
         }
     }

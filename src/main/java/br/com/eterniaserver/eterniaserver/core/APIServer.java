@@ -15,30 +15,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toList;
 
 public interface APIServer {
 
-    static boolean isChatMuted() {
-        return PluginVars.chatMuted;
+    static boolean hasCooldown(long cooldown, int timeNeeded) {
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown) >= timeNeeded;
     }
 
-    static void removeFromSpy(String playerName) {
-        PluginVars.spy.remove(playerName);
+    static String getTimeLeftOfCooldown(long cooldown) {
+        return String.valueOf(TimeUnit.MILLISECONDS.toSeconds(cooldown - System.currentTimeMillis()));
     }
 
-    static void putSpy(String playerName) {
-        PluginVars.spy.put(playerName, true);
+    static String getTimeLeftOfCooldown(long cooldown, long cd) {
+        return String.valueOf(cooldown - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cd));
     }
 
-    static void disableSpy(String playerName) {
-        PluginVars.spy.put(playerName, false);
+    static boolean isInFutureCooldown(long cooldown) {
+        return cooldown - System.currentTimeMillis() > 0;
     }
 
-    static boolean isSpying(String playerName) {
-        return PluginVars.spy.getOrDefault(playerName, false);
-    }
 
     static void putInTeleport(Player player, PlayerTeleport playerTeleport) {
         PluginVars.teleports.put(player, playerTeleport);
@@ -193,7 +191,7 @@ public interface APIServer {
             default:
                 errorLevel = ChatColor.RED + "Erro";
         }
-        Bukkit.getConsoleSender().sendMessage("$8[$aE$9S$8] " + errorLevel + "$8:$3" + errorMsg + "$8.");
+        Bukkit.getConsoleSender().sendMessage(("$8[$aE$9S$8] " + errorLevel + "$8:$3" + errorMsg + "$8.").replace('$', (char) 0x00A7));
     }
 
     static Colors colorFromString(String colorName) {
@@ -215,10 +213,6 @@ public interface APIServer {
 
     static void changeNightTime(final long time) {
         PluginVars.nightTime = time;
-    }
-
-    static void setChatMuted(boolean bool) {
-        PluginVars.chatMuted = bool;
     }
 
     static long getBedCooldown(String name) {

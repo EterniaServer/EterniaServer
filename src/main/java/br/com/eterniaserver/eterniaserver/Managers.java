@@ -10,6 +10,7 @@ import br.com.eterniaserver.eterniaserver.core.PluginVars;
 import br.com.eterniaserver.eterniaserver.core.UtilAccelerateWorld;
 import br.com.eterniaserver.eterniaserver.core.UtilCustomCommands;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
+import br.com.eterniaserver.eterniaserver.enums.Commands;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Bukkit;
@@ -30,6 +31,7 @@ public class Managers {
 
         this.plugin = plugin;
 
+        loadCommandsLocale();
         loadConditions();
         loadCompletions();
         loadGenericManager();
@@ -49,6 +51,42 @@ public class Managers {
         loadSpawnersManager();
         loadTeleportsManager();
         loadScheduleTasks();
+
+    }
+
+    private void loadCommandsLocale() {
+
+        EterniaLib.getManager().getCommandReplacements().addReplacements(
+                "cash", EterniaServer.cmdsLocale.getName(Commands.CASH),
+                "cash_description", EterniaServer.cmdsLocale.getDescription(Commands.CASH),
+                "cash_perm", EterniaServer.cmdsLocale.getPerm(Commands.CASH),
+                "cash_help", EterniaServer.cmdsLocale.getName(Commands.CASH_HELP),
+                "cash_help_syntax", EterniaServer.cmdsLocale.getSyntax(Commands.CASH_HELP),
+                "cash_help_description", EterniaServer.cmdsLocale.getDescription(Commands.CASH_HELP),
+                "cash_help_perm", EterniaServer.cmdsLocale.getPerm(Commands.CASH_HELP),
+                "cash_balance", EterniaServer.cmdsLocale.getName(Commands.CASH_BALANCE),
+                "cash_balance_syntax", EterniaServer.cmdsLocale.getSyntax(Commands.CASH_BALANCE),
+                "cash_balance_description", EterniaServer.cmdsLocale.getDescription(Commands.CASH_BALANCE),
+                "cash_balance_perm", EterniaServer.cmdsLocale.getPerm(Commands.CASH_BALANCE),
+                "cash_accept", EterniaServer.cmdsLocale.getName(Commands.CASH_ACCEPT),
+                "cash_accept_description", EterniaServer.cmdsLocale.getDescription(Commands.CASH_ACCEPT),
+                "cash_accept_perm", EterniaServer.cmdsLocale.getPerm(Commands.CASH_ACCEPT),
+                "cash_deny", EterniaServer.cmdsLocale.getName(Commands.CASH_DENY),
+                "cash_deny_description", EterniaServer.cmdsLocale.getDescription(Commands.CASH_DENY),
+                "cash_deny_perm", EterniaServer.cmdsLocale.getPerm(Commands.CASH_DENY),
+                "cash_pay", EterniaServer.cmdsLocale.getName(Commands.CASH_PAY),
+                "cash_pay_syntax", EterniaServer.cmdsLocale.getSyntax(Commands.CASH_PAY),
+                "cash_pay_description", EterniaServer.cmdsLocale.getDescription(Commands.CASH_PAY),
+                "cash_pay_perm", EterniaServer.cmdsLocale.getPerm(Commands.CASH_PAY),
+                "cash_remove", EterniaServer.cmdsLocale.getName(Commands.CASH_REMOVE),
+                "cash_remove_syntax", EterniaServer.cmdsLocale.getSyntax(Commands.CASH_REMOVE),
+                "cash_remove_description", EterniaServer.cmdsLocale.getDescription(Commands.CASH_REMOVE),
+                "cash_remove_perm", EterniaServer.cmdsLocale.getPerm(Commands.CASH_REMOVE),
+                "cash_give", EterniaServer.cmdsLocale.getName(Commands.CASH_GIVE),
+                "cash_give_syntax", EterniaServer.cmdsLocale.getSyntax(Commands.CASH_GIVE),
+                "cash_give_description", EterniaServer.cmdsLocale.getDescription(Commands.CASH_GIVE),
+                "cash_give_perm", EterniaServer.cmdsLocale.getPerm(Commands.CASH_GIVE)
+        );
 
     }
 
