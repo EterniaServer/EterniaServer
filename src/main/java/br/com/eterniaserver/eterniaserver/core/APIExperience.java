@@ -42,7 +42,7 @@ public interface APIExperience {
      */
      static void setExp(UUID uuid, int amount) {
         PluginVars.playerProfile.get(uuid).setXp(amount);
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.XP_STR, amount, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "xp", amount, "uuid", uuid.toString()));
      }
 
     /**

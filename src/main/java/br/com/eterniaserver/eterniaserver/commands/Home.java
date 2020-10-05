@@ -163,10 +163,10 @@ public class Home extends BaseCommand {
             result.append(home);
             APIPlayer.updateHome(uuid, home);
             values.add(home);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.HOMES_STR, result.toString(), Constants.UUID_STR, uuid.toString()));
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableLocations, Constants.NAME_STR, homeName, Constants.LOCATION_STR, saveloc));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "homes", result.toString(), "uuid", uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableLocations, "name", homeName, "location", saveloc));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableLocations, Constants.LOCATION_STR, saveloc, Constants.NAME_STR, homeName));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableLocations, "location", saveloc, "name", homeName));
         }
     }
 
@@ -186,8 +186,8 @@ public class Home extends BaseCommand {
             }
         }
         APIPlayer.getHomes(uuid).remove(home);
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.HOMES_STR, nova.toString(), Constants.UUID_STR, uuid.toString()));
-        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.configs.tableLocations, Constants.NAME_STR, homeName));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "homes", nova.toString(), "uuid", uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.configs.tableLocations, "name", homeName));
     }
 
     public boolean existHome(String home, UUID uuid) {

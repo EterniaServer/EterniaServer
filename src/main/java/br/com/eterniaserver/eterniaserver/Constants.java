@@ -19,62 +19,27 @@ public class Constants {
     public static final String CASHGUI_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "cashgui.yml";
     public static final String BLOCKS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
 
-    public static final String KITS_STR = "kits.";
-    public static final String SPAWNERS_COLOR = "spawners.color";
-    public static final String COMMAND_STR = "commands.";
-    public static final String REWARD_STR = "rewards.";
-    public static final String SCHEDULE_STR = "schedule.days";
-    public static final String MONEY_TABLE_PREFIX = "(uuid, player_name, time, last, hours, balance)";
-    public static final String WARP_SPAWN = "warp.spawn";
-    public static final String CHAT_GLOBAL_PERM = "eternia.chat.global";
-    public static final String PLACEHOLDER = "placeholders.";
-    public static final String MATERIAL = ".material";
-    public static final String NAME = ".name";
-    public static final String LORE = ".lore";
-    public static final String GUIS = "guis.";
-    public static final String MENU = "menu.";
-    public static final String WARP = "warp.";
-    public static final String MESSAGE = "%message%";
-    public static final String PRIMARY_KEY = "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ";
-    public static final String NAME_STR = "name";
-    public static final String LOCATION_STR = "location";
-    public static final String PLAYER_NAME_STR = "player_name";
-    public static final String UUID_STR = "uuid";
-    public static final String PLAYER_DISPLAY_STR = "player_display";
-    public static final String BALANCE_STR = "balance";
-    public static final String CODE_STR = "code";
-    public static final String CODE_GROUP_STR = "group_name";
-    public static final String TIME_STR = "time";
-    public static final String COOLDOWN_STR = "cooldown";
-    public static final String XP_STR = "xp";
-    public static final String HOMES_STR = "homes";
-    public static final String CLEAR_STR = "clear";
-    public static final String LAST_STR = "last";
-    public static final String CASH_STR = "cash";
-    public static final String MUTED_STR = "muted";
-    public static final String HOURS_STR = "hours";
-
-    public static String getQueryCreateTable(final String table, final String values) {
+    public static String getQueryCreateTable(String table, String values) {
         return "CREATE TABLE IF NOT EXISTS " + table + " " + values + ";";
     }
 
-    public static String getQuerySelectAll(final String table) {
+    public static String getQuerySelectAll(String table) {
         return "SELECT * FROM " + table + ";";
     }
 
-    public static String getQueryDelete(final String table, final String type, final String value) {
+    public static String getQueryDelete(String table, String type, String value) {
         return "DELETE FROM " + table + " WHERE " + type + "='" + value + "';";
     }
 
-    public static String getQueryUpdate(final String table, final String type, final Object value, final String type2, final Object value2) {
+    public static String getQueryUpdate(String table, String type, Object value, String type2, Object value2) {
         return "UPDATE " + table + " SET " + type + "='" + value + "' WHERE " + type2 + "='" + value2 + "';";
     }
 
-    public static String getQueryInsert(final String table, final String type, final Object value, final String type2, final Object value2) {
+    public static String getQueryInsert(String table, String type, Object value, String type2, Object value2) {
         return "INSERT INTO " + table + " (" + type + ", " + type2 + ") VALUES ('" + value + "', '" + value2 + "');";
     }
 
-    public static String getQueryInsert(final String table, final String type, final Object value) {
+    public static String getQueryInsert(String table, String type, Object value) {
         return "INSERT INTO " + table + " " + type + " VALUES " + value + ";";
     }
 

@@ -60,7 +60,7 @@ public interface APICash {
     static void setCash(UUID uuid, int amount) {
         if (PluginVars.playerProfile.containsKey(uuid)) {
             PluginVars.playerProfile.get(uuid).setCash(amount);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.CASH_STR, amount, Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "cash", amount, "uuid", uuid.toString()));
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);

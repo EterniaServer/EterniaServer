@@ -11,11 +11,11 @@ public class TableCfg {
 
         if (EterniaLib.getMySQL()) {
             EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableKits,
-                    Constants.PRIMARY_KEY +
+                    "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, " +
                             "name VARCHAR(32), " +
                             "cooldown BIGINT(20))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tablePlayer,
-                    Constants.PRIMARY_KEY +
+                    "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, " +
                             "uuid VARCHAR(36), " +
                             "player_name VARCHAR(16), " +
                             "player_display VARCHAR(16), " +
@@ -28,11 +28,11 @@ public class TableCfg {
                             "muted BIGINT(20), " +
                             "homes VARCHAR(1024))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableLocations,
-                    Constants.PRIMARY_KEY +
+                    "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, " +
                             "name VARCHAR(32), " +
                             "location VARCHAR(64))"), false);
             EQueries.executeQuery(Constants.getQueryCreateTable(EterniaServer.configs.tableRewards,
-                    Constants.PRIMARY_KEY +
+                    "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, " +
                             "code VARCHAR(16), " +
                             "group_name VARCHAR(16))"), false);
         } else {

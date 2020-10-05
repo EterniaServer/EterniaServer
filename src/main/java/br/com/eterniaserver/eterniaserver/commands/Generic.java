@@ -69,7 +69,7 @@ public class Generic extends BaseCommand {
         if (EterniaServer.configs.moduleHomes || EterniaServer.configs.moduleTeleports) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
                 PluginVars.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
-                final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.configs.tableLocations), Constants.NAME_STR, Constants.LOCATION_STR);
+                final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.configs.tableLocations), "name", "location");
                 temp.forEach((k, v) -> {
                     final String[] split = v.split(":");
                     Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -320,28 +320,28 @@ public class Generic extends BaseCommand {
     private void getPlayersProfiles(ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
             final PlayerProfile playerProfile = new PlayerProfile(
-                    resultSet.getString(Constants.PLAYER_NAME_STR),
-                    resultSet.getLong(Constants.TIME_STR),
-                    resultSet.getLong(Constants.LAST_STR),
-                    resultSet.getLong(Constants.HOURS_STR)
+                    resultSet.getString("player_name"),
+                    resultSet.getLong("time"),
+                    resultSet.getLong("last"),
+                    resultSet.getLong("hours")
             );
             getModules(playerProfile, resultSet);
-            APIServer.putProfile(UUID.fromString(resultSet.getString(Constants.UUID_STR)), playerProfile);
+            APIServer.putProfile(UUID.fromString(resultSet.getString("uuid")), playerProfile);
         }
     }
 
     private void getModules(PlayerProfile playerProfile, ResultSet resultSet) throws SQLException {
         if (EterniaServer.configs.moduleCash) {
-            playerProfile.setCash(resultSet.getInt(Constants.CASH_STR));
+            playerProfile.setCash(resultSet.getInt("cash"));
         }
         if (EterniaServer.configs.moduleEconomy) {
-            playerProfile.setBalance(resultSet.getDouble(Constants.BALANCE_STR));
+            playerProfile.setBalance(resultSet.getDouble("balance"));
         }
         if (EterniaServer.configs.moduleExperience) {
-            playerProfile.setXp(resultSet.getInt(Constants.XP_STR));
+            playerProfile.setXp(resultSet.getInt("xp"));
         }
         if (EterniaServer.configs.moduleHomes) {
-            String result = resultSet.getString(Constants.HOMES_STR);
+            String result = resultSet.getString("homes");
             if (result != null) {
                 for (String home : result.split(":")) {
                     if (!playerProfile.getHomes().contains(home)) {
@@ -351,8 +351,8 @@ public class Generic extends BaseCommand {
             }
         }
         if (EterniaServer.configs.moduleChat) {
-            playerProfile.setMuted(resultSet.getLong(Constants.MUTED_STR));
-            playerProfile.setPlayerDisplayName(resultSet.getString(Constants.PLAYER_DISPLAY_STR));
+            playerProfile.setMuted(resultSet.getLong("muted"));
+            playerProfile.setPlayerDisplayName(resultSet.getString("player_display"));
         }
     }
 

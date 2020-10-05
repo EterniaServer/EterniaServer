@@ -23,7 +23,7 @@ public class Reward extends BaseCommand {
     private final byte[] bytes = new byte[20];
 
     public Reward() {
-        APIServer.updateRewardMap(EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.configs.tableRewards), Constants.CODE_STR, Constants.CODE_GROUP_STR));
+        APIServer.updateRewardMap(EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.configs.tableRewards), "code", "group_name"));
         Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(APIServer.getRewardMapSize())));
     }
 
@@ -56,11 +56,11 @@ public class Reward extends BaseCommand {
     }
 
     private void createKey(final String grupo, String key) {
-        EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableRewards, Constants.CODE_STR, key, Constants.CODE_GROUP_STR, grupo));
+        EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableRewards, "code", key, "group_name", grupo));
     }
 
     private void deleteKey(final String key) {
-        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.configs.tableRewards, Constants.CODE_STR, key));
+        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.configs.tableRewards, "code", key));
     }
 
     private void giveReward(String group, Player player) {

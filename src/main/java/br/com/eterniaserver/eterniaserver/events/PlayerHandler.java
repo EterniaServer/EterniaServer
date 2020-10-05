@@ -110,15 +110,15 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation(Constants.WARP_SPAWN) && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
-            event.setSpawnLocation(APIServer.getLocation(Constants.WARP_SPAWN));
+        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation("warp.spawn") && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
+            event.setSpawnLocation(APIServer.getLocation("warp.spawn"));
         }
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation(Constants.WARP_SPAWN)) {
-            event.setRespawnLocation(APIServer.getLocation(Constants.WARP_SPAWN));
+        if (EterniaServer.configs.moduleTeleports && APIServer.hasLocation("warp.spawn")) {
+            event.setRespawnLocation(APIServer.getLocation("warp.spawn"));
         }
     }
 
@@ -128,7 +128,7 @@ public class PlayerHandler implements Listener {
         final String playerName = player.getName();
         APIPlayer.removeFromAFK(playerName);
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.HOURS_STR, APIPlayer.getAndUpdateTimePlayed(uuid), Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "hours", APIPlayer.getAndUpdateTimePlayed(uuid), "uuid", uuid.toString()));
         if (EterniaServer.configs.moduleChat && player.hasPermission("eternia.spy")) {
             APIServer.removeFromSpy(playerName);
         }
@@ -224,7 +224,7 @@ public class PlayerHandler implements Listener {
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGIN, true, playerName, player.getDisplayName()));
 
         if (!APIPlayer.hasProfile(uuid)) {
-            PaperLib.teleportAsync(player, APIServer.getLocation(Constants.WARP_SPAWN));
+            PaperLib.teleportAsync(player, APIServer.getLocation("warp.spawn"));
             APIServer.playerProfileCreate(uuid, playerName, player.getFirstPlayed());
         } else {
             APIPlayer.updatePlayerProfile(uuid, player, System.currentTimeMillis());

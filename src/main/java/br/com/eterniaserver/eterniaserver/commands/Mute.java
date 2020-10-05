@@ -65,7 +65,7 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_MUTE, true, targetName, targetP.getDisplayName(), player.getName(), player.getDisplayName(), message));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.TIME_STR, time, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "time", time, "uuid", uuid.toString()));
         APIPlayer.putMutedTime(uuid, time);
     }
 
@@ -79,7 +79,7 @@ public class Mute extends BaseCommand {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         APIPlayer.putMutedTime(uuid, time);
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_UNMUTE, true, playerName, target.getPlayer().getDisplayName(), player.getName(), player.getDisplayName()));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.TIME_STR, time, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "time", time, "uuid", uuid.toString()));
     }
 
     @CommandAlias("temp|temporario")
@@ -94,7 +94,7 @@ public class Mute extends BaseCommand {
         final String targetName = target.getPlayer().getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(targetName);
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_TEMP_MUTE, true, targetName, target.getPlayer().getDisplayName(), String.valueOf(time), player.getName(), player.getDisplayName(), message));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.TIME_STR, timeInMillis, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "time", timeInMillis, "uuid", uuid.toString()));
         APIPlayer.putMutedTime(uuid, timeInMillis);
     }
 

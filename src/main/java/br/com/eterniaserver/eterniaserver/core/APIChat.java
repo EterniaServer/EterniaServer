@@ -17,7 +17,7 @@ public interface APIChat {
             if (p.hasPermission("eternia.chat.staff")) {
                 String format = EterniaServer.chat.staffFormat;
                 format = APIChat.setPlaceholders(player, format);
-                format = APIServer.getColor(format.replace(Constants.MESSAGE, message));
+                format = APIServer.getColor(format.replace("%message%", message));
                 p.sendMessage(format);
             }
         }
@@ -44,9 +44,9 @@ public interface APIChat {
     private static String getLocalFormat(String message, final Player player) {
         String format = APIChat.setPlaceholders(player, EterniaServer.chat.localFormat);
         if (player.hasPermission("eternia.chat.color")) {
-            return APIServer.getColor(format.replace(Constants.MESSAGE, message));
+            return APIServer.getColor(format.replace("%message%", message));
         } else {
-            return(format.replace(Constants.MESSAGE, message));
+            return(format.replace("%message%", message));
         }
     }
 

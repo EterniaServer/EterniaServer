@@ -28,9 +28,9 @@ public class KitsCfg {
         ConfigurationSection configurationSection = kits.getConfigurationSection("kits");
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
-                List<String> lista = kits.getStringList(Constants.KITS_STR + key + ".text");
+                List<String> lista = kits.getStringList("kits." + key + ".text");
                 APIServer.putColorOnList(lista);
-                tempKitList.put(key, new CustomKit(kits.getInt(Constants.KITS_STR + key + ".delay"), kits.getStringList(Constants.KITS_STR + key + ".command"), lista));
+                tempKitList.put(key, new CustomKit(kits.getInt("kits." + key + ".delay"), kits.getStringList("kits." + key + ".command"), lista));
             }
         }
 
@@ -42,9 +42,9 @@ public class KitsCfg {
         tempKitList.forEach(this.kitList::put);
 
         tempKitList.forEach((k, v) -> {
-            outKit.set(Constants.KITS_STR + k + ".delay", v.getDelay());
-            outKit.set(Constants.KITS_STR + k + ".command", v.getCommands());
-            outKit.set(Constants.KITS_STR + k + ".text", v.getMessages());
+            outKit.set("kits." + k + ".delay", v.getDelay());
+            outKit.set("kits." + k + ".command", v.getCommands());
+            outKit.set("kits." + k + ".text", v.getMessages());
         });
 
         outKit.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");

@@ -229,9 +229,9 @@ public interface APIPlayer {
         if (!playerProfile.getPlayerName().equals(playerName)) {
             playerProfile.setPlayerName(playerName);
             PluginVars.playerProfile.put(uuid, playerProfile);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.PLAYER_NAME_STR, playerName, Constants.UUID_STR, uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "player_name", playerName, "uuid", uuid.toString()));
         }
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.LAST_STR, time, Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "last", time, "uuid", uuid.toString()));
     }
 
     static boolean hasNickRequest(UUID uuid) {
@@ -256,7 +256,7 @@ public interface APIPlayer {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
 
-        if (string.equals(Constants.CLEAR_STR)) {
+        if (string.equals("clear")) {
             player.setDisplayName(playerName);
             EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CLEAR);
             return;
@@ -283,7 +283,7 @@ public interface APIPlayer {
             return;
         }
 
-        if (string.equals(Constants.CLEAR_STR)) {
+        if (string.equals("clear")) {
             final String playerName = player.getName();
             final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
             player.setDisplayName(playerName);
@@ -298,7 +298,7 @@ public interface APIPlayer {
 
     private static void changeNickName(final Player target, final Player player, final String string) {
         final String targetName = target.getName();
-        if (string.equals(Constants.CLEAR_STR)) {
+        if (string.equals("clear")) {
             EterniaServer.msg.sendMessage(target, Messages.CHAT_NICK_CLEAR_BY, player.getName(), player.getDisplayName());
             EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CLEAR_FROM, targetName, target.getDisplayName());
             target.setDisplayName(targetName);
@@ -310,7 +310,7 @@ public interface APIPlayer {
     }
 
     private static void saveToSQL(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.PLAYER_DISPLAY_STR, PluginVars.playerProfile.get(uuid).getPlayerDisplayName(), Constants.UUID_STR, uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "player_display", PluginVars.playerProfile.get(uuid).getPlayerDisplayName(), "uuid", uuid.toString()));
     }
 
 }

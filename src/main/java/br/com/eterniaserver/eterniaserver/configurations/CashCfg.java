@@ -58,25 +58,25 @@ public class CashCfg {
         for (int i = 0; i < menuGuiTemp.size(); i++) {
             ItemStack itemStack = menuGuiTemp.get(i);
             if (!itemStack.isSimilar(getGlass())) {
-                outCash.set(Constants.MENU + i + Constants.MATERIAL, itemStack.getType().name());
-                outCash.set(Constants.MENU + i + Constants.NAME, itemStack.getItemMeta().getDisplayName());
+                outCash.set("menu." + i + ".material", itemStack.getType().name());
+                outCash.set("menu." + i + ".name", itemStack.getItemMeta().getDisplayName());
                 List<String> listando = itemStack.getLore();
-                outCash.set(Constants.MENU + i + Constants.LORE, listando);
+                outCash.set("menu." + i + ".lore", listando);
                 String guiName = guisTemp.get(i);
-                outCash.set(Constants.MENU + i + ".gui", guiName);
+                outCash.set("menu." + i + ".gui", guiName);
                 List<CashItem> cashItems = othersGuiTemp.get(i);
-                outCash.set(Constants.GUIS + guiName + ".size", cashItems.size());
+                outCash.set("guis." + guiName + ".size", cashItems.size());
                 for (int j = 0; j < cashItems.size(); j++) {
                     CashItem cashItem = cashItems.get(j);
                     if (!cashItem.isGlass()) {
-                        outCash.set(Constants.GUIS + guiName + "." + j + ".cost", cashItem.getCost());
-                        outCash.set(Constants.GUIS + guiName + "." + j + Constants.MATERIAL, cashItem.getItemStack().getType().name());
-                        outCash.set(Constants.GUIS + guiName + "." + j + Constants.NAME, cashItem.getItemStack().getItemMeta().getDisplayName());
-                        outCash.set(Constants.GUIS + guiName + "." + j + ".commands", cashItem.getCommands());
+                        outCash.set("guis." + guiName + "." + j + ".cost", cashItem.getCost());
+                        outCash.set("guis." + guiName + "." + j + ".material", cashItem.getItemStack().getType().name());
+                        outCash.set("guis." + guiName + "." + j + ".name", cashItem.getItemStack().getItemMeta().getDisplayName());
+                        outCash.set("guis." + guiName + "." + j + ".commands", cashItem.getCommands());
                         List<String> lore = cashItem.getItemStack().getLore();
-                        outCash.set(Constants.GUIS + guiName + "." + j + Constants.LORE, lore);
+                        outCash.set("guis." + guiName + "." + j + ".lore", lore);
                         List<String> msgs = cashItem.getMessages();
-                        outCash.set(Constants.GUIS + guiName + "." + j + ".messages", msgs);
+                        outCash.set("guis." + guiName + "." + j + ".messages", msgs);
                     }
                 }
             }
@@ -123,32 +123,32 @@ public class CashCfg {
 
     private void loadMapFromArchive(FileConfiguration cashGui, Map<Integer, List<CashItem>> othersGuiTemp, List<ItemStack> menuGuiTemp, Map<Integer, String> guisTemp, Map<String, Integer> guisTempInvert) {
         for (int i = 0; i < cashGui.getInt("menu.size"); i++) {
-            if (cashGui.contains(Constants.MENU + i)) {
-                ItemStack itemStack = new ItemStack(Material.valueOf(cashGui.getString(Constants.MENU + i + Constants.MATERIAL)));
+            if (cashGui.contains("menu." + i)) {
+                ItemStack itemStack = new ItemStack(Material.valueOf(cashGui.getString("menu." + i + "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ")));
                 ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(cashGui.getString(Constants.MENU + i + Constants.NAME).replace('$', (char) 0x00A7));
-                List<String> listando = cashGui.getStringList(Constants.MENU + i + Constants.LORE);
+                itemMeta.setDisplayName(cashGui.getString("menu." + i + ".name").replace('$', (char) 0x00A7));
+                List<String> listando = cashGui.getStringList("menu." + i + ".lore");
                 APIServer.putColorOnList(listando);
                 itemMeta.setLore(listando);
                 itemStack.setItemMeta(itemMeta);
                 menuGuiTemp.add(itemStack);
-                String guiName = cashGui.getString(Constants.MENU + i + ".gui");
+                String guiName = cashGui.getString("menu." + i + ".gui");
                 guisTemp.put(i, guiName);
                 guisTempInvert.put(guiName, i);
                 List<CashItem> tempList = new ArrayList<>();
-                for (int j = 0; j < cashGui.getInt(Constants.GUIS + guiName + ".size"); j++) {
-                    if (cashGui.contains(Constants.GUIS + guiName + "." + j)) {
-                        ItemStack guiItem = new ItemStack(Material.valueOf(cashGui.getString(Constants.GUIS + guiName + "." + j + Constants.MATERIAL)));
+                for (int j = 0; j < cashGui.getInt("guis." + guiName + ".size"); j++) {
+                    if (cashGui.contains("guis." + guiName + "." + j)) {
+                        ItemStack guiItem = new ItemStack(Material.valueOf(cashGui.getString("guis." + guiName + "." + j + "(id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, ")));
                         ItemMeta guiMeta = guiItem.getItemMeta();
-                        guiMeta.setDisplayName(cashGui.getString(Constants.GUIS + guiName + "." + j + Constants.NAME).replace('$', (char) 0x00A7));
-                        List<String> listandoNovo = cashGui.getStringList(Constants.GUIS + guiName + "." + j + Constants.LORE);
+                        guiMeta.setDisplayName(cashGui.getString("guis." + guiName + "." + j + ".name").replace('$', (char) 0x00A7));
+                        List<String> listandoNovo = cashGui.getStringList("guis." + guiName + "." + j + ".lore");
                         APIServer.putColorOnList(listandoNovo);
                         guiMeta.setLore(listandoNovo);
                         guiItem.setItemMeta(guiMeta);
-                        List<String> commands = cashGui.getStringList(Constants.GUIS + guiName + "." + j + ".commands");
-                        List<String> msgs = cashGui.getStringList(Constants.GUIS + guiName + "." + j + ".messages");
+                        List<String> commands = cashGui.getStringList("guis." + guiName + "." + j + ".commands");
+                        List<String> msgs = cashGui.getStringList("guis." + guiName + "." + j + ".messages");
                         APIServer.putColorOnList(msgs);
-                        tempList.add(new CashItem(guiItem, cashGui.getInt(Constants.GUIS + guiName + "." + j + ".cost"), msgs, commands, false));
+                        tempList.add(new CashItem(guiItem, cashGui.getInt("guis." + guiName + "." + j + ".cost"), msgs, commands, false));
                     } else {
                         tempList.add(new CashItem(getGlass(), 0, null, null, true));
                     }

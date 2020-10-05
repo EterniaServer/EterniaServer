@@ -126,7 +126,7 @@ public interface APIServer {
         for (String kit : EterniaServer.kits.kitList.keySet()) {
             final String kitName = kit + "." + playerName;
             if (!PluginVars.kitsCooldown.containsKey(kitName)) {
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableKits, Constants.NAME_STR, kitName, Constants.COOLDOWN_STR, time));
+                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableKits, "name", kitName, "cooldown", time));
                 PluginVars.kitsCooldown.put(kitName, time);
             }
         }

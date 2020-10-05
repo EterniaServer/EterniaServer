@@ -74,7 +74,7 @@ public interface APIEconomy {
         if (EterniaServer.configs.moduleEconomy) {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, Constants.MONEY_TABLE_PREFIX,
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
                     "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
@@ -101,7 +101,7 @@ public interface APIEconomy {
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, Constants.MONEY_TABLE_PREFIX,
+                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
                         "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "')"));
                 final PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
@@ -141,11 +141,11 @@ public interface APIEconomy {
         if (EterniaServer.configs.moduleEconomy) {
             if (PluginVars.playerProfile.containsKey(uuid)) {
                 PluginVars.playerProfile.get(uuid).setBalance(amount);
-                EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, Constants.BALANCE_STR, amount, Constants.UUID_STR, uuid.toString()));
+                EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "balance", amount, "uuid", uuid.toString()));
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, Constants.MONEY_TABLE_PREFIX,
+                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
                         "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "')"));
                 final PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
@@ -214,9 +214,9 @@ public interface APIEconomy {
             if (EterniaLib.getMySQL()) {
                 EterniaLib.getConnections().executeSQLQuery(connection -> {
                     final PreparedStatement getHashMap = connection.prepareStatement(
-                            "SELECT " + Constants.UUID_STR +
+                            "SELECT " + "uuid" +
                                     " FROM " + EterniaServer.configs.tablePlayer +
-                                    " ORDER BY " + Constants.BALANCE_STR + " DESC LIMIT " + size + ";");
+                                    " ORDER BY " + "balance" + " DESC LIMIT " + size + ";");
                     final ResultSet resultSet = getHashMap.executeQuery();
                     getBaltop(resultSet);
                     getHashMap.close();
@@ -224,9 +224,9 @@ public interface APIEconomy {
                 });
             } else {
                 try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
-                        "SELECT " + Constants.UUID_STR +
+                        "SELECT " + "uuid" +
                                 " FROM " + EterniaServer.configs.tablePlayer +
-                                " ORDER BY " + Constants.BALANCE_STR + " DESC LIMIT " + size + ";"); ResultSet resultSet = getHashMap.executeQuery()) {
+                                " ORDER BY " + "balance" + " DESC LIMIT " + size + ";"); ResultSet resultSet = getHashMap.executeQuery()) {
                     getBaltop(resultSet);
                 } catch (SQLException ignored) {
                     APIServer.logError("Erro ao se conectar com a database", 3);
@@ -242,7 +242,7 @@ public interface APIEconomy {
         UUID uuid;
         while (resultSet.next()) {
             if (tempList.size() < 10) {
-                uuid = UUID.fromString(resultSet.getString(Constants.UUID_STR));
+                uuid = UUID.fromString(resultSet.getString("uuid"));
                 if (!EterniaServer.configs.blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
                     tempList.add(uuid);
                 }
