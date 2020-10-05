@@ -1,11 +1,11 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APICash;
 import br.com.eterniaserver.eterniaserver.core.APIPlayer;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

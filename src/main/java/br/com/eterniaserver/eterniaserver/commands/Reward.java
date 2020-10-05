@@ -1,9 +1,10 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
+import br.com.eterniaserver.acf.annotation.CommandAlias;
+import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
-
 import br.com.eterniaserver.acf.BaseCommand;
-import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
@@ -16,7 +17,6 @@ import org.bukkit.entity.Player;
 
 import java.security.SecureRandom;
 
-@SuppressWarnings("squid:S2245")
 public class Reward extends BaseCommand {
 
     private final SecureRandom random = new SecureRandom();

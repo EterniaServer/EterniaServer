@@ -3,9 +3,14 @@ package br.com.eterniaserver.eterniaserver;
 import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.*;
+import br.com.eterniaserver.eterniaserver.core.PluginClear;
+import br.com.eterniaserver.eterniaserver.core.PluginTicks;
+import br.com.eterniaserver.eterniaserver.core.PluginTimer;
+import br.com.eterniaserver.eterniaserver.core.PluginVars;
+import br.com.eterniaserver.eterniaserver.core.UtilAccelerateWorld;
+import br.com.eterniaserver.eterniaserver.core.UtilCustomCommands;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.*;
 
 import org.bukkit.Bukkit;
 

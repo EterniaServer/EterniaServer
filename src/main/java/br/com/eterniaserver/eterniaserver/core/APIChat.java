@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;

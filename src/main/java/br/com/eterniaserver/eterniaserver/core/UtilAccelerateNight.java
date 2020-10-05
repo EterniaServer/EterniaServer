@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.World;

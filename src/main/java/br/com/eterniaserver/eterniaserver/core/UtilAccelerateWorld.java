@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

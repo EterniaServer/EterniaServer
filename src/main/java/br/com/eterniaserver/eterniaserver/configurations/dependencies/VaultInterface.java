@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
