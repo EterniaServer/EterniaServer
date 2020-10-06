@@ -18,6 +18,7 @@ import br.com.eterniaserver.eterniaserver.events.EntityHandler;
 import br.com.eterniaserver.eterniaserver.events.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.events.ServerHandler;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
@@ -43,7 +44,7 @@ public class EterniaServer extends JavaPlugin {
 
         this.getServer().getPluginManager().registerEvents(new BlockHandler(), this);
         this.getServer().getPluginManager().registerEvents(new EntityHandler(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerHandler(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerHandler(this), this);
         this.getServer().getPluginManager().registerEvents(new ServerHandler(), this);
 
     }

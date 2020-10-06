@@ -59,6 +59,7 @@ public class PluginVars {
 
     protected static final Set<String> god = new HashSet<>();
     protected static final Set<String> afk = new HashSet<>();
+    protected static final Set<Player> vanished = new HashSet<>();
 
     protected static final Map<Player, PlayerTeleport> teleports = new HashMap<>();
 

@@ -21,56 +21,57 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@CommandAlias("ch|channels")
-@CommandPermission("eternia.chat.channels")
+@CommandAlias("%channel")
 public class Channel extends BaseCommand {
 
     @Default
     @CatchUnknown
     @HelpCommand
-    @Syntax("<página>")
-    @Description(" Ajuda para o sistema de Canais")
+    @Syntax("%channel_syntax")
+    @CommandPermission("%channel_perm")
+    @Description("%channel_description")
     public void onChannels(CommandHelp help) {
         help.showHelp();
     }
 
-    @Subcommand("local")
-    @CommandAlias("l|local")
-    @Syntax("<msg>")
-    @Description(" Fale ou vá para o canal local")
-    public void toLocal(Player player, @Optional String[] messages) {
+    @Subcommand("%channel_local")
+    @CommandAlias("%channel_local_aliases")
+    @Syntax("%channel_local_syntax")
+    @CommandPermission("%channel_local_perm")
+    @Description("%channel_local_description")
+    public void toLocal(Player player, @Optional String messages) {
         changeChannel(0, EterniaServer.configs.chLocal, player, messages);
     }
 
-    @Subcommand("global")
-    @CommandAlias("g|global")
-    @Syntax("<msg>")
+    @Subcommand("%channel_global")
+    @CommandAlias("%channel_global_aliases")
+    @Syntax("%channel_global_syntax")
     @CommandCompletion("@players")
-    @Description(" Fale ou vá para o canal global")
-    public void toGlobal(Player player, @Optional String[] messages) {
+    @CommandPermission("%channel_global_perm")
+    @Description("%channel_global_description")
+    public void toGlobal(Player player, @Optional String messages) {
         changeChannel(1, EterniaServer.configs.chGlobal, player, messages);
     }
 
-    @Subcommand("staff")
-    @CommandAlias("s|a|staff")
-    @Syntax("<msg>")
-    @CommandPermission("eternia.chat.staff")
-    @Description(" Fale ou vá para o canal de staffs")
-    public void toStaff(Player player, @Optional String[] messages) {
+    @Subcommand("%channel_staff")
+    @CommandAlias("%channel_staff_aliases")
+    @Syntax("%channel_staff_syntax")
+    @CommandCompletion("@players")
+    @CommandPermission("%channel_staff_perm")
+    @Description("%channel_staff_description")
+    public void toStaff(Player player, @Optional String messages) {
         changeChannel(2, EterniaServer.configs.chStaff, player, messages);
     }
 
-    private void changeChannel(final int channel, final String channelName, final Player player, final String[] messages) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        if (messages != null && messages.length == 0) {
+    private void changeChannel(int channel, String channelName, Player player, String messages) {
+        UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        if (messages == null || messages.equals("")) {
             APIChat.setChannel(uuid, channel);
             EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channelName);
         } else {
             int defaultChannel = APIChat.getChannel(uuid);
             APIChat.setChannel(uuid, channel);
-            StringBuilder sb = new StringBuilder();
-            for (String arg : messages) sb.append(arg).append(" ");
-            player.chat(sb.substring(0, sb.length() - 1));
+            player.chat(messages);
             APIChat.setChannel(uuid, defaultChannel);
         }
     }

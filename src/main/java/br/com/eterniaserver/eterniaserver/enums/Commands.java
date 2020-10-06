@@ -9,6 +9,18 @@ public enum Commands {
     CASH_BALANCE,
     CASH_ACCEPT,
     CASH_DENY,
-    CASH_PAY
+    CASH_PAY,
+    CHANNEL,
+    CHANNEL_LOCAL,
+    CHANNEL_GLOBAL,
+    CHANNEL_STAFF,
+    CHAT,
+    CHAT_CLEAR,
+    CHAT_BROADCAST,
+    CHAT_VANISH,
+    CHAT_IGNORE,
+    CHAT_SPY,
+    CHAT_REPLY,
+    CHAT_TELL
 
 }

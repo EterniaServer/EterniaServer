@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface APIPlayer {
@@ -142,6 +143,26 @@ public interface APIPlayer {
 
         player.setAllowFlight(true);
         player.setFlying(true);
+    }
+
+    static Set<Player> getVanishList() {
+        return PluginVars.vanished;
+    }
+
+    static void removeFromVanish(Player player) {
+        PluginVars.vanished.remove(player);
+    }
+
+    static boolean isVanished(Player player) {
+        return PluginVars.vanished.contains(player);
+    }
+
+    static void changeVanishState(Player player) {
+        if (PluginVars.vanished.contains(player)) {
+            PluginVars.vanished.remove(player);
+        } else {
+            PluginVars.vanished.add(player);
+        }
     }
 
     static boolean isOnPvP(UUID uuid) {

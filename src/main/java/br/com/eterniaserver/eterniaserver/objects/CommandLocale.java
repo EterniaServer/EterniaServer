@@ -9,13 +9,15 @@ public class CommandLocale {
     public final String syntax;
     public final String description;
     public final String perm;
+    public final String aliases;
 
-    public CommandLocale(Commands id, String name, String syntax, String description, String perm) {
+    public CommandLocale(Commands id, String name, String syntax, String description, String perm, String aliases) {
         this.id = id;
         this.name = name;
         this.syntax = syntax;
         this.description = description;
         this.perm = perm;
+        this.aliases = aliases;
     }
 
 }

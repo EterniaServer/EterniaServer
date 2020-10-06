@@ -43,7 +43,12 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayerHandler implements Listener {
 
+    private final EterniaServer plugin;
     private final List<Material> list = List.of(Material.RAIL, Material.POWERED_RAIL, Material.DETECTOR_RAIL, Material.ACTIVATOR_RAIL);
+
+    public PlayerHandler(EterniaServer plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -132,6 +137,7 @@ public class PlayerHandler implements Listener {
         if (EterniaServer.configs.moduleChat && player.hasPermission("eternia.spy")) {
             APIChat.removeFromSpy(playerName);
         }
+        APIPlayer.removeFromVanish(player);
         event.setQuitMessage(null);
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGOUT, true, playerName, player.getDisplayName()));
     }
@@ -237,6 +243,10 @@ public class PlayerHandler implements Listener {
             if (APIPlayer.hasProfile(uuid)) {
                 player.setDisplayName(APIPlayer.getDisplayName(uuid));
             }
+        }
+
+        for (Player p : APIPlayer.getVanishList()) {
+            player.hidePlayer(plugin, p);
         }
 
         APIServer.playerKitsCreate(playerName);
