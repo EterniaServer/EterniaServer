@@ -105,7 +105,7 @@ public class Teleport extends BaseCommand {
                 EterniaServer.msg.sendMessage(player, Messages.ECO_NO_MONEY);
             }
         } else {
-            EterniaServer.msg.sendMessage(player, Messages.TELEPORT_BACK_NOT_DIED);
+            EterniaServer.msg.sendMessage(player, Messages.TELEPORT_BACK_NOT_TP);
         }
     }
 

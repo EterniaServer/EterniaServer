@@ -33,6 +33,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
@@ -110,6 +111,15 @@ public class PlayerHandler implements Listener {
         if (EterniaServer.configs.moduleTeleports) {
             final Player player = event.getEntity();
             APIServer.putBackLocation(player.getName(), player.getLocation());
+        }
+    }
+
+    @EventHandler (priority = EventPriority.MONITOR)
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (event.isCancelled()) return;
+
+        if (EterniaServer.configs.moduleTeleports) {
+            APIServer.putBackLocation(event.getPlayer().getName(), event.getFrom());
         }
     }
 
@@ -230,7 +240,6 @@ public class PlayerHandler implements Listener {
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGIN, true, playerName, player.getDisplayName()));
 
         if (!APIPlayer.hasProfile(uuid)) {
-            PaperLib.teleportAsync(player, APIServer.getLocation("warp.spawn"));
             APIServer.playerProfileCreate(uuid, playerName, player.getFirstPlayed());
         } else {
             APIPlayer.updatePlayerProfile(uuid, player, System.currentTimeMillis());

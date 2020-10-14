@@ -117,9 +117,9 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.TELEPORT_RECEIVED, "Você recebeu um pedido de tpa de $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.TELEPORT_MOVED, "Você se moveu e por isso o teleporte foi cancelado$8.", null);
         this.addDefault(defaults, Messages.TELEPORT_TIMING, "Você irá ser teleportado em $3{0}$7 segundos$8.", "0: tempo para ser teleportado");
-        this.addDefault(defaults, Messages.TELEPORT_BACK_NOT_DIED, "Você ainda não morreu para poder usar esse comando$8.", null);
-        this.addDefault(defaults, Messages.TELEPORT_BACK_WITH_COST, "Você foi teleportado até o local de sua morte por $3{0}$8.", "0: custo do back");
-        this.addDefault(defaults, Messages.TELEPORT_BACK_WITHOUT_COST, "Você foi teleportado até o local de sua morte de graça$8.", null);
+        this.addDefault(defaults, Messages.TELEPORT_BACK_NOT_TP, "Você ainda não se teleportou para usar esse comando$8.", null);
+        this.addDefault(defaults, Messages.TELEPORT_BACK_WITH_COST, "Você foi teleportado até o seu local anterior por $3{0}$8.", "0: custo do back");
+        this.addDefault(defaults, Messages.TELEPORT_BACK_WITHOUT_COST, "Você foi teleportado até o seu local anterior de graça$8.", null);
         this.addDefault(defaults, Messages.REWARD_INVALID_KEY, "$3{0}$7 não é uma chave válida$8.", "0: chave");
         this.addDefault(defaults, Messages.REWARD_CREATED, "Reward criado com sucesso chave $3{0}$8.", "0: chave");
         this.addDefault(defaults, Messages.REWARD_NOT_FOUND, "Não foi encontrado nenhum reward com o nome de $3{0}$8.", "0: reward");
