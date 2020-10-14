@@ -39,11 +39,11 @@ public class UtilGetRuntime {
         return seconds;
     }
 
-    public long getFreemem() {
+    public long getFreeMem() {
         return freemem;
     }
 
-    public long getTotalmem() {
+    public long getTotalMem() {
         return totalmem;
     }
 

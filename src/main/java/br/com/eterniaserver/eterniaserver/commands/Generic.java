@@ -117,7 +117,7 @@ public class Generic extends BaseCommand {
     @CommandPermission("eternia.mem")
     public void onMem(CommandSender player) {
         getRuntime.recalculateRuntime();
-        EterniaServer.msg.sendMessage(player, Messages.STATS_MEM, String.valueOf(getRuntime.getFreemem()), String.valueOf(getRuntime.getTotalmem()));
+        EterniaServer.msg.sendMessage(player, Messages.STATS_MEM, String.valueOf(getRuntime.getFreeMem()), String.valueOf(getRuntime.getTotalMem()));
         EterniaServer.msg.sendMessage(player, Messages.STATS_HOURS, String.valueOf(getRuntime.getDays()), String.valueOf(getRuntime.getHours()), String.valueOf(getRuntime.getMinutes()), String.valueOf(getRuntime.getSeconds()));
     }
 
@@ -125,7 +125,7 @@ public class Generic extends BaseCommand {
     @CommandPermission("eternia.mem.all")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
-        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.STATS_MEM, true, String.valueOf(getRuntime.getFreemem()), String.valueOf(getRuntime.getTotalmem())));
+        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.STATS_MEM, true, String.valueOf(getRuntime.getFreeMem()), String.valueOf(getRuntime.getTotalMem())));
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.STATS_HOURS, true, String.valueOf(getRuntime.getDays()), String.valueOf(getRuntime.getHours()), String.valueOf(getRuntime.getMinutes()), String.valueOf(getRuntime.getSeconds())));
     }
 

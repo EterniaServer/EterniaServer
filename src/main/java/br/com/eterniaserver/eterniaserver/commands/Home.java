@@ -164,7 +164,6 @@ public class Home extends BaseCommand {
         if (!t) {
             result.append(home);
             APIPlayer.updateHome(uuid, home);
-            values.add(home);
             EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "homes", result.toString(), "uuid", uuid.toString()));
             EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableLocations, "name", homeName, "location", saveloc));
         } else {
