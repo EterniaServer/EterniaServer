@@ -53,6 +53,13 @@ public interface APIChat {
         }
     }
 
+    /**
+     * Make a player send a private message
+     * to other player
+     * @param player the sender's player object
+     * @param target the target's player object
+     * @param s the message
+     */
     static void sendPrivate(final Player player, final Player target, final String s) {
         final String playerDisplay = player.getDisplayName();
         final String targetDisplay = target.getDisplayName();

@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.events;
 
+import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
@@ -49,8 +50,8 @@ public class BlockHandler implements Listener {
         if (block.getType() == Material.SPAWNER) {
             final ItemMeta meta = event.getItemInHand().getItemMeta();
             if (meta != null) {
-                final String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
-                final EntityType entity = EntityType.valueOf(entityName);
+                String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
+                EntityType entity = EntityType.valueOf(entityName);
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 spawner.setSpawnedType(entity);
                 spawner.update();
@@ -123,7 +124,7 @@ public class BlockHandler implements Listener {
         }
     }
 
-    private void giveSpawner(final Player player, final Material material, Block block) {
+    private void giveSpawner(Player player, Material material, Block block) {
         double random = Math.random();
         if (random < EterniaServer.configs.dropChance) {
             if (EterniaServer.configs.invDrop) {
@@ -144,14 +145,20 @@ public class BlockHandler implements Listener {
         }
     }
 
-    private ItemStack getSpawner(final Block block, final Material material) {
-        final CreatureSpawner spawner = (CreatureSpawner) block.getState();
+    private ItemStack getSpawner(Block block, Material material) {
+        CreatureSpawner spawner = (CreatureSpawner) block.getState();
+        EntityType entityType = spawner.getSpawnedType();
+
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         String mobFormatted = spawner.getSpawnedType().toString();
         meta.setDisplayName(PluginVars.colors.get(8) + "[" + EterniaServer.configs.mobSpawnerColor + mobFormatted + PluginVars.colors.get(7) + " Spawner" +  PluginVars.colors.get(8) + "]");
         item.setItemMeta(meta);
-        return item;
+
+        NBTItem nbtItem = new NBTItem(item);
+        nbtItem.setString("ms_mob", entityType.name());
+
+        return nbtItem.getItem();
     }
 
     private boolean isBlackListWorld(final String worldName) {
