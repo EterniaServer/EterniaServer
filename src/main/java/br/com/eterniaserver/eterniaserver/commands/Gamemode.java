@@ -100,13 +100,13 @@ public class Gamemode extends BaseCommand {
     private String getType(int type) {
         switch (type) {
             case 0:
-                return EterniaServer.configs.gmSurvival;
+                return EterniaServer.constants.gmSurvival;
             case 1:
-                return EterniaServer.configs.gmCreative;
+                return EterniaServer.constants.gmCreative;
             case 2:
-                return EterniaServer.configs.gmAdventure;
+                return EterniaServer.constants.gmAdventure;
             default:
-                return EterniaServer.configs.gmSpectator;
+                return EterniaServer.constants.gmSpectator;
         }
     }
 

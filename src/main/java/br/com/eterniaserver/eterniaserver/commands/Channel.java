@@ -40,7 +40,7 @@ public class Channel extends BaseCommand {
     @CommandPermission("%channel_local_perm")
     @Description("%channel_local_description")
     public void toLocal(Player player, @Optional String messages) {
-        changeChannel(0, EterniaServer.configs.chLocal, player, messages);
+        changeChannel(0, EterniaServer.constants.chLocal, player, messages);
     }
 
     @Subcommand("%channel_global")
@@ -50,7 +50,7 @@ public class Channel extends BaseCommand {
     @CommandPermission("%channel_global_perm")
     @Description("%channel_global_description")
     public void toGlobal(Player player, @Optional String messages) {
-        changeChannel(1, EterniaServer.configs.chGlobal, player, messages);
+        changeChannel(1, EterniaServer.constants.chGlobal, player, messages);
     }
 
     @Subcommand("%channel_staff")
@@ -60,7 +60,7 @@ public class Channel extends BaseCommand {
     @CommandPermission("%channel_staff_perm")
     @Description("%channel_staff_description")
     public void toStaff(Player player, @Optional String messages) {
-        changeChannel(2, EterniaServer.configs.chStaff, player, messages);
+        changeChannel(2, EterniaServer.constants.chStaff, player, messages);
     }
 
     private void changeChannel(int channel, String channelName, Player player, String messages) {

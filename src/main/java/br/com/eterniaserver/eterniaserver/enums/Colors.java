@@ -4,22 +4,22 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 public enum Colors {
 
-    BLACK(EterniaServer.configs.cnBlack, "&o"),
-    DARK_BLUE(EterniaServer.configs.cnDarkBlue, "&1"),
-    DARK_GREEN(EterniaServer.configs.cnDarkGreen, "&2"),
-    DARK_AQUA(EterniaServer.configs.cnDarkAqua, "&3"),
-    DARK_RED(EterniaServer.configs.cnDarkRed, "&4"),
-    DARK_PURPLE(EterniaServer.configs.cnDarkPurple, "&5"),
-    GOLD(EterniaServer.configs.cnGold, "&6"),
-    GRAY(EterniaServer.configs.cnGray, "&7"),
-    DARK_GRAY(EterniaServer.configs.cnDarkGray, "&8"),
-    BLUE(EterniaServer.configs.cnBlue, "&9"),
-    GREEN(EterniaServer.configs.cnGreen, "&a"),
-    AQUA(EterniaServer.configs.cnAqua, "&b"),
-    RED(EterniaServer.configs.cnRed, "&c"),
-    LIGHT_PURPLE(EterniaServer.configs.cnLightPurple, "&d"),
-    YELLOW(EterniaServer.configs.cnYellow, "&e"),
-    WHITE(EterniaServer.configs.cnWhite, "&f");
+    BLACK(EterniaServer.constants.cnBlack, "&o"),
+    DARK_BLUE(EterniaServer.constants.cnDarkBlue, "&1"),
+    DARK_GREEN(EterniaServer.constants.cnDarkGreen, "&2"),
+    DARK_AQUA(EterniaServer.constants.cnDarkAqua, "&3"),
+    DARK_RED(EterniaServer.constants.cnDarkRed, "&4"),
+    DARK_PURPLE(EterniaServer.constants.cnDarkPurple, "&5"),
+    GOLD(EterniaServer.constants.cnGold, "&6"),
+    GRAY(EterniaServer.constants.cnGray, "&7"),
+    DARK_GRAY(EterniaServer.constants.cnDarkGray, "&8"),
+    BLUE(EterniaServer.constants.cnBlue, "&9"),
+    GREEN(EterniaServer.constants.cnGreen, "&a"),
+    AQUA(EterniaServer.constants.cnAqua, "&b"),
+    RED(EterniaServer.constants.cnRed, "&c"),
+    LIGHT_PURPLE(EterniaServer.constants.cnLightPurple, "&d"),
+    YELLOW(EterniaServer.constants.cnYellow, "&e"),
+    WHITE(EterniaServer.constants.cnWhite, "&f");
 
     final String colorName;
     final String colorStr;

@@ -158,7 +158,7 @@ public class Chat extends BaseCommand {
 
         if (targets == null) {
             APIChat.setChannel(uuid, 0);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, EterniaServer.configs.chLocal);
+            EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, EterniaServer.constants.chLocal);
             return;
         }
 

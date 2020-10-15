@@ -218,7 +218,7 @@ public class MsgCfg {
             final String path = getPath(messagesEnum);
 
             if (messageData == null) {
-                messageData = new CustomizableMessage(messagesEnum, EterniaServer.configs.serverPrefix +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
+                messageData = new CustomizableMessage(messagesEnum, EterniaServer.constants.serverPrefix +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
                 APIServer.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
             }
 
@@ -269,7 +269,7 @@ public class MsgCfg {
         }
 
         if (prefix) {
-            return EterniaServer.configs.serverPrefix + message;
+            return EterniaServer.constants.serverPrefix + message;
         }
 
         return message;

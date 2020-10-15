@@ -28,7 +28,7 @@ public interface APIPlayer {
     }
 
     static String isAFKPlaceholder(String playerName) {
-        return isAFK(playerName) ? EterniaServer.configs.afkPlaceholder : "";
+        return isAFK(playerName) ? EterniaServer.constants.afkPlaceholder : "";
     }
 
     static void removeFromAFK(String playerName) {
@@ -69,7 +69,7 @@ public interface APIPlayer {
     }
 
     static String isGodPlaceholder(String playerName) {
-        return isGod(playerName) ? EterniaServer.configs.godPlaceholder : "";
+        return isGod(playerName) ? EterniaServer.constants.godPlaceholder : "";
     }
 
     static long getMutedTime(UUID uuid) {

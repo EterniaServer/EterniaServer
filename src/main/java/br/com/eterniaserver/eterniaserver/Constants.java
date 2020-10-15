@@ -20,6 +20,7 @@ public class Constants {
     public static final String BLOCKS_FILE_PATH = Constants.DATA_LAYER_FOLDER_PATH + File.separator + "blocks.yml";
     public static final String MESSAGES_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "messages.yml";
     public static final String COMMANDS_LOCALE_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "commands.yml";
+    public static final String CONSTANTS_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "constants.yml";
 
     public static String getQueryCreateTable(String table, String values) {
         return "CREATE TABLE IF NOT EXISTS " + table + " " + values + ";";

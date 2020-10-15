@@ -32,9 +32,6 @@ public class ConfigsCfg {
     public final boolean moduleRewards;
     public final boolean moduleSchedule;
 
-    public final String afkPlaceholder;
-    public final String godPlaceholder;
-
     public final String tableKits;
     public final String tablePlayer;
     public final String tableRewards;
@@ -48,7 +45,6 @@ public class ConfigsCfg {
     public final int cooldown;
     public final int pvpTime;
     public final int clearRange;
-    public final String serverPrefix;
 
     public final List<Material> elevatorMaterials = new ArrayList<>();
     public final int elevatorMax;
@@ -74,37 +70,9 @@ public class ConfigsCfg {
 
     public final List<String> profileCustomMessages = new ArrayList<>();
 
-    public final String baltopTag;
-
-    public final String gmSpectator;
-    public final String gmSurvival;
-    public final String gmCreative;
-    public final String gmAdventure;
-
-    public final String cnBlack;
-    public final String cnDarkBlue;
-    public final String cnDarkGreen;
-    public final String cnDarkAqua;
-    public final String cnDarkRed;
-    public final String cnDarkPurple;
-    public final String cnGold;
-    public final String cnGray;
-    public final String cnDarkGray;
-    public final String cnBlue;
-    public final String cnGreen;
-    public final String cnAqua;
-    public final String cnRed;
-    public final String cnLightPurple;
-    public final String cnYellow;
-    public final String cnWhite;
-
-    public final String chLocal;
-    public final String chGlobal;
-    public final String chStaff;
-
     public ConfigsCfg() {
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONSTANTS_FILE_PATH));
         FileConfiguration outConfig = new YamlConfiguration();
 
         this.moduleBed = config.getBoolean("module.bed", true);
@@ -136,7 +104,6 @@ public class ConfigsCfg {
         this.cooldown = config.getInt("server.cooldown", 4);
         this.pvpTime = config.getInt("server.pvp-time", 15);
         this.clearRange = config.getInt("server.clear-range", 1);
-        this.serverPrefix = config.getString("server.prefix", "$8[$aE$9S$8]$7 ").replace('$', (char) 0x00A7);
 
         this.elevatorMaterials.add(Material.IRON_BLOCK);
         this.elevatorMax = config.getInt("elevator.max", 50);
@@ -161,38 +128,6 @@ public class ConfigsCfg {
         this.dropChance = config.getDouble("spawners.drop-chance", 1.0);
         this.preventAnvil = config.getBoolean("spawners.prevent-anvil", true);
         this.blacklistedWorldsSpawners.add("world_evento");
-
-        this.baltopTag = config.getString("strings.baltop", "$8[$2Magnata$8]").replace('$', (char) 0x00A7);
-
-        this.afkPlaceholder = config.getString("strings.afk", "$9 AFK").replace('$', (char) 0x00A7);
-        this.godPlaceholder = config.getString("strings.godmode", "$9 GOD").replace('$', (char) 0x00A7);
-
-        this.gmAdventure = config.getString("strings.gm.adventure", "aventura");
-        this.gmCreative = config.getString("strings.gm.creative", "criativo");
-        this.gmSpectator = config.getString("strings.gm.spectator", "espectador");
-        this.gmSurvival = config.getString("strings.gm.survival", "sobrevivência");
-
-        this.cnBlack = config.getString("strings.cn.black", "Preto");
-        this.cnDarkBlue = config.getString("strings.cn.darkblue", "Azul Escuro");
-        this.cnDarkGreen = config.getString("strings.cn.darkgreen", "Verde Escuro");
-        this.cnDarkAqua = config.getString("strings.cn.darkaqua", "Ciano");
-        this.cnDarkRed = config.getString("strings.cn.darkred", "Vermelho Escuro");
-        this.cnDarkPurple = config.getString("strings.cn.darkpurple", "Roxo");
-        this.cnGold = config.getString("strings.cn.gold", "Laranja");
-        this.cnGray = config.getString("strings.cn.gray", "Cinza");
-        this.cnDarkGray = config.getString("strings.cn.darkgray", "Cinza Escuro");
-        this.cnBlue = config.getString("strings.cn.blue", "Azul");
-        this.cnGreen = config.getString("strings.cn.green", "Verde");
-        this.cnAqua = config.getString("strings.cn.aqua", "Azul Claro");
-        this.cnRed = config.getString("strings.cn.red", "Vermelho");
-        this.cnLightPurple = config.getString("strings.cn.lightpurple", "Rosa");
-        this.cnYellow = config.getString("strings.cn.yellow", "Amarelo");
-        this.cnWhite = config.getString("strings.cn.white", "Branco");
-
-        this.chLocal = config.getString("strings.ch.local", "Local");
-        this.chGlobal = config.getString("strings.ch.global", "Global");
-        this.chStaff = config.getString("strings.ch.staff", "Staff");
-
 
         List<String> defaultMaterialBlocksList = new ArrayList<>();
         for (Material material : this.elevatorMaterials) {
@@ -281,7 +216,6 @@ public class ConfigsCfg {
         outConfig.set("server.cooldown", this.cooldown);
         outConfig.set("server.pvp-time", this.pvpTime);
         outConfig.set("server.clear-range", this.clearRange);
-        outConfig.set("server.prefix", this.serverPrefix);
 
         outConfig.set("elevator.block", tempBlockMaterials);
         outConfig.set("elevator.max", this.elevatorMax);
@@ -307,39 +241,8 @@ public class ConfigsCfg {
 
         outConfig.set("profile.custom-messages", tempCustomProfileMessages);
 
-        outConfig.set("strings.baltop", this.baltopTag);
-
-        outConfig.set("strings.afk", this.afkPlaceholder);
-        outConfig.set("strings.godmode", this.afkPlaceholder);
-
-        outConfig.set("strings.gm.adventure", this.gmAdventure);
-        outConfig.set("strings.gm.creative", this.gmCreative);
-        outConfig.set("strings.gm.spectator", this.gmSpectator);
-        outConfig.set("strings.gm.survival", this.gmSurvival);
-
-        outConfig.set("strings.cn.black", this.cnBlack);
-        outConfig.set("strings.cn.darkblue", this.cnDarkBlue);
-        outConfig.set("strings.cn.darkgreen", this.cnDarkGreen);
-        outConfig.set("strings.cn.darkaqua", this.cnDarkAqua);
-        outConfig.set("strings.cn.darkred", this.cnDarkRed);
-        outConfig.set("strings.cn.darkpurple", this.cnDarkPurple);
-        outConfig.set("strings.cn.gold", this.cnGold);
-        outConfig.set("strings.cn.gray", this.cnGray);
-        outConfig.set("strings.cn.darkgray", this.cnDarkGray);
-        outConfig.set("strings.cn.blue", this.cnBlue);
-        outConfig.set("strings.cn.green", this.cnGreen);
-        outConfig.set("strings.cn.aqua", this.cnAqua);
-        outConfig.set("strings.cn.red", this.cnRed);
-        outConfig.set("strings.cn.lightpurple", this.cnLightPurple);
-        outConfig.set("strings.cn.yellow", this.cnYellow);
-        outConfig.set("strings.cn.white", this.cnWhite);
-
-        outConfig.set("strings.ch.local", this.chLocal);
-        outConfig.set("strings.ch.global", this.chGlobal);
-        outConfig.set("strings.ch.staff", this.chStaff);
-
         try {
-            outConfig.save(Constants.CONFIG_FILE_PATH);
+            outConfig.save(Constants.CONSTANTS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

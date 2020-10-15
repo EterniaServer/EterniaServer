@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.configurations.configs.CashCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ChatCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ConfigsCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.KitsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
@@ -23,6 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
 
+    public static final ConstantsCfg constants = new ConstantsCfg();
     public static final ConfigsCfg configs = new ConfigsCfg();
     public static final MsgCfg msg = new MsgCfg();
     public static final CommandsLocaleCfg cmdsLocale = new CommandsLocaleCfg();
