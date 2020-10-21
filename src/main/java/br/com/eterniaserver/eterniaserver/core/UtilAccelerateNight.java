@@ -18,7 +18,7 @@ public class UtilAccelerateNight extends BukkitRunnable {
     public UtilAccelerateNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - PluginVars.nightTime) > 300) {
+        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
             Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.NIGHT_SKIPPING, true, world.getName()));
         }
     }
@@ -35,15 +35,15 @@ public class UtilAccelerateNight extends BukkitRunnable {
                 world.setStorm(false);
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
-                Bukkit.getScheduler().runTaskLater(plugin, () -> PluginVars.skippingWorlds.remove(world), 20);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
                 Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.NIGHT_SKIPPED, true, world.getName()));
                 APIServer.changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {
                 world.setTime(time + timeRate);
             }
-        } else if (PluginVars.skippingWorlds.contains(world)) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> PluginVars.skippingWorlds.remove(world), 20);
+        } else if (Vars.skippingWorlds.contains(world)) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
             this.cancel();
         }
     }

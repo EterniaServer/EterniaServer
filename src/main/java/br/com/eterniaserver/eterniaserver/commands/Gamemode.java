@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.CommandHelp;
+import br.com.eterniaserver.acf.annotation.CatchUnknown;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
@@ -13,88 +14,112 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandAlias("gamemode|gm")
-@CommandPermission("eternia.gamemode")
-@Description(" Altera o modo de jogo de um jogador")
+@CommandAlias("%gamemode")
 public class Gamemode extends BaseCommand {
 
     @Default
+    @CatchUnknown
     @HelpCommand
-    @Syntax("<página>")
-    @Description(" Ajuda para o comando Gamemode")
+    @Syntax("%gamemode_syntax")
+    @Description("%gamemode_description")
+    @CommandPermission("%gamemode_perm")
     public void onHelp(CommandHelp help) {
         help.showHelp();
     }
 
-    @Subcommand("survival|s|0|sobrevivencia")
     @CommandCompletion("@players")
-    @Description(" Define o modo de jogo de um jogador como sobrevivência")
-    @Syntax("<jogador>")
+    @Syntax("%gamemode_survival_syntax")
+    @Subcommand("%gamemode_survival")
+    @Description("%gamemode_survival_description")
+    @CommandPermission("%gamemode_survival_perm")
     public void onSurvival(CommandSender player, @Optional OnlinePlayer target) {
-        final Player playerZin = (Player) player;
-        if (target == null && playerZin != null) {
-            setGamemode(playerZin, GameMode.SURVIVAL, 0);
-        } else if (target != null) {
-            setGamemode(player, target.getPlayer(), GameMode.SURVIVAL, 0);
+        User user = new User(player);
+
+        if (target == null && user.isPlayer()) {
+            setGamemode(user, GameMode.SURVIVAL, 0);
+            return;
+        }
+
+        if (target != null) {
+            setGamemode(user, target.getPlayer(), GameMode.SURVIVAL, 0);
         }
     }
 
-    @Subcommand("creative|c|1|criativo")
     @CommandCompletion("@players")
-    @Description(" Define o modo de jogo de um jogador como criativo")
-    @Syntax("<jogador>")
+    @Syntax("%gamemode_creative_syntax")
+    @Subcommand("%gamemode_creative")
+    @Description("%gamemode_creative_description")
+    @CommandPermission("%gamemode_creative_perm")
     public void onCreative(CommandSender player, @Optional OnlinePlayer target) {
-        final Player playerZin = (Player) player;
-        if (target == null && playerZin != null) {
-            setGamemode(playerZin, GameMode.CREATIVE, 1);
-        } else if (target != null) {
-            setGamemode(player, target.getPlayer(), GameMode.CREATIVE, 1);
+        User user = new User(player);
+
+        if (target == null && user.isPlayer()) {
+            setGamemode(user, GameMode.CREATIVE, 1);
+            return;
+        }
+
+        if (target != null) {
+            setGamemode(user, target.getPlayer(), GameMode.CREATIVE, 1);
         }
     }
 
-    @Subcommand("adventure|a|2|aventura")
     @CommandCompletion("@players")
-    @Description(" Define o modo de jogo de um jogador como aventura")
-    @Syntax("<jogador>")
+    @Syntax("%gamemode_adventure_syntax")
+    @Subcommand("%gamemode_adventure")
+    @Description("%gamemode_adventure_description")
+    @CommandPermission("%gamemode_adventure_perm")
     public void onAdventure(CommandSender player, @Optional OnlinePlayer target) {
-        final Player playerZin = (Player) player;
-        if (target == null && playerZin != null) {
-            setGamemode(playerZin, GameMode.ADVENTURE, 2);
-        } else if (target != null) {
-            setGamemode(player, target.getPlayer(), GameMode.ADVENTURE, 2);
+        User user = new User(player);
+
+        if (target == null && user.isPlayer()) {
+            setGamemode(user, GameMode.ADVENTURE, 2);
+            return;
+        }
+
+        if (target != null) {
+            setGamemode(user, target.getPlayer(), GameMode.ADVENTURE, 2);
         }
     }
 
-    @Subcommand("spectator|spect|3|espectador")
     @CommandCompletion("@players")
-    @Description(" Define o modo de jogo de um jogador como espectador")
-    @Syntax("<jogador>")
+    @Syntax("%gamemode_spectator_syntax")
+    @Subcommand("%gamemode_spectator")
+    @Description("%gamemode_spectator_description")
+    @CommandPermission("%gamemode_spectator_perm")
     public void onSpectator(CommandSender player, @Optional OnlinePlayer target) {
-        final Player playerZin = (Player) player;
-        if (target == null && playerZin != null) {
-            setGamemode(playerZin, GameMode.SPECTATOR, 3);
-        } else if (target != null) {
-            setGamemode(player, target.getPlayer(), GameMode.SPECTATOR, 3);
+        User user = new User(player);
+
+        if (target == null && user.isPlayer()) {
+            setGamemode(user, GameMode.SPECTATOR, 3);
+            return;
+        }
+
+        if (target != null) {
+            setGamemode(user, target.getPlayer(), GameMode.SPECTATOR, 3);
         }
     }
 
-    private void setGamemode(Player player, GameMode gameMode, int type) {
-        final String typeName = getType(type);
-        player.setGameMode(gameMode);
-        EterniaServer.msg.sendMessage(player, Messages.GAMEMODE_SETED, typeName);
+    private void setGamemode(User user, GameMode gameMode, int type) {
+        String typeName = getType(type);
+
+        user.getPlayer().setGameMode(gameMode);
+        user.sendMessage(Messages.GAMEMODE_SETED, typeName);
     }
 
-    private void setGamemode(CommandSender player, Player target, GameMode gameMode, int type) {
-        final String typeName = getType(type);
-        target.setGameMode(gameMode);
-        EterniaServer.msg.sendMessage(target, Messages.GAMEMODE_SETED, typeName);
-        EterniaServer.msg.sendMessage(player, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
+    private void setGamemode(User user, Player targets, GameMode gameMode, int type) {
+        String typeName = getType(type);
+        User target = new User(targets);
+
+        user.getPlayer().setGameMode(gameMode);
+        target.sendMessage(Messages.GAMEMODE_SETED, typeName);
+        user.sendMessage(Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
     }
 
     private String getType(int type) {

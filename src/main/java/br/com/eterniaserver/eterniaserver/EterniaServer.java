@@ -5,21 +5,20 @@ import br.com.eterniaserver.eterniaserver.configurations.configs.CashCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ChatCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ConfigsCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.ConstantsCfg;
+import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.KitsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.RewardsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ScheduleCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.TableCfg;
-import br.com.eterniaserver.eterniaserver.configurations.dependencies.PlaceHolders;
+import br.com.eterniaserver.eterniaserver.configurations.dependencies.Placeholders;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.VaultHook;
 import br.com.eterniaserver.eterniaserver.events.BlockHandler;
 import br.com.eterniaserver.eterniaserver.events.EntityHandler;
 import br.com.eterniaserver.eterniaserver.events.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.events.ServerHandler;
 
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EterniaServer extends JavaPlugin {
@@ -40,7 +39,7 @@ public class EterniaServer extends JavaPlugin {
     public void onEnable() {
 
         new TableCfg();
-        new PlaceHolders().register();
+        new Placeholders().register();
         new Managers(this);
         new VaultHook(this);
 

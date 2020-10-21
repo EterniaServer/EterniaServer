@@ -14,21 +14,17 @@ import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APICash;
-import br.com.eterniaserver.eterniaserver.core.APIPlayer;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-
-import java.util.UUID;
 
 @CommandAlias("%cash")
 public class Cash extends BaseCommand {
@@ -63,64 +59,63 @@ public class Cash extends BaseCommand {
     @Description("%cash_balance_description")
     @CommandPermission("%cash_balance_perm")
     public void onCashBalance(Player player, @Optional String playerName) {
+        User user = new User(player);
         if (playerName == null) {
-            EterniaServer.msg.sendMessage(player, Messages.CASH_BALANCE, String.valueOf(APICash.getCash(UUIDFetcher.getUUIDOf(player.getName()))));
+            user.sendMessage(Messages.CASH_BALANCE, String.valueOf(APICash.getCash(user.getUUID())));
             return;
         }
 
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        final OfflinePlayer target = Bukkit.getOfflinePlayer(uuid);
+        User target = new User(playerName);
 
-        if (APIPlayer.hasProfile(uuid)) {
-            String displayName = target.isOnline() ? target.getPlayer().getDisplayName() : playerName;
-            EterniaServer.msg.sendMessage(player, Messages.CASH_BALANCE_OTHER, playerName, displayName, String.valueOf(APICash.getCash(uuid)));
+        if (target.hasProfile()) {
+            user.sendMessage(Messages.CASH_BALANCE_OTHER, playerName, target.getDisplayName(), String.valueOf(APICash.getCash(target.getUUID())));
             return;
         }
 
-        EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PLAYER);
+        user.sendMessage(Messages.SERVER_NO_PLAYER);
     }
 
     @Subcommand("%cash_accept")
     @Description("%cash_accept_description")
     @CommandPermission("%cash_accept_perm")
     public void onCashAccept(Player player) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        User user = new User(player);
 
-        if (!APICash.isBuying(uuid)) {
-            EterniaServer.msg.sendMessage(player, Messages.CASH_NOTHING_TO_BUY);
+        if (!APICash.isBuying(user.getUUID())) {
+            user.sendMessage(Messages.CASH_NOTHING_TO_BUY);
             return;
         }
 
-        final CashItem cashItem = APICash.getCashBuy(uuid);
+        final CashItem cashItem = APICash.getCashBuy(user.getUUID());
 
         for (String line : cashItem.getCommands()) {
-            final String modifiedCommand = APIChat.setPlaceholders(player, line);
+            final String modifiedCommand = APIServer.setPlaceholders(player, line);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), modifiedCommand);
         }
 
         for (String line : cashItem.getMessages()) {
-            final String modifiedText = APIChat.setPlaceholders(player, line);
+            final String modifiedText = APIServer.setPlaceholders(player, line);
             player.sendMessage(modifiedText);
         }
 
-        APICash.removeCash(uuid, cashItem.getCost());
-        EterniaServer.msg.sendMessage(player, Messages.CASH_BOUGHT);
-        APICash.removeCashBuy(uuid);
+        APICash.removeCash(user.getUUID(), cashItem.getCost());
+        user.sendMessage(Messages.CASH_BOUGHT);
+        APICash.removeCashBuy(user.getUUID());
     }
 
     @Subcommand("%cash_deny")
     @Description("%cash_deny_description")
     @CommandPermission("%cash_deny_perm")
     public void onCashDeny(Player player) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        User user = new User(player);
 
-        if (!APICash.isBuying(uuid)) {
-            EterniaServer.msg.sendMessage(player, Messages.CASH_NOTHING_TO_BUY);
+        if (!APICash.isBuying(user.getUUID())) {
+            user.sendMessage(Messages.CASH_NOTHING_TO_BUY);
             return;
         }
 
-        EterniaServer.msg.sendMessage(player, Messages.CASH_CANCELED);
-        APICash.removeCashBuy(uuid);
+        user.sendMessage(Messages.CASH_CANCELED);
+        APICash.removeCashBuy(user.getUUID());
     }
 
     @Subcommand("%cash_pay")
@@ -129,18 +124,18 @@ public class Cash extends BaseCommand {
     @Description("%cash_pay_description")
     @CommandPermission("%cash_pay_perm")
     public void onCashPay(Player player, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        final Player target = targetP.getPlayer();
+        User user = new User(player);
+        User target = new User(targetP.getPlayer());
 
-        if (!APICash.hasCash(uuid, value)) {
+        if (!APICash.hasCash(user.getUUID(), value)) {
             EterniaServer.msg.sendMessage(player, Messages.ECO_NO_MONEY);
             return;
         }
 
-        APICash.removeCash(uuid, value);
-        APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        EterniaServer.msg.sendMessage(target, Messages.CASH_RECEVEID, String.valueOf(value), player.getName(), player.getDisplayName());
-        EterniaServer.msg.sendMessage(player, Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
+        APICash.removeCash(user.getUUID(), value);
+        APICash.addCash(user.getUUID(), value);
+        target.sendMessage(Messages.CASH_RECEVEID, String.valueOf(value), user.getName(), user.getDisplayName());
+        user.sendMessage(Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
     @Subcommand("%cash_give")
@@ -148,12 +143,13 @@ public class Cash extends BaseCommand {
     @Syntax("%cash_give_syntax")
     @Description("%cash_give_description")
     @CommandPermission("%cash_give_perm")
-    public void onCashGive(CommandSender player, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
-        final Player target = targetP.getPlayer();
-        APICash.addCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        final String senderDisplay = (player instanceof Player) ? ((Player) player).getDisplayName() : player.getName();
-        EterniaServer.msg.sendMessage(target, Messages.CASH_RECEVEID, String.valueOf(value), player.getName(), senderDisplay);
-        EterniaServer.msg.sendMessage(player, Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
+    public void onCashGive(CommandSender sender, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
+        User user = new User(sender);
+        User target = new User(targetP.getPlayer());
+
+        APICash.addCash(target.getUUID(), value);
+        target.sendMessage(Messages.CASH_RECEVEID, String.valueOf(value), user.getName(), user.getDisplayName());
+        user.sendMessage(Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
     @Subcommand("%cash_remove")
@@ -161,12 +157,13 @@ public class Cash extends BaseCommand {
     @Syntax("%cash_remove_syntax")
     @CommandPermission("%cash_remove_perm")
     @Description("%cash_remove_description")
-    public void onCashRemove(CommandSender player, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
-        final Player target = targetP.getPlayer();
-        APICash.removeCash(UUIDFetcher.getUUIDOf(target.getName()), value);
-        final String senderDisplay = (player instanceof Player) ? ((Player) player).getDisplayName() : player.getName();
-        EterniaServer.msg.sendMessage(target, Messages.CASH_LOST, String.valueOf(value), player.getName(), senderDisplay);
-        EterniaServer.msg.sendMessage(player, Messages.CASH_REMOVED, String.valueOf(value), target.getName(), target.getDisplayName());
+    public void onCashRemove(CommandSender sender, OnlinePlayer targetP, @Conditions("limits:min=1,max=9999999") Integer value) {
+        User user = new User(sender);
+        User target = new User(targetP.getPlayer());
+
+        APICash.removeCash(target.getUUID(), value);
+        target.sendMessage(Messages.CASH_LOST, String.valueOf(value), user.getName(), user.getDisplayName());
+        user.sendMessage(Messages.CASH_REMOVED, String.valueOf(value), target.getName(), target.getDisplayName());
     }
 
 }

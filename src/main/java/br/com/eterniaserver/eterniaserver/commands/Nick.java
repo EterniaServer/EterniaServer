@@ -1,86 +1,80 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.BaseCommand;
-import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Default;
 import br.com.eterniaserver.acf.annotation.Description;
-import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
-import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
-
-@CommandAlias("nick|nickname")
-@CommandPermission("eternia.nickname")
+@CommandAlias("%nick")
 public class Nick extends BaseCommand {
 
     @Default
     @CommandCompletion("@players")
-    @Syntax("<novo nome> ou <novo nome> <jogador>")
-    @Description(" Altera o seu apelido ou de um jogador")
+    @Syntax("%nick_syntax")
+    @Description("%nick_description")
+    @CommandPermission("%nick_perm")
     public void onNick(Player player, String string, @Optional OnlinePlayer target) {
         string = string.replaceAll("[^a-zA-Z0-9]", "");
-        if (!player.hasPermission("eternia.nickname.others")) {
-            if (target == null) {
-                APIPlayer.playerNick(player, string);
-            } else {
-                EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
-            }
-        } else {
-            APIPlayer.staffNick(target, player, string);
+        User user = new User(player);
+
+        if (target == null) {
+            user.playerNick(string);
+            return;
         }
+
+        if (user.hasPermission("eternia.nickname.others")) {
+            user.staffNick(target, player, string);
+            return;
+        }
+
+        user.sendMessage(Messages.SERVER_NO_PERM);
     }
 
-    @Subcommand("deny")
-    @Description(" Nega um pedido de mudança de apelido")
+    @Subcommand("%nick_deny")
+    @Description("%nick_deny_description")
+    @CommandPermission("%nick_deny_perm")
     public void onNickDeny(Player player) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        User user = new User(player);
 
-        if (APIPlayer.hasNickRequest(uuid)) {
-            APIPlayer.removeNickRequest(uuid);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_DENIED);
-        } else {
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_NOT_REQUESTED);
+        if (user.hasNickRequest()) {
+            user.removeNickRequest();
+            user.sendMessage(Messages.CHAT_NICK_DENIED);
+            return;
         }
+
+        user.sendMessage(Messages.CHAT_NICK_NOT_REQUESTED);
     }
 
-    @Subcommand("accept")
-    @Description(" Aceita um pedido de mudança de apelido")
+    @Subcommand("%nick_accept")
+    @CommandPermission("%nick_accept_perm")
+    @Description("%nick_accept_description")
     public void onNickAccept(Player player) {
-        final String playerName = player.getName();
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        User user = new User(player);
 
-        if (APIPlayer.hasNickRequest(uuid)) {
-            if (APIEconomy.hasMoney(uuid, EterniaServer.configs.nickCost)) {
-                APIEconomy.removeMoney(uuid, EterniaServer.configs.nickCost);
-                APIPlayer.updateNickName(player, uuid);
-            } else {
-                EterniaServer.msg.sendMessage(player, Messages.ECO_NO_MONEY);
-            }
-            APIPlayer.removeNickRequest(uuid);
-        } else {
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_NOT_REQUESTED);
+        if (!user.hasNickRequest()) {
+            user.sendMessage(Messages.CHAT_NICK_NOT_REQUESTED);
+            return;
         }
-    }
 
-    @HelpCommand
-    @Subcommand("help")
-    @Syntax("<página>")
-    @Description(" Ajuda para os comandos de apelido")
-    public void onHelp(CommandHelp help) {
-        help.showHelp();
+        if (!APIEconomy.hasMoney(user.getUUID(), EterniaServer.configs.nickCost)) {
+            user.sendMessage(Messages.ECO_NO_MONEY);
+            return;
+        }
+
+        APIEconomy.removeMoney(user.getUUID(), EterniaServer.configs.nickCost);
+        user.updateNickName();
     }
 
 }

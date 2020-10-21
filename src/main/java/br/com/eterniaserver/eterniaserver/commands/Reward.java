@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.acf.BaseCommand;
@@ -9,7 +10,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -27,9 +27,10 @@ public class Reward extends BaseCommand {
         Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(APIServer.getRewardMapSize())));
     }
 
-    @CommandAlias("usekey|usarkey|usarchave")
-    @Syntax("<chave>")
-    @CommandPermission("eternia.usekey")
+    @CommandAlias("%usekey")
+    @Syntax("%usekey_syntax")
+    @Description("%usekey_description")
+    @CommandPermission("%usekey_perm")
     public void onUseKey(Player player, String key) {
         if (APIServer.hasReward(key)) {
             giveReward(APIServer.getReward(key), player);
@@ -40,9 +41,10 @@ public class Reward extends BaseCommand {
         }
     }
 
-    @CommandAlias("genkey|criarkey|criarchave")
-    @Syntax("<reward>")
-    @CommandPermission("eternia.genkey")
+    @CommandAlias("%genkey")
+    @Syntax("%genkey_syntax")
+    @Description("%genkey_description")
+    @CommandPermission("%genkey_perm")
     public void onGenKey(CommandSender sender, String reward) {
         if (EterniaServer.rewards.rewardsMap.containsKey(reward)) {
             random.nextBytes(bytes);
@@ -67,7 +69,7 @@ public class Reward extends BaseCommand {
         EterniaServer.rewards.rewardsMap.get(group).forEach((chance, lista) -> {
             if (Math.random() <= chance) {
                 for (String command : lista) {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIServer.setPlaceholders(player, command));
                 }
             }
         });

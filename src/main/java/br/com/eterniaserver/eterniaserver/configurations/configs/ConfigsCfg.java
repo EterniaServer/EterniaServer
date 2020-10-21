@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.PluginVars;
+import br.com.eterniaserver.eterniaserver.core.Vars;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -123,7 +123,7 @@ public class ConfigsCfg {
         this.blockedCommands.add("/deop");
         this.blockedCommands.add("/stop");
 
-        this.mobSpawnerColor = PluginVars.colors.get(config.getInt("spawners.color", 13));
+        this.mobSpawnerColor = Vars.colors.get(config.getInt("spawners.color", 13));
         this.invDrop = config.getBoolean("spawners.drop-in-inventory", true);
         this.dropChance = config.getDouble("spawners.drop-chance", 1.0);
         this.preventAnvil = config.getBoolean("spawners.prevent-anvil", true);

@@ -1,16 +1,15 @@
 package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.BaseCommand;
-import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Default;
 import br.com.eterniaserver.acf.annotation.Description;
-import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
@@ -18,20 +17,12 @@ import br.com.eterniaserver.eterniaserver.core.APIServer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-@CommandAlias("glow")
-@CommandPermission("eternia.glow")
+@CommandAlias("%glow")
 public class Glow extends BaseCommand {
 
-    @Subcommand("help")
-    @HelpCommand
-    @Syntax("<página>")
-    @Description(" Ajuda para o comando Glow")
-    public void onHelp(CommandHelp help) {
-        help.showHelp();
-    }
-
     @Default
-    @Description(" Ativa ou desativa o glow")
+    @Description("%glow_description")
+    @CommandPermission("%glow_perm")
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
             EterniaServer.msg.sendMessage(player, Messages.GLOW_ENABLED);
@@ -42,16 +33,17 @@ public class Glow extends BaseCommand {
         player.setGlowing(!player.isGlowing());
     }
 
-    @Subcommand("color")
+    @Subcommand("%glow_color")
     @CommandCompletion("@colors")
-    @Syntax("<cor>")
-    @Description(" Escolhe qual cor utilizar no glow")
+    @Syntax("%glow_color_syntax")
+    @Description("%glow_color_description")
+    @CommandPermission("%glow_color_perm")
     public void onGlowColor(Player player, String color) {
+        User user = new User(player);
         Colors colors = APIServer.colorFromString(color);
-        final String playerName = player.getName();
-        APIServer.getScoreboard().getTeam(colors.name()).addEntry(playerName);
-        APIServer.putGlowing(playerName, colors.getColorStr());
-        EterniaServer.msg.sendMessage(player, Messages.GLOW_COLOR_CHANGED, colors.getName());
+        APIServer.getScoreboard().getTeam(colors.name()).addEntry(user.getName());
+        user.putGlowing(colors.getColorStr());
+        user.sendMessage(Messages.GLOW_COLOR_CHANGED, colors.getName());
     }
 
 }

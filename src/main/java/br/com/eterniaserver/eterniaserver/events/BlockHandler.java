@@ -4,8 +4,7 @@ import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.PluginVars;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
+import br.com.eterniaserver.eterniaserver.core.Vars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -120,7 +119,7 @@ public class BlockHandler implements Listener {
         });
         if (reward.get() == null) return;
         for (String command : reward.get()) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIServer.setPlaceholders(player, command));
         }
     }
 
@@ -152,7 +151,7 @@ public class BlockHandler implements Listener {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         String mobFormatted = spawner.getSpawnedType().toString();
-        meta.setDisplayName(PluginVars.colors.get(8) + "[" + EterniaServer.configs.mobSpawnerColor + mobFormatted + PluginVars.colors.get(7) + " Spawner" +  PluginVars.colors.get(8) + "]");
+        meta.setDisplayName(Vars.colors.get(8) + "[" + EterniaServer.configs.mobSpawnerColor + mobFormatted + Vars.colors.get(7) + " Spawner" +  Vars.colors.get(8) + "]");
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);

@@ -10,13 +10,11 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
-import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Bukkit;
@@ -24,7 +22,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @CommandAlias("%chat")
 public class Chat extends BaseCommand {
@@ -67,7 +64,8 @@ public class Chat extends BaseCommand {
     @CommandPermission("%chat_vanish_perm")
     @CommandAlias("%chat_vanish_aliases")
     public void onVanish(Player player) {
-        if (APIPlayer.isVanished(player)) {
+        User user = new User(player);
+        if (user.isVanished()) {
             Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGIN, true, player.getName(), player.getDisplayName()));
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.showPlayer(plugin, player);
@@ -78,7 +76,7 @@ public class Chat extends BaseCommand {
                 p.hidePlayer(plugin, player);
             }
         }
-        APIPlayer.changeVanishState(player);
+        user.changeVanishState();
     }
 
     @Subcommand("%chat_ignore")
@@ -87,24 +85,22 @@ public class Chat extends BaseCommand {
     @CommandPermission("%chat_ignore_perm")
     @CommandAlias("%chat_ignore_aliases")
     public void onIgnore(Player player, OnlinePlayer targetOnline) {
-        final Player target = targetOnline.getPlayer();
-        if (target != null && target.isOnline()) {
-            final String targetName = target.getName();
-            List<Player> ignoreds;
-            if (!APIChat.hasIgnores(targetName)) {
-                ignoreds = new ArrayList<>();
-            } else {
-                ignoreds = APIChat.getIgnores(targetName);
-                if (ignoreds.contains(player)) {
-                    EterniaServer.msg.sendMessage(player, Messages.CHAT_UNIGNORE, targetName, target.getDisplayName());
-                    ignoreds.remove(player);
-                    return;
-                }
+        User target = new User(targetOnline.getPlayer());
+
+        List<Player> ignoreds;
+        if (!APIServer.hasIgnores(target.getUUID())) {
+            ignoreds = new ArrayList<>();
+        } else {
+            ignoreds = APIServer.getIgnores(target.getUUID());
+            if (ignoreds.contains(player)) {
+                EterniaServer.msg.sendMessage(player, Messages.CHAT_UNIGNORE, target.getName(), target.getDisplayName());
+                ignoreds.remove(player);
+                return;
             }
-            ignoreds.add(player);
-            APIChat.putIgnored(targetName, ignoreds);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_IGNORE, targetName, target.getDisplayName());
         }
+        ignoreds.add(player);
+        APIServer.putIgnored(target.getUUID(), ignoreds);
+        EterniaServer.msg.sendMessage(player, Messages.CHAT_IGNORE, target.getName(), target.getDisplayName());
     }
 
     @Subcommand("%chat_spy")
@@ -112,14 +108,13 @@ public class Chat extends BaseCommand {
     @CommandPermission("%chat_spy_perm")
     @CommandAlias("%chat_spy_aliases")
     public void onSpy(Player player) {
-        final String playerName = player.getName();
-        if (APIChat.isSpying(playerName)) {
-            APIChat.disableSpy(playerName);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_SPY_DISABLED);
-        } else {
-            APIChat.putSpy(playerName);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_SPY_ENABLED);
+        User user = new User(player);
+        user.changeSpyState();
+        if (user.isSpying()) {
+            user.sendMessage(Messages.CHAT_SPY_ENABLED);
+            return;
         }
+        user.sendMessage(Messages.CHAT_SPY_DISABLED);
     }
 
     @Subcommand("%chat_reply")
@@ -128,21 +123,21 @@ public class Chat extends BaseCommand {
     @CommandPermission("%chat_reply_perm")
     @CommandAlias("%chat_reply_aliases")
     public void onResp(Player sender, String msg) {
-        if (isMuted(sender)) return;
+        User user = new User(sender);
+        if (isMuted(user)) return;
 
-        final String playerName = sender.getName();
-        if (APIChat.receivedTell(playerName) && msg != null) {
-            final Player target = Bukkit.getPlayer(APIChat.getTellSender(playerName));
+        if (user.receivedTell() && msg != null) {
+            final Player target = Bukkit.getPlayer(user.getTellSender());
             if (target != null && target.isOnline()) {
-                if (APIChat.hasIgnores(playerName) && APIChat.areIgnored(playerName, target)) {
+                if (APIServer.hasIgnores(user.getUUID()) && APIServer.areIgnored(user.getUUID(), target)) {
                     EterniaServer.msg.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
                     return;
                 }
-                APIChat.sendPrivate(sender, target, msg);
+                user.sendPrivate(target, msg);
                 return;
             }
         }
-        EterniaServer.msg.sendMessage(sender, Messages.CHAT_NO_ONE_TO_RESP);
+        user.sendMessage(Messages.CHAT_NO_ONE_TO_RESP);
     }
 
     @Subcommand("%chat_tell")
@@ -151,45 +146,43 @@ public class Chat extends BaseCommand {
     @CommandPermission("%chat_tell_perm")
     @CommandAlias("%chat_tell_aliases")
     public void onTell(Player player, @Optional OnlinePlayer targets, @Optional String msg) {
-        if (isMuted(player)) return;
+        User user = new User(player);
 
-        final String playerName = player.getName();
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (isMuted(user)) return;
 
         if (targets == null) {
-            APIChat.setChannel(uuid, 0);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, EterniaServer.constants.chLocal);
+            user.setChannel(0);
+            user.sendMessage(Messages.CHAT_CHANNEL_CHANGED, EterniaServer.constants.chLocal);
             return;
         }
 
-        if (APIChat.isTell(playerName)) {
-            APIChat.removeTelling(playerName);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_TELL_UNLOCKED, targets.getPlayer().getName(), targets.getPlayer().getDisplayName());
+        User target = new User(targets.getPlayer());
+
+        if (user.isTell()) {
+            user.removeTelling();
+            user.sendMessage(Messages.CHAT_TELL_UNLOCKED, target.getName(), target.getDisplayName());
             return;
         }
-
-        final Player target = targets.getPlayer();
 
         if (msg == null || msg.length() == 0) {
-            APIChat.setTelling(playerName, target.getName());
-            APIChat.setChannel(uuid, 3);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_TELL_LOCKED, targets.getPlayer().getName(), targets.getPlayer().getDisplayName());
+            user.setTelling(target.getUUID());
+            user.setChannel(3);
+            user.sendMessage(Messages.CHAT_TELL_LOCKED, target.getName(), target.getDisplayName());
             return;
         }
 
-        if (APIChat.hasIgnores(playerName) && APIChat.areIgnored(player.getName(), target)) {
+        if (APIServer.hasIgnores(user.getUUID()) && APIServer.areIgnored(user.getUUID(), target.getPlayer())) {
             EterniaServer.msg.sendMessage(player, Messages.CHAT_ARE_IGNORED);
             return;
         }
 
-        APIChat.sendPrivate(player, target, msg);
+        user.sendPrivate(target.getPlayer(), msg);
     }
 
-    private boolean isMuted(Player player) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        final long time = APIPlayer.getMutedTime(uuid);
+    private boolean isMuted(User user) {
+        final long time = user.getMuteTime();
         if (APIServer.isInFutureCooldown(time)) {
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_ARE_MUTED, APIServer.getTimeLeftOfCooldown(time));
+            user.sendMessage(Messages.CHAT_ARE_MUTED, APIServer.getTimeLeftOfCooldown(time));
             return true;
         }
         return false;

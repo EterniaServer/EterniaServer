@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.PluginVars;
+import br.com.eterniaserver.eterniaserver.core.Vars;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -18,7 +18,7 @@ public class VaultHook {
         } else if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && !EterniaServer.configs.moduleEconomy) {
             RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp != null) {
-                PluginVars.setEcon(rsp.getProvider());
+                Vars.setEcon(rsp.getProvider());
             }
         } else {
             plugin.getServer().getPluginManager().disablePlugin(plugin);

@@ -1,11 +1,9 @@
 package br.com.eterniaserver.eterniaserver.core;
 
-import br.com.eterniaserver.eternialib.EQueries;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
-import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
+
+import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,12 +12,41 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toList;
 
 public interface APIServer {
+
+    static void setChatMuted(boolean bool) {
+        Vars.chatMuted = bool;
+    }
+
+    static boolean isChatMuted() {
+        return Vars.chatMuted;
+    }
+
+
+    static boolean hasIgnores(UUID uuid) {
+        return Vars.ignoredPlayer.containsKey(uuid);
+    }
+
+    static List<Player> getIgnores(UUID uuid) {
+        return Vars.ignoredPlayer.get(uuid);
+    }
+
+    static boolean areIgnored(UUID uuid, Player target) {
+        return Vars.ignoredPlayer.get(uuid).contains(target);
+    }
+
+    static void putIgnored(UUID uuid, List<Player> list) {
+        Vars.ignoredPlayer.put(uuid, list);
+    }
 
     static boolean hasCooldown(long cooldown, int timeNeeded) {
         return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown) >= timeNeeded;
@@ -37,136 +64,89 @@ public interface APIServer {
         return cooldown - System.currentTimeMillis() > 0;
     }
 
-
-    static void putInTeleport(Player player, PlayerTeleport playerTeleport) {
-        PluginVars.teleports.put(player, playerTeleport);
-    }
-
     static Object[] listWarp() {
-        return PluginVars.locations.keySet().toArray();
-    }
-
-    static void putBackLocation(String playerName, Location location) {
-        PluginVars.back.put(playerName, location);
+        return Vars.locations.keySet().toArray();
     }
 
     static Scoreboard getScoreboard() {
-        if (PluginVars.getScoreboard() == null) {
+        if (Vars.getScoreboard() == null) {
             Scoreboard tempScoreBoard = Bukkit.getScoreboardManager().getMainScoreboard();
             List<Colors> colors = Arrays.asList(Colors.values());
             for (int i = 0; i < 16; i++) {
                 if (tempScoreBoard.getTeam(colors.get(i).name()) == null) {
-                    tempScoreBoard.registerNewTeam(colors.get(i).name()).setColor(PluginVars.colors.get(i));
+                    tempScoreBoard.registerNewTeam(colors.get(i).name()).setColor(Vars.colors.get(i));
                 }
             }
-            PluginVars.setScoreboard(tempScoreBoard);
+            Vars.setScoreboard(tempScoreBoard);
         }
-        return PluginVars.getScoreboard();
-    }
-
-    static boolean hasBackLocation(String playerName) {
-        return PluginVars.back.containsKey(playerName);
-    }
-
-    static Location getBackLocation(String playerName) {
-        return PluginVars.back.get(playerName);
+        return Vars.getScoreboard();
     }
 
     static boolean hasLocation(String warpName) {
-        return PluginVars.locations.containsKey(warpName);
+        return Vars.locations.containsKey(warpName);
     }
 
     static Location getLocation(String warpName) {
-        return PluginVars.locations.getOrDefault(warpName, PluginVars.getError());
+        return Vars.locations.getOrDefault(warpName, Vars.getError());
     }
 
     static void putLocation(String warpName, Location location) {
-        PluginVars.locations.put(warpName, location);
+        Vars.locations.put(warpName, location);
     }
 
     static void removeLocation(String warpName) {
-        PluginVars.locations.remove(warpName);
+        Vars.locations.remove(warpName);
     }
 
-    static void putBedCooldown(String playerName) {
-        PluginVars.bedCooldown.put(playerName, System.currentTimeMillis());
-    }
-
-    static void putGlowing(String playerName, String nameColor) {
-        PluginVars.glowingColor.put(playerName, nameColor);
+    static Set<Player> getVanishList() {
+        return Vars.vanished.keySet();
     }
 
     static void putProfile(UUID uuid, PlayerProfile playerProfile) {
-        PluginVars.playerProfile.put(uuid, playerProfile);
+        Vars.playerProfile.put(uuid, playerProfile);
     }
 
     static int getProfileMapSize() {
-        return PluginVars.playerProfile.size();
-    }
-
-    static void playerProfileCreate(UUID uuid, String playerName, long firstPlayed) {
-        final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + firstPlayed + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "', '" + time + "')"));
-        final PlayerProfile playerProfile = new PlayerProfile(
-                playerName,
-                firstPlayed,
-                time,
-                0
-        );
-        playerProfile.setBalance(EterniaServer.configs.startMoney);
-        playerProfile.setMuted(time);
-        PluginVars.playerProfile.put(uuid, playerProfile);
-    }
-
-    static void playerKitsCreate(String playerName) {
-        final long time = System.currentTimeMillis();
-        for (String kit : EterniaServer.kits.kitList.keySet()) {
-            final String kitName = kit + "." + playerName;
-            if (!PluginVars.kitsCooldown.containsKey(kitName)) {
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableKits, "name", kitName, "cooldown", time));
-                PluginVars.kitsCooldown.put(kitName, time);
-            }
-        }
+        return Vars.playerProfile.size();
     }
 
     static long getKitCooldown(String kit) {
-        return PluginVars.kitsCooldown.get(kit);
+        return Vars.kitsCooldown.get(kit);
     }
 
     static void putKitCooldown(String kit, long time) {
-        PluginVars.kitsCooldown.put(kit, time);
+        Vars.kitsCooldown.put(kit, time);
     }
 
     static int getVersion() {
-        if (PluginVars.getVersion() == 0) {
+        if (Vars.getVersion() == 0) {
             String bukkitVersion = Bukkit.getBukkitVersion();
-            if (bukkitVersion.contains("1.16")) PluginVars.setVersion(116);
-            else if (bukkitVersion.contains("1.15")) PluginVars.setVersion(115);
-            else if (bukkitVersion.contains("1.14")) PluginVars.setVersion(114);
-            else PluginVars.setVersion(113);
+            if (bukkitVersion.contains("1.16")) Vars.setVersion(116);
+            else if (bukkitVersion.contains("1.15")) Vars.setVersion(115);
+            else if (bukkitVersion.contains("1.14")) Vars.setVersion(114);
+            else Vars.setVersion(113);
         }
-        return PluginVars.getVersion();
+        return Vars.getVersion();
     }
 
     static void updateRewardMap(Map<String, String> map) {
-        map.forEach(PluginVars.rewards::put);
+        map.forEach(Vars.rewards::put);
     }
 
     static int getRewardMapSize() {
-        return PluginVars.rewards.size();
+        return Vars.rewards.size();
     }
 
     static boolean hasReward(String key) {
-        return PluginVars.rewards.containsKey(key);
+        return Vars.rewards.containsKey(key);
     }
 
     static void addReward(String key, String reward) {
-        PluginVars.rewards.put(key, reward);
+        Vars.rewards.put(key, reward);
     }
 
     static void removeReward(String key) {
-        PluginVars.rewards.remove(key);
+        Vars.rewards.remove(key);
     }
 
     static void putColorOnList(List<String> list) {
@@ -176,7 +156,7 @@ public interface APIServer {
     }
 
     static String getReward(String key) {
-        return PluginVars.rewards.get(key);
+        return Vars.rewards.get(key);
     }
 
     static void logError(String errorMsg, int level) {
@@ -192,6 +172,12 @@ public interface APIServer {
                 errorLevel = ChatColor.RED + "Erro";
         }
         Bukkit.getConsoleSender().sendMessage(("$8[$aE$9S$8] " + errorLevel + "$8:$3" + errorMsg + "$8.").replace('$', (char) 0x00A7));
+    }
+
+    static String setPlaceholders(Player p, String s) {
+        s = s.replace("%player_name%", p.getName());
+        s = s.replace("%player_displayname%", p.getDisplayName());
+        return PlaceholderAPI.setPlaceholders(p, s);
     }
 
     static Colors colorFromString(String colorName) {
@@ -212,12 +198,7 @@ public interface APIServer {
     }
 
     static void changeNightTime(final long time) {
-        PluginVars.nightTime = time;
-    }
-
-    static long getBedCooldown(String name) {
-        if (!PluginVars.bedCooldown.containsKey(name)) return 0;
-        else return PluginVars.bedCooldown.get(name);
+        Vars.nightTime = time;
     }
 
     static int getXPForLevel(int lvl) {

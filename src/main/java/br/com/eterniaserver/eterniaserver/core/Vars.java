@@ -15,16 +15,14 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
-public class PluginVars {
+public class Vars {
 
-    private PluginVars() {
+    private Vars() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -57,31 +55,30 @@ public class PluginVars {
     protected static final List<World> skippingWorlds = new ArrayList<>();
     protected static final List<UUID> baltopList = new ArrayList<>();
 
-    protected static final Set<String> god = new HashSet<>();
-    protected static final Set<String> afk = new HashSet<>();
-    protected static final Set<Player> vanished = new HashSet<>();
+    protected static final Map<Player, Boolean> vanished = new HashMap<>();
 
-    protected static final Map<Player, PlayerTeleport> teleports = new HashMap<>();
-
+    protected static final Map<UUID, PlayerTeleport> teleports = new HashMap<>();
     protected static final Map<UUID, CashItem> cashItem = new HashMap<>();
     protected static final Map<UUID, PlayerProfile> playerProfile = new HashMap<>();
+    protected static final Map<UUID, UUID> tpaRequests = new HashMap<>();
+    protected static final Map<UUID, Boolean> godMode = new HashMap<>();
+    protected static final Map<UUID, Long> tpaTime = new HashMap<>();
+    protected static final Map<UUID, Location> playerLocationMap = new HashMap<>();
+    protected static final Map<UUID, Boolean> onAfk = new HashMap<>();
+    protected static final Map<UUID, Long> afkTime = new HashMap<>();
+    protected static final Map<UUID, Integer> playersInPortal = new HashMap<>();
+    protected static final Map<UUID, Boolean> spy = new HashMap<>();
+    protected static final Map<UUID, Long> bedCooldown = new HashMap<>();
+    protected static final Map<UUID, Location> back = new HashMap<>();
+    protected static final Map<UUID, String> glowingColor = new HashMap<>();
+    protected static final Map<UUID, String> tell = new HashMap<>();
+    protected static final Map<UUID, UUID> chatLocked = new HashMap<>();
+    protected static final Map<UUID, List<Player>> ignoredPlayer = new HashMap<>();
 
     protected static final Map<String, UUID> playersName = new HashMap<>();
     protected static final Map<String, Location> locations = new HashMap<>();
-    protected static final Map<String, String> chatLocked = new HashMap<>();
     protected static final Map<String, Long> kitsCooldown = new HashMap<>();
-    protected static final Map<String, Boolean> spy = new HashMap<>();
-    protected static final Map<String, Integer> playersInPortal = new HashMap<>();
-    protected static final Map<String, Location> back = new HashMap<>();
-    protected static final Map<String, Long> tpaTime = new HashMap<>();
-    protected static final Map<String, Long> afkTime = new HashMap<>();
-    protected static final Map<Player, Location> playerLocationMap = new HashMap<>();
-    protected static final Map<String, Long> bedCooldown = new HashMap<>();
     protected static final Map<String, String> rewards = new HashMap<>();
-    protected static final Map<String, String> tpaRequests = new HashMap<>();
-    protected static final Map<String, String> glowingColor = new HashMap<>();
-    protected static final Map<String, String> tell = new HashMap<>();
-    protected static final Map<String, List<Player>> ignoredPlayer = new HashMap<>();
 
     protected static Scoreboard getScoreboard() {
         return scoreboard;

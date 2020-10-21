@@ -11,15 +11,12 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 @CommandAlias("%channel")
 public class Channel extends BaseCommand {
@@ -64,15 +61,15 @@ public class Channel extends BaseCommand {
     }
 
     private void changeChannel(int channel, String channelName, Player player, String messages) {
-        UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        User user = new User(player);
         if (messages == null || messages.equals("")) {
-            APIChat.setChannel(uuid, channel);
+            user.setChannel(channel);
             EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channelName);
         } else {
-            int defaultChannel = APIChat.getChannel(uuid);
-            APIChat.setChannel(uuid, channel);
+            int defaultChannel = user.getChannel();
+            user.setChannel(channel);
             player.chat(messages);
-            APIChat.setChannel(uuid, defaultChannel);
+            user.setChannel(defaultChannel);
         }
     }
 

@@ -2,12 +2,11 @@ package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIExperience;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 
 import org.bukkit.ChatColor;
@@ -19,129 +18,146 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
-import java.util.UUID;
 
-@CommandAlias("xp")
-@CommandPermission("eternia.xp.user")
+@CommandAlias("%xp")
 public class Experience extends BaseCommand {
 
     @Default
+    @CatchUnknown
     @HelpCommand
-    @Syntax("<página>")
-    @Description(" Ajuda para o sistema de experiência")
+    @Syntax("%xp_syntax")
+    @CommandPermission("%xp_perm")
+    @Description("%xp_description")
     public void xpHelp(CommandHelp help) {
         help.showHelp();
     }
 
-    @Subcommand("set")
     @CommandCompletion("@players 100")
-    @Syntax("<jogador> <quantia>")
-    @CommandPermission("eternia.xp.admin")
-    @Description(" Define o nível do jogador")
-    public void onSet(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999") Integer money) {
-        final Player targetP = target.getPlayer();
-        String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        targetP.setLevel(money);
-        EterniaServer.msg.sendMessage(sender, Messages.EXP_SET_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        EterniaServer.msg.sendMessage(targetP, Messages.EXP_SETED, String.valueOf(money), sender.getName(), playerDisplay);
+    @Syntax("%xp_set_syntax")
+    @Subcommand("%xp_set")
+    @Description("%xp_set_description")
+    @CommandPermission("%xp_set_perm")
+    public void onSet(CommandSender sender, OnlinePlayer targets, @Conditions("limits:min=1,max=9999999") Integer amount) {
+        User user = new User(sender);
+        User target = new User(targets.getPlayer());
+
+        target.setLevel(amount);
+        user.sendMessage(Messages.EXP_SET_FROM, String.valueOf(amount), target.getName(), target.getDisplayName());
+        target.sendMessage(Messages.EXP_SETED, String.valueOf(amount), user.getName(), user.getDisplayName());
     }
 
-    @Subcommand("take")
     @CommandCompletion("@players 100")
-    @Syntax("<jogador> <quantia>")
-    @CommandPermission("eternia.xp.admin")
-    @Description(" Retira uma quantidade de nível do jogador")
-    public void onTake(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999") Integer money) {
-        final Player targetP = target.getPlayer();
-        targetP.setLevel(targetP.getLevel() - money);
-        String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        EterniaServer.msg.sendMessage(sender, Messages.EXP_REMOVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        EterniaServer.msg.sendMessage(targetP, Messages.EXP_REMOVED, String.valueOf(money), sender.getName(), playerDisplay);
+    @Syntax("%xp_take_syntax")
+    @Subcommand("%xp_take")
+    @Description("%xp_take_description")
+    @CommandPermission("%xp_take_perm")
+    public void onTake(CommandSender sender, OnlinePlayer targets, @Conditions("limits:min=1,max=9999999") Integer amount) {
+        User user = new User(sender);
+        User target = new User(targets.getPlayer());
+
+        target.setLevel(target.getLevel() - amount);
+        user.sendMessage(Messages.EXP_REMOVE_FROM, String.valueOf(amount), target.getName(), target.getDisplayName());
+        target.sendMessage(Messages.EXP_REMOVED, String.valueOf(amount), user.getName(), user.getDisplayName());
     }
 
-    @Subcommand("give")
     @CommandCompletion("@players 100")
-    @Syntax("<jogador> <quantia>")
-    @CommandPermission("eternia.xp.admin")
-    @Description(" Dá uma quantidade de nível do jogador")
-    public void onGive(CommandSender sender, OnlinePlayer target, @Conditions("limits:min=1,max=9999999") Integer money) {
-        final Player targetP = target.getPlayer();
-        targetP.setLevel(targetP.getLevel() + money);
-        String playerDisplay = sender instanceof Player ? ((Player) sender).getDisplayName() : sender.getName();
-        EterniaServer.msg.sendMessage(sender, Messages.EXP_GIVE_FROM, String.valueOf(money), targetP.getName(), targetP.getDisplayName());
-        EterniaServer.msg.sendMessage(targetP, Messages.EXP_GIVED, String.valueOf(money), sender.getName(), playerDisplay);
+    @Syntax("%xp_give_syntax")
+    @Subcommand("%xp_give")
+    @Description("%xp_give_description")
+    @CommandPermission("%xp_give_perm")
+    public void onGive(CommandSender sender, OnlinePlayer targets, @Conditions("limits:min=1,max=9999999") Integer amount) {
+        User user = new User(sender);
+        User target = new User(targets.getPlayer());
+
+        target.setLevel(target.getLevel() + amount);
+        user.sendMessage(Messages.EXP_GIVE_FROM, String.valueOf(amount), target.getName(), target.getDisplayName());
+        target.sendMessage(Messages.EXP_GIVED, String.valueOf(amount), user.getName(), user.getDisplayName());
     }
 
-    @Subcommand("check")
-    @Description(" Verifica quantos leveis você possui guardado")
+    @Subcommand("%xp_check")
+    @Description("%xp_check_description")
+    @CommandPermission("%xp_check_perm")
     public void onCheckLevel(Player player) {
-        int lvl = player.getLevel();
-        float xp = player.getExp();
-        player.setLevel(0);
-        player.setExp(0);
-        player.giveExp(APIExperience.getExp(UUIDFetcher.getUUIDOf(player.getName())));
-        EterniaServer.msg.sendMessage(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
-        player.setLevel(lvl);
-        player.setExp(xp);
+        User user = new User(player);
+        int lvl = user.getLevel();
+        float xp = user.getGameExp();
+        user.setLevel(0);
+        user.setGameExp(0);
+        user.giveGameExp(user.getExp());
+        user.sendMessage(Messages.EXP_BALANCE, String.valueOf(user.getLevel()));
+        user.setLevel(lvl);
+        user.setGameExp(xp);
     }
 
-    @Subcommand("bottle")
     @CommandCompletion("10")
-    @Syntax("<quantia>")
-    @Description(" Converte uma quantia de nível para uma garra de EXP")
+    @Syntax("%xp_bottle_syntax")
+    @Subcommand("%xp_bottle")
+    @Description("%xp_bottle_description")
+    @CommandPermission("%xp_bottle_perm")
     public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpWant) {
-        int xpReal = APIServer.getXPForLevel(player.getLevel());
-        if (xpWant > 0 && xpReal > xpWant) {
-            ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&eGarrafa de EXP&8]"));
-            item.setItemMeta(meta);
-            item.setLore(Collections.singletonList(String.valueOf(xpWant)));
-            PlayerInventory inventory = player.getInventory();
-            inventory.addItem(item);
-            EterniaServer.msg.sendMessage(player, Messages.EXP_BOTTLED);
-            player.setLevel(0);
-            player.setExp(0);
-            player.giveExp(xpReal - xpWant);
-        } else {
-            EterniaServer.msg.sendMessage(player, Messages.EXP_INSUFFICIENT);
+        User user = new User(player);
+
+        int xpReal = APIServer.getXPForLevel(user.getLevel());
+
+        if (xpWant <= 0 || xpReal <= xpWant) {
+            user.sendMessage(Messages.EXP_INSUFFICIENT);
+            return;
         }
+
+        ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&eGarrafa de EXP&8]"));
+        item.setItemMeta(meta);
+        item.setLore(Collections.singletonList(String.valueOf(xpWant)));
+        PlayerInventory inventory = player.getInventory();
+        inventory.addItem(item);
+        user.sendMessage(Messages.EXP_BOTTLED);
+        user.setLevel(0);
+        user.setGameExp(0);
+        user.giveGameExp(xpReal - xpWant);
     }
 
-    @Subcommand("withdraw")
     @CommandCompletion("10")
-    @Syntax("<quantia>")
-    @Description(" Retira uma quantia de nível")
+    @Syntax("%xp_withdraw_syntax")
+    @Subcommand("%xp_withdraw")
+    @Description("%xp_withdraw_description")
+    @CommandPermission("%xp_withdraw_perm")
     public void onWithdrawLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer level) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
+        User user = new User(player);
 
         int xpla = APIServer.getXPForLevel(level);
-        if (APIExperience.getExp(uuid) >= xpla) {
-            APIExperience.removeExp(uuid, xpla);
-            player.giveExp(xpla);
-            EterniaServer.msg.sendMessage(player, Messages.EXP_WITHDRAW, String.valueOf(level));
-        } else {
-            EterniaServer.msg.sendMessage(player, Messages.EXP_BOTTLED);
+        if (user.getExp() < xpla) {
+            user.sendMessage(Messages.EXP_INSUFFICIENT);
+            return;
         }
+
+        user.removeExp(xpla);
+        user.giveGameExp(xpla);
+        EterniaServer.msg.sendMessage(player, Messages.EXP_WITHDRAW, String.valueOf(level));
     }
 
-    @Subcommand("deposit")
     @CommandCompletion("10")
-    @Syntax("<quantia>")
-    @Description(" Guarda uma quantia de nível")
+    @Syntax("%xp_deposit_syntax")
+    @Subcommand("%xp_deposit")
+    @Description("%xp_deposit_description")
+    @CommandPermission("%xp_deposit_perm")
     public void onDepositLevel(Player player, @Conditions("limits:min=1,max=9999999")  Integer xpla) {
-        int xpAtual = player.getLevel();
-        if (xpAtual >= xpla) {
-            int xp = APIServer.getXPForLevel(xpla);
-            int xpto = APIServer.getXPForLevel(xpAtual);
-            APIExperience.addExp(UUIDFetcher.getUUIDOf(player.getName()), xp);
-            EterniaServer.msg.sendMessage(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
-            player.setLevel(0);
-            player.setExp(0);
-            player.giveExp(xpto - xp);
-        } else {
-            EterniaServer.msg.sendMessage(player, Messages.EXP_BOTTLED);
+        User user = new User(player);
+
+        int xpAtual = user.getLevel();
+        if (xpAtual < xpla) {
+            user.sendMessage(Messages.EXP_INSUFFICIENT);
+            return;
         }
+
+        int xp = APIServer.getXPForLevel(xpla);
+        int xpto = APIServer.getXPForLevel(xpAtual);
+        user.addExp(xp);
+        user.setLevel(0);
+        user.setGameExp(0);
+        user.giveGameExp(xpto - xp);
+        user.sendMessage(Messages.EXP_DEPOSIT, String.valueOf(xpla));
+
     }
 
 }

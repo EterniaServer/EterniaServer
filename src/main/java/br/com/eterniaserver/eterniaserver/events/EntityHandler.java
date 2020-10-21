@@ -1,10 +1,9 @@
 package br.com.eterniaserver.eterniaserver.events;
 
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APICash;
-import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,8 +21,8 @@ public class EntityHandler implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
-            final Player player = (Player) event.getEntity();
-            if (APIPlayer.isGod(player.getName())) {
+            User user = new User((Player) event.getEntity());
+            if (user.getGodMode()) {
                 event.setCancelled(true);
             }
         }
@@ -32,10 +31,11 @@ public class EntityHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-            final Player player = (Player) event.getDamager();
+            Player player = (Player) event.getDamager();
+            User user = new User(player);
             if (player.isFlying() && !player.hasPermission("eternia.fly.bypass")) {
-                APIPlayer.setIsOnPvP(UUIDFetcher.getUUIDOf(player.getName()));
-                EterniaServer.msg.sendMessage(player, Messages.FLY_ENTER_PVP);
+                user.setIsOnPvP();
+                user.sendMessage(Messages.FLY_ENTER_PVP);
                 player.setAllowFlight(false);
                 player.setFlying(false);
             }

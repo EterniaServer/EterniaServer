@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.acf.BaseCommand;
@@ -9,7 +10,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
 
 import org.bukkit.Bukkit;
@@ -29,8 +29,9 @@ public class Kit extends BaseCommand {
 
     }
 
-    @CommandAlias("kits")
-    @CommandPermission("eternia.kits")
+    @CommandAlias("%kits")
+    @Description("%kits_description")
+    @CommandPermission("%kits_perm")
     public void onKits(Player player) {
         StringBuilder str = new StringBuilder();
         for (String key : EterniaServer.kits.kitList.keySet()) {
@@ -40,9 +41,10 @@ public class Kit extends BaseCommand {
         EterniaServer.msg.sendMessage(player, Messages.KIT_LIST, str.toString());
     }
 
-    @CommandAlias("kit")
-    @Syntax("<kit>")
-    @CommandPermission("eternia.kit")
+    @CommandAlias("%kit")
+    @Syntax("%kit_syntax")
+    @Description("%kit_description")
+    @CommandPermission("%kit_perm")
     public void onKit(Player player, String kit) {
         if (EterniaServer.kits.kitList.containsKey(kit)) {
             if (player.hasPermission("eternia.kit." + kit)) {
@@ -64,10 +66,10 @@ public class Kit extends BaseCommand {
 
         if (APIServer.hasCooldown(cd, cooldown)) {
             for (String command : kitObject.getCommands()) {
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIChat.setPlaceholders(player, command));
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIServer.setPlaceholders(player, command));
             }
             for (String text : kitObject.getMessages()) {
-                player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(player, text)));
+                player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, text)));
             }
             APIServer.putKitCooldown(kitName, time);
             EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableKits, "cooldown", time, "name", kitName));

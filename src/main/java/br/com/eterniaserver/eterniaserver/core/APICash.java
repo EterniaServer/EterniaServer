@@ -23,8 +23,8 @@ public interface APICash {
      * @return the cash balance
      */
     static int getCash(UUID uuid) {
-        if (PluginVars.playerProfile.containsKey(uuid)) {
-            return PluginVars.playerProfile.get(uuid).getCash();
+        if (Vars.playerProfile.containsKey(uuid)) {
+            return Vars.playerProfile.get(uuid).getCash();
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
@@ -37,7 +37,7 @@ public interface APICash {
                     0
             );
             playerProfile.setBalance(EterniaServer.configs.startMoney);
-            PluginVars.playerProfile.put(uuid, playerProfile);
+            Vars.playerProfile.put(uuid, playerProfile);
             return 0;
         }
     }
@@ -58,8 +58,8 @@ public interface APICash {
      * @param amount the amount of cash to set
      */
     static void setCash(UUID uuid, int amount) {
-        if (PluginVars.playerProfile.containsKey(uuid)) {
-            PluginVars.playerProfile.get(uuid).setCash(amount);
+        if (Vars.playerProfile.containsKey(uuid)) {
+            Vars.playerProfile.get(uuid).setCash(amount);
             EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "cash", amount, "uuid", uuid.toString()));
         } else {
             final long time = System.currentTimeMillis();
@@ -73,7 +73,7 @@ public interface APICash {
                     0
             );
             playerProfile.setBalance(EterniaServer.configs.startMoney);
-            PluginVars.playerProfile.put(uuid, playerProfile);
+            Vars.playerProfile.put(uuid, playerProfile);
             setCash(uuid, amount);
         }
     }
@@ -102,7 +102,7 @@ public interface APICash {
      * @return if is or not
      */
     static boolean isBuying(UUID uuid) {
-        return PluginVars.cashItem.containsKey(uuid);
+        return Vars.cashItem.containsKey(uuid);
     }
 
     /**
@@ -112,7 +112,7 @@ public interface APICash {
      * @return the CashItem object
      */
     static CashItem getCashBuy(UUID uuid) {
-        return PluginVars.cashItem.get(uuid);
+        return Vars.cashItem.get(uuid);
     }
 
     /**
@@ -121,7 +121,7 @@ public interface APICash {
      * @param uuid of player
      */
     static void removeCashBuy(UUID uuid) {
-        PluginVars.cashItem.remove(uuid);
+        Vars.cashItem.remove(uuid);
     }
 
     /**
@@ -151,14 +151,14 @@ public interface APICash {
     static void permGui(final Player player, final String title, int slot) {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (!PluginVars.cashItem.containsKey(uuid)) {
+        if (!Vars.cashItem.containsKey(uuid)) {
             CashItem cashItem = EterniaServer.cash.othersGui.get(EterniaServer.cash.guisInvert.get(title)).get(slot);
             if (!cashItem.isGlass()) {
                 final int cost = cashItem.getCost();
                 if (APICash.hasCash(uuid, cost)) {
                     EterniaServer.msg.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
                     EterniaServer.msg.sendMessage(player, Messages.CASH_CHOOSE);
-                    PluginVars.cashItem.put(uuid, cashItem);
+                    Vars.cashItem.put(uuid, cashItem);
                 } else {
                     EterniaServer.msg.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(cost));
                 }

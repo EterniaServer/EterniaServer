@@ -37,10 +37,10 @@ public class UtilCustomCommands extends AbstractCommand {
     private void checkCommands(final Player player, final String cmd) {
         if (player.hasPermission("eternia." + cmd)) {
             for (String line : commandsStrings) {
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIChat.setPlaceholders(player, line));
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIServer.setPlaceholders(player, line));
             }
             for (String line : messagesStrings) {
-                player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(player, line)));
+                player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, line)));
             }
         } else {
             EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);

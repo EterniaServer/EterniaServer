@@ -3,20 +3,19 @@ package br.com.eterniaserver.eterniaserver.commands;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
-import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.PluginVars;
+import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.core.Vars;
 import br.com.eterniaserver.eterniaserver.core.UtilGetRuntime;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
@@ -74,120 +73,136 @@ public class Generic extends BaseCommand {
 
         if (EterniaServer.configs.moduleHomes || EterniaServer.configs.moduleTeleports) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-                PluginVars.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
+                Vars.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
                 final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.configs.tableLocations), "name", "location");
                 temp.forEach((k, v) -> {
                     final String[] split = v.split(":");
                     Location loc = new Location(Bukkit.getWorld(split[0]),
                             Double.parseDouble(split[1]),
-                            (Double.parseDouble(split[2]) + 1),
+                            Double.parseDouble(split[2]) + 1D,
                             Double.parseDouble(split[3]),
                             Float.parseFloat(split[4]),
                             Float.parseFloat(split[5]));
-                    APIServer.putLocation(k, loc);
+                    APIServer.putLocation(k, getCenter(loc));
                 });
             });
         }
     }
 
-    @CommandAlias("speed")
-    @CommandPermission("eternia.speed")
+    @CommandAlias("%speed")
+    @Syntax("%speed_syntax")
+    @Description("%speed_description")
+    @CommandPermission("%speed_perm")
     public void onSpeed(Player player, Integer speed) {
-        if (speed > 0 && speed < 11) {
-            player.setFlySpeed((float) speed / 10);
-            player.setWalkSpeed((float) speed / 10);
-            EterniaServer.msg.sendMessage(player, Messages.SPEED_SET, String.valueOf((float) speed / 10));
-        } else {
-            EterniaServer.msg.sendMessage(player, Messages.SPEED_LIMIT);
+        User user = new User(player);
+
+        if (speed <= 0 || speed >= 11) {
+            user.sendMessage(Messages.SPEED_LIMIT);
+            return;
         }
+
+        player.setFlySpeed((float) speed / 10);
+        player.setWalkSpeed((float) speed / 10);
+        user.sendMessage(Messages.SPEED_SET, String.valueOf((float) (speed / 10)));
     }
 
-    @CommandAlias("profile|perfil")
-    @CommandPermission("eternia.profile")
+    @CommandAlias("%god")
+    @Syntax("%god_syntax")
+    @Description("%god_description")
+    @CommandPermission("%god_perm")
+    public void onGod(Player player, @Optional OnlinePlayer targets) {
+        if (targets == null) {
+            changeGameMode(new User(player));
+            return;
+        }
+
+        changeGameMode(new User(targets.getPlayer()));
+    }
+
+    @CommandAlias("%profile")
+    @CommandPermission("%profile_perm")
+    @Syntax("%profile_syntax")
+    @Description("%profile_description")
     @CommandCompletion("@players")
     public void onProfile(Player player, @Optional OnlinePlayer onlinePlayer) {
-        if (onlinePlayer != null) {
-            sendProfile(player, onlinePlayer.getPlayer());
-        } else {
+        if (onlinePlayer == null) {
             sendProfile(player, player);
+            return;
         }
+
+        sendProfile(player, onlinePlayer.getPlayer());
     }
 
-    @CommandAlias("mem|memory")
-    @CommandPermission("eternia.mem")
+    @CommandAlias("%mem")
+    @CommandPermission("%mem_perm")
+    @Description("%mem_description")
     public void onMem(CommandSender player) {
+        User user = new User(player);
+
         getRuntime.recalculateRuntime();
-        EterniaServer.msg.sendMessage(player, Messages.STATS_MEM, String.valueOf(getRuntime.getFreeMem()), String.valueOf(getRuntime.getTotalMem()));
-        EterniaServer.msg.sendMessage(player, Messages.STATS_HOURS, String.valueOf(getRuntime.getDays()), String.valueOf(getRuntime.getHours()), String.valueOf(getRuntime.getMinutes()), String.valueOf(getRuntime.getSeconds()));
+        user.sendMessage(Messages.STATS_MEM, String.valueOf(getRuntime.getFreeMem()), String.valueOf(getRuntime.getTotalMem()));
+        user.sendMessage(Messages.STATS_HOURS, String.valueOf(getRuntime.getDays()), String.valueOf(getRuntime.getHours()), String.valueOf(getRuntime.getMinutes()), String.valueOf(getRuntime.getSeconds()));
     }
 
-    @CommandAlias("memall|memoryall")
-    @CommandPermission("eternia.mem.all")
+    @CommandAlias("%mem_all")
+    @CommandPermission("%mem_all_perm")
+    @Description("%mem_all_description")
     public void onMemAll() {
         getRuntime.recalculateRuntime();
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.STATS_MEM, true, String.valueOf(getRuntime.getFreeMem()), String.valueOf(getRuntime.getTotalMem())));
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.STATS_HOURS, true, String.valueOf(getRuntime.getDays()), String.valueOf(getRuntime.getHours()), String.valueOf(getRuntime.getMinutes()), String.valueOf(getRuntime.getSeconds())));
     }
 
-    @CommandAlias("god")
-    @Syntax("<jogador>")
-    @CommandPermission("eternia.god")
-    public void onGod(Player player, @Optional OnlinePlayer target) {
-        if (target != null) {
-            changeGod(target.getPlayer());
-        } else {
-            changeGod(player);
-        }
-    }
-
-    @CommandAlias("fly")
-    @CommandPermission("eternia.fly")
+    @CommandAlias("%fly")
+    @CommandPermission("%fly_perm")
+    @Syntax("%fly_syntax")
+    @Description("%fly_description")
+    @CommandCompletion("@players")
     public void onFly(Player player, @Optional OnlinePlayer targetS) {
-        final String worldName = player.getWorld().getName();
+        User user = new User(player);
+        String worldName = player.getWorld().getName();
 
         if ((worldName.equals("evento") || worldName.equals("world_evento")) && !player.hasPermission("eternia.fly.evento")) {
-            EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
+            user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
 
         if (targetS != null && player.hasPermission("eternia.fly.others")) {
 
-            final Player target = targetS.getPlayer();
-            final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
+            User target = new User(targetS.getPlayer());
 
-            if (APIPlayer.isOnPvP(uuid)) {
-                EterniaServer.msg.sendMessage(player, Messages.FLY_TARGET_ARE_PVP, String.valueOf(EterniaServer.configs.pvpTime - APIPlayer.getPvPCooldown(uuid)));
+            if (target.isOnPvP()) {
+                user.sendMessage(Messages.FLY_TARGET_ARE_PVP, String.valueOf(EterniaServer.configs.pvpTime - target.getPvPCooldown()));
                 return;
             }
 
-            APIPlayer.changeFlyState(target);
-            if (target.isFlying()) {
-                EterniaServer.msg.sendMessage(target, Messages.FLY_ENABLED_BY, player.getName(), player.getDisplayName());
-                EterniaServer.msg.sendMessage(player, Messages.FLY_ENABLED_FROM, target.getName(), target.getDisplayName());
+            target.changeFlyState();
+            if (target.getPlayer().isFlying()) {
+                target.sendMessage(Messages.FLY_ENABLED_BY, user.getName(), user.getDisplayName());
+                user.sendMessage(Messages.FLY_ENABLED_FROM, target.getName(), target.getDisplayName());
                 return;
             }
-            EterniaServer.msg.sendMessage(target, Messages.FLY_DISABLED_BY, player.getName(), player.getDisplayName());
-            EterniaServer.msg.sendMessage(player, Messages.FLY_DISABLED_FROM, target.getName(), target.getDisplayName());
+            target.sendMessage(Messages.FLY_DISABLED_BY, user.getName(), user.getDisplayName());
+            user.sendMessage(Messages.FLY_DISABLED_FROM, target.getName(), target.getDisplayName());
             return;
         }
 
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-
-        if (APIPlayer.isOnPvP(uuid)) {
-            EterniaServer.msg.sendMessage(player, Messages.FLY_ARE_PVP, String.valueOf(EterniaServer.configs.pvpTime - APIPlayer.getPvPCooldown(uuid)));
+        if (user.isOnPvP()) {
+            user.sendMessage(Messages.FLY_ARE_PVP, String.valueOf(EterniaServer.configs.pvpTime - user.getPvPCooldown()));
             return;
         }
 
-        APIPlayer.changeFlyState(player);
+        user.changeFlyState();
         if (player.isFlying()) {
-            EterniaServer.msg.sendMessage(player, Messages.FLY_ENABLED);
+            user.sendMessage(Messages.FLY_ENABLED);
             return;
         }
-        EterniaServer.msg.sendMessage(player, Messages.FLY_DISABLED);
+        user.sendMessage(Messages.FLY_DISABLED);
     }
 
-    @CommandAlias("flydebug")
-    @CommandPermission("eternia.admin")
+    @CommandAlias("%fly_debug")
+    @Description("%fly_debug_description")
+    @CommandPermission("%fly_debug_perm")
     public void onFlyDebug() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.setFlying(false);
@@ -195,9 +210,10 @@ public class Generic extends BaseCommand {
         }
     }
 
-    @CommandAlias("feed|saciar")
-    @Syntax("<jogador>")
-    @CommandPermission("eternia.feed")
+    @CommandAlias("%feed")
+    @Syntax("%feed_syntax")
+    @CommandPermission("%feed_perm")
+    @Description("%feed_description")
     public void onFeed(Player player, @Optional OnlinePlayer target) {
         if (target == null) {
             player.setFoodLevel(20);
@@ -214,8 +230,9 @@ public class Generic extends BaseCommand {
         }
     }
 
-    @CommandAlias("blocks|condenser")
-    @CommandPermission("eternia.blocks")
+    @CommandAlias("%condenser")
+    @CommandPermission("%condenser_perm")
+    @Description("%condenser_description")
     public void onBlocks(Player player) {
         int coal = 0;
         int lapiz = 0;
@@ -245,10 +262,11 @@ public class Generic extends BaseCommand {
         EterniaServer.msg.sendMessage(player, Messages.ITEM_CONDENSER);
     }
 
-    @CommandAlias("thor|lightning")
-    @Syntax("<jogador>")
+    @CommandAlias("%thor")
+    @Syntax("%thor_syntax")
     @CommandCompletion("@players")
-    @CommandPermission("eternia.thor")
+    @CommandPermission("%thor_perm")
+    @Description("%thor_description")
     public void onThor(Player player, @Optional OnlinePlayer target) {
         final World world = player.getWorld();
         if (target != null) {
@@ -262,36 +280,27 @@ public class Generic extends BaseCommand {
         }
     }
 
-    @CommandAlias("suicide|suicidio")
-    @Syntax("<mensagem>")
-    @CommandPermission("eternia.suicide")
+    @CommandAlias("%suicide")
+    @Syntax("%suicide_syntax")
+    @CommandPermission("%suicide_perm")
+    @Description("%suicide_description")
     public void onSuicide(Player player, String message) {
         player.setHealth(0);
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SUICIDE_BROADCAST, true, player.getName(), player.getDisplayName(), message));
     }
 
-    @CommandAlias("afk")
-    @CommandPermission("eternia.afk")
+    @CommandAlias("%afk")
+    @CommandPermission("%afk_perm")
+    @Description("%afk_description")
     public void onAFK(Player player) {
-        final String playerName = player.getName();
-        if (APIPlayer.isAFK(playerName)) {
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_LEAVE, true, playerName, player.getDisplayName()));
-            APIPlayer.removeAfk(playerName);
-        } else {
-            APIPlayer.putInAfk(player);
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_ENTER, true, playerName, player.getDisplayName()));
-        }
-    }
+        User user = new User(player);
+        user.changeAfkState();
 
-    private void changeGod(final Player player) {
-        final String playerName = player.getName();
-        if (APIPlayer.isGod(playerName)) {
-            EterniaServer.msg.sendMessage(player, Messages.GODMODE_DISABLED);
-            APIPlayer.removeGod(playerName);
-        } else {
-            EterniaServer.msg.sendMessage(player, Messages.GODMODE_ENABLED);
-            APIPlayer.putGod(playerName);
+        if (user.isAfk()) {
+            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_ENTER, true, user.getName(), user.getDisplayName()));
+            return;
         }
+        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_LEAVE, true, user.getName(), user.getDisplayName()));
     }
 
     private int checkItems(ItemStack item1, ItemStack item2) {
@@ -307,18 +316,18 @@ public class Generic extends BaseCommand {
         }
     }
 
-    private void sendProfile(Player player, Player target) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(target.getName());
-        final long millis = APIPlayer.getAndUpdateTimePlayed(uuid);
+    private void sendProfile(Player player, Player targets) {
+        User target = new User(targets);
+        final long millis = target.getAndUpdateTimePlayed();
         String hms = APIServer.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
         player.sendMessage(EterniaServer.msg.getMessage(Messages.PROFILE_TITLE, false));
         for (String line : EterniaServer.configs.profileCustomMessages) {
-            player.sendMessage(APIServer.getColor(APIChat.setPlaceholders(target, line)));
+            player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(targets, line)));
         }
-        player.sendMessage(EterniaServer.msg.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(APIPlayer.getFirstLoginLong(uuid)))));
-        player.sendMessage(EterniaServer.msg.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(APIPlayer.getLastLogin(uuid)))));
+        player.sendMessage(EterniaServer.msg.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(target.getFirstLogin()))));
+        player.sendMessage(EterniaServer.msg.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(target.getLastLogin()))));
         player.sendMessage(EterniaServer.msg.getMessage(Messages.PROFILE_ACCOUNT_HOURS, false, hms));
         player.sendMessage(EterniaServer.msg.getMessage(Messages.PROFILE_TITLE, false));
     }
@@ -364,6 +373,15 @@ public class Generic extends BaseCommand {
 
     private void sendConsole(String message) {
         Bukkit.getConsoleSender().sendMessage(message);
+    }
+
+    public void changeGameMode(User user) {
+        user.changeGodModeState();
+        if (user.getGodMode()) {
+            user.sendMessage(Messages.GODMODE_ENABLED);
+            return;
+        }
+        user.sendMessage(Messages.GODMODE_DISABLED);
     }
 
     public Location getCenter(Location loc) {

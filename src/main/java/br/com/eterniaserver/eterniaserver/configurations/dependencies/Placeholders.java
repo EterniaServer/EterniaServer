@@ -1,17 +1,16 @@
 package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.core.APICash;
-import br.com.eterniaserver.eterniaserver.core.APIPlayer;
+import br.com.eterniaserver.eterniaserver.core.User;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
-public class PlaceHolders extends PlaceholderExpansion {
+public class Placeholders extends PlaceholderExpansion {
 
     private final String version = this.getClass().getPackage().getImplementationVersion();
 
@@ -45,10 +44,10 @@ public class PlaceHolders extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer p, @Nonnull String identifier) {
-        return p != null ? getPlaceHolder(getIdentifier(identifier), p.getName()) : "";
+        return p != null ? getPlaceHolder(getIdentifier(identifier), p.getPlayer()) : "";
     }
 
-    private byte getIdentifier(final String identifier) {
+    private byte getIdentifier(String identifier) {
         switch(identifier.hashCode()) {
             case -690213213:
                 return 0;
@@ -65,19 +64,19 @@ public class PlaceHolders extends PlaceholderExpansion {
         }
     }
 
-    private String getPlaceHolder(final byte var4, final String playerName) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+    private String getPlaceHolder(byte var4, Player player) {
+        User user = new User(player);
         switch (var4) {
             case 0:
-                return APIPlayer.getFirstLogin(uuid);
+                return user.getFirstLoginPlaceholder();
             case 1:
-                return APIPlayer.isAFKPlaceholder(playerName);
+                return user.getAfkPlaceholder();
             case 2:
-                return String.valueOf(APICash.getCash(uuid));
+                return String.valueOf(APICash.getCash(user.getUUID()));
             case 3:
-                return APIPlayer.getGlowColor(playerName);
+                return user.getGlowColor();
             case 4:
-                return APIPlayer.isGodPlaceholder(playerName);
+                return user.getGodeModePlaceholder();
             default:
                 return null;
         }

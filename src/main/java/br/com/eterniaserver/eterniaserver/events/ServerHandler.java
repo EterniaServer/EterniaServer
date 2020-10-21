@@ -1,11 +1,8 @@
 package br.com.eterniaserver.eterniaserver.events;
 
-import br.com.eterniaserver.eternialib.UUIDFetcher;
-
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIPlayer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.APIChat;
+import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.UtilGlobalFormat;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -24,7 +21,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,61 +67,59 @@ public class ServerHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
         if (EterniaServer.configs.moduleChat) {
-            final Player player = e.getPlayer();
-            final String playerName = player.getName();
-            if (APIChat.isChatMuted() && !player.hasPermission("eternia.mute.bypass")) {
-                EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNELS_MUTED);
+            User user = new User(e.getPlayer());
+
+            if (APIServer.isChatMuted() && !user.hasPermission("eternia.mute.bypass")) {
+                user.sendMessage(Messages.CHAT_CHANNELS_MUTED);
                 e.setCancelled(true);
             } else {
-                final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-                final long time = APIPlayer.getMutedTime(uuid);
+                long time = user.getMuteTime();
                 if (APIServer.isInFutureCooldown(time)) {
-                    EterniaServer.msg.sendMessage(player, Messages.CHAT_ARE_MUTED, APIServer.getTimeLeftOfCooldown(time));
+                    user.sendMessage(Messages.CHAT_ARE_MUTED, APIServer.getTimeLeftOfCooldown(time));
                     e.setCancelled(true);
                 } else {
-                    e.setCancelled(getChannel(e, player, e.getMessage(), uuid));
+                    e.setCancelled(getChannel(e, user, e.getMessage()));
                 }
             }
         }
     }
 
-    private boolean getChannel(AsyncPlayerChatEvent e, Player player, String message, UUID uuid) {
-        message = canHex(player, message);
-        switch (APIChat.getChannel(uuid)) {
+    private boolean getChannel(AsyncPlayerChatEvent e, User user, String message) {
+        message = canHex(user, message);
+        switch (user.getChannel()) {
             case 0:
-                APIChat.sendLocal(message, player, EterniaServer.chat.localRange);
+                user.sendLocalMessage(message, EterniaServer.chat.localRange);
                 return true;
             case 2:
-                APIChat.sendStaff(message, player);
+                user.sendStaffMessage(message);
                 return true;
             case 3:
-                sendTell(player, message);
+                sendTell(user, message);
                 return true;
             default:
                 e.getRecipients().clear();
-                utilGlobalFormat.filter(player, message);
+                utilGlobalFormat.filter(user, message);
                 return false;
         }
     }
 
-    private void sendTell(Player sender, final String msg) {
-        final String playerName = sender.getName();
-        if (APIChat.isTell(playerName)) {
-            final Player target = Bukkit.getPlayer(APIChat.getTellingPlayerName(playerName));
+    private void sendTell(User user, String msg) {
+        if (user.isTell()) {
+            final Player target = Bukkit.getPlayer(user.getTellingPlayerName());
             if (target != null && target.isOnline()) {
-                if (APIChat.hasIgnores(playerName) && APIChat.areIgnored(playerName, target)) {
-                    EterniaServer.msg.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
+                if (APIServer.hasIgnores(user.getUUID()) && APIServer.areIgnored(user.getUUID(), target)) {
+                    user.sendMessage(Messages.CHAT_ARE_IGNORED);
                     return;
                 }
-                APIChat.sendPrivate(sender, target, msg);
+                user.sendPrivate(target, msg);
                 return;
             }
         }
-        EterniaServer.msg.sendMessage(sender, Messages.CHAT_NO_ONE_TO_RESP);
+        user.sendMessage(Messages.CHAT_NO_ONE_TO_RESP);
     }
 
-    private String canHex(final Player player, String message) {
-        if (APIServer.getVersion() >= 116 && player.hasPermission("eternia.chat.color.hex")) {
+    private String canHex(User user, String message) {
+        if (APIServer.getVersion() >= 116 && user.hasPermission("eternia.chat.color.hex")) {
             Matcher matcher = colorPattern.matcher(message);
             if (matcher.find()) {
                 StringBuffer buffer = new StringBuffer();

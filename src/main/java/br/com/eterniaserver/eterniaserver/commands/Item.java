@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.commands;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
-import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Default;
 import br.com.eterniaserver.acf.annotation.Description;
@@ -22,25 +21,34 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-@CommandAlias("item")
-@CommandPermission("eternia.item")
+@CommandAlias("%item")
 public class Item extends BaseCommand {
 
     @Default
     @HelpCommand
-    @Syntax("<página>")
-    @Description(" Ajuda para os comandos de Item")
+    @Syntax("%item_syntax")
+    @CommandPermission("%item_perm")
+    @Description("%item_description")
     public void onHelp(CommandHelp help) {
         help.showHelp();
     }
 
-    @Subcommand("nbt")
-    @CommandPermission("eternia.item.nbt")
+    @Subcommand("%item_nbt")
     public class Nbt extends BaseCommand {
 
-        @Subcommand("addstring")
-        @Description(" Adiciona uma chave e um valor NBT ao item")
-        @Syntax("<chave> <valor>")
+        @Default
+        @HelpCommand
+        @Syntax("%item_nbt_syntax")
+        @Description("%item_nbt_description")
+        @CommandPermission("%item_nbt_perm")
+        public void onNbt(CommandHelp help) {
+            onHelp(help);
+        }
+
+        @Subcommand("%item_nbt_addstring")
+        @CommandPermission("%item_nbt_addstring_perm")
+        @Description("%item_nbt_addstring_description")
+        @Syntax("item_nbt_addstring_syntax")
         public void onItemAddString(Player player, String key, String value) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
@@ -53,9 +61,10 @@ public class Item extends BaseCommand {
             }
         }
 
-        @Subcommand("addint")
-        @Description(" Adiciona uma chave e um valor NBT ao item")
-        @Syntax("<chave> <valor>")
+        @Subcommand("%item_nbt_addint")
+        @CommandPermission("%item_nbt_addint_perm")
+        @Description("%item_nbt_addint_description")
+        @Syntax("item_nbt_addint_syntax")
         public void onItemAddInteger(Player player, String key, Integer value) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
@@ -70,11 +79,21 @@ public class Item extends BaseCommand {
 
     }
 
-    @Subcommand("clear")
+    @Subcommand("%item_clear")
     public class Clear extends BaseCommand {
 
-        @Subcommand("lore")
-        @Description(" Remove a lore do item")
+        @Default
+        @HelpCommand
+        @Syntax("%item_clear_syntax")
+        @Description("%item_clear_description")
+        @CommandPermission("%item_clear_perm")
+        public void onClear(CommandHelp help) {
+            onHelp(help);
+        }
+
+        @Subcommand("%item_clear_lore")
+        @Description("%item_clear_lore_description")
+        @CommandPermission("%item_clear_lore_perm")
         public void onItemClearLore(Player player) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR && item.getLore() != null) {
@@ -86,8 +105,9 @@ public class Item extends BaseCommand {
             }
         }
 
-        @Subcommand("name")
-        @Description(" Remove o nome do item")
+        @Subcommand("%item_clear_name")
+        @CommandPermission("%item_clear_name_perm")
+        @Description("%item_clear_name_description")
         public void onItemClearName(Player player) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
@@ -102,10 +122,10 @@ public class Item extends BaseCommand {
     }
 
 
-    @Subcommand("add lore")
-    @CommandCompletion("<lore>")
-    @Syntax("<lore>")
-    @Description(" Adiciona uma linha de lore ao item")
+    @Subcommand("%item_add_lore")
+    @Syntax("%item_add_lore_syntax")
+    @CommandPermission("%item_add_lore_perm")
+    @Description("%item_add_lore_description")
     public void onItemAddLore(Player player, String name) {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType() != Material.AIR) {
@@ -124,13 +144,22 @@ public class Item extends BaseCommand {
         }
     }
 
-    @Subcommand("set")
+    @Subcommand("%item_set")
     public class Set extends BaseCommand {
 
-        @Subcommand("lore")
-        @CommandCompletion("<lore>")
-        @Syntax("<lore>")
-        @Description(" Define a lore de um item")
+        @Default
+        @HelpCommand
+        @Syntax("%item_set_syntax")
+        @Description("%item_set_description")
+        @CommandPermission("%item_set_perm")
+        public void onSet(CommandHelp help) {
+            onHelp(help);
+        }
+
+        @Subcommand("%item_set_lore")
+        @Syntax("%item_set_lore_syntax")
+        @Description("%item_set_lore_description")
+        @CommandPermission("%item_set_lore_perm")
         public void onItemSetLore(Player player, String name) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
@@ -143,10 +172,10 @@ public class Item extends BaseCommand {
             }
         }
 
-        @Subcommand("name")
-        @CommandCompletion("<nome>")
-        @Syntax("<nome>")
-        @Description(" Define o nome de um item")
+        @Subcommand("%item_set_name")
+        @Syntax("%item_set_name_syntax")
+        @Description("%item_set_name_description")
+        @CommandPermission("%item_set_name_perm")
         public void onItemSetName(Player player, String name) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {

@@ -21,14 +21,14 @@ public class UtilAccelerateWorld implements Runnable {
     private void checkWorld(final World world) {
         final int sleeping = APIServer.getSleeping(world).size();
         if (sleeping > 0) {
-            PluginVars.skippingWorlds.add(world);
+            Vars.skippingWorlds.add(world);
             new UtilAccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }
 
     private boolean validateWorld(final World world) {
         return !isBlacklisted(world)
-                && !PluginVars.skippingWorlds.contains(world)
+                && !Vars.skippingWorlds.contains(world)
                 && isNight(world);
     }
 
