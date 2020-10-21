@@ -16,13 +16,15 @@ public class UtilCustomCommands extends AbstractCommand {
     private final String commandString;
     private final List<String> messagesStrings;
     private final List<String> commandsStrings;
+    private final boolean console;
 
-    public UtilCustomCommands(EterniaServer plugin, String command, String description, List<String> aliases, List<String> messages, List<String> commands) {
+    public UtilCustomCommands(EterniaServer plugin, String command, String description, List<String> aliases, List<String> messages, List<String> commands, boolean console) {
         super(command, description, aliases);
         this.messagesStrings = messages;
         this.commandsStrings = commands;
         this.plugin = plugin;
         this.commandString = command;
+        this.console = console;
     }
 
     @Override
@@ -37,7 +39,11 @@ public class UtilCustomCommands extends AbstractCommand {
     private void checkCommands(final Player player, final String cmd) {
         if (player.hasPermission("eternia." + cmd)) {
             for (String line : commandsStrings) {
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIServer.setPlaceholders(player, line));
+                if (console) {
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIServer.setPlaceholders(player, line));
+                } else {
+                    player.performCommand(APIServer.setPlaceholders(player, line));
+                }
             }
             for (String line : messagesStrings) {
                 player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, line)));

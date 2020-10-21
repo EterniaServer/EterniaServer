@@ -487,7 +487,7 @@ public class Managers {
 
     private void loadCommandsManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleCommands, "Commands")) {
-            EterniaServer.commands.customCommandMap.forEach((commandName, commandObject) -> new UtilCustomCommands(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands()));
+            EterniaServer.commands.customCommandMap.forEach((commandName, commandObject) -> new UtilCustomCommands(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
         }
     }
 

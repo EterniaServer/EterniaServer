@@ -43,7 +43,7 @@ public class ConstantsCfg {
 
     public ConstantsCfg() {
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONSTANTS_FILE_PATH));
         FileConfiguration outConfig = new YamlConfiguration();
 
         this.serverPrefix = config.getString("server.prefix", "$8[$aE$9S$8]$7 ").replace('$', (char) 0x00A7);
@@ -82,7 +82,7 @@ public class ConstantsCfg {
         outConfig.set("server.baltop", this.baltopTag);
 
         outConfig.set("placeholders.afk", this.afkPlaceholder);
-        outConfig.set("placeholders.godmode", this.afkPlaceholder);
+        outConfig.set("placeholders.godmode", this.godPlaceholder);
 
         outConfig.set("generics.gm.adventure", this.gmAdventure);
         outConfig.set("generics.gm.creative", this.gmCreative);
@@ -110,7 +110,7 @@ public class ConstantsCfg {
         outConfig.set("chat.staff", this.chStaff);
 
         try {
-            outConfig.save(Constants.CONFIG_FILE_PATH);
+            outConfig.save(Constants.CONSTANTS_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }

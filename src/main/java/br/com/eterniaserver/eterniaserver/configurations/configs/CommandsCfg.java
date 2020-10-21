@@ -24,8 +24,8 @@ public class CommandsCfg {
         FileConfiguration commandsConfig = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_FILE_PATH));
         FileConfiguration outCommands = new YamlConfiguration();
 
-        this.customCommandMap.put("discord", new CustomCommand("Informa o link do discord", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8.")));
-        this.customCommandMap.put("facebook", new CustomCommand("Informa o link do facebook", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8.")));
+        this.customCommandMap.put("discord", new CustomCommand("Informa o link do discord", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8."), false));
+        this.customCommandMap.put("facebook", new CustomCommand("Informa o link do facebook", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8."), false));
 
         Map<String, CustomCommand> tempCustomCommandMap = new HashMap<>();
         ConfigurationSection configurationSection = commandsConfig.getConfigurationSection("commands");
@@ -34,7 +34,8 @@ public class CommandsCfg {
                 tempCustomCommandMap.put(key, new CustomCommand(commandsConfig.getString("commands." + key + ".description"),
                         commandsConfig.getStringList("commands." + key + ".aliases"),
                         commandsConfig.getStringList("commands." + key + ".command"),
-                        commandsConfig.getStringList("commands." + key + ".text")));
+                        commandsConfig.getStringList("commands." + key + ".text"),
+                        commandsConfig.getBoolean("commands." + key + ".console")));
             }
         }
 
@@ -50,6 +51,7 @@ public class CommandsCfg {
             outCommands.set("commands." + k + ".aliases", v.getAliases());
             outCommands.set("commands." + k + ".command", v.getCommands());
             outCommands.set("commands." + k + ".text", v.getText());
+            outCommands.set("commands." + k + ".console", v.getConsole());
         });
 
         outCommands.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");

@@ -8,12 +8,14 @@ public class CustomCommand {
     private final List<String> aliases;
     private final List<String> commands;
     private final List<String> text;
+    private final boolean console;
 
-    public CustomCommand(String description, List<String> aliases, List<String> commands, List<String> text) {
+    public CustomCommand(String description, List<String> aliases, List<String> commands, List<String> text, boolean console) {
         this.description = description;
         this.aliases = aliases;
         this.commands = commands;
         this.text = text;
+        this.console = console;
     }
 
     public List<String> getCommands() {
@@ -30,6 +32,10 @@ public class CustomCommand {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean getConsole() {
+        return console;
     }
 
 }

@@ -72,7 +72,7 @@ public class ConfigsCfg {
 
     public ConfigsCfg() {
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONSTANTS_FILE_PATH));
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
         FileConfiguration outConfig = new YamlConfiguration();
 
         this.moduleBed = config.getBoolean("module.bed", true);
@@ -242,7 +242,7 @@ public class ConfigsCfg {
         outConfig.set("profile.custom-messages", tempCustomProfileMessages);
 
         try {
-            outConfig.save(Constants.CONSTANTS_FILE_PATH);
+            outConfig.save(Constants.CONFIG_FILE_PATH);
         } catch (IOException exception) {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
