@@ -45,7 +45,7 @@ public class Inventory extends BaseCommand {
             return;
         }
 
-        if (player.hasPermission("eternia.enderchest.other")) {
+        if (player.hasPermission(EterniaServer.constants.permEcOther)) {
             player.openInventory(target.getPlayer().getEnderChest());
             return;
         }

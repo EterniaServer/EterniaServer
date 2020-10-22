@@ -33,7 +33,7 @@ public class EntityHandler implements Listener {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getDamager();
             User user = new User(player);
-            if (player.isFlying() && !player.hasPermission("eternia.fly.bypass")) {
+            if (player.isFlying() && !player.hasPermission(EterniaServer.constants.permFlyBypass)) {
                 user.setIsOnPvP();
                 user.sendMessage(Messages.FLY_ENTER_PVP);
                 player.setAllowFlight(false);

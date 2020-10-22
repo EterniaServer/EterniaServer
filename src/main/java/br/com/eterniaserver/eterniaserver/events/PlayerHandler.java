@@ -74,7 +74,7 @@ public class PlayerHandler implements Listener {
         if (EterniaServer.configs.moduleSpawners && event.getClickedBlock() != null
                 && action.equals(Action.RIGHT_CLICK_BLOCK) && event.getItem() != null
                 && event.getClickedBlock().getType() == Material.SPAWNER
-                && !user.hasPermission("eternia.change-spawner")) {
+                && !user.hasPermission(EterniaServer.constants.permSpawnersChange)) {
             event.setCancelled(true);
         }
     }
@@ -188,7 +188,7 @@ public class PlayerHandler implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         final Player player = event.getPlayer();
-        if (EterniaServer.configs.moduleElevator && player.hasPermission("eternia.elevator") && !player.isSneaking()) {
+        if (EterniaServer.configs.moduleElevator && player.hasPermission(EterniaServer.constants.permElevator) && !player.isSneaking()) {
             Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
             for (Material value : EterniaServer.configs.elevatorMaterials) {
@@ -206,7 +206,7 @@ public class PlayerHandler implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerJump(PlayerJumpEvent event) {
         final Player player = event.getPlayer();
-        if (EterniaServer.configs.moduleTeleports && player.hasPermission("eternia.elevator")) {
+        if (EterniaServer.configs.moduleTeleports && player.hasPermission(EterniaServer.constants.permElevator)) {
             Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
             for (Material value : EterniaServer.configs.elevatorMaterials) {
@@ -226,16 +226,17 @@ public class PlayerHandler implements Listener {
         User user = new User(event.getPlayer());
 
         event.setJoinMessage(null);
-        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
 
         if (!user.hasProfile()) {
+            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_FIRST_LOGIN, true, user.getName(), user.getDisplayName()));
             user.createProfile();
         } else {
+            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
             user.updateProfile();
         }
 
         if (EterniaServer.configs.moduleChat) {
-            if (user.hasPermission("eternia.spy")) {
+            if (user.hasPermission(EterniaServer.constants.permSpy)) {
                 user.changeSpyState();
             }
             user.setDisplayName(user.getDisplayName());

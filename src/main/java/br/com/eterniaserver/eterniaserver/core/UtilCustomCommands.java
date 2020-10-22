@@ -37,7 +37,7 @@ public class UtilCustomCommands extends AbstractCommand {
     }
 
     private void checkCommands(final Player player, final String cmd) {
-        if (player.hasPermission("eternia." + cmd)) {
+        if (player.hasPermission(EterniaServer.constants.permBaseCommand + cmd)) {
             for (String line : commandsStrings) {
                 if (console) {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIServer.setPlaceholders(player, line));

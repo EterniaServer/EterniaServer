@@ -47,7 +47,7 @@ public class Kit extends BaseCommand {
     @CommandPermission("%kit_perm")
     public void onKit(Player player, String kit) {
         if (EterniaServer.kits.kitList.containsKey(kit)) {
-            if (player.hasPermission("eternia.kit." + kit)) {
+            if (player.hasPermission(EterniaServer.constants.permKitPrefix + kit)) {
                 giveKit(player, kit);
             } else {
                 EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);

@@ -31,7 +31,7 @@ public class UtilGlobalFormat {
 	}
 
 	private BaseComponent[] customPlaceholder(Player player, String format, String message) {
-		if (player.hasPermission("eternia.chat.color")) {
+		if (player.hasPermission(EterniaServer.constants.permChatColor)) {
 			message = message.replace('&', '§');
 		}
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
@@ -62,34 +62,38 @@ public class UtilGlobalFormat {
 	}
 
 	private TextComponent getComponent(String actualMsg, Player player) {
-		if (actualMsg.contains("@") && Vars.playersName.containsKey(actualMsg)) {
+		if (player.hasPermission(EterniaServer.constants.permChatMention) && actualMsg.contains(EterniaServer.constants.mentionPlaceholder) && Vars.playersName.containsKey(actualMsg)) {
 			Player target = Bukkit.getPlayer(Vars.playersName.get(actualMsg));
 			actualMsg = Vars.colors.get(3) + actualMsg + Vars.colors.get(15);
 			if (target != null && target.isOnline()) {
 				target.playNote(target.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-				target.sendTitle(APIServer.getColor(player.getDisplayName()), Vars.colors.get(7) + "mencionou você" + Vars.colors.get(8) + "!", 10, 40, 10);
+				target.sendTitle(EterniaServer.constants.chMentionTitle.replace("{0}", player.getName()).replace("{1}", player.getDisplayName()),
+						EterniaServer.constants.chMentionSubtitle.replace("{0}", player.getName()).replace("{1}", player.getDisplayName()), 10, 40, 10);
 			}
-			return new TextComponent(actualMsg + " ");
-		} else if (actualMsg.equals("[item]")) {
-			ItemStack itemStack = player.getInventory().getItemInMainHand();
-			if (!itemStack.getType().equals(Material.AIR)) {
-				return sendItemInHand(actualMsg + " ", itemStack);
-			} else {
-				return new TextComponent(actualMsg + " ");
-			}
-		} else {
 			return new TextComponent(actualMsg + " ");
 		}
+
+		if (player.hasPermission(EterniaServer.constants.permChatItem) && actualMsg.equals(EterniaServer.constants.showItemPlaceholder)) {
+			ItemStack itemStack = player.getInventory().getItemInMainHand();
+			if (itemStack.getType().equals(Material.AIR)) {
+				return new TextComponent(actualMsg + " ");
+
+			}
+			return sendItemInHand(actualMsg + " ", itemStack);
+		}
+
+		return new TextComponent(actualMsg + " ");
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
 		if (APIServer.getVersion() >= 116) {
-			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
-			TextComponent component = new TextComponent(string.replace("[item]", Vars.colors.get(3) + "x" + itemStack.getAmount() + " " + itemStack.getI18NDisplayName() + Vars.colors.get(15)));
+			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));;
+			TextComponent component = new TextComponent(string.replace(EterniaServer.constants.showItemPlaceholder,
+					EterniaServer.constants.chShowItemFormat.replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemStack.getI18NDisplayName())));
 			component.setHoverEvent(event);
 			return component;
 		}
-		return new TextComponent("sem suporte");
+		return new TextComponent(EterniaServer.constants.noSupport);
 	}
 
 	private TextComponent getText(Player player, CustomPlaceholders objects) {
@@ -99,6 +103,7 @@ public class UtilGlobalFormat {
 			textComponentList.add(new TextComponent(APIServer.getColor(APIServer.setPlaceholders(player, objects.getHoverText()))));
 			textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(textComponentList.toArray(new TextComponent[textComponentList.size() - 1]))));
 		}
+
 		if (!objects.getSuggestCmd().equals("")) {
 			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, APIServer.getColor(APIServer.setPlaceholders(player, objects.getSuggestCmd()))));
 		}

@@ -41,7 +41,7 @@ public class Generic extends BaseCommand {
 
     private final UtilGetRuntime getRuntime;
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private final SimpleDateFormat sdf = new SimpleDateFormat(EterniaServer.constants.dataFormat);
     private final ItemStack coali = new ItemStack(Material.COAL);
     private final ItemStack lapizi = new ItemStack(Material.LAPIS_LAZULI);
     private final ItemStack redstonei = new ItemStack(Material.REDSTONE);
@@ -162,12 +162,12 @@ public class Generic extends BaseCommand {
         User user = new User(player);
         String worldName = player.getWorld().getName();
 
-        if ((worldName.equals("evento") || worldName.equals("world_evento")) && !player.hasPermission("eternia.fly.evento")) {
+        if (EterniaServer.configs.blacklistedFly.contains(worldName.toLowerCase()) && !player.hasPermission(EterniaServer.constants.permFlyBypass)) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
 
-        if (targetS != null && player.hasPermission("eternia.fly.others")) {
+        if (targetS != null && player.hasPermission(EterniaServer.constants.permFlyOther)) {
 
             User target = new User(targetS.getPlayer());
 
@@ -220,7 +220,7 @@ public class Generic extends BaseCommand {
             EterniaServer.msg.sendMessage(player, Messages.FEED_YOURSELF);
         } else {
             final Player targetP = target.getPlayer();
-            if (player.hasPermission("eternia.feed.other")) {
+            if (player.hasPermission(EterniaServer.constants.permFeedOther)) {
                 targetP.setFoodLevel(20);
                 EterniaServer.msg.sendMessage(player, Messages.FEED_RECEIVED, player.getName(), player.getDisplayName());
                 EterniaServer.msg.sendMessage(player, Messages.FEED_TARGET, targetP.getName(), targetP.getDisplayName());

@@ -34,7 +34,7 @@ public class Nick extends BaseCommand {
             return;
         }
 
-        if (user.hasPermission("eternia.nickname.others")) {
+        if (user.hasPermission(EterniaServer.constants.permNicknameOther)) {
             user.staffNick(target, player, string);
             return;
         }

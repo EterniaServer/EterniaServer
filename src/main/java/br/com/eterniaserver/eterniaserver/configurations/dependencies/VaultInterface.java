@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 
 import net.milkbowl.vault.economy.Economy;
@@ -223,7 +224,7 @@ public class VaultInterface implements Economy {
     }
 
     private EconomyResponse createUnsupportedResponse() {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "Sem suporte para bancos");
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, EterniaServer.constants.noSupport);
     }
 
     @Override

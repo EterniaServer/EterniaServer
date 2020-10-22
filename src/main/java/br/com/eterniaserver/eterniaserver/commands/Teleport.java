@@ -117,7 +117,7 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        if (user.hasPermission("eternia.backfree") || !EterniaServer.configs.moduleEconomy) {
+        if (user.hasPermission(EterniaServer.constants.permBackFree) || !EterniaServer.configs.moduleEconomy) {
             user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
             return;
         }

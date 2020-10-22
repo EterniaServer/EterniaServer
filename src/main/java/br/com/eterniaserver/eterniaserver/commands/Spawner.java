@@ -66,12 +66,11 @@ public class Spawner extends BaseCommand {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < Vars.entityList.size(); i++) {
             if (i + 1 == Vars.entityList.size()) {
-                str.append(ChatColor.DARK_AQUA).append(Vars.entityList.get(i));
+                str.append(ChatColor.DARK_AQUA).append(Vars.entityList.get(i)).append(ChatColor.DARK_GRAY).append(".");
             } else {
                 str.append(ChatColor.DARK_AQUA).append(Vars.entityList.get(i)).append(ChatColor.DARK_GRAY).append(", ");
             }
         }
-        str.append(ChatColor.GRAY).append("algumas entidades não funcionam");
         EterniaServer.msg.sendMessage(player, Messages.SPAWNER_SEND_TYPES, str.toString());
     }
 

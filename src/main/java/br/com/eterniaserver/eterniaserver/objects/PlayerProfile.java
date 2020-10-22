@@ -102,10 +102,6 @@ public class PlayerProfile {
         return hours;
     }
 
-    public long getLastLogin() {
-        return lastLogin;
-    }
-
     public long getMuted() {
         return muted;
     }

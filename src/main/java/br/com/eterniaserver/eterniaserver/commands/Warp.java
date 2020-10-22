@@ -47,7 +47,7 @@ public class Warp extends BaseCommand {
 
         User target = new User(targets.getPlayer());
 
-        if (!user.hasPermission("eternia.spawn.other")) {
+        if (!user.hasPermission(EterniaServer.constants.permSpawnOther)) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
@@ -90,7 +90,7 @@ public class Warp extends BaseCommand {
 
         Location location = APIServer.getLocation("warp.shop");
 
-        if (!player.hasPermission("eternia.warp.shop")) {
+        if (!player.hasPermission(EterniaServer.constants.permWarpShop)) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
@@ -128,7 +128,7 @@ public class Warp extends BaseCommand {
             return;
         }
 
-        if (!player.hasPermission("eternia.warp." + nome.toLowerCase())) {
+        if (!player.hasPermission(EterniaServer.constants.permWarpPrefix + nome.toLowerCase())) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
@@ -174,7 +174,7 @@ public class Warp extends BaseCommand {
             String line = list[i].toString();
             if (line.contains("warp.")) {
                 String warp = line.replace("warp.", "");
-                if (player.hasPermission("eternia.warp." + warp)) {
+                if (player.hasPermission(EterniaServer.constants.permWarpPrefix + warp)) {
                     if (i + 1 != size) {
                         string.append(warp).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
                     } else {

@@ -27,7 +27,7 @@ public interface APIEconomy {
      * @return the formatted string value
      */
     static String format(double amount) {
-        return Vars.df2.format(amount);
+        return Vars.getDf2().format(amount);
     }
 
     /**

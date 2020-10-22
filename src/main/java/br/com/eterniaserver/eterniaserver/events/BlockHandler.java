@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eternialib.NBTItem;
+import br.com.eterniaserver.eternialib.NBTTileEntity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
@@ -34,7 +35,7 @@ public class BlockHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerSignChange(SignChangeEvent event) {
-        if (event.getPlayer().hasPermission("eternia.sign.color")) {
+        if (event.getPlayer().hasPermission(EterniaServer.constants.permSignColor)) {
             for (byte i = 0; i < 4; i++) {
                 event.setLine(i, APIServer.getColor(event.getLine(i)));
             }
@@ -54,6 +55,8 @@ public class BlockHandler implements Listener {
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 spawner.setSpawnedType(entity);
                 spawner.update();
+                NBTTileEntity tileEntity = new NBTTileEntity(block.getState());
+                tileEntity.setString("ms_mob", tileEntity.toString());
             }
         }
     }
@@ -70,16 +73,16 @@ public class BlockHandler implements Listener {
         final String materialName = material.name().toUpperCase();
         final String worldName = player.getWorld().getName();
 
-        if (EterniaServer.configs.moduleSpawners && material == Material.SPAWNER && !isBlackListWorld(worldName) && player.hasPermission("eternia.spawners.break")) {
+        if (EterniaServer.configs.moduleSpawners && material == Material.SPAWNER && !isBlackListWorld(worldName) && player.hasPermission(EterniaServer.constants.permSpawnersBreak)) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
-            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("eternia.spawners.nosilk")) {
+            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(EterniaServer.constants.permSpawnersNoSilk)) {
                 giveSpawner(player, material, block);
                 event.setExpToDrop(0);
             } else {
                 event.setCancelled(true);
                 EterniaServer.msg.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
             }
-        } else if (!player.hasPermission("eternia.spawners.break") && material == Material.SPAWNER) {
+        } else if (!player.hasPermission(EterniaServer.constants.permSpawnersBreak) && material == Material.SPAWNER) {
             EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
             event.setCancelled(true);
         } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {

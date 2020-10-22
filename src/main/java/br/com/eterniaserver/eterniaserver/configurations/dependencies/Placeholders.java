@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APICash;
 import br.com.eterniaserver.eterniaserver.core.User;
 
@@ -78,7 +79,7 @@ public class Placeholders extends PlaceholderExpansion {
             case 4:
                 return user.getGodeModePlaceholder();
             default:
-                return null;
+                return EterniaServer.constants.noSupport;
         }
     }
 

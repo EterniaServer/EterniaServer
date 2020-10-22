@@ -69,7 +69,7 @@ public class ServerHandler implements Listener {
         if (EterniaServer.configs.moduleChat) {
             User user = new User(e.getPlayer());
 
-            if (APIServer.isChatMuted() && !user.hasPermission("eternia.mute.bypass")) {
+            if (APIServer.isChatMuted() && !user.hasPermission(EterniaServer.constants.permMuteBypass)) {
                 user.sendMessage(Messages.CHAT_CHANNELS_MUTED);
                 e.setCancelled(true);
             } else {
@@ -119,7 +119,7 @@ public class ServerHandler implements Listener {
     }
 
     private String canHex(User user, String message) {
-        if (APIServer.getVersion() >= 116 && user.hasPermission("eternia.chat.color.hex")) {
+        if (APIServer.getVersion() >= 116 && user.hasPermission(EterniaServer.constants.permChatColor)) {
             Matcher matcher = colorPattern.matcher(message);
             if (matcher.find()) {
                 StringBuffer buffer = new StringBuffer();

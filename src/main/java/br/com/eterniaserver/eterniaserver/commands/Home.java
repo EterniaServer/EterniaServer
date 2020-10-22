@@ -64,7 +64,7 @@ public class Home extends BaseCommand {
             return;
         }
 
-        if (user.hasPermission("eternia.home.other")) {
+        if (user.hasPermission(EterniaServer.constants.permHomeOther)) {
             Location location = APIServer.getLocation(nome.toLowerCase() + "." + targets.getPlayer().getName());
             if (locationExists(location, player, nome)) {
                 user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.msg.getMessage(Messages.HOME_GOING, true, nome)));
@@ -85,7 +85,7 @@ public class Home extends BaseCommand {
             return;
         }
 
-        if (player.hasPermission("eternia.homes.other")) {
+        if (player.hasPermission(EterniaServer.constants.permHomeOther)) {
             showHomes(player, target.getPlayer());
             return;
         }
@@ -116,7 +116,7 @@ public class Home extends BaseCommand {
     public void onSetHome(Player player, String nome) {
         User user = new User(player);
         int i = 4;
-        for (int v = 5; v <= 93; v++) if (player.hasPermission("eternia.sethome." + v)) i = v;
+        for (int v = 5; v <= 93; v++) if (player.hasPermission(EterniaServer.constants.permSethomeLimitPrefix + v)) i = v;
 
         nome = nome.replaceAll("[^a-zA-Z0-9]", "");
         if (nome.length() > 10) {

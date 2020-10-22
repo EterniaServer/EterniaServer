@@ -338,6 +338,12 @@ public class User {
                 final Player spyPlayer = Bukkit.getPlayer(uuid);
                 if (spyPlayer != null && spyPlayer.isOnline()) {
                     spyPlayer.sendMessage(APIServer.getColor("&8[&7SPY-&6P&8] &8" + playerDisplayName + " -> " + user.getDisplayName() + ": " + s));
+                    spyPlayer.sendMessage(APIServer.getColor(EterniaServer.constants.spyTell
+                            .replace("{0}", playerName)
+                            .replace("{1}", playerDisplayName)
+                            .replace("{2}", user.getName())
+                            .replace("{3}", user.getDisplayName())
+                            .replace("{4}", s)));
                 } else {
                     Vars.spy.remove(uuid);
                 }
@@ -347,7 +353,7 @@ public class User {
 
     public void sendStaffMessage(String message) {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.hasPermission("eternia.chat.staff")) {
+            if (p.hasPermission(EterniaServer.constants.permChatStaff)) {
                 String format = EterniaServer.chat.staffFormat;
                 format = APIServer.setPlaceholders(player, format);
                 format = APIServer.getColor(format.replace("%message%", message));
@@ -365,8 +371,11 @@ public class User {
             if ((player.getWorld() == p.getWorld() && p.getLocation().distanceSquared(player.getLocation()) <= Math.pow(radius, 2)) || radius <= 0) {
                 pes += 1;
                 p.sendMessage(format);
-            } else if (p.hasPermission("eternia.spy") && Boolean.TRUE.equals(b)) {
-                p.sendMessage(APIServer.getColor("&8[&7SPY&8-&eL&8] &8" + playerDisplayName + ": " + message));
+            } else if (p.hasPermission(EterniaServer.constants.permSpy) && Boolean.TRUE.equals(b)) {
+                p.sendMessage(APIServer.getColor(EterniaServer.constants.spyLocal
+                                .replace("{0}", playerName)
+                                .replace("{1}", playerDisplayName)
+                                .replace("{2}", message)));
             }
         }
         if (pes <= 1) {
@@ -388,7 +397,7 @@ public class User {
 
     private String getLocalFormat(String message) {
         String format = APIServer.setPlaceholders(player, EterniaServer.chat.localFormat);
-        if (player.hasPermission("eternia.chat.color")) {
+        if (player.hasPermission(EterniaServer.constants.permChatColor)) {
             return APIServer.getColor(format.replace("%message%", message));
         } else {
             return(format.replace("%message%", message));
@@ -445,9 +454,9 @@ public class User {
 
     public String getFirstLoginPlaceholder() {
         if (playerProfile != null) {
-            return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(playerProfile.getFirstLogin()));
+            return new SimpleDateFormat(EterniaServer.constants.dataFormat).format(new Date(playerProfile.getFirstLogin()));
         }
-        return "Sem registro";
+        return EterniaServer.constants.noRegister;
     }
 
     public long getAndUpdateTimePlayed() {
@@ -474,10 +483,6 @@ public class User {
 
     public void changeVanishState() {
         Vars.vanished.put(player, !Vars.vanished.getOrDefault(player, false));
-    }
-
-    public boolean hasFreeSlot() {
-        return player.getInventory().firstEmpty() != -1;
     }
 
     public void setItemInMainHand(ItemStack item) {
@@ -513,10 +518,6 @@ public class User {
         Vars.bedCooldown.put(uuid, System.currentTimeMillis());
     }
 
-    public PlayerProfile getPlayerProfile() {
-        return playerProfile;
-    }
-
     public boolean hasNickRequest() {
         return playerProfile.isNickRequest();
     }
@@ -534,13 +535,13 @@ public class User {
     }
 
     public void playerNick(String string) {
-        if (string.equals("clear")) {
+        if (string.equals(EterniaServer.constants.clearStr)) {
             player.setDisplayName(playerName);
             EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CLEAR);
             return;
         }
 
-        if (player.hasPermission("eternia.chat.color.nick")) {
+        if (player.hasPermission(EterniaServer.constants.permChatColorNick)) {
             EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CHANGE_REQUEST, APIServer.getColor(string), String.valueOf(EterniaServer.configs.nickCost));
             playerProfile.setTempNick(string);
         } else {
@@ -559,7 +560,7 @@ public class User {
             return;
         }
 
-        if (string.equals("clear")) {
+        if (string.equals(EterniaServer.constants.clearStr)) {
             final String playerName = player.getName();
             final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
             player.setDisplayName(playerName);
@@ -574,7 +575,7 @@ public class User {
 
     private void changeNickName(final Player target, final Player player, final String string) {
         final String targetName = target.getName();
-        if (string.equals("clear")) {
+        if (string.equals(EterniaServer.constants.clearStr)) {
             EterniaServer.msg.sendMessage(target, Messages.CHAT_NICK_CLEAR_BY, player.getName(), player.getDisplayName());
             EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CLEAR_FROM, targetName, target.getDisplayName());
             target.setDisplayName(targetName);

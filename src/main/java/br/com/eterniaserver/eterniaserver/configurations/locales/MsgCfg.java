@@ -35,6 +35,7 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.SERVER_REMOVED_ENTITIES, "Foram removidas $3{0}$7 entidades$8.", "0: quantia de entidades");
         this.addDefault(defaults, Messages.SERVER_LOGIN, "$3{1} $8[$a+$8]", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.SERVER_LOGOUT, "$3{1} $8[$c-$8]", "0: nome do jogador; 1: apelido do jogador");
+        this.addDefault(defaults, Messages.SERVER_FIRST_LOGIN, "$3{1} $7acabou de chegar no servidor$8, $7OLÁ$8!", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.SERVER_TIMING, "Você não pode usar isso pelos próximos $3{0} $7segundos$8.", "0: tempo restante");
         this.addDefault(defaults, Messages.SERVER_TPS, "TPS$8:$3 {0}$8.", "0: tps");
         this.addDefault(defaults, Messages.SERVER_MOTD_1, "$l#333832◢◤◢◤◢◤ $l#a7d95b✙ $l#69de3bE$l#46e33dt$l#3ee66ee$l#46e89fr$l#50ebc4n$l#5bebedi$l#61b4f0a$l#677ff2S$l#7469f5e$l#825ff7r$l#ab5cfav$l#c962fce$l#f36affr $l#ff5cc9S$l#ff579a$l#ff4b6fu$l#ff454er$l#ff4b41v$l#ff583bi$l#ff8250v$l#ffa959a$l#ffcc4al $l#ffe77c✙ $l#333832◥◣◥◣◥◣", null);

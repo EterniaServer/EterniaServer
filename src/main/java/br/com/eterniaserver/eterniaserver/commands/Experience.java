@@ -106,7 +106,7 @@ public class Experience extends BaseCommand {
 
         ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&eGarrafa de EXP&8]"));
+        meta.setDisplayName(EterniaServer.constants.bottleExpName);
         item.setItemMeta(meta);
         item.setLore(Collections.singletonList(String.valueOf(xpWant)));
         PlayerInventory inventory = player.getInventory();

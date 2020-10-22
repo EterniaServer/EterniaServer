@@ -95,7 +95,7 @@ public class Economy extends BaseCommand {
 
         User target = new User(targets.getPlayer());
 
-        if (player.hasPermission("eternia.money.admin")) {
+        if (player.hasPermission(EterniaServer.constants.permMoneyOther)) {
             user.sendMessage(Messages.ECO_BALANCE_OTHER, APIEconomy.format(APIEconomy.getMoney(target.getUUID())), target.getName(), target.getDisplayName());
             return;
         }

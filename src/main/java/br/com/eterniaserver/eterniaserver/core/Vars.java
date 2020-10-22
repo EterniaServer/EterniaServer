@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.core;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -34,7 +35,7 @@ public class Vars {
     protected static long baltopTime = 0;
 
     private static Location error;
-    protected static final NumberFormat df2 = NumberFormat.getInstance(new Locale("pt", "BR"));
+    private static NumberFormat df2;
 
     public static final List<String> entityList = List.of("BEE", "BLAZE", "CAT", "CAVE_SPIDER", "CHICKEN", "COD",
             "COW", "CREEPER", "DOLPHIN", "DONKEY", "DROWNED", "ELDER_GUARDIAN", "ENDER_DRAGON", "ENDERMAN", "ENDERMITE",
@@ -106,6 +107,13 @@ public class Vars {
 
     public static Location getError() {
         return error;
+    }
+
+    public static NumberFormat getDf2() {
+        if (df2 == null) {
+            df2 = NumberFormat.getInstance(new Locale(EterniaServer.constants.moneyLanguage, EterniaServer.constants.moneyCountry));
+        }
+        return df2;
     }
 
     public static void setError(Location location) {

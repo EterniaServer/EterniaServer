@@ -45,6 +45,7 @@ public class ConfigsCfg {
     public final int cooldown;
     public final int pvpTime;
     public final int clearRange;
+    public final List<String> blacklistedFly = new ArrayList<>();
 
     public final List<Material> elevatorMaterials = new ArrayList<>();
     public final int elevatorMax;
@@ -104,6 +105,7 @@ public class ConfigsCfg {
         this.cooldown = config.getInt("server.cooldown", 4);
         this.pvpTime = config.getInt("server.pvp-time", 15);
         this.clearRange = config.getInt("server.clear-range", 1);
+        this.blacklistedFly.add("world_evento");
 
         this.elevatorMaterials.add(Material.IRON_BLOCK);
         this.elevatorMax = config.getInt("elevator.max", 50);
@@ -134,12 +136,17 @@ public class ConfigsCfg {
             defaultMaterialBlocksList.add(material.name());
         }
 
+        List<String> tempBlacklistedFly = config.getStringList("server.blacklisted-fly-worlds");
         List<String> tempBlockMaterials = config.getStringList("elevator.block");
         List<String> tempBlockBaltop = config.getStringList("money.blacklisted-baltop");
         List<String> tempBlockWorld = config.getStringList("bed.blacklisted-worlds");
         List<String> tempBlockedCommands = config.getStringList("blocked-commands");
         List<String> tempBlockWorldSpawners = config.getStringList("spawners.blacklisted-worlds");
         List<String> tempCustomProfileMessages = config.getStringList("profile.custom-messages");
+
+        if (tempBlacklistedFly.isEmpty()) {
+            tempBlacklistedFly = new ArrayList<>(blacklistedFly);
+        }
 
         if (tempCustomProfileMessages.isEmpty()) {
             tempCustomProfileMessages = new ArrayList<>(profileCustomMessages);
@@ -165,6 +172,8 @@ public class ConfigsCfg {
             tempBlockWorldSpawners = new ArrayList<>(blacklistedWorldsSpawners);
         }
 
+        blacklistedFly.clear();
+        blacklistedFly.addAll(tempBlacklistedFly);
         this.elevatorMaterials.clear();
         for (String material : tempBlockMaterials) {
             Material blockMaterial = Material.getMaterial(material);
@@ -216,6 +225,7 @@ public class ConfigsCfg {
         outConfig.set("server.cooldown", this.cooldown);
         outConfig.set("server.pvp-time", this.pvpTime);
         outConfig.set("server.clear-range", this.clearRange);
+        outConfig.set("blacklisted-fly-worlds", tempBlacklistedFly);
 
         outConfig.set("elevator.block", tempBlockMaterials);
         outConfig.set("elevator.max", this.elevatorMax);
