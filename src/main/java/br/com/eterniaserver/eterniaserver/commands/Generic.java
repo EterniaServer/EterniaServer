@@ -101,9 +101,9 @@ public class Generic extends BaseCommand {
             return;
         }
 
-        player.setFlySpeed((float) speed / 10);
-        player.setWalkSpeed((float) speed / 10);
-        user.sendMessage(Messages.SPEED_SET, String.valueOf((float) (speed / 10)));
+        player.setFlySpeed((float) (speed / 10.0D));
+        player.setWalkSpeed((float) (speed / 10.0D));
+        user.sendMessage(Messages.SPEED_SET, String.valueOf((float) (speed / 10.0D)));
     }
 
     @CommandAlias("%god")
