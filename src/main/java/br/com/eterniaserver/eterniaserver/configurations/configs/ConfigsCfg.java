@@ -225,7 +225,7 @@ public class ConfigsCfg {
         outConfig.set("server.cooldown", this.cooldown);
         outConfig.set("server.pvp-time", this.pvpTime);
         outConfig.set("server.clear-range", this.clearRange);
-        outConfig.set("blacklisted-fly-worlds", tempBlacklistedFly);
+        outConfig.set("server.blacklisted-fly-worlds", tempBlacklistedFly);
 
         outConfig.set("elevator.block", tempBlockMaterials);
         outConfig.set("elevator.max", this.elevatorMax);
