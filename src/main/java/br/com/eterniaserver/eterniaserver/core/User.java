@@ -34,23 +34,23 @@ public class User {
     private UUID uuid;
 
     public User(String playerName) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUIDFetcher.getUUIDOf(playerName));
-        if (offlinePlayer.isOnline()) {
-            this.player = offlinePlayer.getPlayer();
+        OfflinePlayer offlinePlayerTemp = Bukkit.getOfflinePlayer(UUIDFetcher.getUUIDOf(playerName));
+        if (offlinePlayerTemp.isOnline()) {
+            this.player = offlinePlayerTemp.getPlayer();
             getInfo(this.player);
         } else {
-            this.offlinePlayer = offlinePlayer;
+            this.offlinePlayer = offlinePlayerTemp;
             getInfo(this.offlinePlayer);
         }
     }
 
     public User(UUID uuid) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-        if (offlinePlayer.isOnline()) {
-            this.player = offlinePlayer.getPlayer();
+        OfflinePlayer offlinePlayerTemp = Bukkit.getOfflinePlayer(uuid);
+        if (offlinePlayerTemp.isOnline()) {
+            this.player = offlinePlayerTemp.getPlayer();
             getInfo(this.player);
         } else {
-            this.offlinePlayer = offlinePlayer;
+            this.offlinePlayer = offlinePlayerTemp;
             getInfo(this.offlinePlayer);
         }
     }
@@ -104,15 +104,15 @@ public class User {
         final long time = System.currentTimeMillis();
         EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
                 "('" + uuid.toString() + "', '" + playerName + "', '" + getFirstLogin() + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "', '" + time + "')"));
-        final PlayerProfile playerProfile = new PlayerProfile(
+        final PlayerProfile playerProfileTemp = new PlayerProfile(
                 playerName,
                 getFirstLogin(),
                 time,
                 0
         );
-        playerProfile.setBalance(EterniaServer.configs.startMoney);
-        playerProfile.setMuted(time);
-        Vars.playerProfile.put(uuid, playerProfile);
+        playerProfileTemp.setBalance(EterniaServer.configs.startMoney);
+        playerProfileTemp.setMuted(time);
+        Vars.playerProfile.put(uuid, playerProfileTemp);
     }
 
     public void updateProfile() {
@@ -134,7 +134,6 @@ public class User {
                             "' WHERE uuid='" + uuid.toString() + "'");
             playerProfile = newPlayerProfile;
             Vars.playerProfile.put(uuid, newPlayerProfile);
-            this.playerProfile = newPlayerProfile;
         }
         playerProfile.setLastLogin(time);
         if (!playerProfile.getPlayerName().equals(playerName)) {
@@ -332,10 +331,10 @@ public class User {
         player.sendMessage(EterniaServer.msg.getMessage(Messages.CHAT_TELL_TO, false, s, playerName, playerDisplayName, user.getName(), user.getDisplayName()));
         target.sendMessage(EterniaServer.msg.getMessage(Messages.CHAT_TELL_FROM, false, s, user.getName(), user.getDisplayName(), playerName, playerDisplayName));
 
-        for (UUID uuid : Vars.spy.keySet()) {
-            final Boolean b = Vars.spy.getOrDefault(uuid, false);
-            if (Boolean.TRUE.equals(b) && !uuid.equals(this.uuid) && !uuid.equals(user.getUUID())) {
-                final Player spyPlayer = Bukkit.getPlayer(uuid);
+        for (UUID uuidTemp : Vars.spy.keySet()) {
+            final Boolean b = Vars.spy.getOrDefault(uuidTemp, false);
+            if (Boolean.TRUE.equals(b) && !uuidTemp.equals(this.uuid) && !uuidTemp.equals(user.getUUID())) {
+                final Player spyPlayer = Bukkit.getPlayer(uuidTemp);
                 if (spyPlayer != null && spyPlayer.isOnline()) {
                     spyPlayer.sendMessage(APIServer.getColor("&8[&7SPY-&6P&8] &8" + playerDisplayName + " -> " + user.getDisplayName() + ": " + s));
                     spyPlayer.sendMessage(APIServer.getColor(EterniaServer.constants.spyTell
@@ -345,7 +344,7 @@ public class User {
                             .replace("{3}", user.getDisplayName())
                             .replace("{4}", s)));
                 } else {
-                    Vars.spy.remove(uuid);
+                    Vars.spy.remove(uuidTemp);
                 }
             }
         }
@@ -561,12 +560,12 @@ public class User {
         }
 
         if (string.equals(EterniaServer.constants.clearStr)) {
-            final String playerName = player.getName();
-            final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-            player.setDisplayName(playerName);
-            playerProfile.setPlayerDisplayName(playerName);
+            final String playerNameTemp = player.getName();
+            final UUID uuidTemp = UUIDFetcher.getUUIDOf(playerNameTemp);
+            player.setDisplayName(playerNameTemp);
+            playerProfile.setPlayerDisplayName(playerNameTemp);
             EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CLEAR);
-            saveToSQL(uuid);
+            saveToSQL(uuidTemp);
             return;
         }
 
