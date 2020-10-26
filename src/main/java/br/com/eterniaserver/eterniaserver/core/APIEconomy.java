@@ -211,22 +211,17 @@ public interface APIEconomy {
      */
     static CompletableFuture<Boolean> updateBalanceTop(int size) {
         return CompletableFuture.supplyAsync(() -> {
+            final String query = "SELECT " + "uuid" + " FROM " + EterniaServer.configs.tablePlayer + " ORDER BY " + "balance" + " DESC LIMIT " + size + ";";
             if (EterniaLib.getMySQL()) {
                 EterniaLib.getConnections().executeSQLQuery(connection -> {
-                    final PreparedStatement getHashMap = connection.prepareStatement(
-                            "SELECT " + "uuid" +
-                                    " FROM " + EterniaServer.configs.tablePlayer +
-                                    " ORDER BY " + "balance" + " DESC LIMIT " + size + ";");
+                    final PreparedStatement getHashMap = connection.prepareStatement(query);
                     final ResultSet resultSet = getHashMap.executeQuery();
                     checkBlacklist(resultSet);
                     getHashMap.close();
                     resultSet.close();
                 });
             } else {
-                try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(
-                        "SELECT " + "uuid" +
-                                " FROM " + EterniaServer.configs.tablePlayer +
-                                " ORDER BY " + "balance" + " DESC LIMIT " + size + ";"); ResultSet resultSet = getHashMap.executeQuery()) {
+                try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(query); ResultSet resultSet = getHashMap.executeQuery()) {
                     checkBlacklist(resultSet);
                 } catch (SQLException ignored) {
                     APIServer.logError("Erro ao se conectar com a database", 3);

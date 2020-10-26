@@ -67,7 +67,7 @@ public class PluginTicks extends BukkitRunnable {
             if (time == -1) {
                 Vars.playersInPortal.put(user.getUUID(), 10);
             } else if (Vars.playersInPortal.get(user.getUUID()) == 1) {
-                runSync(() -> PaperLib.teleportAsync(user.getPlayer(), getWarp()));
+                runSync(() -> PaperLib.teleportAsync(user.getPlayer(), Vars.locations.getOrDefault("warp.spawn", Vars.getError())));
                 user.sendMessage(Messages.WARP_SPAWN_TELEPORTED);
             } else if (time > 1) {
                 Vars.playersInPortal.put(user.getUUID(), time - 1);
@@ -125,10 +125,6 @@ public class PluginTicks extends BukkitRunnable {
                 user.removeFromTeleporting();
             }
         }
-    }
-
-    private Location getWarp() {
-        return Vars.locations.getOrDefault("warp.spawn", Vars.getError());
     }
 
     private void runSync(Runnable runnable) {

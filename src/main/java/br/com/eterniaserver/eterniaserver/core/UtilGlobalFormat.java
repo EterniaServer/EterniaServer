@@ -31,9 +31,6 @@ public class UtilGlobalFormat {
 	}
 
 	private BaseComponent[] customPlaceholder(Player player, String format, String message) {
-		if (player.hasPermission(EterniaServer.constants.permChatColor)) {
-			message = message.replace('&', '§');
-		}
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
 		EterniaServer.chat.customPlaceholdersObjectsMap.forEach((placeholder, object) -> {
 			if (format.contains("{" + placeholder + "}") && player.hasPermission(object.getPermission())) {
@@ -75,19 +72,19 @@ public class UtilGlobalFormat {
 
 		if (player.hasPermission(EterniaServer.constants.permChatItem) && actualMsg.equals(EterniaServer.constants.showItemPlaceholder)) {
 			ItemStack itemStack = player.getInventory().getItemInMainHand();
-			if (itemStack.getType().equals(Material.AIR)) {
-				return new TextComponent(actualMsg + " ");
-
+			if (!itemStack.getType().equals(Material.AIR)) {
+				return sendItemInHand(actualMsg + " ", itemStack);
 			}
-			return sendItemInHand(actualMsg + " ", itemStack);
 		}
-
+		if (!player.hasPermission(EterniaServer.constants.permChatColor)) {
+			actualMsg = ChatColor.stripColor(actualMsg);
+		}
 		return new TextComponent(actualMsg + " ");
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
 		if (APIServer.getVersion() >= 116) {
-			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));;
+			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
 			TextComponent component = new TextComponent(string.replace(EterniaServer.constants.showItemPlaceholder,
 					EterniaServer.constants.chShowItemFormat.replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemStack.getI18NDisplayName())));
 			component.setHoverEvent(event);

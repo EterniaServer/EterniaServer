@@ -59,8 +59,6 @@ public class RewardsCfg {
             APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
 
-        System.gc();
-
     }
 
 }

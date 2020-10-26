@@ -193,7 +193,6 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.FEED_YOURSELF, "Você se saciou$8.", null);
         this.addDefault(defaults, Messages.FEED_TARGET, "Você saciou o $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.FEED_RECEIVED, "Você foi saciado por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
-        this.addDefault(defaults, Messages.FEED_YOURSELF, "Você foi saciado por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.STATS_MEM, "Memória$8: $3{0}MB$8/$3{1}MB$8.", "0: memória usada; 1: memória total");
         this.addDefault(defaults, Messages.STATS_HOURS, "Tempo online$8: $7Dias$8: $3{0} $7horas$8: $3{1} $7minutos$8:{2} $7segundos$8:$3{3}$8.", "0: dias; 1: horas; 2: minutos; 3: segundos");
         this.addDefault(defaults, Messages.FLY_ENABLED, "Modo voar ativado$8.", null);

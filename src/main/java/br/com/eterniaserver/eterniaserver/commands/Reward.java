@@ -67,7 +67,8 @@ public class Reward extends BaseCommand {
 
     private void giveReward(String group, Player player) {
         EterniaServer.rewards.rewardsMap.get(group).forEach((chance, lista) -> {
-            if (Math.random() <= chance) {
+            random.nextBytes(bytes);
+            if (random.nextDouble() <= chance) {
                 for (String command : lista) {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIServer.setPlaceholders(player, command));
                 }
