@@ -12,7 +12,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 public class PluginClear extends BukkitRunnable {
 
@@ -35,7 +39,7 @@ public class PluginClear extends BukkitRunnable {
         World world = origin.getWorld();
 
         int length = (EterniaServer.configs.clearRange * 2) + 1;
-        Set<Chunk> chunks = new HashSet<>(length * length);
+        List<Chunk> chunks = new ArrayList<>(length * length);
 
         int cX = origin.getX();
         int cZ = origin.getZ();
