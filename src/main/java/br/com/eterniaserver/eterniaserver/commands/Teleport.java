@@ -44,9 +44,10 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        user.putInTeleport(new PlayerTeleport(target, player.getLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
+        new User(target).putInTeleport(new PlayerTeleport(target, player.getLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
         EterniaServer.msg.sendMessage(target, Messages.TELEPORT_TARGET_ACCEPT, user.getName(), user.getDisplayName());
         user.sendMessage(Messages.TELEPORT_ACCEPT, target.getName(), target.getDisplayName());
+        user.removeTpaRequest();
     }
 
     @CommandAlias("%tpa_deny")
@@ -69,6 +70,7 @@ public class Teleport extends BaseCommand {
 
         EterniaServer.msg.sendMessage(target, Messages.TELEPORT_TARGET_DENIED, user.getName(), user.getDisplayName());
         user.sendMessage(Messages.TELEPORT_DENIED, target.getName(), target.getDisplayName());
+        user.removeTpaRequest();
     }
 
     @CommandAlias("%tpa")
