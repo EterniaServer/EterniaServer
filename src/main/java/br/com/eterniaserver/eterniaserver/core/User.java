@@ -200,7 +200,7 @@ public class User {
     }
 
     public void putTpaRequest(UUID uuid) {
-        Vars.tpaRequests.put(uuid, this.uuid);
+        Vars.tpaRequests.put(this.uuid, uuid);
         Vars.tpaTime.put(uuid, System.currentTimeMillis());
     }
 
