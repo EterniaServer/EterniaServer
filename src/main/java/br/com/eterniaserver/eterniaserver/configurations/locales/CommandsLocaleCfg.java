@@ -120,11 +120,11 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.TP_ALL, "tpall", "eternia.tpall", null, " Teleporte todos jogadores até você", null);
         this.addDefault(defaults, Commands.TP_BACK, "back", "eternia.back", null, " Volte ao seu ultimo local", null);
         this.addDefault(defaults, Commands.TP_TPA, "tpa", "eternia.tpa", " <jogador>", " Envie um pedido de tpa a um jogador", null);
-        this.addDefault(defaults, Commands.TP_TPA_ACCEPT, "accept", "eternia.tpa", null, " Aceite um pedido de tpa", null);
-        this.addDefault(defaults, Commands.TP_TPA_DENY, "deny", "eternia.tpa", null, " Negue um pedido de tpa", null);
+        this.addDefault(defaults, Commands.TP_TPA_ACCEPT, "tpa accept", "eternia.tpa", null, " Aceite um pedido de tpa", null);
+        this.addDefault(defaults, Commands.TP_TPA_DENY, "tpa deny", "eternia.tpa", null, " Negue um pedido de tpa", null);
         this.addDefault(defaults, Commands.SPAWN, "spawn", "eternia.spawn", " <jogador>", " Vá ou leve alguém até o spawner", null);
         this.addDefault(defaults, Commands.SPAWN_SET, "setspawn", "eternia.setspawn", null, " Defina a localização do spawn", null);
-        this.addDefault(defaults, Commands.SHOP, "shop", "eternia.shop.player", " <jogador>", " Vá até a loja geral ou a de alguém", null);
+        this.addDefault(defaults, Commands.SHOP, "shop|loja", "eternia.shop.player", " <jogador>", " Vá até a loja geral ou a de alguém", null);
         this.addDefault(defaults, Commands.SHOP_SET, "setshop|setloja", "eternia.setshop", null, " Defina a sua loja", null);
         this.addDefault(defaults, Commands.SHOP_DELETE, "delshop|delloja", "eternia.setshop", null, " Delete a sua loja", null);
         this.addDefault(defaults, Commands.WARP, "warp", "eternia.warp", " <warp>", " Vá até uma warp", null);
