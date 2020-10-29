@@ -13,11 +13,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;
 
-public class PluginTicks extends BukkitRunnable {
+public class PluginTick extends BukkitRunnable {
 
     private final EterniaServer plugin;
 
-    public PluginTicks(EterniaServer plugin) {
+    public PluginTick(EterniaServer plugin) {
         this.plugin = plugin;
     }
 

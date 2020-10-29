@@ -5,11 +5,11 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-public class UtilAccelerateWorld implements Runnable {
+public class CheckWorld implements Runnable {
 
     private final EterniaServer plugin;
 
-    public UtilAccelerateWorld(EterniaServer plugin) {
+    public CheckWorld(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
@@ -22,7 +22,7 @@ public class UtilAccelerateWorld implements Runnable {
         final int sleeping = APIServer.getSleeping(world).size();
         if (sleeping > 0) {
             Vars.skippingWorlds.add(world);
-            new UtilAccelerateNight(world, plugin).runTaskTimer(plugin, 1, 1);
+            new PassNight(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }
 

@@ -10,12 +10,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.TimeUnit;
 
-public class UtilAccelerateNight extends BukkitRunnable {
+public class PassNight extends BukkitRunnable {
 
     private final EterniaServer plugin;
     private final World world;
 
-    public UtilAccelerateNight(final World world, EterniaServer plugin) {
+    public PassNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {

@@ -432,7 +432,7 @@ public class User {
     }
 
     public String getDisplayName() {
-        return playerDisplayName;
+        return playerProfile.getPlayerDisplayName();
     }
 
     public UUID getUUID() {
@@ -504,9 +504,54 @@ public class User {
         return Vars.back.get(uuid);
     }
 
-    public void setDisplayName(String displayName) {
-        this.playerDisplayName = displayName;
-        this.player.setDisplayName(displayName);
+    public void requestNickChange(String nick) {
+        nick = APIServer.getColor(nick);
+
+        if (nick.equals(EterniaServer.constants.clearStr)) {
+            sendMessage(Messages.CHAT_NICK_CLEAR);
+            clearNickName();
+            return;
+        }
+
+        if (!hasPermission(EterniaServer.constants.permChatColorNick)) {
+            nick = ChatColor.stripColor(nick);
+        }
+
+        sendMessage(Messages.CHAT_NICK_CHANGE_REQUEST, nick, String.valueOf(EterniaServer.configs.nickCost));
+        playerProfile.setTempNick(nick);
+        playerProfile.setNickRequest(true);
+        sendMessage(Messages.CHAT_NICK_USE);
+    }
+
+    public void setTempNickName(String nick) {
+        playerProfile.setTempNick(nick);
+        playerProfile.setNickRequest(true);
+    }
+
+    public void updateNickName() {
+        playerProfile.setPlayerDisplayName(playerProfile.getTempNick());
+        player.setDisplayName(playerProfile.getTempNick());
+        playerProfile.setNickRequest(false);
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "player_display", playerProfile.getPlayerDisplayName(), "uuid", uuid.toString()));
+    }
+
+    public void setDisplayName() {
+        playerProfile.setPlayerDisplayName(getDisplayName());
+        player.setDisplayName(getDisplayName());
+    }
+
+    public void clearNickName() {
+        playerProfile.setPlayerDisplayName(playerName);
+        player.setDisplayName(playerName);
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "player_display", playerProfile.getPlayerDisplayName(), "uuid", uuid.toString()));
+    }
+
+    public void removeNickRequest() {
+        playerProfile.setNickRequest(false);
+    }
+
+    public boolean hasNickRequest() {
+        return playerProfile.isNickRequest();
     }
 
     public long getBedCooldown() {
@@ -515,78 +560,6 @@ public class User {
 
     public void updateBedCooldown() {
         Vars.bedCooldown.put(uuid, System.currentTimeMillis());
-    }
-
-    public boolean hasNickRequest() {
-        return playerProfile.isNickRequest();
-    }
-
-    public void updateNickName() {
-        player.setDisplayName(playerProfile.getTempNick());
-        EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CHANGED, player.getDisplayName());
-        playerProfile.setPlayerDisplayName(playerProfile.getTempNick());
-        saveToSQL(uuid);
-    }
-
-    public void removeNickRequest() {
-        playerProfile.setTempNick(null);
-        playerProfile.setNickRequest(false);
-    }
-
-    public void playerNick(String string) {
-        if (string.equals(EterniaServer.constants.clearStr)) {
-            player.setDisplayName(playerName);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CLEAR);
-            return;
-        }
-
-        if (player.hasPermission(EterniaServer.constants.permChatColorNick)) {
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CHANGE_REQUEST, APIServer.getColor(string), String.valueOf(EterniaServer.configs.nickCost));
-            playerProfile.setTempNick(string);
-        } else {
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CHANGE_REQUEST, string, String.valueOf(EterniaServer.configs.nickCost));
-            playerProfile.setTempNick(ChatColor.stripColor(string));
-        }
-
-        playerProfile.setTempNick(string);
-        playerProfile.setNickRequest(true);
-        EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_USE);
-    }
-
-    public void staffNick(final OnlinePlayer target, final Player player, final String string) {
-        if (target != null) {
-            changeNickName(target.getPlayer(), player, string);
-            return;
-        }
-
-        if (string.equals(EterniaServer.constants.clearStr)) {
-            final String playerNameTemp = player.getName();
-            final UUID uuidTemp = UUIDFetcher.getUUIDOf(playerNameTemp);
-            player.setDisplayName(playerNameTemp);
-            playerProfile.setPlayerDisplayName(playerNameTemp);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CLEAR);
-            saveToSQL(uuidTemp);
-            return;
-        }
-
-        player.setDisplayName(APIServer.getColor(string));
-    }
-
-    private void changeNickName(final Player target, final Player player, final String string) {
-        final String targetName = target.getName();
-        if (string.equals(EterniaServer.constants.clearStr)) {
-            EterniaServer.msg.sendMessage(target, Messages.CHAT_NICK_CLEAR_BY, player.getName(), player.getDisplayName());
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CLEAR_FROM, targetName, target.getDisplayName());
-            target.setDisplayName(targetName);
-        } else {
-            EterniaServer.msg.sendMessage(target, Messages.CHAT_NICK_CHANGED_BY, string, player.getName(), player.getDisplayName());
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CHANGED_FROM, string, player.getName(), player.getDisplayName());
-            target.setDisplayName(string);
-        }
-    }
-
-    private void saveToSQL(UUID uuid) {
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "player_display", playerProfile.getPlayerDisplayName(), "uuid", uuid.toString()));
     }
 
     public int getExp() {

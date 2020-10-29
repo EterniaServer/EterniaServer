@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class PluginTimer extends TimerTask {
+public class PluginSchedule extends TimerTask {
 
     private final Calendar calendar;
     private final EterniaServer plugin;
 
-    public PluginTimer(EterniaServer plugin) {
+    public PluginSchedule(EterniaServer plugin) {
         this.plugin = plugin;
         calendar = Calendar.getInstance();
     }

@@ -25,21 +25,33 @@ public class Nick extends BaseCommand {
     @Syntax("%nick_syntax")
     @Description("%nick_description")
     @CommandPermission("%nick_perm")
-    public void onNick(Player player, String string, @Optional OnlinePlayer target) {
+    public void onNick(Player player, String string, @Optional OnlinePlayer targets) {
         string = string.replaceAll("[^a-zA-Z0-9]", "");
         User user = new User(player);
 
-        if (target == null) {
-            user.playerNick(string);
+        if (targets == null) {
+            user.requestNickChange(string);
             return;
         }
 
-        if (user.hasPermission(EterniaServer.constants.permNicknameOther)) {
-            user.staffNick(target, player, string);
+        if (!user.hasPermission(EterniaServer.constants.permNicknameOther)) {
+            user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
 
-        user.sendMessage(Messages.SERVER_NO_PERM);
+        User target = new User(targets.getPlayer());
+
+        if (string.equals(EterniaServer.constants.clearStr)) {
+            target.clearNickName();
+            target.sendMessage(Messages.CHAT_NICK_CLEAR_BY, user.getName(), user.getDisplayName());
+            user.sendMessage(Messages.CHAT_NICK_CLEAR_FROM, target.getName(), target.getDisplayName());
+            return;
+        }
+
+        target.setTempNickName(string);
+        target.updateNickName();
+        target.sendMessage(Messages.CHAT_NICK_CHANGED_BY, string, user.getName(), user.getDisplayName());
+        user.sendMessage(Messages.CHAT_NICK_CHANGED_FROM, string, target.getName(), target.getDisplayName());
     }
 
     @Subcommand("%nick_deny")
@@ -74,6 +86,7 @@ public class Nick extends BaseCommand {
         }
 
         APIEconomy.removeMoney(user.getUUID(), EterniaServer.configs.nickCost);
+        EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CHANGED, player.getDisplayName());
         user.updateNickName();
     }
 

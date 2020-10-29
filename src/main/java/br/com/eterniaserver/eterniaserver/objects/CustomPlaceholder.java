@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
-public class CustomPlaceholders {
+public class CustomPlaceholder {
 
     private final String permission;
     private final String value;
@@ -8,7 +8,7 @@ public class CustomPlaceholders {
     private final String suggestCmd;
     private final int priority;
 
-    public CustomPlaceholders(String permission, String value, String hoverText, String suggestCmd, int priority) {
+    public CustomPlaceholder(String permission, String value, String hoverText, String suggestCmd, int priority) {
         this.permission = permission;
         this.value = value;
         this.hoverText = hoverText;

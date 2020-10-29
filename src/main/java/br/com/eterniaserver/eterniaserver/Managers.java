@@ -3,12 +3,12 @@ package br.com.eterniaserver.eterniaserver;
 import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.*;
-import br.com.eterniaserver.eterniaserver.core.PluginClear;
-import br.com.eterniaserver.eterniaserver.core.PluginTicks;
-import br.com.eterniaserver.eterniaserver.core.PluginTimer;
+import br.com.eterniaserver.eterniaserver.core.PluginClearSchedule;
+import br.com.eterniaserver.eterniaserver.core.PluginTick;
+import br.com.eterniaserver.eterniaserver.core.PluginSchedule;
 import br.com.eterniaserver.eterniaserver.core.Vars;
-import br.com.eterniaserver.eterniaserver.core.UtilAccelerateWorld;
-import br.com.eterniaserver.eterniaserver.core.UtilCustomCommands;
+import br.com.eterniaserver.eterniaserver.core.CheckWorld;
+import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Commands;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -477,7 +477,7 @@ public class Managers {
 
     private void loadBedManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleBed, "Bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new UtilAccelerateWorld(plugin), 0L, (long) EterniaServer.configs.pluginTicks * 40);
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new CheckWorld(plugin), 0L, (long) EterniaServer.configs.pluginTicks * 40);
         }
     }
 
@@ -487,7 +487,7 @@ public class Managers {
 
     private void loadCommandsManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleCommands, "Commands")) {
-            EterniaServer.commands.customCommandMap.forEach((commandName, commandObject) -> new UtilCustomCommands(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
+            EterniaServer.commands.customCommandMap.forEach((commandName, commandObject) -> new CustomCommand(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
         }
     }
 
@@ -545,15 +545,15 @@ public class Managers {
     private void loadPlayerChecks() {
         sendModuleStatus(true, "PlayerChecks");
         if (EterniaServer.configs.asyncCheck) {
-            new PluginTicks(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.configs.pluginTicks * 20);
+            new PluginTick(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.configs.pluginTicks * 20);
             return;
         }
-        new PluginTicks(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.configs.pluginTicks * 20);
+        new PluginTick(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.configs.pluginTicks * 20);
     }
 
     private void loadClearManager() {
         if (sendModuleStatus(EterniaServer.configs.moduleClear, "Mob Control")) {
-            new PluginClear().runTaskTimer(plugin, 20L, 600L);
+            new PluginClearSchedule().runTaskTimer(plugin, 20L, 600L);
         }
     }
 
@@ -583,7 +583,7 @@ public class Managers {
                     EterniaServer.schedule.scheduleMinute,
                     EterniaServer.schedule.scheduleSecond));
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.scheduleWithFixedDelay(new PluginTimer(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.schedule.scheduleDelay), TimeUnit.MILLISECONDS);
+            scheduler.scheduleWithFixedDelay(new PluginSchedule(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.schedule.scheduleDelay), TimeUnit.MILLISECONDS);
         }
     }
 

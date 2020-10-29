@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholders;
+import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class UtilGlobalFormat {
+public class GlobalFormatter {
 
 	public void filter(User user, String message) {
 		BaseComponent[] baseComponents = customPlaceholder(user.getPlayer(), EterniaServer.chat.globalFormat, message);
@@ -31,6 +31,9 @@ public class UtilGlobalFormat {
 	}
 
 	private BaseComponent[] customPlaceholder(Player player, String format, String message) {
+		if (player.hasPermission(EterniaServer.constants.permChatColor)) {
+			message = message.replace('&', (char) 0x00A7);
+		}
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
 		EterniaServer.chat.customPlaceholdersObjectsMap.forEach((placeholder, object) -> {
 			if (format.contains("{" + placeholder + "}") && player.hasPermission(object.getPermission())) {
@@ -93,7 +96,7 @@ public class UtilGlobalFormat {
 		return new TextComponent(EterniaServer.constants.noSupport);
 	}
 
-	private TextComponent getText(Player player, CustomPlaceholders objects) {
+	private TextComponent getText(Player player, CustomPlaceholder objects) {
 		TextComponent textComponent = new TextComponent(APIServer.getColor(APIServer.setPlaceholders(player, objects.getValue())));
 		if (!objects.getHoverText().equals("")) {
 			List<TextComponent> textComponentList = new ArrayList<>();

@@ -1,9 +1,9 @@
-package br.com.eterniaserver.eterniaserver.core;
+package br.com.eterniaserver.eterniaserver.objects;
 
 import java.lang.management.ManagementFactory;
 import java.util.concurrent.TimeUnit;
 
-public class UtilGetRuntime {
+public class Runtime {
 
     private long freemem;
     private long totalmem;
@@ -13,7 +13,7 @@ public class UtilGetRuntime {
     private int hours;
 
     public void recalculateRuntime() {
-        Runtime runtime = Runtime.getRuntime();
+        java.lang.Runtime runtime = java.lang.Runtime.getRuntime();
         long milliseconds = ManagementFactory.getRuntimeMXBean().getUptime();
         days = (int) TimeUnit.MILLISECONDS.toDays(milliseconds);
         totalmem = runtime.totalMemory() / 1048576;

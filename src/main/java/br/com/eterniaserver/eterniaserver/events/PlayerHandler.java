@@ -239,7 +239,7 @@ public class PlayerHandler implements Listener {
             if (user.hasPermission(EterniaServer.constants.permSpy)) {
                 user.changeSpyState();
             }
-            user.setDisplayName(user.getDisplayName());
+            user.setDisplayName();
         }
 
         for (Player player : APIServer.getVanishList()) {

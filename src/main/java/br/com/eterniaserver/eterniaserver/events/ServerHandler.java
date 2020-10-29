@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.core.UtilGlobalFormat;
+import br.com.eterniaserver.eterniaserver.core.GlobalFormatter;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 public class ServerHandler implements Listener {
 
-    private final UtilGlobalFormat utilGlobalFormat = new UtilGlobalFormat();
+    private final GlobalFormatter utilGlobalFormat = new GlobalFormatter();
     private final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
     private String messageMotd;
     private String message2;

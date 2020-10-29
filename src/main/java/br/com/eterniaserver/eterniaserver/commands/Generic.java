@@ -16,7 +16,7 @@ import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.Vars;
-import br.com.eterniaserver.eterniaserver.core.UtilGetRuntime;
+import br.com.eterniaserver.eterniaserver.objects.Runtime;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Generic extends BaseCommand {
 
-    private final UtilGetRuntime getRuntime;
+    private final Runtime getRuntime;
 
     private final SimpleDateFormat sdf = new SimpleDateFormat(EterniaServer.constants.dataFormat);
     private final ItemStack coali = new ItemStack(Material.COAL);
@@ -52,7 +52,7 @@ public class Generic extends BaseCommand {
 
     public Generic(EterniaServer plugin) {
 
-        this.getRuntime = new UtilGetRuntime();
+        this.getRuntime = new Runtime();
 
         if (EterniaLib.getMySQL()) {
             EterniaLib.getConnections().executeSQLQuery(connection -> {

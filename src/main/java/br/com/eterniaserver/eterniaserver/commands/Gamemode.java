@@ -117,7 +117,7 @@ public class Gamemode extends BaseCommand {
         String typeName = getType(type);
         User target = new User(targets);
 
-        user.getPlayer().setGameMode(gameMode);
+        target.getPlayer().setGameMode(gameMode);
         target.sendMessage(Messages.GAMEMODE_SETED, typeName);
         user.sendMessage(Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
     }

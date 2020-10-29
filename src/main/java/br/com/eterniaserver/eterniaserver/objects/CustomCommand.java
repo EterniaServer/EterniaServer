@@ -1,41 +1,57 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.objects.AbstractCommand;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
-public class CustomCommand {
+public class CustomCommand extends AbstractCommand {
 
-    private final String description;
-    private final List<String> aliases;
-    private final List<String> commands;
-    private final List<String> text;
+    private final EterniaServer plugin;
+    private final String commandString;
+    private final List<String> messagesStrings;
+    private final List<String> commandsStrings;
     private final boolean console;
 
-    public CustomCommand(String description, List<String> aliases, List<String> commands, List<String> text, boolean console) {
-        this.description = description;
-        this.aliases = aliases;
-        this.commands = commands;
-        this.text = text;
+    public CustomCommand(EterniaServer plugin, String command, String description, List<String> aliases, List<String> messages, List<String> commands, boolean console) {
+        super(command, description, aliases);
+        this.messagesStrings = messages;
+        this.commandsStrings = commands;
+        this.plugin = plugin;
+        this.commandString = command;
         this.console = console;
     }
 
-    public List<String> getCommands() {
-        return commands;
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+        if (EterniaServer.configs.moduleCommands) {
+            checkCommands((Player) sender, commandString);
+            return true;
+        }
+        return false;
     }
 
-    public List<String> getAliases() {
-        return aliases;
-    }
-
-    public List<String> getText() {
-        return text;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean getConsole() {
-        return console;
+    private void checkCommands(final Player player, final String cmd) {
+        if (player.hasPermission(EterniaServer.constants.permBaseCommand + cmd)) {
+            for (String line : commandsStrings) {
+                if (console) {
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIServer.setPlaceholders(player, line));
+                } else {
+                    player.performCommand(APIServer.setPlaceholders(player, line));
+                }
+            }
+            for (String line : messagesStrings) {
+                player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, line)));
+            }
+        } else {
+            EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
+        }
     }
 
 }
