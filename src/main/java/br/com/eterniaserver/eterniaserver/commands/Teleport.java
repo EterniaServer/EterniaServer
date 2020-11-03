@@ -10,6 +10,8 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
+import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -119,14 +121,14 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        if (user.hasPermission(EterniaServer.constants.permBackFree) || !EterniaServer.configs.moduleEconomy) {
+        if (user.hasPermission(EterniaServer.constants.permBackFree) || !EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
             return;
         }
 
-        if (APIEconomy.hasMoney(user.getUUID(), EterniaServer.configs.backCost)) {
-            APIEconomy.removeMoney(user.getUUID(), EterniaServer.configs.backCost);
-            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.configs.backCost))));
+        if (APIEconomy.hasMoney(user.getUUID(), EterniaServer.getDouble(ConfigDoubles.BACK_COST))) {
+            APIEconomy.removeMoney(user.getUUID(), EterniaServer.getDouble(ConfigDoubles.BACK_COST));
+            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.getDouble(ConfigDoubles.BACK_COST)))));
             return;
         }
 

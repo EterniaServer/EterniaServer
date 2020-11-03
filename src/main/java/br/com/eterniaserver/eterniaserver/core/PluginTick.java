@@ -1,6 +1,8 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
+import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
@@ -81,9 +83,9 @@ public class PluginTick extends BukkitRunnable {
     }
 
     private void checkAFK(User user) {
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - user.getAfkTime()) < EterniaServer.configs.afkTimer) return;
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - user.getAfkTime()) < EterniaServer.getInteger(ConfigIntegers.AFK_TIMER)) return;
 
-        if (!EterniaServer.configs.afkKick) {
+        if (!EterniaServer.getBoolean(ConfigBooleans.AFK_KICK)) {
             Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_AUTO_ENTER, false, user.getName(), user.getDisplayName()));
             user.changeAfkState();
             return;
@@ -128,7 +130,7 @@ public class PluginTick extends BukkitRunnable {
     }
 
     private void runSync(Runnable runnable) {
-        if (EterniaServer.configs.asyncCheck) {
+        if (EterniaServer.getBoolean(ConfigBooleans.ASYNC_CHECK)) {
             Bukkit.getScheduler().runTask(plugin, runnable);
             return;
         }

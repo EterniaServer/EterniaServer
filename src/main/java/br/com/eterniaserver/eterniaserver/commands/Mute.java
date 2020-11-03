@@ -17,6 +17,7 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.Constants;
 
@@ -65,7 +66,7 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_MUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName(), message));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "time", time, "uuid", target.getUUID().toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "time", time, "uuid", target.getUUID().toString()));
         target.putMutedTime(time);
     }
 
@@ -80,7 +81,7 @@ public class Mute extends BaseCommand {
 
         target.putMutedTime(time);
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_UNMUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName()));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "time", time, "uuid", target.getUUID().toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "time", time, "uuid", target.getUUID().toString()));
     }
 
     @CommandCompletion("@players 15 Mensagem")
@@ -96,7 +97,7 @@ public class Mute extends BaseCommand {
         final long timeInMillis = cal.getTimeInMillis();
 
         Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_TEMP_MUTE, true, target.getName(), target.getDisplayName(), String.valueOf(time), player.getName(), player.getDisplayName(), message));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "time", timeInMillis, "uuid", target.getUUID().toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "time", timeInMillis, "uuid", target.getUUID().toString()));
         target.putMutedTime(timeInMillis);
     }
 

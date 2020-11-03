@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APICash;
 
@@ -44,19 +45,19 @@ public class EntityHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
-        if (!EterniaServer.configs.moduleCash && !EterniaServer.configs.moduleSpawners) return;
+        if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_CASH) && !EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS)) return;
 
         final Player player = (Player) e.getWhoClicked();
         final ItemStack itemStack = e.getCurrentItem();
-        if (itemStack != null && (EterniaServer.configs.preventAnvil
-                && EterniaServer.configs.moduleSpawners
+        if (itemStack != null && (EterniaServer.getBoolean(ConfigBooleans.PREVENT_ANVIL)
+                && EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS)
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
             EterniaServer.msg.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
         }
 
-        if (EterniaServer.configs.moduleCash) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CASH)) {
             String title = e.getView().getTitle();
             if ("Cash".equals(title)) {
                 APICash.menuGui(player, e.getSlot());

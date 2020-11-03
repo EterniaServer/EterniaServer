@@ -6,6 +6,10 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.Connections;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
+import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
+import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import org.bukkit.Bukkit;
@@ -35,8 +39,8 @@ public interface APIEconomy {
      * @return the name
      */
     static String singularName() {
-        if (EterniaServer.configs.moduleEconomy) {
-            return EterniaServer.configs.singularName;
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
+            return EterniaServer.getString(ConfigStrings.MONEY_SINGULAR);
         } else {
             return Vars.getEcon().currencyNameSingular();
         }
@@ -47,8 +51,8 @@ public interface APIEconomy {
      * @return the name
      */
     static String pluralName() {
-        if (EterniaServer.configs.moduleEconomy) {
-            return EterniaServer.configs.pluralName;
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
+            return EterniaServer.getString(ConfigStrings.MONEY_PLURAL);
         } else {
             return Vars.getEcon().currencyNamePlural();
         }
@@ -59,7 +63,7 @@ public interface APIEconomy {
      * @param uuid uuid of player
      */
     static boolean hasAccount(UUID uuid) {
-        if (EterniaServer.configs.moduleEconomy) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             return Vars.playerProfile.containsKey(uuid);
         } else {
             return Vars.getEcon().hasAccount(Bukkit.getOfflinePlayer(uuid));
@@ -71,18 +75,18 @@ public interface APIEconomy {
      * @param uuid uuid of player
      */
     static void createAccount(UUID uuid) {
-        if (EterniaServer.configs.moduleEconomy) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "')"));
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance)",
+                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "')"));
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
-            playerProfile.setBalance(EterniaServer.configs.startMoney);
+            playerProfile.setBalance(EterniaServer.getDouble(ConfigDoubles.START_MONEY));
             Vars.playerProfile.put(uuid, playerProfile);
         } else {
             Vars.getEcon().createPlayerAccount(Bukkit.getOfflinePlayer(uuid));
@@ -95,23 +99,23 @@ public interface APIEconomy {
      * @return the balance
      */
     static double getMoney(UUID uuid) {
-        if (EterniaServer.configs.moduleEconomy) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             if (Vars.playerProfile.containsKey(uuid)) {
                 return Vars.playerProfile.get(uuid).getBalance();
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "')"));
+                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance)",
+                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "')"));
                 final PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
                         time,
                         time,
                         0
                 );
-                playerProfile.setBalance(EterniaServer.configs.startMoney);
+                playerProfile.setBalance(EterniaServer.getDouble(ConfigDoubles.START_MONEY));
                 Vars.playerProfile.put(uuid, playerProfile);
-                return EterniaServer.configs.startMoney;
+                return EterniaServer.getDouble(ConfigDoubles.START_MONEY);
             }
         } else {
             return Vars.getEcon().getBalance(Bukkit.getOfflinePlayer(uuid));
@@ -125,7 +129,7 @@ public interface APIEconomy {
      * @return if has or not
      */
     static boolean hasMoney(UUID uuid, double amount) {
-        if (EterniaServer.configs.moduleEconomy) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             return getMoney(uuid) >= amount;
         } else {
             return Vars.getEcon().has(Bukkit.getOfflinePlayer(uuid), amount);
@@ -138,22 +142,22 @@ public interface APIEconomy {
      * @param amount the amount of money to set
      */
     static void setMoney(UUID uuid, double amount) {
-        if (EterniaServer.configs.moduleEconomy) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             if (Vars.playerProfile.containsKey(uuid)) {
                 Vars.playerProfile.get(uuid).setBalance(amount);
-                EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "balance", amount, "uuid", uuid.toString()));
+                EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "balance", amount, "uuid", uuid.toString()));
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance)",
-                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "')"));
+                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance)",
+                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "')"));
                 final PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
                         time,
                         time,
                         0
                 );
-                playerProfile.setBalance(EterniaServer.configs.startMoney);
+                playerProfile.setBalance(EterniaServer.getDouble(ConfigDoubles.START_MONEY));
                 Vars.playerProfile.put(uuid, playerProfile);
                 setMoney(uuid, amount);
             }
@@ -171,7 +175,7 @@ public interface APIEconomy {
      * @param amount the amount of money to give
      */
     static void addMoney(UUID uuid, double amount) {
-        if (EterniaServer.configs.moduleEconomy) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             setMoney(uuid, getMoney(uuid) + amount);
         } else {
             Vars.getEcon().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
@@ -184,7 +188,7 @@ public interface APIEconomy {
      * @param amount the amount of money to give
      */
     static void removeMoney(UUID uuid, double amount) {
-        if (EterniaServer.configs.moduleEconomy) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             setMoney(uuid, getMoney(uuid) - amount);
         } else {
             Vars.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
@@ -211,7 +215,7 @@ public interface APIEconomy {
      */
     static CompletableFuture<Boolean> updateBalanceTop(int size) {
         return CompletableFuture.supplyAsync(() -> {
-            final String query = "SELECT " + "uuid" + " FROM " + EterniaServer.configs.tablePlayer + " ORDER BY " + "balance" + " DESC LIMIT " + size + ";";
+            final String query = "SELECT " + "uuid" + " FROM " + EterniaServer.getString(ConfigStrings.TABLE_PLAYER) + " ORDER BY " + "balance" + " DESC LIMIT " + size + ";";
             if (EterniaLib.getMySQL()) {
                 EterniaLib.getConnections().executeSQLQuery(connection -> {
                     final PreparedStatement getHashMap = connection.prepareStatement(query);
@@ -251,12 +255,15 @@ public interface APIEconomy {
     private static void checkBlacklist(ResultSet resultSet) throws SQLException {
         final List<UUID> tempList = new ArrayList<>();
         UUID uuid;
+        boolean isBlacklisted;
         while (resultSet.next()) {
             if (tempList.size() < 10) {
+                isBlacklisted = false;
                 uuid = UUID.fromString(resultSet.getString("uuid"));
-                if (!EterniaServer.configs.blacklistedBaltop.contains(UUIDFetcher.getNameOf(uuid))) {
-                    tempList.add(uuid);
+                for (Object object : EterniaServer.getList(ConfigLists.BLACKLISTED_BALANCE_TOP)) {
+                    if (object.toString().equals(UUIDFetcher.getNameOf(uuid))) isBlacklisted = true;
                 }
+                if (!isBlacklisted) tempList.add(uuid);
             }
         }
         Vars.baltopTime = System.currentTimeMillis();

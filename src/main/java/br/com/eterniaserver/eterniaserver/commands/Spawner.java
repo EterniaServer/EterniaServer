@@ -10,6 +10,7 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.Vars;
 
@@ -55,7 +56,7 @@ public class Spawner extends BaseCommand {
         ItemStack item = new ItemStack(Material.SPAWNER);
         ItemMeta meta = item.getItemMeta();
         item.setAmount(value);
-        meta.setDisplayName(Vars.colors.get(8) + "[" + EterniaServer.configs.mobSpawnerColor + spawnerName + Vars.colors.get(7) + " Spawner" +  Vars.colors.get(8) + "]");
+        meta.setDisplayName(Vars.colors.get(8) + "[" + Vars.colors.get(EterniaServer.getInteger(ConfigIntegers.SPAWNERS_COLORS)) + spawnerName + Vars.colors.get(7) + " Spawner" +  Vars.colors.get(8) + "]");
         item.setItemMeta(meta);
         NBTItem nbtItem = new NBTItem(item);
         nbtItem.setString("ms_mob", spawnerName.toUpperCase());

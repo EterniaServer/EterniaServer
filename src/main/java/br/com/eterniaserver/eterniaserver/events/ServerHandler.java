@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.GlobalFormatter;
+import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
@@ -44,7 +45,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCreatureSpawn(PreCreatureSpawnEvent event) {
-        if (EterniaServer.configs.moduleClear) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CLEAR)) {
             int amount = 0;
             EntityType entity = event.getType();
             for (Entity e : event.getSpawnLocation().getChunk().getEntities()) {
@@ -66,7 +67,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        if (EterniaServer.configs.moduleChat) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT)) {
             User user = new User(e.getPlayer());
 
             if (APIServer.isChatMuted() && !user.hasPermission(EterniaServer.constants.permMuteBypass)) {

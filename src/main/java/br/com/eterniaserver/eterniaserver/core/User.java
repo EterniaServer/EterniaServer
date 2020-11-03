@@ -4,6 +4,8 @@ import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
@@ -102,15 +104,15 @@ public class User {
 
     public void createProfile() {
         final long time = System.currentTimeMillis();
-        EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tablePlayer, "(uuid, player_name, time, last, hours, balance, muted)",
-                "('" + uuid.toString() + "', '" + playerName + "', '" + getFirstLogin() + "', '" + time + "', '" + 0 + "', '" + EterniaServer.configs.startMoney + "', '" + time + "')"));
+        EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance, muted)",
+                "('" + uuid.toString() + "', '" + playerName + "', '" + getFirstLogin() + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "', '" + time + "')"));
         final PlayerProfile playerProfileTemp = new PlayerProfile(
                 playerName,
                 getFirstLogin(),
                 time,
                 0
         );
-        playerProfileTemp.setBalance(EterniaServer.configs.startMoney);
+        playerProfileTemp.setBalance(EterniaServer.getDouble(ConfigDoubles.START_MONEY));
         playerProfileTemp.setMuted(time);
         Vars.playerProfile.put(uuid, playerProfileTemp);
     }
@@ -124,7 +126,7 @@ public class User {
             newPlayerProfile.setXp(playerProfile.getXp());
             newPlayerProfile.setMuted(time);
             EQueries.executeQuery(
-                    "UPDATE " + EterniaServer.configs.tablePlayer +
+                    "UPDATE " + EterniaServer.getString(ConfigStrings.TABLE_PLAYER) +
                             " SET player_name='" + playerName +
                             "', player_display='" + playerName +
                             "', time='" + player.getFirstPlayed() +
@@ -138,9 +140,9 @@ public class User {
         playerProfile.setLastLogin(time);
         if (!playerProfile.getPlayerName().equals(playerName)) {
             playerProfile.setPlayerName(playerName);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "player_name", playerName, "uuid", uuid.toString()));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "player_name", playerName, "uuid", uuid.toString()));
         }
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "last", time, "uuid", uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "last", time, "uuid", uuid.toString()));
     }
 
     public void changeFlyState() {
@@ -248,7 +250,7 @@ public class User {
         for (String kit : EterniaServer.kits.kitList.keySet()) {
             final String kitName = kit + "." + playerName;
             if (!Vars.kitsCooldown.containsKey(kitName)) {
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableKits, "name", kitName, "cooldown", time));
+                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_KITS), "name", kitName, "cooldown", time));
                 Vars.kitsCooldown.put(kitName, time);
             }
         }
@@ -517,7 +519,7 @@ public class User {
             nick = ChatColor.stripColor(nick);
         }
 
-        sendMessage(Messages.CHAT_NICK_CHANGE_REQUEST, nick, String.valueOf(EterniaServer.configs.nickCost));
+        sendMessage(Messages.CHAT_NICK_CHANGE_REQUEST, nick, String.valueOf(EterniaServer.getDouble(ConfigDoubles.NICK_COST)));
         playerProfile.setTempNick(nick);
         playerProfile.setNickRequest(true);
         sendMessage(Messages.CHAT_NICK_USE);
@@ -532,7 +534,7 @@ public class User {
         playerProfile.setPlayerDisplayName(playerProfile.getTempNick());
         player.setDisplayName(playerProfile.getTempNick());
         playerProfile.setNickRequest(false);
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "player_display", playerProfile.getPlayerDisplayName(), "uuid", uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "player_display", playerProfile.getPlayerDisplayName(), "uuid", uuid.toString()));
     }
 
     public void setDisplayName() {
@@ -543,7 +545,7 @@ public class User {
     public void clearNickName() {
         playerProfile.setPlayerDisplayName(playerName);
         player.setDisplayName(playerName);
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "player_display", playerProfile.getPlayerDisplayName(), "uuid", uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "player_display", playerProfile.getPlayerDisplayName(), "uuid", uuid.toString()));
     }
 
     public void removeNickRequest() {
@@ -568,7 +570,7 @@ public class User {
 
     public void setExp(int amount) {
         playerProfile.setXp(amount);
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "xp", amount, "uuid", uuid.toString()));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "xp", amount, "uuid", uuid.toString()));
     }
 
     public void addExp(int amount) {

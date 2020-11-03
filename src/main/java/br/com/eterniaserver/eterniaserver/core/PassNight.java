@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Bukkit;
@@ -30,7 +31,7 @@ public class PassNight extends BukkitRunnable {
         final int players = plugin.getServer().getMaxPlayers();
         if (sleeping > 0) {
             int x = players / sleeping;
-            int timeRate = EterniaServer.configs.nightSpeed / x;
+            int timeRate = EterniaServer.getInteger(ConfigIntegers.NIGHT_SPEED) / x;
             if (time >= (1200 - timeRate * 1.5) && time <= 1200) {
                 world.setStorm(false);
                 world.setThundering(false);

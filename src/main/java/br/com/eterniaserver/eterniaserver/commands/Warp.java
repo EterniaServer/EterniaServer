@@ -14,6 +14,7 @@ import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.Vars;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
@@ -226,9 +227,9 @@ public class Warp extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (!APIServer.getLocation(shop).equals(Vars.getError())) {
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableLocations, "location", saveloc, "name", shop));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "location", saveloc, "name", shop));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableLocations, "name", shop, "location", saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "name", shop, "location", saveloc));
         }
         APIServer.putLocation(shop, loc);
     }
@@ -242,9 +243,9 @@ public class Warp extends BaseCommand {
                 ":" + ((int) loc.getPitch());
         final String warpName = "warp." + warp;
         if (!APIServer.getLocation(warpName).equals(Vars.getError())) {
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableLocations, "location", saveloc, "name", warpName));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "location", saveloc, "name", warpName));
         } else {
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableLocations, "name", warpName, "location", saveloc));
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "name", warpName, "location", saveloc));
         }
         APIServer.putLocation(warpName, loc);
     }
@@ -252,12 +253,12 @@ public class Warp extends BaseCommand {
     public void delWarp(String warp) {
         final String warpName = "warp." + warp;
         APIServer.removeLocation(warpName);
-        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.configs.tableLocations, "name", warpName));
+        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "name", warpName));
     }
 
     public void delShop(String shop) {
         APIServer.removeLocation(shop);
-        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.configs.tableLocations, "name", shop));
+        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "name", shop));
     }
 
 }

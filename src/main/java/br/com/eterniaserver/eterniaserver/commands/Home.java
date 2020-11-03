@@ -13,6 +13,7 @@ import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.Vars;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -178,10 +179,10 @@ public class Home extends BaseCommand {
         if (!t) {
             result.append(home);
             user.updateHome(home);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "homes", result.toString(), "uuid", user.getUUID().toString()));
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.configs.tableLocations, "name", homeName, "location", saveloc));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "homes", result.toString(), "uuid", user.getUUID().toString()));
+            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "name", homeName, "location", saveloc));
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableLocations, "location", saveloc, "name", homeName));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "location", saveloc, "name", homeName));
         }
     }
 
@@ -201,8 +202,8 @@ public class Home extends BaseCommand {
             }
         }
         user.getHomes().remove(home);
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tablePlayer, "homes", nova.toString(), "uuid", user.getHomes().toString()));
-        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.configs.tableLocations, "name", homeName));
+        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "homes", nova.toString(), "uuid", user.getHomes().toString()));
+        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "name", homeName));
     }
 
     public boolean existHome(String home, User user) {

@@ -7,6 +7,7 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
@@ -22,7 +23,7 @@ public class Kit extends BaseCommand {
 
     public Kit() {
 
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.configs.tableKits), "name", "cooldown");
+        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.getString(ConfigStrings.TABLE_KITS)), "name", "cooldown");
         temp.forEach((k, v) -> APIServer.putKitCooldown(k, Long.parseLong(v)));
 
         Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_DATA_LOADED, true, "Kits", String.valueOf(temp.size())));
@@ -72,7 +73,7 @@ public class Kit extends BaseCommand {
                 player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, text)));
             }
             APIServer.putKitCooldown(kitName, time);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.configs.tableKits, "cooldown", time, "name", kitName));
+            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_KITS), "cooldown", time, "name", kitName));
         } else {
             EterniaServer.msg.sendMessage(player, Messages.SERVER_TIMING, APIServer.getTimeLeftOfCooldown(cooldown, cd));
         }

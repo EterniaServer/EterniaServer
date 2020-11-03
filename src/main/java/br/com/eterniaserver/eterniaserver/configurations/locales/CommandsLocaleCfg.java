@@ -86,9 +86,9 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.GLOW, "glow", "eternia.glow", null, " Brilhe como você merece", null);
         this.addDefault(defaults, Commands.GLOW_COLOR, "color", "eternia.glow", " <cor>", " Escolha a cor que você deseja brilhar", null);
         this.addDefault(defaults, Commands.HOME, "home", "eternia.home", " <home> <jogador>", " Vá até sua home ou a de outro jogador", null);
-        this.addDefault(defaults, Commands.HOME_DELETE, "delhome", "eternia.delhome", " <home>", " Delete uma home sua", null);
-        this.addDefault(defaults, Commands.HOME_LIST, "homes", "eternia.homes", " <jogador>", " Veja a sua lista de homes ou a de outro jogador", null);
-        this.addDefault(defaults, Commands.HOME_CREATE, "sethome", "eternia.sethome", " <home>", " Defina uma nova home ou uma bússula de teleporte", null);
+        this.addDefault(defaults, Commands.DELHOME, "delhome", "eternia.delhome", " <home>", " Delete uma home sua", null);
+        this.addDefault(defaults, Commands.HOMES, "homes", "eternia.homes", " <jogador>", " Veja a sua lista de homes ou a de outro jogador", null);
+        this.addDefault(defaults, Commands.SETHOME, "sethome", "eternia.sethome", " <home>", " Defina uma nova home ou uma bússula de teleporte", null);
         this.addDefault(defaults, Commands.HAT, "hat", "eternia.hat", null, " Coloque seu caçapete", null);
         this.addDefault(defaults, Commands.WORKBENCH, "workbench", "eternia.workbench", null, " Abra uma bancada de trabalho virtual", null);
         this.addDefault(defaults, Commands.OPENINV, "openinv", "eternia.openinv", " <jogador>", " Abra o inventário de um jogador", null);
@@ -105,32 +105,32 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.ITEM_SET_LORE, "lore", "eternia.item", " <lore>", " Define a lore do item", null);
         this.addDefault(defaults, Commands.ITEM_SET_NAME, "name", "eternia.item", " <nome>", " Define o nome do item", null);
         this.addDefault(defaults, Commands.KIT, "kit", "eternia.kit", " <kit>", " Escolha um kit para pegar", null);
-        this.addDefault(defaults, Commands.KIT_LIST, "kits", "eternia.kits", null, " Veja a lista de kits disponíveis", null);
+        this.addDefault(defaults, Commands.KITS, "kits", "eternia.kits", null, " Veja a lista de kits disponíveis", null);
         this.addDefault(defaults, Commands.MUTE, "mute", "eternia.mute", " <página>", " Receba ajuda para o sistema de Mute", null);
         this.addDefault(defaults, Commands.MUTE_CHANNELS, "channels|muteall", "eternia.mute", null, " Muta todos os canais", null);
         this.addDefault(defaults, Commands.MUTE_PERMA, "perma", "eternia.mute.perma", " <jogador> <mensagem>", " Muta um jogador permanentemente", null);
         this.addDefault(defaults, Commands.MUTE_UNDO, "unmute", "eternia.mute", " <jogador>", " Desmuta um jogador", null);
         this.addDefault(defaults, Commands.MUTE_TEMP, "temp", "eternia.mute", " <jogador> <tempo> <mensagem>", " Muta um jogador temporariamente", null);
-        this.addDefault(defaults, Commands.NICKNAME, "nick", "eternia.nickname", " <novo nome> ou <novo nome> <jogador>", " Altera o seu apelido ou de um jogador", null);
-        this.addDefault(defaults, Commands.NICKNAME_DENY, "deny", "eternia.nickname", null, " Nega uma mudança de nick", null);
-        this.addDefault(defaults, Commands.NICKNAME_ACCEPT, "accept", "eternia.nickname", null, " Aceita uma mudança de nick", null);
-        this.addDefault(defaults, Commands.KEY_USE, "usekey", "eternia.usekey", " <chave>", " Ative uma key de rewards", null);
-        this.addDefault(defaults, Commands.KEY_GEN, "genkey", "eternia.genkey", " <reward>", " Crie uma key de rewards", null);
+        this.addDefault(defaults, Commands.NICK, "nick", "eternia.nickname", " <novo nome> ou <novo nome> <jogador>", " Altera o seu apelido ou de um jogador", null);
+        this.addDefault(defaults, Commands.NICK_DENY, "deny", "eternia.nickname", null, " Nega uma mudança de nick", null);
+        this.addDefault(defaults, Commands.NICK_ACCEPT, "accept", "eternia.nickname", null, " Aceita uma mudança de nick", null);
+        this.addDefault(defaults, Commands.USEKEY, "usekey", "eternia.usekey", " <chave>", " Ative uma key de rewards", null);
+        this.addDefault(defaults, Commands.GENKEY, "genkey", "eternia.genkey", " <reward>", " Crie uma key de rewards", null);
         this.addDefault(defaults, Commands.SPAWNERGIVE, "spawnergive", "eternia.spawnergive", " <mob> <quantia> <jogador>", " Dá uma quantia de spawners para um jogador", null);
-        this.addDefault(defaults, Commands.TP_ALL, "tpall", "eternia.tpall", null, " Teleporte todos jogadores até você", null);
-        this.addDefault(defaults, Commands.TP_BACK, "back", "eternia.back", null, " Volte ao seu ultimo local", null);
-        this.addDefault(defaults, Commands.TP_TPA, "tpa", "eternia.tpa", " <jogador>", " Envie um pedido de tpa a um jogador", null);
-        this.addDefault(defaults, Commands.TP_TPA_ACCEPT, "tpa accept", "eternia.tpa", null, " Aceite um pedido de tpa", null);
-        this.addDefault(defaults, Commands.TP_TPA_DENY, "tpa deny", "eternia.tpa", null, " Negue um pedido de tpa", null);
+        this.addDefault(defaults, Commands.TPALL, "tpall", "eternia.tpall", null, " Teleporte todos jogadores até você", null);
+        this.addDefault(defaults, Commands.BACK, "back", "eternia.back", null, " Volte ao seu ultimo local", null);
+        this.addDefault(defaults, Commands.TPA, "tpa", "eternia.tpa", " <jogador>", " Envie um pedido de tpa a um jogador", null);
+        this.addDefault(defaults, Commands.TPA_ACCEPT, "tpa accept", "eternia.tpa", null, " Aceite um pedido de tpa", null);
+        this.addDefault(defaults, Commands.TPA_DENY, "tpa deny", "eternia.tpa", null, " Negue um pedido de tpa", null);
         this.addDefault(defaults, Commands.SPAWN, "spawn", "eternia.spawn", " <jogador>", " Vá ou leve alguém até o spawner", null);
-        this.addDefault(defaults, Commands.SPAWN_SET, "setspawn", "eternia.setspawn", null, " Defina a localização do spawn", null);
+        this.addDefault(defaults, Commands.SPAWNSET, "setspawn", "eternia.setspawn", null, " Defina a localização do spawn", null);
         this.addDefault(defaults, Commands.SHOP, "shop|loja", "eternia.shop.player", " <jogador>", " Vá até a loja geral ou a de alguém", null);
-        this.addDefault(defaults, Commands.SHOP_SET, "setshop|setloja", "eternia.setshop", null, " Defina a sua loja", null);
-        this.addDefault(defaults, Commands.SHOP_DELETE, "delshop|delloja", "eternia.setshop", null, " Delete a sua loja", null);
+        this.addDefault(defaults, Commands.SETSHOP, "setshop|setloja", "eternia.setshop", null, " Defina a sua loja", null);
+        this.addDefault(defaults, Commands.DELSHOP, "delshop|delloja", "eternia.setshop", null, " Delete a sua loja", null);
         this.addDefault(defaults, Commands.WARP, "warp", "eternia.warp", " <warp>", " Vá até uma warp", null);
-        this.addDefault(defaults, Commands.WARP_SET, "setwarp", "eternia.setwarp", " <warp>", " Define uma nova warp", null);
-        this.addDefault(defaults, Commands.WARP_DELETE, "delwarp", "eternia.delwarp", " <warp>", " Delete uma warp", null);
-        this.addDefault(defaults, Commands.WARP_LIST, "listwarp", "eternia.listwarp", null, " Veja todas as warps disponíveis", null);
+        this.addDefault(defaults, Commands.SETWARP, "setwarp", "eternia.setwarp", " <warp>", " Define uma nova warp", null);
+        this.addDefault(defaults, Commands.DELWARP, "delwarp", "eternia.delwarp", " <warp>", " Delete uma warp", null);
+        this.addDefault(defaults, Commands.LISTWARP, "warps", "eternia.listwarp", null, " Veja todas as warps disponíveis", null);
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_LOCALE_FILE_PATH));
 
@@ -182,7 +182,7 @@ public class CommandsLocaleCfg {
     }
 
     public String getSyntax(Commands id) {
-        return syntax[id.ordinal()];
+        return syntax[id.ordinal()] != null ? syntax[id.ordinal()] : "";
     }
 
     public String getDescription(Commands id) {
@@ -194,7 +194,7 @@ public class CommandsLocaleCfg {
     }
 
     public String getAliases(Commands id) {
-        return aliases[id.ordinal()];
+        return aliases[id.ordinal()] != null ? aliases[id.ordinal()] : "";
     }
 
 }
