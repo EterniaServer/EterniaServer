@@ -20,7 +20,7 @@ public class PassNight extends BukkitRunnable {
         this.plugin = plugin;
         this.world = world;
         if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.NIGHT_SKIPPING, true, world.getName()));
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.NIGHT_SKIPPING, true, world.getName()));
         }
     }
 
@@ -37,7 +37,7 @@ public class PassNight extends BukkitRunnable {
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                 Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
-                Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.NIGHT_SKIPPED, true, world.getName()));
+                Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.NIGHT_SKIPPED, true, world.getName()));
                 APIServer.changeNightTime(System.currentTimeMillis());
                 this.cancel();
             } else {

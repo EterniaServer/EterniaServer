@@ -15,6 +15,7 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.GameMode;
@@ -125,13 +126,13 @@ public class Gamemode extends BaseCommand {
     private String getType(int type) {
         switch (type) {
             case 0:
-                return EterniaServer.constants.gmSurvival;
+                return EterniaServer.getString(ConfigStrings.CONS_SURVIVAL);
             case 1:
-                return EterniaServer.constants.gmCreative;
+                return EterniaServer.getString(ConfigStrings.CONS_CREATIVE);
             case 2:
-                return EterniaServer.constants.gmAdventure;
+                return EterniaServer.getString(ConfigStrings.CONS_ADVENTURE);
             default:
-                return EterniaServer.constants.gmSpectator;
+                return EterniaServer.getString(ConfigStrings.CONS_SPECTATOR);
         }
     }
 

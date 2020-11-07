@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.GlobalFormatter;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
@@ -34,8 +35,8 @@ public class ServerHandler implements Listener {
 
     public ServerHandler() {
 
-        messageMotd = ChatColor.translateAlternateColorCodes('&', EterniaServer.msg.getMessage(Messages.SERVER_MOTD_1, false));
-        message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.msg.getMessage(Messages.SERVER_MOTD_2, false));
+        messageMotd = ChatColor.translateAlternateColorCodes('&', EterniaServer.getMessage(Messages.SERVER_MOTD_1, false));
+        message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.getMessage(Messages.SERVER_MOTD_2, false));
         if (APIServer.getVersion() >= 116) {
             messageMotd = matcherMessage(messageMotd);
             message2 = matcherMessage(message2);
@@ -70,7 +71,7 @@ public class ServerHandler implements Listener {
         if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT)) {
             User user = new User(e.getPlayer());
 
-            if (APIServer.isChatMuted() && !user.hasPermission(EterniaServer.constants.permMuteBypass)) {
+            if (APIServer.isChatMuted() && !user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_MUTE_BYPASS))) {
                 user.sendMessage(Messages.CHAT_CHANNELS_MUTED);
                 e.setCancelled(true);
             } else {
@@ -120,7 +121,7 @@ public class ServerHandler implements Listener {
     }
 
     private String canHex(User user, String message) {
-        if (APIServer.getVersion() >= 116 && user.hasPermission(EterniaServer.constants.permChatColor)) {
+        if (APIServer.getVersion() >= 116 && user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR))) {
             Matcher matcher = colorPattern.matcher(message);
             if (matcher.find()) {
                 StringBuffer buffer = new StringBuffer();

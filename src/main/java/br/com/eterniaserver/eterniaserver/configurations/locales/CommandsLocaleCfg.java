@@ -22,7 +22,7 @@ public class CommandsLocaleCfg {
     private final String[] aliases;
 
     public CommandsLocaleCfg() {
-        Commands[] commandsList = Commands.values();
+
         this.commands = new String[Commands.values().length];
         this.syntax = new String[Commands.values().length];
         this.descriptions = new String[Commands.values().length];
@@ -134,7 +134,7 @@ public class CommandsLocaleCfg {
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_LOCALE_FILE_PATH));
 
-        for (Commands commandsEnum : commandsList) {
+        for (Commands commandsEnum : Commands.values()) {
             CommandLocale commandLocale = defaults.get(commandsEnum.name());
 
             this.commands[commandsEnum.ordinal()] = config.getString(commandsEnum.name() + ".name", commandLocale.name);

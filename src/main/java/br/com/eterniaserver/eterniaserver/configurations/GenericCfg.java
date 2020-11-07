@@ -1,6 +1,5 @@
 package br.com.eterniaserver.eterniaserver.configurations;
 
-import br.com.eterniaserver.eterniaserver.commands.Generic;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
@@ -12,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class GenericCfg {
     private final Boolean[] booleans;
     private final Integer[] integers;
     private final Double[] doubles;
-    private final List<List<?>> lists;
+    private final List<List<String>> lists;
 
     protected GenericCfg(String[] strings) {
         this(strings, null, null, null, null);
@@ -40,7 +38,7 @@ public class GenericCfg {
         this(strings, booleans, integers, doubles, null);
     }
 
-    protected GenericCfg(String[] strings, Boolean[] booleans, Integer[] integers, Double[] doubles, List<List<?>> lists) {
+    protected GenericCfg(String[] strings, Boolean[] booleans, Integer[] integers, Double[] doubles, List<List<String>> lists) {
 
         this.strings = strings;
         this.booleans = booleans;
@@ -81,56 +79,31 @@ public class GenericCfg {
 
     protected void setList(ConfigLists configLists, FileConfiguration file, FileConfiguration outFile, String key, String... values) {
         List<String> list = file.getStringList(key);
-        if (isString(list)) {
-            if (list.isEmpty()) {
-                list.addAll(Arrays.asList(values));
-            }
-            lists.set(configLists.ordinal(), new ArrayList<>(list));
-            saveList(configLists, outFile, key);
-            return;
+        if (list.isEmpty()) {
+            list.addAll(Arrays.asList(values));
         }
-
-        List<Material> listOut = new ArrayList<>();
-        for (String material : list) {
-            Material blockMaterial = Material.getMaterial(material);
-            if (blockMaterial == null) {
-                APIServer.logError("Configuração de elevadores material " + material + " não encontrado", 2);
-                continue;
-            }
-            listOut.add(blockMaterial);
-        }
-
-        if (listOut.isEmpty()) {
-            for (String material : values) {
-                listOut.add(Material.getMaterial(material));
-            }
-        }
-
-        lists.set(configLists.ordinal(), new ArrayList<>(listOut));
-        saveList(configLists, outFile, key);
+        lists.set(configLists.ordinal(), list);
+        outFile.set(key, lists.get(configLists.ordinal()));
     }
 
-    private void saveList(ConfigLists configLists, FileConfiguration fileConfiguration, String key) {
-        List<?> list = lists.get(configLists.ordinal());
-        if (isString(list)) {
-            fileConfiguration.set(key, list);
-            return;
+    protected void setMaterials(List<Material> elevatorMaterials, FileConfiguration file, FileConfiguration outFile, String... values) {
+        elevatorMaterials.clear();
+
+        List<String> list = file.getStringList("elevator.block");
+        if (list.isEmpty()) {
+            list.addAll(Arrays.asList(values));
         }
 
-        List<String> listOut = new ArrayList<>();
-        for (Object object : list) {
-            listOut.add(((Material) object).name());
+        for (String value : list) {
+            Material material = Material.getMaterial(value);
+            if (material == null) {
+                APIServer.logError("Configuração de elevadores material " + value + " não encontrado", 2);
+            } else {
+                elevatorMaterials.add(material);
+            }
         }
-        fileConfiguration.set(key, listOut);
+
+        outFile.set("elevator.block", list);
     }
-
-    private boolean isString(List<?> list) {
-        try {
-            return list.get(0).getClass().equals(String.class);
-        } catch (IndexOutOfBoundsException e) {
-            return true;
-        }
-    }
-
 
 }

@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.events;
 
-import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.SQL;
+import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
@@ -78,7 +78,7 @@ public class PlayerHandler implements Listener {
         if (EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS) && event.getClickedBlock() != null
                 && action.equals(Action.RIGHT_CLICK_BLOCK) && event.getItem() != null
                 && event.getClickedBlock().getType() == Material.SPAWNER
-                && !user.hasPermission(EterniaServer.constants.permSpawnersChange)) {
+                && !user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWNERS_CHANGE))) {
             event.setCancelled(true);
         }
     }
@@ -102,7 +102,7 @@ public class PlayerHandler implements Listener {
             if (user.isTeleporting()) {
                 user.sendMessage(Messages.SERVER_IN_TELEPORT);
             } else {
-                user.putInTeleport( new PlayerTeleport(user.getPlayer(), location, EterniaServer.msg.getMessage(Messages.HOME_GOING, true, nome)));
+                user.putInTeleport( new PlayerTeleport(user.getPlayer(), location, EterniaServer.getMessage(Messages.HOME_GOING, true, nome)));
             }
             return true;
         }
@@ -144,8 +144,13 @@ public class PlayerHandler implements Listener {
     public void onPlayerLeave(PlayerQuitEvent event) {
         User user = new User(event.getPlayer());
         user.clear();
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "hours", user.getAndUpdateTimePlayed(), "uuid", user.getUUID().toString()));
-        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGOUT, true, user.getName(), user.getDisplayName()));
+
+        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        update.set.set("hours", user.getAndUpdateTimePlayed());
+        update.where.set("uuid", user.getUUID().toString());
+        SQL.executeAsync(update);
+
+        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGOUT, true, user.getName(), user.getDisplayName()));
         event.setQuitMessage(null);
 
     }
@@ -154,12 +159,12 @@ public class PlayerHandler implements Listener {
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
         String message = event.getMessage().toLowerCase();
         if (message.equalsIgnoreCase("/tps")) {
-            EterniaServer.msg.sendMessage(event.getPlayer(), Messages.SERVER_TPS, String.format("%.2f", Bukkit.getTPS()[0]));
+            EterniaServer.sendMessage(event.getPlayer(), Messages.SERVER_TPS, String.format("%.2f", Bukkit.getTPS()[0]));
             event.setCancelled(true);
             return;
         }
-        for (Object line : EterniaServer.getList(ConfigLists.BLACKLISTED_COMMANDS)) {
-            if (message.startsWith(line.toString())) {
+        for (String line : EterniaServer.getStringList(ConfigLists.BLACKLISTED_COMMANDS)) {
+            if (message.startsWith(line)) {
                 event.setCancelled(true);
                 return;
             }
@@ -174,7 +179,7 @@ public class PlayerHandler implements Listener {
             User user = new User(event.getPlayer());
             if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - user.getBedCooldown()) > 6) {
                 user.updateBedCooldown();
-                Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.NIGHT_PLAYER_SLEEPING, true, user.getName(), user.getDisplayName()));
+                Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.NIGHT_PLAYER_SLEEPING, true, user.getName(), user.getDisplayName()));
             }
         }
     }
@@ -192,10 +197,10 @@ public class PlayerHandler implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         final Player player = event.getPlayer();
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.constants.permElevator) && !player.isSneaking()) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_ELEVATOR)) && !player.isSneaking()) {
             Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
-            for (Object valueObject : EterniaServer.getList(ConfigLists.ELEVATOR_MATERIALS)) {
+            for (Object valueObject : EterniaServer.getElevatorMaterials()) {
                 Material value = (Material) valueObject;
                 if (value == material) {
                     block = block.getRelative(BlockFace.DOWN, EterniaServer.getInteger(ConfigIntegers.ELEVATOR_MIN));
@@ -211,10 +216,10 @@ public class PlayerHandler implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerJump(PlayerJumpEvent event) {
         final Player player = event.getPlayer();
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.constants.permElevator)) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_ELEVATOR))) {
             Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
-            for (Object valueObject : EterniaServer.getList(ConfigLists.ELEVATOR_MATERIALS)) {
+            for (Object valueObject : EterniaServer.getElevatorMaterials()) {
                 Material value = (Material) valueObject;
                 if (value == material) {
                     block = block.getRelative(BlockFace.UP, EterniaServer.getInteger(ConfigIntegers.ELEVATOR_MIN));
@@ -234,15 +239,15 @@ public class PlayerHandler implements Listener {
         event.setJoinMessage(null);
 
         if (!user.hasProfile()) {
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_FIRST_LOGIN, true, user.getName(), user.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_FIRST_LOGIN, true, user.getName(), user.getDisplayName()));
             user.createProfile();
         } else {
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
             user.updateProfile();
         }
 
         if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT)) {
-            if (user.hasPermission(EterniaServer.constants.permSpy)) {
+            if (user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPY))) {
                 user.changeSpyState();
             }
             user.setDisplayName();

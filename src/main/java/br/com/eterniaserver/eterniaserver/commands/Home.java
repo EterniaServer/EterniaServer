@@ -5,11 +5,13 @@ import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Syntax;
-import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eternialib.SQL;
+import br.com.eterniaserver.eternialib.sql.queries.Delete;
+import br.com.eterniaserver.eternialib.sql.queries.Insert;
+import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.Vars;
@@ -43,7 +45,7 @@ public class Home extends BaseCommand {
             return;
         }
 
-        EterniaServer.msg.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
+        EterniaServer.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
     }
 
     @CommandAlias("%home")
@@ -60,15 +62,15 @@ public class Home extends BaseCommand {
         if (targets == null) {
             Location location = APIServer.getLocation(nome.toLowerCase() + "." + user.getName());
             if (locationExists(location, player, nome)) {
-                user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.msg.getMessage(Messages.HOME_GOING, true, nome)));
+                user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.getMessage(Messages.HOME_GOING, true, nome)));
             }
             return;
         }
 
-        if (user.hasPermission(EterniaServer.constants.permHomeOther)) {
+        if (user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_HOME_OTHER))) {
             Location location = APIServer.getLocation(nome.toLowerCase() + "." + targets.getPlayer().getName());
             if (locationExists(location, player, nome)) {
-                user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.msg.getMessage(Messages.HOME_GOING, true, nome)));
+                user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.getMessage(Messages.HOME_GOING, true, nome)));
             }
             return;
         }
@@ -86,12 +88,12 @@ public class Home extends BaseCommand {
             return;
         }
 
-        if (player.hasPermission(EterniaServer.constants.permHomeOther)) {
+        if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_HOME_OTHER))) {
             showHomes(player, target.getPlayer());
             return;
         }
 
-        EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
+        EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
     }
 
     private void showHomes(Player player, Player target) {
@@ -107,7 +109,7 @@ public class Home extends BaseCommand {
             }
         }
 
-        EterniaServer.msg.sendMessage(player, Messages.HOME_LIST, accounts.toString());
+        EterniaServer.sendMessage(player, Messages.HOME_LIST, accounts.toString());
     }
 
     @CommandAlias("%sethome")
@@ -117,7 +119,7 @@ public class Home extends BaseCommand {
     public void onSetHome(Player player, String nome) {
         User user = new User(player);
         int i = 4;
-        for (int v = 5; v <= 93; v++) if (player.hasPermission(EterniaServer.constants.permSethomeLimitPrefix + v)) i = v;
+        for (int v = 5; v <= 93; v++) if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SETHOME_LIMIT_PREFIX) + v)) i = v;
 
         nome = nome.replaceAll("[^a-zA-Z0-9]", "");
         if (nome.length() > 10) {
@@ -147,7 +149,7 @@ public class Home extends BaseCommand {
 
     private boolean locationExists(final Location location, final Player player, final String nome) {
         if (location == Vars.getError()) {
-            EterniaServer.msg.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
+            EterniaServer.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
             return false;
         }
         return true;
@@ -179,10 +181,21 @@ public class Home extends BaseCommand {
         if (!t) {
             result.append(home);
             user.updateHome(home);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "homes", result.toString(), "uuid", user.getUUID().toString()));
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "name", homeName, "location", saveloc));
+
+            Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            update.set.set("homes", result.toString());
+            update.where.set("uuid", user.getUUID().toString());
+            SQL.executeAsync(update);
+
+            Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+            insert.columns.set("name", "location");
+            insert.values.set(homeName, saveloc);
+            SQL.executeAsync(insert);
         } else {
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "location", saveloc, "name", homeName));
+            Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+            update.set.set("location", saveloc);
+            update.where.set("name", homeName);
+            SQL.executeAsync(update);
         }
     }
 
@@ -202,8 +215,14 @@ public class Home extends BaseCommand {
             }
         }
         user.getHomes().remove(home);
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "homes", nova.toString(), "uuid", user.getHomes().toString()));
-        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS), "name", homeName));
+        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        update.set.set("homes", nova.toString());
+        update.where.set("uuid", user.getUUID().toString());
+        SQL.executeAsync(update);
+
+        Delete delete = new Delete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+        delete.where.set("name", homeName);
+        SQL.executeAsync(delete);
     }
 
     public boolean existHome(String home, User user) {

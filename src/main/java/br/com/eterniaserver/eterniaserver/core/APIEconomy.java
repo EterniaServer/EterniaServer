@@ -1,11 +1,11 @@
 package br.com.eterniaserver.eterniaserver.core;
 
-import br.com.eterniaserver.eternialib.EQueries;
-import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eternialib.sql.Connections;
+import br.com.eterniaserver.eternialib.sql.queries.Insert;
+import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.enums.BalanceTop;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
 import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
@@ -15,6 +15,7 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import javax.sql.rowset.CachedRowSet;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -78,14 +79,19 @@ public interface APIEconomy {
         if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "')"));
+
+            Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
+            insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(ConfigDoubles.START_MONEY));
+            SQL.executeAsync(insert);
+
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
                     time,
                     0
             );
+
             playerProfile.setBalance(EterniaServer.getDouble(ConfigDoubles.START_MONEY));
             Vars.playerProfile.put(uuid, playerProfile);
         } else {
@@ -105,8 +111,12 @@ public interface APIEconomy {
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance)",
-                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "')"));
+
+                Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+                insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
+                insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(ConfigDoubles.START_MONEY));
+                SQL.executeAsync(insert);
+
                 final PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
                         time,
@@ -145,12 +155,20 @@ public interface APIEconomy {
         if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
             if (Vars.playerProfile.containsKey(uuid)) {
                 Vars.playerProfile.get(uuid).setBalance(amount);
-                EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "balance", amount, "uuid", uuid.toString()));
+
+                Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+                update.set.set("balance", amount);
+                update.where.set("uuid", uuid.toString());
+                SQL.executeAsync(update);
             } else {
                 final long time = System.currentTimeMillis();
                 final String playerName = UUIDFetcher.getNameOf(uuid);
-                EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance)",
-                        "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "')"));
+
+                Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+                insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
+                insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(ConfigDoubles.START_MONEY));
+                SQL.executeAsync(insert);
+
                 final PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
                         time,
@@ -215,22 +233,28 @@ public interface APIEconomy {
      */
     static CompletableFuture<Boolean> updateBalanceTop(int size) {
         return CompletableFuture.supplyAsync(() -> {
-            final String query = "SELECT " + "uuid" + " FROM " + EterniaServer.getString(ConfigStrings.TABLE_PLAYER) + " ORDER BY " + "balance" + " DESC LIMIT " + size + ";";
-            if (EterniaLib.getMySQL()) {
-                EterniaLib.getConnections().executeSQLQuery(connection -> {
-                    final PreparedStatement getHashMap = connection.prepareStatement(query);
-                    final ResultSet resultSet = getHashMap.executeQuery();
-                    checkBlacklist(resultSet);
-                    getHashMap.close();
-                    resultSet.close();
-                });
-            } else {
-                try (PreparedStatement getHashMap = Connections.getSQLite().prepareStatement(query); ResultSet resultSet = getHashMap.executeQuery()) {
-                    checkBlacklist(resultSet);
-                } catch (SQLException ignored) {
-                    APIServer.logError("Erro ao se conectar com a database", 3);
-                    return false;
+            try {
+                PreparedStatement statement = SQL.getConnection().prepareStatement(new BalanceTop(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), size).queryString());
+                statement.execute();
+                ResultSet resultSet = statement.getResultSet();
+                final List<UUID> tempList = new ArrayList<>();
+                UUID uuid;
+                while (resultSet.next()) {
+                    if (tempList.size() < 10) {
+                        uuid = UUID.fromString(resultSet.getString("uuid"));
+                        if (!EterniaServer.getStringList(ConfigLists.BLACKLISTED_BALANCE_TOP).contains(UUIDFetcher.getNameOf(uuid))) {
+                            tempList.add(uuid);
+                        }
+                    }
                 }
+                Vars.baltopTime = System.currentTimeMillis();
+                Vars.baltopList.clear();
+                Vars.baltopList.addAll(tempList);
+                resultSet.close();
+                statement.close();
+            } catch (SQLException ignored) {
+                APIServer.logError("Erro ao se conectar com a database", 3);
+                return false;
             }
             return true;
         });
@@ -250,25 +274,6 @@ public interface APIEconomy {
      */
     static long getBalanceTopTime() {
         return Vars.baltopTime;
-    }
-
-    private static void checkBlacklist(ResultSet resultSet) throws SQLException {
-        final List<UUID> tempList = new ArrayList<>();
-        UUID uuid;
-        boolean isBlacklisted;
-        while (resultSet.next()) {
-            if (tempList.size() < 10) {
-                isBlacklisted = false;
-                uuid = UUID.fromString(resultSet.getString("uuid"));
-                for (Object object : EterniaServer.getList(ConfigLists.BLACKLISTED_BALANCE_TOP)) {
-                    if (object.toString().equals(UUIDFetcher.getNameOf(uuid))) isBlacklisted = true;
-                }
-                if (!isBlacklisted) tempList.add(uuid);
-            }
-        }
-        Vars.baltopTime = System.currentTimeMillis();
-        Vars.baltopList.clear();
-        Vars.baltopList.addAll(tempList);
     }
 
 }

@@ -14,6 +14,7 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.entity.Player;
@@ -37,7 +38,7 @@ public class Channel extends BaseCommand {
     @CommandPermission("%channel_local_perm")
     @Description("%channel_local_description")
     public void toLocal(Player player, @Optional String messages) {
-        changeChannel(0, EterniaServer.constants.chLocal, player, messages);
+        changeChannel(0, EterniaServer.getString(ConfigStrings.CONS_LOCAL), player, messages);
     }
 
     @Subcommand("%channel_global")
@@ -47,7 +48,7 @@ public class Channel extends BaseCommand {
     @CommandPermission("%channel_global_perm")
     @Description("%channel_global_description")
     public void toGlobal(Player player, @Optional String messages) {
-        changeChannel(1, EterniaServer.constants.chGlobal, player, messages);
+        changeChannel(1, EterniaServer.getString(ConfigStrings.CONS_GLOBAL), player, messages);
     }
 
     @Subcommand("%channel_staff")
@@ -57,14 +58,14 @@ public class Channel extends BaseCommand {
     @CommandPermission("%channel_staff_perm")
     @Description("%channel_staff_description")
     public void toStaff(Player player, @Optional String messages) {
-        changeChannel(2, EterniaServer.constants.chStaff, player, messages);
+        changeChannel(2, EterniaServer.getString(ConfigStrings.CONS_STAFF), player, messages);
     }
 
     private void changeChannel(int channel, String channelName, Player player, String messages) {
         User user = new User(player);
         if (messages == null || messages.equals("")) {
             user.setChannel(channel);
-            EterniaServer.msg.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channelName);
+            EterniaServer.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channelName);
         } else {
             int defaultChannel = user.getChannel();
             user.setChannel(channel);

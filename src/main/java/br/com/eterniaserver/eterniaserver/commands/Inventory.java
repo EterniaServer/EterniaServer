@@ -10,6 +10,7 @@ import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Material;
@@ -45,12 +46,12 @@ public class Inventory extends BaseCommand {
             return;
         }
 
-        if (player.hasPermission(EterniaServer.constants.permEcOther)) {
+        if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_EC_OTHER))) {
             player.openInventory(target.getPlayer().getEnderChest());
             return;
         }
 
-        EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
+        EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
     }
 
     @CommandAlias("%hat")
@@ -60,7 +61,7 @@ public class Inventory extends BaseCommand {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         if (itemStack.getType() == Material.AIR) {
-            EterniaServer.msg.sendMessage(player, Messages.ITEM_NOT_FOUND);
+            EterniaServer.sendMessage(player, Messages.ITEM_NOT_FOUND);
             return;
         }
 
@@ -69,7 +70,7 @@ public class Inventory extends BaseCommand {
         }
         dropHelmet(player);
         setHelmet(player);
-        EterniaServer.msg.sendMessage(player, Messages.ITEM_HELMET);
+        EterniaServer.sendMessage(player, Messages.ITEM_HELMET);
     }
 
     private void dropHelmet(Player player) {

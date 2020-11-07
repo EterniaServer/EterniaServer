@@ -40,12 +40,12 @@ public class Spawner extends BaseCommand {
             EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
             if (inventory.firstEmpty() == -1) {
-                EterniaServer.msg.sendMessage(player, Messages.SPAWNER_INV_FULL);
+                EterniaServer.sendMessage(player, Messages.SPAWNER_INV_FULL);
             } else {
                 inventory.addItem(getSpawner(spawnerName, value));
                 final String playerDisplay = player instanceof Player ? ((Player) player).getPlayer().getDisplayName() : player.getName();
-                EterniaServer.msg.sendMessage(targetP, Messages.SPAWNER_RECEIVED, spawnerName, player.getName(), playerDisplay, String.valueOf(value));
-                EterniaServer.msg.sendMessage(player, Messages.SPAWNER_SENT, spawnerName, targetP.getName(), targetP.getDisplayName(), String.valueOf(value));
+                EterniaServer.sendMessage(targetP, Messages.SPAWNER_RECEIVED, spawnerName, player.getName(), playerDisplay, String.valueOf(value));
+                EterniaServer.sendMessage(player, Messages.SPAWNER_SENT, spawnerName, targetP.getName(), targetP.getDisplayName(), String.valueOf(value));
             }
         } else {
             sendTypes(player);
@@ -72,7 +72,7 @@ public class Spawner extends BaseCommand {
                 str.append(ChatColor.DARK_AQUA).append(Vars.entityList.get(i)).append(ChatColor.DARK_GRAY).append(", ");
             }
         }
-        EterniaServer.msg.sendMessage(player, Messages.SPAWNER_SEND_TYPES, str.toString());
+        EterniaServer.sendMessage(player, Messages.SPAWNER_SEND_TYPES, str.toString());
     }
 
 }

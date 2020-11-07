@@ -128,7 +128,7 @@ public class Cash extends BaseCommand {
         User target = new User(targetP.getPlayer());
 
         if (!APICash.hasCash(user.getUUID(), value)) {
-            EterniaServer.msg.sendMessage(player, Messages.ECO_NO_MONEY);
+            EterniaServer.sendMessage(player, Messages.ECO_NO_MONEY);
             return;
         }
 

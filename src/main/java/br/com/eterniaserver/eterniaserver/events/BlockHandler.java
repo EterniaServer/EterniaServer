@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
 import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.Vars;
@@ -39,7 +40,7 @@ public class BlockHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerSignChange(SignChangeEvent event) {
-        if (event.getPlayer().hasPermission(EterniaServer.constants.permSignColor)) {
+        if (event.getPlayer().hasPermission(EterniaServer.getString(ConfigStrings.PERM_SIGN_COLOR))) {
             for (byte i = 0; i < 4; i++) {
                 event.setLine(i, APIServer.getColor(event.getLine(i)));
             }
@@ -77,20 +78,20 @@ public class BlockHandler implements Listener {
         final String materialName = material.name().toUpperCase();
         final String worldName = player.getWorld().getName();
 
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS) && material == Material.SPAWNER && !isBlackListWorld(worldName) && player.hasPermission(EterniaServer.constants.permSpawnersBreak)) {
+        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS) && material == Material.SPAWNER && !isBlackListWorld(worldName) && player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWNERS_BREAK))) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
-            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(EterniaServer.constants.permSpawnersNoSilk)) {
+            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWNERS_NO_SILK))) {
                 giveSpawner(player, material, block);
                 event.setExpToDrop(0);
             } else {
                 event.setCancelled(true);
-                EterniaServer.msg.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
+                EterniaServer.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
             }
-        } else if (!player.hasPermission(EterniaServer.constants.permSpawnersBreak) && material == Material.SPAWNER) {
-            EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
+        } else if (!player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWNERS_BREAK)) && material == Material.SPAWNER) {
+            EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
             event.setCancelled(true);
         } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {
-            EterniaServer.msg.sendMessage(player, Messages.SPAWNER_WORLD_BLOCKED);
+            EterniaServer.sendMessage(player, Messages.SPAWNER_WORLD_BLOCKED);
             event.setCancelled(true);
         }
 
@@ -138,7 +139,7 @@ public class BlockHandler implements Listener {
                     player.getInventory().addItem(getSpawner(block, material));
                     block.getDrops().clear();
                 } else {
-                    EterniaServer.msg.sendMessage(player, Messages.SPAWNER_INV_FULL);
+                    EterniaServer.sendMessage(player, Messages.SPAWNER_INV_FULL);
                     final Location loc = block.getLocation();
                     loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
                 }
@@ -147,7 +148,7 @@ public class BlockHandler implements Listener {
                 loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
             }
         } else {
-            EterniaServer.msg.sendMessage(player, Messages.SPAWNER_DROP_FAILED);
+            EterniaServer.sendMessage(player, Messages.SPAWNER_DROP_FAILED);
         }
     }
 
@@ -168,10 +169,7 @@ public class BlockHandler implements Listener {
     }
 
     private boolean isBlackListWorld(final String worldName) {
-        for (Object object : EterniaServer.getList(ConfigLists.BLACKLISTED_WORLDS_SPAWNERS)) {
-            if (object.toString().equals(worldName)) return true;
-        }
-        return false;
+        return EterniaServer.getStringList(ConfigLists.BLACKLISTED_WORLDS_SPAWNERS).contains(worldName);
     }
 
 }

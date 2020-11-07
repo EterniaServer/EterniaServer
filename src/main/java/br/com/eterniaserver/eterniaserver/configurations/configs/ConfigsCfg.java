@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class ConfigsCfg extends GenericCfg {
 
-    public ConfigsCfg(String[] strings, Boolean[] booleans, Integer[] integers, Double[] doubles, List<List<?>> lists) {
+    public ConfigsCfg(String[] strings, Boolean[] booleans, Integer[] integers, Double[] doubles, List<List<String>> lists, List<Material> elevatorMaterials) {
 
         super(strings, booleans, integers, doubles, lists);
 
@@ -70,9 +71,10 @@ public class ConfigsCfg extends GenericCfg {
         setList(ConfigLists.BLACKLISTED_WORLDS_FLY, file, outFile, "server.blacklisted-fly-worlds", "world_evento");
         setList(ConfigLists.BLACKLISTED_WORLDS_SLEEP, file, outFile, "bed.blacklisted-worlds", "world_evento");
         setList(ConfigLists.BLACKLISTED_COMMANDS, file, outFile, "blocked-commands", "/op", "/deop", "/stop");
-        setList(ConfigLists.ELEVATOR_MATERIALS, file, outFile, "elevator.block", "IRON_BLOCK");
         setList(ConfigLists.BLACKLISTED_WORLDS_SPAWNERS, file, outFile, "spawners.blacklisted-worlds", "world_evento");
         setList(ConfigLists.PROFILE_CUSTOM_MESSAGES, file, outFile, "profile.custom-messages");
+
+        setMaterials(elevatorMaterials, file, outFile, "IRON_BLOCK");
 
         saveFile(outFile, Constants.CONFIG_FILE_PATH, Constants.DATA_LAYER_FOLDER_PATH);
 

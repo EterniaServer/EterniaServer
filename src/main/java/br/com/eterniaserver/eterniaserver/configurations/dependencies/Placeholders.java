@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APICash;
 import br.com.eterniaserver.eterniaserver.core.User;
 
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.OfflinePlayer;
@@ -79,7 +80,7 @@ public class Placeholders extends PlaceholderExpansion {
             case 4:
                 return user.getGodeModePlaceholder();
             default:
-                return EterniaServer.constants.noSupport;
+                return EterniaServer.getString(ConfigStrings.NOT_SUPPORTED);
         }
     }
 

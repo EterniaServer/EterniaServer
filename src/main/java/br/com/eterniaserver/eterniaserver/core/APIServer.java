@@ -129,8 +129,8 @@ public interface APIServer {
         return Vars.getVersion();
     }
 
-    static void updateRewardMap(Map<String, String> map) {
-        map.forEach(Vars.rewards::put);
+    static void updateRewardMap(String key, String value) {
+        Vars.rewards.put(key, value);
     }
 
     static int getRewardMapSize() {

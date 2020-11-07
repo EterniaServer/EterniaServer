@@ -4,19 +4,25 @@ import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Syntax;
-import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.acf.BaseCommand;
+import br.com.eterniaserver.eternialib.SQL;
+import br.com.eterniaserver.eternialib.sql.queries.Delete;
+import br.com.eterniaserver.eternialib.sql.queries.Insert;
+import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.Constants;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.security.SecureRandom;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Reward extends BaseCommand {
 
@@ -24,8 +30,19 @@ public class Reward extends BaseCommand {
     private final byte[] bytes = new byte[20];
 
     public Reward() {
-        APIServer.updateRewardMap(EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.getString(ConfigStrings.TABLE_REWARD)), "code", "group_name"));
-        Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(APIServer.getRewardMapSize())));
+        try {
+            PreparedStatement statement = SQL.getConnection().prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_REWARD)).queryString());
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+            while (resultSet.next()) {
+                APIServer.updateRewardMap(resultSet.getString("code"), resultSet.getString("group_name"));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ignored) {
+            APIServer.logError("Erro ao pegar arquivos da database", 3);
+        }
+        Bukkit.getConsoleSender().sendMessage(EterniaServer.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(APIServer.getRewardMapSize())));
     }
 
     @CommandAlias("%usekey")
@@ -38,7 +55,7 @@ public class Reward extends BaseCommand {
             deleteKey(key);
             APIServer.removeReward(key);
         } else {
-            EterniaServer.msg.sendMessage(player, Messages.REWARD_INVALID_KEY, key);
+            EterniaServer.sendMessage(player, Messages.REWARD_INVALID_KEY, key);
         }
     }
 
@@ -47,27 +64,32 @@ public class Reward extends BaseCommand {
     @Description("%genkey_description")
     @CommandPermission("%genkey_perm")
     public void onGenKey(CommandSender sender, String reward) {
-        if (EterniaServer.rewards.rewardsMap.containsKey(reward)) {
+        if (EterniaServer.getChanceMap(ConfigChanceMaps.REWARDS).containsKey(reward)) {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
             APIServer.addReward(key, reward);
-            EterniaServer.msg.sendMessage(sender, Messages.REWARD_CREATED, key);
+            EterniaServer.sendMessage(sender, Messages.REWARD_CREATED, key);
         } else {
-            EterniaServer.msg.sendMessage(sender, Messages.REWARD_NOT_FOUND, reward);
+            EterniaServer.sendMessage(sender, Messages.REWARD_NOT_FOUND, reward);
         }
     }
 
     private void createKey(final String grupo, String key) {
-        EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_REWARD), "code", key, "group_name", grupo));
+        Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+        insert.columns.set("code", "group_name");
+        insert.values.set(key, grupo);
+        SQL.executeAsync(insert);
     }
 
     private void deleteKey(final String key) {
-        EQueries.executeQuery(Constants.getQueryDelete(EterniaServer.getString(ConfigStrings.TABLE_REWARD), "code", key));
+        Delete delete = new Delete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+        delete.where.set("code", key);
+        SQL.executeAsync(delete);
     }
 
     private void giveReward(String group, Player player) {
-        EterniaServer.rewards.rewardsMap.get(group).forEach((chance, lista) -> {
+        EterniaServer.getChanceMap(ConfigChanceMaps.REWARDS).get(group).forEach((chance, lista) -> {
             random.nextBytes(bytes);
             if (random.nextDouble() <= chance) {
                 for (String command : lista) {

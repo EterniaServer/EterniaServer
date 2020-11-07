@@ -12,6 +12,7 @@ import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -25,7 +26,7 @@ public class Teleport extends BaseCommand {
     @CommandPermission("%tpall_perm")
     public void onTeleportAll(Player player) {
         for (Player other : Bukkit.getOnlinePlayers()) if (other != player) other.teleport(player);
-        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.TELEPORT_ALL_PLAYERS, true, player.getName(), player.getDisplayName()));
+        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.TELEPORT_ALL_PLAYERS, true, player.getName(), player.getDisplayName()));
     }
 
     @CommandAlias("%tpa_accept")
@@ -46,8 +47,8 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        new User(target).putInTeleport(new PlayerTeleport(target, player.getLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
-        EterniaServer.msg.sendMessage(target, Messages.TELEPORT_TARGET_ACCEPT, user.getName(), user.getDisplayName());
+        new User(target).putInTeleport(new PlayerTeleport(target, player.getLocation(), EterniaServer.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
+        EterniaServer.sendMessage(target, Messages.TELEPORT_TARGET_ACCEPT, user.getName(), user.getDisplayName());
         user.sendMessage(Messages.TELEPORT_ACCEPT, target.getName(), target.getDisplayName());
         user.removeTpaRequest();
     }
@@ -70,7 +71,7 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        EterniaServer.msg.sendMessage(target, Messages.TELEPORT_TARGET_DENIED, user.getName(), user.getDisplayName());
+        EterniaServer.sendMessage(target, Messages.TELEPORT_TARGET_DENIED, user.getName(), user.getDisplayName());
         user.sendMessage(Messages.TELEPORT_DENIED, target.getName(), target.getDisplayName());
         user.removeTpaRequest();
     }
@@ -121,14 +122,14 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        if (user.hasPermission(EterniaServer.constants.permBackFree) || !EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
-            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
+        if (user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_BACK_FREE)) || !EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
+            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
             return;
         }
 
         if (APIEconomy.hasMoney(user.getUUID(), EterniaServer.getDouble(ConfigDoubles.BACK_COST))) {
             APIEconomy.removeMoney(user.getUUID(), EterniaServer.getDouble(ConfigDoubles.BACK_COST));
-            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.msg.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.getDouble(ConfigDoubles.BACK_COST)))));
+            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.getDouble(ConfigDoubles.BACK_COST)))));
             return;
         }
 

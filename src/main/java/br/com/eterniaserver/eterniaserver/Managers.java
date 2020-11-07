@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.acf.ConditionFailedException;
+import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.*;
+import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
 import br.com.eterniaserver.eterniaserver.core.PluginClearSchedule;
 import br.com.eterniaserver.eterniaserver.core.PluginTick;
 import br.com.eterniaserver.eterniaserver.core.PluginSchedule;
@@ -57,20 +59,21 @@ public class Managers {
     }
 
     private void loadCommandsLocale() {
+        CommandsLocaleCfg cmdsLocale = new CommandsLocaleCfg();
         for (Commands command : Commands.values()) {
-            EterniaLib.getManager().getCommandReplacements().addReplacements(
-                    command.name().toLowerCase(), EterniaServer.cmdsLocale.getName(command),
-                    command.name().toLowerCase() + "_description", EterniaServer.cmdsLocale.getDescription(command),
-                    command.name().toLowerCase() + "_perm", EterniaServer.cmdsLocale.getPerm(command),
-                    command.name().toLowerCase() + "_syntax", EterniaServer.cmdsLocale.getSyntax(command),
-                    command.name().toLowerCase() + "_aliases", EterniaServer.cmdsLocale.getAliases(command)
+            CommandManager.getCommandReplacements().addReplacements(
+                    command.name().toLowerCase(), cmdsLocale.getName(command),
+                    command.name().toLowerCase() + "_description", cmdsLocale.getDescription(command),
+                    command.name().toLowerCase() + "_perm", cmdsLocale.getPerm(command),
+                    command.name().toLowerCase() + "_syntax", cmdsLocale.getSyntax(command),
+                    command.name().toLowerCase() + "_aliases", cmdsLocale.getAliases(command)
             );
         }
     }
 
     private void loadConditions() {
 
-        EterniaLib.getManager().getCommandConditions().addCondition(Integer.class, "limits", (c, exec, value) -> {
+        CommandManager.getCommandConditions().addCondition(Integer.class, "limits", (c, exec, value) -> {
             if (value == null) {
                 return;
             }
@@ -82,7 +85,7 @@ public class Managers {
             }
         });
 
-        EterniaLib.getManager().getCommandConditions().addCondition(Double.class, "limits", (c, exec, value) -> {
+        CommandManager.getCommandConditions().addCondition(Double.class, "limits", (c, exec, value) -> {
             if (value == null) {
                 return;
             }
@@ -97,8 +100,8 @@ public class Managers {
     }
 
     private void loadCompletions() {
-        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("colors", Stream.of(Colors.values()).map(Enum::name).collect(Collectors.toList()));
-        EterniaLib.getManager().getCommandCompletions().registerStaticCompletion("entidades", Vars.entityList);
+        CommandManager.getCommandCompletions().registerStaticCompletion("colors", Stream.of(Colors.values()).map(Enum::name).collect(Collectors.toList()));
+        CommandManager.getCommandCompletions().registerStaticCompletion("entidades", Vars.entityList);
     }
 
     private void loadBedManager() {
@@ -119,22 +122,22 @@ public class Managers {
 
     private void loadCashManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_CASH), "Cash")) {
-            EterniaLib.getManager().registerCommand(new Cash());
+            CommandManager.registerCommand(new Cash());
         }
     }
 
     private void loadChatManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT), "Chat")) {
-            EterniaLib.getManager().registerCommand(new Channel());
-            EterniaLib.getManager().registerCommand(new Mute());
-            EterniaLib.getManager().registerCommand(new Chat(plugin));
-            EterniaLib.getManager().registerCommand(new Nick());
+            CommandManager.registerCommand(new Channel());
+            CommandManager.registerCommand(new Mute());
+            CommandManager.registerCommand(new Chat(plugin));
+            CommandManager.registerCommand(new Nick());
         }
     }
 
     private void loadEconomyManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY), "Economy")) {
-            EterniaLib.getManager().registerCommand(new Economy());
+            CommandManager.registerCommand(new Economy());
         }
     }
 
@@ -144,27 +147,27 @@ public class Managers {
 
     private void loadExperienceManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_EXPERIENCE), "Experience"))
-            EterniaLib.getManager().registerCommand(new Experience());
+            CommandManager.registerCommand(new Experience());
     }
 
     private void loadGenericManager() {
         sendModuleStatus(true, "Generic");
-        EterniaLib.getManager().registerCommand(new Inventory());
-        EterniaLib.getManager().registerCommand(new Generic(plugin));
-        EterniaLib.getManager().registerCommand(new Gamemode());
-        EterniaLib.getManager().registerCommand(new Glow());
-        EterniaLib.getManager().registerCommand(new Item());
+        CommandManager.registerCommand(new Inventory());
+        CommandManager.registerCommand(new Generic(plugin));
+        CommandManager.registerCommand(new Gamemode());
+        CommandManager.registerCommand(new Glow());
+        CommandManager.registerCommand(new Item());
     }
 
     private void loadHomesManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_HOMES), "Homes")) {
-            EterniaLib.getManager().registerCommand(new Home());
+            CommandManager.registerCommand(new Home());
         }
     }
 
     private void loadKitManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_KITS), "Kits")) {
-            EterniaLib.getManager().registerCommand(new Kit());
+            CommandManager.registerCommand(new Kit());
         }
     }
 
@@ -185,20 +188,20 @@ public class Managers {
 
     private void loadRewardsManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_REWARDS), "Rewards")) {
-            EterniaLib.getManager().registerCommand(new Reward());
+            CommandManager.registerCommand(new Reward());
         }
     }
 
     private void loadSpawnersManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS), "Spawners")) {
-            EterniaLib.getManager().registerCommand(new Spawner());
+            CommandManager.registerCommand(new Spawner());
         }
     }
 
     private void loadTeleportsManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_TELEPORTS), "Teleports")) {
-            EterniaLib.getManager().registerCommand(new Warp());
-            EterniaLib.getManager().registerCommand(new Teleport());
+            CommandManager.registerCommand(new Warp());
+            CommandManager.registerCommand(new Teleport());
         }
     }
 
@@ -215,10 +218,10 @@ public class Managers {
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
-            Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_MODULE_ENABLED, true, module));
+            Bukkit.getConsoleSender().sendMessage(EterniaServer.getMessage(Messages.SERVER_MODULE_ENABLED, true, module));
             return true;
         }
-        Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_MODULE_DISABLED, true, module));
+        Bukkit.getConsoleSender().sendMessage(EterniaServer.getMessage(Messages.SERVER_MODULE_DISABLED, true, module));
         return false;
     }
 

@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -31,7 +32,7 @@ public class GlobalFormatter {
 	}
 
 	private BaseComponent[] customPlaceholder(Player player, String format, String message) {
-		if (player.hasPermission(EterniaServer.constants.permChatColor)) {
+		if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR))) {
 			message = message.replace('&', (char) 0x00A7);
 		}
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
@@ -62,24 +63,24 @@ public class GlobalFormatter {
 	}
 
 	private TextComponent getComponent(String actualMsg, Player player) {
-		if (player.hasPermission(EterniaServer.constants.permChatMention) && actualMsg.contains(EterniaServer.constants.mentionPlaceholder) && Vars.playersName.containsKey(actualMsg)) {
+		if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_MENTION)) && actualMsg.contains(EterniaServer.getString(ConfigStrings.MENTION_PLACEHOLDER)) && Vars.playersName.containsKey(actualMsg)) {
 			Player target = Bukkit.getPlayer(Vars.playersName.get(actualMsg));
 			actualMsg = Vars.colors.get(3) + actualMsg + Vars.colors.get(15);
 			if (target != null && target.isOnline()) {
 				target.playNote(target.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-				target.sendTitle(EterniaServer.constants.chMentionTitle.replace("{0}", player.getName()).replace("{1}", player.getDisplayName()),
-						EterniaServer.constants.chMentionSubtitle.replace("{0}", player.getName()).replace("{1}", player.getDisplayName()), 10, 40, 10);
+				target.sendTitle(EterniaServer.getString(ConfigStrings.CONS_MENTION_TITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()),
+						EterniaServer.getString(ConfigStrings.CONS_MENTION_SUBTITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()), 10, 40, 10);
 			}
 			return new TextComponent(actualMsg + " ");
 		}
 
-		if (player.hasPermission(EterniaServer.constants.permChatItem) && actualMsg.equals(EterniaServer.constants.showItemPlaceholder)) {
+		if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_ITEM)) && actualMsg.equals(EterniaServer.getString(ConfigStrings.SHOW_ITEM_PLACEHOLDER))) {
 			ItemStack itemStack = player.getInventory().getItemInMainHand();
 			if (!itemStack.getType().equals(Material.AIR)) {
 				return sendItemInHand(actualMsg + " ", itemStack);
 			}
 		}
-		if (!player.hasPermission(EterniaServer.constants.permChatColor)) {
+		if (!player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR))) {
 			actualMsg = ChatColor.stripColor(actualMsg);
 		}
 		return new TextComponent(actualMsg + " ");
@@ -88,12 +89,12 @@ public class GlobalFormatter {
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
 		if (APIServer.getVersion() >= 116) {
 			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
-			TextComponent component = new TextComponent(string.replace(EterniaServer.constants.showItemPlaceholder,
-					EterniaServer.constants.chShowItemFormat.replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemStack.getI18NDisplayName())));
+			TextComponent component = new TextComponent(string.replace(EterniaServer.getString(ConfigStrings.SHOW_ITEM_PLACEHOLDER),
+					EterniaServer.getString(ConfigStrings.CONS_SHOW_ITEM).replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemStack.getI18NDisplayName())));
 			component.setHoverEvent(event);
 			return component;
 		}
-		return new TextComponent(EterniaServer.constants.noSupport);
+		return new TextComponent(EterniaServer.getString(ConfigStrings.NOT_SUPPORTED));
 	}
 
 	private TextComponent getText(Player player, CustomPlaceholder objects) {

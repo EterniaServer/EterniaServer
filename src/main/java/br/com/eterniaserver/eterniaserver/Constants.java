@@ -1,5 +1,9 @@
 package br.com.eterniaserver.eterniaserver;
 
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
+import org.bukkit.command.CommandSender;
+
 import java.io.File;
 
 public class Constants {
@@ -22,28 +26,26 @@ public class Constants {
     public static final String COMMANDS_LOCALE_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "commands.yml";
     public static final String CONSTANTS_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "constants.yml";
 
-    public static String getQueryCreateTable(String table, String values) {
-        return "CREATE TABLE IF NOT EXISTS " + table + " " + values + ";";
+    protected void sendMessage(CommandSender sender, Messages messagesId, String[] messages, String... args) {
+        sendMessage(sender, messagesId, true, messages, args);
     }
 
-    public static String getQuerySelectAll(String table) {
-        return "SELECT * FROM " + table + ";";
+    protected static void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String[] messages, String... args) {
+        sender.sendMessage(getMessage(messagesId, prefix, messages, args));
     }
 
-    public static String getQueryDelete(String table, String type, String value) {
-        return "DELETE FROM " + table + " WHERE " + type + "='" + value + "';";
-    }
+    protected static String getMessage(Messages messagesId, boolean prefix, String[] messages, String... args) {
+        String message = messages[messagesId.ordinal()];
 
-    public static String getQueryUpdate(String table, String type, Object value, String type2, Object value2) {
-        return "UPDATE " + table + " SET " + type + "='" + value + "' WHERE " + type2 + "='" + value2 + "';";
-    }
+        for (int i = 0; i < args.length; i++) {
+            message = message.replace("{" + i + "}", args[i]);
+        }
 
-    public static String getQueryInsert(String table, String type, Object value, String type2, Object value2) {
-        return "INSERT INTO " + table + " (" + type + ", " + type2 + ") VALUES ('" + value + "', '" + value2 + "');";
-    }
+        if (prefix) {
+            return EterniaServer.getString(ConfigStrings.SERVER_PREFIX) + message;
+        }
 
-    public static String getQueryInsert(String table, String type, Object value) {
-        return "INSERT INTO " + table + " " + type + " VALUES " + value + ";";
+        return message;
     }
 
 }

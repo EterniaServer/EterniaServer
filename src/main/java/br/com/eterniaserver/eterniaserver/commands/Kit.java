@@ -4,30 +4,39 @@ import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Syntax;
-import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.acf.BaseCommand;
+import br.com.eterniaserver.eternialib.SQL;
+import br.com.eterniaserver.eternialib.sql.queries.Select;
+import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Kit extends BaseCommand {
 
     public Kit() {
-
-        final Map<String, String> temp = EQueries.getMapString(Constants.getQuerySelectAll(EterniaServer.getString(ConfigStrings.TABLE_KITS)), "name", "cooldown");
-        temp.forEach((k, v) -> APIServer.putKitCooldown(k, Long.parseLong(v)));
-
-        Bukkit.getConsoleSender().sendMessage(EterniaServer.msg.getMessage(Messages.SERVER_DATA_LOADED, true, "Kits", String.valueOf(temp.size())));
-
+        try {
+            PreparedStatement statement = SQL.getConnection().prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_KITS)).queryString());
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+            while (resultSet.next()) {
+                APIServer.putKitCooldown(resultSet.getString("name"), resultSet.getLong("cooldown"));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ignored) {
+            APIServer.logError("Erro ao pegar arquivos da database", 3);
+        }
     }
 
     @CommandAlias("%kits")
@@ -39,7 +48,7 @@ public class Kit extends BaseCommand {
             str.append(ChatColor.DARK_AQUA).append(key).append(ChatColor.DARK_GRAY).append(", ");
         }
         str.setLength(str.length() - 2);
-        EterniaServer.msg.sendMessage(player, Messages.KIT_LIST, str.toString());
+        EterniaServer.sendMessage(player, Messages.KIT_LIST, str.toString());
     }
 
     @CommandAlias("%kit")
@@ -48,13 +57,13 @@ public class Kit extends BaseCommand {
     @CommandPermission("%kit_perm")
     public void onKit(Player player, String kit) {
         if (EterniaServer.kits.kitList.containsKey(kit)) {
-            if (player.hasPermission(EterniaServer.constants.permKitPrefix + kit)) {
+            if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_KIT_PREFIX) + kit)) {
                 giveKit(player, kit);
             } else {
-                EterniaServer.msg.sendMessage(player, Messages.SERVER_NO_PERM);
+                EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         } else {
-            EterniaServer.msg.sendMessage(player, Messages.KIT_NOT_FOUND, kit);
+            EterniaServer.sendMessage(player, Messages.KIT_NOT_FOUND, kit);
         }
     }
 
@@ -73,9 +82,13 @@ public class Kit extends BaseCommand {
                 player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, text)));
             }
             APIServer.putKitCooldown(kitName, time);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_KITS), "cooldown", time, "name", kitName));
+
+            Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            update.set.set("cooldown", time);
+            update.where.set("name", kitName);
+            SQL.executeAsync(update);
         } else {
-            EterniaServer.msg.sendMessage(player, Messages.SERVER_TIMING, APIServer.getTimeLeftOfCooldown(cooldown, cd));
+            EterniaServer.sendMessage(player, Messages.SERVER_TIMING, APIServer.getTimeLeftOfCooldown(cooldown, cd));
         }
     }
 

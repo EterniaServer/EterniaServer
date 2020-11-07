@@ -34,10 +34,7 @@ public class CheckWorld implements Runnable {
     }
 
     private boolean isBlacklisted(final World world) {
-        for (Object object : EterniaServer.getList(ConfigLists.BLACKLISTED_WORLDS_SLEEP)) {
-            if (object.toString().equals(world.getName())) return true;
-        }
-        return false;
+        return EterniaServer.getStringList(ConfigLists.BLACKLISTED_WORLDS_SLEEP).contains(world.getName());
     }
 
     private boolean isNight(final World world) {

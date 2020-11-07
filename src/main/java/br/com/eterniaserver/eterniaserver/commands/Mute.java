@@ -11,15 +11,15 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
-import br.com.eterniaserver.eternialib.EQueries;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eternialib.SQL;
+import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.Constants;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,10 +46,10 @@ public class Mute extends BaseCommand {
     public void muteChannels(Player sender) {
         if (APIServer.isChatMuted()) {
             APIServer.setChatMuted(false);
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_CHANNELS_DISABLED, true, sender.getName(), sender.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_CHANNELS_DISABLED, true, sender.getName(), sender.getDisplayName()));
         } else {
             APIServer.setChatMuted(true);
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_CHANNELS_ENABLED, true, sender.getName(), sender.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_CHANNELS_ENABLED, true, sender.getName(), sender.getDisplayName()));
         }
     }
 
@@ -65,8 +65,13 @@ public class Mute extends BaseCommand {
         cal.setTime(new Date());
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
-        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_MUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName(), message));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "time", time, "uuid", target.getUUID().toString()));
+        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_MUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName(), message));
+
+        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        update.set.set("time", time);
+        update.where.set("uuid", target.getUUID().toString());
+        SQL.executeAsync(update);
+
         target.putMutedTime(time);
     }
 
@@ -80,8 +85,12 @@ public class Mute extends BaseCommand {
         final long time = System.currentTimeMillis();
 
         target.putMutedTime(time);
-        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_UNMUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName()));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "time", time, "uuid", target.getUUID().toString()));
+        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_UNMUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName()));
+
+        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        update.set.set("time", time);
+        update.where.set("uuid", target.getUUID().toString());
+        SQL.executeAsync(update);
     }
 
     @CommandCompletion("@players 15 Mensagem")
@@ -96,8 +105,13 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.MINUTE, time);
         final long timeInMillis = cal.getTimeInMillis();
 
-        Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.CHAT_BROADCAST_TEMP_MUTE, true, target.getName(), target.getDisplayName(), String.valueOf(time), player.getName(), player.getDisplayName(), message));
-        EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "time", timeInMillis, "uuid", target.getUUID().toString()));
+        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_TEMP_MUTE, true, target.getName(), target.getDisplayName(), String.valueOf(time), player.getName(), player.getDisplayName(), message));
+
+        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        update.set.set("time", time);
+        update.where.set("uuid", target.getUUID().toString());
+        SQL.executeAsync(update);
+
         target.putMutedTime(timeInMillis);
     }
 

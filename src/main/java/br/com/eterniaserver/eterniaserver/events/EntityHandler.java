@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APICash;
 
@@ -34,7 +35,7 @@ public class EntityHandler implements Listener {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getDamager();
             User user = new User(player);
-            if (player.isFlying() && !player.hasPermission(EterniaServer.constants.permFlyBypass)) {
+            if (player.isFlying() && !player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_FLY_BYPASS))) {
                 user.setIsOnPvP();
                 user.sendMessage(Messages.FLY_ENTER_PVP);
                 player.setAllowFlight(false);
@@ -54,7 +55,7 @@ public class EntityHandler implements Listener {
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
-            EterniaServer.msg.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
+            EterniaServer.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
         }
 
         if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CASH)) {

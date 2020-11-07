@@ -13,6 +13,7 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 
@@ -35,14 +36,14 @@ public class Nick extends BaseCommand {
             return;
         }
 
-        if (!user.hasPermission(EterniaServer.constants.permNicknameOther)) {
+        if (!user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_NICK_OTHER))) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
 
         User target = new User(targets.getPlayer());
 
-        if (string.equals(EterniaServer.constants.clearStr)) {
+        if (string.equals(EterniaServer.getString(ConfigStrings.CLEAR_STRING))) {
             target.clearNickName();
             target.sendMessage(Messages.CHAT_NICK_CLEAR_BY, user.getName(), user.getDisplayName());
             user.sendMessage(Messages.CHAT_NICK_CLEAR_FROM, target.getName(), target.getDisplayName());
@@ -87,7 +88,7 @@ public class Nick extends BaseCommand {
         }
 
         APIEconomy.removeMoney(user.getUUID(), EterniaServer.getDouble(ConfigDoubles.NICK_COST));
-        EterniaServer.msg.sendMessage(player, Messages.CHAT_NICK_CHANGED, player.getDisplayName());
+        EterniaServer.sendMessage(player, Messages.CHAT_NICK_CHANGED, player.getDisplayName());
         user.updateNickName();
     }
 

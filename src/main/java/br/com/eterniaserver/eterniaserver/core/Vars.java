@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -111,7 +112,7 @@ public class Vars {
 
     public static NumberFormat getDf2() {
         if (df2 == null) {
-            df2 = NumberFormat.getInstance(new Locale(EterniaServer.constants.moneyLanguage, EterniaServer.constants.moneyCountry));
+            df2 = NumberFormat.getInstance(new Locale(EterniaServer.getString(ConfigStrings.MONEY_LANGUAGE), EterniaServer.getString(ConfigStrings.MONEY_COUNTRY)));
         }
         return df2;
     }

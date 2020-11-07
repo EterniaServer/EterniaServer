@@ -25,9 +25,9 @@ public class Glow extends BaseCommand {
     @CommandPermission("%glow_perm")
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
-            EterniaServer.msg.sendMessage(player, Messages.GLOW_ENABLED);
+            EterniaServer.sendMessage(player, Messages.GLOW_ENABLED);
         } else {
-            EterniaServer.msg.sendMessage(player, Messages.GLOW_DISABLED);
+            EterniaServer.sendMessage(player, Messages.GLOW_DISABLED);
             player.removePotionEffect(PotionEffectType.GLOWING);
         }
         player.setGlowing(!player.isGlowing());

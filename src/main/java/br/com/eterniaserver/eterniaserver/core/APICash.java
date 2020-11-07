@@ -1,9 +1,10 @@
 package br.com.eterniaserver.eterniaserver.core;
 
-import br.com.eterniaserver.eternialib.EQueries;
+import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
+import br.com.eterniaserver.eternialib.sql.queries.Insert;
+import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -30,8 +31,12 @@ public interface APICash {
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance, cash)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "', '" + 0 +"')"));
+
+            Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
+            insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(ConfigDoubles.START_MONEY));
+            SQL.executeAsync(insert);
+
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
@@ -62,12 +67,20 @@ public interface APICash {
     static void setCash(UUID uuid, int amount) {
         if (Vars.playerProfile.containsKey(uuid)) {
             Vars.playerProfile.get(uuid).setCash(amount);
-            EQueries.executeQuery(Constants.getQueryUpdate(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "cash", amount, "uuid", uuid.toString()));
+
+            Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            update.set.set("cash", amount);
+            update.where.set("uuid", uuid.toString());
+            SQL.executeAsync(update);
         } else {
             final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-            EQueries.executeQuery(Constants.getQueryInsert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), "(uuid, player_name, time, last, hours, balance, cash)",
-                    "('" + uuid.toString() + "', '" + playerName + "', '" + time + "', '" + time + "', '" + 0 + "', '" + EterniaServer.getDouble(ConfigDoubles.START_MONEY) + "', '" + 0 +"')"));
+
+            Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
+            insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(ConfigDoubles.START_MONEY));
+            SQL.executeAsync(insert);
+
             final PlayerProfile playerProfile = new PlayerProfile(
                     playerName,
                     time,
@@ -158,11 +171,11 @@ public interface APICash {
             if (!cashItem.isGlass()) {
                 final int cost = cashItem.getCost();
                 if (APICash.hasCash(uuid, cost)) {
-                    EterniaServer.msg.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
-                    EterniaServer.msg.sendMessage(player, Messages.CASH_CHOOSE);
+                    EterniaServer.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
+                    EterniaServer.sendMessage(player, Messages.CASH_CHOOSE);
                     Vars.cashItem.put(uuid, cashItem);
                 } else {
-                    EterniaServer.msg.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(cost));
+                    EterniaServer.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(cost));
                 }
             } else {
                 player.closeInventory();
@@ -175,8 +188,8 @@ public interface APICash {
                 player.openInventory(gui);
             }
         } else {
-            EterniaServer.msg.sendMessage(player, Messages.CASH_ALREADY_BUYING);
-            EterniaServer.msg.sendMessage(player, Messages.CASH_CHOOSE);
+            EterniaServer.sendMessage(player, Messages.CASH_ALREADY_BUYING);
+            EterniaServer.sendMessage(player, Messages.CASH_CHOOSE);
         }
     }
 

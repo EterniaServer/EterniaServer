@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.core;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
@@ -46,15 +47,15 @@ public class PluginTick extends BukkitRunnable {
             user.updateAfkTime();
             if (user.isAfk()) {
                 user.changeAfkState();
-                Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_LEAVE, true, user.getName(), user.getDisplayName()));
+                Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.AFK_LEAVE, true, user.getName(), user.getDisplayName()));
             }
         }
         Vars.playerLocationMap.put(user.getUUID(), location);
     }
 
     private void refreshPlayers(User user) {
-        Vars.playersName.put(EterniaServer.constants.mentionPlaceholder + user.getName(), user.getUUID());
-        Vars.playersName.put(EterniaServer.constants.mentionPlaceholder + user.getDisplayName(), user.getUUID());
+        Vars.playersName.put(EterniaServer.getString(ConfigStrings.MENTION_PLACEHOLDER) + user.getName(), user.getUUID());
+        Vars.playersName.put(EterniaServer.getString(ConfigStrings.MENTION_PLACEHOLDER) + user.getDisplayName(), user.getUUID());
     }
 
     private void tpaTime(User user) {
@@ -86,20 +87,20 @@ public class PluginTick extends BukkitRunnable {
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - user.getAfkTime()) < EterniaServer.getInteger(ConfigIntegers.AFK_TIMER)) return;
 
         if (!EterniaServer.getBoolean(ConfigBooleans.AFK_KICK)) {
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_AUTO_ENTER, false, user.getName(), user.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.AFK_AUTO_ENTER, false, user.getName(), user.getDisplayName()));
             user.changeAfkState();
             return;
         }
 
-        if (!user.isAfk() && !user.hasPermission(EterniaServer.constants.permNoKickAfk)) {
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_BROADCAST_KICK, true, user.getName(), user.getDisplayName()));
+        if (!user.isAfk() && !user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_NO_KICK_BY_AFK))) {
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.AFK_BROADCAST_KICK, true, user.getName(), user.getDisplayName()));
             user.clear();
-            runSync(() -> user.kick(EterniaServer.msg.getMessage(Messages.AFK_KICKED, true)));
+            runSync(() -> user.kick(EterniaServer.getMessage(Messages.AFK_KICKED, true)));
             return;
         }
 
-        if (!user.isAfk() && user.hasPermission(EterniaServer.constants.permAfk)) {
-            Bukkit.broadcastMessage(EterniaServer.msg.getMessage(Messages.AFK_AUTO_ENTER, false, user.getName(), user.getDisplayName()));
+        if (!user.isAfk() && user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_AFK))) {
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.AFK_AUTO_ENTER, false, user.getName(), user.getDisplayName()));
             user.changeAfkState();
         }
     }
@@ -107,7 +108,7 @@ public class PluginTick extends BukkitRunnable {
     private void getPlayersInTp(User user) {
         if (user.isTeleporting()) {
             final PlayerTeleport playerTeleport = Vars.teleports.get(user.getUUID());
-            if (!user.hasPermission(EterniaServer.constants.permTimingBypass)) {
+            if (!user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_TIMING_BYPASS))) {
                 if (!playerTeleport.hasMoved()) {
                     if (playerTeleport.getCountdown() == 0) {
                         runSync(()-> PaperLib.teleportAsync(user.getPlayer(), playerTeleport.getWantLocation()));

@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.configurations.locales;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 
@@ -19,9 +20,9 @@ public class MsgCfg {
 
     private final String[] messages;
 
-    public MsgCfg() {
-        Messages[] economiesID = Messages.values();
-        messages = new String[Messages.values().length];
+    public MsgCfg(String[] messages) {
+
+        this.messages = messages;
 
         Map<String, CustomizableMessage> defaults = new HashMap<>();
 
@@ -212,13 +213,13 @@ public class MsgCfg {
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.MESSAGES_FILE_PATH));
 
-        for (Messages messagesEnum : economiesID) {
+        for (Messages messagesEnum : Messages.values()) {
             CustomizableMessage messageData = defaults.get(messagesEnum.name());
 
             final String path = getPath(messagesEnum);
 
             if (messageData == null) {
-                messageData = new CustomizableMessage(messagesEnum, EterniaServer.constants.serverPrefix +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
+                messageData = new CustomizableMessage(messagesEnum, EterniaServer.getString(ConfigStrings.SERVER_PREFIX) +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
                 APIServer.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
             }
 
@@ -250,29 +251,6 @@ public class MsgCfg {
     private void addDefault(Map<String, CustomizableMessage> defaults, Messages id, String text, String notes) {
         CustomizableMessage message = new CustomizableMessage(id, text, notes);
         defaults.put(id.name(), message);
-    }
-
-    public void sendMessage(CommandSender player, Messages messagesId, String... args) {
-        sendMessage(player, messagesId, true, args);
-    }
-
-    public void sendMessage(CommandSender player, Messages messagesId, boolean prefix, String... args) {
-        player.sendMessage(getMessage(messagesId, prefix, args));
-    }
-
-    public String getMessage(Messages messagesId, boolean prefix, String... args) {
-        String message = messages[messagesId.ordinal()];
-
-        for (int i = 0; i < args.length; i++) {
-            String param = args[i];
-            message = message.replace("{" + i + "}", param);
-        }
-
-        if (prefix) {
-            return EterniaServer.constants.serverPrefix + message;
-        }
-
-        return message;
     }
 
     private String getPath(Messages messagesEnum) {
