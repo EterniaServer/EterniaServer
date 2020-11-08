@@ -145,10 +145,10 @@ public interface APICash {
      * @param slotInt of GUI
      */
     static void menuGui(final Player player, int slotInt) {
-        if (EterniaServer.cash.guis.containsKey(slotInt)) {
+        if (EterniaServer.getGuis().containsKey(slotInt)) {
             player.closeInventory();
-            List<CashItem> itens = EterniaServer.cash.othersGui.get(slotInt);
-            Inventory gui = Bukkit.getServer().createInventory(player, itens.size(), EterniaServer.cash.guis.get(slotInt));
+            List<CashItem> itens = EterniaServer.getOthersGui().get(slotInt);
+            Inventory gui = Bukkit.getServer().createInventory(player, itens.size(), EterniaServer.getGuis().get(slotInt));
             for (int i = 0; i < itens.size(); i++) {
                 gui.setItem(i, itens.get(i).getItemStack());
             }
@@ -167,7 +167,7 @@ public interface APICash {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
         if (!Vars.cashItem.containsKey(uuid)) {
-            CashItem cashItem = EterniaServer.cash.othersGui.get(EterniaServer.cash.guisInvert.get(title)).get(slot);
+            CashItem cashItem = EterniaServer.getOthersGui().get(EterniaServer.getGuisInvert().get(title)).get(slot);
             if (!cashItem.isGlass()) {
                 final int cost = cashItem.getCost();
                 if (APICash.hasCash(uuid, cost)) {
@@ -179,10 +179,10 @@ public interface APICash {
                 }
             } else {
                 player.closeInventory();
-                Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.cash.menuGui.size(), "Cash");
+                Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.getMenuGui().size(), "Cash");
 
-                for (int i = 0; i < EterniaServer.cash.menuGui.size(); i++) {
-                    gui.setItem(i, EterniaServer.cash.menuGui.get(i));
+                for (int i = 0; i < EterniaServer.getMenuGui().size(); i++) {
+                    gui.setItem(i, EterniaServer.getMenuGui().get(i));
                 }
 
                 player.openInventory(gui);

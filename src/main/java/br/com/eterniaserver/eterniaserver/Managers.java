@@ -81,7 +81,7 @@ public class Managers {
                 throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
             }
             if (c.getConfigValue("max", 3) < value) {
-                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
+                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 2147483647));
             }
         });
 
@@ -93,7 +93,7 @@ public class Managers {
                 throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
             }
             if (c.getConfigValue("max", 3) < value) {
-                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 3));
+                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 1));
             }
         });
 
@@ -116,7 +116,7 @@ public class Managers {
 
     private void loadCommandsManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_COMMANDS), "Commands")) {
-            EterniaServer.commands.customCommandMap.forEach((commandName, commandObject) -> new CustomCommand(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
+            EterniaServer.getCustomCommandMap().forEach((commandName, commandObject) -> new CustomCommand(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
         }
     }
 
@@ -208,11 +208,11 @@ public class Managers {
     private void loadScheduleTasks() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_SCHEDULE), "Schedule")) {
             long start = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.of(
-                    EterniaServer.schedule.scheduleHour,
-                    EterniaServer.schedule.scheduleMinute,
-                    EterniaServer.schedule.scheduleSecond));
+                    EterniaServer.getInteger(ConfigIntegers.SCHEDULE_HOUR),
+                    EterniaServer.getInteger(ConfigIntegers.SCHEDULE_MINUTE),
+                    EterniaServer.getInteger(ConfigIntegers.SCHEDULE_SECONDS)));
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.scheduleWithFixedDelay(new PluginSchedule(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.schedule.scheduleDelay), TimeUnit.MILLISECONDS);
+            scheduler.scheduleWithFixedDelay(new PluginSchedule(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.getInteger(ConfigIntegers.SCHEDULE_DELAY)), TimeUnit.MILLISECONDS);
         }
     }
 

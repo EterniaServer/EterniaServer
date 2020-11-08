@@ -40,6 +40,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Generic extends BaseCommand {
 
+    private final EterniaServer plugin;
     private final Runtime getRuntime;
 
     private final SimpleDateFormat sdf = new SimpleDateFormat(EterniaServer.getString(ConfigStrings.DATA_FORMAT));
@@ -53,6 +54,7 @@ public class Generic extends BaseCommand {
 
     public Generic(EterniaServer plugin) {
 
+        this.plugin = plugin;
         this.getRuntime = new Runtime();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
@@ -98,6 +100,53 @@ public class Generic extends BaseCommand {
             APIServer.logError("Erro ao carregar database", 3);
         }
         sendConsole(EterniaServer.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(APIServer.getProfileMapSize())));
+    }
+
+    @CommandAlias("%reload")
+    @Syntax("%reload_syntax")
+    @Description("%reload_description")
+    @CommandPermission("%reload_perm")
+    @CommandCompletion("configs|messages|constants|blocks|chat|kits|cash|rewards|schedules")
+    public void onReload(String module) {
+        switch (module) {
+            case "configs":
+                plugin.configs();
+                break;
+            case "messages":
+                plugin.messages();
+                break;
+            case "constants":
+                plugin.constants();
+                break;
+            case "blocks":
+                plugin.blocks();
+                break;
+            case "chat":
+                plugin.chat();
+                break;
+            case "kits":
+                plugin.kits();
+                break;
+            case "cash":
+                plugin.cash();
+                break;
+            case "rewards":
+                plugin.rewards();
+                break;
+            case "schedules":
+                plugin.schedule();
+                break;
+            default:
+                plugin.configs();
+                plugin.messages();
+                plugin.constants();
+                plugin.blocks();
+                plugin.chat();
+                plugin.kits();
+                plugin.cash();
+                plugin.rewards();
+                plugin.schedule();
+        }
     }
 
     @CommandAlias("%speed")

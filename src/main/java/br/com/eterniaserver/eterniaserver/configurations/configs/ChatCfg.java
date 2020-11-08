@@ -1,7 +1,10 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
+import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,42 +12,36 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
-public class ChatCfg {
+public class ChatCfg extends GenericCfg {
 
-    public final int localRange;
-    public final String localFormat;
-    public final String globalFormat;
-    public final String staffFormat;
+    public ChatCfg(Map<String, CustomPlaceholder> customPlaceholdersObjectsMap, String[] strings, Integer[] integers) {
+        super(strings, null, integers, null, null);
 
-    public final Map<String, CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
-
-
-    public ChatCfg() {
+        customPlaceholdersObjectsMap.clear();
 
         FileConfiguration chatConfig = YamlConfiguration.loadConfiguration(new File(Constants.CHAT_FILE_PATH));
         FileConfiguration outChat = new YamlConfiguration();
 
-        this.localFormat = chatConfig.getString("format.local", "$8[$eL$8] %vault_suffix% $e%player_displayname%$8 ➤ $e%message%").replace('$', (char) 0x00A7);
-        this.globalFormat = chatConfig.getString("format.global", "{canal}{clan}{sufix}{prefix}{player}{marry}{separator}").replace('$', (char) 0x00A7);
-        this.staffFormat = chatConfig.getString("format.staff", "$8[$bS$8] %vault_prefix%%player_displayname%$8 ➤ $b%message%").replace('$', (char) 0x00A7);
-        this.localRange = chatConfig.getInt("format.local-range", 64);
+        setString(ConfigStrings.LOCAL_FORMAT, chatConfig, outChat, "format.local", "$8[$eL$8] %vault_suffix% $e%player_displayname%$8 ➤ $e%message%");
+        setString(ConfigStrings.GLOBAL_FORMAT, chatConfig, outChat, "format.global", "{canal}{clan}{sufix}{prefix}{player}{marry}{separator}");
+        setString(ConfigStrings.STAFF_FORMAT, chatConfig, outChat, "format.staff", "$8[$bS$8] %vault_prefix%%player_displayname%$8 ➤ $b%message%");
+        setString(ConfigStrings.CHAT_FILTER, chatConfig, outChat, "format.filter", "(((http|ftp|https):\\/\\/)?[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?)");
 
-        this.customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.global", "%vault_prefix%", "", "", 3));
-        this.customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.global", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
-        this.customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.global", " &8➤ ", "", "", 6));
-        this.customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholder("eternia.chat.global", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2));
-        this.customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.global", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1));
-        this.customPlaceholdersObjectsMap.put("canal", new CustomPlaceholder("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0));
-        this.customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.global", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5));
+        setInteger(ConfigIntegers.LOCAL_RANGE, chatConfig, outChat, "format.local-range", 64);
 
-        outChat.set("format.local", this.localFormat);
-        outChat.set("format.global", this.globalFormat);
-        outChat.set("format.staff", this.staffFormat);
-        outChat.set("format.local-range", this.localRange);
+        EterniaServer.setFilter(Pattern.compile(EterniaServer.getString(ConfigStrings.CHAT_FILTER)));
+
+        customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.global", "%vault_prefix%", "", "", 3));
+        customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.global", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
+        customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.global", " &8➤ ", "", "", 6));
+        customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholder("eternia.chat.global", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2));
+        customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.global", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1));
+        customPlaceholdersObjectsMap.put("canal", new CustomPlaceholder("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0));
+        customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.global", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5));
 
         Map<String, CustomPlaceholder> tempCustomPlaceholdersMap = new HashMap<>();
         ConfigurationSection configurationSection = chatConfig.getConfigurationSection("placeholders");
@@ -55,11 +52,11 @@ public class ChatCfg {
         }
 
         if (tempCustomPlaceholdersMap.isEmpty()) {
-            tempCustomPlaceholdersMap = new HashMap<>(this.customPlaceholdersObjectsMap);
+            tempCustomPlaceholdersMap = new HashMap<>(customPlaceholdersObjectsMap);
         }
 
-        this.customPlaceholdersObjectsMap.clear();
-        tempCustomPlaceholdersMap.forEach(this.customPlaceholdersObjectsMap::put);
+        customPlaceholdersObjectsMap.clear();
+        tempCustomPlaceholdersMap.forEach(customPlaceholdersObjectsMap::put);
 
         tempCustomPlaceholdersMap.forEach((k, v) -> {
             outChat.set("placeholders." + k + ".perm", v.getPermission());
@@ -69,13 +66,7 @@ public class ChatCfg {
             outChat.set("placeholders." + k + ".priority", v.getPriority());
         });
 
-        outChat.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
-
-        try {
-            outChat.save(Constants.CHAT_FILE_PATH);
-        } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
-        }
+        saveFile(outChat, Constants.CHAT_FILE_PATH, Constants.DATA_LAYER_FOLDER_PATH);
 
     }
 

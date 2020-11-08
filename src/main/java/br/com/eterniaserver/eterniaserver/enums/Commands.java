@@ -100,5 +100,6 @@ public enum Commands {
     WARP,
     SETWARP,
     DELWARP,
-    LISTWARP
+    LISTWARP,
+    RELOAD
 }

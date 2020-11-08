@@ -26,12 +26,12 @@ public class Constants {
     public static final String COMMANDS_LOCALE_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "commands.yml";
     public static final String CONSTANTS_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "constants.yml";
 
-    protected void sendMessage(CommandSender sender, Messages messagesId, String[] messages, String... args) {
-        sendMessage(sender, messagesId, true, messages, args);
+    protected void sendMessage(CommandSender sender, Messages messagesId, String... args) {
+        sendMessage(sender, messagesId, true, args);
     }
 
-    protected static void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String[] messages, String... args) {
-        sender.sendMessage(getMessage(messagesId, prefix, messages, args));
+    protected static void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
+        sender.sendMessage(EterniaServer.getMessage(messagesId, prefix, args));
     }
 
     protected static String getMessage(Messages messagesId, boolean prefix, String[] messages, String... args) {

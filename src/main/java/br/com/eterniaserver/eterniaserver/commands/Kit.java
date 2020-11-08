@@ -44,7 +44,7 @@ public class Kit extends BaseCommand {
     @CommandPermission("%kits_perm")
     public void onKits(Player player) {
         StringBuilder str = new StringBuilder();
-        for (String key : EterniaServer.kits.kitList.keySet()) {
+        for (String key : EterniaServer.getKitList().keySet()) {
             str.append(ChatColor.DARK_AQUA).append(key).append(ChatColor.DARK_GRAY).append(", ");
         }
         str.setLength(str.length() - 2);
@@ -56,7 +56,7 @@ public class Kit extends BaseCommand {
     @Description("%kit_description")
     @CommandPermission("%kit_perm")
     public void onKit(Player player, String kit) {
-        if (EterniaServer.kits.kitList.containsKey(kit)) {
+        if (EterniaServer.getKitList().containsKey(kit)) {
             if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_KIT_PREFIX) + kit)) {
                 giveKit(player, kit);
             } else {
@@ -69,7 +69,7 @@ public class Kit extends BaseCommand {
 
     private void giveKit(Player player, String kit) {
         final long time = System.currentTimeMillis();
-        CustomKit kitObject = EterniaServer.kits.kitList.get(kit);
+        CustomKit kitObject = EterniaServer.getKitList().get(kit);
         final String kitName = kit + "." + player.getName();
         int cooldown = kitObject.getDelay();
         final long cd = APIServer.getKitCooldown(kitName);

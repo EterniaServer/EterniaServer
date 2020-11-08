@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.enums;
+package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eternialib.interfaces.Query;
 

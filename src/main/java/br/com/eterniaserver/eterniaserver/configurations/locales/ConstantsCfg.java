@@ -13,7 +13,7 @@ public class ConstantsCfg extends GenericCfg {
 
     public ConstantsCfg(String[] strings) {
 
-        super(strings);
+        super(strings, null, null, null, null);
 
         FileConfiguration file = YamlConfiguration.loadConfiguration(new File(Constants.CONSTANTS_FILE_PATH));
         FileConfiguration outFile = new YamlConfiguration();

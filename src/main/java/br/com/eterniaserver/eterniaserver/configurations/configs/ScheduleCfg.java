@@ -1,7 +1,9 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
+import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,24 +15,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ScheduleCfg {
+public class ScheduleCfg extends GenericCfg {
 
-    public final int scheduleHour;
-    public final int scheduleMinute;
-    public final int scheduleSecond;
-    public final int scheduleDelay;
+    public ScheduleCfg(Map<String, Map<Integer, List<String>>> scheduleMap, Integer[] integers) {
+        super(null, null, integers, null, null);
 
-    public final Map<String, Map<Integer, List<String>>> scheduleMap = new HashMap<>();
-
-    public ScheduleCfg() {
+        scheduleMap.clear();
 
         FileConfiguration scheduleConfig = YamlConfiguration.loadConfiguration(new File(Constants.SCHEDULE_FILE_PATH));
         FileConfiguration outSchedule = new YamlConfiguration();
 
-        this.scheduleHour = scheduleConfig.getInt("schedule.hour", 10);
-        this.scheduleMinute = scheduleConfig.getInt("schedule.minute", 0);
-        this.scheduleSecond = scheduleConfig.getInt("schedule.second", 0);
-        this.scheduleDelay = scheduleConfig.getInt("schedule.delay", 1);
+        setInteger(ConfigIntegers.SCHEDULE_HOUR, scheduleConfig, outSchedule, "schedule.hour", 10);
+        setInteger(ConfigIntegers.SCHEDULE_MINUTE, scheduleConfig, outSchedule, "schedule.minute", 10);
+        setInteger(ConfigIntegers.SCHEDULE_SECONDS, scheduleConfig, outSchedule, "schedule.second", 10);
+        setInteger(ConfigIntegers.SCHEDULE_DELAY, scheduleConfig, outSchedule, "schedule.delay", 1);
 
         Map<Integer, List<String>> tempMapForAll = new HashMap<>();
         tempMapForAll.put(0, new ArrayList<>());
@@ -38,13 +36,13 @@ public class ScheduleCfg {
         tempMapForAll.put(2, new ArrayList<>());
         tempMapForAll.put(3, new ArrayList<>());
 
-        this.scheduleMap.put("sunday", new HashMap<>(tempMapForAll));
-        this.scheduleMap.put("monday", new HashMap<>(tempMapForAll));
-        this.scheduleMap.put("tuesday", new HashMap<>(tempMapForAll));
-        this.scheduleMap.put("wednesday", new HashMap<>(tempMapForAll));
-        this.scheduleMap.put("thursday", new HashMap<>(tempMapForAll));
-        this.scheduleMap.put("friday", new HashMap<>(tempMapForAll));
-        this.scheduleMap.put("saturday", new HashMap<>(tempMapForAll));
+        scheduleMap.put("sunday", new HashMap<>(tempMapForAll));
+        scheduleMap.put("monday", new HashMap<>(tempMapForAll));
+        scheduleMap.put("tuesday", new HashMap<>(tempMapForAll));
+        scheduleMap.put("wednesday", new HashMap<>(tempMapForAll));
+        scheduleMap.put("thursday", new HashMap<>(tempMapForAll));
+        scheduleMap.put("friday", new HashMap<>(tempMapForAll));
+        scheduleMap.put("saturday", new HashMap<>(tempMapForAll));
 
         Map<String, Map<Integer, List<String>>> tempScheduleMap = new HashMap<>();
         ConfigurationSection configurationSection = scheduleConfig.getConfigurationSection("schedule.days");
@@ -62,23 +60,14 @@ public class ScheduleCfg {
         }
 
         if (tempScheduleMap.isEmpty()) {
-            tempScheduleMap = new HashMap<>(this.scheduleMap);
+            tempScheduleMap = new HashMap<>(scheduleMap);
         }
 
-        this.scheduleMap.clear();
-        tempScheduleMap.forEach(this.scheduleMap::put);
-        outSchedule.set("schedule.hour", this.scheduleHour);
-        outSchedule.set("schedule.minute", this.scheduleMinute);
-        outSchedule.set("schedule.second", this.scheduleSecond);
-        outSchedule.set("schedule.delay", this.scheduleDelay);
+        scheduleMap.clear();
+        tempScheduleMap.forEach(scheduleMap::put);
         tempScheduleMap.forEach((k, v) -> v.forEach((l, b) -> outSchedule.set("schedule.days" + "." + k + "." + l, b)));
-        outSchedule.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
-        try {
-            outSchedule.save(Constants.SCHEDULE_FILE_PATH);
-        } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
-        }
+        saveFile(outSchedule, Constants.SCHEDULE_FILE_PATH, Constants.DATA_LAYER_FOLDER_PATH);
 
     }
 

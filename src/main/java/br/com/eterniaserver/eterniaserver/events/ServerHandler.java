@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.GlobalFormatter;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
+import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
 public class ServerHandler implements Listener {
 
     private final GlobalFormatter utilGlobalFormat = new GlobalFormatter();
-    private final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
+    private static final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
     private String messageMotd;
     private String message2;
 
@@ -88,9 +89,10 @@ public class ServerHandler implements Listener {
 
     private boolean getChannel(AsyncPlayerChatEvent e, User user, String message) {
         message = canHex(user, message);
+        message = EterniaServer.getFilter().matcher(message).replaceAll("");
         switch (user.getChannel()) {
             case 0:
-                user.sendLocalMessage(message, EterniaServer.chat.localRange);
+                user.sendLocalMessage(message, EterniaServer.getInteger(ConfigIntegers.LOCAL_RANGE));
                 return true;
             case 2:
                 user.sendStaffMessage(message);
@@ -136,7 +138,7 @@ public class ServerHandler implements Listener {
     }
 
     private String matcherMessage(String msg) {
-        Matcher matcher = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))").matcher(msg);
+        Matcher matcher = colorPattern.matcher(msg);
         if (matcher.find()) {
             StringBuffer buffer = new StringBuffer();
             do {

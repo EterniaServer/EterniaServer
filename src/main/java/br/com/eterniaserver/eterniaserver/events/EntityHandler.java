@@ -63,7 +63,7 @@ public class EntityHandler implements Listener {
             if ("Cash".equals(title)) {
                 APICash.menuGui(player, e.getSlot());
                 e.setCancelled(true);
-            } else if (EterniaServer.cash.guisInvert.containsKey(title)) {
+            } else if (EterniaServer.getGuisInvert().containsKey(title)) {
                 APICash.permGui(player, title, e.getSlot());
                 e.setCancelled(true);
             }

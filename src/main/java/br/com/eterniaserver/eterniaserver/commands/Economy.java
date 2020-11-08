@@ -23,6 +23,7 @@ import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @CommandAlias("%eco")
@@ -143,14 +144,14 @@ public class Economy extends BaseCommand {
     }
 
     private void showBaltop(CommandSender sender) {
-        APIEconomy.getBalanceTop().forEach((userUUID -> {
-            User user = new User(userUUID);
+        sender.sendMessage(EterniaServer.getMessage(Messages.ECO_BALTOP_TITLE, true));
+        User user;
+        for (int i = 0; i < 10; i++) {
+            user = new User(APIEconomy.getBalanceTop().get(i));
             EterniaServer.sendMessage(sender, Messages.ECO_BALTOP_LIST, false,
-                    String.valueOf(APIEconomy.getBalanceTop().indexOf(userUUID) + 1),
-                    user.getName(),
-                    user.getDisplayName(),
-                    APIEconomy.format(APIEconomy.getMoney(userUUID)));
-        }));
+                    String.valueOf(i + 1), user.getName(), user.getDisplayName(),
+                    APIEconomy.format(APIEconomy.getMoney(user.getUUID())));
+        }
     }
 
 }

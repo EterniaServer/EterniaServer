@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.NBTTileEntity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
+import br.com.eterniaserver.eterniaserver.enums.ConfigChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
 import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
@@ -97,11 +98,11 @@ public class BlockHandler implements Listener {
 
         if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_BLOCK)) return;
 
-        if (EterniaServer.block.blockRewardsDrop.containsKey(materialName)) {
-            randomizeAndReward(player, EterniaServer.block.blockRewardsDrop.get(materialName));
+        if (EterniaServer.getChanceMap(ConfigChanceMaps.BLOCK_DROPS).containsKey(materialName)) {
+            randomizeAndReward(player, EterniaServer.getChanceMap(ConfigChanceMaps.BLOCK_DROPS).get(materialName));
         }
 
-        if (EterniaServer.block.farmRewardsDrop.containsKey(materialName)) {
+        if (EterniaServer.getChanceMap(ConfigChanceMaps.FARM_DROPS).containsKey(materialName)) {
             winFarmReward(block, player);
         }
 
@@ -112,7 +113,7 @@ public class BlockHandler implements Listener {
         if (blockData instanceof Ageable) {
             Ageable ageable = (Ageable) blockData;
             if (ageable.getAge() == ageable.getMaximumAge()) {
-                randomizeAndReward(player, EterniaServer.block.farmRewardsDrop.get(block.getType().name().toUpperCase()));
+                randomizeAndReward(player, EterniaServer.getChanceMap(ConfigChanceMaps.FARM_DROPS).get(block.getType().name().toUpperCase()));
             }
         }
     }

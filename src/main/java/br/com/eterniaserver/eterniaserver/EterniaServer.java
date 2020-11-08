@@ -24,25 +24,25 @@ import br.com.eterniaserver.eterniaserver.events.BlockHandler;
 import br.com.eterniaserver.eterniaserver.events.EntityHandler;
 import br.com.eterniaserver.eterniaserver.events.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.events.ServerHandler;
+import br.com.eterniaserver.eterniaserver.objects.CashItem;
+import br.com.eterniaserver.eterniaserver.objects.CommandData;
+import br.com.eterniaserver.eterniaserver.objects.CustomKit;
+import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class EterniaServer extends JavaPlugin {
 
-    public static final BlocksCfg block = new BlocksCfg();
-    public static final CashCfg cash = new CashCfg();
-    public static final KitsCfg kits = new KitsCfg();
-    public static final ChatCfg chat = new ChatCfg();
-    public static final ScheduleCfg schedule =  new ScheduleCfg();
-    public static final CommandsCfg commands = new CommandsCfg();
+    private static Pattern filter;
 
     private static final String[] strings = new String[ConfigStrings.values().length];
     private static final String[] messages = new String[Messages.values().length];
@@ -52,8 +52,16 @@ public class EterniaServer extends JavaPlugin {
 
     private static final List<List<String>> stringLists = new ArrayList<>();
     private static final List<Material> elevatorMaterials = new ArrayList<>();
+    private static final List<ItemStack> menuGui = new ArrayList<>();
     private static final List<Map<String, Map<Double, List<String>>>> chanceMaps = new ArrayList<>();
 
+    private static final Map<String, CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
+    private static final Map<String, CommandData> customCommandMap = new HashMap<>();
+    private static final Map<String, CustomKit> kitList = new HashMap<>();
+    private static final Map<String, Map<Integer, List<String>>> scheduleMap = new HashMap<>();
+    private static final Map<Integer, String> guis = new HashMap<>();
+    private static final Map<String, Integer> guisInvert = new HashMap<>();
+    private static final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
     @Override
     public void onEnable() {
 
@@ -65,10 +73,16 @@ public class EterniaServer extends JavaPlugin {
             chanceMaps.add(new HashMap<>());
         }
 
-        new ConstantsCfg(strings);
-        new MsgCfg(messages);
-        new ConfigsCfg(strings, booleans, integers, doubles, stringLists, elevatorMaterials);
-        new RewardsCfg(chanceMaps);
+        constants();
+        messages();
+        configs();
+        commands();
+        blocks();
+        chat();
+        kits();
+        cash();
+        rewards();
+        schedule();
 
         new TableCfg();
         new Placeholders().register();
@@ -80,6 +94,46 @@ public class EterniaServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerHandler(this), this);
         this.getServer().getPluginManager().registerEvents(new ServerHandler(), this);
 
+    }
+
+    public void constants() {
+        new ConstantsCfg(strings);
+    }
+
+    public void messages() {
+        new MsgCfg(messages);
+    }
+
+    public void configs() {
+        new ConfigsCfg(strings, booleans, integers, doubles, stringLists, elevatorMaterials);
+    }
+
+    public void commands() {
+        new CommandsCfg(customCommandMap);
+    }
+
+    public void blocks() {
+        new BlocksCfg(chanceMaps);
+    }
+
+    public void chat() {
+        new ChatCfg(customPlaceholdersObjectsMap, strings, integers);
+    }
+
+    public void kits() {
+        new KitsCfg(kitList);
+    }
+
+    public void cash() {
+        new CashCfg(menuGui, guis, guisInvert, othersGui);
+    }
+
+    public void rewards() {
+        new RewardsCfg(chanceMaps);
+    }
+
+    public void schedule() {
+        new ScheduleCfg(scheduleMap, integers);
     }
 
     public static String getString(ConfigStrings configName) {
@@ -98,12 +152,52 @@ public class EterniaServer extends JavaPlugin {
         return doubles[configName.ordinal()];
     }
 
+    public static void setFilter(Pattern pattern) {
+        filter = pattern;
+    }
+
+    public static Pattern getFilter() {
+        return filter;
+    }
+
     public static List<String> getStringList(ConfigLists configName) {
         return stringLists.get(configName.ordinal());
     }
 
     public static List<Material> getElevatorMaterials() {
         return elevatorMaterials;
+    }
+
+    public static List<ItemStack> getMenuGui() {
+        return menuGui;
+    }
+
+    public static Map<String, CustomPlaceholder> getCustomPlaceholders() {
+        return customPlaceholdersObjectsMap;
+    }
+
+    public static Map<String, CommandData> getCustomCommandMap() {
+        return customCommandMap;
+    }
+
+    public static Map<String, CustomKit> getKitList() {
+        return kitList;
+    }
+
+    public static Map<Integer, String> getGuis() {
+        return guis;
+    }
+
+    public static Map<String, Integer> getGuisInvert() {
+        return guisInvert;
+    }
+
+    public static Map<Integer, List<CashItem>> getOthersGui() {
+        return othersGui;
+    }
+
+    public static Map<String, Map<Integer, List<String>>> getScheduleMap() {
+        return scheduleMap;
     }
 
     public static Map<String, Map<Double, List<String>>> getChanceMap(ConfigChanceMaps configName) {
@@ -115,7 +209,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     public static void sendMessage(CommandSender sender, Messages messagesId, String... args) {
-        Constants.sendMessage(sender, messagesId, true, messages, args);
+        Constants.sendMessage(sender, messagesId, true, args);
     }
 
     public static void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String... args) {

@@ -8,7 +8,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.enums.Profile;
+import br.com.eterniaserver.eterniaserver.objects.Profile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -256,7 +256,7 @@ public class User {
 
     public void createKits() {
         final long time = System.currentTimeMillis();
-        for (String kit : EterniaServer.kits.kitList.keySet()) {
+        for (String kit : EterniaServer.getKitList().keySet()) {
             final String kitName = kit + "." + playerName;
             if (!Vars.kitsCooldown.containsKey(kitName)) {
                 Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_KITS));
@@ -368,7 +368,7 @@ public class User {
     public void sendStaffMessage(String message) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_STAFF))) {
-                String format = EterniaServer.chat.staffFormat;
+                String format = EterniaServer.getString(ConfigStrings.STAFF_FORMAT);
                 format = APIServer.setPlaceholders(player, format);
                 format = APIServer.getColor(format.replace("%message%", message));
                 p.sendMessage(format);
@@ -410,7 +410,7 @@ public class User {
     }
 
     private String getLocalFormat(String message) {
-        String format = APIServer.setPlaceholders(player, EterniaServer.chat.localFormat);
+        String format = APIServer.setPlaceholders(player, EterniaServer.getString(ConfigStrings.LOCAL_FORMAT));
         if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR))) {
             return APIServer.getColor(format.replace("%message%", message));
         } else {

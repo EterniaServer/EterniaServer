@@ -44,10 +44,10 @@ public class Cash extends BaseCommand {
     @CommandPermission("%cash_perm")
     public void onCash(Player player) {
         player.closeInventory();
-        Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.cash.menuGui.size(), "Cash");
+        Inventory gui = Bukkit.getServer().createInventory(player, EterniaServer.getMenuGui().size(), "Cash");
 
-        for (int i = 0; i < EterniaServer.cash.menuGui.size(); i++) {
-            gui.setItem(i, EterniaServer.cash.menuGui.get(i));
+        for (int i = 0; i < EterniaServer.getMenuGui().size(); i++) {
+            gui.setItem(i, EterniaServer.getMenuGui().get(i));
         }
 
         player.openInventory(gui);

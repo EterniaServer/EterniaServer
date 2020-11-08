@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GlobalFormatter {
 
 	public void filter(User user, String message) {
-		BaseComponent[] baseComponents = customPlaceholder(user.getPlayer(), EterniaServer.chat.globalFormat, message);
+		BaseComponent[] baseComponents = customPlaceholder(user.getPlayer(), EterniaServer.getString(ConfigStrings.GLOBAL_FORMAT), message);
 		Bukkit.spigot().broadcast(baseComponents);
 	}
 
@@ -36,7 +36,7 @@ public class GlobalFormatter {
 			message = message.replace('&', (char) 0x00A7);
 		}
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
-		EterniaServer.chat.customPlaceholdersObjectsMap.forEach((placeholder, object) -> {
+		EterniaServer.getCustomPlaceholders().forEach((placeholder, object) -> {
 			if (format.contains("{" + placeholder + "}") && player.hasPermission(object.getPermission())) {
 				textComponentMap.put(object.getPriority(), getText(player, object));
 			}

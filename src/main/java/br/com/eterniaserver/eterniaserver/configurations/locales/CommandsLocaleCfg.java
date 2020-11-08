@@ -53,7 +53,7 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.ECO, "eco", "eternia.money.user", " <página>", " Ajuda para o sistema de Economia", null);
         this.addDefault(defaults, Commands.ECO_SET, "set", "eternia.money.admin", " <jogador> <quantia>", " Define o saldo de um jogador", null);
         this.addDefault(defaults, Commands.ECO_TAKE, "take", "eternia.money.admin", " <jogador> <quantia>", " Retira uma quantia de saldo de um jogador", null);
-        this.addDefault(defaults, Commands.ECO_GIVE, "take", "eternia.money.admin", " <jogador> <quantia>", " Dar uma quantia de saldo a um jogador", null);
+        this.addDefault(defaults, Commands.ECO_GIVE, "give", "eternia.money.admin", " <jogador> <quantia>", " Dar uma quantia de saldo a um jogador", null);
         this.addDefault(defaults, Commands.ECO_MONEY, "money", "eternia.money.user", " <jogador>", " Verifica o saldo de um jogador", "money|balance");
         this.addDefault(defaults, Commands.ECO_PAY, "pay", "eternia.money.user", " <jogador> <quantia>", " Paga uma quantia a um jogador", "pay");
         this.addDefault(defaults, Commands.ECO_BALTOP, "baltop", "eternia.money.user", null, " Verifica a lista de mais ricos", "baltop");
@@ -115,7 +115,7 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.NICK_DENY, "deny", "eternia.nickname", null, " Nega uma mudança de nick", null);
         this.addDefault(defaults, Commands.NICK_ACCEPT, "accept", "eternia.nickname", null, " Aceita uma mudança de nick", null);
         this.addDefault(defaults, Commands.USEKEY, "usekey", "eternia.usekey", " <chave>", " Ative uma key de rewards", null);
-        this.addDefault(defaults, Commands.GENKEY, "genkey", "eternia.genkey", " <reward>", " Crie uma key de rewards", null);
+        this.addDefault(defaults, Commands.GENKEY, "genkey", "eterniaMessages.ECO_BALTOP_LIST.genkey", " <reward>", " Crie uma key de rewards", null);
         this.addDefault(defaults, Commands.SPAWNERGIVE, "spawnergive", "eternia.spawnergive", " <mob> <quantia> <jogador>", " Dá uma quantia de spawners para um jogador", null);
         this.addDefault(defaults, Commands.TPALL, "tpall", "eternia.tpall", null, " Teleporte todos jogadores até você", null);
         this.addDefault(defaults, Commands.BACK, "back", "eternia.back", null, " Volte ao seu ultimo local", null);
@@ -131,6 +131,7 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.SETWARP, "setwarp", "eternia.setwarp", " <warp>", " Define uma nova warp", null);
         this.addDefault(defaults, Commands.DELWARP, "delwarp", "eternia.delwarp", " <warp>", " Delete uma warp", null);
         this.addDefault(defaults, Commands.LISTWARP, "warps", "eternia.listwarp", null, " Veja todas as warps disponíveis", null);
+        this.addDefault(defaults, Commands.RELOAD, "ereload", "eternia.reload", " <modulo>", " Reinicia um módulo especifico ou todos.", null);
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_LOCALE_FILE_PATH));
 

@@ -22,22 +22,6 @@ public class GenericCfg {
     private final Double[] doubles;
     private final List<List<String>> lists;
 
-    protected GenericCfg(String[] strings) {
-        this(strings, null, null, null, null);
-    }
-
-    protected GenericCfg(String[] strings, Boolean[] booleans) {
-        this(strings, booleans, null, null, null);
-    }
-
-    protected GenericCfg(String[] strings, Boolean[] booleans, Integer[] integers) {
-        this(strings, booleans, integers, null, null);
-    }
-
-    protected GenericCfg(String[] strings, Boolean[] booleans, Integer[] integers, Double[] doubles) {
-        this(strings, booleans, integers, doubles, null);
-    }
-
     protected GenericCfg(String[] strings, Boolean[] booleans, Integer[] integers, Double[] doubles, List<List<String>> lists) {
 
         this.strings = strings;

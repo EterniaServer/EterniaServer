@@ -5,7 +5,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.BalanceTop;
+import br.com.eterniaserver.eterniaserver.objects.BalanceTop;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
 import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
@@ -15,7 +15,6 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import javax.sql.rowset.CachedRowSet;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -240,7 +239,7 @@ public interface APIEconomy {
                 final List<UUID> tempList = new ArrayList<>();
                 UUID uuid;
                 while (resultSet.next()) {
-                    if (tempList.size() < 10) {
+                    if (tempList.size() < size) {
                         uuid = UUID.fromString(resultSet.getString("uuid"));
                         if (!EterniaServer.getStringList(ConfigLists.BLACKLISTED_BALANCE_TOP).contains(UUIDFetcher.getNameOf(uuid))) {
                             tempList.add(uuid);

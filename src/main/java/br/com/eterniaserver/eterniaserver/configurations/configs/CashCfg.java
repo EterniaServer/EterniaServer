@@ -19,17 +19,17 @@ import java.util.Map;
 
 public class CashCfg {
 
-    public final List<ItemStack> menuGui = new ArrayList<>();
-    public final Map<Integer, String> guis = new HashMap<>();
-    public final Map<String, Integer> guisInvert = new HashMap<>();
-    public final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
+    public CashCfg(List<ItemStack> menuGui, Map<Integer, String> guis, Map<String, Integer> guisInvert, Map<Integer, List<CashItem>> othersGui) {
 
-    public CashCfg() {
+        menuGui.clear();
+        guis.clear();
+        guisInvert.clear();
+        othersGui.clear();
 
         FileConfiguration cashGui = YamlConfiguration.loadConfiguration(new File(Constants.CASHGUI_FILE_PATH));
         FileConfiguration outCash = new YamlConfiguration();
 
-        loadDefaultValues();
+        loadDefaultValues(menuGui, guis, guisInvert, othersGui);
 
         List<ItemStack> menuGuiTemp = new ArrayList<>();
         Map<Integer, String> guisTemp = new HashMap<>();
@@ -39,20 +39,20 @@ public class CashCfg {
         loadMapFromArchive(cashGui, othersGuiTemp, menuGuiTemp, guisTemp, guisTempInvert);
 
         if (othersGuiTemp.isEmpty()) {
-            menuGuiTemp = new ArrayList<>(this.menuGui);
+            menuGuiTemp = new ArrayList<>(menuGui);
             guisTemp = new HashMap<>(guis);
             guisTempInvert = new HashMap<>(guisInvert);
             othersGuiTemp = new HashMap<>(othersGui);
         }
 
-        this.menuGui.clear();
+        menuGui.clear();
         menuGui.addAll(menuGuiTemp);
-        this.guis.clear();
-        guisTemp.forEach(this.guis::put);
-        this.guisInvert.clear();
-        guisTempInvert.forEach(this.guisInvert::put);
+        guis.clear();
+        guisTemp.forEach(guis::put);
+        guisInvert.clear();
+        guisTempInvert.forEach(guisInvert::put);
         othersGui.clear();
-        othersGuiTemp.forEach(this.othersGui::put);
+        othersGuiTemp.forEach(othersGui::put);
 
         outCash.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
         outCash.set("menu.size", menuGuiTemp.size());
@@ -91,7 +91,7 @@ public class CashCfg {
 
     }
 
-    private void loadDefaultValues() {
+    private void loadDefaultValues(List<ItemStack> menuGui, Map<Integer, String> guis, Map<String, Integer> guisInvert, Map<Integer, List<CashItem>> othersGui) {
         for (int i = 0; i < 27; i++) {
             if (i == 10) {
                 ItemStack itemStack = new ItemStack(Material.OAK_SIGN);
@@ -115,9 +115,9 @@ public class CashCfg {
                         tempList.add(new CashItem(getGlass(), 0, null, null, true));
                     }
                 }
-                this.othersGui.put(i, tempList);
+                othersGui.put(i, tempList);
             } else {
-                this.menuGui.add(getGlass());
+                menuGui.add(getGlass());
             }
         }
     }

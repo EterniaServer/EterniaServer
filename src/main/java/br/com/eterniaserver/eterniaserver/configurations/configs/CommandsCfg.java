@@ -17,15 +17,15 @@ import java.util.Map;
 
 public class CommandsCfg {
 
-    public final Map<String, CommandData> customCommandMap = new HashMap<>();
+    public CommandsCfg(Map<String, CommandData> customCommandMap) {
 
-    public CommandsCfg() {
+        customCommandMap.clear();
 
         FileConfiguration commandsConfig = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_FILE_PATH));
         FileConfiguration outCommands = new YamlConfiguration();
 
-        this.customCommandMap.put("discord", new CommandData("Informa o link do discord", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8."), false));
-        this.customCommandMap.put("facebook", new CommandData("Informa o link do facebook", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8."), false));
+        customCommandMap.put("discord", new CommandData("Informa o link do discord", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8."), false));
+        customCommandMap.put("facebook", new CommandData("Informa o link do facebook", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8."), false));
 
         Map<String, CommandData> tempCustomCommandMap = new HashMap<>();
         ConfigurationSection configurationSection = commandsConfig.getConfigurationSection("commands");
@@ -40,11 +40,11 @@ public class CommandsCfg {
         }
 
         if (tempCustomCommandMap.isEmpty()) {
-            tempCustomCommandMap = new HashMap<>(this.customCommandMap);
+            tempCustomCommandMap = new HashMap<>(customCommandMap);
         }
 
-        this.customCommandMap.clear();
-        tempCustomCommandMap.forEach(this.customCommandMap::put);
+        customCommandMap.clear();
+        tempCustomCommandMap.forEach(customCommandMap::put);
 
         tempCustomCommandMap.forEach((k, v) -> {
             outCommands.set("commands." + k + ".description", v.getDescription());

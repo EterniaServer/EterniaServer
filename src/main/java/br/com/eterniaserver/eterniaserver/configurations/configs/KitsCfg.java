@@ -16,14 +16,14 @@ import java.util.Map;
 
 public class KitsCfg {
 
-    public final Map<String, CustomKit> kitList = new HashMap<>();
+    public KitsCfg(Map<String, CustomKit> kitList) {
 
-    public KitsCfg() {
+        kitList.clear();
 
         FileConfiguration kits = YamlConfiguration.loadConfiguration(new File(Constants.KITS_FILE_PATH));
         FileConfiguration outKit = new YamlConfiguration();
 
-        this.kitList.put("pa", new CustomKit(300, List.of("give %player_name% minecraft:golden_shovel 1"), List.of("$8[$aE$9S$8] $7Toma sua pá$8!".replace('$', (char) 0x00A7))));
+        kitList.put("pa", new CustomKit(300, List.of("give %player_name% minecraft:golden_shovel 1"), List.of("$8[$aE$9S$8] $7Toma sua pá$8!".replace('$', (char) 0x00A7))));
 
         Map<String, CustomKit> tempKitList = new HashMap<>();
         ConfigurationSection configurationSection = kits.getConfigurationSection("kits");
@@ -36,11 +36,11 @@ public class KitsCfg {
         }
 
         if (tempKitList.isEmpty()) {
-            tempKitList = new HashMap<>(this.kitList);
+            tempKitList = new HashMap<>(kitList);
         }
 
-        this.kitList.clear();
-        tempKitList.forEach(this.kitList::put);
+        kitList.clear();
+        tempKitList.forEach(kitList::put);
 
         tempKitList.forEach((k, v) -> {
             outKit.set("kits." + k + ".delay", v.getDelay());
