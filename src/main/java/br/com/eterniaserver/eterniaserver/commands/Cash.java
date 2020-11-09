@@ -133,7 +133,7 @@ public class Cash extends BaseCommand {
         }
 
         APICash.removeCash(user.getUUID(), value);
-        APICash.addCash(user.getUUID(), value);
+        APICash.addCash(target.getUUID(), value);
         target.sendMessage(Messages.CASH_RECEVEID, String.valueOf(value), user.getName(), user.getDisplayName());
         user.sendMessage(Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
     }

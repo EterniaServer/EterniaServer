@@ -18,11 +18,7 @@ import java.util.Map;
 
 public class MsgCfg {
 
-    private final String[] messages;
-
     public MsgCfg(String[] messages) {
-
-        this.messages = messages;
 
         Map<String, CustomizableMessage> defaults = new HashMap<>();
 
@@ -223,10 +219,10 @@ public class MsgCfg {
                 APIServer.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
             }
 
-            this.messages[messagesEnum.ordinal()] = config.getString(path + messagesEnum.name() + ".text", messageData.text);
-            config.set(path + messagesEnum.name() + ".text", this.messages[messagesEnum.ordinal()]);
+            messages[messagesEnum.ordinal()] = config.getString(path + messagesEnum.name() + ".text", messageData.text);
+            config.set(path + messagesEnum.name() + ".text", messages[messagesEnum.ordinal()]);
 
-            this.messages[messagesEnum.ordinal()] = this.messages[messagesEnum.ordinal()].replace('$', (char) 0x00A7);
+            messages[messagesEnum.ordinal()] = messages[messagesEnum.ordinal()].replace('$', (char) 0x00A7);
 
             if (messageData.getNotes() != null) {
                 messageData.setNotes(config.getString(path + messagesEnum.name() + ".notes", messageData.getNotes()));
