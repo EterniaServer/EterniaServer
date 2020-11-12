@@ -30,6 +30,7 @@ public class CommandsLocaleCfg {
         this.aliases = new String[Commands.values().length];
 
         Map<String, CommandLocale> defaults = new HashMap<>();
+
         this.addDefault(defaults, Commands.CASH, "cash", "eternia.cash", null, "  Abre a GUI da loja de Cash", null);
         this.addDefault(defaults, Commands.CASH_PAY, "pay", "eternia.cash", " <jogador> <quantia>", " Paga uma quantia de cash a um jogador", null);
         this.addDefault(defaults, Commands.CASH_ACCEPT, "accept", "eternia.cash", null, " Aceita uma compra da loja de cash", null);
@@ -39,14 +40,10 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.CASH_REMOVE, "remove", "eternia.cash", " <jogador> <quantia>", " Remove uma quantia de cash de um jogador", null);
         this.addDefault(defaults, Commands.CASH_HELP, "help", "eternia.cash.admin", " <página>", " Ajuda para o sistema de Cash", null);
         this.addDefault(defaults, Commands.CHANNEL, "ch|channel", "eternia.chat.channel", " <página>", " Ajuda para o sistema de Canais", null);
-        this.addDefault(defaults, Commands.CHANNEL_LOCAL, "local", "eternia.chat.local", " <msg>", " Fale ou vá para o canal local", "l|local");
-        this.addDefault(defaults, Commands.CHANNEL_GLOBAL, "global", "eternia.chat.global", " <msg>", " Fale ou vá para o canal global", "g|global");
-        this.addDefault(defaults, Commands.CHANNEL_STAFF, "staff", "eternia.chat.staff", " <msg>", " Fale ou vá para o canal de staffs", "s|a|staff");
         this.addDefault(defaults, Commands.CHAT, "chat", "eternia.chat.help", " <página>", " Ajuda para o sistema de Chat", null);
         this.addDefault(defaults, Commands.CHAT_CLEAR, "clear", "eternia.chat.clear", null, " Limpa todo o chat", "clearchat|limparchat");
         this.addDefault(defaults, Commands.CHAT_BROADCAST, "broadcast", "eternia.broadcast", " <msg>", " Envie uma mensagem para todo o servidor", "broadcast|advice|aviso");
         this.addDefault(defaults, Commands.CHAT_VANISH, "vanish", "eternia.vanish", null, " Se esconda dos jogadores", "chupadadimensional|vanish");
-        this.addDefault(defaults, Commands.CHAT_IGNORE, "ignore", "eternia.ignore", " <jogador>", " Pare de receber mensagens de um jogador", "ignore");
         this.addDefault(defaults, Commands.CHAT_SPY, "spy", "eternia.spy", null, " Ative o spy de todos os chats", "spy");
         this.addDefault(defaults, Commands.CHAT_REPLY, "reply", "eternia.tell", " <msg>", " Responde um jogador", "r|w|reply");
         this.addDefault(defaults, Commands.CHAT_TELL, "tell", "eternia.tell", " <jogador> <msg>", " Envia uma mensagem privada a um jogador", "tell|msg|whisper");
@@ -120,8 +117,8 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.TPALL, "tpall", "eternia.tpall", null, " Teleporte todos jogadores até você", null);
         this.addDefault(defaults, Commands.BACK, "back", "eternia.back", null, " Volte ao seu ultimo local", null);
         this.addDefault(defaults, Commands.TPA, "tpa", "eternia.tpa", " <jogador>", " Envie um pedido de tpa a um jogador", null);
-        this.addDefault(defaults, Commands.TPA_ACCEPT, "tpa accept", "eternia.tpa", null, " Aceite um pedido de tpa", null);
-        this.addDefault(defaults, Commands.TPA_DENY, "tpa deny", "eternia.tpa", null, " Negue um pedido de tpa", null);
+        this.addDefault(defaults, Commands.TPA_ACCEPT, "accept", "eternia.tpa", null, " Aceite um pedido de tpa", null);
+        this.addDefault(defaults, Commands.TPA_DENY, "deny", "eternia.tpa", null, " Negue um pedido de tpa", null);
         this.addDefault(defaults, Commands.SPAWN, "spawn", "eternia.spawn", " <jogador>", " Vá ou leve alguém até o spawner", null);
         this.addDefault(defaults, Commands.SPAWNSET, "setspawn", "eternia.setspawn", null, " Defina a localização do spawn", null);
         this.addDefault(defaults, Commands.SHOP, "shop|loja", "eternia.shop.player", " <jogador>", " Vá até a loja geral ou a de alguém", null);

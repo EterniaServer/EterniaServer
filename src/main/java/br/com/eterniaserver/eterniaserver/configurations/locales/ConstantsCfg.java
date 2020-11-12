@@ -32,13 +32,12 @@ public class ConstantsCfg extends GenericCfg {
         setString(ConfigStrings.PERM_CHAT_ITEM, file, outFile, "perm.chat-item", "eternia.chat.item");
         setString(ConfigStrings.PERM_BASE_COMMAND, file, outFile, "perm.base-command", "eternia.");
         setString(ConfigStrings.PERM_CHAT_COLOR_NICK, file, outFile, "perm.chat-color-nick", "eternia.chat.color.nick");
-        setString(ConfigStrings.PERM_CHAT_STAFF, file, outFile, "perm.chat-staff", "eternia.chat.staff");
         setString(ConfigStrings.PERM_SPY, file, outFile, "perm.spy", "eternia.spy");
         setString(ConfigStrings.PERM_AFK, file, outFile, "perm.afk", "eternia.afk");
         setString(ConfigStrings.PERM_NO_KICK_BY_AFK, file, outFile, "perm.no-kick-by-afk", "eternia.nokickbyafksorrymates");
         setString(ConfigStrings.PERM_TIMING_BYPASS, file, outFile, "perm.timing-bypass", "eternia.timing.bypass");
         setString(ConfigStrings.PERM_SIGN_COLOR, file, outFile, "perm.sign-color", "eternia.sign.color");
-        setString(ConfigStrings.PERM_SPAWNERS_BREAK, file, outFile, "perm.sign-color", "eternia.spawners.break");
+        setString(ConfigStrings.PERM_SPAWNERS_BREAK, file, outFile, "perm.spawners-break", "eternia.spawners.break");
         setString(ConfigStrings.PERM_SPAWNERS_NO_SILK, file, outFile, "perm.spawners-no-silk", "eternia.spawners.nosilk");
         setString(ConfigStrings.PERM_SPAWNERS_CHANGE, file, outFile, "perm.spawners-change", "eternia.change-spawner");
         setString(ConfigStrings.PERM_FLY_BYPASS, file, outFile, "perm.fly-bypass", "eternia.fly.bypass");
@@ -56,6 +55,7 @@ public class ConstantsCfg extends GenericCfg {
         setString(ConfigStrings.PERM_FEED_OTHER, file, outFile, "perm.feed-other", "eternia.feed.other");
         setString(ConfigStrings.PERM_FLY_OTHER, file, outFile, "perm.fly-other", "eternia.fly.others");
         setString(ConfigStrings.PERM_MONEY_OTHER, file, outFile, "perm.money-other", "eternia.money.admin");
+        setString(ConfigStrings.PERM_CHAT_BYPASS_PROTECTION, file, outFile, "perm.chat-bypass-protection", "eternia.chat.bypass");
         setString(ConfigStrings.AFK_PLACEHOLDER, file, outFile, "placeholders.afk", "$9 AFK");
         setString(ConfigStrings.GOD_PLACEHOLDER, file, outFile, "placeholders.godmode", "$9 GOD");
         setString(ConfigStrings.SHOW_ITEM_PLACEHOLDER, file, outFile, "placeholders.show-item", "[item]");

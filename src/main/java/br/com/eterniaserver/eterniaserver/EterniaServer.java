@@ -25,6 +25,7 @@ import br.com.eterniaserver.eterniaserver.events.EntityHandler;
 import br.com.eterniaserver.eterniaserver.events.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.events.ServerHandler;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
+import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CommandData;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
@@ -62,6 +63,9 @@ public class EterniaServer extends JavaPlugin {
     private static final Map<Integer, String> guis = new HashMap<>();
     private static final Map<String, Integer> guisInvert = new HashMap<>();
     private static final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
+    private static final Map<Integer, ChannelObject> channelsMap = new HashMap<>();
+    private static final List<String> channels = new ArrayList<>();
+
     @Override
     public void onEnable() {
 
@@ -117,7 +121,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     public void chat() {
-        new ChatCfg(customPlaceholdersObjectsMap, strings, integers);
+        new ChatCfg(customPlaceholdersObjectsMap, channelsMap, channels, integers);
     }
 
     public void kits() {
@@ -200,8 +204,20 @@ public class EterniaServer extends JavaPlugin {
         return scheduleMap;
     }
 
+    public static Map<Integer, ChannelObject> getChannelsMap() {
+        return channelsMap;
+    }
+
     public static Map<String, Map<Double, List<String>>> getChanceMap(ConfigChanceMaps configName) {
         return chanceMaps.get(configName.ordinal());
+    }
+
+    public static List<String> getChannels() {
+        return channels;
+    }
+
+    public static ChannelObject channelObject(int value) {
+        return channelsMap.get(value);
     }
 
     public static String getMessage(Messages messagesId, boolean prefix, String... args) {

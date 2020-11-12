@@ -15,6 +15,7 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -232,8 +233,8 @@ public interface APIEconomy {
      */
     static CompletableFuture<Boolean> updateBalanceTop(int size) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                PreparedStatement statement = SQL.getConnection().prepareStatement(new BalanceTop(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), size).queryString());
+            try (Connection connection = SQL.getConnection()) {
+                PreparedStatement statement = connection.prepareStatement(new BalanceTop(EterniaServer.getString(ConfigStrings.TABLE_PLAYER), size).queryString());
                 statement.execute();
                 ResultSet resultSet = statement.getResultSet();
                 final List<UUID> tempList = new ArrayList<>();

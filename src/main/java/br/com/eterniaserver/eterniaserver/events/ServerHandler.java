@@ -3,9 +3,8 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.core.GlobalFormatter;
+import br.com.eterniaserver.eterniaserver.core.ChatFormatter;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -24,12 +23,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ServerHandler implements Listener {
 
-    private final GlobalFormatter utilGlobalFormat = new GlobalFormatter();
+    private final ChatFormatter chatFormatter = new ChatFormatter();
     private static final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
     private String messageMotd;
     private String message2;
@@ -89,32 +89,26 @@ public class ServerHandler implements Listener {
 
     private boolean getChannel(AsyncPlayerChatEvent e, User user, String message) {
         message = canHex(user, message);
-        message = EterniaServer.getFilter().matcher(message).replaceAll("");
-        switch (user.getChannel()) {
-            case 0:
-                user.sendLocalMessage(message, EterniaServer.getInteger(ConfigIntegers.LOCAL_RANGE));
-                return true;
-            case 2:
-                user.sendStaffMessage(message);
-                return true;
-            case 3:
-                sendTell(user, message);
-                return true;
-            default:
-                e.getRecipients().clear();
-                utilGlobalFormat.filter(user, message);
-                return false;
+        if (user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_BYPASS_PROTECTION))) {
+            message = EterniaServer.getFilter().matcher(message).replaceAll("");
         }
+        Set<Player> players = e.getRecipients();
+        if (user.getChannel() == "global".hashCode()) {
+            e.getRecipients().clear();
+            chatFormatter.filter(user, message, EterniaServer.channelObject(user.getChannel()), players);
+            return false;
+        } else if (user.getChannel() == "tell".hashCode()) {
+            sendTell(user, message);
+            return true;
+        }
+        chatFormatter.filter(user, message, EterniaServer.channelObject(user.getChannel()), players);
+        return true;
     }
 
     private void sendTell(User user, String msg) {
         if (user.isTell()) {
             final Player target = Bukkit.getPlayer(user.getTellingPlayerName());
             if (target != null && target.isOnline()) {
-                if (APIServer.hasIgnores(user.getUUID()) && APIServer.areIgnored(user.getUUID(), target)) {
-                    user.sendMessage(Messages.CHAT_ARE_IGNORED);
-                    return;
-                }
                 user.sendPrivate(target, msg);
                 return;
             }

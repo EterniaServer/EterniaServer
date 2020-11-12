@@ -7,7 +7,7 @@ public class Profile implements Query {
 
     private final String table;
     private Object[] objects;
-    public Cells where = new Cells();
+    public final Cells where = new Cells();
 
 
     public Profile(String table) {

@@ -365,38 +365,6 @@ public class User {
         }
     }
 
-    public void sendStaffMessage(String message) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_STAFF))) {
-                String format = EterniaServer.getString(ConfigStrings.STAFF_FORMAT);
-                format = APIServer.setPlaceholders(player, format);
-                format = APIServer.getColor(format.replace("%message%", message));
-                p.sendMessage(format);
-            }
-        }
-    }
-
-    public void sendLocalMessage(String message, int radius) {
-        int pes = 0;
-        final String format = getLocalFormat(message);
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (Vars.ignoredPlayer.get(uuid) != null && Vars.ignoredPlayer.get(uuid).contains(p)) return;
-            final Boolean b = Vars.spy.get(uuid);
-            if ((player.getWorld() == p.getWorld() && p.getLocation().distanceSquared(player.getLocation()) <= Math.pow(radius, 2)) || radius <= 0) {
-                pes += 1;
-                p.sendMessage(format);
-            } else if (p.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPY)) && Boolean.TRUE.equals(b)) {
-                p.sendMessage(APIServer.getColor(EterniaServer.getString(ConfigStrings.CONS_SPY_LOCAL)
-                                .replace("{0}", playerName)
-                                .replace("{1}", playerDisplayName)
-                                .replace("{2}", message)));
-            }
-        }
-        if (pes <= 1) {
-            sendMessage(Messages.CHAT_NO_ONE_NEAR);
-        }
-    }
-
     public boolean isSpying() {
         return Vars.spy.getOrDefault(uuid, false);
     }
@@ -407,15 +375,6 @@ public class User {
 
     public void giveExp(int amount) {
         player.giveExp(amount);
-    }
-
-    private String getLocalFormat(String message) {
-        String format = APIServer.setPlaceholders(player, EterniaServer.getString(ConfigStrings.LOCAL_FORMAT));
-        if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR))) {
-            return APIServer.getColor(format.replace("%message%", message));
-        } else {
-            return(format.replace("%message%", message));
-        }
     }
 
     public void updateAfkTime() {
@@ -447,7 +406,7 @@ public class User {
     }
 
     public String getDisplayName() {
-        return playerProfile.getPlayerDisplayName();
+        return playerDisplayName;
     }
 
     public UUID getUUID() {

@@ -1,7 +1,10 @@
 package br.com.eterniaserver.eterniaserver.core;
 
+import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -21,14 +24,43 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GlobalFormatter {
+public class ChatFormatter {
 
-	public void filter(User user, String message) {
-		BaseComponent[] baseComponents = customPlaceholder(user.getPlayer(), EterniaServer.getString(ConfigStrings.GLOBAL_FORMAT), message);
-		Bukkit.spigot().broadcast(baseComponents);
+	public void filter(User user, String message, ChannelObject channelObject, Set<Player> players) {
+		if (!user.hasPermission(channelObject.getPerm())) {
+			user.sendMessage(Messages.SERVER_NO_PERM);
+			return;
+		}
+
+		BaseComponent[] baseComponents = customPlaceholder(user.getPlayer(), channelObject.getFormat(), message);
+
+		if (channelObject.isHasRange()) {
+			int pes = 0;
+			for (Player p : players) {
+				if ((user.getPlayer().getWorld() == p.getWorld() && p.getLocation().distanceSquared(user.getPlayer().getLocation()) <= Math.pow(channelObject.getRange(), 2)) || channelObject.getRange() <= 0) {
+					pes += 1;
+					p.spigot().sendMessage(baseComponents);
+				} else if (p.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPY)) && Vars.spy.get(UUIDFetcher.getUUIDOf(p.getName()))) {
+					p.sendMessage(APIServer.getColor(EterniaServer.getString(ConfigStrings.CONS_SPY_LOCAL)
+							.replace("{0}", user.getName())
+							.replace("{1}", user.getDisplayName())
+							.replace("{2}", message)));
+				}
+			}
+			if (pes <= 1) {
+				user.sendMessage(Messages.CHAT_NO_ONE_NEAR);
+			}
+		} else {
+			for (Player player : players) {
+				if (player.hasPermission(channelObject.getPerm())) {
+					player.spigot().sendMessage(baseComponents);
+				}
+			}
+		}
 	}
 
 	private BaseComponent[] customPlaceholder(Player player, String format, String message) {

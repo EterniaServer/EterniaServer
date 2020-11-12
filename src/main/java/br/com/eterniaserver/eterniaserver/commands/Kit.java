@@ -18,6 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,8 +26,8 @@ import java.sql.SQLException;
 public class Kit extends BaseCommand {
 
     public Kit() {
-        try {
-            PreparedStatement statement = SQL.getConnection().prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_KITS)).queryString());
+        try (Connection connection = SQL.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_KITS)).queryString());
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
             while (resultSet.next()) {

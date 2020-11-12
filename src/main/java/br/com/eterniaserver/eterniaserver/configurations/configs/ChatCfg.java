@@ -4,7 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,35 +13,75 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class ChatCfg extends GenericCfg {
 
-    public ChatCfg(Map<String, CustomPlaceholder> customPlaceholdersObjectsMap, String[] strings, Integer[] integers) {
-        super(strings, null, integers, null, null);
+    public ChatCfg(Map<String, CustomPlaceholder> customPlaceholdersObjectsMap, Map<Integer, ChannelObject> channelObjectMap, List<String> channels, Integer[] integers) {
+        super(null, null, integers, null, null);
 
+        channelObjectMap.clear();
         customPlaceholdersObjectsMap.clear();
+        channels.clear();
 
         FileConfiguration chatConfig = YamlConfiguration.loadConfiguration(new File(Constants.CHAT_FILE_PATH));
         FileConfiguration outChat = new YamlConfiguration();
 
-        setString(ConfigStrings.LOCAL_FORMAT, chatConfig, outChat, "format.local", "$8[$eL$8] %vault_suffix% $e%player_displayname%$8 ➤ $e%message%");
-        setString(ConfigStrings.GLOBAL_FORMAT, chatConfig, outChat, "format.global", "{canal}{clan}{sufix}{prefix}{player}{marry}{separator}");
-        setString(ConfigStrings.STAFF_FORMAT, chatConfig, outChat, "format.staff", "$8[$bS$8] %vault_prefix%%player_displayname%$8 ➤ $b%message%");
-        setString(ConfigStrings.CHAT_FILTER, chatConfig, outChat, "format.filter", "(((http|ftp|https):\\/\\/)?[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?)");
+        Map<Integer, ChannelObject> tempChannelMap = new HashMap<>();
+        tempChannelMap.put("global".hashCode(), new ChannelObject("{global}{clan}{sufix}{prefix}{player}{marry}{separator}", "global", "eternia.chat.global", false, 0));
 
-        setInteger(ConfigIntegers.LOCAL_RANGE, chatConfig, outChat, "format.local-range", 64);
+        Set<String> lista = null;
+        if (chatConfig.getConfigurationSection("channels") != null) {
+            lista = chatConfig.getConfigurationSection("channels").getKeys(false);
 
-        EterniaServer.setFilter(Pattern.compile(EterniaServer.getString(ConfigStrings.CHAT_FILTER)));
+            for (String channel : lista) {
+                ChannelObject channelObject = new ChannelObject(
+                        chatConfig.getString("channels." + channel + ".format", "{player}"),
+                        channel,
+                        chatConfig.getString("channels." + channel + ".perm", "eternia.chat.default"),
+                        chatConfig.getBoolean("channels." + channel + ".range", false),
+                        chatConfig.getInt("channels." + channel + ".range-value", 0)
+                );
+                channelObjectMap.put(channel.hashCode(), channelObject);
+            }
+        }
 
-        customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.global", "%vault_prefix%", "", "", 3));
-        customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.global", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
-        customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.global", " &8➤ ", "", "", 6));
-        customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholder("eternia.chat.global", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2));
-        customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.global", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1));
-        customPlaceholdersObjectsMap.put("canal", new CustomPlaceholder("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0));
-        customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.global", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5));
+        setInteger(ConfigIntegers.DEFAULT_CHANNEL, chatConfig, outChat, "default-channel", "global".hashCode());
+
+        if (channelObjectMap.isEmpty()) {
+            channelObjectMap.putAll(tempChannelMap);
+        }
+
+        if (lista == null || lista.isEmpty()) {
+            lista = Set.of("global");
+        }
+
+        channels.addAll(lista);
+
+        channelObjectMap.forEach((k, v) -> {
+            String channel = v.getName();
+            outChat.set("channels." + channel + ".format", v.getFormat());
+            outChat.set("channels." + channel + ".perm", v.getPerm());
+            outChat.set("channels." + channel + ".range", v.isHasRange());
+            outChat.set("channels." + channel + ".range-value", v.getRange());
+        });
+
+        String filter = chatConfig.getString("filter", "(((http|ftp|https):\\/\\/)?[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?)");
+
+        outChat.set("filter", filter);
+
+        EterniaServer.setFilter(Pattern.compile(filter));
+
+        customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.default", "%vault_prefix%", "", "", 3));
+        customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.default", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
+        customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.default", " &8➤ ", "", "", 6));
+        customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholder("eternia.chat.default", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2));
+        customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.default", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1));
+        customPlaceholdersObjectsMap.put("global", new CustomPlaceholder("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0));
+        customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.default", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5));
 
         Map<String, CustomPlaceholder> tempCustomPlaceholdersMap = new HashMap<>();
         ConfigurationSection configurationSection = chatConfig.getConfigurationSection("placeholders");

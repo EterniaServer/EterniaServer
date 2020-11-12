@@ -14,7 +14,6 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -29,23 +28,6 @@ public interface APIServer {
 
     static boolean isChatMuted() {
         return Vars.chatMuted;
-    }
-
-
-    static boolean hasIgnores(UUID uuid) {
-        return Vars.ignoredPlayer.containsKey(uuid);
-    }
-
-    static List<Player> getIgnores(UUID uuid) {
-        return Vars.ignoredPlayer.get(uuid);
-    }
-
-    static boolean areIgnored(UUID uuid, Player target) {
-        return Vars.ignoredPlayer.get(uuid).contains(target);
-    }
-
-    static void putIgnored(UUID uuid, List<Player> list) {
-        Vars.ignoredPlayer.put(uuid, list);
     }
 
     static boolean hasCooldown(long cooldown, int timeNeeded) {

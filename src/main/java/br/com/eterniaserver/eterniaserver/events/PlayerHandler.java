@@ -257,6 +257,10 @@ public class PlayerHandler implements Listener {
             user.hidePlayer(plugin, player);
         }
 
+        if (user.getChannel() == 0) {
+            user.setChannel(EterniaServer.getInteger(ConfigIntegers.DEFAULT_CHANNEL));
+        }
+
         user.updateAfkTime();
         user.createKits();
     }

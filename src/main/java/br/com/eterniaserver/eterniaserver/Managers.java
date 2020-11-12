@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.CommandManager;
-import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
 import br.com.eterniaserver.eterniaserver.core.PluginClearSchedule;
@@ -12,6 +11,7 @@ import br.com.eterniaserver.eterniaserver.core.Vars;
 import br.com.eterniaserver.eterniaserver.core.CheckWorld;
 import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
 import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
+import br.com.eterniaserver.eterniaserver.objects.ChannelCommand;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Commands;
@@ -30,6 +30,8 @@ import java.util.stream.Stream;
 public class Managers {
 
     private final EterniaServer plugin;
+
+    private String channelCommand;
 
     public Managers(EterniaServer plugin) {
 
@@ -60,6 +62,9 @@ public class Managers {
 
     private void loadCommandsLocale() {
         CommandsLocaleCfg cmdsLocale = new CommandsLocaleCfg();
+
+        this.channelCommand = cmdsLocale.getName(Commands.CHANNEL).split("\\|")[0];
+
         for (Commands command : Commands.values()) {
             CommandManager.getCommandReplacements().addReplacements(
                     command.name().toLowerCase(), cmdsLocale.getName(command),
@@ -93,7 +98,16 @@ public class Managers {
                 throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
             }
             if (c.getConfigValue("max", 3) < value) {
-                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 1));
+                throw new ConditionFailedException("O valor máximo precisa ser &3" + c.getConfigValue("max", 1));
+            }
+        });
+
+        CommandManager.getCommandConditions().addCondition(String.class, "channel", (c, exec, value) -> {
+            if (value == null) {
+                return;
+            }
+            if (!EterniaServer.getChannels().contains(value)) {
+                throw new ConditionFailedException("Você precisa informar um canal válido");
             }
         });
 
@@ -102,6 +116,7 @@ public class Managers {
     private void loadCompletions() {
         CommandManager.getCommandCompletions().registerStaticCompletion("colors", Stream.of(Colors.values()).map(Enum::name).collect(Collectors.toList()));
         CommandManager.getCommandCompletions().registerStaticCompletion("entidades", Vars.entityList);
+        CommandManager.getCommandCompletions().registerStaticCompletion("channels", EterniaServer.getChannels());
     }
 
     private void loadBedManager() {
@@ -128,10 +143,12 @@ public class Managers {
 
     private void loadChatManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT), "Chat")) {
-            CommandManager.registerCommand(new Channel());
             CommandManager.registerCommand(new Mute());
             CommandManager.registerCommand(new Chat(plugin));
             CommandManager.registerCommand(new Nick());
+
+            EterniaServer.getChannelsMap().forEach((ignored, commandObject) -> new ChannelCommand(commandObject.getName(), "chat", commandObject.getPerm(), channelCommand));
+
         }
     }
 

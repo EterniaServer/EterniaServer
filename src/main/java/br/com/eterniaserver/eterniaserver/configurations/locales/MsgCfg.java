@@ -7,7 +7,6 @@ import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -132,11 +131,8 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.CHAT_NICK_NOT_REQUESTED, "Você não tem nenhum pedido de mudança de apelido$8.", null);
         this.addDefault(defaults, Messages.CHAT_NICK_DENIED, "Você cancelou a mudança de apelido$8.", null);
         this.addDefault(defaults, Messages.CHAT_BROADCAST, "$7{0}", "0: mensagem");
-        this.addDefault(defaults, Messages.CHAT_IGNORE, "Você agora está ignorando o $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
-        this.addDefault(defaults, Messages.CHAT_UNIGNORE, "Você agora não está ignorando o $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.CHAT_SPY_ENABLED, "Chat spy ativado$8.", null);
         this.addDefault(defaults, Messages.CHAT_SPY_DISABLED, "Chat spy desativado$8.", null);
-        this.addDefault(defaults, Messages.CHAT_ARE_IGNORED, "Este usuário está ignorando você$8.", null);
         this.addDefault(defaults, Messages.CHAT_NO_ONE_TO_RESP, "Você não possui ninguém para responder$8.", null);
         this.addDefault(defaults, Messages.CHAT_CHANNEL_CHANGED, "Você foi para o canal $3{0}$8.", "0: nome do canal");
         this.addDefault(defaults, Messages.CHAT_TELL_LOCKED, "Você travou a conversa privada com $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");

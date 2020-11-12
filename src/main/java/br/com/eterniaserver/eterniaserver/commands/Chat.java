@@ -3,7 +3,9 @@ package br.com.eterniaserver.eterniaserver.commands;
 import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.CatchUnknown;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
+import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Conditions;
 import br.com.eterniaserver.acf.annotation.Default;
 import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.HelpCommand;
@@ -20,9 +22,6 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @CommandAlias("%chat")
 public class Chat extends BaseCommand {
@@ -49,6 +48,27 @@ public class Chat extends BaseCommand {
     @CommandAlias("%chat_clear_aliases")
     public void onClearChat() {
         for (int i = 0; i < 150; i ++) Bukkit.broadcastMessage("");
+    }
+
+    @CommandAlias("%channel")
+    @Syntax("%channel_syntax")
+    @CommandPermission("%channel_perm")
+    @Description("%channel_description")
+    @CommandCompletion("@channels")
+    public void onChannel(Player player, @Conditions("channel") String channel, @Optional String message) {
+        User user = new User(player);
+
+        if (message == null) {
+            user.setChannel(channel.hashCode());
+            EterniaServer.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channel);
+            return;
+        }
+
+        int defaultChannel = user.getChannel();
+        user.setChannel(channel.hashCode());
+        player.chat(message);
+        user.setChannel(defaultChannel);
+
     }
 
     @Subcommand("%chat_broadcast")
@@ -80,30 +100,6 @@ public class Chat extends BaseCommand {
         user.changeVanishState();
     }
 
-    @Subcommand("%chat_ignore")
-    @Syntax("%chat_ignore_syntax")
-    @Description("%chat_ignore_description")
-    @CommandPermission("%chat_ignore_perm")
-    @CommandAlias("%chat_ignore_aliases")
-    public void onIgnore(Player player, OnlinePlayer targetOnline) {
-        User target = new User(targetOnline.getPlayer());
-
-        List<Player> ignoreds;
-        if (!APIServer.hasIgnores(target.getUUID())) {
-            ignoreds = new ArrayList<>();
-        } else {
-            ignoreds = APIServer.getIgnores(target.getUUID());
-            if (ignoreds.contains(player)) {
-                EterniaServer.sendMessage(player, Messages.CHAT_UNIGNORE, target.getName(), target.getDisplayName());
-                ignoreds.remove(player);
-                return;
-            }
-        }
-        ignoreds.add(player);
-        APIServer.putIgnored(target.getUUID(), ignoreds);
-        EterniaServer.sendMessage(player, Messages.CHAT_IGNORE, target.getName(), target.getDisplayName());
-    }
-
     @Subcommand("%chat_spy")
     @Description("%chat_spy_description")
     @CommandPermission("%chat_spy_perm")
@@ -130,10 +126,6 @@ public class Chat extends BaseCommand {
         if (user.receivedTell() && msg != null) {
             final Player target = Bukkit.getPlayer(user.getTellSender());
             if (target != null && target.isOnline()) {
-                if (APIServer.hasIgnores(user.getUUID()) && APIServer.areIgnored(user.getUUID(), target)) {
-                    EterniaServer.sendMessage(sender, Messages.CHAT_ARE_IGNORED);
-                    return;
-                }
                 user.sendPrivate(target, msg);
                 return;
             }
@@ -167,13 +159,8 @@ public class Chat extends BaseCommand {
 
         if (msg == null || msg.length() == 0) {
             user.setTelling(target.getUUID());
-            user.setChannel(3);
+            user.setChannel("tell".hashCode());
             user.sendMessage(Messages.CHAT_TELL_LOCKED, target.getName(), target.getDisplayName());
-            return;
-        }
-
-        if (APIServer.hasIgnores(user.getUUID()) && APIServer.areIgnored(user.getUUID(), target.getPlayer())) {
-            EterniaServer.sendMessage(player, Messages.CHAT_ARE_IGNORED);
             return;
         }
 

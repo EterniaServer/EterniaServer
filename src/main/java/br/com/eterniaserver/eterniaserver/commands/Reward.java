@@ -20,6 +20,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.security.SecureRandom;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,8 +31,8 @@ public class Reward extends BaseCommand {
     private final byte[] bytes = new byte[20];
 
     public Reward() {
-        try {
-            PreparedStatement statement = SQL.getConnection().prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_REWARD)).queryString());
+        try (Connection connection = SQL.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_REWARD)).queryString());
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
             while (resultSet.next()) {

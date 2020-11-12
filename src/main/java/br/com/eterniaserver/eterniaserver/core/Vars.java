@@ -75,7 +75,6 @@ public class Vars {
     protected static final Map<UUID, String> glowingColor = new HashMap<>();
     protected static final Map<UUID, String> tell = new HashMap<>();
     protected static final Map<UUID, UUID> chatLocked = new HashMap<>();
-    protected static final Map<UUID, List<Player>> ignoredPlayer = new HashMap<>();
 
     protected static final Map<String, UUID> playersName = new HashMap<>();
     protected static final Map<String, Location> locations = new HashMap<>();

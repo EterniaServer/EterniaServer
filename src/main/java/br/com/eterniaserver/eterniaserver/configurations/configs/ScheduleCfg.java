@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,7 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -30,6 +30,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,8 +59,8 @@ public class Generic extends BaseCommand {
         this.getRuntime = new Runtime();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-            try {
-                PreparedStatement preparedStatement = SQL.getConnection().prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS)).queryString());
+            try (Connection connection = SQL.getConnection()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS)).queryString());
                 preparedStatement.execute();
                 ResultSet resultSet = preparedStatement.getResultSet();
                 Vars.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
@@ -80,8 +81,8 @@ public class Generic extends BaseCommand {
             }
         });
 
-        try {
-            PreparedStatement preparedStatement = SQL.getConnection().prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_PLAYER)).queryString());
+        try (Connection connection = SQL.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_PLAYER)).queryString());
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
             while (resultSet.next()) {

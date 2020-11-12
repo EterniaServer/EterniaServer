@@ -23,7 +23,6 @@ import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @CommandAlias("%eco")
