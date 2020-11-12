@@ -1,8 +1,7 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
-public enum ConfigIntegers {
+public enum Integers {
 
-    SPAWNERS_COLORS,
     PLUGIN_TICKS,
     SCHEDULE_THREADS,
     AFK_TIMER,

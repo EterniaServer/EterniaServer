@@ -10,9 +10,9 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
+import br.com.eterniaserver.eterniaserver.enums.Entities;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.Vars;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,8 +23,14 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @CommandAlias("%spawnergive")
 public class Spawner extends BaseCommand {
+
+    private final static List<String> entities = Stream.of(Entities.values()).map(Enum::name).collect(Collectors.toList());
 
     @Default
     @CommandCompletion("@entidades 1 @players")
@@ -36,7 +42,7 @@ public class Spawner extends BaseCommand {
         final Inventory inventory = targetP.getInventory();
         final String spawnerName = spawner.toUpperCase();
 
-        if (Vars.entityList.contains(spawnerName)) {
+        if (entities.contains(spawner)) {
             EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
             if (inventory.firstEmpty() == -1) {
@@ -56,7 +62,7 @@ public class Spawner extends BaseCommand {
         ItemStack item = new ItemStack(Material.SPAWNER);
         ItemMeta meta = item.getItemMeta();
         item.setAmount(value);
-        meta.setDisplayName(Vars.colors.get(8) + "[" + Vars.colors.get(EterniaServer.getInteger(ConfigIntegers.SPAWNERS_COLORS)) + spawnerName + Vars.colors.get(7) + " Spawner" +  Vars.colors.get(8) + "]");
+        meta.setDisplayName("§8[" + EterniaServer.getString(Strings.SPAWNERS_COLORS) + spawnerName + " §7Spawner§8]");
         item.setItemMeta(meta);
         NBTItem nbtItem = new NBTItem(item);
         nbtItem.setString("ms_mob", spawnerName.toUpperCase());
@@ -65,11 +71,11 @@ public class Spawner extends BaseCommand {
 
     private void sendTypes(final CommandSender player) {
         StringBuilder str = new StringBuilder();
-        for (int i = 0; i < Vars.entityList.size(); i++) {
-            if (i + 1 == Vars.entityList.size()) {
-                str.append(ChatColor.DARK_AQUA).append(Vars.entityList.get(i)).append(ChatColor.DARK_GRAY).append(".");
+        for (int i = 0; i < entities.size(); i++) {
+            if (i + 1 == entities.size()) {
+                str.append(ChatColor.DARK_AQUA).append(entities.get(i)).append(ChatColor.DARK_GRAY).append(".");
             } else {
-                str.append(ChatColor.DARK_AQUA).append(Vars.entityList.get(i)).append(ChatColor.DARK_GRAY).append(", ");
+                str.append(ChatColor.DARK_AQUA).append(entities.get(i)).append(ChatColor.DARK_GRAY).append(", ");
             }
         }
         EterniaServer.sendMessage(player, Messages.SPAWNER_SEND_TYPES, str.toString());

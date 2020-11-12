@@ -5,8 +5,8 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.Profile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
@@ -106,9 +106,9 @@ public class User {
     public void createProfile() {
         final long time = System.currentTimeMillis();
 
-        Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_PLAYER));
         insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance", "muted");
-        insert.values.set(uuid.toString(), playerName, getFirstLogin(), time, 0, EterniaServer.getDouble(ConfigDoubles.START_MONEY), time);
+        insert.values.set(uuid.toString(), playerName, getFirstLogin(), time, 0, EterniaServer.getDouble(Doubles.START_MONEY), time);
         SQL.executeAsync(insert);
 
         final PlayerProfile playerProfileTemp = new PlayerProfile(
@@ -117,7 +117,7 @@ public class User {
                 time,
                 0
         );
-        playerProfileTemp.setBalance(EterniaServer.getDouble(ConfigDoubles.START_MONEY));
+        playerProfileTemp.setBalance(EterniaServer.getDouble(Doubles.START_MONEY));
         playerProfileTemp.setMuted(time);
         Vars.playerProfile.put(uuid, playerProfileTemp);
     }
@@ -131,7 +131,7 @@ public class User {
             newPlayerProfile.setXp(playerProfile.getXp());
             newPlayerProfile.setMuted(time);
 
-            Profile profile = new Profile(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            Profile profile = new Profile(EterniaServer.getString(Strings.TABLE_PLAYER));
             profile.setObjects(playerName, playerName, player.getFirstPlayed(), time, 0, time);
             profile.where.set("uuid", uuid.toString());
             SQL.executeAsync(profile);
@@ -143,12 +143,12 @@ public class User {
         if (!playerProfile.getPlayerName().equals(playerName)) {
             playerProfile.setPlayerName(playerName);
 
-            Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
             update.set.set("player_name", playerName);
             update.where.set("uuid", uuid.toString());
             SQL.executeAsync(update);
         }
-        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("last", time);
         update.where.set("uuid", uuid.toString());
         SQL.executeAsync(update);
@@ -259,7 +259,7 @@ public class User {
         for (String kit : EterniaServer.getKitList().keySet()) {
             final String kitName = kit + "." + playerName;
             if (!Vars.kitsCooldown.containsKey(kitName)) {
-                Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_KITS));
+                Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_KITS));
                 insert.columns.set("name", "cooldown");
                 insert.values.set(kitName, time);
                 SQL.executeAsync(insert);
@@ -352,7 +352,7 @@ public class User {
                 final Player spyPlayer = Bukkit.getPlayer(uuidTemp);
                 if (spyPlayer != null && spyPlayer.isOnline()) {
                     spyPlayer.sendMessage(APIServer.getColor("&8[&7SPY-&6P&8] &8" + playerDisplayName + " -> " + user.getDisplayName() + ": " + s));
-                    spyPlayer.sendMessage(APIServer.getColor(EterniaServer.getString(ConfigStrings.CONS_SPY)
+                    spyPlayer.sendMessage(APIServer.getColor(EterniaServer.getString(Strings.CONS_SPY)
                             .replace("{0}", playerName)
                             .replace("{1}", playerDisplayName)
                             .replace("{2}", user.getName())
@@ -418,18 +418,18 @@ public class User {
     }
 
     public String getAfkPlaceholder() {
-        return isAfk() ? EterniaServer.getString(ConfigStrings.AFK_PLACEHOLDER) : "";
+        return isAfk() ? EterniaServer.getString(Strings.AFK_PLACEHOLDER) : "";
     }
 
     public String getGodeModePlaceholder() {
-        return getGodMode() ? EterniaServer.getString(ConfigStrings.GOD_PLACEHOLDER) : "";
+        return getGodMode() ? EterniaServer.getString(Strings.GOD_PLACEHOLDER) : "";
     }
 
     public String getFirstLoginPlaceholder() {
         if (playerProfile != null) {
-            return new SimpleDateFormat(EterniaServer.getString(ConfigStrings.DATA_FORMAT)).format(new Date(playerProfile.getFirstLogin()));
+            return new SimpleDateFormat(EterniaServer.getString(Strings.DATA_FORMAT)).format(new Date(playerProfile.getFirstLogin()));
         }
-        return EterniaServer.getString(ConfigStrings.NO_REGISTER);
+        return EterniaServer.getString(Strings.NO_REGISTER);
     }
 
     public long getAndUpdateTimePlayed() {
@@ -481,17 +481,17 @@ public class User {
     public void requestNickChange(String nick) {
         nick = APIServer.getColor(nick);
 
-        if (nick.equals(EterniaServer.getString(ConfigStrings.CLEAR_STRING))) {
+        if (nick.equals(EterniaServer.getString(Strings.CLEAR_STRING))) {
             sendMessage(Messages.CHAT_NICK_CLEAR);
             clearNickName();
             return;
         }
 
-        if (!hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR_NICK))) {
+        if (!hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR_NICK))) {
             nick = ChatColor.stripColor(nick);
         }
 
-        sendMessage(Messages.CHAT_NICK_CHANGE_REQUEST, nick, String.valueOf(EterniaServer.getDouble(ConfigDoubles.NICK_COST)));
+        sendMessage(Messages.CHAT_NICK_CHANGE_REQUEST, nick, String.valueOf(EterniaServer.getDouble(Doubles.NICK_COST)));
         playerProfile.setTempNick(nick);
         playerProfile.setNickRequest(true);
         sendMessage(Messages.CHAT_NICK_USE);
@@ -507,7 +507,7 @@ public class User {
         player.setDisplayName(playerProfile.getTempNick());
         playerProfile.setNickRequest(false);
 
-        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("player_display", playerProfile.getPlayerDisplayName());
         update.where.set("uuid", uuid.toString());
         SQL.executeAsync(update);
@@ -522,7 +522,7 @@ public class User {
         playerProfile.setPlayerDisplayName(playerName);
         player.setDisplayName(playerName);
 
-        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("player_display", playerProfile.getPlayerDisplayName());
         update.where.set("uuid", uuid.toString());
         SQL.executeAsync(update);
@@ -551,7 +551,7 @@ public class User {
     public void setExp(int amount) {
         playerProfile.setXp(amount);
 
-        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("xp", amount);
         update.where.set("uuid", uuid.toString());
         SQL.executeAsync(update);

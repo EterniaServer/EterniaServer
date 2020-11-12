@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
-public enum ConfigLists {
+public enum Lists {
 
     BLACKLISTED_WORLDS_FLY,
     BLACKLISTED_WORLDS_SLEEP,

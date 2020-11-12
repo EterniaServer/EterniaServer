@@ -3,15 +3,13 @@ package br.com.eterniaserver.eterniaserver.events;
 import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.NBTTileEntity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigChanceMaps;
-import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
-import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
+import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.Vars;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,7 +39,7 @@ public class BlockHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerSignChange(SignChangeEvent event) {
-        if (event.getPlayer().hasPermission(EterniaServer.getString(ConfigStrings.PERM_SIGN_COLOR))) {
+        if (event.getPlayer().hasPermission(EterniaServer.getString(Strings.PERM_SIGN_COLOR))) {
             for (byte i = 0; i < 4; i++) {
                 event.setLine(i, APIServer.getColor(event.getLine(i)));
             }
@@ -50,7 +48,7 @@ public class BlockHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
-        if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)) return;
 
         final Block block = event.getBlockPlaced();
         if (block.getType() == Material.SPAWNER) {
@@ -71,7 +69,7 @@ public class BlockHandler implements Listener {
     public void onPlayerBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
 
-        if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS) && !EterniaServer.getBoolean(ConfigBooleans.MODULE_BLOCK)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS) && !EterniaServer.getBoolean(Booleans.MODULE_BLOCK)) return;
 
         final Player player = event.getPlayer();
         final Block block = event.getBlock();
@@ -79,16 +77,16 @@ public class BlockHandler implements Listener {
         final String materialName = material.name().toUpperCase();
         final String worldName = player.getWorld().getName();
 
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS) && material == Material.SPAWNER && !isBlackListWorld(worldName) && player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWNERS_BREAK))) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS) && material == Material.SPAWNER && !isBlackListWorld(worldName) && player.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_BREAK))) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
-            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWNERS_NO_SILK))) {
+            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_NO_SILK))) {
                 giveSpawner(player, material, block);
                 event.setExpToDrop(0);
             } else {
                 event.setCancelled(true);
                 EterniaServer.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
             }
-        } else if (!player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWNERS_BREAK)) && material == Material.SPAWNER) {
+        } else if (!player.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_BREAK)) && material == Material.SPAWNER) {
             EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
             event.setCancelled(true);
         } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {
@@ -96,13 +94,13 @@ public class BlockHandler implements Listener {
             event.setCancelled(true);
         }
 
-        if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_BLOCK)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_BLOCK)) return;
 
-        if (EterniaServer.getChanceMap(ConfigChanceMaps.BLOCK_DROPS).containsKey(materialName)) {
-            randomizeAndReward(player, EterniaServer.getChanceMap(ConfigChanceMaps.BLOCK_DROPS).get(materialName));
+        if (EterniaServer.getChanceMap(ChanceMaps.BLOCK_DROPS).containsKey(materialName)) {
+            randomizeAndReward(player, EterniaServer.getChanceMap(ChanceMaps.BLOCK_DROPS).get(materialName));
         }
 
-        if (EterniaServer.getChanceMap(ConfigChanceMaps.FARM_DROPS).containsKey(materialName)) {
+        if (EterniaServer.getChanceMap(ChanceMaps.FARM_DROPS).containsKey(materialName)) {
             winFarmReward(block, player);
         }
 
@@ -113,7 +111,7 @@ public class BlockHandler implements Listener {
         if (blockData instanceof Ageable) {
             Ageable ageable = (Ageable) blockData;
             if (ageable.getAge() == ageable.getMaximumAge()) {
-                randomizeAndReward(player, EterniaServer.getChanceMap(ConfigChanceMaps.FARM_DROPS).get(block.getType().name().toUpperCase()));
+                randomizeAndReward(player, EterniaServer.getChanceMap(ChanceMaps.FARM_DROPS).get(block.getType().name().toUpperCase()));
             }
         }
     }
@@ -134,8 +132,8 @@ public class BlockHandler implements Listener {
 
     private void giveSpawner(Player player, Material material, Block block) {
         double random = Math.random();
-        if (random < EterniaServer.getDouble(ConfigDoubles.DROP_CHANCE)) {
-            if (EterniaServer.getBoolean(ConfigBooleans.INV_DROP)) {
+        if (random < EterniaServer.getDouble(Doubles.DROP_CHANCE)) {
+            if (EterniaServer.getBoolean(Booleans.INV_DROP)) {
                 if (player.getInventory().firstEmpty() != -1) {
                     player.getInventory().addItem(getSpawner(block, material));
                     block.getDrops().clear();
@@ -160,7 +158,7 @@ public class BlockHandler implements Listener {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         String mobFormatted = spawner.getSpawnedType().toString();
-        meta.setDisplayName(Vars.colors.get(8) + "[" + Vars.colors.get(EterniaServer.getInteger(ConfigIntegers.SPAWNERS_COLORS)) + mobFormatted + Vars.colors.get(7) + " Spawner" +  Vars.colors.get(8) + "]");
+        meta.setDisplayName("§8[" + EterniaServer.getString(Strings.SPAWNERS_COLORS) + mobFormatted + " §7Spawner§8]");
         item.setItemMeta(meta);
 
         NBTItem nbtItem = new NBTItem(item);
@@ -170,7 +168,7 @@ public class BlockHandler implements Listener {
     }
 
     private boolean isBlackListWorld(final String worldName) {
-        return EterniaServer.getStringList(ConfigLists.BLACKLISTED_WORLDS_SPAWNERS).contains(worldName);
+        return EterniaServer.getStringList(Lists.BLACKLISTED_WORLDS_SPAWNERS).contains(worldName);
     }
 
 }

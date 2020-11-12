@@ -2,8 +2,8 @@ package br.com.eterniaserver.eterniaserver.events;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APICash;
 
@@ -35,7 +35,7 @@ public class EntityHandler implements Listener {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getDamager();
             User user = new User(player);
-            if (player.isFlying() && !player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_FLY_BYPASS))) {
+            if (player.isFlying() && !player.hasPermission(EterniaServer.getString(Strings.PERM_FLY_BYPASS))) {
                 user.setIsOnPvP();
                 user.sendMessage(Messages.FLY_ENTER_PVP);
                 player.setAllowFlight(false);
@@ -46,19 +46,19 @@ public class EntityHandler implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onEntityInventoryClick(InventoryClickEvent e) {
-        if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_CASH) && !EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_CASH) && !EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)) return;
 
         final Player player = (Player) e.getWhoClicked();
         final ItemStack itemStack = e.getCurrentItem();
-        if (itemStack != null && (EterniaServer.getBoolean(ConfigBooleans.PREVENT_ANVIL)
-                && EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS)
+        if (itemStack != null && (EterniaServer.getBoolean(Booleans.PREVENT_ANVIL)
+                && EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
             EterniaServer.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
         }
 
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CASH)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_CASH)) {
             String title = e.getView().getTitle();
             if ("Cash".equals(title)) {
                 APICash.menuGui(player, e.getSlot());

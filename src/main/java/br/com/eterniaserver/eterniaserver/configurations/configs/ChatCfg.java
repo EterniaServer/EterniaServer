@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
@@ -49,7 +49,7 @@ public class ChatCfg extends GenericCfg {
             }
         }
 
-        setInteger(ConfigIntegers.DEFAULT_CHANNEL, chatConfig, outChat, "default-channel", "global".hashCode());
+        setInteger(Integers.DEFAULT_CHANNEL, chatConfig, outChat, "default-channel", "global".hashCode());
 
         if (channelObjectMap.isEmpty()) {
             channelObjectMap.putAll(tempChannelMap);

@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
 
-import br.com.eterniaserver.eterniaserver.enums.ConfigChanceMaps;
+import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,7 +41,7 @@ public class BlocksCfg {
 
         blocksMap.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("blocks." + k + '.' + String.format("%.10f", l).replace('.', ','), b)));
 
-        chanceMaps.set(ConfigChanceMaps.BLOCK_DROPS.ordinal(), blocksMap);
+        chanceMaps.set(ChanceMaps.BLOCK_DROPS.ordinal(), blocksMap);
 
         Map<Double, List<String>> tempFarmMap = new HashMap<>();
         tempFarmMap.put(0.001, List.of("crates givekey %player_name% farm"));
@@ -64,7 +64,7 @@ public class BlocksCfg {
 
         farmsMap.forEach((k, v) -> v.forEach((l, b) -> outBlocks.set("farm." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
 
-        chanceMaps.set(ConfigChanceMaps.FARM_DROPS.ordinal(), farmsMap);
+        chanceMaps.set(ChanceMaps.FARM_DROPS.ordinal(), farmsMap);
 
         outBlocks.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 

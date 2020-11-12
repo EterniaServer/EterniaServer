@@ -14,10 +14,10 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.Vars;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
-import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.Runtime;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
@@ -44,7 +44,7 @@ public class Generic extends BaseCommand {
     private final EterniaServer plugin;
     private final Runtime getRuntime;
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat(EterniaServer.getString(ConfigStrings.DATA_FORMAT));
+    private final SimpleDateFormat sdf = new SimpleDateFormat(EterniaServer.getString(Strings.DATA_FORMAT));
     private final ItemStack coali = new ItemStack(Material.COAL);
     private final ItemStack lapizi = new ItemStack(Material.LAPIS_LAZULI);
     private final ItemStack redstonei = new ItemStack(Material.REDSTONE);
@@ -60,7 +60,7 @@ public class Generic extends BaseCommand {
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
             try (Connection connection = SQL.getConnection()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS)).queryString());
+                PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_LOCATIONS)).queryString());
                 preparedStatement.execute();
                 ResultSet resultSet = preparedStatement.getResultSet();
                 Vars.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
@@ -82,7 +82,7 @@ public class Generic extends BaseCommand {
         });
 
         try (Connection connection = SQL.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_PLAYER)).queryString());
+            PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_PLAYER)).queryString());
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
             while (resultSet.next()) {
@@ -223,17 +223,17 @@ public class Generic extends BaseCommand {
         User user = new User(player);
         String worldName = player.getWorld().getName();
 
-        if (!player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_FLY_BYPASS)) && EterniaServer.getStringList(ConfigLists.BLACKLISTED_WORLDS_FLY).contains(worldName)) {
+        if (!player.hasPermission(EterniaServer.getString(Strings.PERM_FLY_BYPASS)) && EterniaServer.getStringList(Lists.BLACKLISTED_WORLDS_FLY).contains(worldName)) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
 
-        if (targetS != null && player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_FLY_OTHER))) {
+        if (targetS != null && player.hasPermission(EterniaServer.getString(Strings.PERM_FLY_OTHER))) {
 
             User target = new User(targetS.getPlayer());
 
             if (target.isOnPvP()) {
-                user.sendMessage(Messages.FLY_TARGET_ARE_PVP, String.valueOf(EterniaServer.getInteger(ConfigIntegers.PVP_TIME) - target.getPvPCooldown()));
+                user.sendMessage(Messages.FLY_TARGET_ARE_PVP, String.valueOf(EterniaServer.getInteger(Integers.PVP_TIME) - target.getPvPCooldown()));
                 return;
             }
 
@@ -249,7 +249,7 @@ public class Generic extends BaseCommand {
         }
 
         if (user.isOnPvP()) {
-            user.sendMessage(Messages.FLY_ARE_PVP, String.valueOf(EterniaServer.getInteger(ConfigIntegers.PVP_TIME) - user.getPvPCooldown()));
+            user.sendMessage(Messages.FLY_ARE_PVP, String.valueOf(EterniaServer.getInteger(Integers.PVP_TIME) - user.getPvPCooldown()));
             return;
         }
 
@@ -281,7 +281,7 @@ public class Generic extends BaseCommand {
             EterniaServer.sendMessage(player, Messages.FEED_YOURSELF);
         } else {
             final Player targetP = target.getPlayer();
-            if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_FEED_OTHER))) {
+            if (player.hasPermission(EterniaServer.getString(Strings.PERM_FEED_OTHER))) {
                 targetP.setFoodLevel(20);
                 EterniaServer.sendMessage(player, Messages.FEED_RECEIVED, player.getName(), player.getDisplayName());
                 EterniaServer.sendMessage(player, Messages.FEED_TARGET, targetP.getName(), targetP.getDisplayName());
@@ -384,7 +384,7 @@ public class Generic extends BaseCommand {
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
         player.sendMessage(EterniaServer.getMessage(Messages.PROFILE_TITLE, false));
-        for (String object : EterniaServer.getStringList(ConfigLists.PROFILE_CUSTOM_MESSAGES)) {
+        for (String object : EterniaServer.getStringList(Lists.PROFILE_CUSTOM_MESSAGES)) {
             player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(targets, object)));
         }
         player.sendMessage(EterniaServer.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(target.getFirstLogin()))));
@@ -394,16 +394,16 @@ public class Generic extends BaseCommand {
     }
 
     private void getModules(PlayerProfile playerProfile, ResultSet resultSet) throws SQLException {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CASH)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_CASH)) {
             playerProfile.setCash(resultSet.getInt("cash"));
         }
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             playerProfile.setBalance(resultSet.getDouble("balance"));
         }
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_EXPERIENCE)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_EXPERIENCE)) {
             playerProfile.setXp(resultSet.getInt("xp"));
         }
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_HOMES)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_HOMES)) {
             String result = resultSet.getString("homes");
             if (result != null) {
                 for (String home : result.split(":")) {
@@ -413,7 +413,7 @@ public class Generic extends BaseCommand {
                 }
             }
         }
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_CHAT)) {
             playerProfile.setMuted(resultSet.getLong("muted"));
             playerProfile.setPlayerDisplayName(resultSet.getString("player_display"));
         }

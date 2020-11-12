@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
@@ -44,8 +44,8 @@ public class ChatFormatter {
 				if ((user.getPlayer().getWorld() == p.getWorld() && p.getLocation().distanceSquared(user.getPlayer().getLocation()) <= Math.pow(channelObject.getRange(), 2)) || channelObject.getRange() <= 0) {
 					pes += 1;
 					p.spigot().sendMessage(baseComponents);
-				} else if (p.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPY)) && Vars.spy.get(UUIDFetcher.getUUIDOf(p.getName()))) {
-					p.sendMessage(APIServer.getColor(EterniaServer.getString(ConfigStrings.CONS_SPY_LOCAL)
+				} else if (p.hasPermission(EterniaServer.getString(Strings.PERM_SPY)) && Vars.spy.get(UUIDFetcher.getUUIDOf(p.getName()))) {
+					p.sendMessage(APIServer.getColor(EterniaServer.getString(Strings.CONS_SPY_LOCAL)
 							.replace("{0}", user.getName())
 							.replace("{1}", user.getDisplayName())
 							.replace("{2}", message)));
@@ -64,7 +64,7 @@ public class ChatFormatter {
 	}
 
 	private BaseComponent[] customPlaceholder(Player player, String format, String message) {
-		if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR))) {
+		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
 			message = message.replace('&', (char) 0x00A7);
 		}
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
@@ -95,24 +95,24 @@ public class ChatFormatter {
 	}
 
 	private TextComponent getComponent(String actualMsg, Player player) {
-		if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_MENTION)) && actualMsg.contains(EterniaServer.getString(ConfigStrings.MENTION_PLACEHOLDER)) && Vars.playersName.containsKey(actualMsg)) {
+		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_MENTION)) && actualMsg.contains(EterniaServer.getString(Strings.MENTION_PLACEHOLDER)) && Vars.playersName.containsKey(actualMsg)) {
 			Player target = Bukkit.getPlayer(Vars.playersName.get(actualMsg));
-			actualMsg = Vars.colors.get(3) + actualMsg + Vars.colors.get(15);
+			actualMsg = "§3" + actualMsg + "§f";
 			if (target != null && target.isOnline()) {
 				target.playNote(target.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-				target.sendTitle(EterniaServer.getString(ConfigStrings.CONS_MENTION_TITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()),
-						EterniaServer.getString(ConfigStrings.CONS_MENTION_SUBTITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()), 10, 40, 10);
+				target.sendTitle(EterniaServer.getString(Strings.CONS_MENTION_TITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()),
+						EterniaServer.getString(Strings.CONS_MENTION_SUBTITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()), 10, 40, 10);
 			}
 			return new TextComponent(actualMsg + " ");
 		}
 
-		if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_ITEM)) && actualMsg.equals(EterniaServer.getString(ConfigStrings.SHOW_ITEM_PLACEHOLDER))) {
+		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_ITEM)) && actualMsg.equals(EterniaServer.getString(Strings.SHOW_ITEM_PLACEHOLDER))) {
 			ItemStack itemStack = player.getInventory().getItemInMainHand();
 			if (!itemStack.getType().equals(Material.AIR)) {
 				return sendItemInHand(actualMsg + " ", itemStack);
 			}
 		}
-		if (!player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR))) {
+		if (!player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
 			actualMsg = ChatColor.stripColor(actualMsg);
 		}
 		return new TextComponent(actualMsg + " ");
@@ -121,12 +121,12 @@ public class ChatFormatter {
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
 		if (APIServer.getVersion() >= 116) {
 			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
-			TextComponent component = new TextComponent(string.replace(EterniaServer.getString(ConfigStrings.SHOW_ITEM_PLACEHOLDER),
-					EterniaServer.getString(ConfigStrings.CONS_SHOW_ITEM).replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemStack.getI18NDisplayName())));
+			TextComponent component = new TextComponent(string.replace(EterniaServer.getString(Strings.SHOW_ITEM_PLACEHOLDER),
+					EterniaServer.getString(Strings.CONS_SHOW_ITEM).replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemStack.getI18NDisplayName())));
 			component.setHoverEvent(event);
 			return component;
 		}
-		return new TextComponent(EterniaServer.getString(ConfigStrings.NOT_SUPPORTED));
+		return new TextComponent(EterniaServer.getString(Strings.NOT_SUPPORTED));
 	}
 
 	private TextComponent getText(Player player, CustomPlaceholder objects) {

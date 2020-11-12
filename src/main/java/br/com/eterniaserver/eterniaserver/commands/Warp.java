@@ -16,7 +16,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.Vars;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
@@ -50,7 +50,7 @@ public class Warp extends BaseCommand {
 
         User target = new User(targets.getPlayer());
 
-        if (!user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWN_OTHER))) {
+        if (!user.hasPermission(EterniaServer.getString(Strings.PERM_SPAWN_OTHER))) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
@@ -93,7 +93,7 @@ public class Warp extends BaseCommand {
 
         Location location = APIServer.getLocation("warp.shop");
 
-        if (!player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_WARP_SHOP))) {
+        if (!player.hasPermission(EterniaServer.getString(Strings.PERM_WARP_SHOP))) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
@@ -131,7 +131,7 @@ public class Warp extends BaseCommand {
             return;
         }
 
-        if (!player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_WARP_PREFIX) + nome.toLowerCase())) {
+        if (!player.hasPermission(EterniaServer.getString(Strings.PERM_WARP_PREFIX) + nome.toLowerCase())) {
             user.sendMessage(Messages.SERVER_NO_PERM);
             return;
         }
@@ -177,11 +177,11 @@ public class Warp extends BaseCommand {
             String line = list[i].toString();
             if (line.contains("warp.")) {
                 String warp = line.replace("warp.", "");
-                if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_WARP_PREFIX) + warp)) {
+                if (player.hasPermission(EterniaServer.getString(Strings.PERM_WARP_PREFIX) + warp)) {
                     if (i + 1 != size) {
-                        string.append(warp).append(Vars.colors.get(8)).append(", ").append(Vars.colors.get(3));
+                        string.append(warp).append("§8").append(", ").append("§3");
                     } else {
-                        string.append(warp).append(Vars.colors.get(3));
+                        string.append(warp).append("§3");
                     }
                 }
             }
@@ -229,12 +229,12 @@ public class Warp extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         if (!APIServer.getLocation(shop).equals(Vars.getError())) {
-            Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+            Update update = new Update(EterniaServer.getString(Strings.TABLE_LOCATIONS));
             update.set.set("location", saveloc);
             update.where.set("name", shop);
             SQL.executeAsync(update);
         } else {
-            Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS));
             insert.columns.set("name", "location");
             insert.values.set(shop, saveloc);
             SQL.executeAsync(insert);
@@ -251,12 +251,12 @@ public class Warp extends BaseCommand {
                 ":" + ((int) loc.getPitch());
         final String warpName = "warp." + warp;
         if (!APIServer.getLocation(warpName).equals(Vars.getError())) {
-            Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+            Update update = new Update(EterniaServer.getString(Strings.TABLE_LOCATIONS));
             update.set.set("location", saveloc);
             update.where.set("name", warpName);
             SQL.executeAsync(update);
         } else {
-            Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS));
             insert.columns.set("name", "location");
             insert.values.set(warpName, saveloc);
             SQL.executeAsync(insert);
@@ -268,7 +268,7 @@ public class Warp extends BaseCommand {
         final String warpName = "warp." + warp;
         APIServer.removeLocation(warpName);
 
-        Delete delete = new Delete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
         delete.where.set("name", warpName);
         SQL.executeAsync(delete);
     }
@@ -276,7 +276,7 @@ public class Warp extends BaseCommand {
     public void delShop(String shop) {
         APIServer.removeLocation(shop);
 
-        Delete delete = new Delete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
         delete.where.set("name", shop);
         SQL.executeAsync(delete);
     }

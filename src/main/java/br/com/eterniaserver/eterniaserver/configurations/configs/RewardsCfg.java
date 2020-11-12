@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
 
-import br.com.eterniaserver.eterniaserver.enums.ConfigChanceMaps;
+import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -55,7 +55,7 @@ public class RewardsCfg {
         rewardsMap.forEach((k, v) -> v.forEach((l, b) -> outRewards.set("rewards." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
         outRewards.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
 
-        rewards.set(ConfigChanceMaps.REWARDS.ordinal(), rewardsMap);
+        rewards.set(ChanceMaps.REWARDS.ordinal(), rewardsMap);
 
         try {
             outRewards.save(Constants.REWARDS_FILE_PATH);

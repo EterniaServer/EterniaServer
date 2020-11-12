@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
-import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -34,7 +34,7 @@ public class CheckWorld implements Runnable {
     }
 
     private boolean isBlacklisted(final World world) {
-        return EterniaServer.getStringList(ConfigLists.BLACKLISTED_WORLDS_SLEEP).contains(world.getName());
+        return EterniaServer.getStringList(Lists.BLACKLISTED_WORLDS_SLEEP).contains(world.getName());
     }
 
     private boolean isNight(final World world) {

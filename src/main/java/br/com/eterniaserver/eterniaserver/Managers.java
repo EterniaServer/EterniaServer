@@ -9,8 +9,9 @@ import br.com.eterniaserver.eterniaserver.core.PluginTick;
 import br.com.eterniaserver.eterniaserver.core.PluginSchedule;
 import br.com.eterniaserver.eterniaserver.core.Vars;
 import br.com.eterniaserver.eterniaserver.core.CheckWorld;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Entities;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.objects.ChannelCommand;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
@@ -115,34 +116,34 @@ public class Managers {
 
     private void loadCompletions() {
         CommandManager.getCommandCompletions().registerStaticCompletion("colors", Stream.of(Colors.values()).map(Enum::name).collect(Collectors.toList()));
-        CommandManager.getCommandCompletions().registerStaticCompletion("entidades", Vars.entityList);
+        CommandManager.getCommandCompletions().registerStaticCompletion("entidades", Stream.of(Entities.values()).map(Enum::name).collect(Collectors.toList()));
         CommandManager.getCommandCompletions().registerStaticCompletion("channels", EterniaServer.getChannels());
     }
 
     private void loadBedManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_BED), "Bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new CheckWorld(plugin), 0L, (long) EterniaServer.getInteger(ConfigIntegers.PLUGIN_TICKS) * 40);
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_BED), "Bed")) {
+            plugin.getServer().getScheduler().runTaskTimer(plugin, new CheckWorld(plugin), 0L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 40);
         }
     }
 
     private void loadBlockRewardsManager() {
-        sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_BLOCK), "Block-Reward");
+        sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_BLOCK), "Block-Reward");
     }
 
     private void loadCommandsManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_COMMANDS), "Commands")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_COMMANDS), "Commands")) {
             EterniaServer.getCustomCommandMap().forEach((commandName, commandObject) -> new CustomCommand(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
         }
     }
 
     private void loadCashManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_CASH), "Cash")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_CASH), "Cash")) {
             CommandManager.registerCommand(new Cash());
         }
     }
 
     private void loadChatManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT), "Chat")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_CHAT), "Chat")) {
             CommandManager.registerCommand(new Mute());
             CommandManager.registerCommand(new Chat(plugin));
             CommandManager.registerCommand(new Nick());
@@ -153,17 +154,17 @@ public class Managers {
     }
 
     private void loadEconomyManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY), "Economy")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_ECONOMY), "Economy")) {
             CommandManager.registerCommand(new Economy());
         }
     }
 
     private void loadElevatorManager() {
-        sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_ELEVATOR), "Elevator");
+        sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_ELEVATOR), "Elevator");
     }
 
     private void loadExperienceManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_EXPERIENCE), "Experience"))
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_EXPERIENCE), "Experience"))
             CommandManager.registerCommand(new Experience());
     }
 
@@ -177,59 +178,59 @@ public class Managers {
     }
 
     private void loadHomesManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_HOMES), "Homes")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_HOMES), "Homes")) {
             CommandManager.registerCommand(new Home());
         }
     }
 
     private void loadKitManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_KITS), "Kits")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_KITS), "Kits")) {
             CommandManager.registerCommand(new Kit());
         }
     }
 
     private void loadPlayerChecks() {
         sendModuleStatus(true, "PlayerChecks");
-        if (EterniaServer.getBoolean(ConfigBooleans.ASYNC_CHECK)) {
-            new PluginTick(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.getInteger(ConfigIntegers.PLUGIN_TICKS) * 20);
+        if (EterniaServer.getBoolean(Booleans.ASYNC_CHECK)) {
+            new PluginTick(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20);
             return;
         }
-        new PluginTick(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(ConfigIntegers.PLUGIN_TICKS) * 20);
+        new PluginTick(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20);
     }
 
     private void loadClearManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_CLEAR), "Mob Control")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_CLEAR), "Mob Control")) {
             new PluginClearSchedule().runTaskTimer(plugin, 20L, 600L);
         }
     }
 
     private void loadRewardsManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_REWARDS), "Rewards")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_REWARDS), "Rewards")) {
             CommandManager.registerCommand(new Reward());
         }
     }
 
     private void loadSpawnersManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS), "Spawners")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS), "Spawners")) {
             CommandManager.registerCommand(new Spawner());
         }
     }
 
     private void loadTeleportsManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_TELEPORTS), "Teleports")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS), "Teleports")) {
             CommandManager.registerCommand(new Warp());
             CommandManager.registerCommand(new Teleport());
         }
     }
 
     private void loadScheduleTasks() {
-        if (sendModuleStatus(EterniaServer.getBoolean(ConfigBooleans.MODULE_SCHEDULE), "Schedule")) {
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_SCHEDULE), "Schedule")) {
             long start = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.of(
-                    EterniaServer.getInteger(ConfigIntegers.SCHEDULE_HOUR),
-                    EterniaServer.getInteger(ConfigIntegers.SCHEDULE_MINUTE),
-                    EterniaServer.getInteger(ConfigIntegers.SCHEDULE_SECONDS)));
+                    EterniaServer.getInteger(Integers.SCHEDULE_HOUR),
+                    EterniaServer.getInteger(Integers.SCHEDULE_MINUTE),
+                    EterniaServer.getInteger(Integers.SCHEDULE_SECONDS)));
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.scheduleWithFixedDelay(new PluginSchedule(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.getInteger(ConfigIntegers.SCHEDULE_DELAY)), TimeUnit.MILLISECONDS);
+            scheduler.scheduleWithFixedDelay(new PluginSchedule(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.getInteger(Integers.SCHEDULE_DELAY)), TimeUnit.MILLISECONDS);
         }
     }
 

@@ -4,8 +4,8 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.ChatFormatter;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
@@ -47,7 +47,7 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCreatureSpawn(PreCreatureSpawnEvent event) {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CLEAR)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_CLEAR)) {
             int amount = 0;
             EntityType entity = event.getType();
             for (Entity e : event.getSpawnLocation().getChunk().getEntities()) {
@@ -69,10 +69,10 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_CHAT)) {
             User user = new User(e.getPlayer());
 
-            if (APIServer.isChatMuted() && !user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_MUTE_BYPASS))) {
+            if (APIServer.isChatMuted() && !user.hasPermission(EterniaServer.getString(Strings.PERM_MUTE_BYPASS))) {
                 user.sendMessage(Messages.CHAT_CHANNELS_MUTED);
                 e.setCancelled(true);
             } else {
@@ -89,7 +89,7 @@ public class ServerHandler implements Listener {
 
     private boolean getChannel(AsyncPlayerChatEvent e, User user, String message) {
         message = canHex(user, message);
-        if (user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_BYPASS_PROTECTION))) {
+        if (user.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_BYPASS_PROTECTION))) {
             message = EterniaServer.getFilter().matcher(message).replaceAll("");
         }
         Set<Player> players = e.getRecipients();
@@ -117,7 +117,7 @@ public class ServerHandler implements Listener {
     }
 
     private String canHex(User user, String message) {
-        if (APIServer.getVersion() >= 116 && user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_CHAT_COLOR))) {
+        if (APIServer.getVersion() >= 116 && user.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
             Matcher matcher = colorPattern.matcher(message);
             if (matcher.find()) {
                 StringBuffer buffer = new StringBuffer();

@@ -10,9 +10,9 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -122,14 +122,14 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        if (user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_BACK_FREE)) || !EterniaServer.getBoolean(ConfigBooleans.MODULE_ECONOMY)) {
+        if (user.hasPermission(EterniaServer.getString(Strings.PERM_BACK_FREE)) || !EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
             return;
         }
 
-        if (APIEconomy.hasMoney(user.getUUID(), EterniaServer.getDouble(ConfigDoubles.BACK_COST))) {
-            APIEconomy.removeMoney(user.getUUID(), EterniaServer.getDouble(ConfigDoubles.BACK_COST));
-            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.getDouble(ConfigDoubles.BACK_COST)))));
+        if (APIEconomy.hasMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST))) {
+            APIEconomy.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST));
+            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.getDouble(Doubles.BACK_COST)))));
             return;
         }
 

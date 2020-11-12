@@ -52,11 +52,15 @@ public interface APIServer {
 
     static Scoreboard getScoreboard() {
         if (Vars.getScoreboard() == null) {
+            List<ChatColor> colorss = List.of(ChatColor.BLACK, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN,
+                    ChatColor.DARK_AQUA, ChatColor.DARK_RED, ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GRAY,
+                    ChatColor.DARK_GRAY, ChatColor.BLUE, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE,
+                    ChatColor.YELLOW, ChatColor.WHITE);
             Scoreboard tempScoreBoard = Bukkit.getScoreboardManager().getMainScoreboard();
             List<Colors> colors = Arrays.asList(Colors.values());
             for (int i = 0; i < 16; i++) {
                 if (tempScoreBoard.getTeam(colors.get(i).name()) == null) {
-                    tempScoreBoard.registerNewTeam(colors.get(i).name()).setColor(Vars.colors.get(i));
+                    tempScoreBoard.registerNewTeam(colors.get(i).name()).setColor(colorss.get(i));
                 }
             }
             Vars.setScoreboard(tempScoreBoard);

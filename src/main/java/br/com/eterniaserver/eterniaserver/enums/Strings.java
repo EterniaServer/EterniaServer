@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
-public enum ConfigStrings {
+public enum Strings {
 
     TABLE_KITS,
     TABLE_PLAYER,
@@ -77,6 +77,7 @@ public enum ConfigStrings {
     CONS_MENTION_TITLE,
     CONS_MENTION_SUBTITLE,
     CONS_SPY,
-    CONS_SPY_LOCAL
+    CONS_SPY_LOCAL,
+    SPAWNERS_COLORS
 
 }

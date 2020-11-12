@@ -9,7 +9,7 @@ import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
@@ -27,7 +27,7 @@ public class Kit extends BaseCommand {
 
     public Kit() {
         try (Connection connection = SQL.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_KITS)).queryString());
+            PreparedStatement statement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_KITS)).queryString());
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
             while (resultSet.next()) {
@@ -58,7 +58,7 @@ public class Kit extends BaseCommand {
     @CommandPermission("%kit_perm")
     public void onKit(Player player, String kit) {
         if (EterniaServer.getKitList().containsKey(kit)) {
-            if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_KIT_PREFIX) + kit)) {
+            if (player.hasPermission(EterniaServer.getString(Strings.PERM_KIT_PREFIX) + kit)) {
                 giveKit(player, kit);
             } else {
                 EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
@@ -84,7 +84,7 @@ public class Kit extends BaseCommand {
             }
             APIServer.putKitCooldown(kitName, time);
 
-            Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+            Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
             update.set.set("cooldown", time);
             update.where.set("name", kitName);
             SQL.executeAsync(update);

@@ -1,11 +1,11 @@
 package br.com.eterniaserver.eterniaserver.configurations;
 
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
-import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -41,27 +41,27 @@ public class GenericCfg {
         }
     }
 
-    protected void setBoolean(ConfigBooleans configBooleans, FileConfiguration file, FileConfiguration outFile, String key, boolean defaultValue) {
+    protected void setBoolean(Booleans configBooleans, FileConfiguration file, FileConfiguration outFile, String key, boolean defaultValue) {
         booleans[configBooleans.ordinal()] = file.getBoolean(key, defaultValue);
         outFile.set(key, booleans[configBooleans.ordinal()]);
     }
 
-    protected void setString(ConfigStrings configStrings, FileConfiguration file, FileConfiguration outFile, String key, String defaultValue) {
+    protected void setString(Strings configStrings, FileConfiguration file, FileConfiguration outFile, String key, String defaultValue) {
         strings[configStrings.ordinal()] = file.getString(key, defaultValue).replace('$', (char) 0x00A7);
         outFile.set(key, strings[configStrings.ordinal()]);
     }
 
-    protected void setInteger(ConfigIntegers configIntegers, FileConfiguration file, FileConfiguration outFile, String key, int defaultValue) {
+    protected void setInteger(Integers configIntegers, FileConfiguration file, FileConfiguration outFile, String key, int defaultValue) {
         integers[configIntegers.ordinal()] = file.getInt(key, defaultValue);
         outFile.set(key, integers[configIntegers.ordinal()]);
     }
 
-    protected void setDouble(ConfigDoubles configDoubles, FileConfiguration file, FileConfiguration outFile, String key, double defaultValue) {
+    protected void setDouble(Doubles configDoubles, FileConfiguration file, FileConfiguration outFile, String key, double defaultValue) {
         doubles[configDoubles.ordinal()] = file.getDouble(key, defaultValue);
         outFile.set(key, doubles[configDoubles.ordinal()]);
     }
 
-    protected void setList(ConfigLists configLists, FileConfiguration file, FileConfiguration outFile, String key, String... values) {
+    protected void setList(Lists configLists, FileConfiguration file, FileConfiguration outFile, String key, String... values) {
         List<String> list = file.getStringList(key);
         if (list.isEmpty()) {
             list.addAll(Arrays.asList(values));

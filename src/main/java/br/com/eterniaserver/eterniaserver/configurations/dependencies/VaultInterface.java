@@ -4,7 +4,7 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -225,7 +225,7 @@ public class VaultInterface implements Economy {
     }
 
     private EconomyResponse createUnsupportedResponse() {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, EterniaServer.getString(ConfigStrings.NOT_SUPPORTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, EterniaServer.getString(Strings.NOT_SUPPORTED));
     }
 
     @Override

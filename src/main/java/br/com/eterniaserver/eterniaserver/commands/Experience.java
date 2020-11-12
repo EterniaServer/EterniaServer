@@ -6,7 +6,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 
@@ -106,7 +106,7 @@ public class Experience extends BaseCommand {
 
         ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(EterniaServer.getString(ConfigStrings.BOTTLE_EXP_NAME));
+        meta.setDisplayName(EterniaServer.getString(Strings.BOTTLE_EXP_NAME));
         item.setItemMeta(meta);
         item.setLore(Collections.singletonList(String.valueOf(xpWant)));
         PlayerInventory inventory = player.getInventory();

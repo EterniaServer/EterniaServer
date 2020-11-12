@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver;
 
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import org.bukkit.command.CommandSender;
 
@@ -42,7 +42,7 @@ public class Constants {
         }
 
         if (prefix) {
-            return EterniaServer.getString(ConfigStrings.SERVER_PREFIX) + message;
+            return EterniaServer.getString(Strings.SERVER_PREFIX) + message;
         }
 
         return message;

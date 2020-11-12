@@ -2,10 +2,9 @@ package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.objects.AbstractCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -35,7 +34,7 @@ public class CustomCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_COMMANDS)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_COMMANDS)) {
             checkCommands((Player) sender, commandString);
             return true;
         }
@@ -43,7 +42,7 @@ public class CustomCommand extends AbstractCommand {
     }
 
     private void checkCommands(final Player player, final String cmd) {
-        if (player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_BASE_COMMAND) + cmd)) {
+        if (player.hasPermission(EterniaServer.getString(Strings.PERM_BASE_COMMAND) + cmd)) {
             for (String line : commandsStrings) {
                 if (console) {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIServer.setPlaceholders(player, line));

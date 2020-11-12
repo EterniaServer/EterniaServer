@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
-public enum  ConfigBooleans {
+public enum Booleans {
 
     MODULE_BED,
     MODULE_BLOCK,

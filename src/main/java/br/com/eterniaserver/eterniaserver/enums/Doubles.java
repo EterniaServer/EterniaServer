@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
-public enum ConfigDoubles {
+public enum Doubles {
 
     START_MONEY,
     BACK_COST,

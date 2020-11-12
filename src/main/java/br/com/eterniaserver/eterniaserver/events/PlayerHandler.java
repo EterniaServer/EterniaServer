@@ -5,10 +5,10 @@ import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
-import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
@@ -56,7 +56,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_HOMES) && !EterniaServer.getBoolean(ConfigBooleans.MODULE_EXPERIENCE) && !EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_HOMES) && !EterniaServer.getBoolean(Booleans.MODULE_EXPERIENCE) && !EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)) return;
 
         User user = new User(event.getPlayer());
         final Action action = event.getAction();
@@ -75,16 +75,16 @@ public class PlayerHandler implements Listener {
                 });
             }
         }
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_SPAWNERS) && event.getClickedBlock() != null
+        if (EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS) && event.getClickedBlock() != null
                 && action.equals(Action.RIGHT_CLICK_BLOCK) && event.getItem() != null
                 && event.getClickedBlock().getType() == Material.SPAWNER
-                && !user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPAWNERS_CHANGE))) {
+                && !user.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_CHANGE))) {
             event.setCancelled(true);
         }
     }
 
     private void loadModuleExp(ItemStack is, List<String> lore, User user) {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_EXPERIENCE) && is.getType().equals(Material.EXPERIENCE_BOTTLE)
+        if (EterniaServer.getBoolean(Booleans.MODULE_EXPERIENCE) && is.getType().equals(Material.EXPERIENCE_BOTTLE)
                 && lore != null) {
             user.setItemInMainHand(new ItemStack(Material.AIR));
             user.giveExp(Integer.parseInt(lore.get(0)));
@@ -92,7 +92,7 @@ public class PlayerHandler implements Listener {
     }
 
     private boolean loadHomes(ItemStack is, List<String> lore, User user) {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_HOMES) && is.getType().equals(Material.COMPASS)
+        if (EterniaServer.getBoolean(Booleans.MODULE_HOMES) && is.getType().equals(Material.COMPASS)
                 && lore != null) {
             final String[] isso = lore.get(0).split(":");
             final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
@@ -111,7 +111,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.NORMAL)
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_TELEPORTS)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS)) {
             final Player player = event.getEntity();
             new User(player).putBackLocation(player.getLocation());
         }
@@ -121,21 +121,21 @@ public class PlayerHandler implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
 
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_TELEPORTS)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS)) {
             new User(event.getPlayer()).putBackLocation(event.getFrom());
         }
     }
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_TELEPORTS) && APIServer.hasLocation("warp.spawn") && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && APIServer.hasLocation("warp.spawn") && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
             event.setSpawnLocation(APIServer.getLocation("warp.spawn"));
         }
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_TELEPORTS) && APIServer.hasLocation("warp.spawn")) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && APIServer.hasLocation("warp.spawn")) {
             event.setRespawnLocation(APIServer.getLocation("warp.spawn"));
         }
     }
@@ -145,7 +145,7 @@ public class PlayerHandler implements Listener {
         User user = new User(event.getPlayer());
         user.clear();
 
-        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("hours", user.getAndUpdateTimePlayed());
         update.where.set("uuid", user.getUUID().toString());
         SQL.executeAsync(update);
@@ -163,7 +163,7 @@ public class PlayerHandler implements Listener {
             event.setCancelled(true);
             return;
         }
-        for (String line : EterniaServer.getStringList(ConfigLists.BLACKLISTED_COMMANDS)) {
+        for (String line : EterniaServer.getStringList(Lists.BLACKLISTED_COMMANDS)) {
             if (message.startsWith(line)) {
                 event.setCancelled(true);
                 return;
@@ -173,7 +173,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
-        if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_BED)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_BED)) return;
 
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             User user = new User(event.getPlayer());
@@ -186,7 +186,7 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerBedLeave(PlayerBedLeaveEvent event) {
-        if (!EterniaServer.getBoolean(ConfigBooleans.MODULE_BED)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_BED)) return;
 
         User user = new User(event.getPlayer());
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - user.getBedCooldown()) > 6) {
@@ -197,15 +197,15 @@ public class PlayerHandler implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         final Player player = event.getPlayer();
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_ELEVATOR)) && !player.isSneaking()) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(Strings.PERM_ELEVATOR)) && !player.isSneaking()) {
             Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
             for (Object valueObject : EterniaServer.getElevatorMaterials()) {
                 Material value = (Material) valueObject;
                 if (value == material) {
-                    block = block.getRelative(BlockFace.DOWN, EterniaServer.getInteger(ConfigIntegers.ELEVATOR_MIN));
+                    block = block.getRelative(BlockFace.DOWN, EterniaServer.getInteger(Integers.ELEVATOR_MIN));
                     int i;
-                    for (i = EterniaServer.getInteger(ConfigIntegers.ELEVATOR_MAX); i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.DOWN)) --i;
+                    for (i = EterniaServer.getInteger(Integers.ELEVATOR_MAX); i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.DOWN)) --i;
                     elevatorDown(player, i);
                     break;
                 }
@@ -216,15 +216,15 @@ public class PlayerHandler implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerJump(PlayerJumpEvent event) {
         final Player player = event.getPlayer();
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(ConfigStrings.PERM_ELEVATOR))) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(Strings.PERM_ELEVATOR))) {
             Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
             for (Object valueObject : EterniaServer.getElevatorMaterials()) {
                 Material value = (Material) valueObject;
                 if (value == material) {
-                    block = block.getRelative(BlockFace.UP, EterniaServer.getInteger(ConfigIntegers.ELEVATOR_MIN));
+                    block = block.getRelative(BlockFace.UP, EterniaServer.getInteger(Integers.ELEVATOR_MIN));
                     int i;
-                    for (i = EterniaServer.getInteger(ConfigIntegers.ELEVATOR_MAX); i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) -- i;
+                    for (i = EterniaServer.getInteger(Integers.ELEVATOR_MAX); i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) -- i;
                     elevatorUp(player, i);
                     break;
                 }
@@ -246,8 +246,8 @@ public class PlayerHandler implements Listener {
             user.updateProfile();
         }
 
-        if (EterniaServer.getBoolean(ConfigBooleans.MODULE_CHAT)) {
-            if (user.hasPermission(EterniaServer.getString(ConfigStrings.PERM_SPY))) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_CHAT)) {
+            if (user.hasPermission(EterniaServer.getString(Strings.PERM_SPY))) {
                 user.changeSpyState();
             }
             user.setDisplayName();
@@ -258,7 +258,7 @@ public class PlayerHandler implements Listener {
         }
 
         if (user.getChannel() == 0) {
-            user.setChannel(EterniaServer.getInteger(ConfigIntegers.DEFAULT_CHANNEL));
+            user.setChannel(EterniaServer.getInteger(Integers.DEFAULT_CHANNEL));
         }
 
         user.updateAfkTime();
@@ -268,7 +268,7 @@ public class PlayerHandler implements Listener {
     private void elevatorUp(final Player player, final int i) {
         if (i > 0) {
             Location location = player.getLocation();
-            location.setY((location.getY() + EterniaServer.getInteger(ConfigIntegers.ELEVATOR_MAX) + 3.0D - (double) i) - 1);
+            location.setY((location.getY() + EterniaServer.getInteger(Integers.ELEVATOR_MAX) + 3.0D - (double) i) - 1);
             PaperLib.teleportAsync(player, location);
             player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
         }
@@ -277,7 +277,7 @@ public class PlayerHandler implements Listener {
     private void elevatorDown(final Player player, final int i) {
         if (i > 0) {
             Location location = player.getLocation();
-            location.setY((location.getY() - EterniaServer.getInteger(ConfigIntegers.ELEVATOR_MAX) - 3.0D + (double) i) + 1);
+            location.setY((location.getY() - EterniaServer.getInteger(Integers.ELEVATOR_MAX) - 3.0D + (double) i) + 1);
             PaperLib.teleportAsync(player, location);
             player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.D));
         }

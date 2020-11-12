@@ -18,7 +18,7 @@ import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Bukkit;
@@ -67,7 +67,7 @@ public class Mute extends BaseCommand {
         long time = cal.getTimeInMillis();
         Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_MUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName(), message));
 
-        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("time", time);
         update.where.set("uuid", target.getUUID().toString());
         SQL.executeAsync(update);
@@ -87,7 +87,7 @@ public class Mute extends BaseCommand {
         target.putMutedTime(time);
         Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_UNMUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName()));
 
-        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("time", time);
         update.where.set("uuid", target.getUUID().toString());
         SQL.executeAsync(update);
@@ -107,7 +107,7 @@ public class Mute extends BaseCommand {
 
         Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_TEMP_MUTE, true, target.getName(), target.getDisplayName(), String.valueOf(time), player.getName(), player.getDisplayName(), message));
 
-        Update update = new Update(EterniaServer.getString(ConfigStrings.TABLE_PLAYER));
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("time", time);
         update.where.set("uuid", target.getUUID().toString());
         SQL.executeAsync(update);

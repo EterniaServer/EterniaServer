@@ -10,8 +10,8 @@ import br.com.eterniaserver.eternialib.sql.queries.Delete;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigChanceMaps;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 
@@ -32,7 +32,7 @@ public class Reward extends BaseCommand {
 
     public Reward() {
         try (Connection connection = SQL.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(new Select(EterniaServer.getString(ConfigStrings.TABLE_REWARD)).queryString());
+            PreparedStatement statement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_REWARD)).queryString());
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
             while (resultSet.next()) {
@@ -65,7 +65,7 @@ public class Reward extends BaseCommand {
     @Description("%genkey_description")
     @CommandPermission("%genkey_perm")
     public void onGenKey(CommandSender sender, String reward) {
-        if (EterniaServer.getChanceMap(ConfigChanceMaps.REWARDS).containsKey(reward)) {
+        if (EterniaServer.getChanceMap(ChanceMaps.REWARDS).containsKey(reward)) {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
@@ -77,20 +77,20 @@ public class Reward extends BaseCommand {
     }
 
     private void createKey(final String grupo, String key) {
-        Insert insert = new Insert(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+        Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS));
         insert.columns.set("code", "group_name");
         insert.values.set(key, grupo);
         SQL.executeAsync(insert);
     }
 
     private void deleteKey(final String key) {
-        Delete delete = new Delete(EterniaServer.getString(ConfigStrings.TABLE_LOCATIONS));
+        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
         delete.where.set("code", key);
         SQL.executeAsync(delete);
     }
 
     private void giveReward(String group, Player player) {
-        EterniaServer.getChanceMap(ConfigChanceMaps.REWARDS).get(group).forEach((chance, lista) -> {
+        EterniaServer.getChanceMap(ChanceMaps.REWARDS).get(group).forEach((chance, lista) -> {
             random.nextBytes(bytes);
             if (random.nextDouble() <= chance) {
                 for (String command : lista) {

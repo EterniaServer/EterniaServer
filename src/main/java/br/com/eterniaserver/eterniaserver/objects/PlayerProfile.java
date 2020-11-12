@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class PlayerProfile {
 
     public boolean isOnPvP() {
         if (onPvP == 0) return false;
-        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP) < EterniaServer.getInteger(ConfigIntegers.PVP_TIME);
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP) < EterniaServer.getInteger(Integers.PVP_TIME);
     }
 
     public void setIsOnPvP() {

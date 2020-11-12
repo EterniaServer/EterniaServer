@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.configurations.locales;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 
@@ -211,7 +211,7 @@ public class MsgCfg {
             final String path = getPath(messagesEnum);
 
             if (messageData == null) {
-                messageData = new CustomizableMessage(messagesEnum, EterniaServer.getString(ConfigStrings.SERVER_PREFIX) +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
+                messageData = new CustomizableMessage(messagesEnum, EterniaServer.getString(Strings.SERVER_PREFIX) +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
                 APIServer.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
             }
 

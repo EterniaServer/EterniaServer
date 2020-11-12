@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,10 +23,10 @@ public class ScheduleCfg extends GenericCfg {
         FileConfiguration scheduleConfig = YamlConfiguration.loadConfiguration(new File(Constants.SCHEDULE_FILE_PATH));
         FileConfiguration outSchedule = new YamlConfiguration();
 
-        setInteger(ConfigIntegers.SCHEDULE_HOUR, scheduleConfig, outSchedule, "schedule.hour", 10);
-        setInteger(ConfigIntegers.SCHEDULE_MINUTE, scheduleConfig, outSchedule, "schedule.minute", 10);
-        setInteger(ConfigIntegers.SCHEDULE_SECONDS, scheduleConfig, outSchedule, "schedule.second", 10);
-        setInteger(ConfigIntegers.SCHEDULE_DELAY, scheduleConfig, outSchedule, "schedule.delay", 1);
+        setInteger(Integers.SCHEDULE_HOUR, scheduleConfig, outSchedule, "schedule.hour", 10);
+        setInteger(Integers.SCHEDULE_MINUTE, scheduleConfig, outSchedule, "schedule.minute", 10);
+        setInteger(Integers.SCHEDULE_SECONDS, scheduleConfig, outSchedule, "schedule.second", 10);
+        setInteger(Integers.SCHEDULE_DELAY, scheduleConfig, outSchedule, "schedule.delay", 1);
 
         Map<Integer, List<String>> tempMapForAll = new HashMap<>();
         tempMapForAll.put(0, new ArrayList<>());

@@ -17,7 +17,7 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Bukkit;
@@ -87,12 +87,12 @@ public class Chat extends BaseCommand {
     public void onVanish(Player player) {
         User user = new User(player);
         if (user.isVanished()) {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGIN, true, player.getName(), player.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.showPlayer(plugin, player);
             }
         } else {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGOUT, true, player.getName(), player.getDisplayName()));
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGOUT, true, user.getName(), user.getDisplayName()));
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.hidePlayer(plugin, player);
             }
@@ -145,7 +145,7 @@ public class Chat extends BaseCommand {
 
         if (targets == null) {
             user.setChannel(0);
-            user.sendMessage(Messages.CHAT_CHANNEL_CHANGED, EterniaServer.getString(ConfigStrings.CONS_LOCAL));
+            user.sendMessage(Messages.CHAT_CHANNEL_CHANGED, EterniaServer.getString(Strings.CONS_LOCAL));
             return;
         }
 

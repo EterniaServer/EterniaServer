@@ -13,12 +13,12 @@ import br.com.eterniaserver.eterniaserver.configurations.configs.ScheduleCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.TableCfg;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.Placeholders;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.VaultHook;
-import br.com.eterniaserver.eterniaserver.enums.ConfigBooleans;
-import br.com.eterniaserver.eterniaserver.enums.ConfigChanceMaps;
-import br.com.eterniaserver.eterniaserver.enums.ConfigDoubles;
-import br.com.eterniaserver.eterniaserver.enums.ConfigIntegers;
-import br.com.eterniaserver.eterniaserver.enums.ConfigLists;
-import br.com.eterniaserver.eterniaserver.enums.ConfigStrings;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
+import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.events.BlockHandler;
 import br.com.eterniaserver.eterniaserver.events.EntityHandler;
@@ -45,11 +45,11 @@ public class EterniaServer extends JavaPlugin {
 
     private static Pattern filter;
 
-    private static final String[] strings = new String[ConfigStrings.values().length];
+    private static final String[] strings = new String[Strings.values().length];
     private static final String[] messages = new String[Messages.values().length];
-    private static final Boolean[] booleans = new Boolean[ConfigBooleans.values().length];
-    private static final Integer[] integers = new Integer[ConfigIntegers.values().length];
-    private static final Double[] doubles = new Double[ConfigDoubles.values().length];
+    private static final Boolean[] booleans = new Boolean[Booleans.values().length];
+    private static final Integer[] integers = new Integer[Integers.values().length];
+    private static final Double[] doubles = new Double[Doubles.values().length];
 
     private static final List<List<String>> stringLists = new ArrayList<>();
     private static final List<Material> elevatorMaterials = new ArrayList<>();
@@ -69,11 +69,11 @@ public class EterniaServer extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        for (int i = 0; i < ConfigLists.values().length; i++) {
+        for (int i = 0; i < Lists.values().length; i++) {
             stringLists.add(new ArrayList<>());
         }
 
-        for (int i = 0; i < ConfigChanceMaps.values().length; i++) {
+        for (int i = 0; i < ChanceMaps.values().length; i++) {
             chanceMaps.add(new HashMap<>());
         }
 
@@ -140,19 +140,19 @@ public class EterniaServer extends JavaPlugin {
         new ScheduleCfg(scheduleMap, integers);
     }
 
-    public static String getString(ConfigStrings configName) {
+    public static String getString(Strings configName) {
         return strings[configName.ordinal()];
     }
 
-    public static boolean getBoolean(ConfigBooleans configName) {
+    public static boolean getBoolean(Booleans configName) {
         return booleans[configName.ordinal()];
     }
 
-    public static int getInteger(ConfigIntegers configName) {
+    public static int getInteger(Integers configName) {
         return integers[configName.ordinal()];
     }
 
-    public static double getDouble(ConfigDoubles configName) {
+    public static double getDouble(Doubles configName) {
         return doubles[configName.ordinal()];
     }
 
@@ -164,7 +164,7 @@ public class EterniaServer extends JavaPlugin {
         return filter;
     }
 
-    public static List<String> getStringList(ConfigLists configName) {
+    public static List<String> getStringList(Lists configName) {
         return stringLists.get(configName.ordinal());
     }
 
@@ -208,7 +208,7 @@ public class EterniaServer extends JavaPlugin {
         return channelsMap;
     }
 
-    public static Map<String, Map<Double, List<String>>> getChanceMap(ConfigChanceMaps configName) {
+    public static Map<String, Map<Double, List<String>>> getChanceMap(ChanceMaps configName) {
         return chanceMaps.get(configName.ordinal());
     }
 
