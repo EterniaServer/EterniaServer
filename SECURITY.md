@@ -73,6 +73,9 @@
     </tbody>
 </table>
 
+:heavy_check_mark: = Suporte com todas funcionalidades.
+:white_check_mark: = Suporte.
+
 ## Como reportar uma vulnerabilidade
 
 Abra um issue informando onde está a vulnerabilidade e por que é uma vulnerabilidade.
