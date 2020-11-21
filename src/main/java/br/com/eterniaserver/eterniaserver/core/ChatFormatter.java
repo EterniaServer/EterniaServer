@@ -31,12 +31,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ChatFormatter {
 
 	public void filter(User user, String message, ChannelObject channelObject, Set<Player> players) {
+		if (channelObject == null) {
+			channelObject = EterniaServer.getChannelsMap().get(EterniaServer.getString(Strings.DEFAULT_CHANNEL).hashCode());
+		}
+
 		if (!user.hasPermission(channelObject.getPerm())) {
 			user.sendMessage(Messages.SERVER_NO_PERM);
 			return;
 		}
 
-		BaseComponent[] baseComponents = customPlaceholder(user.getPlayer(), channelObject.getFormat(), message);
+		BaseComponent[] baseComponents = customPlaceholder(user.getPlayer(), channelObject.getFormat(), channelObject.getChannelColor(), message);
 
 		if (channelObject.isHasRange()) {
 			int pes = 0;
@@ -61,9 +65,10 @@ public class ChatFormatter {
 				}
 			}
 		}
+		players.clear();
 	}
 
-	private BaseComponent[] customPlaceholder(Player player, String format, String message) {
+	private BaseComponent[] customPlaceholder(Player player, String format, String channelColor, String message) {
 		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
 			message = message.replace('&', (char) 0x00A7);
 		}
@@ -75,6 +80,7 @@ public class ChatFormatter {
 		});
 
 		String[] messageSplited = message.split(" ");
+		messageSplited[0] = channelColor + messageSplited[0];
 
 		for (int i = 0; i < messageSplited.length; i++) {
 			if (i > 0) {
@@ -88,34 +94,38 @@ public class ChatFormatter {
 		textComponentMap.forEach((id, component) -> baseComponents[integer.getAndIncrement()] = component);
 
 		for (String actualMsg : messageSplited) {
-			baseComponents[integer.getAndIncrement()] = getComponent(actualMsg, player);
+			baseComponents[integer.getAndIncrement()] = getComponent(actualMsg, channelColor, player);
 		}
 
 		return baseComponents;
 	}
 
-	private TextComponent getComponent(String actualMsg, Player player) {
-		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_MENTION)) && actualMsg.contains(EterniaServer.getString(Strings.MENTION_PLACEHOLDER)) && Vars.playersName.containsKey(actualMsg)) {
-			Player target = Bukkit.getPlayer(Vars.playersName.get(actualMsg));
-			actualMsg = "§3" + actualMsg + "§f";
+	private TextComponent getComponent(String actualMsg, String channelColor, Player player) {
+		String msg = ChatColor.stripColor(actualMsg);
+
+		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_MENTION)) && msg.contains(EterniaServer.getString(Strings.MENTION_PLACEHOLDER)) && Vars.playersName.containsKey(msg)) {
+			Player target = Bukkit.getPlayer(Vars.playersName.get(msg));
+			msg = "§3" + msg + channelColor;
 			if (target != null && target.isOnline()) {
 				target.playNote(target.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
 				target.sendTitle(EterniaServer.getString(Strings.CONS_MENTION_TITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()),
 						EterniaServer.getString(Strings.CONS_MENTION_SUBTITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()), 10, 40, 10);
 			}
+			return new TextComponent(msg + " ");
+		}
+
+		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_ITEM)) && msg.equals(EterniaServer.getString(Strings.SHOW_ITEM_PLACEHOLDER))) {
+			ItemStack itemStack = player.getInventory().getItemInMainHand();
+			if (!itemStack.getType().equals(Material.AIR)) {
+				return sendItemInHand(msg + " ", itemStack);
+			}
+		}
+
+		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
 			return new TextComponent(actualMsg + " ");
 		}
 
-		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_ITEM)) && actualMsg.equals(EterniaServer.getString(Strings.SHOW_ITEM_PLACEHOLDER))) {
-			ItemStack itemStack = player.getInventory().getItemInMainHand();
-			if (!itemStack.getType().equals(Material.AIR)) {
-				return sendItemInHand(actualMsg + " ", itemStack);
-			}
-		}
-		if (!player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
-			actualMsg = ChatColor.stripColor(actualMsg);
-		}
-		return new TextComponent(actualMsg + " ");
+		return new TextComponent(msg + " ");
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {

@@ -84,7 +84,7 @@ public class Kit extends BaseCommand {
             }
             APIServer.putKitCooldown(kitName, time);
 
-            Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+            Update update = new Update(EterniaServer.getString(Strings.TABLE_KITS));
             update.set.set("cooldown", time);
             update.where.set("name", kitName);
             SQL.executeAsync(update);

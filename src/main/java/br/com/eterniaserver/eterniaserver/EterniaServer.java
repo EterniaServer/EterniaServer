@@ -121,7 +121,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     public void chat() {
-        new ChatCfg(customPlaceholdersObjectsMap, channelsMap, channels, integers);
+        new ChatCfg(customPlaceholdersObjectsMap, channelsMap, channels, integers, strings);
     }
 
     public void kits() {

@@ -1,7 +1,5 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
-import java.util.List;
-
 public enum  Entities {
 
     BEE,

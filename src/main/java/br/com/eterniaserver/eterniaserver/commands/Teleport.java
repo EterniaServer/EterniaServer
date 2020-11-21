@@ -9,6 +9,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIEconomy;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
@@ -35,22 +36,24 @@ public class Teleport extends BaseCommand {
     public void onTeleportAccept(Player player) {
         User user = new User(player);
 
-        if (!user.hasTpaRequest()) {
+        if (!APIServer.hasTpaRequest(user.getUUID())) {
             user.sendMessage(Messages.TELEPORT_NOT_REQUESTED);
             return;
         }
 
-        Player target = Bukkit.getPlayer(user.getTpaSender());
+        Player targets = Bukkit.getPlayer(APIServer.getTpaSender(user.getUUID()));
 
-        if (target == null) {
+        if (targets == null) {
             user.sendMessage(Messages.TELEPORT_TARGET_OFFLINE);
             return;
         }
 
-        new User(target).putInTeleport(new PlayerTeleport(target, player.getLocation(), EterniaServer.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
-        EterniaServer.sendMessage(target, Messages.TELEPORT_TARGET_ACCEPT, user.getName(), user.getDisplayName());
+        User target = new User(targets);
+
+        target.putInTeleport(new PlayerTeleport(targets, player.getLocation(), EterniaServer.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
+        EterniaServer.sendMessage(targets, Messages.TELEPORT_TARGET_ACCEPT, user.getName(), user.getDisplayName());
         user.sendMessage(Messages.TELEPORT_ACCEPT, target.getName(), target.getDisplayName());
-        user.removeTpaRequest();
+        APIServer.removeTpaRequest(user.getUUID());
     }
 
     @CommandAlias("%tpa_deny")
@@ -59,12 +62,12 @@ public class Teleport extends BaseCommand {
     public void onTeleportDeny(Player player) {
         User user = new User(player);
 
-        if (!user.hasTpaRequest()) {
+        if (!APIServer.hasTpaRequest(user.getUUID())) {
             user.sendMessage(Messages.TELEPORT_NOT_REQUESTED);
             return;
         }
 
-        Player target = Bukkit.getPlayer(user.getTpaSender());
+        Player target = Bukkit.getPlayer(APIServer.getTpaSender(user.getUUID()));
 
         if (target == null) {
             user.sendMessage(Messages.TELEPORT_TARGET_OFFLINE);
@@ -73,7 +76,7 @@ public class Teleport extends BaseCommand {
 
         EterniaServer.sendMessage(target, Messages.TELEPORT_TARGET_DENIED, user.getName(), user.getDisplayName());
         user.sendMessage(Messages.TELEPORT_DENIED, target.getName(), target.getDisplayName());
-        user.removeTpaRequest();
+        APIServer.removeTpaRequest(user.getUUID());
     }
 
     @CommandAlias("%tpa")
@@ -96,12 +99,12 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        if (target.hasTpaRequest()) {
+        if (APIServer.hasTpaRequest(target.getUUID())) {
             user.sendMessage(Messages.TELEPORT_ALREADY_REQUESTED, target.getName(), target.getDisplayName());
             return;
         }
 
-        target.putTpaRequest(user.getUUID());
+        APIServer.putTpaRequest(target.getUUID(), user.getUUID());
         target.sendMessage(Messages.TELEPORT_RECEIVED, user.getName(), user.getDisplayName());
         user.sendMessage(Messages.TELEPORT_SENT, target.getName(), target.getDisplayName());
     }

@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
 
 public class ChatCfg extends GenericCfg {
 
-    public ChatCfg(Map<String, CustomPlaceholder> customPlaceholdersObjectsMap, Map<Integer, ChannelObject> channelObjectMap, List<String> channels, Integer[] integers) {
-        super(null, null, integers, null, null);
+    public ChatCfg(Map<String, CustomPlaceholder> customPlaceholdersObjectsMap, Map<Integer, ChannelObject> channelObjectMap, List<String> channels, Integer[] integers, String[] strings) {
+        super(strings, null, integers, null, null);
 
         channelObjectMap.clear();
         customPlaceholdersObjectsMap.clear();
@@ -31,7 +31,7 @@ public class ChatCfg extends GenericCfg {
         FileConfiguration outChat = new YamlConfiguration();
 
         Map<Integer, ChannelObject> tempChannelMap = new HashMap<>();
-        tempChannelMap.put("global".hashCode(), new ChannelObject("{global}{clan}{sufix}{prefix}{player}{marry}{separator}", "global", "eternia.chat.global", false, 0));
+        tempChannelMap.put("global".hashCode(), new ChannelObject("{global}{clan}{sufix}{prefix}{player}{marry}{separator}", "global", "eternia.chat.global", "$f", false, 0));
 
         Set<String> lista = null;
         if (chatConfig.getConfigurationSection("channels") != null) {
@@ -42,6 +42,7 @@ public class ChatCfg extends GenericCfg {
                         chatConfig.getString("channels." + channel + ".format", "{player}"),
                         channel,
                         chatConfig.getString("channels." + channel + ".perm", "eternia.chat.default"),
+                        chatConfig.getString("channels." + channel + ".color", "$f"),
                         chatConfig.getBoolean("channels." + channel + ".range", false),
                         chatConfig.getInt("channels." + channel + ".range-value", 0)
                 );
@@ -49,7 +50,8 @@ public class ChatCfg extends GenericCfg {
             }
         }
 
-        setInteger(Integers.DEFAULT_CHANNEL, chatConfig, outChat, "default-channel", "global".hashCode());
+        setString(Strings.DEFAULT_CHANNEL, chatConfig, outChat, "default-channel", "global");
+        setString(Strings.DISCORD_SRV, chatConfig, outChat, "discord-srv-channel", "global");
 
         if (channelObjectMap.isEmpty()) {
             channelObjectMap.putAll(tempChannelMap);
@@ -65,6 +67,7 @@ public class ChatCfg extends GenericCfg {
             String channel = v.getName();
             outChat.set("channels." + channel + ".format", v.getFormat());
             outChat.set("channels." + channel + ".perm", v.getPerm());
+            outChat.set("channels." + channel + ".color", v.getChannelColor());
             outChat.set("channels." + channel + ".range", v.isHasRange());
             outChat.set("channels." + channel + ".range-value", v.getRange());
         });

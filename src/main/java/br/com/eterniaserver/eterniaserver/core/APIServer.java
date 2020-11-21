@@ -22,6 +22,24 @@ import static java.util.stream.Collectors.toList;
 
 public interface APIServer {
 
+    static UUID getTpaSender(UUID uuid) {
+        return Vars.tpaRequests.get(uuid);
+    }
+
+    static void removeTpaRequest(UUID uuid) {
+        Vars.tpaTime.remove(uuid);
+        Vars.tpaRequests.remove(uuid);
+    }
+
+    static void putTpaRequest(UUID target, UUID uuid) {
+        Vars.tpaRequests.put(target, uuid);
+        Vars.tpaTime.put(target, System.currentTimeMillis());
+    }
+
+    static boolean hasTpaRequest(UUID uuid) {
+        return Vars.tpaRequests.containsKey(uuid);
+    }
+
     static void setChatMuted(boolean bool) {
         Vars.chatMuted = bool;
     }

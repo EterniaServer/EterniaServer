@@ -258,7 +258,7 @@ public class PlayerHandler implements Listener {
         }
 
         if (user.getChannel() == 0) {
-            user.setChannel(EterniaServer.getInteger(Integers.DEFAULT_CHANNEL));
+            user.setChannel(EterniaServer.getString(Strings.DEFAULT_CHANNEL).hashCode());
         }
 
         user.updateAfkTime();

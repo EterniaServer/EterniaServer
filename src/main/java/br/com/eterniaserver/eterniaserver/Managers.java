@@ -7,7 +7,6 @@ import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleC
 import br.com.eterniaserver.eterniaserver.core.PluginClearSchedule;
 import br.com.eterniaserver.eterniaserver.core.PluginTick;
 import br.com.eterniaserver.eterniaserver.core.PluginSchedule;
-import br.com.eterniaserver.eterniaserver.core.Vars;
 import br.com.eterniaserver.eterniaserver.core.CheckWorld;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Entities;

@@ -201,24 +201,6 @@ public class User {
         playerProfile.setIsOnPvP();
     }
 
-    public UUID getTpaSender() {
-        return Vars.tpaRequests.get(uuid);
-    }
-
-    public void removeTpaRequest() {
-        Vars.tpaTime.remove(uuid);
-        Vars.tpaRequests.remove(uuid);
-    }
-
-    public void putTpaRequest(UUID uuid) {
-        Vars.tpaRequests.put(this.uuid, uuid);
-        Vars.tpaTime.put(this.uuid, System.currentTimeMillis());
-    }
-
-    public boolean hasTpaRequest() {
-        return Vars.tpaRequests.containsKey(uuid);
-    }
-
     public boolean hasPermission(String permission) {
         return player.hasPermission(permission);
     }
