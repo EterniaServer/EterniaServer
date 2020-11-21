@@ -73,7 +73,7 @@
     </tbody>
 </table>
 
-:heavy_check_mark: = Suporte com todas funcionalidades.
+:heavy_check_mark: = Suporte com todas funcionalidades. <br>
 :white_check_mark: = Suporte.
 
 ## Como reportar uma vulnerabilidade
