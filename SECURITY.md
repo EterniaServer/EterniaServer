@@ -1,7 +1,7 @@
 # Atualizações de segurança
 
 ## Versões suportadas
-
+<span style="font-family: 'Lucida Console', monospace;">
 |&nbsp; Versão&nbsp; | Suportado |\
 |&nbsp; 1.16.4&nbsp; &nbsp;| :white_check_mark: |\
 |&nbsp; 1.16.3&nbsp; &nbsp;| :x: |\
@@ -12,6 +12,7 @@
 |&nbsp; 1.15.1&nbsp; | :x:                |\
 |&nbsp; 1.14.4&nbsp; | :white_check_mark: |\
 | < 1.13.2 | :x:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
+</span>
 
 ## Como reportar uma vulnerabilidade
 
