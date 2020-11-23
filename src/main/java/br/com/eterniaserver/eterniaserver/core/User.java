@@ -68,6 +68,11 @@ public class User {
         }
     }
 
+    public User(OfflinePlayer player) {
+        this.offlinePlayer = player;
+        getInfo(this.offlinePlayer);
+    }
+
     public User(CommandSender sender) {
         if (sender instanceof Player) {
             this.player = (Player) sender;

@@ -80,7 +80,6 @@ public class ChatFormatter {
 		});
 
 		String[] messageSplited = message.split(" ");
-		messageSplited[0] = channelColor + messageSplited[0];
 
 		for (int i = 0; i < messageSplited.length; i++) {
 			if (i > 0) {
@@ -125,7 +124,7 @@ public class ChatFormatter {
 			return new TextComponent(actualMsg + " ");
 		}
 
-		return new TextComponent(msg + " ");
+		return new TextComponent(channelColor + msg + " ");
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
