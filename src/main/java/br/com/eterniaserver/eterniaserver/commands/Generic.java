@@ -59,10 +59,7 @@ public class Generic extends BaseCommand {
         this.getRuntime = new Runtime();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-            try (Connection connection = SQL.getConnection()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_LOCATIONS)).queryString());
-                preparedStatement.execute();
-                ResultSet resultSet = preparedStatement.getResultSet();
+            try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_LOCATIONS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
                 Vars.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
                 while (resultSet.next()) {
                     final String[] split = resultSet.getString("location").split(":");
@@ -74,17 +71,12 @@ public class Generic extends BaseCommand {
                             Float.parseFloat(split[5]));
                     APIServer.putLocation(resultSet.getString("name"), getCenter(loc));
                 }
-                resultSet.close();
-                preparedStatement.close();
             } catch (SQLException ignored) {
                 APIServer.logError("Erro ao carregar database", 3);
             }
         });
 
-        try (Connection connection = SQL.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_PLAYER)).queryString());
-            preparedStatement.execute();
-            ResultSet resultSet = preparedStatement.getResultSet();
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_PLAYER)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()){
             while (resultSet.next()) {
                 final PlayerProfile playerProfile = new PlayerProfile(
                         resultSet.getString("player_name"),
@@ -95,8 +87,6 @@ public class Generic extends BaseCommand {
                 getModules(playerProfile, resultSet);
                 APIServer.putProfile(UUID.fromString(resultSet.getString("uuid")), playerProfile);
             }
-            resultSet.close();
-            preparedStatement.close();
         } catch (SQLException ignored) {
             APIServer.logError("Erro ao carregar database", 3);
         }

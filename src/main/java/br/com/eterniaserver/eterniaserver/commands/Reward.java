@@ -31,15 +31,10 @@ public class Reward extends BaseCommand {
     private final byte[] bytes = new byte[20];
 
     public Reward() {
-        try (Connection connection = SQL.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_REWARD)).queryString());
-            statement.execute();
-            ResultSet resultSet = statement.getResultSet();
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_REWARD)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 APIServer.updateRewardMap(resultSet.getString("code"), resultSet.getString("group_name"));
             }
-            resultSet.close();
-            statement.close();
         } catch (SQLException ignored) {
             APIServer.logError("Erro ao pegar arquivos da database", 3);
         }

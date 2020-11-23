@@ -26,15 +26,10 @@ import java.sql.SQLException;
 public class Kit extends BaseCommand {
 
     public Kit() {
-        try (Connection connection = SQL.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_KITS)).queryString());
-            statement.execute();
-            ResultSet resultSet = statement.getResultSet();
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_KITS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery();) {
             while (resultSet.next()) {
                 APIServer.putKitCooldown(resultSet.getString("name"), resultSet.getLong("cooldown"));
             }
-            resultSet.close();
-            statement.close();
         } catch (SQLException ignored) {
             APIServer.logError("Erro ao pegar arquivos da database", 3);
         }
