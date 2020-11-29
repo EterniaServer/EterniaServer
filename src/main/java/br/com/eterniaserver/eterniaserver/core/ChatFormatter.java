@@ -128,7 +128,7 @@ public class ChatFormatter {
 		}
 
 		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
-			return new TextComponent(actualMsg + " ");
+			return new TextComponent(channelColor + actualMsg + " ");
 		}
 
 		return new TextComponent(channelColor + msg + " ");

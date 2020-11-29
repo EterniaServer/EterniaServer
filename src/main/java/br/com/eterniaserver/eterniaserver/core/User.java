@@ -338,7 +338,6 @@ public class User {
             if (Boolean.TRUE.equals(b) && !uuidTemp.equals(this.uuid) && !uuidTemp.equals(user.getUUID())) {
                 final Player spyPlayer = Bukkit.getPlayer(uuidTemp);
                 if (spyPlayer != null && spyPlayer.isOnline()) {
-                    spyPlayer.sendMessage(APIServer.getColor("&8[&7SPY-&6P&8] &8" + playerDisplayName + " -> " + user.getDisplayName() + ": " + s));
                     spyPlayer.sendMessage(APIServer.getColor(EterniaServer.getString(Strings.CONS_SPY)
                             .replace("{0}", playerName)
                             .replace("{1}", playerDisplayName)

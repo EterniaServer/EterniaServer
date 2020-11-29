@@ -77,9 +77,7 @@ public interface APIServer {
             Scoreboard tempScoreBoard = Bukkit.getScoreboardManager().getMainScoreboard();
             List<Colors> colors = Arrays.asList(Colors.values());
             for (int i = 0; i < 16; i++) {
-                if (tempScoreBoard.getTeam(colors.get(i).name()) == null) {
-                    tempScoreBoard.registerNewTeam(colors.get(i).name()).setColor(colorss.get(i));
-                }
+                tempScoreBoard.registerNewTeam(colors.get(i).name()).setColor(colorss.get(i));
             }
             Vars.setScoreboard(tempScoreBoard);
         }

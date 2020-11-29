@@ -33,7 +33,7 @@ public class Reward extends BaseCommand {
     public Reward() {
         try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_REWARD)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                APIServer.updateRewardMap(resultSet.getString("code"), resultSet.getString("group_name"));
+                APIServer.updateRewardMap(resultSet.getString("key_code"), resultSet.getString("group_name"));
             }
         } catch (SQLException ignored) {
             APIServer.logError("Erro ao pegar arquivos da database", 3);
@@ -73,14 +73,14 @@ public class Reward extends BaseCommand {
 
     private void createKey(final String grupo, String key) {
         Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-        insert.columns.set("code", "group_name");
+        insert.columns.set("key_code", "group_name");
         insert.values.set(key, grupo);
         SQL.executeAsync(insert);
     }
 
     private void deleteKey(final String key) {
         Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-        delete.where.set("code", key);
+        delete.where.set("key_code", key);
         SQL.executeAsync(delete);
     }
 

@@ -51,7 +51,7 @@ public class Teleport extends BaseCommand {
         User target = new User(targets);
 
         target.putInTeleport(new PlayerTeleport(targets, player.getLocation(), EterniaServer.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
-        EterniaServer.sendMessage(targets, Messages.TELEPORT_TARGET_ACCEPT, user.getName(), user.getDisplayName());
+        target.sendMessage(Messages.TELEPORT_TARGET_ACCEPT, user.getName(), user.getDisplayName());
         user.sendMessage(Messages.TELEPORT_ACCEPT, target.getName(), target.getDisplayName());
         APIServer.removeTpaRequest(user.getUUID());
     }
