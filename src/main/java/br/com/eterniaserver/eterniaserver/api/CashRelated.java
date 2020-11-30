@@ -1,10 +1,9 @@
-package br.com.eterniaserver.eterniaserver.core;
+package br.com.eterniaserver.eterniaserver.api;
 
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
@@ -13,17 +12,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-public interface APICash {
+public class CashRelated {
+
+    private static final Map<UUID, CashItem> cashItem = new HashMap<>();
+
+    private CashRelated() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Get the cash balance of the player
      * @param uuid of player
      * @return the cash balance
      */
-    static int getCash(UUID uuid) {
+    public static int getCash(UUID uuid) {
         if (PlayerRelated.hasProfile(uuid)) {
             return PlayerRelated.getProfile(uuid).getCash();
         } else {
@@ -38,7 +45,7 @@ public interface APICash {
      * @param amount the amount of cash needed
      * @return if has or not
      */
-    static boolean hasCash(UUID uuid, int amount) {
+    public static boolean hasCash(UUID uuid, int amount) {
         return getCash(uuid) >= amount;
     }
 
@@ -47,7 +54,7 @@ public interface APICash {
      * @param uuid of player
      * @param amount the amount of cash to set
      */
-    static void setCash(UUID uuid, int amount) {
+    public static void setCash(UUID uuid, int amount) {
         if (PlayerRelated.hasProfile(uuid)) {
             PlayerRelated.getProfile(uuid).setCash(amount);
 
@@ -66,7 +73,7 @@ public interface APICash {
      * @param uuid of player
      * @param amount the amount of cash to add
      */
-    static void addCash(UUID uuid, int amount) {
+    public static void addCash(UUID uuid, int amount) {
         setCash(uuid, getCash(uuid) + amount);
     }
 
@@ -75,7 +82,7 @@ public interface APICash {
      * @param uuid of player
      * @param amount the amount of cash to remove
      */
-    static void removeCash(UUID uuid, int amount) {
+    public static void removeCash(UUID uuid, int amount) {
         setCash(uuid, getCash(uuid) - amount);
     }
 
@@ -84,8 +91,8 @@ public interface APICash {
      * @param uuid of player
      * @return if is or not
      */
-    static boolean isBuying(UUID uuid) {
-        return Vars.cashItem.containsKey(uuid);
+    public static boolean isBuying(UUID uuid) {
+        return cashItem.containsKey(uuid);
     }
 
     /**
@@ -94,8 +101,8 @@ public interface APICash {
      * @param uuid of player
      * @return the CashItem object
      */
-    static CashItem getCashBuy(UUID uuid) {
-        return Vars.cashItem.get(uuid);
+    public static CashItem getCashBuy(UUID uuid) {
+        return cashItem.get(uuid);
     }
 
     /**
@@ -103,8 +110,8 @@ public interface APICash {
      * is about to buy
      * @param uuid of player
      */
-    static void removeCashBuy(UUID uuid) {
-        Vars.cashItem.remove(uuid);
+    public static void removeCashBuy(UUID uuid) {
+        cashItem.remove(uuid);
     }
 
     /**
@@ -112,7 +119,7 @@ public interface APICash {
      * @param player the player object
      * @param slotInt of GUI
      */
-    static void menuGui(final Player player, int slotInt) {
+    public static void menuGui(final Player player, int slotInt) {
         if (EterniaServer.getGuis().containsKey(slotInt)) {
             player.closeInventory();
             List<CashItem> itens = EterniaServer.getOthersGui().get(slotInt);
@@ -131,17 +138,17 @@ public interface APICash {
      * @param title of GUI
      * @param slot of GUI
      */
-    static void permGui(final Player player, final String title, int slot) {
+    public static void permGui(final Player player, final String title, int slot) {
         final String playerName = player.getName();
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (!Vars.cashItem.containsKey(uuid)) {
-            CashItem cashItem = EterniaServer.getOthersGui().get(EterniaServer.getGuisInvert().get(title)).get(slot);
-            if (!cashItem.isGlass()) {
-                final int cost = cashItem.getCost();
-                if (APICash.hasCash(uuid, cost)) {
+        if (!cashItem.containsKey(uuid)) {
+            CashItem actualCashItem = EterniaServer.getOthersGui().get(EterniaServer.getGuisInvert().get(title)).get(slot);
+            if (!actualCashItem.isGlass()) {
+                final int cost = actualCashItem.getCost();
+                if (CashRelated.hasCash(uuid, cost)) {
                     EterniaServer.sendMessage(player, Messages.CASH_COST, String.valueOf(cost));
                     EterniaServer.sendMessage(player, Messages.CASH_CHOOSE);
-                    Vars.cashItem.put(uuid, cashItem);
+                    cashItem.put(uuid, actualCashItem);
                 } else {
                     EterniaServer.sendMessage(player, Messages.CASH_NO_HAS, String.valueOf(cost));
                 }

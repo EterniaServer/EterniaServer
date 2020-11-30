@@ -1,7 +1,5 @@
 package br.com.eterniaserver.eterniaserver.core;
 
-import br.com.eterniaserver.eterniaserver.objects.CashItem;
-
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 
@@ -23,7 +21,6 @@ public class Vars {
 
     protected static final Map<Player, Boolean> vanished = new HashMap<>();
 
-    protected static final Map<UUID, CashItem> cashItem = new HashMap<>();
     protected static final Map<UUID, UUID> tpaRequests = new HashMap<>();
     protected static final Map<UUID, Boolean> godMode = new HashMap<>();
     protected static final Map<UUID, Long> tpaTime = new HashMap<>();

@@ -15,10 +15,10 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.CashRelated;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APICash;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 
 import org.bukkit.Bukkit;
@@ -61,14 +61,14 @@ public class Cash extends BaseCommand {
     public void onCashBalance(Player player, @Optional String playerName) {
         User user = new User(player);
         if (playerName == null) {
-            user.sendMessage(Messages.CASH_BALANCE, String.valueOf(APICash.getCash(user.getUUID())));
+            user.sendMessage(Messages.CASH_BALANCE, String.valueOf(CashRelated.getCash(user.getUUID())));
             return;
         }
 
         User target = new User(playerName);
 
         if (target.hasProfile()) {
-            user.sendMessage(Messages.CASH_BALANCE_OTHER, playerName, target.getDisplayName(), String.valueOf(APICash.getCash(target.getUUID())));
+            user.sendMessage(Messages.CASH_BALANCE_OTHER, playerName, target.getDisplayName(), String.valueOf(CashRelated.getCash(target.getUUID())));
             return;
         }
 
@@ -81,12 +81,12 @@ public class Cash extends BaseCommand {
     public void onCashAccept(Player player) {
         User user = new User(player);
 
-        if (!APICash.isBuying(user.getUUID())) {
+        if (!CashRelated.isBuying(user.getUUID())) {
             user.sendMessage(Messages.CASH_NOTHING_TO_BUY);
             return;
         }
 
-        final CashItem cashItem = APICash.getCashBuy(user.getUUID());
+        final CashItem cashItem = CashRelated.getCashBuy(user.getUUID());
 
         for (String line : cashItem.getCommands()) {
             final String modifiedCommand = APIServer.setPlaceholders(player, line);
@@ -98,9 +98,9 @@ public class Cash extends BaseCommand {
             player.sendMessage(modifiedText);
         }
 
-        APICash.removeCash(user.getUUID(), cashItem.getCost());
+        CashRelated.removeCash(user.getUUID(), cashItem.getCost());
         user.sendMessage(Messages.CASH_BOUGHT);
-        APICash.removeCashBuy(user.getUUID());
+        CashRelated.removeCashBuy(user.getUUID());
     }
 
     @Subcommand("%cash_deny")
@@ -109,13 +109,13 @@ public class Cash extends BaseCommand {
     public void onCashDeny(Player player) {
         User user = new User(player);
 
-        if (!APICash.isBuying(user.getUUID())) {
+        if (!CashRelated.isBuying(user.getUUID())) {
             user.sendMessage(Messages.CASH_NOTHING_TO_BUY);
             return;
         }
 
         user.sendMessage(Messages.CASH_CANCELED);
-        APICash.removeCashBuy(user.getUUID());
+        CashRelated.removeCashBuy(user.getUUID());
     }
 
     @Subcommand("%cash_pay")
@@ -127,13 +127,13 @@ public class Cash extends BaseCommand {
         User user = new User(player);
         User target = new User(targetP.getPlayer());
 
-        if (!APICash.hasCash(user.getUUID(), value)) {
+        if (!CashRelated.hasCash(user.getUUID(), value)) {
             EterniaServer.sendMessage(player, Messages.ECO_NO_MONEY);
             return;
         }
 
-        APICash.removeCash(user.getUUID(), value);
-        APICash.addCash(target.getUUID(), value);
+        CashRelated.removeCash(user.getUUID(), value);
+        CashRelated.addCash(target.getUUID(), value);
         target.sendMessage(Messages.CASH_RECEVEID, String.valueOf(value), user.getName(), user.getDisplayName());
         user.sendMessage(Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
     }
@@ -147,7 +147,7 @@ public class Cash extends BaseCommand {
         User user = new User(sender);
         User target = new User(targetP.getPlayer());
 
-        APICash.addCash(target.getUUID(), value);
+        CashRelated.addCash(target.getUUID(), value);
         target.sendMessage(Messages.CASH_RECEVEID, String.valueOf(value), user.getName(), user.getDisplayName());
         user.sendMessage(Messages.CASH_SENT, String.valueOf(value), target.getName(), target.getDisplayName());
     }
@@ -161,7 +161,7 @@ public class Cash extends BaseCommand {
         User user = new User(sender);
         User target = new User(targetP.getPlayer());
 
-        APICash.removeCash(target.getUUID(), value);
+        CashRelated.removeCash(target.getUUID(), value);
         target.sendMessage(Messages.CASH_LOST, String.valueOf(value), user.getName(), user.getDisplayName());
         user.sendMessage(Messages.CASH_REMOVED, String.valueOf(value), target.getName(), target.getDisplayName());
     }

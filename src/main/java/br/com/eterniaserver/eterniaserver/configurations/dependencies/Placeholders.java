@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APICash;
+import br.com.eterniaserver.eterniaserver.api.CashRelated;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 
@@ -74,7 +74,7 @@ public class Placeholders extends PlaceholderExpansion {
             case 1:
                 return user.getAfkPlaceholder();
             case 2:
-                return String.valueOf(APICash.getCash(user.getUUID()));
+                return String.valueOf(CashRelated.getCash(user.getUUID()));
             case 3:
                 return user.getGlowColor();
             case 4:

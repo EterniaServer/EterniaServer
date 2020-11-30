@@ -1,11 +1,11 @@
 package br.com.eterniaserver.eterniaserver.handlers;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.CashRelated;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APICash;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -61,10 +61,10 @@ public class EntityHandler implements Listener {
         if (EterniaServer.getBoolean(Booleans.MODULE_CASH)) {
             String title = e.getView().getTitle();
             if ("Cash".equals(title)) {
-                APICash.menuGui(player, e.getSlot());
+                CashRelated.menuGui(player, e.getSlot());
                 e.setCancelled(true);
             } else if (EterniaServer.getGuisInvert().containsKey(title)) {
-                APICash.permGui(player, title, e.getSlot());
+                CashRelated.permGui(player, title, e.getSlot());
                 e.setCancelled(true);
             }
         }
