@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.enums.Colors;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -10,9 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -20,107 +17,87 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toList;
 
-public interface APIServer {
+public class APIServer {
 
-    static UUID getTpaSender(UUID uuid) {
+    private APIServer() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static UUID getTpaSender(UUID uuid) {
         return Vars.tpaRequests.get(uuid);
     }
 
-    static void removeTpaRequest(UUID uuid) {
+    public static void removeTpaRequest(UUID uuid) {
         Vars.tpaTime.remove(uuid);
         Vars.tpaRequests.remove(uuid);
     }
 
-    static void putTpaRequest(UUID target, UUID uuid) {
+    public static void putTpaRequest(UUID target, UUID uuid) {
         Vars.tpaRequests.put(target, uuid);
         Vars.tpaTime.put(target, System.currentTimeMillis());
     }
 
-    static boolean hasTpaRequest(UUID uuid) {
+    public static boolean hasTpaRequest(UUID uuid) {
         return Vars.tpaRequests.containsKey(uuid);
     }
 
-    static void setChatMuted(boolean bool) {
+    public static void setChatMuted(boolean bool) {
         Vars.chatMuted = bool;
     }
 
-    static boolean isChatMuted() {
+    public static boolean isChatMuted() {
         return Vars.chatMuted;
     }
 
-    static boolean hasCooldown(long cooldown, int timeNeeded) {
+    public static boolean hasCooldown(long cooldown, int timeNeeded) {
         return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown) >= timeNeeded;
     }
 
-    static String getTimeLeftOfCooldown(long cooldown) {
+    public static String getTimeLeftOfCooldown(long cooldown) {
         return String.valueOf(TimeUnit.MILLISECONDS.toSeconds(cooldown - System.currentTimeMillis()));
     }
 
-    static String getTimeLeftOfCooldown(long cooldown, long cd) {
+    public static String getTimeLeftOfCooldown(long cooldown, long cd) {
         return String.valueOf(cooldown - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cd));
     }
 
-    static boolean isInFutureCooldown(long cooldown) {
+    public static boolean isInFutureCooldown(long cooldown) {
         return cooldown - System.currentTimeMillis() > 0;
     }
 
-    static Object[] listWarp() {
+    public static Object[] listWarp() {
         return Vars.locations.keySet().toArray();
     }
 
-    static Scoreboard getScoreboard() {
-        if (Vars.getScoreboard() == null) {
-            List<ChatColor> colorss = List.of(ChatColor.BLACK, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN,
-                    ChatColor.DARK_AQUA, ChatColor.DARK_RED, ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GRAY,
-                    ChatColor.DARK_GRAY, ChatColor.BLUE, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE,
-                    ChatColor.YELLOW, ChatColor.WHITE);
-            Scoreboard tempScoreBoard = Bukkit.getScoreboardManager().getMainScoreboard();
-            List<Colors> colors = Arrays.asList(Colors.values());
-            for (int i = 0; i < 16; i++) {
-                tempScoreBoard.registerNewTeam(colors.get(i).name()).setColor(colorss.get(i));
-            }
-            Vars.setScoreboard(tempScoreBoard);
-        }
-        return Vars.getScoreboard();
-    }
-
-    static boolean hasLocation(String warpName) {
+    public static boolean hasLocation(String warpName) {
         return Vars.locations.containsKey(warpName);
     }
 
-    static Location getLocation(String warpName) {
+    public static Location getLocation(String warpName) {
         return Vars.locations.getOrDefault(warpName, Vars.getError());
     }
 
-    static void putLocation(String warpName, Location location) {
+    public static void putLocation(String warpName, Location location) {
         Vars.locations.put(warpName, location);
     }
 
-    static void removeLocation(String warpName) {
+    public static void removeLocation(String warpName) {
         Vars.locations.remove(warpName);
     }
 
-    static Set<Player> getVanishList() {
+    public static Set<Player> getVanishList() {
         return Vars.vanished.keySet();
     }
 
-    static void putProfile(UUID uuid, PlayerProfile playerProfile) {
-        Vars.playerProfile.put(uuid, playerProfile);
-    }
-
-    static int getProfileMapSize() {
-        return Vars.playerProfile.size();
-    }
-
-    static long getKitCooldown(String kit) {
+    public static long getKitCooldown(String kit) {
         return Vars.kitsCooldown.get(kit);
     }
 
-    static void putKitCooldown(String kit, long time) {
+    public static void putKitCooldown(String kit, long time) {
         Vars.kitsCooldown.put(kit, time);
     }
 
-    static int getVersion() {
+    public static int getVersion() {
         if (Vars.getVersion() == 0) {
             String bukkitVersion = Bukkit.getBukkitVersion();
             if (bukkitVersion.contains("1.16")) Vars.setVersion(116);
@@ -131,37 +108,37 @@ public interface APIServer {
         return Vars.getVersion();
     }
 
-    static void updateRewardMap(String key, String value) {
+    public static void updateRewardMap(String key, String value) {
         Vars.rewards.put(key, value);
     }
 
-    static int getRewardMapSize() {
+    public static int getRewardMapSize() {
         return Vars.rewards.size();
     }
 
-    static boolean hasReward(String key) {
+    public static boolean hasReward(String key) {
         return Vars.rewards.containsKey(key);
     }
 
-    static void addReward(String key, String reward) {
+    public static void addReward(String key, String reward) {
         Vars.rewards.put(key, reward);
     }
 
-    static void removeReward(String key) {
+    public static void removeReward(String key) {
         Vars.rewards.remove(key);
     }
 
-    static void putColorOnList(List<String> list) {
+    public static void putColorOnList(List<String> list) {
         for (int i = 0; i < list.size(); i++) {
             list.set(i, list.get(i).replace('$', (char) 0x00A7));
         }
     }
 
-    static String getReward(String key) {
+    public static String getReward(String key) {
         return Vars.rewards.get(key);
     }
 
-    static void logError(String errorMsg, int level) {
+    public static void logError(String errorMsg, int level) {
         String errorLevel;
         switch (level) {
             case 1:
@@ -176,13 +153,13 @@ public interface APIServer {
         Bukkit.getConsoleSender().sendMessage(("$8[$aE$9S$8] " + errorLevel + "$8:$3" + errorMsg + "$8.").replace('$', (char) 0x00A7));
     }
 
-    static String setPlaceholders(Player p, String s) {
+    public static String setPlaceholders(Player p, String s) {
         s = s.replace("%player_name%", p.getName());
         s = s.replace("%player_displayname%", p.getDisplayName());
         return PlaceholderAPI.setPlaceholders(p, s);
     }
 
-    static Colors colorFromString(String colorName) {
+    public static Colors colorFromString(String colorName) {
         for (Colors b : Colors.values()) {
             if (b.name().equalsIgnoreCase(colorName)) {
                 return b;
@@ -191,19 +168,15 @@ public interface APIServer {
         return Colors.WHITE;
     }
 
-    static String getColor(String string) {
+    public static String getColor(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
 
-    static List<Player> getSleeping(final World world) {
+    public static List<Player> getSleeping(final World world) {
         return world.getPlayers().stream().filter(Player::isSleeping).collect(toList());
     }
 
-    static void changeNightTime(final long time) {
-        Vars.nightTime = time;
-    }
-
-    static int getXPForLevel(int lvl) {
+    public static int getXPForLevel(int lvl) {
         if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
         else if (lvl > 15 && lvl < 31) return (int) ((2.5 * (lvl * lvl)) - (40.5 * lvl) + 360);
         else if (lvl >= 31) return (int) ((4.5 * (lvl * lvl)) - (162.5 * lvl) + 2220);

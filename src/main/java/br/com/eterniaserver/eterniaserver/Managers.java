@@ -79,10 +79,7 @@ public class Managers {
     private void loadConditions() {
 
         CommandManager.getCommandConditions().addCondition(Integer.class, "limits", (c, exec, value) -> {
-            if (value == null) {
-                return;
-            }
-            if (c.getConfigValue("min", 0) > value) {
+            if (value == null || c.getConfigValue("min", 0) > value) {
                 throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
             }
             if (c.getConfigValue("max", 3) < value) {
@@ -91,10 +88,7 @@ public class Managers {
         });
 
         CommandManager.getCommandConditions().addCondition(Double.class, "limits", (c, exec, value) -> {
-            if (value == null) {
-                return;
-            }
-            if (c.getConfigValue("min", 0) > value) {
+            if (value == null || c.getConfigValue("min", 0) > value) {
                 throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
             }
             if (c.getConfigValue("max", 3) < value) {
@@ -103,10 +97,7 @@ public class Managers {
         });
 
         CommandManager.getCommandConditions().addCondition(String.class, "channel", (c, exec, value) -> {
-            if (value == null) {
-                return;
-            }
-            if (!EterniaServer.getChannels().contains(value)) {
+            if (value == null || !EterniaServer.getChannels().contains(value)) {
                 throw new ConditionFailedException("Você precisa informar um canal válido");
             }
         });
@@ -172,7 +163,7 @@ public class Managers {
         CommandManager.registerCommand(new Inventory());
         CommandManager.registerCommand(new Generic(plugin));
         CommandManager.registerCommand(new Gamemode());
-        CommandManager.registerCommand(new Glow());
+        CommandManager.registerCommand(new Glow(plugin));
         CommandManager.registerCommand(new Item());
     }
 

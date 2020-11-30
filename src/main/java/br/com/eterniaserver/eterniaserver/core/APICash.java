@@ -2,14 +2,12 @@ package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,25 +24,10 @@ public interface APICash {
      * @return the cash balance
      */
     static int getCash(UUID uuid) {
-        if (Vars.playerProfile.containsKey(uuid)) {
-            return Vars.playerProfile.get(uuid).getCash();
+        if (PlayerRelated.hasProfile(uuid)) {
+            return PlayerRelated.getProfile(uuid).getCash();
         } else {
-            final long time = System.currentTimeMillis();
-            final String playerName = UUIDFetcher.getNameOf(uuid);
-
-            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_PLAYER));
-            insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
-            insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(Doubles.START_MONEY));
-            SQL.executeAsync(insert);
-
-            final PlayerProfile playerProfile = new PlayerProfile(
-                    playerName,
-                    time,
-                    time,
-                    0
-            );
-            playerProfile.setBalance(EterniaServer.getDouble(Doubles.START_MONEY));
-            Vars.playerProfile.put(uuid, playerProfile);
+            PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
             return 0;
         }
     }
@@ -65,30 +48,15 @@ public interface APICash {
      * @param amount the amount of cash to set
      */
     static void setCash(UUID uuid, int amount) {
-        if (Vars.playerProfile.containsKey(uuid)) {
-            Vars.playerProfile.get(uuid).setCash(amount);
+        if (PlayerRelated.hasProfile(uuid)) {
+            PlayerRelated.getProfile(uuid).setCash(amount);
 
             Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
             update.set.set("cash", amount);
             update.where.set("uuid", uuid.toString());
             SQL.executeAsync(update);
         } else {
-            final long time = System.currentTimeMillis();
-            final String playerName = UUIDFetcher.getNameOf(uuid);
-
-            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_PLAYER));
-            insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
-            insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(Doubles.START_MONEY));
-            SQL.executeAsync(insert);
-
-            final PlayerProfile playerProfile = new PlayerProfile(
-                    playerName,
-                    time,
-                    time,
-                    0
-            );
-            playerProfile.setBalance(EterniaServer.getDouble(Doubles.START_MONEY));
-            Vars.playerProfile.put(uuid, playerProfile);
+            PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
             setCash(uuid, amount);
         }
     }

@@ -1,9 +1,10 @@
-package br.com.eterniaserver.eterniaserver.events;
+package br.com.eterniaserver.eterniaserver.handlers;
 
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
@@ -240,7 +241,7 @@ public class PlayerHandler implements Listener {
 
         if (!user.hasProfile()) {
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_FIRST_LOGIN, true, user.getName(), user.getDisplayName()));
-            user.createProfile();
+            PlayerRelated.createProfile(user.getUUID(), user.getName());
         } else {
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
             user.updateProfile();

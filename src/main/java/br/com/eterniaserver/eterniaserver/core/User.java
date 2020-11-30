@@ -5,12 +5,14 @@ import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.objects.Profile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
+import br.com.eterniaserver.eterniaserver.objects.Profile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -88,43 +90,24 @@ public class User {
         this.playerName = player.getName();
         this.playerDisplayName = player.getDisplayName();
         this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
-        if (!Vars.playerProfile.containsKey(this.uuid)) {
-            createProfile();
+        if (!PlayerRelated.hasProfile(this.uuid)) {
+            PlayerRelated.createProfile(uuid, playerName);
         }
-        this.playerProfile = Vars.playerProfile.get(this.uuid);
+        this.playerProfile = PlayerRelated.getProfile(this.uuid);
     }
 
     private void getInfo(OfflinePlayer offlinePlayer) {
         this.playerName = offlinePlayer.getName();
         this.playerDisplayName = offlinePlayer.getName();
         this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
-        if (!Vars.playerProfile.containsKey(this.uuid)) {
-            createProfile();
+        if (!PlayerRelated.hasProfile(this.uuid)) {
+            PlayerRelated.createProfile(uuid, playerName);
         }
-        this.playerProfile = Vars.playerProfile.get(this.uuid);
+        this.playerProfile = PlayerRelated.getProfile(this.uuid);
     }
 
     public boolean hasProfile() {
         return playerProfile != null;
-    }
-
-    public void createProfile() {
-        final long time = System.currentTimeMillis();
-
-        Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_PLAYER));
-        insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance", "muted");
-        insert.values.set(uuid.toString(), playerName, getFirstLogin(), time, 0, EterniaServer.getDouble(Doubles.START_MONEY), time);
-        SQL.executeAsync(insert);
-
-        final PlayerProfile playerProfileTemp = new PlayerProfile(
-                playerName,
-                getFirstLogin(),
-                time,
-                0
-        );
-        playerProfileTemp.setBalance(EterniaServer.getDouble(Doubles.START_MONEY));
-        playerProfileTemp.setMuted(time);
-        Vars.playerProfile.put(uuid, playerProfileTemp);
     }
 
     public void updateProfile() {
@@ -142,7 +125,7 @@ public class User {
             SQL.executeAsync(profile);
 
             playerProfile = newPlayerProfile;
-            Vars.playerProfile.put(uuid, newPlayerProfile);
+            PlayerRelated.putProfile(uuid, newPlayerProfile);
         }
         playerProfile.setLastLogin(time);
         if (!playerProfile.getPlayerName().equals(playerName)) {
@@ -228,11 +211,9 @@ public class User {
     }
 
     public void clear() {
-        Vars.afkTime.remove(uuid);
-        Vars.onAfk.remove(uuid);
+        PlayerRelated.playerLogout(uuid);
         Vars.godMode.remove(uuid);
         Vars.spy.remove(uuid);
-        Vars.bedCooldown.remove(uuid);
         Vars.vanished.remove(player);
         removeFromTeleporting();
     }
@@ -257,15 +238,15 @@ public class User {
     }
 
     public boolean isTeleporting() {
-        return Vars.teleports.containsKey(uuid);
+        return PlayerRelated.areTeleporting(uuid);
     }
 
     public void removeFromTeleporting() {
-        Vars.teleports.remove(uuid);
+        PlayerRelated.removeFromTeleport(uuid);
     }
 
     public void putInTeleport(PlayerTeleport playerTeleport) {
-        Vars.teleports.put(uuid, playerTeleport);
+        PlayerRelated.putInTeleport(uuid, playerTeleport);
     }
 
     public List<String> getHomes() {
@@ -364,19 +345,19 @@ public class User {
     }
 
     public void updateAfkTime() {
-        Vars.afkTime.put(uuid, System.currentTimeMillis());
+        PlayerRelated.updateAFKTime(uuid);
     }
 
     public long getAfkTime() {
-        return Vars.afkTime.getOrDefault(uuid, System.currentTimeMillis());
+        return PlayerRelated.getAFKTime(uuid);
     }
 
     public void changeAfkState() {
-        Vars.onAfk.put(uuid, !Vars.onAfk.getOrDefault(uuid, false));
+        PlayerRelated.changeAFKState(uuid);
     }
 
     public boolean isAfk() {
-        return Vars.onAfk.getOrDefault(uuid, false);
+        return PlayerRelated.areAFK(uuid);
     }
 
     public void changeGodModeState() {
@@ -523,11 +504,11 @@ public class User {
     }
 
     public long getBedCooldown() {
-        return Vars.bedCooldown.getOrDefault(uuid, 0L);
+        return ServerRelated.getBedCooldown(uuid);
     }
 
     public void updateBedCooldown() {
-        Vars.bedCooldown.put(uuid, System.currentTimeMillis());
+        ServerRelated.updateBedCooldown(uuid);
     }
 
     public int getExp() {

@@ -25,7 +25,6 @@ public class ChannelsTest {
 
         assertNotNull(channelObject);
         assertTrue(user.hasPermission(channelObject.getPerm()));
-
     }
     
 }

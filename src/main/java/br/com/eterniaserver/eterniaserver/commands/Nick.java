@@ -11,11 +11,11 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 
 import org.bukkit.entity.Player;
 
@@ -82,12 +82,12 @@ public class Nick extends BaseCommand {
             return;
         }
 
-        if (!APIEconomy.hasMoney(user.getUUID(), EterniaServer.getDouble(Doubles.NICK_COST))) {
+        if (!EconomyRelated.hasMoney(user.getUUID(), EterniaServer.getDouble(Doubles.NICK_COST))) {
             user.sendMessage(Messages.ECO_NO_MONEY);
             return;
         }
 
-        APIEconomy.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.NICK_COST));
+        EconomyRelated.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.NICK_COST));
         EterniaServer.sendMessage(player, Messages.CHAT_NICK_CHANGED, player.getDisplayName());
         user.updateNickName();
     }

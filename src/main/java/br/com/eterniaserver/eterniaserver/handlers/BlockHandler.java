@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.events;
+package br.com.eterniaserver.eterniaserver.handlers;
 
 import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.NBTTileEntity;

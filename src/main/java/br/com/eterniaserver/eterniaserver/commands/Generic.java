@@ -11,6 +11,7 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.core.Vars;
@@ -78,19 +79,19 @@ public class Generic extends BaseCommand {
 
         try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_PLAYER)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()){
             while (resultSet.next()) {
-                final PlayerProfile playerProfile = new PlayerProfile(
+                PlayerProfile playerProfile = new PlayerProfile(
                         resultSet.getString("player_name"),
                         resultSet.getLong("time"),
                         resultSet.getLong("last"),
                         resultSet.getLong("hours")
-                );
+                );  
                 getModules(playerProfile, resultSet);
-                APIServer.putProfile(UUID.fromString(resultSet.getString("uuid")), playerProfile);
+                PlayerRelated.putProfile(UUID.fromString(resultSet.getString("uuid")), playerProfile);
             }
         } catch (SQLException ignored) {
             APIServer.logError("Erro ao carregar database", 3);
         }
-        sendConsole(EterniaServer.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(APIServer.getProfileMapSize())));
+        sendConsole(EterniaServer.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(PlayerRelated.getProfileMapSize())));
     }
 
     @CommandAlias("%reload")

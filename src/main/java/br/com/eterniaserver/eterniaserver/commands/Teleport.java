@@ -8,7 +8,7 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIEconomy;
+import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.core.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
@@ -130,8 +130,8 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        if (APIEconomy.hasMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST))) {
-            APIEconomy.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST));
+        if (EconomyRelated.hasMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST))) {
+            EconomyRelated.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST));
             user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.getDouble(Doubles.BACK_COST)))));
             return;
         }

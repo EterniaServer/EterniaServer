@@ -1,16 +1,17 @@
-package br.com.eterniaserver.eterniaserver.core;
+package br.com.eterniaserver.eterniaserver.api;
 
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.objects.BalanceTop;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
+
+import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -19,31 +20,65 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public interface APIEconomy {
+public class EconomyRelated {
+
+    private static Economy economy;
+    private static NumberFormat numberFormat;
+    private static UUID baltop;
+    private static long baltopTime = 0;
+    private static final List<UUID> baltopList = new ArrayList<>();
+
+    private EconomyRelated() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    /**
+     * Get the number format of plugin
+     * @return the NumberFormat
+     */
+    public static NumberFormat getNumberFormat() {
+        if (numberFormat == null) {
+            numberFormat = NumberFormat.getInstance(new Locale(EterniaServer.getString(Strings.MONEY_LANGUAGE), EterniaServer.getString(Strings.MONEY_COUNTRY)));
+        }
+        return numberFormat;
+    }
+
+    /**
+     * Set the economy interface of plugin
+     * @param econ interface
+     */
+    public static void setEconomy(Economy econ) {
+        economy = econ;
+    }
 
     /**
      * Get the amount formated
      * @param amount to format
      * @return the formatted string value
      */
-    static String format(double amount) {
-        return Vars.getDf2().format(amount);
+    public static String format(double amount) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
+            return getNumberFormat().format(amount);
+        }
+        return economy.format(amount);
     }
 
     /**
      * Get the singular name of current
      * @return the name
      */
-    static String singularName() {
+    public static String singularName() {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             return EterniaServer.getString(Strings.MONEY_SINGULAR);
         } else {
-            return Vars.getEcon().currencyNameSingular();
+            return economy.currencyNameSingular();
         }
     }
 
@@ -51,11 +86,11 @@ public interface APIEconomy {
      * Get the plural name of current
      * @return the name
      */
-    static String pluralName() {
+    public static String pluralName() {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             return EterniaServer.getString(Strings.MONEY_PLURAL);
         } else {
-            return Vars.getEcon().currencyNamePlural();
+            return economy.currencyNamePlural();
         }
     }
 
@@ -63,11 +98,11 @@ public interface APIEconomy {
      * Check if player has account
      * @param uuid uuid of player
      */
-    static boolean hasAccount(UUID uuid) {
+    public static boolean hasAccount(UUID uuid) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
-            return Vars.playerProfile.containsKey(uuid);
+            return PlayerRelated.hasProfile(uuid);
         } else {
-            return Vars.getEcon().hasAccount(Bukkit.getOfflinePlayer(uuid));
+            return economy.hasAccount(Bukkit.getOfflinePlayer(uuid));
         }
     }
 
@@ -75,27 +110,12 @@ public interface APIEconomy {
      * Create a account for the player
      * @param uuid uuid of player
      */
-    static void createAccount(UUID uuid) {
+    public static void createAccount(UUID uuid) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
-            final long time = System.currentTimeMillis();
             final String playerName = UUIDFetcher.getNameOf(uuid);
-
-            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_PLAYER));
-            insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
-            insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(Doubles.START_MONEY));
-            SQL.executeAsync(insert);
-
-            final PlayerProfile playerProfile = new PlayerProfile(
-                    playerName,
-                    time,
-                    time,
-                    0
-            );
-
-            playerProfile.setBalance(EterniaServer.getDouble(Doubles.START_MONEY));
-            Vars.playerProfile.put(uuid, playerProfile);
+            PlayerRelated.createProfile(uuid, playerName);
         } else {
-            Vars.getEcon().createPlayerAccount(Bukkit.getOfflinePlayer(uuid));
+            economy.createPlayerAccount(Bukkit.getOfflinePlayer(uuid));
         }
     }
 
@@ -104,31 +124,16 @@ public interface APIEconomy {
      * @param uuid of player
      * @return the balance
      */
-    static double getMoney(UUID uuid) {
+    public static double getMoney(UUID uuid) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
-            if (Vars.playerProfile.containsKey(uuid)) {
-                return Vars.playerProfile.get(uuid).getBalance();
+            if (PlayerRelated.hasProfile(uuid)) {
+                return PlayerRelated.getProfile(uuid).getBalance();
             } else {
-                final long time = System.currentTimeMillis();
-                final String playerName = UUIDFetcher.getNameOf(uuid);
-
-                Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_PLAYER));
-                insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
-                insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(Doubles.START_MONEY));
-                SQL.executeAsync(insert);
-
-                final PlayerProfile playerProfile = new PlayerProfile(
-                        playerName,
-                        time,
-                        time,
-                        0
-                );
-                playerProfile.setBalance(EterniaServer.getDouble(Doubles.START_MONEY));
-                Vars.playerProfile.put(uuid, playerProfile);
+                PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
                 return EterniaServer.getDouble(Doubles.START_MONEY);
             }
         } else {
-            return Vars.getEcon().getBalance(Bukkit.getOfflinePlayer(uuid));
+            return economy.getBalance(Bukkit.getOfflinePlayer(uuid));
         }
     }
 
@@ -138,11 +143,11 @@ public interface APIEconomy {
      * @param amount the amount of money needed
      * @return if has or not
      */
-    static boolean hasMoney(UUID uuid, double amount) {
+    public static boolean hasMoney(UUID uuid, double amount) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             return getMoney(uuid) >= amount;
         } else {
-            return Vars.getEcon().has(Bukkit.getOfflinePlayer(uuid), amount);
+            return economy.has(Bukkit.getOfflinePlayer(uuid), amount);
         }
     }
 
@@ -151,39 +156,23 @@ public interface APIEconomy {
      * @param uuid of player
      * @param amount the amount of money to set
      */
-    static void setMoney(UUID uuid, double amount) {
+    public static void setMoney(UUID uuid, double amount) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
-            if (Vars.playerProfile.containsKey(uuid)) {
-                Vars.playerProfile.get(uuid).setBalance(amount);
+            if (PlayerRelated.hasProfile(uuid)) {
+                PlayerRelated.getProfile(uuid).setBalance(amount);
 
                 Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
                 update.set.set("balance", amount);
                 update.where.set("uuid", uuid.toString());
                 SQL.executeAsync(update);
             } else {
-                final long time = System.currentTimeMillis();
-                final String playerName = UUIDFetcher.getNameOf(uuid);
-
-                Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_PLAYER));
-                insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance");
-                insert.values.set(uuid.toString(), playerName, time, time, 0, EterniaServer.getDouble(Doubles.START_MONEY));
-                SQL.executeAsync(insert);
-
-                final PlayerProfile playerProfile = new PlayerProfile(
-                        playerName,
-                        time,
-                        time,
-                        0
-                );
-                playerProfile.setBalance(EterniaServer.getDouble(Doubles.START_MONEY));
-                Vars.playerProfile.put(uuid, playerProfile);
+                PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
                 setMoney(uuid, amount);
             }
         } else {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-            double balance = Vars.getEcon().getBalance(offlinePlayer);
-            Vars.getEcon().withdrawPlayer(offlinePlayer, balance);
-            Vars.getEcon().depositPlayer(offlinePlayer, amount);
+            economy.withdrawPlayer(offlinePlayer, economy.getBalance(offlinePlayer));
+            economy.depositPlayer(offlinePlayer, amount);
         }
     }
 
@@ -192,11 +181,11 @@ public interface APIEconomy {
      * @param uuid of player
      * @param amount the amount of money to give
      */
-    static void addMoney(UUID uuid, double amount) {
+    public static void addMoney(UUID uuid, double amount) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             setMoney(uuid, getMoney(uuid) + amount);
         } else {
-            Vars.getEcon().depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+            economy.depositPlayer(Bukkit.getOfflinePlayer(uuid), amount);
         }
     }
 
@@ -205,11 +194,11 @@ public interface APIEconomy {
      * @param uuid of player
      * @param amount the amount of money to give
      */
-    static void removeMoney(UUID uuid, double amount) {
+    public static void removeMoney(UUID uuid, double amount) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             setMoney(uuid, getMoney(uuid) - amount);
         } else {
-            Vars.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+            economy.withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
         }
     }
 
@@ -218,11 +207,11 @@ public interface APIEconomy {
      * @param uuid of player
      * @return if the player was top money or not
      */
-    static boolean isBalanceTop(UUID uuid) {
-        if (Vars.balltop == null) {
+    public static boolean isBalanceTop(UUID uuid) {
+        if (baltop == null) {
             updateBalanceTop(20);
         }
-        return Vars.balltop.equals(uuid);
+        return baltop.equals(uuid);
     }
 
     /**
@@ -231,7 +220,7 @@ public interface APIEconomy {
      * @param size the size of list
      * @return if the list was updated or not
      */
-    static CompletableFuture<Boolean> updateBalanceTop(int size) {
+    public static CompletableFuture<Boolean> updateBalanceTop(int size) {
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = SQL.getConnection()) {
                 PreparedStatement statement = connection.prepareStatement(new BalanceTop(EterniaServer.getString(Strings.TABLE_PLAYER), size).queryString());
@@ -247,9 +236,10 @@ public interface APIEconomy {
                         }
                     }
                 }
-                Vars.baltopTime = System.currentTimeMillis();
-                Vars.baltopList.clear();
-                Vars.baltopList.addAll(tempList);
+                baltopTime = System.currentTimeMillis();
+                baltopList.clear();
+                baltopList.addAll(tempList);
+                baltop = baltopList.get(0);
                 resultSet.close();
                 statement.close();
             } catch (SQLException ignored) {
@@ -264,16 +254,16 @@ public interface APIEconomy {
      * Get the baltop list
      * @return the baltop list
      */
-    static List<UUID> getBalanceTop() {
-        return Vars.baltopList;
+    public static List<UUID> getBalanceTop() {
+        return baltopList;
     }
 
     /**
      * Get the time from the last update
      * @return the time in long
      */
-    static long getBalanceTopTime() {
-        return Vars.baltopTime;
+    public static long getBalanceTopTime() {
+        return baltopTime;
     }
 
 }

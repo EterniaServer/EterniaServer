@@ -2,8 +2,8 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
-
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

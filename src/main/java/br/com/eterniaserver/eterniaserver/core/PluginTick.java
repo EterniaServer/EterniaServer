@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -107,7 +108,7 @@ public class PluginTick extends BukkitRunnable {
 
     private void getPlayersInTp(User user) {
         if (user.isTeleporting()) {
-            final PlayerTeleport playerTeleport = Vars.teleports.get(user.getUUID());
+            final PlayerTeleport playerTeleport = PlayerRelated.getPlayerTeleport(user.getUUID());
             if (!user.hasPermission(EterniaServer.getString(Strings.PERM_TIMING_BYPASS))) {
                 if (!playerTeleport.hasMoved()) {
                     if (playerTeleport.getCountdown() == 0) {

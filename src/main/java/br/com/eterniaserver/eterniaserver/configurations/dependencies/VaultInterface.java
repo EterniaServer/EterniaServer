@@ -2,9 +2,9 @@ package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIEconomy;
-
+import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -38,77 +38,77 @@ public class VaultInterface implements Economy {
 
     @Override
     public String format(double amount) {
-        return APIEconomy.format(amount);
+        return EconomyRelated.format(amount);
     }
 
     @Override
     public String currencyNamePlural() {
-        return APIEconomy.pluralName();
+        return EconomyRelated.pluralName();
     }
 
     @Override
     public String currencyNameSingular() {
-        return APIEconomy.singularName();
+        return EconomyRelated.singularName();
     }
 
     @Override
     public boolean hasAccount(String playerName) {
-        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(playerName));
+        return EconomyRelated.hasAccount(UUIDFetcher.getUUIDOf(playerName));
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(player.getName()));
+        return EconomyRelated.hasAccount(UUIDFetcher.getUUIDOf(player.getName()));
     }
 
     @Override
     public boolean hasAccount(String playerName, String worldName) {
-        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(playerName));
+        return EconomyRelated.hasAccount(UUIDFetcher.getUUIDOf(playerName));
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(player.getName()));
+        return EconomyRelated.hasAccount(UUIDFetcher.getUUIDOf(player.getName()));
     }
 
     @Override
     public double getBalance(String playerName) {
-        return APIEconomy.getMoney(UUIDFetcher.getUUIDOf(playerName));
+        return EconomyRelated.getMoney(UUIDFetcher.getUUIDOf(playerName));
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
+        return EconomyRelated.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
     }
 
     @Override
     public double getBalance(String playerName, String world) {
-        return APIEconomy.getMoney(UUIDFetcher.getUUIDOf(playerName));
+        return EconomyRelated.getMoney(UUIDFetcher.getUUIDOf(playerName));
     }
 
     @Override
     public double getBalance(OfflinePlayer player, String world) {
-        return APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
+        return EconomyRelated.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
     }
 
     @Override
     public boolean has(String playerName, double amount) {
-        return APIEconomy.hasMoney(UUIDFetcher.getUUIDOf(playerName), amount);
+        return EconomyRelated.hasMoney(UUIDFetcher.getUUIDOf(playerName), amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return APIEconomy.hasMoney(UUIDFetcher.getUUIDOf(player.getName()), amount);
+        return EconomyRelated.hasMoney(UUIDFetcher.getUUIDOf(player.getName()), amount);
     }
 
     @Override
     public boolean has(String playerName, String worldName, double amount) {
-        return APIEconomy.hasMoney(UUIDFetcher.getUUIDOf(playerName), amount);
+        return EconomyRelated.hasMoney(UUIDFetcher.getUUIDOf(playerName), amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, String worldName, double amount) {
-        return APIEconomy.hasMoney(UUIDFetcher.getUUIDOf(player.getName()), amount);
+        return EconomyRelated.hasMoney(UUIDFetcher.getUUIDOf(player.getName()), amount);
     }
 
     @Override
@@ -133,40 +133,40 @@ public class VaultInterface implements Economy {
 
     private EconomyResponse withdraw(final String playerName, double amount) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (APIEconomy.hasMoney(uuid, amount)) {
-            APIEconomy.removeMoney(uuid, amount);
-            return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        if (EconomyRelated.hasMoney(uuid, amount)) {
+            EconomyRelated.removeMoney(uuid, amount);
+            return new EconomyResponse(amount, EconomyRelated.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
         } else {
-            return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.FAILURE, null);
+            return new EconomyResponse(amount, EconomyRelated.getMoney(uuid), EconomyResponse.ResponseType.FAILURE, null);
         }
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        APIEconomy.addMoney(uuid, amount);
-        return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        EconomyRelated.addMoney(uuid, amount);
+        return new EconomyResponse(amount, EconomyRelated.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        APIEconomy.addMoney(uuid, amount);
-        return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        EconomyRelated.addMoney(uuid, amount);
+        return new EconomyResponse(amount, EconomyRelated.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        APIEconomy.addMoney(uuid, amount);
-        return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        EconomyRelated.addMoney(uuid, amount);
+        return new EconomyResponse(amount, EconomyRelated.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        APIEconomy.addMoney(uuid, amount);
-        return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        EconomyRelated.addMoney(uuid, amount);
+        return new EconomyResponse(amount, EconomyRelated.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
@@ -236,32 +236,32 @@ public class VaultInterface implements Economy {
     @Override
     public boolean createPlayerAccount(String playerName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (APIEconomy.hasAccount(uuid)) return false;
-        APIEconomy.createAccount(uuid);
+        if (EconomyRelated.hasAccount(uuid)) return false;
+        EconomyRelated.createAccount(uuid);
         return true;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        if (APIEconomy.hasAccount(uuid)) return false;
-        APIEconomy.createAccount(uuid);
+        if (EconomyRelated.hasAccount(uuid)) return false;
+        EconomyRelated.createAccount(uuid);
         return true;
     }
 
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (APIEconomy.hasAccount(uuid)) return false;
-        APIEconomy.createAccount(uuid);
+        if (EconomyRelated.hasAccount(uuid)) return false;
+        EconomyRelated.createAccount(uuid);
         return true;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        if (APIEconomy.hasAccount(uuid)) return false;
-        APIEconomy.createAccount(uuid);
+        if (EconomyRelated.hasAccount(uuid)) return false;
+        EconomyRelated.createAccount(uuid);
         return true;
     }
 

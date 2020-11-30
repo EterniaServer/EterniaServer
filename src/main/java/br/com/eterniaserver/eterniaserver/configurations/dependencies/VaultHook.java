@@ -1,9 +1,9 @@
 package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.Vars;
-
+import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
+
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -19,7 +19,7 @@ public class VaultHook {
         } else if (plugin.getServer().getPluginManager().isPluginEnabled("Vault") && !EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp != null) {
-                Vars.setEcon(rsp.getProvider());
+                EconomyRelated.setEconomy(rsp.getProvider());
             }
         } else {
             plugin.getServer().getPluginManager().disablePlugin(plugin);

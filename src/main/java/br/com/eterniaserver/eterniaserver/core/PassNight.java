@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -19,7 +20,7 @@ public class PassNight extends BukkitRunnable {
     public PassNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - Vars.nightTime) > 300) {
+        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - ServerRelated.getNightMessageTime()) > 300) {
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.NIGHT_SKIPPING, true, world.getName()));
         }
     }
@@ -36,15 +37,15 @@ public class PassNight extends BukkitRunnable {
                 world.setStorm(false);
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
-                Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> ServerRelated.removeFromSkipping(world), 20);
                 Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.NIGHT_SKIPPED, true, world.getName()));
-                APIServer.changeNightTime(System.currentTimeMillis());
+                ServerRelated.updateNightMessageTime();
                 this.cancel();
             } else {
                 world.setTime(time + timeRate);
             }
-        } else if (Vars.skippingWorlds.contains(world)) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> Vars.skippingWorlds.remove(world), 20);
+        } else if (ServerRelated.isSkipping(world)) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> ServerRelated.removeFromSkipping(world), 20);
             this.cancel();
         }
     }
