@@ -28,10 +28,10 @@ public class Glow extends BaseCommand {
     public Glow(EterniaServer plugin) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
             Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-
             for (Colors colors : Colors.values()) {
-                Team team = scoreboard.registerNewTeam(colors.name());
+                Team team = scoreboard.registerNewTeam("es_" + colors.name().toLowerCase());
                 team.setColor(colors.getChatColor());
+                team.setAllowFriendlyFire(true);
                 teams[colors.ordinal()] = team;
             }
         });

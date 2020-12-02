@@ -21,9 +21,7 @@ public class Vars {
 
     protected static final Map<Player, Boolean> vanished = new HashMap<>();
 
-    protected static final Map<UUID, UUID> tpaRequests = new HashMap<>();
     protected static final Map<UUID, Boolean> godMode = new HashMap<>();
-    protected static final Map<UUID, Long> tpaTime = new HashMap<>();
     protected static final Map<UUID, Location> playerLocationMap = new HashMap<>();
     protected static final Map<UUID, Integer> playersInPortal = new HashMap<>();
     protected static final Map<UUID, Boolean> spy = new HashMap<>();
@@ -34,7 +32,6 @@ public class Vars {
 
     protected static final Map<String, UUID> playersName = new HashMap<>();
     protected static final Map<String, Location> locations = new HashMap<>();
-    protected static final Map<String, Long> kitsCooldown = new HashMap<>();
     protected static final Map<String, String> rewards = new HashMap<>();
 
     protected static int getVersion() {

@@ -62,10 +62,11 @@ public class CashRelated {
             update.set.set("cash", amount);
             update.where.set("uuid", uuid.toString());
             SQL.executeAsync(update);
-        } else {
-            PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
-            setCash(uuid, amount);
+            return;
         }
+        
+        PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
+        setCash(uuid, amount);
     }
 
     /**

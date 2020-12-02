@@ -60,8 +60,8 @@ public class PluginTick extends BukkitRunnable {
     }
 
     private void tpaTime(User user) {
-        if (APIServer.hasTpaRequest(user.getUUID()) && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - Vars.tpaTime.getOrDefault(user.getUUID(), 0L)) >= 25) {
-            APIServer.removeTpaRequest(user.getUUID());
+        if (PlayerRelated.hasTpaRequest(user.getUUID()) && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - PlayerRelated.getAFKTime(user.getUUID())) >= 25) {
+            PlayerRelated.removeTpaRequest(user.getUUID());
         }
     }
 

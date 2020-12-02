@@ -9,6 +9,7 @@ import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.core.APIServer;
@@ -28,7 +29,7 @@ public class Kit extends BaseCommand {
     public Kit() {
         try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_KITS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery();) {
             while (resultSet.next()) {
-                APIServer.putKitCooldown(resultSet.getString("name"), resultSet.getLong("cooldown"));
+                PlayerRelated.putKitCooldown(resultSet.getString("name"), resultSet.getLong("cooldown"));
             }
         } catch (SQLException ignored) {
             APIServer.logError("Erro ao pegar arquivos da database", 3);
@@ -68,7 +69,7 @@ public class Kit extends BaseCommand {
         CustomKit kitObject = EterniaServer.getKitList().get(kit);
         final String kitName = kit + "." + player.getName();
         int cooldown = kitObject.getDelay();
-        final long cd = APIServer.getKitCooldown(kitName);
+        final long cd = PlayerRelated.getKitCooldown(kitName);
 
         if (APIServer.hasCooldown(cd, cooldown)) {
             for (String command : kitObject.getCommands()) {
@@ -77,7 +78,7 @@ public class Kit extends BaseCommand {
             for (String text : kitObject.getMessages()) {
                 player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, text)));
             }
-            APIServer.putKitCooldown(kitName, time);
+            PlayerRelated.putKitCooldown(kitName, time);
 
             Update update = new Update(EterniaServer.getString(Strings.TABLE_KITS));
             update.set.set("cooldown", time);

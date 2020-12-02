@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.Collectors.toList;
@@ -21,24 +20,6 @@ public class APIServer {
 
     private APIServer() {
         throw new IllegalStateException("Utility class");
-    }
-
-    public static UUID getTpaSender(UUID uuid) {
-        return Vars.tpaRequests.get(uuid);
-    }
-
-    public static void removeTpaRequest(UUID uuid) {
-        Vars.tpaTime.remove(uuid);
-        Vars.tpaRequests.remove(uuid);
-    }
-
-    public static void putTpaRequest(UUID target, UUID uuid) {
-        Vars.tpaRequests.put(target, uuid);
-        Vars.tpaTime.put(target, System.currentTimeMillis());
-    }
-
-    public static boolean hasTpaRequest(UUID uuid) {
-        return Vars.tpaRequests.containsKey(uuid);
     }
 
     public static void setChatMuted(boolean bool) {
@@ -87,14 +68,6 @@ public class APIServer {
 
     public static Set<Player> getVanishList() {
         return Vars.vanished.keySet();
-    }
-
-    public static long getKitCooldown(String kit) {
-        return Vars.kitsCooldown.get(kit);
-    }
-
-    public static void putKitCooldown(String kit, long time) {
-        Vars.kitsCooldown.put(kit, time);
     }
 
     public static int getVersion() {

@@ -14,13 +14,100 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 public class PlayerRelated {
 
+    private static final Map<String, Long> kitsCooldown = new HashMap<>();
+
     private static final Map<UUID, PlayerTeleport> teleports = new HashMap<>();
     private static final Map<UUID, PlayerProfile> playerProfiles = new HashMap<>();
     private static final Map<UUID, Boolean> onAfk = new HashMap<>();
     private static final Map<UUID, Long> afkTime = new HashMap<>();
+    private static final Map<UUID, UUID> tpaRequests = new HashMap<>();
+    private static final Map<UUID, Long> tpaTime = new HashMap<>();
 
     private PlayerRelated() {
         throw new IllegalStateException("Utility class");
+    }
+
+    /**
+     * Get the time of last TPA
+     * @param uuid user
+     * @return the time
+     */
+    public static long getTPATime(UUID uuid) {
+        return tpaTime.getOrDefault(uuid, 0L);
+    }
+
+    /**
+     * Get the target user that request a tpa. Can return null
+     * @param uuid of user
+     * @return the uuid of target user
+     */
+    public static UUID getTpaSender(UUID uuid) {
+        return tpaRequests.get(uuid);
+    }
+
+    /**
+     * Remove a tpa request from a user
+     * @param uuid of user
+     */
+    public static void removeTpaRequest(UUID uuid) {
+        tpaTime.remove(uuid);
+        tpaRequests.remove(uuid);
+    }
+
+    /**
+     * Put a tpa request from one user to another user
+     * @param target uuid of target user
+     * @param uuid of user
+     */
+    public static void putTpaRequest(UUID target, UUID uuid) {
+        tpaRequests.put(target, uuid);
+        tpaTime.put(target, System.currentTimeMillis());
+    }
+
+    /**
+     * Check if a user has a tpa request searching by uuid
+     * @param uuid of user
+     * @return if the user have
+     */
+    public static boolean hasTpaRequest(UUID uuid) {
+        return tpaRequests.containsKey(uuid);
+    }
+
+    /**
+     * Get the cooldown of a kit
+     * @param kitname
+     * @return the time
+     */
+    public static long getKitCooldown(String kitname) {
+        return kitsCooldown.get(kitname);
+    }
+
+    /**
+     * Update the cooldown of a kit
+     * @param kitName
+     * @param time
+     */
+    public static void putKitCooldown(String kitName, long time) {
+        kitsCooldown.put(kitName, time);
+    }
+
+    /**
+     * Generate
+     * @param playerName
+     */
+    public static void generatePlayerKits(String playerName) {
+        for (String kit : EterniaServer.getKitList().keySet()) {
+            String kitName = kit + "." + playerName;
+
+            if (!kitsCooldown.containsKey(kitName)) {
+                Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_KITS));
+                insert.columns.set("name", "cooldown");
+                insert.values.set(kitName, System.currentTimeMillis());
+                SQL.executeAsync(insert);
+
+                kitsCooldown.put(kitName, System.currentTimeMillis());
+            }
+        }
     }
 
     /**
@@ -98,7 +185,7 @@ public class PlayerRelated {
      * @param uuid of user
      */
     public static void changeAFKState(UUID uuid) {
-        onAfk.put(uuid, areAFK(uuid));
+        onAfk.put(uuid, !areAFK(uuid));
     }
 
     /**

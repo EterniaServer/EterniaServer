@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
@@ -223,18 +222,7 @@ public class User {
     }
 
     public void createKits() {
-        final long time = System.currentTimeMillis();
-        for (String kit : EterniaServer.getKitList().keySet()) {
-            final String kitName = kit + "." + playerName;
-            if (!Vars.kitsCooldown.containsKey(kitName)) {
-                Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_KITS));
-                insert.columns.set("name", "cooldown");
-                insert.values.set(kitName, time);
-                SQL.executeAsync(insert);
-
-                Vars.kitsCooldown.put(kitName, time);
-            }
-        }
+        PlayerRelated.generatePlayerKits(playerName);
     }
 
     public boolean isTeleporting() {
