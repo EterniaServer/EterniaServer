@@ -16,8 +16,8 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -44,13 +44,13 @@ public class Mute extends BaseCommand {
     @CommandPermission("%mute_channels_perm")
     @Description("%mute_channels_description")
     public void muteChannels(Player sender) {
-        if (APIServer.isChatMuted()) {
-            APIServer.setChatMuted(false);
+        if (ServerRelated.isChatMuted()) {
+            ServerRelated.changeChatLockState();
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_CHANNELS_DISABLED, true, sender.getName(), sender.getDisplayName()));
         } else {
-            APIServer.setChatMuted(true);
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_CHANNELS_ENABLED, true, sender.getName(), sender.getDisplayName()));
         }
+        ServerRelated.changeChatLockState();
     }
 
     @CommandCompletion("@players Mensagem")

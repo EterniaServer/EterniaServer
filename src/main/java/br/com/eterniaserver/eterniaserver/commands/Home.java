@@ -12,9 +12,8 @@ import br.com.eterniaserver.eternialib.sql.queries.Delete;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.core.Vars;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -60,7 +59,7 @@ public class Home extends BaseCommand {
         }
 
         if (targets == null) {
-            Location location = APIServer.getLocation(nome.toLowerCase() + "." + user.getName());
+            Location location = ServerRelated.getLocation(nome.toLowerCase() + "." + user.getName());
             if (locationExists(location, player, nome)) {
                 user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.getMessage(Messages.HOME_GOING, true, nome)));
             }
@@ -68,7 +67,7 @@ public class Home extends BaseCommand {
         }
 
         if (user.hasPermission(EterniaServer.getString(Strings.PERM_HOME_OTHER))) {
-            Location location = APIServer.getLocation(nome.toLowerCase() + "." + targets.getPlayer().getName());
+            Location location = ServerRelated.getLocation(nome.toLowerCase() + "." + targets.getPlayer().getName());
             if (locationExists(location, player, nome)) {
                 user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.getMessage(Messages.HOME_GOING, true, nome)));
             }
@@ -148,7 +147,7 @@ public class Home extends BaseCommand {
     }
 
     private boolean locationExists(final Location location, final Player player, final String nome) {
-        if (location == Vars.getError()) {
+        if (location == ServerRelated.getError()) {
             EterniaServer.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
             return false;
         }
@@ -159,7 +158,7 @@ public class Home extends BaseCommand {
         String homeName = home + "." + jogador;
         User user = new User(jogador);
 
-        APIServer.putLocation(homeName, loc);
+        ServerRelated.putLocation(homeName, loc);
         boolean t = false;
         StringBuilder result = new StringBuilder();
 
@@ -202,7 +201,7 @@ public class Home extends BaseCommand {
     public void delHome(String home, String jogador) {
         User user = new User(jogador);
         final String homeName = home + "." + jogador;
-        APIServer.removeLocation(homeName);
+        ServerRelated.removeLocation(homeName);
         StringBuilder nova = new StringBuilder();
 
         List<String> values = user.getHomes();

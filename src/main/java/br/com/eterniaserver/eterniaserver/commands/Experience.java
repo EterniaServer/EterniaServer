@@ -5,10 +5,10 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -97,7 +97,7 @@ public class Experience extends BaseCommand {
     public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpWant) {
         User user = new User(player);
 
-        int xpReal = APIServer.getXPForLevel(user.getLevel());
+        int xpReal = ServerRelated.getXPForLevel(user.getLevel());
 
         if (xpWant <= 0 || xpReal <= xpWant) {
             user.sendMessage(Messages.EXP_INSUFFICIENT);
@@ -125,7 +125,7 @@ public class Experience extends BaseCommand {
     public void onWithdrawLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer level) {
         User user = new User(player);
 
-        int xpla = APIServer.getXPForLevel(level);
+        int xpla = ServerRelated.getXPForLevel(level);
         if (user.getExp() < xpla) {
             user.sendMessage(Messages.EXP_INSUFFICIENT);
             return;
@@ -150,8 +150,8 @@ public class Experience extends BaseCommand {
             return;
         }
 
-        int xp = APIServer.getXPForLevel(xpla);
-        int xpto = APIServer.getXPForLevel(xpAtual);
+        int xp = ServerRelated.getXPForLevel(xpla);
+        int xpto = ServerRelated.getXPForLevel(xpAtual);
         user.addExp(xp);
         user.setLevel(0);
         user.setGameExp(0);

@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 
 import org.bukkit.Material;
@@ -86,7 +86,7 @@ public class CashCfg {
         try {
             outCash.save(Constants.CASHGUI_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
+            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
 
     }
@@ -129,7 +129,7 @@ public class CashCfg {
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(cashGui.getString("menu." + i + ".name").replace('$', (char) 0x00A7));
                 List<String> listando = cashGui.getStringList("menu." + i + ".lore");
-                APIServer.putColorOnList(listando);
+                ServerRelated.putColorOnList(listando);
                 itemMeta.setLore(listando);
                 itemStack.setItemMeta(itemMeta);
                 menuGuiTemp.add(itemStack);
@@ -143,12 +143,12 @@ public class CashCfg {
                         ItemMeta guiMeta = guiItem.getItemMeta();
                         guiMeta.setDisplayName(cashGui.getString("guis." + guiName + "." + j + ".name").replace('$', (char) 0x00A7));
                         List<String> listandoNovo = cashGui.getStringList("guis." + guiName + "." + j + ".lore");
-                        APIServer.putColorOnList(listandoNovo);
+                        ServerRelated.putColorOnList(listandoNovo);
                         guiMeta.setLore(listandoNovo);
                         guiItem.setItemMeta(guiMeta);
                         List<String> commands = cashGui.getStringList("guis." + guiName + "." + j + ".commands");
                         List<String> msgs = cashGui.getStringList("guis." + guiName + "." + j + ".messages");
-                        APIServer.putColorOnList(msgs);
+                        ServerRelated.putColorOnList(msgs);
                         tempList.add(new CashItem(guiItem, cashGui.getInt("guis." + guiName + "." + j + ".cost"), msgs, commands, false));
                     } else {
                         tempList.add(new CashItem(getGlass(), 0, null, null, true));

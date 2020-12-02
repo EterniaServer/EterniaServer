@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.configurations;
 
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
@@ -37,7 +37,7 @@ public class GenericCfg {
             fileConfiguration.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
             fileConfiguration.save(filePath);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + path, 3);
+            ServerRelated.logError("Impossível de criar arquivos em " + path, 3);
         }
     }
 
@@ -81,7 +81,7 @@ public class GenericCfg {
         for (String value : list) {
             Material material = Material.getMaterial(value);
             if (material == null) {
-                APIServer.logError("Configuração de elevadores material " + value + " não encontrado", 2);
+                ServerRelated.logError("Configuração de elevadores material " + value + " não encontrado", 2);
             } else {
                 elevatorMaterials.add(material);
             }

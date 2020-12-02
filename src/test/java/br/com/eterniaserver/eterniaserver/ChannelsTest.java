@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

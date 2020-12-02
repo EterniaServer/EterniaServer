@@ -21,7 +21,7 @@ public class CheckWorld implements Runnable {
     }
 
     private void checkWorld(final World world) {
-        final int sleeping = APIServer.getSleeping(world).size();
+        final int sleeping = ServerRelated.getSleeping(world).size();
         if (sleeping > 0) {
             ServerRelated.putInSkipping(world);
             new PassNight(world, plugin).runTaskTimer(plugin, 1, 1);

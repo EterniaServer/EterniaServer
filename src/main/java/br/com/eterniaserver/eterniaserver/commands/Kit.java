@@ -10,9 +10,9 @@ import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
 
 import org.bukkit.Bukkit;
@@ -32,7 +32,7 @@ public class Kit extends BaseCommand {
                 PlayerRelated.putKitCooldown(resultSet.getString("name"), resultSet.getLong("cooldown"));
             }
         } catch (SQLException ignored) {
-            APIServer.logError("Erro ao pegar arquivos da database", 3);
+            ServerRelated.logError("Erro ao pegar arquivos da database", 3);
         }
     }
 
@@ -71,12 +71,12 @@ public class Kit extends BaseCommand {
         int cooldown = kitObject.getDelay();
         final long cd = PlayerRelated.getKitCooldown(kitName);
 
-        if (APIServer.hasCooldown(cd, cooldown)) {
+        if (ServerRelated.hasCooldown(cd, cooldown)) {
             for (String command : kitObject.getCommands()) {
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIServer.setPlaceholders(player, command));
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), ServerRelated.setPlaceholders(player, command));
             }
             for (String text : kitObject.getMessages()) {
-                player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, text)));
+                player.sendMessage(ServerRelated.getColor(ServerRelated.setPlaceholders(player, text)));
             }
             PlayerRelated.putKitCooldown(kitName, time);
 
@@ -85,7 +85,7 @@ public class Kit extends BaseCommand {
             update.where.set("name", kitName);
             SQL.executeAsync(update);
         } else {
-            EterniaServer.sendMessage(player, Messages.SERVER_TIMING, APIServer.getTimeLeftOfCooldown(cooldown, cd));
+            EterniaServer.sendMessage(player, Messages.SERVER_TIMING, ServerRelated.getTimeLeftOfCooldown(cooldown, cd));
         }
     }
 

@@ -12,9 +12,8 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.core.Vars;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
@@ -61,7 +60,7 @@ public class Generic extends BaseCommand {
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
             try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_LOCATIONS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
-                Vars.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
+                ServerRelated.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
                 while (resultSet.next()) {
                     final String[] split = resultSet.getString("location").split(":");
                     Location loc = new Location(Bukkit.getWorld(split[0]),
@@ -70,10 +69,10 @@ public class Generic extends BaseCommand {
                             Double.parseDouble(split[3]),
                             Float.parseFloat(split[4]),
                             Float.parseFloat(split[5]));
-                    APIServer.putLocation(resultSet.getString("name"), getCenter(loc));
+                    ServerRelated.putLocation(resultSet.getString("name"), getCenter(loc));
                 }
             } catch (SQLException ignored) {
-                APIServer.logError("Erro ao carregar database", 3);
+                ServerRelated.logError("Erro ao carregar database", 3);
             }
         });
 
@@ -89,7 +88,7 @@ public class Generic extends BaseCommand {
                 PlayerRelated.putProfile(UUID.fromString(resultSet.getString("uuid")), playerProfile);
             }
         } catch (SQLException ignored) {
-            APIServer.logError("Erro ao carregar database", 3);
+            ServerRelated.logError("Erro ao carregar database", 3);
         }
         sendConsole(EterniaServer.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(PlayerRelated.getProfileMapSize())));
     }
@@ -371,12 +370,12 @@ public class Generic extends BaseCommand {
     private void sendProfile(Player player, Player targets) {
         User target = new User(targets);
         final long millis = target.getAndUpdateTimePlayed();
-        String hms = APIServer.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
+        String hms = ServerRelated.getColor(String.format("&3%02d&8:&3%02d&8:&3%02d", TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
         player.sendMessage(EterniaServer.getMessage(Messages.PROFILE_TITLE, false));
         for (String object : EterniaServer.getStringList(Lists.PROFILE_CUSTOM_MESSAGES)) {
-            player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(targets, object)));
+            player.sendMessage(ServerRelated.getColor(ServerRelated.setPlaceholders(targets, object)));
         }
         player.sendMessage(EterniaServer.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(target.getFirstLogin()))));
         player.sendMessage(EterniaServer.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(target.getLastLogin()))));

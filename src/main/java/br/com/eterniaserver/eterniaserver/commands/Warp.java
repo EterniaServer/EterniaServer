@@ -13,9 +13,8 @@ import br.com.eterniaserver.eternialib.sql.queries.Delete;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.User;
-import br.com.eterniaserver.eterniaserver.core.Vars;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -39,7 +38,7 @@ public class Warp extends BaseCommand {
             return;
         }
 
-        Location location = APIServer.getLocation("warp.spawn");
+        Location location = ServerRelated.getLocation("warp.spawn");
 
         if (targets == null) {
             if (spawnExists(location, player)) {
@@ -84,14 +83,14 @@ public class Warp extends BaseCommand {
         }
 
         if (targets != null) {
-            Location location = APIServer.getLocation(targets.toLowerCase());
+            Location location = ServerRelated.getLocation(targets.toLowerCase());
             if (shopExists(location, player, targets)) {
                 user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.getMessage(Messages.WARP_SHOP_PLAYER_TELEPORTED, true, targets)));
             }
             return;
         }
 
-        Location location = APIServer.getLocation("warp.shop");
+        Location location = ServerRelated.getLocation("warp.shop");
 
         if (!player.hasPermission(EterniaServer.getString(Strings.PERM_WARP_SHOP))) {
             user.sendMessage(Messages.SERVER_NO_PERM);
@@ -136,7 +135,7 @@ public class Warp extends BaseCommand {
             return;
         }
 
-        Location location = APIServer.getLocation("warp." + nome.toLowerCase());
+        Location location = ServerRelated.getLocation("warp." + nome.toLowerCase());
 
         if (warpExists(location, player, nome)) {
             user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.getMessage(Messages.WARP_TELEPORTED, true, nome)));
@@ -157,7 +156,7 @@ public class Warp extends BaseCommand {
     @Description("%delwarp_description")
     @CommandPermission("%delwarp_perm")
     public void onDelWarp(Player player, String nome) {
-        if (APIServer.getLocation("warp." + nome.toLowerCase()).equals(Vars.getError())) {
+        if (ServerRelated.getLocation("warp." + nome.toLowerCase()).equals(ServerRelated.getError())) {
             EterniaServer.sendMessage(player, Messages.WARP_NOT_FOUND, nome);
             return;
         }
@@ -171,7 +170,7 @@ public class Warp extends BaseCommand {
     @CommandPermission("%listwarp_perm")
     public void onListWarp(Player player) {
         StringBuilder string = new StringBuilder();
-        Object[] list = APIServer.listWarp();
+        Object[] list = ServerRelated.listWarp();
         int size = list.length;
         for (int i = 0; i < size; i++) {
             String line = list[i].toString();
@@ -190,7 +189,7 @@ public class Warp extends BaseCommand {
     }
 
     private boolean shopExists(final Location location, final Player player) {
-        if (location == Vars.getError()) {
+        if (location == ServerRelated.getError()) {
             EterniaServer.sendMessage(player, Messages.WARP_SHOP_CENTRAL_NOT_FOUND);
             return false;
         }
@@ -198,7 +197,7 @@ public class Warp extends BaseCommand {
     }
 
     private boolean shopExists(final Location location, final Player player, final String nome) {
-        if (location == Vars.getError()) {
+        if (location == ServerRelated.getError()) {
             EterniaServer.sendMessage(player, Messages.WARP_SHOP_NOT_FOUND, nome);
             return false;
         }
@@ -206,7 +205,7 @@ public class Warp extends BaseCommand {
     }
 
     private boolean warpExists(final Location location, final Player player, final String nome) {
-        if (location == Vars.getError()) {
+        if (location == ServerRelated.getError()) {
             EterniaServer.sendMessage(player, Messages.WARP_NOT_FOUND, nome);
             return false;
         }
@@ -214,7 +213,7 @@ public class Warp extends BaseCommand {
     }
 
     private boolean spawnExists(final Location location, final Player player) {
-        if (location == Vars.getError()) {
+        if (location == ServerRelated.getError()) {
             EterniaServer.sendMessage(player, Messages.WARP_SPAWN_NOT_FOUND);
             return false;
         }
@@ -228,7 +227,7 @@ public class Warp extends BaseCommand {
                 ":" + ((int) loc.getZ()) +
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
-        if (!APIServer.getLocation(shop).equals(Vars.getError())) {
+        if (!ServerRelated.getLocation(shop).equals(ServerRelated.getError())) {
             Update update = new Update(EterniaServer.getString(Strings.TABLE_LOCATIONS));
             update.set.set("location", saveloc);
             update.where.set("name", shop);
@@ -239,7 +238,7 @@ public class Warp extends BaseCommand {
             insert.values.set(shop, saveloc);
             SQL.executeAsync(insert);
         }
-        APIServer.putLocation(shop, loc);
+        ServerRelated.putLocation(shop, loc);
     }
 
     public void setWarp(Location loc, String warp) {
@@ -250,7 +249,7 @@ public class Warp extends BaseCommand {
                 ":" + ((int) loc.getYaw()) +
                 ":" + ((int) loc.getPitch());
         final String warpName = "warp." + warp;
-        if (!APIServer.getLocation(warpName).equals(Vars.getError())) {
+        if (!ServerRelated.getLocation(warpName).equals(ServerRelated.getError())) {
             Update update = new Update(EterniaServer.getString(Strings.TABLE_LOCATIONS));
             update.set.set("location", saveloc);
             update.where.set("name", warpName);
@@ -261,12 +260,12 @@ public class Warp extends BaseCommand {
             insert.values.set(warpName, saveloc);
             SQL.executeAsync(insert);
         }
-        APIServer.putLocation(warpName, loc);
+        ServerRelated.putLocation(warpName, loc);
     }
 
     public void delWarp(String warp) {
         final String warpName = "warp." + warp;
-        APIServer.removeLocation(warpName);
+        ServerRelated.removeLocation(warpName);
 
         Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
         delete.where.set("name", warpName);
@@ -274,7 +273,7 @@ public class Warp extends BaseCommand {
     }
 
     public void delShop(String shop) {
-        APIServer.removeLocation(shop);
+        ServerRelated.removeLocation(shop);
 
         Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
         delete.where.set("name", shop);

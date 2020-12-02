@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 
 import org.bukkit.Bukkit;
 
@@ -46,7 +47,7 @@ public class PluginSchedule extends TimerTask {
                 runDay(EterniaServer.getScheduleMap().get("saturday"));
                 break;
             default:
-                APIServer.logError("Talvez você não seja da terra", 3);
+                ServerRelated.logError("Talvez você não seja da terra", 3);
         }
     }
 

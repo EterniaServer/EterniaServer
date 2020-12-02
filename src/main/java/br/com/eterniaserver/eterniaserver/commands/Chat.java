@@ -15,8 +15,8 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -77,7 +77,7 @@ public class Chat extends BaseCommand {
     @CommandPermission("%chat_broadcast_perm")
     @CommandAlias("%chat_broadcast_aliases")
     public void onBroadcast(String message) {
-        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST, true, APIServer.getColor(message)));
+        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST, true, ServerRelated.getColor(message)));
     }
 
     @Subcommand("%chat_vanish")
@@ -169,8 +169,8 @@ public class Chat extends BaseCommand {
 
     private boolean isMuted(User user) {
         final long time = user.getMuteTime();
-        if (APIServer.isInFutureCooldown(time)) {
-            user.sendMessage(Messages.CHAT_ARE_MUTED, APIServer.getTimeLeftOfCooldown(time));
+        if (ServerRelated.isInFutureCooldown(time)) {
+            user.sendMessage(Messages.CHAT_ARE_MUTED, ServerRelated.getTimeLeftOfCooldown(time));
             return true;
         }
         return false;

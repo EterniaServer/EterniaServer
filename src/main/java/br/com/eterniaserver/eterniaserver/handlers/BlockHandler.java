@@ -3,13 +3,13 @@ package br.com.eterniaserver.eterniaserver.handlers;
 import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.NBTTileEntity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,7 +41,7 @@ public class BlockHandler implements Listener {
     public void onPlayerSignChange(SignChangeEvent event) {
         if (event.getPlayer().hasPermission(EterniaServer.getString(Strings.PERM_SIGN_COLOR))) {
             for (byte i = 0; i < 4; i++) {
-                event.setLine(i, APIServer.getColor(event.getLine(i)));
+                event.setLine(i, ServerRelated.getColor(event.getLine(i)));
             }
         }
     }
@@ -126,7 +126,7 @@ public class BlockHandler implements Listener {
         });
         if (reward.get() == null) return;
         for (String command : reward.get()) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIServer.setPlaceholders(player, command));
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), ServerRelated.setPlaceholders(player, command));
         }
     }
 

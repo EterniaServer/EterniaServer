@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.locales;
 
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Commands;
 import br.com.eterniaserver.eterniaserver.objects.CommandLocale;
 
@@ -157,13 +157,13 @@ public class CommandsLocaleCfg {
         }
 
         if (new File(Constants.DATA_LOCALE_FOLDER_PATH).mkdir()) {
-            APIServer.logError("Pasta de locales criada com sucesso", 1);
+            ServerRelated.logError("Pasta de locales criada com sucesso", 1);
         }
 
         try {
             config.save(Constants.COMMANDS_LOCALE_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
+            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
         }
 
         defaults.clear();

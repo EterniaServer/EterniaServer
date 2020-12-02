@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -45,13 +45,13 @@ public class CustomCommand extends AbstractCommand {
         if (player.hasPermission(EterniaServer.getString(Strings.PERM_BASE_COMMAND) + cmd)) {
             for (String line : commandsStrings) {
                 if (console) {
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), APIServer.setPlaceholders(player, line));
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), ServerRelated.setPlaceholders(player, line));
                 } else {
-                    player.performCommand(APIServer.setPlaceholders(player, line));
+                    player.performCommand(ServerRelated.setPlaceholders(player, line));
                 }
             }
             for (String line : messagesStrings) {
-                player.sendMessage(APIServer.getColor(APIServer.setPlaceholders(player, line)));
+                player.sendMessage(ServerRelated.getColor(ServerRelated.setPlaceholders(player, line)));
             }
         } else {
             EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);

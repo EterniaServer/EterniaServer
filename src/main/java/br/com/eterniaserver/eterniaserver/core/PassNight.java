@@ -28,7 +28,7 @@ public class PassNight extends BukkitRunnable {
     @Override
     public void run() {
         final long time = world.getTime();
-        final int sleeping = APIServer.getSleeping(world).size();
+        final int sleeping = ServerRelated.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
         if (sleeping > 0) {
             int x = players / sleeping;

@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.objects.CommandData;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -59,7 +59,7 @@ public class CommandsCfg {
         try {
             outCommands.save(Constants.COMMANDS_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
+            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
 
     }

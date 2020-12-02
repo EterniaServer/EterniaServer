@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,7 +30,7 @@ public class KitsCfg {
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
                 List<String> lista = kits.getStringList("kits." + key + ".text");
-                APIServer.putColorOnList(lista);
+                ServerRelated.putColorOnList(lista);
                 tempKitList.put(key, new CustomKit(kits.getInt("kits." + key + ".delay"), kits.getStringList("kits." + key + ".command"), lista));
             }
         }
@@ -53,7 +53,7 @@ public class KitsCfg {
         try {
             outKit.save(Constants.KITS_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
+            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
 
     }

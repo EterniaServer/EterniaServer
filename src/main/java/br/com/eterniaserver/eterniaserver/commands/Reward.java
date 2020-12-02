@@ -10,10 +10,10 @@ import br.com.eterniaserver.eternialib.sql.queries.Delete;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -33,12 +33,12 @@ public class Reward extends BaseCommand {
     public Reward() {
         try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_REWARD)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                APIServer.updateRewardMap(resultSet.getString("key_code"), resultSet.getString("group_name"));
+                ServerRelated.updateRewardMap(resultSet.getString("key_code"), resultSet.getString("group_name"));
             }
         } catch (SQLException ignored) {
-            APIServer.logError("Erro ao pegar arquivos da database", 3);
+            ServerRelated.logError("Erro ao pegar arquivos da database", 3);
         }
-        Bukkit.getConsoleSender().sendMessage(EterniaServer.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(APIServer.getRewardMapSize())));
+        Bukkit.getConsoleSender().sendMessage(EterniaServer.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(ServerRelated.getRewardMapSize())));
     }
 
     @CommandAlias("%usekey")
@@ -46,10 +46,10 @@ public class Reward extends BaseCommand {
     @Description("%usekey_description")
     @CommandPermission("%usekey_perm")
     public void onUseKey(Player player, String key) {
-        if (APIServer.hasReward(key)) {
-            giveReward(APIServer.getReward(key), player);
+        if (ServerRelated.hasReward(key)) {
+            giveReward(ServerRelated.getReward(key), player);
             deleteKey(key);
-            APIServer.removeReward(key);
+            ServerRelated.removeReward(key);
         } else {
             EterniaServer.sendMessage(player, Messages.REWARD_INVALID_KEY, key);
         }
@@ -64,7 +64,7 @@ public class Reward extends BaseCommand {
             random.nextBytes(bytes);
             final String key = Long.toHexString(random.nextLong());
             createKey(reward, key);
-            APIServer.addReward(key, reward);
+            ServerRelated.addReward(key, reward);
             EterniaServer.sendMessage(sender, Messages.REWARD_CREATED, key);
         } else {
             EterniaServer.sendMessage(sender, Messages.REWARD_NOT_FOUND, reward);
@@ -89,7 +89,7 @@ public class Reward extends BaseCommand {
             random.nextBytes(bytes);
             if (random.nextDouble() <= chance) {
                 for (String command : lista) {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), APIServer.setPlaceholders(player, command));
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), ServerRelated.setPlaceholders(player, command));
                 }
             }
         });

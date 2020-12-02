@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.CashRelated;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;

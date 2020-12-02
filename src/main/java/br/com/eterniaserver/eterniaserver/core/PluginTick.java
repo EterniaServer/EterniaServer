@@ -2,12 +2,15 @@ package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
+import br.com.eterniaserver.eterniaserver.objects.User;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,7 +45,7 @@ public class PluginTick extends BukkitRunnable {
 
     private void optimizedMoveEvent(User user) {
         Location location = user.getLocation();
-        Location firstLocation = Vars.playerLocationMap.getOrDefault(user.getUUID(), location);
+        Location firstLocation = PlayerRelated.getLocationOfUser(user.getUUID(), location);
 
         if (!(firstLocation.getBlockX() == location.getBlockX() && firstLocation.getBlockY() == location.getBlockY() && firstLocation.getBlockZ() == location.getBlockZ())) {
             user.updateAfkTime();
@@ -51,12 +54,12 @@ public class PluginTick extends BukkitRunnable {
                 Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.AFK_LEAVE, true, user.getName(), user.getDisplayName()));
             }
         }
-        Vars.playerLocationMap.put(user.getUUID(), location);
+        PlayerRelated.putLocationOfUser(user.getUUID(), location);
     }
 
     private void refreshPlayers(User user) {
-        Vars.playersName.put(EterniaServer.getString(Strings.MENTION_PLACEHOLDER) + user.getName(), user.getUUID());
-        Vars.playersName.put(EterniaServer.getString(Strings.MENTION_PLACEHOLDER) + user.getDisplayName(), user.getUUID());
+        PlayerRelated.setNameOnline(EterniaServer.getString(Strings.MENTION_PLACEHOLDER) + user.getName(), user.getUUID());
+        PlayerRelated.setNameOnline(EterniaServer.getString(Strings.MENTION_PLACEHOLDER) + user.getDisplayName(), user.getUUID());
     }
 
     private void tpaTime(User user) {
@@ -67,20 +70,20 @@ public class PluginTick extends BukkitRunnable {
 
     private void checkNetherTrap(User user) {
         if (user.getLocation().getBlock().getType() == Material.NETHER_PORTAL) {
-            int time = Vars.playersInPortal.getOrDefault(user.getUUID(), -1);
+            int time = PlayerRelated.getInPortal(user.getUUID());
             if (time == -1) {
-                Vars.playersInPortal.put(user.getUUID(), 10);
-            } else if (Vars.playersInPortal.get(user.getUUID()) == 1) {
-                runSync(() -> PaperLib.teleportAsync(user.getPlayer(), Vars.locations.getOrDefault("warp.spawn", Vars.getError())));
+                PlayerRelated.putInPortal(user.getUUID(), 10);
+            } else if (time == 1) {
+                runSync(() -> PaperLib.teleportAsync(user.getPlayer(), ServerRelated.getLocation("warp.spawn")));
                 user.sendMessage(Messages.WARP_SPAWN_TELEPORTED);
             } else if (time > 1) {
-                Vars.playersInPortal.put(user.getUUID(), time - 1);
+                PlayerRelated.putInPortal(user.getUUID(), time - 1);
                 if ((time - 1) < 5) {
                     user.sendMessage(Messages.SERVER_NETHER_TRAP_TIMING, String.valueOf(time - 1));
                 }
             }
         } else {
-            Vars.playersInPortal.put(user.getUUID(), -1);
+            PlayerRelated.putInPortal(user.getUUID(), -1);
         }
     }
 

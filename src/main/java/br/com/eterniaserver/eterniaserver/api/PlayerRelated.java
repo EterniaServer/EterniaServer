@@ -2,7 +2,12 @@ package br.com.eterniaserver.eterniaserver.api;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
@@ -17,19 +22,270 @@ public class PlayerRelated {
     private static final Map<String, Long> kitsCooldown = new HashMap<>();
 
     private static final Map<UUID, PlayerTeleport> teleports = new HashMap<>();
+
     private static final Map<UUID, PlayerProfile> playerProfiles = new HashMap<>();
+
     private static final Map<UUID, Boolean> onAfk = new HashMap<>();
     private static final Map<UUID, Long> afkTime = new HashMap<>();
+
     private static final Map<UUID, UUID> tpaRequests = new HashMap<>();
     private static final Map<UUID, Long> tpaTime = new HashMap<>();
+
+    private static final Map<Player, Boolean> vanished = new HashMap<>();
+
+    private static final Map<UUID, Boolean> godMode = new HashMap<>();
+    private static final Map<UUID, Location> playerLocationMap = new HashMap<>();
+    private static final Map<UUID, Integer> playersInPortal = new HashMap<>();
+    private static final Map<UUID, Boolean> spy = new HashMap<>();
+    private static final Map<UUID, Location> back = new HashMap<>();
+    private static final Map<UUID, String> glowingColor = new HashMap<>();
+
+    private static final Map<UUID, String> tell = new HashMap<>();
+    private static final Map<UUID, UUID> chatLocked = new HashMap<>();
+
+    private static final Map<String, UUID> playersName = new HashMap<>();
 
     private PlayerRelated() {
         throw new IllegalStateException("Utility class");
     }
 
+    public static void putLocationOfUser(UUID uuid, Location location) {
+        playerLocationMap.put(uuid, location);
+    }
+
+    public static Location getLocationOfUser(UUID uuid, Location location) {
+        return playerLocationMap.getOrDefault(uuid, location);
+    }
+
+    /**
+     * Get the time of a user that are in portal
+     * @param uuid of user
+     * @return the time
+     */
+    public static int getInPortal(UUID uuid) {
+        return playersInPortal.getOrDefault(uuid, -1);
+    }
+
+    /**
+     * Put a time from a user that are in portal
+     * @param uuid of user
+     * @param time
+     */
+    public static void putInPortal(UUID uuid, int time) {
+        playersInPortal.put(uuid, time);
+    }
+
+    /**
+     * Checks if a user is online to mention
+     * @param playerName of user
+     * @return if are
+     */
+    public static boolean hasNameOnline(String playerName) {
+        return playersName.containsKey(playerName);
+    }
+
+    /**
+     * Get a UUID from mention. Can return null
+     * @param playerName of user
+     * @return the UUID of user
+     */
+    public static UUID getUUIDFromMention(String playerName) {
+        return playersName.get(playerName);
+    }
+
+    /**
+     * Set a playerName online for mention
+     * @param playerName of user
+     * @param uuid of user
+     */
+    public static void setNameOnline(String playerName, UUID uuid) {
+        playersName.put(playerName, uuid);
+    }
+
+    /**
+     * Get the UUID's with spy enabled
+     * @return the keyset object
+     */
+    public static Set<UUID> getSpyKeySet() {
+        return spy.keySet();
+    }
+
+    /**
+     * Removes a user from spy
+     * @param uuid of user
+     */
+    public static void removeFromSpy(UUID uuid) {
+        spy.remove(uuid);
+    }
+
+    /**
+     * Change the state of spy from user
+     * @param uuid of user
+     */
+    public static void changeSpyState(UUID uuid) {
+        spy.put(uuid, !isSpying(uuid));
+    }
+
+    /**
+     * Checks if a user are with spy enabled
+     * @param uuid of user
+     * @return if are
+     */
+    public static boolean isSpying(UUID uuid) {
+        return spy.getOrDefault(uuid, false);
+    }
+
+    /**
+     * Change the state of vanish from user
+     * @param player object of user
+     */
+    public static void changeVanishState(Player player) {
+        vanished.put(player, !isVanished(player));
+    }
+    
+    /**
+     * Check if a user is in vanish
+     * @param player object of user
+     * @return if are
+     */
+    public static boolean isVanished(Player player) {
+        return vanished.getOrDefault(player, false);
+    }
+
+    /**
+     * Get the users in vanish
+     * @return the players objects
+     */
+    public static Set<Player> getVanishList() {
+        return vanished.keySet();
+    }
+
+    /**
+     * Change the godmode of user
+     * @param uuid of user
+     */
+    public static void changeGodModeState(UUID uuid) {
+        godMode.put(uuid, !getGodMode(uuid));
+    }
+
+    /**
+     * Check if a user are in godmode
+     * @return if are
+     */
+    public static boolean getGodMode(UUID uuid) {
+        return godMode.getOrDefault(uuid, false);
+    }
+
+    /**
+     * Update the last location user
+     * @param uuid of user
+     * @param location
+     */
+    public static void putBackLocation(UUID uuid, Location location) {
+        back.put(uuid, location);
+    }
+
+    /**
+     * Check if a user has a last location
+     * @param uuid of user
+     * @return if has
+     */
+    public static boolean hasBackLocation(UUID uuid) {
+        return back.containsKey(uuid);
+    }
+
+    /**
+     * Get the last location of user
+     * @param uuid of user
+     * @return the location
+     */
+    public static Location getBackLocation(UUID uuid) {
+        return back.get(uuid);
+    }
+
+    /**
+     * Put a user in tell with other by the name
+     * @param uuid of user
+     * @param playerName of target
+     */
+    public static void putInTell(UUID uuid, String playerName) {
+        tell.put(uuid, playerName);
+    }
+
+    /**
+     * Checks if a user received a private message
+     * @param uuid of user
+     * @return if has
+     */
+    public static boolean receivedTell(UUID uuid) {
+        return tell.containsKey(uuid);
+    }
+
+    /**
+     * 
+     * @param uuid
+     * @return
+     */
+    public static String getTellSender(UUID uuid) {
+        return tell.get(uuid);
+    }
+
+    /**
+     * Checks if a user are telling
+     * @param uuid of user
+     * @return return if are
+     */
+    public static boolean isTell(UUID uuid) {
+        return chatLocked.containsKey(uuid);
+    }
+
+    /**
+     * Set a target to tell with you
+     * @param userUUID of user
+     * @param uuid of target
+     */
+    public static void setTelling(UUID userUUID, UUID uuid) {
+        chatLocked.put(userUUID, uuid);
+    }
+
+    /**
+     * Get the player that are in tell with you
+     * @param uuid of user
+     * @return the UUID of target
+     */
+    public static UUID getTellingPlayerName(UUID uuid) {
+        return chatLocked.get(uuid);
+    }
+
+    /**
+     * Unlock a player from telling
+     * @param uuid of user
+     */
+    public static void removeTelling(UUID uuid) {
+        chatLocked.remove(uuid);
+    }
+
+    /**
+     * Set a glow color to user
+     * @param uuid of user
+     * @param nameColor
+     */
+    public static void putGlowing(UUID uuid, String nameColor) {
+        glowingColor.put(uuid, nameColor);
+    }
+
+    /**
+     * Get the glow color of user
+     * @param uuid of user
+     * @return the color
+     */
+    public static String getGlowColor(UUID uuid) {
+        return glowingColor.getOrDefault(uuid, "");
+    }
+
     /**
      * Get the time of last TPA
-     * @param uuid user
+     * @param uuid of user
      * @return the time
      */
     public static long getTPATime(UUID uuid) {
@@ -152,6 +408,9 @@ public class PlayerRelated {
     public static void playerLogout(UUID uuid) {
         afkTime.remove(uuid);
         onAfk.remove(uuid);
+        godMode.remove(uuid);
+        spy.remove(uuid);
+        vanished.remove(Bukkit.getPlayer(uuid));
     }
 
     /**

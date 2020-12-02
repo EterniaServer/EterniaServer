@@ -4,7 +4,6 @@ import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.objects.BalanceTop;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
@@ -243,7 +242,7 @@ public class EconomyRelated {
                 resultSet.close();
                 statement.close();
             } catch (SQLException ignored) {
-                APIServer.logError("Erro ao se conectar com a database", 3);
+                ServerRelated.logError("Erro ao se conectar com a database", 3);
                 return false;
             }
             return true;

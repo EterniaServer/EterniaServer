@@ -2,10 +2,13 @@ package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
+import br.com.eterniaserver.eterniaserver.objects.User;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -55,8 +58,8 @@ public class ChatFormatter {
 			if ((user.getPlayer().getWorld() == p.getWorld() && p.getLocation().distanceSquared(user.getPlayer().getLocation()) <= Math.pow(channelObject.getRange(), 2)) || channelObject.getRange() <= 0) {
 				pes += 1;
 				p.spigot().sendMessage(baseComponents);
-			} else if (p.hasPermission(EterniaServer.getString(Strings.PERM_SPY)) && Vars.spy.get(UUIDFetcher.getUUIDOf(p.getName()))) {
-				p.sendMessage(APIServer.getColor(EterniaServer.getString(Strings.CONS_SPY_LOCAL)
+			} else if (p.hasPermission(EterniaServer.getString(Strings.PERM_SPY)) && PlayerRelated.isSpying(UUIDFetcher.getUUIDOf(p.getName()))) {
+				p.sendMessage(ServerRelated.getColor(EterniaServer.getString(Strings.CONS_SPY_LOCAL)
 						.replace("{0}", user.getName())
 						.replace("{1}", user.getDisplayName())
 						.replace("{2}", message)));
@@ -109,8 +112,8 @@ public class ChatFormatter {
 	private TextComponent getComponent(String actualMsg, String channelColor, Player player) {
 		String msg = ChatColor.stripColor(actualMsg);
 
-		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_MENTION)) && msg.contains(EterniaServer.getString(Strings.MENTION_PLACEHOLDER)) && Vars.playersName.containsKey(msg)) {
-			Player target = Bukkit.getPlayer(Vars.playersName.get(msg));
+		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_MENTION)) && msg.contains(EterniaServer.getString(Strings.MENTION_PLACEHOLDER)) && PlayerRelated.hasNameOnline(msg)) {
+			Player target = Bukkit.getPlayer(PlayerRelated.getUUIDFromMention(msg));
 			msg = "§3" + msg + channelColor;
 			if (target != null && target.isOnline()) {
 				target.playNote(target.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
@@ -135,7 +138,7 @@ public class ChatFormatter {
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
-		if (APIServer.getVersion() >= 116) {
+		if (ServerRelated.getVersion() >= 116) {
 			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
 			TextComponent component = new TextComponent(string.replace(EterniaServer.getString(Strings.SHOW_ITEM_PLACEHOLDER),
 					EterniaServer.getString(Strings.CONS_SHOW_ITEM).replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemStack.getI18NDisplayName())));
@@ -146,15 +149,15 @@ public class ChatFormatter {
 	}
 
 	private TextComponent getText(Player player, CustomPlaceholder objects) {
-		TextComponent textComponent = new TextComponent(APIServer.getColor(APIServer.setPlaceholders(player, objects.getValue())));
+		TextComponent textComponent = new TextComponent(ServerRelated.getColor(ServerRelated.setPlaceholders(player, objects.getValue())));
 		if (!objects.getHoverText().equals("")) {
 			List<TextComponent> textComponentList = new ArrayList<>();
-			textComponentList.add(new TextComponent(APIServer.getColor(APIServer.setPlaceholders(player, objects.getHoverText()))));
+			textComponentList.add(new TextComponent(ServerRelated.getColor(ServerRelated.setPlaceholders(player, objects.getHoverText()))));
 			textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(textComponentList.toArray(new TextComponent[textComponentList.size() - 1]))));
 		}
 
 		if (!objects.getSuggestCmd().equals("")) {
-			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, APIServer.getColor(APIServer.setPlaceholders(player, objects.getSuggestCmd()))));
+			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, ServerRelated.getColor(ServerRelated.setPlaceholders(player, objects.getSuggestCmd()))));
 		}
 		return textComponent;
 	}

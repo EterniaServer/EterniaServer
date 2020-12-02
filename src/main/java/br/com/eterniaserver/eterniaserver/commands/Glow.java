@@ -9,10 +9,10 @@ import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -57,7 +57,7 @@ public class Glow extends BaseCommand {
     @CommandPermission("%glow_color_perm")
     public void onGlowColor(Player player, String color) {
         User user = new User(player);
-        Colors colors = APIServer.colorFromString(color);
+        Colors colors = ServerRelated.colorFromString(color);
         teams[colors.ordinal()].addEntry(user.getName());
         user.putGlowing(colors.getColorStr());
         user.sendMessage(Messages.GLOW_COLOR_CHANGED, colors.getName());

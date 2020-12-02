@@ -16,8 +16,8 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.CashRelated;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 
@@ -89,12 +89,12 @@ public class Cash extends BaseCommand {
         final CashItem cashItem = CashRelated.getCashBuy(user.getUUID());
 
         for (String line : cashItem.getCommands()) {
-            final String modifiedCommand = APIServer.setPlaceholders(player, line);
+            final String modifiedCommand = ServerRelated.setPlaceholders(player, line);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), modifiedCommand);
         }
 
         for (String line : cashItem.getMessages()) {
-            final String modifiedText = APIServer.setPlaceholders(player, line);
+            final String modifiedText = ServerRelated.setPlaceholders(player, line);
             player.sendMessage(modifiedText);
         }
 

@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.locales;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -212,7 +212,7 @@ public class MsgCfg {
 
             if (messageData == null) {
                 messageData = new CustomizableMessage(messagesEnum, EterniaServer.getString(Strings.SERVER_PREFIX) +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
-                APIServer.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
+                ServerRelated.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
             }
 
             messages[messagesEnum.ordinal()] = config.getString(path + messagesEnum.name() + ".text", messageData.text);
@@ -228,13 +228,13 @@ public class MsgCfg {
         }
 
         if (new File(Constants.DATA_LOCALE_FOLDER_PATH).mkdir()) {
-            APIServer.logError("Pasta de locales criada com sucesso", 1);
+            ServerRelated.logError("Pasta de locales criada com sucesso", 1);
         }
 
         try {
             config.save(Constants.MESSAGES_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
+            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
         }
 
         defaults.clear();

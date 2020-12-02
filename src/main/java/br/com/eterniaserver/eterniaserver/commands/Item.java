@@ -11,8 +11,8 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -129,7 +129,7 @@ public class Item extends BaseCommand {
     public void onItemAddLore(Player player, String name) {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType() != Material.AIR) {
-            name = APIServer.getColor(name);
+            name = ServerRelated.getColor(name);
             List<String> lore = item.getLore();
             if (lore != null) {
                 lore.add(name);
@@ -163,7 +163,7 @@ public class Item extends BaseCommand {
         public void onItemSetLore(Player player, String name) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
-                name = APIServer.getColor(name);
+                name = ServerRelated.getColor(name);
                 item.setLore(List.of(name));
                 player.getInventory().setItemInMainHand(item);
                 EterniaServer.sendMessage(player, Messages.ITEM_SET_LORE, name);
@@ -179,7 +179,7 @@ public class Item extends BaseCommand {
         public void onItemSetName(Player player, String name) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() != Material.AIR) {
-                name = APIServer.getColor(name);
+                name = ServerRelated.getColor(name);
                 ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName(name);
                 item.setItemMeta(meta);

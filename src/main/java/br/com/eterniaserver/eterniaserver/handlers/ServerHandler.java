@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.handlers;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.core.ChatFormatter;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -40,7 +40,7 @@ public class ServerHandler implements Listener {
         messageMOTD = ChatColor.translateAlternateColorCodes('&', EterniaServer.getMessage(Messages.SERVER_MOTD_1, false));
         message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.getMessage(Messages.SERVER_MOTD_2, false));
 
-        if (APIServer.getVersion() >= 116) {
+        if (ServerRelated.getVersion() >= 116) {
             messageMOTD = canHex(messageMOTD);
             message2 = canHex(message2);
         }
@@ -51,7 +51,7 @@ public class ServerHandler implements Listener {
     public void onCreatureSpawn(PreCreatureSpawnEvent event) {
         if (!EterniaServer.getBoolean(Booleans.MODULE_CLEAR)) {
             return;
-        }
+        }   
 
         int amount = 0;
         EntityType entityType = event.getType();
@@ -85,15 +85,15 @@ public class ServerHandler implements Listener {
 
         User user = new User(e.getPlayer());
 
-        if (APIServer.isChatMuted() && !user.hasPermission(EterniaServer.getString(Strings.PERM_MUTE_BYPASS))) {
+        if (ServerRelated.isChatMuted() && !user.hasPermission(EterniaServer.getString(Strings.PERM_MUTE_BYPASS))) {
             e.setCancelled(true);
             return;
         }
 
         long time = user.getMuteTime();
 
-        if (APIServer.isInFutureCooldown(time)) {
-            user.sendMessage(Messages.CHAT_ARE_MUTED, APIServer.getTimeLeftOfCooldown(time));
+        if (ServerRelated.isInFutureCooldown(time)) {
+            user.sendMessage(Messages.CHAT_ARE_MUTED, ServerRelated.getTimeLeftOfCooldown(time));
             e.setCancelled(true);
             return;
         }
@@ -143,7 +143,7 @@ public class ServerHandler implements Listener {
     }
 
     private String canHex(String message) {
-        if (APIServer.getVersion() < 116) {
+        if (ServerRelated.getVersion() < 116) {
             return message;
         }
 

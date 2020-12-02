@@ -3,9 +3,9 @@ package br.com.eterniaserver.eterniaserver.handlers;
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
@@ -129,15 +129,15 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && APIServer.hasLocation("warp.spawn") && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
-            event.setSpawnLocation(APIServer.getLocation("warp.spawn"));
+        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && ServerRelated.hasLocation("warp.spawn") && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
+            event.setSpawnLocation(ServerRelated.getLocation("warp.spawn"));
         }
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && APIServer.hasLocation("warp.spawn")) {
-            event.setRespawnLocation(APIServer.getLocation("warp.spawn"));
+        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && ServerRelated.hasLocation("warp.spawn")) {
+            event.setRespawnLocation(ServerRelated.getLocation("warp.spawn"));
         }
     }
 
@@ -254,7 +254,7 @@ public class PlayerHandler implements Listener {
             user.setDisplayName();
         }
 
-        for (Player player : APIServer.getVanishList()) {
+        for (Player player : PlayerRelated.getVanishList()) {
             user.hidePlayer(plugin, player);
         }
 
