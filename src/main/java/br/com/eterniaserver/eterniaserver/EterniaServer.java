@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver;
 import br.com.eterniaserver.eterniaserver.configurations.configs.BlocksCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.CashCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ChatCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.EntityCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ConfigsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
@@ -29,9 +30,11 @@ import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CommandData;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
+import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -66,6 +69,8 @@ public class EterniaServer extends JavaPlugin {
     private static final Map<Integer, ChannelObject> channelsMap = new HashMap<>();
     private static final List<String> channels = new ArrayList<>();
 
+    private static final EntityControl[] entities = new EntityControl[EntityType.values().length];
+
     @Override
     public void onEnable() {
 
@@ -83,6 +88,7 @@ public class EterniaServer extends JavaPlugin {
         commands();
         blocks();
         chat();
+        entity();
         kits();
         cash();
         rewards();
@@ -116,6 +122,10 @@ public class EterniaServer extends JavaPlugin {
         new CommandsCfg(customCommandMap);
     }
 
+    public void entity() {
+        new EntityCfg(booleans, integers, entities);
+    }
+
     public void blocks() {
         new BlocksCfg(chanceMaps);
     }
@@ -138,6 +148,18 @@ public class EterniaServer extends JavaPlugin {
 
     public void schedule() {
         new ScheduleCfg(scheduleMap, integers);
+    }
+
+    public static boolean changeState(String string) {
+        if (string.equals("custom_entities")) {
+            booleans[Booleans.ENTITY_EDITOR.ordinal()] = !booleans[Booleans.ENTITY_EDITOR.ordinal()];
+            return true;
+        }
+        return false;
+    }
+
+    public static EntityControl getControl(EntityType entityType) {
+        return entities[entityType.ordinal()];
     }
 
     public static String getString(Strings configName) {

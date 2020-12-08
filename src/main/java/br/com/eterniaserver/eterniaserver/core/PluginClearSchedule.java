@@ -1,33 +1,44 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-
 public class PluginClearSchedule extends BukkitRunnable {
 
+    private final Chunk[] checkChunks;
+
+    private final int length;
     private int removed;
+
+    public PluginClearSchedule() {
+        this.length = EterniaServer.getInteger(Integers.CLEAR_RANGE);
+
+        int lengthCube = (this.length * 2) + 1;
+
+        this.checkChunks = new Chunk[(lengthCube * lengthCube)];
+    }
 
     @Override
     public void run() {
+        if (!EterniaServer.getBoolean(Booleans.CLEAR_ENTITIES)) {
+            return;
+        }
+
         removed = 0;
         for (Player player : Bukkit.getOnlinePlayers()) {
-            for (Chunk chunk : around(player.getChunk())) {
+            updateCheckChunks(player.getChunk());
+            for (Chunk chunk : checkChunks) {
                 cleanupChunk(chunk);
             }
         }
@@ -36,35 +47,40 @@ public class PluginClearSchedule extends BukkitRunnable {
         }
     }
 
-    private Collection<Chunk> around(Chunk origin) {
+
+    private void updateCheckChunks(Chunk origin) {
         World world = origin.getWorld();
-
-        int length = (EterniaServer.getInteger(Integers.CLEAR_RANGE) * 2) + 1;
-        List<Chunk> chunks = new ArrayList<>(length * length);
-
+        int indice = 0;
         int cX = origin.getX();
         int cZ = origin.getZ();
 
-        for (int x = -EterniaServer.getInteger(Integers.CLEAR_RANGE); x <= EterniaServer.getInteger(Integers.CLEAR_RANGE); x++) {
-            for (int z = -EterniaServer.getInteger(Integers.CLEAR_RANGE); z <= EterniaServer.getInteger(Integers.CLEAR_RANGE); z++) {
-                chunks.add(world.getChunkAt(cX + x, cZ + z));
+        for (int x = -this.length; x <= this.length; x++) {
+            for (int z = -this.length; z <= this.length; z++) {
+                checkChunks[indice++] = world.getChunkAt(cX + x, cZ + z);
             }
         }
-        return chunks;
     }
 
     private void cleanupChunk(Chunk chunk) {
-        Map<EntityType, Integer> entityIntegerMap = new EnumMap<>(EntityType.class);
+        int[] entityAmounts = new int[EntityType.values().length];
+
         for (Entity e : chunk.getEntities()) {
-            if (!(e instanceof Creature)) continue;
+            EntityType entityType = e.getType();
+            EntityControl entityControl = EterniaServer.getControl(entityType);
 
-            int amount = entityIntegerMap.getOrDefault(e.getType(), 0);
+            if (entityControl.getClearAmount() == -1) {
+                continue;
+            }
+        
+            int amount = entityAmounts[entityType.ordinal()];
 
-            if (amount > 15) {
-                e.remove();
-                removed++;
+            if (amount > entityControl.getClearAmount()) {
+                if (!e.isDead()) {
+                    e.remove();
+                }
+                ++removed;
             } else {
-                entityIntegerMap.put(e.getType(), amount + 1);
+                ++entityAmounts[entityType.ordinal()];
             }
         }
     }

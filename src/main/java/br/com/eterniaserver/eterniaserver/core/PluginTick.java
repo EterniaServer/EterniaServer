@@ -96,17 +96,18 @@ public class PluginTick extends BukkitRunnable {
             return;
         }
 
+        if (!user.isAfk() && user.hasPermission(EterniaServer.getString(Strings.PERM_AFK))) {
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.AFK_AUTO_ENTER, false, user.getName(), user.getDisplayName()));
+            user.changeAfkState();
+            return;
+        }
+
         if (!user.isAfk() && !user.hasPermission(EterniaServer.getString(Strings.PERM_NO_KICK_BY_AFK))) {
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.AFK_BROADCAST_KICK, true, user.getName(), user.getDisplayName()));
             user.clear();
             runSync(() -> user.kick(EterniaServer.getMessage(Messages.AFK_KICKED, true)));
-            return;
         }
 
-        if (!user.isAfk() && user.hasPermission(EterniaServer.getString(Strings.PERM_AFK))) {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.AFK_AUTO_ENTER, false, user.getName(), user.getDisplayName()));
-            user.changeAfkState();
-        }
     }
 
     private void getPlayersInTp(User user) {
@@ -136,7 +137,7 @@ public class PluginTick extends BukkitRunnable {
 
     private void runSync(Runnable runnable) {
         if (EterniaServer.getBoolean(Booleans.ASYNC_CHECK)) {
-            Bukkit.getScheduler().runTask(plugin, runnable);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, runnable);
             return;
         }
         runnable.run();

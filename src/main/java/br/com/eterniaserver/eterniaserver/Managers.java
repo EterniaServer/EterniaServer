@@ -189,8 +189,8 @@ public class Managers {
     }
 
     private void loadClearManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_CLEAR), "Mob Control")) {
-            new PluginClearSchedule().runTaskTimer(plugin, 20L, 600L);
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_ENTITY), "Mob Control")) {
+            new PluginClearSchedule().runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(Integers.CLEAR_TIMER) * 20);
         }
     }
 

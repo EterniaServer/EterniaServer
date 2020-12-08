@@ -72,14 +72,14 @@ public class Reward extends BaseCommand {
     }
 
     private void createKey(final String grupo, String key) {
-        Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS));
+        Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_REWARD));
         insert.columns.set("key_code", "group_name");
         insert.values.set(key, grupo);
         SQL.executeAsync(insert);
     }
 
     private void deleteKey(final String key) {
-        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
+        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_REWARD));
         delete.where.set("key_code", key);
         SQL.executeAsync(delete);
     }

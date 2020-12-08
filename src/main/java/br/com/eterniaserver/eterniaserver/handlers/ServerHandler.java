@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.handlers;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.core.ChatFormatter;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
@@ -13,13 +14,15 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Creature;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
@@ -47,29 +50,48 @@ public class ServerHandler implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onCreatureSpawn(PreCreatureSpawnEvent event) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_CLEAR)) {
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPreCreatureSpawn(PreCreatureSpawnEvent event) {
+        if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.ENTITY_LIMITER)) {
             return;
-        }   
+        }
 
         int amount = 0;
         EntityType entityType = event.getType();
-        for (Entity e : event.getSpawnLocation().getChunk().getEntities()) {
-            if (!(e instanceof Creature)) {
-                continue;
-            }
+        EntityControl entityControl = EterniaServer.getControl(entityType);
 
-            if (!e.getType().equals(entityType)) {
-                continue;
-            }
-
-            if (amount > 15) {
-                event.setCancelled(true);
-                return;
-            }
-            amount++;
+        if (entityControl.getSpawnLimit() == -1) {
+            return;
         }
+
+        for (Entity e : event.getSpawnLocation().getChunk().getEntities()) {
+            if (e.getType().ordinal() == entityType.ordinal()) {
+                if (amount > entityControl.getSpawnLimit()) {
+                    event.setCancelled(true);
+                    break;
+                }
+                amount++;
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.ENTITY_EDITOR)) {
+            return;
+        }
+
+        LivingEntity entity = event.getEntity();
+        EntityControl entityControl = EterniaServer.getControl(entity.getType());
+
+        if (!entityControl.getEditorState()) {
+            return;
+        }
+
+        entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(entityControl.getHealth());
+        entity.setHealth(entityControl.getHealth());
+        entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(entityControl.getSpeed());
+        entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(entityControl.getAttackDamage());
     }
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)

@@ -129,6 +129,7 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.DELWARP, "delwarp", "eternia.delwarp", " <warp>", " Delete uma warp", null);
         this.addDefault(defaults, Commands.LISTWARP, "warps", "eternia.listwarp", null, " Veja todas as warps disponíveis", null);
         this.addDefault(defaults, Commands.RELOAD, "ereload", "eternia.reload", " <modulo>", " Reinicia um módulo especifico ou todos.", null);
+        this.addDefault(defaults, Commands.SETTINGS, "settings", "eternia.settings", " <setting>", "Edite alguma configuração do plugin", null);
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_LOCALE_FILE_PATH));
 

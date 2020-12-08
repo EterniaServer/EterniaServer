@@ -54,9 +54,9 @@ public class PluginSchedule extends TimerTask {
     private void runDay(Map<Integer, List<String>> map) {
         map.forEach((key, lista) -> Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (String command : lista) {
-                Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command));
             }
         }, TimeUnit.SECONDS.toMillis(key)));
     }
-
+    
 }

@@ -8,6 +8,7 @@ public enum Integers {
     COOLDOWN,
     PVP_TIME,
     CLEAR_RANGE,
+    CLEAR_TIMER,
     ELEVATOR_MAX,
     ELEVATOR_MIN,
     NIGHT_SPEED,

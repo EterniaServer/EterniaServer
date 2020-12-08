@@ -28,7 +28,7 @@ public class ConfigsCfg extends GenericCfg {
         setBoolean(Booleans.MODULE_BLOCK, file, outFile, "module.block-reward", true);
         setBoolean(Booleans.MODULE_CASH, file, outFile, "module.cash", true);
         setBoolean(Booleans.MODULE_CHAT, file, outFile, "module.chat", true);
-        setBoolean(Booleans.MODULE_CLEAR, file, outFile, "module.clear", true);
+        setBoolean(Booleans.MODULE_ENTITY, file, outFile, "module.entity", true);
         setBoolean(Booleans.MODULE_COMMANDS, file, outFile, "module.commands", true);
         setBoolean(Booleans.MODULE_ECONOMY, file, outFile, "module.economy", true);
         setBoolean(Booleans.MODULE_ELEVATOR, file, outFile, "module.elevator", true);
@@ -57,7 +57,6 @@ public class ConfigsCfg extends GenericCfg {
         setInteger(Integers.AFK_TIMER, file, outFile, "server.afk-timer", 900);
         setInteger(Integers.COOLDOWN, file, outFile, "server.cooldown", 4);
         setInteger(Integers.PVP_TIME, file, outFile, "server.pvp-time", 15);
-        setInteger(Integers.CLEAR_RANGE, file, outFile, "server.clear-range", 1);
         setInteger(Integers.ELEVATOR_MAX, file, outFile, "elevator.max", 50);
         setInteger(Integers.ELEVATOR_MIN, file, outFile, "elevator.min", 2);
         setInteger(Integers.NIGHT_SPEED, file, outFile, "bed.speed", 100);

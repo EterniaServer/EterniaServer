@@ -202,6 +202,8 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.NIGHT_PLAYER_SLEEPING, "$3{1}$7 está dormindo$8, $7durma também para passar a noite mais rápido$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(defaults, Messages.NIGHT_SKIPPING, "A noite está passando em $3{0}$8.", "0: nome do mundo");
         this.addDefault(defaults, Messages.NIGHT_SKIPPED, "A noite passou em $3{0}$8.", "0: nome do mundo");
+        this.addDefault(defaults, Messages.SETTINGS_CHANGE, "Alterado estado de $3{0}$8.", "0: boolean");
+        this.addDefault(defaults, Messages.SETTINGS_WRONG, "Nenhuma configuração com esse nome$8.", null);
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.MESSAGES_FILE_PATH));
 

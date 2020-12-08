@@ -2,16 +2,20 @@ package br.com.eterniaserver.eterniaserver.handlers;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.CashRelated;
+import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -41,6 +45,34 @@ public class EntityHandler implements Listener {
                 player.setAllowFlight(false);
                 player.setFlying(false);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityBreed(EntityBreedEvent event) {
+        if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.BREEDING_LIMITER)) {
+            return;
+        }
+
+        EntityType entityType = event.getEntityType();
+        EntityControl entityControl = EterniaServer.getControl(entityType);
+
+        if (entityControl.getBreedingLimit() == -1) {
+            return;
+        }
+
+        int amount = 0;
+        for (Entity entity : event.getEntity().getLocation().getChunk().getEntities()) {
+            if (entity.getType().ordinal() != entityType.ordinal()) {
+                continue;
+            }
+
+            if (amount > entityControl.getBreedingLimit()) {
+                event.setCancelled(true);
+                return;
+            }
+
+            amount++;
         }
     }
 

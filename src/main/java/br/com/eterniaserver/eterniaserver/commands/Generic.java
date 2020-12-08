@@ -97,7 +97,7 @@ public class Generic extends BaseCommand {
     @Syntax("%reload_syntax")
     @Description("%reload_description")
     @CommandPermission("%reload_perm")
-    @CommandCompletion("configs|messages|constants|blocks|chat|kits|cash|rewards|schedules")
+    @CommandCompletion("configs|messages|constants|blocks|chat|kits|cash|rewards|schedules|entity")
     public void onReload(String module) {
         switch (module) {
             case "configs":
@@ -126,6 +126,9 @@ public class Generic extends BaseCommand {
                 break;
             case "schedules":
                 plugin.schedule();
+                break;
+            case "entity":
+                plugin.entity();
                 break;
             default:
                 plugin.configs();
@@ -279,6 +282,20 @@ public class Generic extends BaseCommand {
                 EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         }
+    }
+
+    @CommandAlias("%settings")
+    @Syntax("%settings_syntax")
+    @CommandPermission("%settings_perm")
+    @CommandCompletion("custom_entities")
+    @Description("%settings_description")
+    public void changeState(CommandSender sender, String type) {
+        if (!EterniaServer.changeState(type)) {
+            EterniaServer.sendMessage(sender, Messages.SETTINGS_WRONG);
+            return;
+        }
+
+        EterniaServer.sendMessage(sender, Messages.SETTINGS_CHANGE, type);
     }
 
     @CommandAlias("%condenser")
