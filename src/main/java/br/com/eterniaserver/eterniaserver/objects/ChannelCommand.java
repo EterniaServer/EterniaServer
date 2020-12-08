@@ -7,8 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class ChannelCommand extends AbstractCommand {
@@ -28,7 +26,7 @@ public class ChannelCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender.hasPermission(perm)) {
             Player player = (Player) commandSender;
             StringBuilder str = new StringBuilder(orig);

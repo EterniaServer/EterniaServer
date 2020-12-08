@@ -1,0 +1,91 @@
+# Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki
+server:
+  prefix: '§8[§aE§9S§8]§7 '
+  baltop: §8[§2Magnata§8]
+  bottle-exp: §8[§eGarrafa de EXP§8]
+  no-supported: §7Sem suporte
+  clear-str: clear
+  no-registered: Sem registro
+  data-format: dd/MM/yyyy HH:mm
+  money:
+    language: pt
+    country: BR
+perm:
+  chat-color: eternia.chat.color
+  chat-mention: eternia.chat.mention
+  chat-item: eternia.chat.item
+  base-command: eternia.
+  chat-color-nick: eternia.chat.color.nick
+  spy: eternia.spy
+  afk: eternia.afk
+  no-kick-by-afk: eternia.nokickbyafksorrymates
+  timing-bypass: eternia.timing.bypass
+  sign-color: eternia.sign.color
+  spawners-break: eternia.spawners.break
+  spawners-no-silk: eternia.spawners.nosilk
+  spawners-change: eternia.change-spawner
+  fly-bypass: eternia.fly.bypass
+  elevator: eternia.elevator
+  mute-bypass: eternia.mute.bypass
+  back-free: eternia.backfree
+  warp-prefix: eternia.warp.
+  warp-shop: eternia.warp.shop
+  spawn-other: eternia.spawn.other
+  nickname-other: eternia.nickname.others
+  kit-prefix: eternia.kit.
+  ec-other: eternia.enderchest.other
+  home-other: eternia.home.other
+  sethome-limit-prefix: eternia.sethome.
+  feed-other: eternia.feed.other
+  fly-other: eternia.fly.others
+  money-other: eternia.money.admin
+  chat-bypass-protection: eternia.chat.bypass
+placeholders:
+  afk: §9 AFK
+  godmode: §9 GOD
+  show-item: '[item]'
+  mention: '@'
+generics:
+  gm:
+    adventure: aventura
+    creative: criativo
+    spectator: espectador
+    survival: sobrevivência
+chat:
+  cn:
+    black: Preto
+    darkblue: Azul Escuro
+    darkgreen: Verde Escuro
+    darkaqua: Ciano
+    darkred: Vermelho Escuro
+    darkpurple: Roxo
+    gold: Laranja
+    gray: Cinza
+    darkgray: Cinza Escuro
+    blue: Azul
+    green: Verde
+    aqua: Azul Claro
+    red: Vermelho
+    lightpurple: Rosa
+    yellow: Amarelo
+    white: Branco
+  local: Local
+  global: Global
+  staff: Staff
+  show-item:
+    format: §3x{0} {1}§f
+    notes: '0: quantia de items; 1: item'
+  mention-title:
+    format: '{1}'
+    notes: '0: nome do jogador; 1: apelido do jogador'
+  mention-subtitle:
+    format: §7mencionou você§8!
+    notes: '0: nome do jogador; 1: apelido do jogador'
+spy:
+  tell:
+    format: '&8[&7SPY-&6P&8] {1} -> {3}: {4}'
+    notes: '0: nome do jogador; 1: apelido do jogador; 2: nome do alvo; 3: apelido
+      do alvo; 4: mensagem'
+  local:
+    format: '&8[&7SPY&8-&aC&8] {1}: {2}'
+    notes: '0: nome do jogador; 1: apelido do jogador; 2: mensagem'

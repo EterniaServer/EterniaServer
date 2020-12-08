@@ -1,0 +1,14 @@
+sql:
+  mysql: false
+  host: 127.0.0.1
+  port: '3306'
+  database: admin
+  user: admin
+  password: admin
+  pool-size: 50
+messages:
+  load-cache: §8[§aE§9L§8] §7Carregados §3%size%§7 arquivos de jogadores§8.
+  load-mysql: §8[§aE§9L§8] §7Conexão §3MySQL §7feita com sucesso§8.
+  load-sqlite: §8[§aE§9L§8] §7Conexão §3SQLite §7feita com sucesso§8.
+  connection-error: §8[§aE§9L§8] §7Erro ao se conectar a database§8.
+  create-file: §8[§aE§9L§8] §7Criando arquivo SQLite§8.

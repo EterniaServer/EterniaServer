@@ -1,0 +1,991 @@
+# Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki
+modules:
+  clear: false
+  entity-limiter: false
+  breeding-limiter: false
+  entity-editor: false
+clear:
+  range: 1
+  timer: 30
+types:
+  DROPPED_ITEM:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  EXPERIENCE_ORB:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  AREA_EFFECT_CLOUD:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ELDER_GUARDIAN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  WITHER_SKELETON:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  STRAY:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  EGG:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  LEASH_HITCH:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PAINTING:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ARROW:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SNOWBALL:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  FIREBALL:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SMALL_FIREBALL:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ENDER_PEARL:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ENDER_SIGNAL:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SPLASH_POTION:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  THROWN_EXP_BOTTLE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ITEM_FRAME:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  WITHER_SKULL:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PRIMED_TNT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  FALLING_BLOCK:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  FIREWORK:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  HUSK:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SPECTRAL_ARROW:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SHULKER_BULLET:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  DRAGON_FIREBALL:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ZOMBIE_VILLAGER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SKELETON_HORSE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ZOMBIE_HORSE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ARMOR_STAND:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  DONKEY:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MULE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  EVOKER_FANGS:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  EVOKER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  VEX:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  VINDICATOR:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ILLUSIONER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MINECART_COMMAND:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  BOAT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MINECART:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MINECART_CHEST:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MINECART_FURNACE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MINECART_TNT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MINECART_HOPPER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MINECART_MOB_SPAWNER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  CREEPER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SKELETON:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SPIDER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  GIANT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ZOMBIE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SLIME:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  GHAST:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ZOMBIFIED_PIGLIN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ENDERMAN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  CAVE_SPIDER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SILVERFISH:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  BLAZE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MAGMA_CUBE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ENDER_DRAGON:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  WITHER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  BAT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  WITCH:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ENDERMITE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  GUARDIAN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SHULKER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PIG:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SHEEP:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  COW:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  CHICKEN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SQUID:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  WOLF:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  MUSHROOM_COW:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SNOWMAN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  OCELOT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  IRON_GOLEM:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  HORSE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  RABBIT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  POLAR_BEAR:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  LLAMA:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  LLAMA_SPIT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PARROT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  VILLAGER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ENDER_CRYSTAL:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  TURTLE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PHANTOM:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  TRIDENT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  COD:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  SALMON:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PUFFERFISH:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  TROPICAL_FISH:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  DROWNED:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  DOLPHIN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  CAT:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PANDA:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PILLAGER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  RAVAGER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  TRADER_LLAMA:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  WANDERING_TRADER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  FOX:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  BEE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  HOGLIN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PIGLIN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  STRIDER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  ZOGLIN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PIGLIN_BRUTE:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  FISHING_HOOK:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  LIGHTNING:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  PLAYER:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0
+  UNKNOWN:
+    clear: -1
+    spawn-limit: -1
+    breeding-limit: -1
+    editor:
+      state: false
+      health: 20.0
+      attack-damage: 20.0
+      speed: 20.0

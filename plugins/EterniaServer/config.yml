@@ -1,0 +1,62 @@
+# Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki
+module:
+  bed: true
+  block-reward: true
+  cash: true
+  chat: true
+  entity: true
+  commands: true
+  economy: true
+  elevator: true
+  experience: true
+  home: true
+  kits: true
+  spawners: true
+  teleports: true
+  rewards: true
+  schedule: true
+server:
+  async-check: true
+  afk-kick: true
+  checks: 1
+  schedule-threads: 1
+  afk-timer: 900
+  cooldown: 4
+  pvp-time: 15
+  blacklisted-fly-worlds:
+  - world_evento
+spawners:
+  drop-in-inventory: true
+  prevent-anvil: true
+  color: §e
+  drop-chance: 1.0
+  blacklisted-worlds:
+  - world_evento
+sql:
+  table-kits: es_kits
+  table-player: es_players
+  table-rewards: es_rewards
+  table-locations: es_locations
+money:
+  singular: Eternia
+  plural: Eternias
+  start: 300.0
+  back: 1000.0
+  nick: 500000.0
+  blacklisted-baltop:
+  - yurinogueira
+elevator:
+  max: 50
+  min: 2
+  block:
+  - IRON_BLOCK
+bed:
+  speed: 100
+  blacklisted-worlds:
+  - world_evento
+blocked-commands:
+- /op
+- /deop
+- /stop
+profile:
+  custom-messages: []

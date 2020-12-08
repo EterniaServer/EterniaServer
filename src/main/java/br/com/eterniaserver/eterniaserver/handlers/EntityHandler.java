@@ -63,16 +63,13 @@ public class EntityHandler implements Listener {
 
         int amount = 0;
         for (Entity entity : event.getEntity().getLocation().getChunk().getEntities()) {
-            if (entity.getType().ordinal() != entityType.ordinal()) {
-                continue;
+            if (entity.getType().ordinal() == entityType.ordinal()) {
+                if (amount > entityControl.getBreedingLimit()) {
+                    event.setCancelled(true);
+                    break;
+                }
+                amount++;
             }
-
-            if (amount > entityControl.getBreedingLimit()) {
-                event.setCancelled(true);
-                return;
-            }
-
-            amount++;
         }
     }
 
