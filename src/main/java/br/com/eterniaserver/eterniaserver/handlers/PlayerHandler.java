@@ -41,12 +41,15 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerHandler implements Listener {
+
+    private static final String WARP_SPAWN = "warp.spawn";
 
     private final EterniaServer plugin;
     private final List<Material> list = List.of(Material.RAIL, Material.POWERED_RAIL, Material.DETECTOR_RAIL, Material.ACTIVATOR_RAIL);
@@ -129,15 +132,15 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && ServerRelated.hasLocation("warp.spawn") && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
-            event.setSpawnLocation(ServerRelated.getLocation("warp.spawn"));
+        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && ServerRelated.hasLocation(WARP_SPAWN) && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
+            event.setSpawnLocation(ServerRelated.getLocation(WARP_SPAWN));
         }
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && ServerRelated.hasLocation("warp.spawn")) {
-            event.setRespawnLocation(ServerRelated.getLocation("warp.spawn"));
+        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && ServerRelated.hasLocation(WARP_SPAWN)) {
+            event.setRespawnLocation(ServerRelated.getLocation(WARP_SPAWN));
         }
     }
 
@@ -239,13 +242,8 @@ public class PlayerHandler implements Listener {
 
         event.setJoinMessage(null);
 
-        if (!user.hasProfile()) {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_FIRST_LOGIN, true, user.getName(), user.getDisplayName()));
-            PlayerRelated.createProfile(user.getUUID(), user.getName());
-        } else {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
-            user.updateProfile();
-        }
+        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
+        user.updateProfile();
 
         if (EterniaServer.getBoolean(Booleans.MODULE_CHAT)) {
             if (user.hasPermission(EterniaServer.getString(Strings.PERM_SPY))) {

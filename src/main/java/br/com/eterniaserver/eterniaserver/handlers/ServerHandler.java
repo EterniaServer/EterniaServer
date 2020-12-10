@@ -128,7 +128,7 @@ public class ServerHandler implements Listener {
             message = canHex(message);
         }
 
-        if (user.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_BYPASS_PROTECTION))) {
+        if (!user.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_BYPASS_PROTECTION))) {
             message = EterniaServer.getFilter().matcher(message).replaceAll("");
         }
 

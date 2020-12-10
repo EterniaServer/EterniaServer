@@ -97,6 +97,7 @@ public class User {
         this.playerDisplayName = offlinePlayer.getName();
         this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
         if (!PlayerRelated.hasProfile(this.uuid)) {
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_FIRST_LOGIN, true, playerName, playerDisplayName));
             PlayerRelated.createProfile(uuid, playerName);
         }
         this.playerProfile = PlayerRelated.getProfile(this.uuid);

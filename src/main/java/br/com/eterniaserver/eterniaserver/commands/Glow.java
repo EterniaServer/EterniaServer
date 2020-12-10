@@ -14,6 +14,9 @@ import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -23,16 +26,22 @@ import org.bukkit.scoreboard.Team;
 @CommandAlias("%glow")
 public class Glow extends BaseCommand {
 
-    private final Team[] teams = new Team[Colors.values().length];
+    private final Map<Colors, Team> teams = new EnumMap<>(Colors.class);
 
     public Glow(EterniaServer plugin) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
             Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
             for (Colors colors : Colors.values()) {
-                Team team = scoreboard.registerNewTeam("es_" + colors.name().toLowerCase());
+                String teamName = "es_" + colors.name().toLowerCase();
+                Team team = scoreboard.getTeam(teamName);
+                
+                if (team == null) {
+                    team = scoreboard.registerNewTeam(teamName);
+                }
+
                 team.setColor(colors.getChatColor());
                 team.setAllowFriendlyFire(true);
-                teams[colors.ordinal()] = team;
+                teams.put(colors, team);
             }
         });
     }
@@ -58,7 +67,7 @@ public class Glow extends BaseCommand {
     public void onGlowColor(Player player, String color) {
         User user = new User(player);
         Colors colors = ServerRelated.colorFromString(color);
-        teams[colors.ordinal()].addEntry(user.getName());
+        teams.get(colors).addEntry(user.getName());
         user.putGlowing(colors.getColorStr());
         user.sendMessage(Messages.GLOW_COLOR_CHANGED, colors.getName());
     }
