@@ -71,39 +71,44 @@ public class BlockHandler implements Listener {
 
         if (!EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS) && !EterniaServer.getBoolean(Booleans.MODULE_BLOCK)) return;
 
-        final Player player = event.getPlayer();
         final Block block = event.getBlock();
         final Material material = block.getType();
         final String materialName = material.name().toUpperCase();
-        final String worldName = player.getWorld().getName();
+        final String worldName = block.getWorld().getName();
 
-        if (EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS) && material == Material.SPAWNER && !isBlackListWorld(worldName) && player.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_BREAK))) {
+        if (EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS) && material == Material.SPAWNER && !isBlackListWorld(worldName)) {
+            getSpawner(event.getPlayer(), event, block);
+            return;
+        }
+
+        if (EterniaServer.getBoolean(Booleans.MODULE_BLOCK) && EterniaServer.getChanceMap(ChanceMaps.BLOCK_DROPS).containsKey(materialName)) {
+            randomizeAndReward(event.getPlayer(), EterniaServer.getChanceMap(ChanceMaps.BLOCK_DROPS).get(materialName));
+            return;
+        }
+
+        if (EterniaServer.getBoolean(Booleans.MODULE_BLOCK) && EterniaServer.getChanceMap(ChanceMaps.FARM_DROPS).containsKey(materialName)) {
+            winFarmReward(event.getBlock(), event.getPlayer());
+        }
+
+    }
+
+    private void getSpawner(Player player, BlockBreakEvent event, Block block) {
+        if (player.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_BREAK))) {
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_NO_SILK))) {
-                giveSpawner(player, material, block);
+                giveSpawner(player, block);
                 event.setExpToDrop(0);
             } else {
                 event.setCancelled(true);
                 EterniaServer.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
             }
-        } else if (!player.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_BREAK)) && material == Material.SPAWNER) {
+        } else if (!player.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_BREAK)) && block.getType() == Material.SPAWNER) {
             EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
             event.setCancelled(true);
-        } else if (isBlackListWorld(worldName) && material == Material.SPAWNER) {
+        } else if (isBlackListWorld(block.getWorld().getName()) && block.getType() == Material.SPAWNER) {
             EterniaServer.sendMessage(player, Messages.SPAWNER_WORLD_BLOCKED);
             event.setCancelled(true);
         }
-
-        if (!EterniaServer.getBoolean(Booleans.MODULE_BLOCK)) return;
-
-        if (EterniaServer.getChanceMap(ChanceMaps.BLOCK_DROPS).containsKey(materialName)) {
-            randomizeAndReward(player, EterniaServer.getChanceMap(ChanceMaps.BLOCK_DROPS).get(materialName));
-        }
-
-        if (EterniaServer.getChanceMap(ChanceMaps.FARM_DROPS).containsKey(materialName)) {
-            winFarmReward(block, player);
-        }
-
     }
 
     private void winFarmReward(Block block, Player player) {
@@ -130,32 +135,32 @@ public class BlockHandler implements Listener {
         }
     }
 
-    private void giveSpawner(Player player, Material material, Block block) {
+    private void giveSpawner(Player player, Block block) {
         double random = Math.random();
         if (random < EterniaServer.getDouble(Doubles.DROP_CHANCE)) {
             if (EterniaServer.getBoolean(Booleans.INV_DROP)) {
                 if (player.getInventory().firstEmpty() != -1) {
-                    player.getInventory().addItem(getSpawner(block, material));
+                    player.getInventory().addItem(getSpawner(block));
                     block.getDrops().clear();
                 } else {
                     EterniaServer.sendMessage(player, Messages.SPAWNER_INV_FULL);
                     final Location loc = block.getLocation();
-                    loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
+                    loc.getWorld().dropItemNaturally(loc, getSpawner(block));
                 }
             } else {
                 final Location loc = block.getLocation();
-                loc.getWorld().dropItemNaturally(loc, getSpawner(block, material));
+                loc.getWorld().dropItemNaturally(loc, getSpawner(block));
             }
         } else {
             EterniaServer.sendMessage(player, Messages.SPAWNER_DROP_FAILED);
         }
     }
 
-    private ItemStack getSpawner(Block block, Material material) {
+    private ItemStack getSpawner(Block block) {
         CreatureSpawner spawner = (CreatureSpawner) block.getState();
         EntityType entityType = spawner.getSpawnedType();
 
-        ItemStack item = new ItemStack(material);
+        ItemStack item = new ItemStack(block.getType());
         ItemMeta meta = item.getItemMeta();
         String mobFormatted = spawner.getSpawnedType().toString();
         meta.setDisplayName("§8[" + EterniaServer.getString(Strings.SPAWNERS_COLORS) + mobFormatted + " §7Spawner§8]");

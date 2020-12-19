@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.api;
 
 import br.com.eterniaserver.eterniaserver.enums.Colors;
+import br.com.eterniaserver.eterniaserver.objects.CommandToRun;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,12 +31,40 @@ public class ServerRelated {
     private static final List<World> skippingWorlds = new ArrayList<>();
     private static final Map<UUID, Long> bedCooldown = new HashMap<>();
 
-    protected static final Map<String, String> rewards = new HashMap<>();
+    private static final Map<String, String> rewards = new HashMap<>();
 
     private static final Map<String, Location> locations = new HashMap<>();
 
+    private static final Map<UUID, CommandToRun> commandsToRun = new HashMap<>();
+
     private ServerRelated() {
         throw new IllegalStateException("Utility class");
+    }
+
+    /**
+     * Get a command to be run. Can return null
+     * @param uuid of user
+     * @return the CommandToRun object
+     */
+    public static CommandToRun getCommandToRun(UUID uuid) {
+        return commandsToRun.get(uuid);
+    }
+
+    /**
+     * Put a Command to be check and ask to user
+     * @param uuid of user
+     * @param commandToRun object
+     */
+    public static void putCommandToRun(UUID uuid, CommandToRun commandToRun) {
+        commandsToRun.put(uuid, commandToRun);
+    }
+
+    /**
+     * Remove a command from commandsToRun map
+     * @param uuid of user
+     */
+    public static void removeCommandToRun(UUID uuid) {
+        commandsToRun.remove(uuid);
     }
 
     /**

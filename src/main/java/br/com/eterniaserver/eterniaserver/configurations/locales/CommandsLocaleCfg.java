@@ -109,8 +109,6 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.MUTE_UNDO, "unmute", "eternia.mute", " <jogador>", " Desmuta um jogador", null);
         this.addDefault(defaults, Commands.MUTE_TEMP, "temp", "eternia.mute", " <jogador> <tempo> <mensagem>", " Muta um jogador temporariamente", null);
         this.addDefault(defaults, Commands.NICK, "nick", "eternia.nickname", " <novo nome> ou <novo nome> <jogador>", " Altera o seu apelido ou de um jogador", null);
-        this.addDefault(defaults, Commands.NICK_DENY, "deny", "eternia.nickname", null, " Nega uma mudança de nick", null);
-        this.addDefault(defaults, Commands.NICK_ACCEPT, "accept", "eternia.nickname", null, " Aceita uma mudança de nick", null);
         this.addDefault(defaults, Commands.USEKEY, "usekey", "eternia.usekey", " <chave>", " Ative uma key de rewards", null);
         this.addDefault(defaults, Commands.GENKEY, "genkey", "eterniaMessages.ECO_BALTOP_LIST.genkey", " <reward>", " Crie uma key de rewards", null);
         this.addDefault(defaults, Commands.SPAWNERGIVE, "spawnergive", "eternia.spawnergive", " <mob> <quantia> <jogador>", " Dá uma quantia de spawners para um jogador", null);
@@ -128,8 +126,12 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.SETWARP, "setwarp", "eternia.setwarp", " <warp>", " Define uma nova warp", null);
         this.addDefault(defaults, Commands.DELWARP, "delwarp", "eternia.delwarp", " <warp>", " Delete uma warp", null);
         this.addDefault(defaults, Commands.LISTWARP, "warps", "eternia.listwarp", null, " Veja todas as warps disponíveis", null);
-        this.addDefault(defaults, Commands.RELOAD, "ereload", "eternia.reload", " <modulo>", " Reinicia um módulo especifico ou todos.", null);
+        this.addDefault(defaults, Commands.RELOAD, "reload", "eternia.reload", " <modulo>", " Reinicia um módulo especifico ou todos.", null);
         this.addDefault(defaults, Commands.SETTINGS, "settings", "eternia.settings", " <setting>", "Edite alguma configuração do plugin", null);
+        this.addDefault(defaults, Commands.INTERN, "eternia", "eternia.eternia", " <página>", " Receba ajuda para o sistema interno do EterniaServer plugin", null);
+        this.addDefault(defaults, Commands.COMMAND, "command", "eternia.spawn", " <página>", " Receba ajuda para o sistema de confirmação de comandos", null);
+        this.addDefault(defaults, Commands.COMMAND_ACCEPT, "accept", "eternia.spawn", null, " Confirme o uso de um comando", null);
+        this.addDefault(defaults, Commands.COMMAND_DENY, "deny", "eternia.spawn", null, " Negue o uso de um comando", null);
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_LOCALE_FILE_PATH));
 

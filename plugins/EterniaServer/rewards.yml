@@ -1,9 +1,0 @@
-# Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki
-rewards:
-  cliente:
-    1,0000000000:
-    - lp user %player_name% parent removetemp cliente
-    - lp user %player_name% parent addtemp cliente 30d
-    - broadcast &3%player_name% &7virou um cliente pelos próximos &330 &7dias&8.
-    0,2000000000:
-    - crates givekey %player_name% farmraros

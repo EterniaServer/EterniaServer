@@ -45,7 +45,6 @@ public class Mute extends BaseCommand {
     @Description("%mute_channels_description")
     public void muteChannels(Player sender) {
         if (ServerRelated.isChatMuted()) {
-            ServerRelated.changeChatLockState();
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_CHANNELS_DISABLED, true, sender.getName(), sender.getDisplayName()));
         } else {
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_CHANNELS_ENABLED, true, sender.getName(), sender.getDisplayName()));

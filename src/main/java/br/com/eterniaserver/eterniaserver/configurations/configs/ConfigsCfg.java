@@ -60,6 +60,7 @@ public class ConfigsCfg extends GenericCfg {
         setInteger(Integers.ELEVATOR_MAX, file, outFile, "elevator.max", 50);
         setInteger(Integers.ELEVATOR_MIN, file, outFile, "elevator.min", 2);
         setInteger(Integers.NIGHT_SPEED, file, outFile, "bed.speed", 100);
+        setInteger(Integers.COMMAND_CONFIRM_TIME, file, outFile, "command-confirm.time", 60);
 
         setDouble(Doubles.START_MONEY, file, outFile, "money.start", 300.0);
         setDouble(Doubles.BACK_COST, file, outFile, "money.back", 1000.0);

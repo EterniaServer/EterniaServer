@@ -6,7 +6,6 @@ import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
-import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -84,23 +83,24 @@ public class User {
 
     private void getInfo(Player player) {
         this.playerName = player.getName();
-        this.playerDisplayName = player.getDisplayName();
         this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
         if (!PlayerRelated.hasProfile(this.uuid)) {
             PlayerRelated.createProfile(uuid, playerName);
         }
         this.playerProfile = PlayerRelated.getProfile(this.uuid);
+        this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
     }
 
     private void getInfo(OfflinePlayer offlinePlayer) {
         this.playerName = offlinePlayer.getName();
-        this.playerDisplayName = offlinePlayer.getName();
         this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
         if (!PlayerRelated.hasProfile(this.uuid)) {
             Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_FIRST_LOGIN, true, playerName, playerDisplayName));
             PlayerRelated.createProfile(uuid, playerName);
+            player.teleport(ServerRelated.getLocation("warp.spawn"));
         }
         this.playerProfile = PlayerRelated.getProfile(this.uuid);
+        this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
     }
 
     public boolean hasProfile() {
@@ -417,12 +417,16 @@ public class User {
         return PlayerRelated.getBackLocation(uuid);
     }
 
-    public void requestNickChange(String nick) {
-        nick = ServerRelated.getColor(nick);
-
+    public void changeNick(String nick) {
         if (nick.equals(EterniaServer.getString(Strings.CLEAR_STRING))) {
             sendMessage(Messages.CHAT_NICK_CLEAR);
-            clearNickName();
+            playerProfile.setPlayerDisplayName(playerName);
+            player.setDisplayName(playerName);
+    
+            Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+            update.set.set("player_display", playerProfile.getPlayerDisplayName());
+            update.where.set("uuid", uuid.toString());
+            SQL.executeAsync(update);
             return;
         }
 
@@ -430,21 +434,9 @@ public class User {
             nick = ChatColor.stripColor(nick);
         }
 
-        sendMessage(Messages.CHAT_NICK_CHANGE_REQUEST, nick, String.valueOf(EterniaServer.getDouble(Doubles.NICK_COST)));
-        playerProfile.setTempNick(nick);
-        playerProfile.setNickRequest(true);
-        sendMessage(Messages.CHAT_NICK_USE);
-    }
-
-    public void setTempNickName(String nick) {
-        playerProfile.setTempNick(nick);
-        playerProfile.setNickRequest(true);
-    }
-
-    public void updateNickName() {
-        playerProfile.setPlayerDisplayName(playerProfile.getTempNick());
-        player.setDisplayName(playerProfile.getTempNick());
-        playerProfile.setNickRequest(false);
+        playerProfile.setPlayerDisplayName(nick);
+        player.setDisplayName(nick);
+        sendMessage(Messages.CHAT_NICK_CHANGE, nick);
 
         Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
         update.set.set("player_display", playerProfile.getPlayerDisplayName());
@@ -453,26 +445,7 @@ public class User {
     }
 
     public void setDisplayName() {
-        playerProfile.setPlayerDisplayName(getDisplayName());
         player.setDisplayName(getDisplayName());
-    }
-
-    public void clearNickName() {
-        playerProfile.setPlayerDisplayName(playerName);
-        player.setDisplayName(playerName);
-
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-        update.set.set("player_display", playerProfile.getPlayerDisplayName());
-        update.where.set("uuid", uuid.toString());
-        SQL.executeAsync(update);
-    }
-
-    public void removeNickRequest() {
-        playerProfile.setNickRequest(false);
-    }
-
-    public boolean hasNickRequest() {
-        return playerProfile.isNickRequest();
     }
 
     public long getBedCooldown() {

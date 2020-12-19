@@ -1,8 +1,0 @@
-# Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki
-kits:
-  pa:
-    delay: 300
-    command:
-    - give %player_name% minecraft:golden_shovel 1
-    text:
-    - §8[§aE§9S§8] §7Toma sua pá§8!

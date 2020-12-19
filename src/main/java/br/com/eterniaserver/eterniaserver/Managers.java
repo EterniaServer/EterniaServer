@@ -112,7 +112,7 @@ public class Managers {
 
     private void loadBedManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_BED), "Bed")) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new CheckWorld(plugin), 0L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 40);
+            new CheckWorld(plugin).runTaskTimer(plugin, 0L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 40);
         }
     }
 
@@ -136,10 +136,7 @@ public class Managers {
         if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_CHAT), "Chat")) {
             CommandManager.registerCommand(new Mute());
             CommandManager.registerCommand(new Chat(plugin));
-            CommandManager.registerCommand(new Nick());
-
             EterniaServer.getChannelsMap().forEach((ignored, commandObject) -> new ChannelCommand(commandObject.getName(), "chat", commandObject.getPerm(), channelCommand));
-
         }
     }
 
@@ -160,6 +157,7 @@ public class Managers {
 
     private void loadGenericManager() {
         sendModuleStatus(true, "Generic");
+        CommandManager.registerCommand(new Intern(plugin));
         CommandManager.registerCommand(new Inventory());
         CommandManager.registerCommand(new Generic(plugin));
         CommandManager.registerCommand(new Gamemode());

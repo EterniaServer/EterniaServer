@@ -204,8 +204,7 @@ public class PlayerHandler implements Listener {
         if (EterniaServer.getBoolean(Booleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(Strings.PERM_ELEVATOR)) && !player.isSneaking()) {
             Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
-            for (Object valueObject : EterniaServer.getElevatorMaterials()) {
-                Material value = (Material) valueObject;
+            for (Material value : EterniaServer.getElevatorMaterials()) {
                 if (value == material) {
                     block = block.getRelative(BlockFace.DOWN, EterniaServer.getInteger(Integers.ELEVATOR_MIN));
                     int i;
@@ -223,8 +222,7 @@ public class PlayerHandler implements Listener {
         if (EterniaServer.getBoolean(Booleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(Strings.PERM_ELEVATOR))) {
             Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
             Material material = block.getType();
-            for (Object valueObject : EterniaServer.getElevatorMaterials()) {
-                Material value = (Material) valueObject;
+            for (Material value : EterniaServer.getElevatorMaterials()) {
                 if (value == material) {
                     block = block.getRelative(BlockFace.UP, EterniaServer.getInteger(Integers.ELEVATOR_MIN));
                     int i;

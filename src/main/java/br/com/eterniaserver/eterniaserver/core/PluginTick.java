@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.objects.CommandToRun;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import br.com.eterniaserver.paperlib.PaperLib;
 import br.com.eterniaserver.eterniaserver.objects.User;
@@ -39,7 +40,20 @@ public class PluginTick extends BukkitRunnable {
             getPlayersInTp(user);
             refreshPlayers(user);
             optimizedMoveEvent(user);
+            commandsConfirmTime(user);
 
+        }
+    }
+
+    private void commandsConfirmTime(User user) {
+        CommandToRun commandToRun = ServerRelated.getCommandToRun(user.getUUID());
+
+        if (commandToRun == null) {
+            return;
+        }
+
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - commandToRun.getTime()) > EterniaServer.getInteger(Integers.COMMAND_CONFIRM_TIME)) {
+            ServerRelated.removeCommandToRun(user.getUUID());
         }
     }
 

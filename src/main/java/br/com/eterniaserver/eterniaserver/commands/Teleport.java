@@ -10,12 +10,15 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.objects.CommandToRun;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -131,8 +134,11 @@ public class Teleport extends BaseCommand {
         }
 
         if (EconomyRelated.hasMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST))) {
-            EconomyRelated.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST));
-            user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.getDouble(Doubles.BACK_COST)))));
+            user.sendMessage(Messages.COMMAND_COST, String.valueOf(EterniaServer.getDouble(Doubles.BACK_COST)));
+            ServerRelated.putCommandToRun(user.getUUID(), new CommandToRun(() -> {
+                EconomyRelated.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.BACK_COST));
+                user.putInTeleport(new PlayerTeleport(player, user.getBackLocation(), EterniaServer.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(EterniaServer.getDouble(Doubles.BACK_COST)))));
+            }, System.currentTimeMillis()));
             return;
         }
 

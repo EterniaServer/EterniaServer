@@ -166,12 +166,42 @@ public class EterniaServer extends JavaPlugin {
         new ScheduleCfg(scheduleMap, integers);
     }
 
-    public static boolean changeState(String string) {
-        if (string.equals("custom_entities")) {
-            booleans[Booleans.ENTITY_EDITOR.ordinal()] = !booleans[Booleans.ENTITY_EDITOR.ordinal()];
-            return true;
+    public static boolean changeState(String string, Boolean state) {
+        switch (string) {
+            case "entities_module":
+                booleans[Booleans.MODULE_ENTITY.ordinal()] = state;
+                return true;
+            case "entities_editor":
+                booleans[Booleans.ENTITY_EDITOR.ordinal()] = state;
+                return true;
+            case "entities_limiter":
+                booleans[Booleans.ENTITY_LIMITER.ordinal()] = state;
+                return true;
+            case "entities_breeding":
+                booleans[Booleans.BREEDING_LIMITER.ordinal()] = state;
+                return true;
+            default:
+                return false;
         }
-        return false;
+    }
+
+    public static boolean changeState(String string) {
+        switch (string) {
+            case "entities_module":
+                booleans[Booleans.MODULE_ENTITY.ordinal()] = !booleans[Booleans.MODULE_ENTITY.ordinal()];
+                return true;
+            case "entities_editor":
+                booleans[Booleans.ENTITY_EDITOR.ordinal()] = !booleans[Booleans.ENTITY_EDITOR.ordinal()];
+                return true;
+            case "entities_limiter":
+                booleans[Booleans.ENTITY_LIMITER.ordinal()] = !booleans[Booleans.ENTITY_LIMITER.ordinal()];
+                return true;
+            case "entities_breeding":
+                booleans[Booleans.BREEDING_LIMITER.ordinal()] = !booleans[Booleans.BREEDING_LIMITER.ordinal()];
+                return true;
+            default:
+                return false;
+        }
     }
 
     public static EntityControl getControl(EntityType entityType) {

@@ -6,8 +6,9 @@ import br.com.eterniaserver.eterniaserver.enums.Lists;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class CheckWorld implements Runnable {
+public class CheckWorld extends BukkitRunnable {
 
     private final EterniaServer plugin;
 

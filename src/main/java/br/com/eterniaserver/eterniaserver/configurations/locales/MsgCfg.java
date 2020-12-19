@@ -120,16 +120,9 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.REWARD_INVALID_KEY, "$3{0}$7 não é uma chave válida$8.", "0: chave");
         this.addDefault(defaults, Messages.REWARD_CREATED, "Reward criado com sucesso chave $3{0}$8.", "0: chave");
         this.addDefault(defaults, Messages.REWARD_NOT_FOUND, "Não foi encontrado nenhum reward com o nome de $3{0}$8.", "0: reward");
-        this.addDefault(defaults, Messages.CHAT_NICK_CHANGED, "O seu nick foi alterado com sucesso para $3{0}$8.", "0: apelido do jogador");
-        this.addDefault(defaults, Messages.CHAT_NICK_CHANGED_BY, "$3{2}$7alterou seu nick para $3{0}$8.", "0: novo apelido; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(defaults, Messages.CHAT_NICK_CHANGED_FROM, "Você alterou o apelido de $3{2}$7 para $3{0}", "0: novo apelido; 1: nome do jogador 2: apelido do jogador");
         this.addDefault(defaults, Messages.CHAT_NICK_CLEAR, "Seu apelido foi removido$8.", null);
-        this.addDefault(defaults, Messages.CHAT_NICK_CLEAR_BY, "Seu apelido foi removido por $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
-        this.addDefault(defaults, Messages.CHAT_NICK_CLEAR_FROM, "Você removeu o apelido de $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
-        this.addDefault(defaults, Messages.CHAT_NICK_CHANGE_REQUEST, "Seu apelido será definido como $3{0}$7 por $3{1}$8.", "0: apelido do jogador; 1: custo");
-        this.addDefault(defaults, Messages.CHAT_NICK_USE, "Para aceitar seu novo apelido use $6/nick accept $7ou $6/nick deny$8.", null);
-        this.addDefault(defaults, Messages.CHAT_NICK_NOT_REQUESTED, "Você não tem nenhum pedido de mudança de apelido$8.", null);
-        this.addDefault(defaults, Messages.CHAT_NICK_DENIED, "Você cancelou a mudança de apelido$8.", null);
+        this.addDefault(defaults, Messages.CHAT_NICK_CHANGE, "Seu apelido foi alterado para $3{0}$8.", "0: novo apelido");
+        this.addDefault(defaults, Messages.CHAT_NICK_CHANGE_TO, "Você mudou para $3{0}$7 o apelido de $3{2}$8.", "0: novo apelido; 1: nome de quem alterou; 2: apelido de quem alterou");
         this.addDefault(defaults, Messages.CHAT_BROADCAST, "$7{0}", "0: mensagem");
         this.addDefault(defaults, Messages.CHAT_SPY_ENABLED, "Chat spy ativado$8.", null);
         this.addDefault(defaults, Messages.CHAT_SPY_DISABLED, "Chat spy desativado$8.", null);
@@ -204,6 +197,11 @@ public class MsgCfg {
         this.addDefault(defaults, Messages.NIGHT_SKIPPED, "A noite passou em $3{0}$8.", "0: nome do mundo");
         this.addDefault(defaults, Messages.SETTINGS_CHANGE, "Alterado estado de $3{0}$8.", "0: boolean");
         this.addDefault(defaults, Messages.SETTINGS_WRONG, "Nenhuma configuração com esse nome$8.", null);
+        this.addDefault(defaults, Messages.RELOAD_ALL, "Reinicia todos os módulos do EterniaServer plugin$8.", null);
+        this.addDefault(defaults, Messages.RELOAD_MODULE, "Reinicia o módulo $3{0}$7 do EterniaServer plugin$8.", "0: nome do módulo");
+        this.addDefault(defaults, Messages.COMMAND_DENIED, "Comando cancelado$8.", null);
+        this.addDefault(defaults, Messages.COMMAND_NOT, "Nenhum comando para ser aceito$8.", null);
+        this.addDefault(defaults, Messages.COMMAND_COST, "Esse comando custa $3{0}$7 para aceitar use $6/command accept $7para negar use $6/command deny$8.", "0: custo do comando");
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.MESSAGES_FILE_PATH));
 

@@ -78,8 +78,6 @@ public enum Commands {
     MUTE_UNDO,
     MUTE_TEMP,
     NICK,
-    NICK_DENY,
-    NICK_ACCEPT,
     USEKEY,
     GENKEY,
     SPAWNERGIVE,
@@ -97,6 +95,11 @@ public enum Commands {
     SETWARP,
     DELWARP,
     LISTWARP,
+    INTERN,
     RELOAD,
-    SETTINGS
+    SETTINGS,
+    COMMAND,
+    COMMAND_ACCEPT,
+    COMMAND_DENY,
+
 }

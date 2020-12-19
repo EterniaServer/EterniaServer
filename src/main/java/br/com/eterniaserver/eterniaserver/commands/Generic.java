@@ -3,11 +3,15 @@ package br.com.eterniaserver.eterniaserver.commands;
 import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandCompletion;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
+import br.com.eterniaserver.acf.annotation.Default;
 import br.com.eterniaserver.acf.annotation.Description;
+import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Optional;
+import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.acf.BaseCommand;
+import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -20,6 +24,7 @@ import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.Runtime;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.objects.CommandToRun;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import org.bukkit.Bukkit;
@@ -41,7 +46,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Generic extends BaseCommand {
 
-    private final EterniaServer plugin;
     private final Runtime getRuntime;
 
     private final SimpleDateFormat sdf = new SimpleDateFormat(EterniaServer.getString(Strings.DATA_FORMAT));
@@ -55,7 +59,6 @@ public class Generic extends BaseCommand {
 
     public Generic(EterniaServer plugin) {
 
-        this.plugin = plugin;
         this.getRuntime = new Runtime();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
@@ -93,54 +96,52 @@ public class Generic extends BaseCommand {
         sendConsole(EterniaServer.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(PlayerRelated.getProfileMapSize())));
     }
 
-    @CommandAlias("%reload")
-    @Syntax("%reload_syntax")
-    @Description("%reload_description")
-    @CommandPermission("%reload_perm")
-    @CommandCompletion("configs|messages|constants|blocks|chat|kits|cash|rewards|schedules|entity")
-    public void onReload(String module) {
-        switch (module) {
-            case "configs":
-                plugin.configs();
-                break;
-            case "messages":
-                plugin.messages();
-                break;
-            case "constants":
-                plugin.constants();
-                break;
-            case "blocks":
-                plugin.blocks();
-                break;
-            case "chat":
-                plugin.chat();
-                break;
-            case "kits":
-                plugin.kits();
-                break;
-            case "cash":
-                plugin.cash();
-                break;
-            case "rewards":
-                plugin.rewards();
-                break;
-            case "schedules":
-                plugin.schedule();
-                break;
-            case "entity":
-                plugin.entity();
-                break;
-            default:
-                plugin.configs();
-                plugin.messages();
-                plugin.constants();
-                plugin.blocks();
-                plugin.chat();
-                plugin.kits();
-                plugin.cash();
-                plugin.rewards();
-                plugin.schedule();
+    @CommandAlias("%command")
+    public class CommandConfirm extends BaseCommand {
+
+        @Default
+        @HelpCommand
+        @Syntax("%command_syntax")
+        @Description("%command_description")
+        @CommandPermission("%command_perm")
+        public void onCommandHelp(CommandHelp help) {
+            help.showHelp();
         }
+
+        @Subcommand("%command_accept")
+        @Syntax("%command_accept_syntax")
+        @Description("%command_accept_description")
+        @CommandPermission("%command_accept_perm")
+        public void onAccept(Player player) {
+            User user = new User(player);
+            CommandToRun commandToRun = ServerRelated.getCommandToRun(user.getUUID());
+
+            if (commandToRun == null) {
+                user.sendMessage(Messages.COMMAND_NOT);
+                return;
+            }
+
+            commandToRun.getRunnable().run();
+            ServerRelated.removeCommandToRun(user.getUUID());
+        }
+
+        @Subcommand("%command_deny")
+        @Syntax("%command_deny_syntax")
+        @Description("%command_deny_description")
+        @CommandPermission("%command_deny_perm")
+        public void onDeny(Player player) {
+            User user = new User(player);
+            CommandToRun commandToRun = ServerRelated.getCommandToRun(user.getUUID());
+
+            if (commandToRun == null) {
+                user.sendMessage(Messages.COMMAND_NOT);
+                return;
+            }
+
+            ServerRelated.removeCommandToRun(user.getUUID());
+            user.sendMessage(Messages.COMMAND_DENIED);
+        }
+
     }
 
     @CommandAlias("%speed")
@@ -282,20 +283,6 @@ public class Generic extends BaseCommand {
                 EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
             }
         }
-    }
-
-    @CommandAlias("%settings")
-    @Syntax("%settings_syntax")
-    @CommandPermission("%settings_perm")
-    @CommandCompletion("custom_entities")
-    @Description("%settings_description")
-    public void changeState(CommandSender sender, String type) {
-        if (!EterniaServer.changeState(type)) {
-            EterniaServer.sendMessage(sender, Messages.SETTINGS_WRONG);
-            return;
-        }
-
-        EterniaServer.sendMessage(sender, Messages.SETTINGS_CHANGE, type);
     }
 
     @CommandAlias("%condenser")

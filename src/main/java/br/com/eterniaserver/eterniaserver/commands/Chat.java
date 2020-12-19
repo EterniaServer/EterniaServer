@@ -15,9 +15,12 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.CommandToRun;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.Bukkit;
@@ -165,6 +168,36 @@ public class Chat extends BaseCommand {
         }
 
         user.sendPrivate(target.getPlayer(), msg);
+    }
+
+    @CommandAlias("%nick")
+    @CommandCompletion("@players")
+    @Syntax("%nick_syntax")
+    @Description("%nick_description")
+    @CommandPermission("%nick_perm")
+    public void onNick(Player player, String newName, @Optional OnlinePlayer targets) {
+        User user = new User(player);
+        final String nick = ServerRelated.getColor(newName);
+        
+        if (targets == null) {
+            user.sendMessage(Messages.COMMAND_COST, String.valueOf(EterniaServer.getDouble(Doubles.NICK_COST)));
+            ServerRelated.putCommandToRun(user.getUUID(), new CommandToRun(() -> {
+                user.changeNick(nick);
+                EconomyRelated.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.NICK_COST));
+            }, System.currentTimeMillis()));
+            return;
+        }
+
+        if (!user.hasPermission(EterniaServer.getString(Strings.PERM_NICK_OTHER))) {
+            user.sendMessage(Messages.SERVER_NO_PERM);
+            return;
+        }
+
+        User target = new User(targets.getPlayer());
+
+        target.changeNick(nick);
+        user.sendMessage(Messages.CHAT_NICK_CHANGE_TO, nick, target.getName(), target.getDisplayName());
+
     }
 
     private boolean isMuted(User user) {
