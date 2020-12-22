@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class BlockHandler implements Listener {
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler (priority = EventPriority.LOW)
     public void onPlayerSignChange(SignChangeEvent event) {
         if (event.getPlayer().hasPermission(EterniaServer.getString(Strings.PERM_SIGN_COLOR))) {
             for (byte i = 0; i < 4; i++) {
@@ -46,7 +46,7 @@ public class BlockHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
         if (!EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)) return;
 
@@ -65,7 +65,7 @@ public class BlockHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onPlayerBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
 

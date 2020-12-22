@@ -36,11 +36,8 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,22 +71,9 @@ public class EterniaServer extends JavaPlugin {
 
     private static final EntityControl[] entities = new EntityControl[EntityType.values().length];
 
-    private boolean test = false;
-
-    public EterniaServer() {
-        super();
-    }
-
-    public EterniaServer(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file);
-        this.test = true;
-    }
-
     @Override
     public void onEnable() {
-
-        if (test) return;
-
+        
         for (int i = 0; i < Lists.values().length; i++) {
             stringLists.add(new ArrayList<>());
         }

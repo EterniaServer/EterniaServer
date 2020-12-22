@@ -50,7 +50,7 @@ public class ServerHandler implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPreCreatureSpawn(PreCreatureSpawnEvent event) {
         if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.ENTITY_LIMITER)) {
             return;
@@ -75,7 +75,7 @@ public class ServerHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.ENTITY_EDITOR)) {
             return;
@@ -99,9 +99,9 @@ public class ServerHandler implements Listener {
         event.setMotd(messageMOTD + "\n" + message2);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_CHAT)) {
+        if (!EterniaServer.getBoolean(Booleans.MODULE_CHAT) || e.isCancelled()) {
             return;
         }
 

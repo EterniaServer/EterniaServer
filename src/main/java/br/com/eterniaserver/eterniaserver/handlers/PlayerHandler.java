@@ -121,9 +121,11 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) {
+            return;
+        }
 
         if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS)) {
             new User(event.getPlayer()).putBackLocation(event.getFrom());
@@ -137,14 +139,14 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && ServerRelated.hasLocation(WARP_SPAWN)) {
             event.setRespawnLocation(ServerRelated.getLocation(WARP_SPAWN));
         }
     }
 
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler (priority = EventPriority.NORMAL)
     public void onPlayerLeave(PlayerQuitEvent event) {
         User user = new User(event.getPlayer());
         user.clear();
@@ -159,7 +161,7 @@ public class PlayerHandler implements Listener {
 
     }
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
         String message = event.getMessage().toLowerCase();
         if (message.equalsIgnoreCase("/tps")) {
@@ -175,9 +177,11 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler (priority = EventPriority.LOW)
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_BED)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_BED)) {
+            return;
+        }
 
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             User user = new User(event.getPlayer());
@@ -188,9 +192,11 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler (priority = EventPriority.LOW)
     public void onPlayerBedLeave(PlayerBedLeaveEvent event) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_BED)) return;
+        if (!EterniaServer.getBoolean(Booleans.MODULE_BED)) {
+            return;
+        }
 
         User user = new User(event.getPlayer());
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - user.getBedCooldown()) > 6) {
@@ -198,7 +204,7 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         final Player player = event.getPlayer();
         if (EterniaServer.getBoolean(Booleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(Strings.PERM_ELEVATOR)) && !player.isSneaking()) {
@@ -216,7 +222,7 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerJump(PlayerJumpEvent event) {
         final Player player = event.getPlayer();
         if (EterniaServer.getBoolean(Booleans.MODULE_ELEVATOR) && player.hasPermission(EterniaServer.getString(Strings.PERM_ELEVATOR))) {
@@ -234,7 +240,7 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         User user = new User(event.getPlayer());
 
@@ -260,6 +266,7 @@ public class PlayerHandler implements Listener {
 
         user.updateAfkTime();
         user.createKits();
+        user.disableFly();
     }
 
     private void elevatorUp(final Player player, final int i) {

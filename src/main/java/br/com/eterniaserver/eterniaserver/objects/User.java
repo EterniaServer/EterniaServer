@@ -460,6 +460,11 @@ public class User {
         return playerProfile.getXp();
     }
 
+    public void disableFly() {
+        player.setFlying(false);
+        player.setAllowFlight(false);
+    }
+
     public void setExp(int amount) {
         playerProfile.setXp(amount);
 

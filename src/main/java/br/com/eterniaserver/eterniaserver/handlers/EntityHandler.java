@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class EntityHandler implements Listener {
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             User user = new User((Player) event.getEntity());
@@ -34,7 +34,7 @@ public class EntityHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getDamager();
@@ -48,7 +48,7 @@ public class EntityHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityBreed(EntityBreedEvent event) {
         if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.BREEDING_LIMITER)) {
             return;
@@ -73,9 +73,11 @@ public class EntityHandler implements Listener {
         }
     }
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onEntityInventoryClick(InventoryClickEvent e) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_CASH) && !EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)) return;
+        if ((!EterniaServer.getBoolean(Booleans.MODULE_CASH) && !EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)) || e.isCancelled()) {
+            return;
+        }
 
         final Player player = (Player) e.getWhoClicked();
         final ItemStack itemStack = e.getCurrentItem();
