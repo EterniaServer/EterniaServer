@@ -37,7 +37,7 @@ public class CommandsLocaleCfg {
         this.addDefault(defaults, Commands.CASH_DENY, "deny", "eternia.cash", null, " Recusa uma compra da loja de cash", null);
         this.addDefault(defaults, Commands.CASH_BALANCE, "balance", "eternia.cash", " <jogador>", " Mostra o saldo atual de cash de um jogador", null);
         this.addDefault(defaults, Commands.CASH_GIVE, "give", "eternia.cash.admin", " <jogador> <quantia>", " Dá uma quantia de cash a um jogador", null);
-        this.addDefault(defaults, Commands.CASH_REMOVE, "remove", "eternia.cash", " <jogador> <quantia>", " Remove uma quantia de cash de um jogador", null);
+        this.addDefault(defaults, Commands.CASH_REMOVE, "remove", "eternia.cash.admin", " <jogador> <quantia>", " Remove uma quantia de cash de um jogador", null);
         this.addDefault(defaults, Commands.CASH_HELP, "help", "eternia.cash.admin", " <página>", " Ajuda para o sistema de Cash", null);
         this.addDefault(defaults, Commands.CHANNEL, "ch|channel", "eternia.chat.channel", " <página>", " Ajuda para o sistema de Canais", null);
         this.addDefault(defaults, Commands.CHAT, "chat", "eternia.chat.help", " <página>", " Ajuda para o sistema de Chat", null);

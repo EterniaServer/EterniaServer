@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.core;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
-import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
 import org.bukkit.Bukkit;
@@ -14,15 +13,20 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 public class PluginClearSchedule extends BukkitRunnable {
 
+    private final EterniaServer plugin;
     private final Chunk[] checkChunks;
 
     private final int length;
-    private int removed;
 
-    public PluginClearSchedule() {
-        this.length = EterniaServer.getInteger(Integers.CLEAR_RANGE);
+    public PluginClearSchedule(EterniaServer plugin) {
+        this.plugin = plugin;
+        length = EterniaServer.getInteger(Integers.CLEAR_RANGE);
 
         int lengthCube = (this.length * 2) + 1;
 
@@ -35,18 +39,21 @@ public class PluginClearSchedule extends BukkitRunnable {
             return;
         }
 
-        removed = 0;
         for (Player player : Bukkit.getOnlinePlayers()) {
-            updateCheckChunks(player.getChunk());
-            for (Chunk chunk : checkChunks) {
-                cleanupChunk(chunk);
-            }
-        }
-        if (removed != 0) {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_REMOVED_ENTITIES, true, String.valueOf(removed)));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> getFromPlayers(player));
         }
     }
 
+    private void getFromPlayers(Player player) {
+        updateCheckChunks(player.getChunk());
+        Set<Entity> entities = new HashSet<>();
+
+        for (Chunk chunk : checkChunks) {
+            Collections.addAll(entities, chunk.getEntities());
+        }
+
+        cleanupEntities(entities);
+    }
 
     private void updateCheckChunks(Chunk origin) {
         World world = origin.getWorld();
@@ -61,24 +68,21 @@ public class PluginClearSchedule extends BukkitRunnable {
         }
     }
 
-    private void cleanupChunk(Chunk chunk) {
+    private void cleanupEntities(Set<Entity> entities) {
         int[] entityAmounts = new int[EntityType.values().length];
 
-        for (Entity e : chunk.getEntities()) {
+        for (Entity e : entities) {
             EntityType entityType = e.getType();
             EntityControl entityControl = EterniaServer.getControl(entityType);
 
             if (entityControl.getClearAmount() == -1) {
                 continue;
             }
-        
-            int amount = entityAmounts[entityType.ordinal()];
 
-            if (amount > entityControl.getClearAmount()) {
+            if (entityAmounts[entityType.ordinal()] > entityControl.getClearAmount()) {
                 if (!e.isDead()) {
                     e.remove();
                 }
-                ++removed;
             } else {
                 ++entityAmounts[entityType.ordinal()];
             }

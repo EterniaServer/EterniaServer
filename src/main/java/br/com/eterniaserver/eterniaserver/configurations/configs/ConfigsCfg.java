@@ -53,7 +53,6 @@ public class ConfigsCfg extends GenericCfg {
         setString(Strings.SPAWNERS_COLORS, file, outFile, "spawners.color", "§e");
 
         setInteger(Integers.PLUGIN_TICKS, file, outFile, "server.checks", 1);
-        setInteger(Integers.SCHEDULE_THREADS, file, outFile, "server.schedule-threads", 1);
         setInteger(Integers.AFK_TIMER, file, outFile, "server.afk-timer", 900);
         setInteger(Integers.COOLDOWN, file, outFile, "server.cooldown", 4);
         setInteger(Integers.PVP_TIME, file, outFile, "server.pvp-time", 15);

@@ -4,14 +4,16 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class PluginSchedule extends TimerTask {
+public class PluginSchedule extends BukkitRunnable {
 
     private final Calendar calendar;
     private final EterniaServer plugin;
@@ -54,9 +56,9 @@ public class PluginSchedule extends TimerTask {
     private void runDay(Map<Integer, List<String>> map) {
         map.forEach((key, lista) -> Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (String command : lista) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command));
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
             }
         }, TimeUnit.SECONDS.toMillis(key)));
     }
-    
+
 }

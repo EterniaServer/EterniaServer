@@ -21,8 +21,6 @@ import org.bukkit.Bukkit;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -188,7 +186,7 @@ public class Managers {
 
     private void loadClearManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_ENTITY), "Mob Control")) {
-            new PluginClearSchedule().runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(Integers.CLEAR_TIMER) * 20);
+            new PluginClearSchedule(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.getInteger(Integers.CLEAR_TIMER) * 20);
         }
     }
 
@@ -217,8 +215,7 @@ public class Managers {
                     EterniaServer.getInteger(Integers.SCHEDULE_HOUR),
                     EterniaServer.getInteger(Integers.SCHEDULE_MINUTE),
                     EterniaServer.getInteger(Integers.SCHEDULE_SECONDS)));
-            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.scheduleWithFixedDelay(new PluginSchedule(plugin), start, TimeUnit.HOURS.toMillis(EterniaServer.getInteger(Integers.SCHEDULE_DELAY)), TimeUnit.MILLISECONDS);
+            new PluginSchedule(plugin).runTaskTimer(plugin, start, TimeUnit.HOURS.toMillis(EterniaServer.getInteger(Integers.SCHEDULE_DELAY)));
         }
     }
 
