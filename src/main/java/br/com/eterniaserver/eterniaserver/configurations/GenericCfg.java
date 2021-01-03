@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.configurations;
 
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
@@ -32,12 +33,12 @@ public class GenericCfg {
 
     }
 
-    protected void saveFile(FileConfiguration fileConfiguration, String filePath, String path) {
+    protected void saveFile(FileConfiguration fileConfiguration, String filePath) {
         try {
             fileConfiguration.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
             fileConfiguration.save(filePath);
         } catch (IOException exception) {
-            ServerRelated.logError("Impossível de criar arquivos em " + path, 3);
+            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
     }
 

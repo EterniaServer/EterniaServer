@@ -27,7 +27,6 @@ public class TableCfg {
 
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_REWARD));
             createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "key_code VARCHAR(16)", "group_name VARCHAR(16)");
-            SQL.execute(createTable);
         } else {
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_KITS));
             createTable.columns.set("name VARCHAR(32)", "cooldown INTEGER");
@@ -46,8 +45,9 @@ public class TableCfg {
 
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_REWARD));
             createTable.columns.set("key_code VARCHAR(16)", "group_name VARCHAR(16)");
-            SQL.execute(createTable);
         }
+
+        SQL.execute(createTable);
     }
 
 }

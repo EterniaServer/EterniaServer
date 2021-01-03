@@ -27,7 +27,7 @@ import java.sql.SQLException;
 public class Kit extends BaseCommand {
 
     public Kit() {
-        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_KITS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery();) {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_KITS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 PlayerRelated.putKitCooldown(resultSet.getString("name"), resultSet.getLong("cooldown"));
             }

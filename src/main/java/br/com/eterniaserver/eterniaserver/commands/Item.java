@@ -42,7 +42,7 @@ public class Item extends BaseCommand {
         @Description("%item_nbt_description")
         @CommandPermission("%item_nbt_perm")
         public void onNbt(CommandHelp help) {
-            onHelp(help);
+            help.showHelp();
         }
 
         @Subcommand("%item_nbt_addstring")
@@ -88,7 +88,7 @@ public class Item extends BaseCommand {
         @Description("%item_clear_description")
         @CommandPermission("%item_clear_perm")
         public void onClear(CommandHelp help) {
-            onHelp(help);
+            help.showHelp();
         }
 
         @Subcommand("%item_clear_lore")
@@ -153,7 +153,7 @@ public class Item extends BaseCommand {
         @Description("%item_set_description")
         @CommandPermission("%item_set_perm")
         public void onSet(CommandHelp help) {
-            onHelp(help);
+            help.showHelp();
         }
 
         @Subcommand("%item_set_lore")

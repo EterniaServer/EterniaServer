@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.CommandManager;
+import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.commands.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
 import br.com.eterniaserver.eterniaserver.core.PluginClearSchedule;
@@ -106,6 +107,7 @@ public class Managers {
         CommandManager.getCommandCompletions().registerStaticCompletion("colors", Stream.of(Colors.values()).map(Enum::name).collect(Collectors.toList()));
         CommandManager.getCommandCompletions().registerStaticCompletion("entidades", Stream.of(Entities.values()).map(Enum::name).collect(Collectors.toList()));
         CommandManager.getCommandCompletions().registerStaticCompletion("channels", EterniaServer.getChannels());
+        CommandManager.getCommandCompletions().registerCompletion("list_of_shops", shop -> ServerRelated.getShopList());
     }
 
     private void loadBedManager() {

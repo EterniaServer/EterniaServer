@@ -40,8 +40,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Generic extends BaseCommand {
@@ -61,18 +60,25 @@ public class Generic extends BaseCommand {
 
         this.getRuntime = new Runtime();
 
+        final Set<String> playersName = new HashSet<>();
+        final List<String> shopList = ServerRelated.getShopList();
+
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
             try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_LOCATIONS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
                 ServerRelated.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
                 while (resultSet.next()) {
                     final String[] split = resultSet.getString("location").split(":");
+                    final String name = resultSet.getString("name");
                     Location loc = new Location(Bukkit.getWorld(split[0]),
                             Double.parseDouble(split[1]),
                             Double.parseDouble(split[2]) + 1D,
                             Double.parseDouble(split[3]),
                             Float.parseFloat(split[4]),
                             Float.parseFloat(split[5]));
-                    ServerRelated.putLocation(resultSet.getString("name"), getCenter(loc));
+                    ServerRelated.putLocation(name, getCenter(loc));
+                    if (playersName.contains(name)) {
+                        shopList.add(name);
+                    }
                 }
             } catch (SQLException ignored) {
                 ServerRelated.logError("Erro ao carregar database", 3);
@@ -81,14 +87,16 @@ public class Generic extends BaseCommand {
 
         try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_PLAYER)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()){
             while (resultSet.next()) {
+                final String playerName = resultSet.getString("player_name");
                 PlayerProfile playerProfile = new PlayerProfile(
-                        resultSet.getString("player_name"),
+                        playerName,
                         resultSet.getLong("time"),
                         resultSet.getLong("last"),
                         resultSet.getLong("hours")
                 );  
                 getModules(playerProfile, resultSet);
                 PlayerRelated.putProfile(UUID.fromString(resultSet.getString("uuid")), playerProfile);
+                playersName.add(playerName.toLowerCase());
             }
         } catch (SQLException ignored) {
             ServerRelated.logError("Erro ao carregar database", 3);

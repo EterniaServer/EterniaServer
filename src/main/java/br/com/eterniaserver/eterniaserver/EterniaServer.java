@@ -46,10 +46,11 @@ import java.util.regex.Pattern;
 
 public class EterniaServer extends JavaPlugin {
 
+    protected static final String[] messages = new String[Messages.values().length];
+
     private static Pattern filter;
 
     private static final String[] strings = new String[Strings.values().length];
-    private static final String[] messages = new String[Messages.values().length];
     private static final Boolean[] booleans = new Boolean[Booleans.values().length];
     private static final Integer[] integers = new Integer[Integers.values().length];
     private static final Double[] doubles = new Double[Doubles.values().length];
@@ -273,7 +274,7 @@ public class EterniaServer extends JavaPlugin {
     }
 
     public static String getMessage(Messages messagesId, boolean prefix, String... args) {
-        return Constants.getMessage(messagesId, prefix, messages, args);
+        return Constants.getMessage(messagesId, prefix, args);
     }
 
     public static void sendMessage(CommandSender sender, Messages messagesId, String... args) {

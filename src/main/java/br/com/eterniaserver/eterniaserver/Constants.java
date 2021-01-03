@@ -32,11 +32,11 @@ public class Constants {
     }
 
     protected static void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
-        sender.sendMessage(EterniaServer.getMessage(messagesId, prefix, args));
+        sender.sendMessage(getMessage(messagesId, prefix, args));
     }
 
-    protected static String getMessage(Messages messagesId, boolean prefix, String[] messages, String... args) {
-        String message = messages[messagesId.ordinal()];
+    protected static String getMessage(Messages messagesId, boolean prefix, String... args) {
+        String message = EterniaServer.messages[messagesId.ordinal()];
 
         for (int i = 0; i < args.length; i++) {
             message = message.replace("{" + i + "}", args[i]);

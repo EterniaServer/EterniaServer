@@ -66,7 +66,7 @@ public class ScheduleCfg extends GenericCfg {
         tempScheduleMap.forEach(scheduleMap::put);
         tempScheduleMap.forEach((k, v) -> v.forEach((l, b) -> outSchedule.set("schedule.days" + "." + k + "." + l, b)));
 
-        saveFile(outSchedule, Constants.SCHEDULE_FILE_PATH, Constants.DATA_LAYER_FOLDER_PATH);
+        saveFile(outSchedule, Constants.SCHEDULE_FILE_PATH);
 
     }
 

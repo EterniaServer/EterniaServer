@@ -109,7 +109,7 @@ public class ChatCfg extends GenericCfg {
             outChat.set("placeholders." + k + ".priority", v.getPriority());
         });
 
-        saveFile(outChat, Constants.CHAT_FILE_PATH, Constants.DATA_LAYER_FOLDER_PATH);
+        saveFile(outChat, Constants.CHAT_FILE_PATH);
 
     }
 

@@ -72,7 +72,7 @@ public class Warp extends BaseCommand {
     @CommandAlias("%shop")
     @Syntax("%shop_syntax")
     @Description("%shop_description")
-    @CommandCompletion("@players")
+    @CommandCompletion("@list_of_shops")
     @CommandPermission("%shop_perm")
     public void onShop(Player player, @Optional String targets) {
         User user = new User(player);

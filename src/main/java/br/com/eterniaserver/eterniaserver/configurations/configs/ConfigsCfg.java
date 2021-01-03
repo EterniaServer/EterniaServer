@@ -75,7 +75,7 @@ public class ConfigsCfg extends GenericCfg {
 
         setMaterials(elevatorMaterials, file, outFile, "IRON_BLOCK");
 
-        saveFile(outFile, Constants.CONFIG_FILE_PATH, Constants.DATA_LAYER_FOLDER_PATH);
+        saveFile(outFile, Constants.CONFIG_FILE_PATH);
 
     }
 

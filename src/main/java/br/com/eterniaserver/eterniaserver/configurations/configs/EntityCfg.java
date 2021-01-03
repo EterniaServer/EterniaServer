@@ -53,7 +53,7 @@ public class EntityCfg extends GenericCfg {
             entities[entity.ordinal()] = entityControl;
         }
 
-        saveFile(outFile, Constants.ENTITY_FILE_PATH, Constants.DATA_LAYER_FOLDER_PATH);
+        saveFile(outFile, Constants.ENTITY_FILE_PATH);
 
     }
 }

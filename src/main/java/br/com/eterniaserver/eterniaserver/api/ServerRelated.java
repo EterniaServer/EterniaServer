@@ -29,16 +29,19 @@ public class ServerRelated {
 
     private static long nightMessageTime = System.currentTimeMillis();
     private static final List<World> skippingWorlds = new ArrayList<>();
+    private static final List<String> shopList = new ArrayList<>();
+
     private static final Map<UUID, Long> bedCooldown = new HashMap<>();
-
     private static final Map<String, String> rewards = new HashMap<>();
-
     private static final Map<String, Location> locations = new HashMap<>();
-
     private static final Map<UUID, CommandToRun> commandsToRun = new HashMap<>();
 
     private ServerRelated() {
         throw new IllegalStateException("Utility class");
+    }
+
+    public static List<String> getShopList() {
+        return shopList;
     }
 
     /**
@@ -137,8 +140,8 @@ public class ServerRelated {
 
     /**
      * Set the placeholders from PlaceHolderAPI
-     * @param p object of user
-     * @param s to replace
+     * @param player object of user
+     * @param message to replace
      * @return message with placeholders
      */
     public static String setPlaceholders(Player player, String message) {

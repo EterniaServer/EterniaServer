@@ -95,7 +95,7 @@ public class ConstantsCfg extends GenericCfg {
         outFile.set("spy.tell.notes", "0: nome do jogador; 1: apelido do jogador; 2: nome do alvo; 3: apelido do alvo; 4: mensagem");
         outFile.set("spy.local.notes", "0: nome do jogador; 1: apelido do jogador; 2: mensagem");
 
-        saveFile(outFile, Constants.CONSTANTS_FILE_PATH, Constants.DATA_LAYER_FOLDER_PATH);
+        saveFile(outFile, Constants.CONSTANTS_FILE_PATH);
 
     }
 
