@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.eterniaserver</groupId>
     <artifactId>EterniaServer</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -37,25 +37,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <reportOutputDirectory>${project.basedir}</reportOutputDirectory>
-                    <destDir>docs</destDir>
-                    <doctitle>EterniaServer - Javadocs</doctitle>
-                    <windowtitle>EterniaServer - Javadocs</windowtitle>
-                    <detectOfflineLinks>false</detectOfflineLinks>
-                    <additionalJOption>-html5</additionalJOption>
-                    <groups>
-                        <group>
-                            <title>EterniaServer - API</title>
-                            <packages>br.com.eterniaserver.eterniaserver.api.*</packages>
-                        </group>
-                    </groups>
-                </configuration>
             </plugin>
         </plugins>
         <resources>

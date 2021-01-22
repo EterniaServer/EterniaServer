@@ -488,7 +488,7 @@ public class PlayerRelated {
         SQL.executeAsync(insert);
 
         PlayerProfile playerProfile = new PlayerProfile(playerName, time, time, 0);
-        playerProfile.setBalance(EterniaServer.getDouble(Doubles.START_MONEY));
+        EconomyRelated.putInMoney(uuid, EterniaServer.getDouble(Doubles.START_MONEY));
         playerProfile.setMuted(time);
         playerProfiles.put(uuid, playerProfile);
     }

@@ -14,7 +14,9 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.sql.queries.Select;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.objects.User;
@@ -64,18 +66,28 @@ public class Generic extends BaseCommand {
         final List<String> shopList = ServerRelated.getShopList();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-            try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_LOCATIONS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
                 ServerRelated.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
                 while (resultSet.next()) {
-                    final String[] split = resultSet.getString("location").split(":");
                     final String name = resultSet.getString("name");
-                    Location loc = new Location(Bukkit.getWorld(split[0]),
-                            Double.parseDouble(split[1]),
-                            Double.parseDouble(split[2]) + 1D,
-                            Double.parseDouble(split[3]),
-                            Float.parseFloat(split[4]),
-                            Float.parseFloat(split[5]));
-                    ServerRelated.putLocation(name, getCenter(loc));
+                    final String worldName = resultSet.getString("world");
+                    final double x = resultSet.getDouble("coord_x");
+                    final double y = resultSet.getDouble("coord_y");
+                    final double z = resultSet.getDouble("coord_z");
+                    final float yaw = resultSet.getFloat("coord_yaw");
+                    final float pitch = resultSet.getFloat("coord_pitch");
+
+                    if (name == null || worldName == null) {
+                        continue;
+                    }
+
+                    final World world = Bukkit.getWorld(worldName);
+
+                    if (world == null) {
+                        continue;
+                    }
+
+                    ServerRelated.putLocation(name, new Location(world, x, y, z, yaw, pitch));
                     if (playersName.contains(name)) {
                         shopList.add(name);
                     }
@@ -93,10 +105,16 @@ public class Generic extends BaseCommand {
                         resultSet.getLong("time"),
                         resultSet.getLong("last"),
                         resultSet.getLong("hours")
-                );  
+                );
+                final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
+                if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
+                    EconomyRelated.putInMoney(uuid, resultSet.getDouble("balance"));
+                }
                 getModules(playerProfile, resultSet);
-                PlayerRelated.putProfile(UUID.fromString(resultSet.getString("uuid")), playerProfile);
-                playersName.add(playerName.toLowerCase());
+                PlayerRelated.putProfile(uuid, playerProfile);
+                if (playerName != null) {
+                    playersName.add(playerName.toLowerCase());
+                }
             }
         } catch (SQLException ignored) {
             ServerRelated.logError("Erro ao carregar database", 3);
@@ -399,9 +417,6 @@ public class Generic extends BaseCommand {
         if (EterniaServer.getBoolean(Booleans.MODULE_CASH)) {
             playerProfile.setCash(resultSet.getInt("cash"));
         }
-        if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
-            playerProfile.setBalance(resultSet.getDouble("balance"));
-        }
         if (EterniaServer.getBoolean(Booleans.MODULE_EXPERIENCE)) {
             playerProfile.setXp(resultSet.getInt("xp"));
         }
@@ -409,9 +424,7 @@ public class Generic extends BaseCommand {
             String result = resultSet.getString("homes");
             if (result != null) {
                 for (String home : result.split(":")) {
-                    if (!playerProfile.getHomes().contains(home)) {
-                        playerProfile.getHomes().add(home);
-                    }
+                    playerProfile.getHomes().add(home);
                 }
             }
         }
@@ -432,19 +445,6 @@ public class Generic extends BaseCommand {
             return;
         }
         user.sendMessage(Messages.GODMODE_DISABLED);
-    }
-
-    public Location getCenter(Location loc) {
-        return new Location(loc.getWorld(),
-                getRelativeCoord(loc.getBlockX()),
-                getRelativeCoord(loc.getBlockY()),
-                getRelativeCoord(loc.getBlockZ()));
-    }
-
-    private double getRelativeCoord(int i) {
-        double d = i;
-        d = d < 0 ? d - .5 : d + .5;
-        return d;
     }
 
 }

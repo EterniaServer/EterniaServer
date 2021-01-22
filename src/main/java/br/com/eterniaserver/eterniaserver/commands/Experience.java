@@ -4,12 +4,15 @@ import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.annotation.*;
+import br.com.eterniaserver.eternialib.NBTItem;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,6 +21,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
+import java.util.List;
 
 @CommandAlias("%xp")
 public class Experience extends BaseCommand {
@@ -104,13 +108,18 @@ public class Experience extends BaseCommand {
             return;
         }
 
-        ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
-        ItemMeta meta = item.getItemMeta();
+        final ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
+        final ItemMeta meta = item.getItemMeta();
+
         meta.setDisplayName(EterniaServer.getString(Strings.BOTTLE_EXP_NAME));
+        meta.setLore(List.of(ChatColor.GREEN + String.valueOf(xpWant)));
         item.setItemMeta(meta);
-        item.setLore(Collections.singletonList(String.valueOf(xpWant)));
-        PlayerInventory inventory = player.getInventory();
-        inventory.addItem(item);
+
+        final NBTItem nbtItem = new NBTItem(item);
+        nbtItem.setInteger(Constants.NBT_FUNCTION, 0);
+        nbtItem.setInteger(Constants.NBT_INT_VALUE, xpWant);
+
+        player.getInventory().addItem(nbtItem.getItem());
         user.sendMessage(Messages.EXP_BOTTLED);
         user.setLevel(0);
         user.setGameExp(0);

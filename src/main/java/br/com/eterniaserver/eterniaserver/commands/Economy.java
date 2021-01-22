@@ -16,17 +16,32 @@ import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
+import br.com.eterniaserver.eterniaserver.enums.Commands;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @CommandAlias("%eco")
 public class Economy extends BaseCommand {
+
+    private final String baltopName;
+
+    public Economy(final String baltopName) {
+        this.baltopName = baltopName;
+    }
 
     @Default
     @CatchUnknown
@@ -64,6 +79,13 @@ public class Economy extends BaseCommand {
         EconomyRelated.removeMoney(target.getUUID(), money);
         user.sendMessage(Messages.ECO_REMOVE_FROM, String.valueOf(money), target.getName(), target.getDisplayName());
         target.sendMessage(Messages.ECO_REMOVED, String.valueOf(money), user.getName(), user.getDisplayName());
+    }
+
+    @CommandAlias("%eco_run_ir")
+    @CommandPermission("%eco_run_ir_perm")
+    @Description("%eco_run_ir_description")
+    public void runIr(CommandSender sender) {
+        EconomyRelated.getIR();
     }
 
     @CommandCompletion("@players 100")
@@ -110,7 +132,7 @@ public class Economy extends BaseCommand {
     @CommandAlias("%eco_pay_aliases")
     @Description("%eco_pay_description")
     @CommandPermission("%eco_pay_perm")
-    public void onPay(Player player, OnlinePlayer targets, @Conditions("limits:min=1,max=2147483647")  Double value) {
+    public void onPay(Player player, OnlinePlayer targets, @Conditions("limits:min=1,max=2147483647") Double value) {
         User user = new User(player);
         User target = new User(targets.getPlayer());
 
@@ -134,23 +156,65 @@ public class Economy extends BaseCommand {
     @CommandAlias("%eco_baltop_aliases")
     @Description("%eco_baltop_description")
     @CommandPermission("%eco_baltop_perm")
-    public void onBaltop(CommandSender sender) {
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EconomyRelated.getBalanceTopTime()) <= 300) {
-            showBaltop(sender);
-        } else {
-            EconomyRelated.updateBalanceTop(20).thenRun(() -> showBaltop(sender));
+    public void onBaltop(CommandSender sender, @Optional Integer page) {
+        if (page == null) {
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EconomyRelated.getBalanceTopTime()) <= 300) {
+                showBaltop(sender, 0);
+                return;
+            }
+            EconomyRelated.updateBalanceTop().thenRun(() -> showBaltop(sender, 0));
+            return;
         }
+
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EconomyRelated.getBalanceTopTime()) <= 300) {
+            showBaltop(sender, page);
+            return;
+        }
+        EconomyRelated.updateBalanceTop().thenRun(() -> showBaltop(sender, page));
     }
 
-    private void showBaltop(CommandSender sender) {
-        sender.sendMessage(EterniaServer.getMessage(Messages.ECO_BALTOP_TITLE, true));
-        User user;
-        for (int i = 0; i < 10; i++) {
-            user = new User(EconomyRelated.getBalanceTop().get(i));
-            EterniaServer.sendMessage(sender, Messages.ECO_BALTOP_LIST, false,
-                    String.valueOf(i + 1), user.getName(), user.getDisplayName(),
-                    EconomyRelated.format(EconomyRelated.getMoney(user.getUUID())));
+    private void showBaltop(CommandSender sender, int page) {
+        List<Map.Entry<UUID, Double>> entryList = new ArrayList<>(EconomyRelated.getBalanceTop().entrySet());
+        int maxPage = entryList.size() / 10;
+        if (maxPage == 0) {
+            maxPage = 1;
         }
+        if (page >= maxPage || page < 0) {
+            EterniaServer.sendMessage(sender, Messages.ECO_BALTOP_PAGE_LIMIT, true);
+            return;
+        }
+        sender.sendMessage(EterniaServer.getMessage(Messages.ECO_BALTOP_TITLE, true, String.valueOf(page + 1)));
+
+        int pagecontar = page * 10;
+
+        for (int i = pagecontar; i < pagecontar + 10; i++) {
+            if (entryList.size() > i) {
+                Map.Entry<UUID, Double> entry = entryList.get(i);
+                User user = new User(entry.getKey());
+                EterniaServer.sendMessage(sender, Messages.ECO_BALTOP_LIST, false, " " + user.getName(), " " + user.getDisplayName(), EconomyRelated.format(entry.getValue()));
+            } else {
+                break;
+            }
+        }
+
+        final BaseComponent[] baseComponents = new BaseComponent[3];
+        final TextComponent textComponentLeft = new TextComponent(" <<<");
+        if ((page - 1) > 0) {
+            textComponentLeft.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + baltopName + " " + (page - 1)));
+        }
+        final TextComponent textComponentRight = new TextComponent(">>>");
+        if ((page + 1) < maxPage) {
+            textComponentRight.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + baltopName + " " + (page + 1)));
+        }
+        final TextComponent textComponentCenter = new TextComponent(EterniaServer.getMessage(Messages.ECO_BALTOP_PAGE, false));
+        baseComponents[0] = textComponentLeft;
+        baseComponents[1] = textComponentCenter;
+        baseComponents[2] = textComponentRight;
+        sender.sendMessage(baseComponents);
+
+
     }
+
+
 
 }

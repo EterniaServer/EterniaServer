@@ -1,7 +1,9 @@
 package br.com.eterniaserver.eterniaserver.handlers;
 
+import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
@@ -17,13 +19,13 @@ import br.com.eterniaserver.paperlib.PaperLib;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,8 +43,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
-
-import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -66,19 +66,15 @@ public class PlayerHandler implements Listener {
         final Action action = event.getAction();
 
         if (action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
-            final ItemStack is = user.getItemInMainHand();
-            final List<String> lore = is.getLore();
-            event.setCancelled(loadHomes(is, lore, user));
-            loadModuleExp(is, lore, user);
-            if (event.getClickedBlock() != null && list.contains(event.getClickedBlock().getType())) {
-                final Location location = event.getClickedBlock().getLocation();
-                location.getNearbyEntities(2, 2, 2).forEach(k -> {
-                    if (k instanceof Minecart) {
-                        event.setCancelled(true);
-                    }
-                });
+            final ItemStack itemStack = event.getItem();
+            if (itemFunction(user, itemStack)) {
+                event.setCancelled(true);
+                return;
             }
+
+            event.setCancelled(blockFunction(event.getClickedBlock(), itemStack, user.hasPermission(EterniaServer.getString(Strings.PERM_SPAWNERS_CHANGE))));
         }
+
         if (EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS) && event.getClickedBlock() != null
                 && action.equals(Action.RIGHT_CLICK_BLOCK) && event.getItem() != null
                 && event.getClickedBlock().getType() == Material.SPAWNER
@@ -87,30 +83,101 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    private void loadModuleExp(ItemStack is, List<String> lore, User user) {
-        if (EterniaServer.getBoolean(Booleans.MODULE_EXPERIENCE) && is.getType().equals(Material.EXPERIENCE_BOTTLE)
-                && lore != null) {
-            user.setItemInMainHand(new ItemStack(Material.AIR));
-            user.giveExp(Integer.parseInt(lore.get(0)));
+    private boolean blockFunction(final Block block, final ItemStack itemStack, boolean hasBreakPerm) {
+        if (block == null) {
+            return false;
+        }
+
+
+        if (list.contains(block.getType())) {
+            final Location location = block.getLocation();
+            for (Entity entity : location.getNearbyEntities(2, 2, 2)) {
+                if (entity instanceof Minecart) {
+                    return true;
+                }
+            }
+        }
+
+        return itemStack != null && block.getType() == Material.SPAWNER && !hasBreakPerm;
+    }
+
+
+    private boolean itemFunction(final User user, final ItemStack itemStack) {
+        if (!EterniaServer.getBoolean(Booleans.ITEMS_FUNCTIONS) || itemStack == null || itemStack.getType().isAir()) {
+            return false;
+        }
+
+        final NBTItem nbtItem = new NBTItem(itemStack);
+        if (!nbtItem.hasKey(Constants.NBT_FUNCTION)) {
+            return false;
+        }
+
+        final int function = nbtItem.getInteger(Constants.NBT_FUNCTION);
+        switch (function) {
+            case 0:
+                return expFunction(user, nbtItem);
+            case 1:
+                return homesFunction(user, nbtItem);
+            case 2:
+                return customFunction(user, nbtItem);
+            default:
+                return false;
         }
     }
 
-    private boolean loadHomes(ItemStack is, List<String> lore, User user) {
-        if (EterniaServer.getBoolean(Booleans.MODULE_HOMES) && is.getType().equals(Material.COMPASS)
-                && lore != null) {
-            final String[] isso = lore.get(0).split(":");
-            final Location location = new Location(Bukkit.getWorld(isso[0]), Double.parseDouble(isso[1]) + 1, Double.parseDouble(isso[2]), Double.parseDouble(isso[3]), Float.parseFloat(isso[4]), Float.parseFloat(isso[5]));
-            String nome = is.getItemMeta().getDisplayName();
-            nome = nome.replace("[", "").replace("]", "");
-            nome = ChatColor.stripColor(nome);
-            if (user.isTeleporting()) {
-                user.sendMessage(Messages.SERVER_IN_TELEPORT);
-            } else {
-                user.putInTeleport( new PlayerTeleport(user.getPlayer(), location, EterniaServer.getMessage(Messages.HOME_GOING, true, nome)));
+    private boolean customFunction(final User user, final NBTItem nbtItem) {
+        final Player player = user.getPlayer();
+
+        if (nbtItem.hasKey(Constants.NBT_RUN_COMMAND)) {
+            for (final String cmd : nbtItem.getStringList(Constants.NBT_RUN_COMMAND)) {
+                if (nbtItem.getBoolean(Constants.NBT_RUN_IN_CONSOLE)) {
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), ServerRelated.setPlaceholders(player, cmd));
+                } else {
+                    player.performCommand(ServerRelated.setPlaceholders(player, cmd));
+                }
+            }
+
+            final int itemUsages = nbtItem.getInteger(Constants.NBT_USAGES);
+            if (itemUsages == 1) {
+                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            } else if (itemUsages > 1) {
+                nbtItem.setInteger(Constants.NBT_USAGES, (itemUsages - 1));
+                player.getInventory().setItemInMainHand(nbtItem.getItem());
             }
             return true;
         }
         return false;
+    }
+
+    private boolean expFunction(final User user, final NBTItem nbtItem) {
+        if (!EterniaServer.getBoolean(Booleans.MODULE_EXPERIENCE)) {
+            return false;
+        }
+
+        user.setItemInMainHand(new ItemStack(Material.AIR));
+        user.giveExp(nbtItem.getInteger(Constants.NBT_INT_VALUE));
+        return true;
+    }
+
+    private boolean homesFunction(final User user, final NBTItem nbtItem) {
+        if (!EterniaServer.getBoolean(Booleans.MODULE_HOMES)) {
+            return false;
+        }
+
+        if (user.isTeleporting()) {
+            user.sendMessage(Messages.SERVER_IN_TELEPORT);
+            return false;
+        }
+
+        user.putInTeleport(new PlayerTeleport(user.getPlayer(), new Location(
+                Bukkit.getWorld(nbtItem.getString(Constants.NBT_WORLD)),
+                nbtItem.getDouble(Constants.NBT_COORD_X),
+                nbtItem.getDouble(Constants.NBT_COORD_Y),
+                nbtItem.getDouble(Constants.NBT_COORD_Z),
+                nbtItem.getFloat(Constants.NBT_COORD_YAW),
+                nbtItem.getFloat(Constants.NBT_COORD_PITCH)
+        ), EterniaServer.getMessage(Messages.HOME_GOING, true, nbtItem.getString(Constants.NBT_LOC_NAME))));
+        return true;
     }
 
     @EventHandler (priority = EventPriority.NORMAL)
@@ -129,13 +196,6 @@ public class PlayerHandler implements Listener {
 
         if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS)) {
             new User(event.getPlayer()).putBackLocation(event.getFrom());
-        }
-    }
-
-    @EventHandler (priority = EventPriority.HIGH)
-    public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
-        if (EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS) && ServerRelated.hasLocation(WARP_SPAWN) && (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - event.getPlayer().getFirstPlayed()) < 10)) {
-            event.setSpawnLocation(ServerRelated.getLocation(WARP_SPAWN));
         }
     }
 
@@ -267,6 +327,8 @@ public class PlayerHandler implements Listener {
         user.updateAfkTime();
         user.createKits();
         user.disableFly();
+
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, user::teleport, 10L);
     }
 
     private void elevatorUp(final Player player, final int i) {

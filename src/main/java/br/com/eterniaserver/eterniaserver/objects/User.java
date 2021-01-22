@@ -6,101 +6,116 @@ import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
-import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.command.CommandSender;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class User {
+
+    private final String playerName;
 
     private Player player = null;
     private OfflinePlayer offlinePlayer = null;
     private CommandSender commandSender = null;
     private PlayerProfile playerProfile = null;
 
-    private String playerName;
     private String playerDisplayName;
     private UUID uuid;
+    private boolean firstLogin = false;
 
     public User(String playerName) {
-        OfflinePlayer offlinePlayerTemp = Bukkit.getOfflinePlayer(UUIDFetcher.getUUIDOf(playerName));
-        if (offlinePlayerTemp.isOnline()) {
-            this.player = offlinePlayerTemp.getPlayer();
-            getInfo(this.player);
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUIDFetcher.getUUIDOf(playerName));
+        final Player player = offlinePlayer.getPlayer();
+        if (player == null) {
+            this.offlinePlayer = offlinePlayer;
+            this.playerName = offlinePlayer.getName();
         } else {
-            this.offlinePlayer = offlinePlayerTemp;
-            getInfo(this.offlinePlayer);
+            this.player = player;
+            this.playerName = player.getName();
         }
+        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+        getInfo();
     }
 
     public User(UUID uuid) {
-        OfflinePlayer offlinePlayerTemp = Bukkit.getOfflinePlayer(uuid);
-        if (offlinePlayerTemp.isOnline()) {
-            this.player = offlinePlayerTemp.getPlayer();
-            getInfo(this.player);
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+        final Player player = offlinePlayer.getPlayer();
+        if (player == null) {
+            this.offlinePlayer = offlinePlayer;
+            this.playerName = offlinePlayer.getName();
         } else {
-            this.offlinePlayer = offlinePlayerTemp;
-            getInfo(this.offlinePlayer);
+            this.player = player;
+            this.playerName = player.getName();
         }
+        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+        getInfo();
     }
 
     public User(Player player) {
-        if (player.isOnline()) {
-            this.player = player;
-            getInfo(this.player);
-        } else {
-            this.offlinePlayer = player;
-            getInfo(this.offlinePlayer);
-        }
+        this.player = player;
+        this.playerName = player.getName();
+        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+        getInfo();
     }
 
-    public User(OfflinePlayer player) {
-        this.offlinePlayer = player;
-        getInfo(this.offlinePlayer);
+    public User(OfflinePlayer offlinePlayer) {
+        final Player player = offlinePlayer.getPlayer();
+        if (player == null) {
+            this.offlinePlayer = offlinePlayer;
+            this.playerName = offlinePlayer.getName();
+        } else {
+            this.player = player;
+            this.playerName = player.getName();
+        }
+        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+        getInfo();
     }
 
     public User(CommandSender sender) {
         if (sender instanceof Player) {
             this.player = (Player) sender;
-            getInfo(this.player);
+            this.playerName = player.getName();
+            this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+            getInfo();
         } else {
             this.commandSender = sender;
             this.playerName = sender.getName();
             this.playerDisplayName = sender.getName();
         }
     }
-
-    private void getInfo(Player player) {
-        this.playerName = player.getName();
-        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+    private void getInfo() {
         if (!PlayerRelated.hasProfile(this.uuid)) {
             PlayerRelated.createProfile(uuid, playerName);
+            this.playerProfile = PlayerRelated.getProfile(this.uuid);
+            this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
+            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_FIRST_LOGIN, true, playerName, playerDisplayName));
+            if (this.player != null) {
+                this.firstLogin = true;
+            }
+            return;
         }
         this.playerProfile = PlayerRelated.getProfile(this.uuid);
         this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
     }
 
-    private void getInfo(OfflinePlayer offlinePlayer) {
-        this.playerName = offlinePlayer.getName();
-        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
-        if (!PlayerRelated.hasProfile(this.uuid)) {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_FIRST_LOGIN, true, playerName, playerDisplayName));
-            PlayerRelated.createProfile(uuid, playerName);
-            player.teleport(ServerRelated.getLocation("warp.spawn"));
+    public void teleport() {
+        if (!firstLogin) {
+            return;
         }
-        this.playerProfile = PlayerRelated.getProfile(this.uuid);
-        this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
+
+        player.teleport(ServerRelated.getLocation("warp.spawn"));
     }
 
     public boolean hasProfile() {
@@ -222,7 +237,7 @@ public class User {
         PlayerRelated.putInTeleport(uuid, playerTeleport);
     }
 
-    public List<String> getHomes() {
+    public Set<String> getHomes() {
         return playerProfile.getHomes();
     }
 
@@ -338,14 +353,6 @@ public class User {
 
     public boolean getGodMode() {
         return PlayerRelated.getGodMode(uuid);
-    }
-
-    public String getName() {
-        return playerName;
-    }
-
-    public String getDisplayName() {
-        return playerDisplayName;
     }
 
     public UUID getUUID() {
@@ -482,5 +489,12 @@ public class User {
         setExp(getExp() - amount);
     }
 
+    public String getName() {
+        return playerName;
+    }
+
+    public String getDisplayName() {
+        return playerDisplayName;
+    }
 
 }

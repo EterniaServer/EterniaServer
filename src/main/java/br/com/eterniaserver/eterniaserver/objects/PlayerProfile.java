@@ -3,8 +3,8 @@ package br.com.eterniaserver.eterniaserver.objects;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerProfile {
@@ -12,13 +12,12 @@ public class PlayerProfile {
     private String playerName;
     private String playerDisplayName;
 
-    private List<String> homes;
+    private Set<String> homes;
 
     private final long firstLogin;
     private long lastLogin;
     private long hours;
 
-    private double balance = 0.0;
     private int cash = 0;
     private int xp = 0;
 
@@ -51,9 +50,9 @@ public class PlayerProfile {
         this.onPvP = System.currentTimeMillis();
     }
 
-    public List<String> getHomes() {
+    public Set<String> getHomes() {
         if (homes == null) {
-            homes = new ArrayList<>();
+            homes = new HashSet<>();
         }
         return homes;
     }
@@ -77,10 +76,6 @@ public class PlayerProfile {
 
     public boolean isNickRequest() {
         return nickRequest;
-    }
-
-    public double getBalance() {
-        return balance;
     }
 
     public int getCash() {
@@ -109,10 +104,6 @@ public class PlayerProfile {
 
     public String getTempNick() {
         return tempNick;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 
     public void setCash(int cash) {

@@ -8,7 +8,7 @@ final class ReflectCommand extends Command {
     private final AbstractCommand exe;
 
     protected ReflectCommand(String command, AbstractCommand exe) {
-        super(command);
+        super (command);
         this.exe = exe;
     }
 

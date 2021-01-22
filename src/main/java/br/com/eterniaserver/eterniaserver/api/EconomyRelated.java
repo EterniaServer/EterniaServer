@@ -4,9 +4,7 @@ import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.objects.BalanceTop;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
-import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 
@@ -17,13 +15,9 @@ import org.bukkit.OfflinePlayer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class EconomyRelated {
@@ -32,10 +26,86 @@ public class EconomyRelated {
     private static NumberFormat numberFormat;
     private static UUID baltop;
     private static long baltopTime = 0;
-    private static final List<UUID> baltopList = new ArrayList<>();
+    private static final Map<UUID, Double> economyMap = new HashMap<>();
+    private static final Map<UUID, Double> economyOrdered = new LinkedHashMap<>();
 
     private EconomyRelated() {
         throw new IllegalStateException("Utility class");
+    }
+
+    public static void putInMoney(UUID uuid, double money) {
+        economyMap.put(uuid, money);
+    }
+
+    public static void getIR() {
+        CompletableFuture.runAsync(() -> {
+            int count = 0;
+            double total = 0.0D;
+            UUID uuid = UUIDFetcher.getUUIDOf(EterniaServer.getString(Strings.SERVER_BALANCE_ACCOUNT));
+            final String initQuery = "UPDATE " + EterniaServer.getString(Strings.TABLE_PLAYER) + " SET balance = CASE uuid";
+            StringBuilder result = new StringBuilder();
+            StringBuilder where = new StringBuilder();
+            final String centerQuery = " END WHERE uuid IN (";
+            for (Map.Entry<UUID, Double> entry : economyMap.entrySet()) {
+                if (entry.getKey() == null || entry.getValue() == null) {
+                    continue;
+                }
+                if (count != 100) {
+                    double impost = calculateIR(entry.getValue());
+                    if (impost != 0) {
+                        total += impost;
+                        result.append(" WHEN '");
+                        result.append(entry.getKey().toString());
+                        result.append("' THEN '");
+                        result.append((entry.getValue() - impost));
+                        economyMap.put(entry.getKey(), (entry.getValue() - impost));
+                        result.append("'");
+                        where.append("'");
+                        where.append(entry.getKey().toString());
+                        where.append("',");
+                        ++count;
+                    }
+                } else {
+                    count = 0;
+                    final String query = initQuery + result.toString() + centerQuery + removeLastChars(where.toString()) + ");";
+                    result = new StringBuilder();
+                    where = new StringBuilder();
+                    try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                        preparedStatement.execute();
+                    } catch (SQLException ignored) {
+                    }
+                }
+            }
+            final String query = initQuery + result.toString() + centerQuery + removeLastChars(where.toString()) + ");";
+            try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.execute();
+            } catch (SQLException ignored) { }
+            final Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+            update.set.set("balance", (getMoney(uuid) + total));
+            update.where.set("uuid", uuid.toString());
+            SQL.execute(update);
+            economyMap.put(uuid, getMoney(uuid) + total);
+        });
+    }
+
+    private static String removeLastChars(String str) {
+        return str.substring(0, str.length() - 1);
+    }
+
+    private static double calculateIR(double amount) {
+        if (amount <= 100000.0D) {
+            return 0.0D;
+        } else if (amount <= 500000.0D) {
+            return (amount / 100.0D) * 2D;
+        } else if (amount <= 1500000.0D) {
+            return (amount / 100.0D) * 4D;
+        } else if (amount <= 10000000.0D) {
+            return (amount / 100.0D) * 6D;
+        } else if (amount <= 30000000.0D) {
+            return (amount / 100.0D) * 8D;
+        } else {
+            return (amount / 100.0D) * 9D;
+        }
     }
 
     /**
@@ -125,12 +195,10 @@ public class EconomyRelated {
      */
     public static double getMoney(UUID uuid) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
-            if (PlayerRelated.hasProfile(uuid)) {
-                return PlayerRelated.getProfile(uuid).getBalance();
-            } else {
+            if (!PlayerRelated.hasProfile(uuid)) {
                 PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
-                return EterniaServer.getDouble(Doubles.START_MONEY);
             }
+            return economyMap.get(uuid);
         } else {
             return economy.getBalance(Bukkit.getOfflinePlayer(uuid));
         }
@@ -157,17 +225,14 @@ public class EconomyRelated {
      */
     public static void setMoney(UUID uuid, double amount) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
-            if (PlayerRelated.hasProfile(uuid)) {
-                PlayerRelated.getProfile(uuid).setBalance(amount);
-
-                Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-                update.set.set("balance", amount);
-                update.where.set("uuid", uuid.toString());
-                SQL.executeAsync(update);
-            } else {
+            if (!PlayerRelated.hasProfile(uuid)) {
                 PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
-                setMoney(uuid, amount);
             }
+            economyMap.put(uuid, amount);
+            Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+            update.set.set("balance", amount);
+            update.where.set("uuid", uuid.toString());
+            SQL.executeAsync(update);
         } else {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             economy.withdrawPlayer(offlinePlayer, economy.getBalance(offlinePlayer));
@@ -208,7 +273,7 @@ public class EconomyRelated {
      */
     public static boolean isBalanceTop(UUID uuid) {
         if (baltop == null) {
-            updateBalanceTop(20);
+            updateBalanceTop();
         }
         return baltop.equals(uuid);
     }
@@ -216,34 +281,21 @@ public class EconomyRelated {
     /**
      * Update the baltop list and return And
      * return if the list was updated or not
-     * @param size the size of list
      * @return if the list was updated or not
      */
-    public static CompletableFuture<Boolean> updateBalanceTop(int size) {
+    public static CompletableFuture<Boolean> updateBalanceTop() {
         return CompletableFuture.supplyAsync(() -> {
-            try (Connection connection = SQL.getConnection()) {
-                PreparedStatement statement = connection.prepareStatement(new BalanceTop(EterniaServer.getString(Strings.TABLE_PLAYER), size).queryString());
-                statement.execute();
-                ResultSet resultSet = statement.getResultSet();
-                final List<UUID> tempList = new ArrayList<>();
-                UUID uuid;
-                while (resultSet.next()) {
-                    if (tempList.size() < size) {
-                        uuid = UUID.fromString(resultSet.getString("uuid"));
-                        if (!EterniaServer.getStringList(Lists.BLACKLISTED_BALANCE_TOP).contains(UUIDFetcher.getNameOf(uuid))) {
-                            tempList.add(uuid);
-                        }
-                    }
+            List<Map.Entry<UUID, Double>> list = new ArrayList<>(economyMap.entrySet());
+
+            list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+
+            economyOrdered.clear();
+            baltopTime = System.currentTimeMillis();
+            baltop = list.get(0).getKey();
+            for (Map.Entry<UUID, Double> entry : list) {
+                if (!EterniaServer.getStringList(Lists.BLACKLISTED_BALANCE_TOP).contains(UUIDFetcher.getNameOf(entry.getKey()))) {
+                    economyOrdered.put(entry.getKey(), entry.getValue());
                 }
-                baltopTime = System.currentTimeMillis();
-                baltopList.clear();
-                baltopList.addAll(tempList);
-                baltop = baltopList.get(0);
-                resultSet.close();
-                statement.close();
-            } catch (SQLException ignored) {
-                ServerRelated.logError("Erro ao se conectar com a database", 3);
-                return false;
             }
             return true;
         });
@@ -253,8 +305,8 @@ public class EconomyRelated {
      * Get the baltop list
      * @return the baltop list
      */
-    public static List<UUID> getBalanceTop() {
-        return baltopList;
+    public static Map<UUID, Double> getBalanceTop() {
+        return economyOrdered;
     }
 
     /**

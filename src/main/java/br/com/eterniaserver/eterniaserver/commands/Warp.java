@@ -11,9 +11,10 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Delete;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
-import br.com.eterniaserver.eternialib.sql.queries.Update;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.LocationQuery;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -221,43 +222,31 @@ public class Warp extends BaseCommand {
     }
 
     public void setShop(Location loc, String shop) {
-        final String saveloc = loc.getWorld().getName() +
-                ":" + ((int) loc.getX()) +
-                ":" + ((int) loc.getY()) +
-                ":" + ((int) loc.getZ()) +
-                ":" + ((int) loc.getYaw()) +
-                ":" + ((int) loc.getPitch());
         if (!ServerRelated.getLocation(shop).equals(ServerRelated.getError())) {
-            Update update = new Update(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-            update.set.set("location", saveloc);
-            update.where.set("name", shop);
-            SQL.executeAsync(update);
+            LocationQuery locationQuery = new LocationQuery(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            locationQuery.setLocation(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+            locationQuery.where.set("name", shop);
+            SQL.executeAsync(locationQuery);
         } else {
-            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-            insert.columns.set("name", "location");
-            insert.values.set(shop, saveloc);
+            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            insert.columns.set("name", "world", "coord_x", "coord_y", "coord_z", "coord_yaw", "coord_pitch");
+            insert.values.set(shop, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
             SQL.executeAsync(insert);
         }
         ServerRelated.putLocation(shop, loc);
     }
 
     public void setWarp(Location loc, String warp) {
-        final String saveloc = loc.getWorld().getName() +
-                ":" + ((int) loc.getX()) +
-                ":" + ((int) loc.getY()) +
-                ":" + ((int) loc.getZ()) +
-                ":" + ((int) loc.getYaw()) +
-                ":" + ((int) loc.getPitch());
         final String warpName = "warp." + warp;
         if (!ServerRelated.getLocation(warpName).equals(ServerRelated.getError())) {
-            Update update = new Update(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-            update.set.set("location", saveloc);
-            update.where.set("name", warpName);
-            SQL.executeAsync(update);
+            LocationQuery locationQuery = new LocationQuery(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            locationQuery.setLocation(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+            locationQuery.where.set("name", warpName);
+            SQL.executeAsync(locationQuery);
         } else {
-            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-            insert.columns.set("name", "location");
-            insert.values.set(warpName, saveloc);
+            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            insert.columns.set("name", "world", "coord_x", "coord_y", "coord_z", "coord_yaw", "coord_pitch");
+            insert.values.set(warpName, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
             SQL.executeAsync(insert);
         }
         ServerRelated.putLocation(warpName, loc);

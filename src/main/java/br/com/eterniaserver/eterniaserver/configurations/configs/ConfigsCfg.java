@@ -43,6 +43,7 @@ public class ConfigsCfg extends GenericCfg {
         setBoolean(Booleans.AFK_KICK, file, outFile, "server.afk-kick", true);
         setBoolean(Booleans.INV_DROP, file, outFile, "spawners.drop-in-inventory", true);
         setBoolean(Booleans.PREVENT_ANVIL, file, outFile, "spawners.prevent-anvil", true);
+        setBoolean(Booleans.ITEMS_FUNCTIONS, file, outFile, "server.item-function", true);
 
         setString(Strings.TABLE_KITS, file, outFile, "sql.table-kits", "es_kits");
         setString(Strings.TABLE_PLAYER, file, outFile, "sql.table-player", "es_players");
@@ -50,6 +51,7 @@ public class ConfigsCfg extends GenericCfg {
         setString(Strings.TABLE_LOCATIONS, file, outFile, "sql.table-locations", "es_locations");
         setString(Strings.MONEY_SINGULAR, file, outFile, "money.singular", "Eternia");
         setString(Strings.MONEY_PLURAL, file, outFile, "money.plural", "Eternias");
+        setString(Strings.SERVER_BALANCE_ACCOUNT, file, outFile, "money.balance-account", "yurinogueira");
         setString(Strings.SPAWNERS_COLORS, file, outFile, "spawners.color", "§e");
 
         setInteger(Integers.PLUGIN_TICKS, file, outFile, "server.checks", 1);

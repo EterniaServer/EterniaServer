@@ -56,7 +56,7 @@ public class PluginSchedule extends BukkitRunnable {
             for (String command : lista) {
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
             }
-        }, TimeUnit.SECONDS.toMillis(key)));
+        }, key * 60 * 20L));
     }
 
 }

@@ -27,6 +27,22 @@ public class Constants {
     public static final String COMMANDS_LOCALE_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "commands.yml";
     public static final String CONSTANTS_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "constants.yml";
 
+    public static final String NBT_FUNCTION = "eternia_function";
+
+    public static final String NBT_INT_VALUE = "eternia_int_value";
+    public static final String NBT_WORLD = "eternia_wn";
+    public static final String NBT_LOC_NAME = "eternia_lc";
+    public static final String NBT_COORD_X = "eternia_x";
+    public static final String NBT_COORD_Y = "eternia_y";
+    public static final String NBT_COORD_Z = "eternia_z";
+    public static final String NBT_COORD_YAW = "eternia_yaw";
+    public static final String NBT_COORD_PITCH = "eternia_pitch";
+    public static final String NBT_RUN_COMMAND = "eternia_cmd";
+    public static final String NBT_RUN_IN_CONSOLE = "eternia_rcmd";
+    public static final String NBT_USAGES = "eternia_usages";
+
+    public static final String NEW = "_new";
+
     protected void sendMessage(CommandSender sender, Messages messagesId, String... args) {
         sendMessage(sender, messagesId, true, args);
     }

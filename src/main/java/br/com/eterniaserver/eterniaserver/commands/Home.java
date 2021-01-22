@@ -7,12 +7,15 @@ import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.sql.queries.Delete;
 import br.com.eterniaserver.eternialib.sql.queries.Insert;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
+import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.objects.LocationQuery;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -23,11 +26,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class Home extends BaseCommand {
 
@@ -96,19 +97,20 @@ public class Home extends BaseCommand {
     }
 
     private void showHomes(Player player, Player target) {
-        User user = new User(target);
+        final User user = new User(target);
+        final StringBuilder result = new StringBuilder();
+        final String finalResult;
 
-        StringBuilder accounts = new StringBuilder();
-        List<String> list = user.getHomes();
-        for (int i = 0; i < list.size(); i++) {
-            if (i + 1 == list.size()) {
-                accounts.append(ChatColor.DARK_AQUA).append(list.get(i));
-            } else {
-                accounts.append(ChatColor.DARK_AQUA).append(list.get(i)).append(ChatColor.DARK_GRAY).append(", ");
-            }
+        for (String actualHomeName : user.getHomes()) {
+            result.append(ChatColor.DARK_AQUA).append(actualHomeName).append(ChatColor.DARK_GRAY).append(", ");
+        }
+        finalResult = result.toString();
+        if (finalResult.length() > 2) {
+            EterniaServer.sendMessage(player, Messages.HOME_LIST, finalResult.substring(0, finalResult.length() - 2));
+            return;
         }
 
-        EterniaServer.sendMessage(player, Messages.HOME_LIST, accounts.toString());
+        EterniaServer.sendMessage(player, Messages.HOME_LIST, "");
     }
 
     @CommandAlias("%sethome")
@@ -132,17 +134,23 @@ public class Home extends BaseCommand {
             return;
         }
 
-        ItemStack item = new ItemStack(Material.COMPASS);
-        ItemMeta meta = item.getItemMeta();
-        final Location loc = player.getLocation();
-        final String saveloc = loc.getWorld().getName() + ":" + ((int) loc.getX()) +
-                ":" + ((int) loc.getY()) + ":" + ((int) loc.getZ()) +
-                ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
-        meta.setLore(Collections.singletonList(saveloc));
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&e" + nome.toLowerCase() + "&8]"));
+        final ItemStack item = new ItemStack(Material.COMPASS);
+        final ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(EterniaServer.getMessage(Messages.HOME_ITEM_NAME, false, nome));
         item.setItemMeta(meta);
-        PlayerInventory inventory = player.getInventory();
-        inventory.addItem(item);
+
+        final NBTItem nbtItem = new NBTItem(item);
+        final Location loc = player.getLocation();
+        nbtItem.setInteger(Constants.NBT_FUNCTION, 1);
+        nbtItem.setString(Constants.NBT_WORLD, loc.getWorld().getName());
+        nbtItem.setDouble(Constants.NBT_COORD_X, loc.getX());
+        nbtItem.setDouble(Constants.NBT_COORD_Y, loc.getY());
+        nbtItem.setDouble(Constants.NBT_COORD_Z, loc.getZ());
+        nbtItem.setFloat(Constants.NBT_COORD_YAW, loc.getYaw());
+        nbtItem.setFloat(Constants.NBT_COORD_PITCH, loc.getPitch());
+        nbtItem.setString(Constants.NBT_LOC_NAME, nome.toLowerCase());
+
+        player.getInventory().addItem(nbtItem.getItem());
         user.sendMessage(Messages.HOME_LIMIT_REACHED);
     }
 
@@ -155,83 +163,67 @@ public class Home extends BaseCommand {
     }
 
     public void setHome(Location loc, String home, String jogador) {
-        String homeName = home + "." + jogador;
-        User user = new User(jogador);
+        CompletableFuture.runAsync(() -> {
+            final String homeName = home + "." + jogador;
+            final User user = new User(jogador);
 
-        ServerRelated.putLocation(homeName, loc);
-        boolean t = false;
-        StringBuilder result = new StringBuilder();
-
-        List<String> values = user.getHomes();
-        int size = values.size();
-        for (int i = 0; i < size; i++) {
-            final String value = values.get(i);
-            if (value.equals(home)) {
-                if (i + 1 != size) result.append(value).append(":");
-                else result.append(value);
-                t = true;
-            } else {
-                result.append(value).append(":");
+            if (user.getHomes().contains(home)) {
+                LocationQuery locationQuery = new LocationQuery(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+                locationQuery.setLocation(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                locationQuery.where.set("name", homeName);
+                SQL.execute(locationQuery);
+                return;
             }
-        }
 
-        final String saveloc = loc.getWorld().getName() + ":" + ((int) loc.getX()) + ":" + ((int) loc.getY()) +
-                ":" + ((int) loc.getZ()) + ":" + ((int) loc.getYaw()) + ":" + ((int) loc.getPitch());
-        if (!t) {
-            result.append(home);
-            user.updateHome(home);
+            user.getHomes().add(home);
+            final StringBuilder result = new StringBuilder();
+            for (String actualHomeName : user.getHomes()) {
+                result.append(actualHomeName).append(":");
+            }
+            final String finalResult = result.toString();
 
             Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-            update.set.set("homes", result.toString());
+            update.set.set("homes", finalResult.substring(0, finalResult.length() - 1));
             update.where.set("uuid", user.getUUID().toString());
-            SQL.executeAsync(update);
+            SQL.execute(update);
 
-            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-            insert.columns.set("name", "location");
-            insert.values.set(homeName, saveloc);
-            SQL.executeAsync(insert);
-        } else {
-            Update update = new Update(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-            update.set.set("location", saveloc);
-            update.where.set("name", homeName);
-            SQL.executeAsync(update);
-        }
+            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            insert.columns.set("name", "world", "coord_x", "coord_y", "coord_z", "coord_yaw", "coord_pitch");
+            insert.values.set(homeName, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+            SQL.execute(insert);
+        });
     }
 
     public void delHome(String home, String jogador) {
-        User user = new User(jogador);
-        final String homeName = home + "." + jogador;
-        ServerRelated.removeLocation(homeName);
-        StringBuilder nova = new StringBuilder();
+        CompletableFuture.runAsync(() -> {
+            final User user = new User(jogador);
+            final String homeName = home + "." + jogador;
+            final StringBuilder result = new StringBuilder();
 
-        List<String> values = user.getHomes();
-        int size = values.size();
-        for (int i = 0; i < size; i++) {
-            final String value = values.get(i);
-            if (!value.equals(home)) {
-                if (i + 1 != size) nova.append(value).append(":");
-                else nova.append(value);
+            ServerRelated.removeLocation(homeName);
+            user.getHomes().remove(home);
+            for (String actualHomeName : user.getHomes()) {
+                result.append(actualHomeName).append(":");
             }
-        }
-        user.getHomes().remove(home);
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-        update.set.set("homes", nova.toString());
-        update.where.set("uuid", user.getUUID().toString());
-        SQL.executeAsync(update);
+            final String finalResult = result.toString();
 
-        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
-        delete.where.set("name", homeName);
-        SQL.executeAsync(delete);
+            final Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+            update.set.set("homes", finalResult.substring(0, finalResult.length() - 1));
+            update.where.set("uuid", user.getUUID().toString());
+            SQL.execute(update);
+
+            final Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
+            delete.where.set("name", homeName);
+            SQL.execute(delete);
+        });
     }
 
     public boolean existHome(String home, User user) {
-        List<String> homes = user.getHomes();
-        for (String line : homes) if (line.equals(home)) return true;
-        return false;
+        return user.getHomes().contains(home);
     }
 
     public int canHome(User user) {
-        return user.getHomes() != null ? user.getHomes().size() : 0;
+        return user.getHomes().size();
     }
 
 }

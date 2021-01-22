@@ -20,6 +20,7 @@ public enum Booleans {
     ASYNC_CHECK,
     AFK_KICK,
     INV_DROP,
+    ITEMS_FUNCTIONS,
     PREVENT_ANVIL,
     CLEAR_ENTITIES,
     ENTITY_LIMITER,

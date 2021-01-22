@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 public class Managers {
 
     private final EterniaServer plugin;
+    private String baltopName;
 
     private String channelCommand;
 
@@ -73,6 +74,8 @@ public class Managers {
                     command.name().toLowerCase() + "_aliases", cmdsLocale.getAliases(command)
             );
         }
+
+        this.baltopName = cmdsLocale.getName(Commands.ECO_BALTOP);
     }
 
     private void loadConditions() {
@@ -142,7 +145,7 @@ public class Managers {
 
     private void loadEconomyManager() {
         if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_ECONOMY), "Economy")) {
-            CommandManager.registerCommand(new Economy());
+            CommandManager.registerCommand(new Economy(baltopName));
         }
     }
 
@@ -183,7 +186,7 @@ public class Managers {
             new PluginTick(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20);
             return;
         }
-        new PluginTick(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20);
+        new PluginTick(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20L);
     }
 
     private void loadClearManager() {
@@ -213,11 +216,9 @@ public class Managers {
 
     private void loadScheduleTasks() {
         if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_SCHEDULE), "Schedule")) {
-            long start = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.of(
-                    EterniaServer.getInteger(Integers.SCHEDULE_HOUR),
-                    EterniaServer.getInteger(Integers.SCHEDULE_MINUTE),
-                    EterniaServer.getInteger(Integers.SCHEDULE_SECONDS)));
-            new PluginSchedule(plugin).runTaskTimer(plugin, start, TimeUnit.HOURS.toMillis(EterniaServer.getInteger(Integers.SCHEDULE_DELAY)));
+            new PluginSchedule(plugin).runTaskTimer(plugin,
+                    ChronoUnit.SECONDS.between(LocalTime.now(), LocalTime.of(EterniaServer.getInteger(Integers.SCHEDULE_HOUR), EterniaServer.getInteger(Integers.SCHEDULE_MINUTE), EterniaServer.getInteger(Integers.SCHEDULE_SECONDS))) * 20L,
+                    TimeUnit.HOURS.toSeconds(EterniaServer.getInteger(Integers.SCHEDULE_DELAY)) * 20L);
         }
     }
 

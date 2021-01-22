@@ -140,6 +140,7 @@ public class Chat extends BaseCommand {
     @Syntax("%chat_tell_syntax")
     @Description("%chat_tell_description")
     @CommandPermission("%chat_tell_perm")
+    @CommandCompletion("@players")
     @CommandAlias("%chat_tell_aliases")
     public void onTell(Player player, @Optional OnlinePlayer targets, @Optional String msg) {
         User user = new User(player);
