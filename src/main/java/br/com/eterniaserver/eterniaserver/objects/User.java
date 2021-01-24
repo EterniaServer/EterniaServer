@@ -299,14 +299,14 @@ public class User {
         User user = new User(target);
 
         PlayerRelated.putInTell(user.getUUID(), playerName);
-        player.sendMessage(EterniaServer.getMessage(Messages.CHAT_TELL_TO, false, s, playerName, playerDisplayName, user.getName(), user.getDisplayName()));
-        target.sendMessage(EterniaServer.getMessage(Messages.CHAT_TELL_FROM, false, s, user.getName(), user.getDisplayName(), playerName, playerDisplayName));
+        player.sendMessage(user.getUUID(), EterniaServer.getMessage(Messages.CHAT_TELL_TO, false, s, playerName, playerDisplayName, user.getName(), user.getDisplayName()));
+        target.sendMessage(this.uuid, EterniaServer.getMessage(Messages.CHAT_TELL_FROM, false, s, user.getName(), user.getDisplayName(), playerName, playerDisplayName));
 
         for (UUID uuidTemp : PlayerRelated.getSpyKeySet()) {
             if (PlayerRelated.isSpying(uuidTemp) && !uuidTemp.equals(this.uuid) && !uuidTemp.equals(user.getUUID())) {
                 Player spyPlayer = Bukkit.getPlayer(uuidTemp);
                 if (spyPlayer != null && spyPlayer.isOnline()) {
-                    spyPlayer.sendMessage(ServerRelated.getColor(EterniaServer.getString(Strings.CONS_SPY)
+                    spyPlayer.sendMessage(this.uuid, ServerRelated.getColor(EterniaServer.getString(Strings.CONS_SPY)
                             .replace("{0}", playerName)
                             .replace("{1}", playerDisplayName)
                             .replace("{2}", user.getName())

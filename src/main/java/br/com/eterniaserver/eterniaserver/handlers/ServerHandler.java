@@ -34,6 +34,7 @@ public class ServerHandler implements Listener {
 
     private final ChatFormatter chatFormatter = new ChatFormatter();
     private static final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
+    private static final int tellHashCode = "tell".hashCode();
 
     private String messageMOTD;
     private String message2;
@@ -120,10 +121,11 @@ public class ServerHandler implements Listener {
             return;
         }
 
-        e.setCancelled(getChannel(e, user, e.getMessage()));
+        e.setCancelled(getChannel(e, user));
     }
 
-    private boolean getChannel(AsyncPlayerChatEvent e, User user, String message) {
+    private boolean getChannel(AsyncPlayerChatEvent e, User user) {
+        String message = e.getMessage();
         if (user.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
             message = canHex(message);
         }
@@ -139,7 +141,7 @@ public class ServerHandler implements Listener {
             return false;
         }
 
-        if (user.getChannel() == "tell".hashCode()) {
+        if (user.getChannel() == tellHashCode) {
             sendTell(user, message);
             return true;
         }

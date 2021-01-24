@@ -167,6 +167,8 @@ public class Home extends BaseCommand {
             final String homeName = home + "." + jogador;
             final User user = new User(jogador);
 
+            ServerRelated.putLocation(homeName, loc);
+
             if (user.getHomes().contains(home)) {
                 LocationQuery locationQuery = new LocationQuery(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
                 locationQuery.setLocation(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -212,7 +214,7 @@ public class Home extends BaseCommand {
             update.where.set("uuid", user.getUUID().toString());
             SQL.execute(update);
 
-            final Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
+            final Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
             delete.where.set("name", homeName);
             SQL.execute(delete);
         });

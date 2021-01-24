@@ -256,7 +256,7 @@ public class Warp extends BaseCommand {
         final String warpName = "warp." + warp;
         ServerRelated.removeLocation(warpName);
 
-        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
+        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
         delete.where.set("name", warpName);
         SQL.executeAsync(delete);
     }
@@ -264,7 +264,7 @@ public class Warp extends BaseCommand {
     public void delShop(String shop) {
         ServerRelated.removeLocation(shop);
 
-        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS));
+        Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
         delete.where.set("name", shop);
         SQL.executeAsync(delete);
     }

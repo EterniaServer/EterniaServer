@@ -81,13 +81,6 @@ public class Economy extends BaseCommand {
         target.sendMessage(Messages.ECO_REMOVED, String.valueOf(money), user.getName(), user.getDisplayName());
     }
 
-    @CommandAlias("%eco_run_ir")
-    @CommandPermission("%eco_run_ir_perm")
-    @Description("%eco_run_ir_description")
-    public void runIr(CommandSender sender) {
-        EconomyRelated.getIR();
-    }
-
     @CommandCompletion("@players 100")
     @Syntax("%eco_give_syntax")
     @Subcommand("%eco_give")

@@ -47,7 +47,9 @@ public class ChatFormatter {
 
 		if (!channelObject.isHasRange()) {
 			for (Player player : players) {
-				sendMessage(player, baseComponents, channelObject.getPerm());
+				if (player.hasPermission(channelObject.getPerm())) {
+					player.spigot().sendMessage(user.getUUID(), baseComponents);
+				}
 			}
 			players.clear();
 			return;
@@ -57,9 +59,9 @@ public class ChatFormatter {
 		for (Player p : players) {
 			if ((user.getPlayer().getWorld() == p.getWorld() && p.getLocation().distanceSquared(user.getPlayer().getLocation()) <= Math.pow(channelObject.getRange(), 2)) || channelObject.getRange() <= 0) {
 				pes += 1;
-				p.spigot().sendMessage(baseComponents);
+				p.spigot().sendMessage(user.getUUID(), baseComponents);
 			} else if (p.hasPermission(EterniaServer.getString(Strings.PERM_SPY)) && PlayerRelated.isSpying(UUIDFetcher.getUUIDOf(p.getName()))) {
-				p.sendMessage(ServerRelated.getColor(EterniaServer.getString(Strings.CONS_SPY_LOCAL)
+				p.sendMessage(user.getUUID(), ServerRelated.getColor(EterniaServer.getString(Strings.CONS_SPY_LOCAL)
 						.replace("{0}", user.getName())
 						.replace("{1}", user.getDisplayName())
 						.replace("{2}", message)));
@@ -69,12 +71,6 @@ public class ChatFormatter {
 			user.sendMessage(Messages.CHAT_NO_ONE_NEAR);
 		}
 		players.clear();
-	}
-
-	private void sendMessage(Player player, BaseComponent[] baseComponents, String perm) {
-		if (player.hasPermission(perm)) {
-			player.spigot().sendMessage(baseComponents);
-		}
 	}
 
 	private BaseComponent[] customPlaceholder(Player player, String format, String channelColor, String message) {

@@ -24,7 +24,6 @@ public enum Commands {
     ECO_MONEY,
     ECO_PAY,
     ECO_BALTOP,
-    ECO_RUN_IR,
     XP,
     XP_SET,
     XP_TAKE,
