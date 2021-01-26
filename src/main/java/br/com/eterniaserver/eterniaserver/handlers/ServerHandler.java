@@ -27,13 +27,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ServerHandler implements Listener {
 
     private final ChatFormatter chatFormatter = new ChatFormatter();
-    private static final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
     private static final int tellHashCode = "tell".hashCode();
 
     private String messageMOTD;
@@ -45,8 +42,8 @@ public class ServerHandler implements Listener {
         message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.getMessage(Messages.SERVER_MOTD_2, false));
 
         if (ServerRelated.getVersion() >= 116) {
-            messageMOTD = canHex(messageMOTD);
-            message2 = canHex(message2);
+            messageMOTD = ServerRelated.translateHex(messageMOTD);
+            message2 = ServerRelated.translateHex(message2);
         }
 
     }
@@ -126,10 +123,6 @@ public class ServerHandler implements Listener {
 
     private boolean getChannel(AsyncPlayerChatEvent e, User user) {
         String message = e.getMessage();
-        if (user.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
-            message = canHex(message);
-        }
-
         if (!user.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_BYPASS_PROTECTION))) {
             message = EterniaServer.getFilter().matcher(message).replaceAll("");
         }
@@ -164,27 +157,6 @@ public class ServerHandler implements Listener {
         }
 
         user.sendPrivate(target, msg);
-    }
-
-    private String canHex(String message) {
-        if (ServerRelated.getVersion() < 116) {
-            return message;
-        }
-
-        Matcher matcher = colorPattern.matcher(message);
-
-        if (!matcher.find()) {
-            return message;
-        }
-
-        StringBuffer buffer = new StringBuffer();
-
-        do {
-            matcher.appendReplacement(buffer, "" + ChatColor.of(matcher.group(1)));
-        } while (matcher.find());
-        matcher.appendTail(buffer);
-
-        return buffer.toString();
     }
 
 }

@@ -80,7 +80,7 @@ public class Chat extends BaseCommand {
     @CommandPermission("%chat_broadcast_perm")
     @CommandAlias("%chat_broadcast_aliases")
     public void onBroadcast(String message) {
-        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST, true, ServerRelated.getColor(message)));
+        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST, true, ServerRelated.translateHex(ServerRelated.getColor(message))));
     }
 
     @Subcommand("%chat_vanish")

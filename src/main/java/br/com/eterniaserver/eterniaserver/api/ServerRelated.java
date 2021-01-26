@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,7 +22,9 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 
 public class ServerRelated {
-    
+
+    private static final Pattern colorPattern = Pattern.compile("(?<!\\\\)(#([a-fA-F0-9]{6}))");
+
     private static int version = 0;
 
     private static Location error;
@@ -287,6 +291,23 @@ public class ServerRelated {
             else version = 113;
         }
         return version;
+    }
+
+    public static String translateHex(final String message) {
+        if (ServerRelated.getVersion() < 116) {
+            return message;
+        }
+
+        Matcher matcher = colorPattern.matcher(message);
+
+        StringBuffer buffer = new StringBuffer();
+
+        while(matcher.find()) {
+            matcher.appendReplacement(buffer, ChatColor.of(matcher.group(1)).toString());
+        }
+
+        return matcher.appendTail(buffer).toString().replace('&', (char) 0x00A7);
+
     }
 
     /**

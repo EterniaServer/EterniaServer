@@ -10,6 +10,7 @@ import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.objects.User;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -17,7 +18,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;
@@ -29,9 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChatFormatter {
+
+	//todo adicionar suporte a hex color
 
 	public void filter(User user, String message, ChannelObject channelObject, Set<Player> players) {
 		if (channelObject == null) {
@@ -74,9 +75,7 @@ public class ChatFormatter {
 	}
 
 	private BaseComponent[] customPlaceholder(Player player, String format, String channelColor, String message) {
-		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
-			message = message.replace('&', (char) 0x00A7);
-		}
+
 		Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
 		EterniaServer.getCustomPlaceholders().forEach((placeholder, object) -> {
 			if (format.contains("{" + placeholder + "}") && player.hasPermission(object.getPermission())) {
@@ -85,32 +84,45 @@ public class ChatFormatter {
 		});
 
 		String[] messageSplited = message.split(" ");
-		messageSplited[0] = channelColor + messageSplited[0];
 
-		for (int i = 0; i < messageSplited.length; i++) {
-			if (i > 0) {
-				messageSplited[i] = ChatColor.getLastColors(messageSplited[i - 1]) + messageSplited[i];
-			}
-		}
-
-		BaseComponent[] baseComponents = new BaseComponent[textComponentMap.size() + messageSplited.length];
-
-		AtomicInteger integer = new AtomicInteger(0);
-		textComponentMap.forEach((id, component) -> baseComponents[integer.getAndIncrement()] = component);
+		StringBuilder stringBuilder = new StringBuilder(channelColor);
+	 	final List<TextComponent> textComponentList = new ArrayList<>();
 
 		for (String actualMsg : messageSplited) {
-			baseComponents[integer.getAndIncrement()] = getComponent(actualMsg, channelColor, player);
+			final TextComponent textComponent = getComponent(actualMsg, player);
+			if (textComponent != null) {
+				textComponentList.add(getText(stringBuilder.toString(), player));
+				stringBuilder = new StringBuilder(channelColor);
+				textComponentList.add(getComponent(actualMsg, player));
+			} else {
+				stringBuilder.append(actualMsg).append(" ");
+			}
+
+		}
+
+		if (!stringBuilder.isEmpty()) {
+			textComponentList.add(getText(stringBuilder.toString(), player));
+		}
+
+		BaseComponent[] baseComponents = new BaseComponent[textComponentMap.size() + textComponentList.size()];
+		int i = 0;
+		for (TextComponent textComponent : textComponentMap.values()) {
+			baseComponents[i++] = textComponent;
+		}
+
+		for (TextComponent textComponent : textComponentList) {
+			baseComponents[i++] = textComponent;
 		}
 
 		return baseComponents;
 	}
 
-	private TextComponent getComponent(String actualMsg, String channelColor, Player player) {
+	private TextComponent getComponent(String actualMsg, Player player) {
 		String msg = ChatColor.stripColor(actualMsg);
 
 		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_MENTION)) && msg.contains(EterniaServer.getString(Strings.MENTION_PLACEHOLDER)) && PlayerRelated.hasNameOnline(msg)) {
 			Player target = Bukkit.getPlayer(PlayerRelated.getUUIDFromMention(msg));
-			msg = "§3" + msg + channelColor;
+			msg = "§3" + msg;
 			if (target != null && target.isOnline()) {
 				target.playNote(target.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
 				target.sendTitle(EterniaServer.getString(Strings.CONS_MENTION_TITLE).replace("{0}", player.getName()).replace("{1}", player.getDisplayName()),
@@ -126,18 +138,23 @@ public class ChatFormatter {
 			}
 		}
 
+		return null;
+	}
+
+	private TextComponent getText(String message, Player player) {
 		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR))) {
-			return new TextComponent(channelColor + actualMsg + " ");
+			message = ServerRelated.translateHex(message);
 		}
 
-		return new TextComponent(channelColor + msg + " ");
+		return new TextComponent(message);
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
 		if (ServerRelated.getVersion() >= 116) {
-			HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
+			final HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack));
+			final String itemName =  itemStack.getI18NDisplayName() == null ? itemStack.getType().toString() : itemStack.getI18NDisplayName();
 			TextComponent component = new TextComponent(string.replace(EterniaServer.getString(Strings.SHOW_ITEM_PLACEHOLDER),
-					EterniaServer.getString(Strings.CONS_SHOW_ITEM).replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemStack.getI18NDisplayName())));
+					EterniaServer.getString(Strings.CONS_SHOW_ITEM).replace("{0}", String.valueOf(itemStack.getAmount())).replace("{1}", itemName)));
 			component.setHoverEvent(event);
 			return component;
 		}
