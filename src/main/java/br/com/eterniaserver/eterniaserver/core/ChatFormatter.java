@@ -146,7 +146,7 @@ public class ChatFormatter {
 			message = ServerRelated.translateHex(message);
 		}
 
-		return new TextComponent(message);
+		return (TextComponent) TextComponent.fromLegacyText(message)[0];
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
