@@ -78,19 +78,25 @@ public class ChatCfg extends GenericCfg {
 
         EterniaServer.setFilter(Pattern.compile(filter));
 
-        customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.default", "%vault_prefix%", "", "", 3));
-        customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.default", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4));
-        customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.default", " &8➤ ", "", "", 6));
-        customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholder("eternia.chat.default", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2));
-        customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.default", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1));
-        customPlaceholdersObjectsMap.put("global", new CustomPlaceholder("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0));
-        customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.default", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5));
+        customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.default", "%vault_prefix%", "", "", 3, false));
+        customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.default", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4, false));
+        customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.default", " &8➤ ", "", "", 6, true));
+        customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholder("eternia.chat.default", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2, false));
+        customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.default", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1, false));
+        customPlaceholdersObjectsMap.put("global", new CustomPlaceholder("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0, true));
+        customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.default", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5, false));
 
         Map<String, CustomPlaceholder> tempCustomPlaceholdersMap = new HashMap<>();
         ConfigurationSection configurationSection = chatConfig.getConfigurationSection("placeholders");
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
-                tempCustomPlaceholdersMap.put(key, new CustomPlaceholder(chatConfig.getString("placeholders." + key + ".perm"), chatConfig.getString("placeholders." + key + ".value"), chatConfig.getString("placeholders." + key + ".hover-text"), chatConfig.getString("placeholders." + key + ".suggest-command"), chatConfig.getInt("placeholders." + key + ".priority")));
+                tempCustomPlaceholdersMap.put(key, new CustomPlaceholder(
+                        chatConfig.getString("placeholders." + key + ".perm", "eternia.default"),
+                        chatConfig.getString("placeholders." + key + ".value", "default"),
+                        chatConfig.getString("placeholders." + key + ".hover-text", "default"),
+                        chatConfig.getString("placeholders." + key + ".suggest-command", "default"),
+                        chatConfig.getInt("placeholders." + key + ".priority", 0),
+                        chatConfig.getBoolean("placeholders." + key + ".static", false)));
             }
         }
 
@@ -107,6 +113,7 @@ public class ChatCfg extends GenericCfg {
             outChat.set("placeholders." + k + ".hover-text", v.getHoverText());
             outChat.set("placeholders." + k + ".suggest-command", v.getSuggestCmd());
             outChat.set("placeholders." + k + ".priority", v.getPriority());
+            outChat.set("placeholders." + k + ".static", v.getIsStatic());
         });
 
         saveFile(outChat, Constants.CHAT_FILE_PATH);

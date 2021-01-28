@@ -11,11 +11,8 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.enums.*;
 import br.com.eterniaserver.eterniaserver.objects.User;
-import br.com.eterniaserver.eterniaserver.enums.Booleans;
-import br.com.eterniaserver.eterniaserver.enums.Doubles;
-import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CommandToRun;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
@@ -125,6 +122,11 @@ public class Teleport extends BaseCommand {
 
         if (user.isTeleporting()) {
             user.sendMessage(Messages.SERVER_IN_TELEPORT);
+            return;
+        }
+
+        if (EterniaServer.getStringList(Lists.BLACKLISTED_WORLDS_BACK).contains(user.getBackLocation().getWorld().getName())) {
+            user.sendMessage(Messages.TELEPORT_BACK_WORLD_BLOCKED);
             return;
         }
 

@@ -123,6 +123,7 @@ public class MsgCfg {
         this.addDefault(Messages.TELEPORT_BACK_NOT_TP, "Você ainda não se teleportou para usar esse comando$8.", null);
         this.addDefault(Messages.TELEPORT_BACK_WITH_COST, "Você foi teleportado até o seu local anterior por $3{0}$8.", "0: custo do back");
         this.addDefault(Messages.TELEPORT_BACK_WITHOUT_COST, "Você foi teleportado até o seu local anterior de graça$8.", null);
+        this.addDefault(Messages.TELEPORT_BACK_WORLD_BLOCKED, "Você não pode utilizar o $6/back $7para esse mundo$8.", null);
         this.addDefault(Messages.REWARD_INVALID_KEY, "$3{0}$7 não é uma chave válida$8.", "0: chave");
         this.addDefault(Messages.REWARD_CREATED, "Reward criado com sucesso chave $3{0}$8.", "0: chave");
         this.addDefault(Messages.REWARD_NOT_FOUND, "Não foi encontrado nenhum reward com o nome de $3{0}$8.", "0: reward");
@@ -162,6 +163,7 @@ public class MsgCfg {
         this.addDefault(Messages.HOME_GOING, "Você foi até a sua home $3{0}$8.", "0: nome da home");
         this.addDefault(Messages.HOME_LIST, "Suas homes$8: $3{0}$8.", "0: lista de homes");
         this.addDefault(Messages.HOME_ITEM_NAME, "$8[$e{0}$8]", "0: nome da home");
+        this.addDefault(Messages.HOME_NO_PERM_TO_COMPASS, "Você excedeu o limite de homes e não tem permissão para salvar em bussulas$8.", null);
         this.addDefault(Messages.ITEM_NOT_FOUND, "Nenhum item foi encontrado em sua mão$8.", null);
         this.addDefault(Messages.ITEM_NBT_ADDKEY, "Foi adicionado a chave $3{0}$7 com valor $3{1}$7 ao item$8.", "0: chave; 1: valor");
         this.addDefault(Messages.ITEM_NBT_DEFINE_COMMAND, "Você definiu o comando para o item executar$8, $7lembre de definir se deve ser executado pelo console ou não$8.", null);

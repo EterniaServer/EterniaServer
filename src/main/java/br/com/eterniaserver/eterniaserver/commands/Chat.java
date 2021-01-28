@@ -178,9 +178,14 @@ public class Chat extends BaseCommand {
     @CommandPermission("%nick_perm")
     public void onNick(Player player, String newName, @Optional OnlinePlayer targets) {
         User user = new User(player);
-        final String nick = ServerRelated.getColor(newName);
+        final String nick = ServerRelated.translateHex(newName);
         
         if (targets == null) {
+            if (EconomyRelated.hasMoney(user.getUUID(), EterniaServer.getDouble(Doubles.NICK_COST))) {
+                user.sendMessage(Messages.ECO_NO_MONEY, String.valueOf(EterniaServer.getDouble(Doubles.NICK_COST)));
+                return;
+            }
+
             user.sendMessage(Messages.COMMAND_COST, String.valueOf(EterniaServer.getDouble(Doubles.NICK_COST)));
             ServerRelated.putCommandToRun(user.getUUID(), new CommandToRun(() -> {
                 user.changeNick(nick);

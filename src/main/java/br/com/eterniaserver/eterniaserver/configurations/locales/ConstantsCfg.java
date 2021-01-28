@@ -56,6 +56,7 @@ public class ConstantsCfg extends GenericCfg {
         setString(Strings.PERM_FLY_OTHER, file, outFile, "perm.fly-other", "eternia.fly.others");
         setString(Strings.PERM_MONEY_OTHER, file, outFile, "perm.money-other", "eternia.money.admin");
         setString(Strings.PERM_CHAT_BYPASS_PROTECTION, file, outFile, "perm.chat-bypass-protection", "eternia.chat.bypass");
+        setString(Strings.PERM_HOME_COMPASS, file, outFile, "perm.sethome-compass", "eternia.sethome.compass");
         setString(Strings.AFK_PLACEHOLDER, file, outFile, "placeholders.afk", "$9 AFK");
         setString(Strings.GOD_PLACEHOLDER, file, outFile, "placeholders.godmode", "$9 GOD");
         setString(Strings.SHOW_ITEM_PLACEHOLDER, file, outFile, "placeholders.show-item", "[item]");

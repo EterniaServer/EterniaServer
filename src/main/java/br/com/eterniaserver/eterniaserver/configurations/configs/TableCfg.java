@@ -63,7 +63,17 @@ public class TableCfg {
 
         SQL.execute(createTable);
 
+        convertingDisplayNameSize();
         convertingOldTable(EterniaServer.getString(Strings.TABLE_LOCATIONS));
+    }
+
+    private void convertingDisplayNameSize() {
+        try (Connection connection = SQL.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("ALTER TABLE '" + EterniaServer.getString(Strings.TABLE_PLAYER) + "'" +
+                    " MODIFY COLUMN 'player_display' VARCHAR(256);");
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException exception) { }
     }
 
     private void convertingOldTable(final String oldTable) {

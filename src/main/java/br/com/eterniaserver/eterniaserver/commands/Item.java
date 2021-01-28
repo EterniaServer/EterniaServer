@@ -41,11 +41,7 @@ public class Item extends BaseCommand {
         try {
             final NBTItem nbtItem = new NBTItem(new ItemStack(Material.valueOf(item)));
             nbtItem.setInteger(Constants.NBT_FUNCTION, 2);
-            if (console == 0) {
-                nbtItem.setBoolean(Constants.NBT_RUN_IN_CONSOLE, false);
-            } else {
-                nbtItem.setBoolean(Constants.NBT_RUN_IN_CONSOLE, true);
-            }
+            nbtItem.setBoolean(Constants.NBT_RUN_IN_CONSOLE, console != 0);
             nbtItem.setInteger(Constants.NBT_USAGES, usages);
             final String[] stringList = lines.split("\\|");
             for (final String line : stringList) {

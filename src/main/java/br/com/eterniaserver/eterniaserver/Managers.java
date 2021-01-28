@@ -159,13 +159,14 @@ public class Managers {
     }
 
     private void loadGenericManager() {
-        sendModuleStatus(true, "Generic");
-        CommandManager.registerCommand(new Intern(plugin));
-        CommandManager.registerCommand(new Inventory());
-        CommandManager.registerCommand(new Generic(plugin));
-        CommandManager.registerCommand(new Gamemode());
-        CommandManager.registerCommand(new Glow(plugin));
-        CommandManager.registerCommand(new Item());
+        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_GENERIC), "Generic")) {
+            CommandManager.registerCommand(new Intern(plugin));
+            CommandManager.registerCommand(new Inventory());
+            CommandManager.registerCommand(new Generic(plugin));
+            CommandManager.registerCommand(new Gamemode());
+            CommandManager.registerCommand(new Glow(plugin));
+            CommandManager.registerCommand(new Item());
+        }
     }
 
     private void loadHomesManager() {

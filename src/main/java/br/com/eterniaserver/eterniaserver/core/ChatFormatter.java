@@ -11,10 +11,7 @@ import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.objects.User;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.hover.content.Text;
 
 import org.bukkit.Bukkit;
@@ -24,15 +21,11 @@ import org.bukkit.Note;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ChatFormatter {
 
-	//todo adicionar suporte a hex color
+	private static final Map<String, TextComponent> staticComponents = new HashMap<>();
 
 	public void filter(User user, String message, ChannelObject channelObject, Set<Player> players) {
 		if (channelObject == null) {
@@ -110,7 +103,7 @@ public class ChatFormatter {
 			baseComponents[i++] = textComponent;
 		}
 
-		for (TextComponent textComponent : textComponentList) {
+		for (BaseComponent textComponent : textComponentList) {
 			baseComponents[i++] = textComponent;
 		}
 
@@ -146,7 +139,7 @@ public class ChatFormatter {
 			message = ServerRelated.translateHex(message);
 		}
 
-		return (TextComponent) TextComponent.fromLegacyText(message)[0];
+		return new TextComponent(TextComponent.fromLegacyText(message));
 	}
 
 	private	TextComponent sendItemInHand(String string, ItemStack itemStack) {
@@ -162,15 +155,36 @@ public class ChatFormatter {
 	}
 
 	private TextComponent getText(Player player, CustomPlaceholder objects) {
-		TextComponent textComponent = new TextComponent(ServerRelated.getColor(ServerRelated.setPlaceholders(player, objects.getValue())));
+		if (objects.getIsStatic()) {
+			TextComponent textComponent = staticComponents.get(objects.getValue());
+			if (textComponent == null) {
+				textComponent = loadComponent(player, objects);
+				staticComponents.put(objects.getValue(), textComponent);
+				return textComponent;
+			}
+
+			return textComponent;
+		}
+
+		return loadComponent(player, objects);
+	}
+
+	private TextComponent loadComponent(Player player, CustomPlaceholder objects) {
+		ComponentBuilder componentBuilder = new ComponentBuilder();
+		for (BaseComponent baseC : TextComponent.fromLegacyText(ServerRelated.setPlaceholders(player, objects.getValue()))) {
+			componentBuilder.append(baseC);
+		}
+
+		TextComponent textComponent = new TextComponent(componentBuilder.create());
+
 		if (!objects.getHoverText().equals("")) {
 			List<TextComponent> textComponentList = new ArrayList<>();
-			textComponentList.add(new TextComponent(ServerRelated.getColor(ServerRelated.setPlaceholders(player, objects.getHoverText()))));
+			textComponentList.add(new TextComponent(ServerRelated.setPlaceholders(player, objects.getHoverText())));
 			textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(textComponentList.toArray(new TextComponent[textComponentList.size() - 1]))));
 		}
 
 		if (!objects.getSuggestCmd().equals("")) {
-			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, ServerRelated.getColor(ServerRelated.setPlaceholders(player, objects.getSuggestCmd()))));
+			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, ServerRelated.setPlaceholders(player, objects.getSuggestCmd())));
 		}
 		return textComponent;
 	}

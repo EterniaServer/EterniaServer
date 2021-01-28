@@ -35,6 +35,7 @@ public class ConfigsCfg extends GenericCfg {
         setBoolean(Booleans.MODULE_EXPERIENCE, file, outFile, "module.experience", true);
         setBoolean(Booleans.MODULE_HOMES, file, outFile, "module.home", true);
         setBoolean(Booleans.MODULE_KITS, file, outFile, "module.kits", true);
+        setBoolean(Booleans.MODULE_GENERIC, file, outFile, "module.generic", true);
         setBoolean(Booleans.MODULE_SPAWNERS, file, outFile, "module.spawners", true);
         setBoolean(Booleans.MODULE_TELEPORTS, file, outFile, "module.teleports", true);
         setBoolean(Booleans.MODULE_REWARDS, file, outFile, "module.rewards", true);
@@ -73,6 +74,7 @@ public class ConfigsCfg extends GenericCfg {
         setList(Lists.BLACKLISTED_WORLDS_SLEEP, file, outFile, "bed.blacklisted-worlds", "world_evento");
         setList(Lists.BLACKLISTED_COMMANDS, file, outFile, "blocked-commands", "/op", "/deop", "/stop");
         setList(Lists.BLACKLISTED_WORLDS_SPAWNERS, file, outFile, "spawners.blacklisted-worlds", "world_evento");
+        setList(Lists.BLACKLISTED_WORLDS_BACK, file, outFile, "back.blacklisted-worlds", "world_evento", "world_pvp");
         setList(Lists.PROFILE_CUSTOM_MESSAGES, file, outFile, "profile.custom-messages");
 
         setMaterials(elevatorMaterials, file, outFile, "IRON_BLOCK");

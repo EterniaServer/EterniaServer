@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.configurations.configs.ChatCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.EntityCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ConfigsCfg;
+import br.com.eterniaserver.eterniaserver.configurations.dependencies.MetricsLite;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.KitsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
@@ -74,6 +75,8 @@ public class EterniaServer extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        new MetricsLite(this, 10160);
         
         for (int i = 0; i < Lists.values().length; i++) {
             stringLists.add(new ArrayList<>());

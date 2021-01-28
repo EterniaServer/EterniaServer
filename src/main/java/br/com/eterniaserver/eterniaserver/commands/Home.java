@@ -28,8 +28,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.concurrent.CompletableFuture;
-
 public class Home extends BaseCommand {
 
     @CommandAlias("%delhome")
@@ -134,6 +132,11 @@ public class Home extends BaseCommand {
             return;
         }
 
+        if (!user.hasPermission(EterniaServer.getString(Strings.PERM_HOME_COMPASS))) {
+            user.sendMessage(Messages.HOME_NO_PERM_TO_COMPASS);
+            return;
+        }
+
         final ItemStack item = new ItemStack(Material.COMPASS);
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(EterniaServer.getMessage(Messages.HOME_ITEM_NAME, false, nome));
@@ -163,61 +166,57 @@ public class Home extends BaseCommand {
     }
 
     public void setHome(Location loc, String home, String jogador) {
-        CompletableFuture.runAsync(() -> {
-            final String homeName = home + "." + jogador;
-            final User user = new User(jogador);
+        final String homeName = home + "." + jogador;
+        final User user = new User(jogador);
 
-            ServerRelated.putLocation(homeName, loc);
+        ServerRelated.putLocation(homeName, loc);
 
-            if (user.getHomes().contains(home)) {
-                LocationQuery locationQuery = new LocationQuery(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
-                locationQuery.setLocation(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-                locationQuery.where.set("name", homeName);
-                SQL.execute(locationQuery);
-                return;
-            }
+        if (user.getHomes().contains(home)) {
+            LocationQuery locationQuery = new LocationQuery(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            locationQuery.setLocation(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+            locationQuery.where.set("name", homeName);
+            SQL.execute(locationQuery);
+            return;
+        }
 
-            user.getHomes().add(home);
-            final StringBuilder result = new StringBuilder();
-            for (String actualHomeName : user.getHomes()) {
-                result.append(actualHomeName).append(":");
-            }
-            final String finalResult = result.toString();
+        user.getHomes().add(home);
+        final StringBuilder result = new StringBuilder();
+        for (String actualHomeName : user.getHomes()) {
+            result.append(actualHomeName).append(":");
+        }
+        final String finalResult = result.toString();
 
-            Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-            update.set.set("homes", finalResult.substring(0, finalResult.length() - 1));
-            update.where.set("uuid", user.getUUID().toString());
-            SQL.execute(update);
+        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+        update.set.set("homes", finalResult.substring(0, finalResult.length() - 1));
+        update.where.set("uuid", user.getUUID().toString());
+        SQL.executeAsync(update);
 
-            Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
-            insert.columns.set("name", "world", "coord_x", "coord_y", "coord_z", "coord_yaw", "coord_pitch");
-            insert.values.set(homeName, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-            SQL.execute(insert);
-        });
+        Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+        insert.columns.set("name", "world", "coord_x", "coord_y", "coord_z", "coord_yaw", "coord_pitch");
+        insert.values.set(homeName, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        SQL.executeAsync(insert);
     }
 
     public void delHome(String home, String jogador) {
-        CompletableFuture.runAsync(() -> {
-            final User user = new User(jogador);
-            final String homeName = home + "." + jogador;
-            final StringBuilder result = new StringBuilder();
+        final User user = new User(jogador);
+        final String homeName = home + "." + jogador;
+        final StringBuilder result = new StringBuilder();
 
-            ServerRelated.removeLocation(homeName);
-            user.getHomes().remove(home);
-            for (String actualHomeName : user.getHomes()) {
-                result.append(actualHomeName).append(":");
-            }
-            final String finalResult = result.toString();
+        ServerRelated.removeLocation(homeName);
+        user.getHomes().remove(home);
+        for (String actualHomeName : user.getHomes()) {
+            result.append(actualHomeName).append(":");
+        }
+        final String finalResult = result.toString();
 
-            final Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-            update.set.set("homes", finalResult.substring(0, finalResult.length() - 1));
-            update.where.set("uuid", user.getUUID().toString());
-            SQL.execute(update);
+        final Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+        update.set.set("homes", finalResult.substring(0, finalResult.length() - 1));
+        update.where.set("uuid", user.getUUID().toString());
+        SQL.executeAsync(update);
 
-            final Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
-            delete.where.set("name", homeName);
-            SQL.execute(delete);
-        });
+        final Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+        delete.where.set("name", homeName);
+        SQL.executeAsync(delete);
     }
 
     public boolean existHome(String home, User user) {

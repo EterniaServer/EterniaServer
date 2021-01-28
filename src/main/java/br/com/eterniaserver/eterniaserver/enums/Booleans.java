@@ -17,6 +17,7 @@ public enum Booleans {
     MODULE_TELEPORTS,
     MODULE_REWARDS,
     MODULE_SCHEDULE,
+    MODULE_GENERIC,
     ASYNC_CHECK,
     AFK_KICK,
     INV_DROP,

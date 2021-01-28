@@ -102,6 +102,10 @@ public class PluginTick extends BukkitRunnable {
     }
 
     private void checkAFK(User user) {
+        if (!EterniaServer.getBoolean(Booleans.MODULE_GENERIC)) {
+            return;
+        }
+
         if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - user.getAfkTime()) < EterniaServer.getInteger(Integers.AFK_TIMER)) return;
 
         if (!EterniaServer.getBoolean(Booleans.AFK_KICK)) {

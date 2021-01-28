@@ -242,9 +242,7 @@ public class User {
     }
 
     public void updateHome(String home) {
-        if (!playerProfile.getHomes().contains(home)) {
-            playerProfile.getHomes().add(home);
-        }
+        playerProfile.getHomes().add(home);
     }
 
     public void putGlowing(String nameColor) {
