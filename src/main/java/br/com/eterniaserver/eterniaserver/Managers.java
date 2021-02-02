@@ -5,8 +5,8 @@ import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.commands.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
+import br.com.eterniaserver.eterniaserver.core.EterniaTick;
 import br.com.eterniaserver.eterniaserver.core.PluginClearSchedule;
-import br.com.eterniaserver.eterniaserver.core.PluginTick;
 import br.com.eterniaserver.eterniaserver.core.PluginSchedule;
 import br.com.eterniaserver.eterniaserver.core.CheckWorld;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
@@ -50,7 +50,7 @@ public class Managers {
         loadElevatorManager();
         loadExperienceManager();
         loadHomesManager();
-        loadPlayerChecks();
+        loadEterniaTick();
         loadClearManager();
         loadKitManager();
         loadRewardsManager();
@@ -181,13 +181,8 @@ public class Managers {
         }
     }
 
-    private void loadPlayerChecks() {
-        sendModuleStatus(true, "PlayerChecks");
-        if (EterniaServer.getBoolean(Booleans.ASYNC_CHECK)) {
-            new PluginTick(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20);
-            return;
-        }
-        new PluginTick(plugin).runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20L);
+    private void loadEterniaTick() {
+        new EterniaTick().runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20L);
     }
 
     private void loadClearManager() {

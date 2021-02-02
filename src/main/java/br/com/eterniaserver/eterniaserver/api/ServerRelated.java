@@ -57,6 +57,10 @@ public class ServerRelated {
         return commandsToRun.get(uuid);
     }
 
+    public static boolean hasCommandToRun(final UUID uuid) {
+        return commandsToRun.containsKey(uuid);
+    }
+
     /**
      * Put a Command to be check and ask to user
      * @param uuid of user

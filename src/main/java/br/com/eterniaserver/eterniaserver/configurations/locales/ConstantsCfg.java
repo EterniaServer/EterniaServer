@@ -60,7 +60,6 @@ public class ConstantsCfg extends GenericCfg {
         setString(Strings.AFK_PLACEHOLDER, file, outFile, "placeholders.afk", "$9 AFK");
         setString(Strings.GOD_PLACEHOLDER, file, outFile, "placeholders.godmode", "$9 GOD");
         setString(Strings.SHOW_ITEM_PLACEHOLDER, file, outFile, "placeholders.show-item", "[item]");
-        setString(Strings.MENTION_PLACEHOLDER, file, outFile, "placeholders.mention", "@");
         setString(Strings.CONS_ADVENTURE, file, outFile, "generics.gm.adventure", "aventura");
         setString(Strings.CONS_CREATIVE, file, outFile, "generics.gm.creative", "criativo");
         setString(Strings.CONS_SPECTATOR, file, outFile, "generics.gm.spectator", "espectador");

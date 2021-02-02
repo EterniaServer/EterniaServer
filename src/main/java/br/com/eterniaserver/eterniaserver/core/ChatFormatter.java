@@ -123,7 +123,7 @@ public class ChatFormatter {
 
 	private TextComponent getComponent(final String string, final Player player) {
 
-		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_MENTION)) && string.contains(EterniaServer.getString(Strings.MENTION_PLACEHOLDER)) && PlayerRelated.hasNameOnline(string)) {
+		if (player.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_MENTION)) && PlayerRelated.hasNameOnline(string)) {
 			final Player target = Bukkit.getPlayer(PlayerRelated.getUUIDFromMention(string));
 
 			if (target != null && target.isOnline()) {
