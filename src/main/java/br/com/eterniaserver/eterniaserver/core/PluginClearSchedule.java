@@ -13,10 +13,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 public class PluginClearSchedule extends BukkitRunnable {
 
     private final EterniaServer plugin;
@@ -40,19 +36,13 @@ public class PluginClearSchedule extends BukkitRunnable {
         }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> getFromPlayers(player));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                updateCheckChunks(player.getChunk());
+                for (Chunk chunk : checkChunks) {
+                    cleanupEntities(chunk.getEntities());
+                }
+            });
         }
-    }
-
-    private void getFromPlayers(Player player) {
-        updateCheckChunks(player.getChunk());
-        Set<Entity> entities = new HashSet<>();
-
-        for (Chunk chunk : checkChunks) {
-            Collections.addAll(entities, chunk.getEntities());
-        }
-
-        cleanupEntities(entities);
     }
 
     private void updateCheckChunks(Chunk origin) {
@@ -68,7 +58,7 @@ public class PluginClearSchedule extends BukkitRunnable {
         }
     }
 
-    private void cleanupEntities(Set<Entity> entities) {
+    private void cleanupEntities(Entity[] entities) {
         int[] entityAmounts = new int[EntityType.values().length];
 
         for (Entity e : entities) {

@@ -50,6 +50,7 @@ public class ConfigsCfg extends GenericCfg {
         setString(Strings.TABLE_PLAYER, file, outFile, "sql.table-player", "es_players");
         setString(Strings.TABLE_REWARD, file, outFile, "sql.table-rewards", "es_rewards");
         setString(Strings.TABLE_LOCATIONS, file, outFile, "sql.table-locations", "es_locations");
+        setString(Strings.TABLE_TITLES, file, outFile, "sql.table-titles", "es_titles");
         setString(Strings.MONEY_SINGULAR, file, outFile, "money.singular", "Eternia");
         setString(Strings.MONEY_PLURAL, file, outFile, "money.plural", "Eternias");
         setString(Strings.SERVER_BALANCE_ACCOUNT, file, outFile, "money.balance-account", "yurinogueira");
@@ -76,6 +77,7 @@ public class ConfigsCfg extends GenericCfg {
         setList(Lists.BLACKLISTED_WORLDS_SPAWNERS, file, outFile, "spawners.blacklisted-worlds", "world_evento");
         setList(Lists.BLACKLISTED_WORLDS_BACK, file, outFile, "back.blacklisted-worlds", "world_evento", "world_pvp");
         setList(Lists.PROFILE_CUSTOM_MESSAGES, file, outFile, "profile.custom-messages");
+        setList(Lists.TITLE_LIST, file, outFile, "titles", "Maníaco", "Farmer");
 
         setMaterials(elevatorMaterials, file, outFile, "IRON_BLOCK");
 

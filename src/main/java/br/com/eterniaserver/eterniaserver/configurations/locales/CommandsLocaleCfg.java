@@ -137,6 +137,7 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.COMMAND, "command", "eternia.spawn", " <página>", " Receba ajuda para o sistema de confirmação de comandos", null);
         this.addDefault(Commands.COMMAND_ACCEPT, "accept", "eternia.spawn", null, " Confirme o uso de um comando", null);
         this.addDefault(Commands.COMMAND_DENY, "deny", "eternia.spawn", null, " Negue o uso de um comando", null);
+        this.addDefault(Commands.TITLE, "title", "eternia.title", " <página>", " Ajuda para o sistema de titulos", null);
 
         final FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_LOCALE_FILE_PATH));
 

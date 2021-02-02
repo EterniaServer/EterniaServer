@@ -162,11 +162,11 @@ public class Managers {
         if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_GENERIC), "Generic")) {
             CommandManager.registerCommand(new Intern(plugin));
             CommandManager.registerCommand(new Inventory());
-            CommandManager.registerCommand(new Generic(plugin));
             CommandManager.registerCommand(new Gamemode());
             CommandManager.registerCommand(new Glow(plugin));
             CommandManager.registerCommand(new Item());
         }
+        CommandManager.registerCommand(new Generic(plugin));
     }
 
     private void loadHomesManager() {
@@ -217,9 +217,11 @@ public class Managers {
 
     private void loadScheduleTasks() {
         if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_SCHEDULE), "Schedule")) {
-            new PluginSchedule(plugin).runTaskTimer(plugin,
-                    ChronoUnit.SECONDS.between(LocalTime.now(), LocalTime.of(EterniaServer.getInteger(Integers.SCHEDULE_HOUR), EterniaServer.getInteger(Integers.SCHEDULE_MINUTE), EterniaServer.getInteger(Integers.SCHEDULE_SECONDS))) * 20L,
-                    TimeUnit.HOURS.toSeconds(EterniaServer.getInteger(Integers.SCHEDULE_DELAY)) * 20L);
+            long time = ChronoUnit.SECONDS.between(LocalTime.now(), LocalTime.of(EterniaServer.getInteger(Integers.SCHEDULE_HOUR), EterniaServer.getInteger(Integers.SCHEDULE_MINUTE), EterniaServer.getInteger(Integers.SCHEDULE_SECONDS)));
+            if (time < 0) {
+                time += TimeUnit.HOURS.toSeconds(EterniaServer.getInteger(Integers.SCHEDULE_DELAY));
+            }
+            new PluginSchedule(plugin).runTaskTimer(plugin, time * 20L, TimeUnit.HOURS.toSeconds(EterniaServer.getInteger(Integers.SCHEDULE_DELAY)) * 20L);
         }
     }
 

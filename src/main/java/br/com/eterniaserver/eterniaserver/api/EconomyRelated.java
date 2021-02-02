@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.api;
 
 import br.com.eterniaserver.eternialib.SQL;
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
@@ -107,8 +106,7 @@ public class EconomyRelated {
      */
     public static void createAccount(UUID uuid) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
-            final String playerName = UUIDFetcher.getNameOf(uuid);
-            PlayerRelated.createProfile(uuid, playerName);
+            PlayerRelated.createProfile(uuid, Bukkit.getOfflinePlayer(uuid).getName());
         } else {
             economy.createPlayerAccount(Bukkit.getOfflinePlayer(uuid));
         }
@@ -122,7 +120,7 @@ public class EconomyRelated {
     public static double getMoney(UUID uuid) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             if (!PlayerRelated.hasProfile(uuid)) {
-                PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
+                PlayerRelated.createProfile(uuid, Bukkit.getOfflinePlayer(uuid).getName());
             }
             return economyMap.get(uuid);
         } else {
@@ -152,7 +150,7 @@ public class EconomyRelated {
     public static void setMoney(UUID uuid, double amount) {
         if (EterniaServer.getBoolean(Booleans.MODULE_ECONOMY)) {
             if (!PlayerRelated.hasProfile(uuid)) {
-                PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
+                PlayerRelated.createProfile(uuid, Bukkit.getOfflinePlayer(uuid).getName());
             }
             economyMap.put(uuid, amount);
             Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
@@ -219,7 +217,7 @@ public class EconomyRelated {
             baltopTime = System.currentTimeMillis();
             baltop = list.get(0).getKey();
             for (Map.Entry<UUID, Double> entry : list) {
-                if (!EterniaServer.getStringList(Lists.BLACKLISTED_BALANCE_TOP).contains(UUIDFetcher.getNameOf(entry.getKey()))) {
+                if (!EterniaServer.getStringList(Lists.BLACKLISTED_BALANCE_TOP).contains(Bukkit.getOfflinePlayer(entry.getKey()).getName())) {
                     economyOrdered.put(entry.getKey(), entry.getValue());
                 }
             }

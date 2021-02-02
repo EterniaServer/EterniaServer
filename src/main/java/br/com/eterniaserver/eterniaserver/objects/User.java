@@ -59,14 +59,14 @@ public class User {
             this.player = player;
             this.playerName = player.getName();
         }
-        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+        this.uuid = uuid;
         getInfo();
     }
 
     public User(Player player) {
         this.player = player;
         this.playerName = player.getName();
-        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+        this.uuid = player.getUniqueId();
         getInfo();
     }
 
@@ -75,11 +75,12 @@ public class User {
         if (player == null) {
             this.offlinePlayer = offlinePlayer;
             this.playerName = offlinePlayer.getName();
+            this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
         } else {
             this.player = player;
             this.playerName = player.getName();
+            this.uuid = player.getUniqueId();
         }
-        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
         getInfo();
     }
 
@@ -87,7 +88,7 @@ public class User {
         if (sender instanceof Player) {
             this.player = (Player) sender;
             this.playerName = player.getName();
-            this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+            this.uuid = player.getUniqueId();
             getInfo();
         } else {
             this.commandSender = sender;

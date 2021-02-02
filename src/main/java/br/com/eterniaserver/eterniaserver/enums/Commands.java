@@ -106,5 +106,6 @@ public enum Commands {
     COMMAND,
     COMMAND_ACCEPT,
     COMMAND_DENY,
+    TITLE
 
 }

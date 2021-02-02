@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.api;
 
 import br.com.eterniaserver.eternialib.SQL;
-import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -34,7 +33,7 @@ public class CashRelated {
         if (PlayerRelated.hasProfile(uuid)) {
             return PlayerRelated.getProfile(uuid).getCash();
         } else {
-            PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
+            PlayerRelated.createProfile(uuid, Bukkit.getOfflinePlayer(uuid).getName());
             return 0;
         }
     }
@@ -65,7 +64,7 @@ public class CashRelated {
             return;
         }
         
-        PlayerRelated.createProfile(uuid, UUIDFetcher.getNameOf(uuid));
+        PlayerRelated.createProfile(uuid, Bukkit.getOfflinePlayer(uuid).getName());
         setCash(uuid, amount);
     }
 
@@ -141,7 +140,7 @@ public class CashRelated {
      */
     public static void permGui(final Player player, final String title, int slot) {
         final String playerName = player.getName();
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        final UUID uuid = player.getUniqueId();
         if (!cashItem.containsKey(uuid)) {
             CashItem actualCashItem = EterniaServer.getOthersGui().get(EterniaServer.getGuisInvert().get(title)).get(slot);
             if (!actualCashItem.isGlass()) {

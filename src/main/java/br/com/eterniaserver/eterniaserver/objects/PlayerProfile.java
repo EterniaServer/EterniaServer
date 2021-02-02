@@ -11,8 +11,10 @@ public class PlayerProfile {
 
     private String playerName;
     private String playerDisplayName;
+    private String activeTitle;
 
     private Set<String> homes;
+    private Set<String> titles;
 
     private final long firstLogin;
     private long lastLogin;
@@ -39,6 +41,18 @@ public class PlayerProfile {
         this.hours = hours + (System.currentTimeMillis() - lastLogin);
         this.lastLogin = System.currentTimeMillis();
         return hours;
+    }
+
+    public String getActiveTitle() {
+        return activeTitle;
+    }
+
+    public void setActiveTitle(String activeTitle) {
+        this.activeTitle = activeTitle;
+    }
+
+    public Set<String> getTitles() {
+        return titles;
     }
 
     public boolean isOnPvP() {

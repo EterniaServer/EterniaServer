@@ -6,6 +6,7 @@ public enum Strings {
     TABLE_PLAYER,
     TABLE_REWARD,
     TABLE_LOCATIONS,
+    TABLE_TITLES,
     MONEY_SINGULAR,
     MONEY_PLURAL,
     SERVER_PREFIX,

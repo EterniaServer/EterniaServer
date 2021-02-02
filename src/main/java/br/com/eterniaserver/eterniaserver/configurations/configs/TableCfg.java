@@ -30,13 +30,17 @@ public class TableCfg {
 
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_PLAYER));
             createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "player_name VARCHAR(16)",
-                    "player_display VARCHAR(16)", "time BIGINT(20)", "last BIGINT(20)", "hours BIGINT(20)", "balance DOUBLE(20,4)",
+                    "player_display VARCHAR(512)", "time BIGINT(20)", "last BIGINT(20)", "hours BIGINT(20)", "balance DOUBLE(20,4)",
                     "cash BIGINT(20)", "xp BIGINT(20)", "muted BIGINT(20)", "homes VARCHAR(1024)");
             SQL.execute(createTable);
 
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
             createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "name VARCHAR(64)", "world VARCHAR(32)",
                     "coord_x DOUBLE", "coord_y DOUBLE", "coord_z DOUBLE", "coord_yaw FLOAT", "coord_pitch FLOAT");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_TITLES));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
             SQL.execute(createTable);
 
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_REWARD));
@@ -48,13 +52,17 @@ public class TableCfg {
 
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_PLAYER));
             createTable.columns.set("uuid VARCHAR(36)", "player_name VARCHAR(16)",
-                    "player_display VARCHAR(16)", "time INTEGER", "last INTEGER", "hours INTEGER", "balance DOUBLE(22)",
+                    "player_display VARCHAR(512)", "time INTEGER", "last INTEGER", "hours INTEGER", "balance DOUBLE(22)",
                     "cash INTEGER", "xp INTEGER", "muted INTEGER", "homes VARCHAR(1024)");
             SQL.execute(createTable);
 
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
             createTable.columns.set("name VARCHAR(64)", "world VARCHAR(32)", "coord_x DOUBLE", "coord_y DOUBLE",
                     "coord_z DOUBLE", "coord_yaw FLOAT", "coord_pitch FLOAT");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_TITLES));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
             SQL.execute(createTable);
 
             createTable = new CreateTable(EterniaServer.getString(Strings.TABLE_REWARD));
@@ -69,8 +77,8 @@ public class TableCfg {
 
     private void convertingDisplayNameSize() {
         try (Connection connection = SQL.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("ALTER TABLE '" + EterniaServer.getString(Strings.TABLE_PLAYER) + "'" +
-                    " MODIFY COLUMN 'player_display' VARCHAR(256);");
+            PreparedStatement preparedStatement = connection.prepareStatement("ALTER TABLE " + EterniaServer.getString(Strings.TABLE_PLAYER) +
+                    " MODIFY player_display VARCHAR(512);");
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException exception) { }
