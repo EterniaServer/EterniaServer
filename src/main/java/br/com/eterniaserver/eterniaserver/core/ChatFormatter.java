@@ -197,14 +197,14 @@ public class ChatFormatter {
 
 	private TextComponent loadComponent(final Player player, final CustomPlaceholder object) {
 
-		final TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(ServerRelated.setPlaceholders(player, object.getValue())));
+		final TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(ServerRelated.translateHex(ServerRelated.setPlaceholders(player, object.getValue()))));
 
 		if (!object.getHoverText().equals("")) {
-			textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(TextComponent.fromLegacyText(ServerRelated.setPlaceholders(player, object.getHoverText())))));
+			textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(TextComponent.fromLegacyText(ServerRelated.translateHex(ServerRelated.setPlaceholders(player, object.getHoverText()))))));
 		}
 
 		if (!object.getSuggestCmd().equals("")) {
-			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, ServerRelated.setPlaceholders(player, object.getSuggestCmd())));
+			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, ServerRelated.translateHex(ServerRelated.setPlaceholders(player, object.getSuggestCmd()))));
 		}
 
 		return textComponent;
