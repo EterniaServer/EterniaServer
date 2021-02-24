@@ -12,7 +12,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -26,9 +25,11 @@ import org.bukkit.scoreboard.Team;
 @CommandAlias("%glow")
 public class Glow extends BaseCommand {
 
+    private final EterniaServer plugin;
     private final Map<Colors, Team> teams = new EnumMap<>(Colors.class);
 
-    public Glow(EterniaServer plugin) {
+    public Glow(final EterniaServer plugin) {
+        this.plugin = plugin;
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
             Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
             for (Colors colors : Colors.values()) {
@@ -51,9 +52,9 @@ public class Glow extends BaseCommand {
     @CommandPermission("%glow_perm")
     public void onGlow(Player player) {
         if (!player.isGlowing()) {
-            EterniaServer.sendMessage(player, Messages.GLOW_ENABLED);
+            plugin.sendMessage(player, Messages.GLOW_ENABLED);
         } else {
-            EterniaServer.sendMessage(player, Messages.GLOW_DISABLED);
+            plugin.sendMessage(player, Messages.GLOW_DISABLED);
             player.removePotionEffect(PotionEffectType.GLOWING);
         }
         player.setGlowing(!player.isGlowing());
@@ -66,10 +67,10 @@ public class Glow extends BaseCommand {
     @CommandPermission("%glow_color_perm")
     public void onGlowColor(Player player, String color) {
         User user = new User(player);
-        Colors colors = ServerRelated.colorFromString(color);
+        Colors colors = plugin.colorFromString(color);
         teams.get(colors).addEntry(user.getName());
         user.putGlowing(colors.getColorStr());
-        user.sendMessage(Messages.GLOW_COLOR_CHANGED, colors.getName());
+        plugin.sendMessage(player, Messages.GLOW_COLOR_CHANGED, colors.getName());
     }
 
 }

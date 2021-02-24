@@ -15,7 +15,6 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -36,9 +35,12 @@ import java.util.concurrent.TimeUnit;
 @CommandAlias("%eco")
 public class Economy extends BaseCommand {
 
+    private final EterniaServer plugin;
+
     private final String baltopName;
 
-    public Economy(final String baltopName) {
+    public Economy(final EterniaServer plugin, final String baltopName) {
+        this.plugin = plugin;
         this.baltopName = baltopName;
     }
 
@@ -61,9 +63,9 @@ public class Economy extends BaseCommand {
         User user = new User(sender);
         User target = new User(targets.getPlayer());
 
-        EconomyRelated.setMoney(target.getUUID(), money);
-        user.sendMessage(Messages.ECO_SET_FROM, String.valueOf(money), target.getName(), target.getDisplayName());
-        target.sendMessage(Messages.ECO_SETED, String.valueOf(money), user.getName(), user.getDisplayName());
+        EterniaServer.getEconomyAPI().setMoney(target.getUUID(), money);
+        plugin.sendMessage(sender, Messages.ECO_SET_FROM, String.valueOf(money), target.getName(), target.getDisplayName());
+        plugin.sendMessage(target.getPlayer(), Messages.ECO_SETED, String.valueOf(money), user.getName(), user.getDisplayName());
     }
 
     @CommandCompletion("@players 100")
@@ -75,9 +77,9 @@ public class Economy extends BaseCommand {
         User user = new User(sender);
         User target = new User(targets.getPlayer());
 
-        EconomyRelated.removeMoney(target.getUUID(), money);
-        user.sendMessage(Messages.ECO_REMOVE_FROM, String.valueOf(money), target.getName(), target.getDisplayName());
-        target.sendMessage(Messages.ECO_REMOVED, String.valueOf(money), user.getName(), user.getDisplayName());
+        EterniaServer.getEconomyAPI().removeMoney(target.getUUID(), money);
+        plugin.sendMessage(sender, Messages.ECO_REMOVE_FROM, String.valueOf(money), target.getName(), target.getDisplayName());
+        plugin.sendMessage(target.getPlayer(), Messages.ECO_REMOVED, String.valueOf(money), user.getName(), user.getDisplayName());
     }
 
     @CommandCompletion("@players 100")
@@ -89,9 +91,9 @@ public class Economy extends BaseCommand {
         User user = new User(sender);
         User target = new User(targets.getPlayer());
 
-        EconomyRelated.addMoney(target.getUUID(), money);
-        user.sendMessage(Messages.ECO_GIVE_FROM, String.valueOf(money), target.getName(), target.getDisplayName());
-        target.sendMessage(Messages.ECO_GIVED, String.valueOf(money), user.getName(), user.getDisplayName());
+        EterniaServer.getEconomyAPI().addMoney(target.getUUID(), money);
+        plugin.sendMessage(sender, Messages.ECO_GIVE_FROM, String.valueOf(money), target.getName(), target.getDisplayName());
+        plugin.sendMessage(target.getPlayer(), Messages.ECO_GIVED, String.valueOf(money), user.getName(), user.getDisplayName());
     }
 
     @CommandCompletion("@players")
@@ -104,18 +106,18 @@ public class Economy extends BaseCommand {
         User user = new User(player);
 
         if (targets == null) {
-            user.sendMessage(Messages.ECO_BALANCE, EconomyRelated.format(EconomyRelated.getMoney(user.getUUID())));
+            plugin.sendMessage(player, Messages.ECO_BALANCE, EterniaServer.getEconomyAPI().format(EterniaServer.getEconomyAPI().getMoney(user.getUUID())));
             return;
         }
 
         User target = new User(targets.getPlayer());
 
-        if (player.hasPermission(EterniaServer.getString(Strings.PERM_MONEY_OTHER))) {
-            user.sendMessage(Messages.ECO_BALANCE_OTHER, EconomyRelated.format(EconomyRelated.getMoney(target.getUUID())), target.getName(), target.getDisplayName());
+        if (player.hasPermission(plugin.getString(Strings.PERM_MONEY_OTHER))) {
+            plugin.sendMessage(player, Messages.ECO_BALANCE_OTHER, EterniaServer.getEconomyAPI().format(EterniaServer.getEconomyAPI().getMoney(target.getUUID())), target.getName(), target.getDisplayName());
             return;
         }
 
-        user.sendMessage(Messages.SERVER_NO_PERM);
+        plugin.sendMessage(player, Messages.SERVER_NO_PERM);
     }
 
     @CommandCompletion("@players 100")
@@ -129,19 +131,19 @@ public class Economy extends BaseCommand {
         User target = new User(targets.getPlayer());
 
         if (target.getName().equals(user.getName())) {
-            user.sendMessage(Messages.ECO_AUTO_PAY);
+            plugin.sendMessage(player, Messages.ECO_AUTO_PAY);
             return;
         }
 
-        if (!EconomyRelated.hasMoney(user.getUUID(), value)) {
-            user.sendMessage(Messages.ECO_NO_MONEY);
+        if (!EterniaServer.getEconomyAPI().hasMoney(user.getUUID(), value)) {
+            plugin.sendMessage(player, Messages.ECO_NO_MONEY);
             return;
         }
 
-        EconomyRelated.addMoney(target.getUUID(), value);
-        EconomyRelated.removeMoney(user.getUUID(), value);
-        user.sendMessage(Messages.ECO_PAY, String.valueOf(value), target.getName(), target.getDisplayName());
-        target.sendMessage(Messages.ECO_PAY_RECEIVED, String.valueOf(value), user.getName(), user.getDisplayName());
+        EterniaServer.getEconomyAPI().addMoney(target.getUUID(), value);
+        EterniaServer.getEconomyAPI().removeMoney(user.getUUID(), value);
+        plugin.sendMessage(player, Messages.ECO_PAY, String.valueOf(value), target.getName(), target.getDisplayName());
+        plugin.sendMessage(target.getPlayer(), Messages.ECO_PAY_RECEIVED, String.valueOf(value), user.getName(), user.getDisplayName());
     }
 
     @Subcommand("%eco_baltop")
@@ -150,32 +152,32 @@ public class Economy extends BaseCommand {
     @CommandPermission("%eco_baltop_perm")
     public void onBaltop(CommandSender sender, @Optional Integer page) {
         if (page == null) {
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EconomyRelated.getBalanceTopTime()) <= 300) {
+            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EterniaServer.getEconomyAPI().getBalanceTopTime()) <= 300) {
                 showBaltop(sender, 0);
                 return;
             }
-            EconomyRelated.updateBalanceTop().thenRun(() -> showBaltop(sender, 0));
+            EterniaServer.getEconomyAPI().updateBalanceTop().thenRun(() -> showBaltop(sender, 0));
             return;
         }
 
-        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EconomyRelated.getBalanceTopTime()) <= 300) {
+        if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EterniaServer.getEconomyAPI().getBalanceTopTime()) <= 300) {
             showBaltop(sender, page);
             return;
         }
-        EconomyRelated.updateBalanceTop().thenRun(() -> showBaltop(sender, page));
+        EterniaServer.getEconomyAPI().updateBalanceTop().thenRun(() -> showBaltop(sender, page));
     }
 
     private void showBaltop(CommandSender sender, int page) {
-        List<Map.Entry<UUID, Double>> entryList = new ArrayList<>(EconomyRelated.getBalanceTop().entrySet());
+        List<Map.Entry<UUID, Double>> entryList = new ArrayList<>(EterniaServer.getEconomyAPI().getBalanceTop().entrySet());
         int maxPage = entryList.size() / 10;
         if (maxPage == 0) {
             maxPage = 1;
         }
         if (page >= maxPage || page < 0) {
-            EterniaServer.sendMessage(sender, Messages.ECO_BALTOP_PAGE_LIMIT, true);
+            plugin.sendMessage(sender, Messages.ECO_BALTOP_PAGE_LIMIT, true);
             return;
         }
-        sender.sendMessage(EterniaServer.getMessage(Messages.ECO_BALTOP_TITLE, true, String.valueOf(page + 1)));
+        sender.sendMessage(plugin.getMessage(Messages.ECO_BALTOP_TITLE, true, String.valueOf(page + 1)));
 
         int pagecontar = page * 10;
 
@@ -183,7 +185,7 @@ public class Economy extends BaseCommand {
             if (entryList.size() > i) {
                 Map.Entry<UUID, Double> entry = entryList.get(i);
                 User user = new User(entry.getKey());
-                EterniaServer.sendMessage(sender, Messages.ECO_BALTOP_LIST, false, " " + user.getName(), " " + user.getDisplayName(), EconomyRelated.format(entry.getValue()));
+                plugin.sendMessage(sender, Messages.ECO_BALTOP_LIST, false, " " + user.getName(), " " + user.getDisplayName(), EterniaServer.getEconomyAPI().format(entry.getValue()));
             } else {
                 break;
             }
@@ -198,7 +200,7 @@ public class Economy extends BaseCommand {
         if ((page + 1) < maxPage) {
             textComponentRight.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + baltopName + " " + (page + 1)));
         }
-        final TextComponent textComponentCenter = new TextComponent(EterniaServer.getMessage(Messages.ECO_BALTOP_PAGE, false));
+        final TextComponent textComponentCenter = new TextComponent(plugin.getMessage(Messages.ECO_BALTOP_PAGE, false));
         baseComponents[0] = textComponentLeft;
         baseComponents[1] = textComponentCenter;
         baseComponents[2] = textComponentRight;

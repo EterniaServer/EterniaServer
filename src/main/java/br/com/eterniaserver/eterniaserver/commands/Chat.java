@@ -14,10 +14,9 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eternialib.CmdConfirmationManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.EconomyRelated;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
-import br.com.eterniaserver.eterniaserver.objects.CommandToRun;
+import br.com.eterniaserver.eterniaserver.objects.RunCommand;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
@@ -63,7 +62,7 @@ public class Chat extends BaseCommand {
 
         if (message == null) {
             user.setChannel(channel.hashCode());
-            EterniaServer.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channel);
+            plugin.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, channel);
             return;
         }
 
@@ -80,7 +79,7 @@ public class Chat extends BaseCommand {
     @CommandPermission("%chat_broadcast_perm")
     @CommandAlias("%chat_broadcast_aliases")
     public void onBroadcast(String message) {
-        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST, true, ServerRelated.translateHex(ServerRelated.getColor(message))));
+        Bukkit.broadcastMessage(plugin.getMessage(Messages.CHAT_BROADCAST, true, plugin.translateHex(plugin.getColor(message))));
     }
 
     @Subcommand("%chat_vanish")
@@ -90,12 +89,12 @@ public class Chat extends BaseCommand {
     public void onVanish(Player player) {
         User user = new User(player);
         if (user.isVanished()) {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
+            Bukkit.broadcastMessage(plugin.getMessage(Messages.SERVER_LOGIN, true, user.getName(), user.getDisplayName()));
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.showPlayer(plugin, player);
             }
         } else {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_LOGOUT, true, user.getName(), user.getDisplayName()));
+            Bukkit.broadcastMessage(plugin.getMessage(Messages.SERVER_LOGOUT, true, user.getName(), user.getDisplayName()));
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.hidePlayer(plugin, player);
             }
@@ -111,10 +110,10 @@ public class Chat extends BaseCommand {
         User user = new User(player);
         user.changeSpyState();
         if (user.isSpying()) {
-            user.sendMessage(Messages.CHAT_SPY_ENABLED);
+            plugin.sendMessage(player, Messages.CHAT_SPY_ENABLED);
             return;
         }
-        user.sendMessage(Messages.CHAT_SPY_DISABLED);
+        plugin.sendMessage(player, Messages.CHAT_SPY_DISABLED);
     }
 
     @Subcommand("%chat_reply")
@@ -133,7 +132,7 @@ public class Chat extends BaseCommand {
                 return;
             }
         }
-        user.sendMessage(Messages.CHAT_NO_ONE_TO_RESP);
+        plugin.sendMessage(sender, Messages.CHAT_NO_ONE_TO_RESP);
     }
 
     @Subcommand("%chat_tell")
@@ -149,7 +148,7 @@ public class Chat extends BaseCommand {
 
         if (targets == null) {
             user.setChannel(0);
-            user.sendMessage(Messages.CHAT_CHANNEL_CHANGED, EterniaServer.getString(Strings.CONS_LOCAL));
+            plugin.sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, plugin.getString(Strings.CONS_LOCAL));
             return;
         }
 
@@ -157,14 +156,14 @@ public class Chat extends BaseCommand {
 
         if (user.isTell()) {
             user.removeTelling();
-            user.sendMessage(Messages.CHAT_TELL_UNLOCKED, target.getName(), target.getDisplayName());
+            plugin.sendMessage(player, Messages.CHAT_TELL_UNLOCKED, target.getName(), target.getDisplayName());
             return;
         }
 
         if (msg == null || msg.length() == 0) {
             user.setTelling(target.getUUID());
             user.setChannel("tell".hashCode());
-            user.sendMessage(Messages.CHAT_TELL_LOCKED, target.getName(), target.getDisplayName());
+            plugin.sendMessage(player, Messages.CHAT_TELL_LOCKED, target.getName(), target.getDisplayName());
             return;
         }
 
@@ -178,38 +177,39 @@ public class Chat extends BaseCommand {
     @CommandPermission("%nick_perm")
     public void onNick(Player player, String newName, @Optional OnlinePlayer targets) {
         User user = new User(player);
-        final String nick = ServerRelated.translateHex(newName);
+        final String nick = plugin.translateHex(newName);
         
         if (targets == null) {
-            if (EconomyRelated.hasMoney(user.getUUID(), EterniaServer.getDouble(Doubles.NICK_COST))) {
-                user.sendMessage(Messages.ECO_NO_MONEY, String.valueOf(EterniaServer.getDouble(Doubles.NICK_COST)));
+            if (EterniaServer.getEconomyAPI().hasMoney(user.getUUID(), plugin.getDouble(Doubles.NICK_COST))) {
+                plugin.sendMessage(player, Messages.ECO_NO_MONEY, String.valueOf(plugin.getDouble(Doubles.NICK_COST)));
                 return;
             }
 
-            user.sendMessage(Messages.COMMAND_COST, String.valueOf(EterniaServer.getDouble(Doubles.NICK_COST)));
-            ServerRelated.putCommandToRun(user.getUUID(), new CommandToRun(() -> {
+            plugin.sendMessage(player, Messages.COMMAND_COST, String.valueOf(plugin.getDouble(Doubles.NICK_COST)));
+            final RunCommand runCommand = new RunCommand(() -> {
                 user.changeNick(nick);
-                EconomyRelated.removeMoney(user.getUUID(), EterniaServer.getDouble(Doubles.NICK_COST));
-            }, System.currentTimeMillis()));
+                EterniaServer.getEconomyAPI().removeMoney(user.getUUID(), plugin.getDouble(Doubles.NICK_COST));
+            });
+            CmdConfirmationManager.scheduleCommand(player, runCommand);
             return;
         }
 
-        if (!user.hasPermission(EterniaServer.getString(Strings.PERM_NICK_OTHER))) {
-            user.sendMessage(Messages.SERVER_NO_PERM);
+        if (!user.hasPermission(plugin.getString(Strings.PERM_NICK_OTHER))) {
+            plugin.sendMessage(player, Messages.SERVER_NO_PERM);
             return;
         }
 
         User target = new User(targets.getPlayer());
 
         target.changeNick(nick);
-        user.sendMessage(Messages.CHAT_NICK_CHANGE_TO, nick, target.getName(), target.getDisplayName());
+        plugin.sendMessage(player, Messages.CHAT_NICK_CHANGE_TO, nick, target.getName(), target.getDisplayName());
 
     }
 
     private boolean isMuted(User user) {
         final long time = user.getMuteTime();
-        if (ServerRelated.isInFutureCooldown(time)) {
-            user.sendMessage(Messages.CHAT_ARE_MUTED, ServerRelated.getTimeLeftOfCooldown(time));
+        if (plugin.isInFutureCooldown(time)) {
+            plugin.sendMessage(user.getPlayer(), Messages.CHAT_ARE_MUTED, plugin.getTimeLeftOfCooldown(time));
             return true;
         }
         return false;

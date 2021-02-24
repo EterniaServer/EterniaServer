@@ -1,10 +1,11 @@
 main: br.com.eterniaserver.eterniaserver.EterniaServer
 
 name: EterniaServer
-version: '${project.version}'
+version: 2.0.0-STABLE
 author: Yuri Nogueira
 description: Blablabla
 load: STARTUP
-api-version: '1.13'
+api-version: '1.14'
 website: www.eterniaserver.com.br
-depend: [EterniaLib, Vault, PlaceholderAPI]
+depend: [EterniaLib, PlaceholderAPI]
+softdepend: [Vault]

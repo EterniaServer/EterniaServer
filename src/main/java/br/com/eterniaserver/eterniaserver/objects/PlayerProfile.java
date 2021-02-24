@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.Integers;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,8 +25,6 @@ public class PlayerProfile {
     private long onPvP;
 
     private int chatChannel = 0;
-    private boolean nickRequest = false;
-    private String tempNick;
     private long muted = System.currentTimeMillis();
 
     public PlayerProfile(String playerName, long firstLogin, long lastLogin, long hours) {
@@ -57,7 +54,7 @@ public class PlayerProfile {
 
     public boolean isOnPvP() {
         if (onPvP == 0) return false;
-        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP) < EterniaServer.getInteger(Integers.PVP_TIME);
+        return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP) < EterniaServer.getUserAPI().getPvPTime();
     }
 
     public void setIsOnPvP() {
@@ -88,10 +85,6 @@ public class PlayerProfile {
         this.playerName = playerName;
     }
 
-    public boolean isNickRequest() {
-        return nickRequest;
-    }
-
     public int getCash() {
         return cash;
     }
@@ -108,16 +101,8 @@ public class PlayerProfile {
         return firstLogin;
     }
 
-    public long getHours() {
-        return hours;
-    }
-
     public long getMuted() {
         return muted;
-    }
-
-    public String getTempNick() {
-        return tempNick;
     }
 
     public void setCash(int cash) {
@@ -128,10 +113,6 @@ public class PlayerProfile {
         this.chatChannel = chatChannel;
     }
 
-    public void setHours(long hours) {
-        this.hours = hours;
-    }
-
     public void setLastLogin(long lastLogin) {
         this.lastLogin = lastLogin;
     }
@@ -140,16 +121,8 @@ public class PlayerProfile {
         this.muted = muted;
     }
 
-    public void setNickRequest(boolean nickRequest) {
-        this.nickRequest = nickRequest;
-    }
-
     public void setPlayerDisplayName(String playerDisplayName) {
         this.playerDisplayName = playerDisplayName;
-    }
-
-    public void setTempNick(String tempNick) {
-        this.tempNick = tempNick;
     }
 
     public void setXp(int xp) {

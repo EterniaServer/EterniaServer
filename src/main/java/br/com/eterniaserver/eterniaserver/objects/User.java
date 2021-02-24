@@ -1,24 +1,15 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
-import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.UUIDFetcher;
-import br.com.eterniaserver.eternialib.sql.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.PlayerRelated;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
-import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.enums.Strings;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,15 +19,21 @@ public class User {
 
     private Player player = null;
     private OfflinePlayer offlinePlayer = null;
-    private CommandSender commandSender = null;
     private PlayerProfile playerProfile = null;
 
     private String playerDisplayName;
     private UUID uuid;
     private boolean firstLogin = false;
 
-    public User(String playerName) {
-        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUIDFetcher.getUUIDOf(playerName));
+    public User(final String playerName) {
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (uuid == null) {
+            this.playerName = playerName;
+            this.uuid = null;
+            return;
+        }
+
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         final Player player = offlinePlayer.getPlayer();
         if (player == null) {
             this.offlinePlayer = offlinePlayer;
@@ -45,7 +42,7 @@ public class User {
             this.player = player;
             this.playerName = player.getName();
         }
-        this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
+        this.uuid = uuid;
         getInfo();
     }
 
@@ -70,20 +67,6 @@ public class User {
         getInfo();
     }
 
-    public User(OfflinePlayer offlinePlayer) {
-        final Player player = offlinePlayer.getPlayer();
-        if (player == null) {
-            this.offlinePlayer = offlinePlayer;
-            this.playerName = offlinePlayer.getName();
-            this.uuid = UUIDFetcher.getUUIDOf(this.playerName);
-        } else {
-            this.player = player;
-            this.playerName = player.getName();
-            this.uuid = player.getUniqueId();
-        }
-        getInfo();
-    }
-
     public User(CommandSender sender) {
         if (sender instanceof Player) {
             this.player = (Player) sender;
@@ -91,32 +74,32 @@ public class User {
             this.uuid = player.getUniqueId();
             getInfo();
         } else {
-            this.commandSender = sender;
             this.playerName = sender.getName();
             this.playerDisplayName = sender.getName();
         }
     }
     private void getInfo() {
-        if (!PlayerRelated.hasProfile(this.uuid)) {
-            PlayerRelated.createProfile(uuid, playerName);
-            this.playerProfile = PlayerRelated.getProfile(this.uuid);
+        if (!EterniaServer.getUserAPI().hasProfile(this.uuid)) {
+            EterniaServer.getUserAPI().createProfile(uuid, playerName);
+            this.playerProfile = EterniaServer.getUserAPI().getProfile(this.uuid);
             this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.SERVER_FIRST_LOGIN, true, playerName, playerDisplayName));
+            EterniaServer.getUserAPI().firstLoginMessage(playerName, playerDisplayName);
             if (this.player != null) {
                 this.firstLogin = true;
             }
             return;
         }
-        this.playerProfile = PlayerRelated.getProfile(this.uuid);
+        this.playerProfile = EterniaServer.getUserAPI().getProfile(this.uuid);
         this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
     }
+
+    // API
 
     public void teleport() {
         if (!firstLogin) {
             return;
         }
-
-        player.teleport(ServerRelated.getLocation("warp.spawn"));
+        EterniaServer.getUserAPI().teleportToSpawn(player);
     }
 
     public boolean hasProfile() {
@@ -125,24 +108,10 @@ public class User {
 
     public void updateProfile() {
         if (playerProfile.getPlayerName() == null) {
-            PlayerRelated.createProfile(uuid, playerName);
-            this.playerProfile = PlayerRelated.getProfile(uuid);
+            EterniaServer.getUserAPI().createProfile(uuid, playerName);
+            this.playerProfile = EterniaServer.getUserAPI().getProfile(uuid);
         }
-        
-        playerProfile.setLastLogin(System.currentTimeMillis());
-        if (!playerProfile.getPlayerName().equals(playerName)) {
-            playerProfile.setPlayerName(playerName);
-
-            Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-            update.set.set("player_name", playerName);
-            update.where.set("uuid", uuid.toString());
-            SQL.executeAsync(update);
-        }
-
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-        update.set.set("last", System.currentTimeMillis());
-        update.where.set("uuid", uuid.toString());
-        SQL.executeAsync(update);
+        EterniaServer.getUserAPI().updateProfile(playerProfile, uuid, playerName);
     }
 
     public void changeFlyState() {
@@ -204,17 +173,8 @@ public class User {
         return player;
     }
 
-    public void sendMessage(Messages message, String... args) {
-        if (player == null) {
-            EterniaServer.sendMessage(commandSender, message, args);
-            return;
-        }
-
-        EterniaServer.sendMessage(player, message, args);
-    }
-
     public void clear() {
-        PlayerRelated.playerLogout(uuid);
+        EterniaServer.getUserAPI().playerLogout(uuid);
         removeFromTeleporting();
     }
 
@@ -223,35 +183,31 @@ public class User {
     }
 
     public void createKits() {
-        PlayerRelated.generatePlayerKits(playerName);
+        EterniaServer.getUserAPI().generatePlayerKits(playerName);
     }
 
     public boolean isTeleporting() {
-        return PlayerRelated.areTeleporting(uuid);
+        return EterniaServer.getUserAPI().areTeleporting(uuid);
     }
 
     public void removeFromTeleporting() {
-        PlayerRelated.removeFromTeleport(uuid);
+        EterniaServer.getUserAPI().removeFromTeleport(uuid);
     }
 
     public void putInTeleport(PlayerTeleport playerTeleport) {
-        PlayerRelated.putInTeleport(uuid, playerTeleport);
+        EterniaServer.getUserAPI().putInTeleport(uuid, playerTeleport);
     }
 
     public Set<String> getHomes() {
         return playerProfile.getHomes();
     }
 
-    public void updateHome(String home) {
-        playerProfile.getHomes().add(home);
-    }
-
     public void putGlowing(String nameColor) {
-        PlayerRelated.putGlowing(uuid, nameColor);
+        EterniaServer.getUserAPI().putGlowing(uuid, nameColor);
     }
 
     public String getGlowColor() {
-        return PlayerRelated.getGlowColor(uuid);
+        return EterniaServer.getUserAPI().getGlowColor(uuid);
     }
 
     public void putMutedTime(long time) {
@@ -271,59 +227,39 @@ public class User {
     }
 
     public boolean receivedTell() {
-        return PlayerRelated.receivedTell(uuid);
+        return EterniaServer.getUserAPI().receivedTell(uuid);
     }
 
     public String getTellSender() {
-        return PlayerRelated.getTellSender(uuid);
+        return EterniaServer.getUserAPI().getTellSender(uuid);
     }
 
     public boolean isTell() {
-        return PlayerRelated.isTell(uuid);
+        return EterniaServer.getUserAPI().isTell(uuid);
     }
 
     public void setTelling(UUID uuid) {
-        PlayerRelated.setTelling(this.uuid, uuid);
+        EterniaServer.getUserAPI().setTelling(this.uuid, uuid);
     }
 
     public UUID getTellingPlayerName() {
-        return PlayerRelated.getTellingPlayerName(uuid);
+        return EterniaServer.getUserAPI().getTellingPlayerName(uuid);
     }
 
     public void removeTelling() {
-        PlayerRelated.removeTelling(uuid);
+        EterniaServer.getUserAPI().removeTelling(uuid);
     }
 
     public void sendPrivate(Player target, String s) {
-        User user = new User(target);
-
-        PlayerRelated.putInTell(user.getUUID(), playerName);
-        player.sendMessage(user.getUUID(), EterniaServer.getMessage(Messages.CHAT_TELL_TO, false, s, playerName, playerDisplayName, user.getName(), user.getDisplayName()));
-        target.sendMessage(this.uuid, EterniaServer.getMessage(Messages.CHAT_TELL_FROM, false, s, user.getName(), user.getDisplayName(), playerName, playerDisplayName));
-
-        for (UUID uuidTemp : PlayerRelated.getSpyKeySet()) {
-            if (PlayerRelated.isSpying(uuidTemp) && !uuidTemp.equals(this.uuid) && !uuidTemp.equals(user.getUUID())) {
-                Player spyPlayer = Bukkit.getPlayer(uuidTemp);
-                if (spyPlayer != null && spyPlayer.isOnline()) {
-                    spyPlayer.sendMessage(this.uuid, ServerRelated.getColor(EterniaServer.getString(Strings.CONS_SPY)
-                            .replace("{0}", playerName)
-                            .replace("{1}", playerDisplayName)
-                            .replace("{2}", user.getName())
-                            .replace("{3}", user.getDisplayName())
-                            .replace("{4}", s)));
-                } else {
-                    PlayerRelated.removeFromSpy(uuidTemp);
-                }
-            }
-        }
+        EterniaServer.getUserAPI().sendPrivateMessage(target, s, player, uuid, playerName, playerDisplayName);
     }
 
     public boolean isSpying() {
-        return PlayerRelated.isSpying(uuid);
+        return EterniaServer.getUserAPI().isSpying(uuid);
     }
 
     public void changeSpyState() {
-        PlayerRelated.changeSpyState(uuid);
+        EterniaServer.getUserAPI().changeSpyState(uuid);
     }
 
     public void giveExp(int amount) {
@@ -331,27 +267,27 @@ public class User {
     }
 
     public void updateAfkTime() {
-        PlayerRelated.updateAFKTime(uuid);
+        EterniaServer.getUserAPI().updateAFKTime(uuid);
     }
 
     public long getAfkTime() {
-        return PlayerRelated.getAFKTime(uuid);
+        return EterniaServer.getUserAPI().getAFKTime(uuid);
     }
 
     public void changeAfkState() {
-        PlayerRelated.changeAFKState(uuid);
+        EterniaServer.getUserAPI().changeAFKState(uuid);
     }
 
     public boolean isAfk() {
-        return PlayerRelated.areAFK(uuid);
+        return EterniaServer.getUserAPI().areAFK(uuid);
     }
 
     public void changeGodModeState() {
-        PlayerRelated.changeGodModeState(uuid);
+        EterniaServer.getUserAPI().changeGodModeState(uuid);
     }
 
     public boolean getGodMode() {
-        return PlayerRelated.getGodMode(uuid);
+        return EterniaServer.getUserAPI().getGodMode(uuid);
     }
 
     public UUID getUUID() {
@@ -363,18 +299,15 @@ public class User {
     }
 
     public String getAfkPlaceholder() {
-        return isAfk() ? EterniaServer.getString(Strings.AFK_PLACEHOLDER) : "";
+        return EterniaServer.getUserAPI().getAfkPlaceholder(uuid);
     }
 
     public String getGodeModePlaceholder() {
-        return getGodMode() ? EterniaServer.getString(Strings.GOD_PLACEHOLDER) : "";
+        return EterniaServer.getUserAPI().getGodeModePlaceholder(uuid);
     }
 
     public String getFirstLoginPlaceholder() {
-        if (playerProfile != null) {
-            return new SimpleDateFormat(EterniaServer.getString(Strings.DATA_FORMAT)).format(new Date(playerProfile.getFirstLogin()));
-        }
-        return EterniaServer.getString(Strings.NO_REGISTER);
+        return EterniaServer.getUserAPI().getFirstLoginPlaceholder(playerProfile);
     }
 
     public long getAndUpdateTimePlayed() {
@@ -396,11 +329,11 @@ public class User {
     }
 
     public boolean isVanished() {
-        return PlayerRelated.isVanished(player);
+        return EterniaServer.getUserAPI().isVanished(player);
     }
 
     public void changeVanishState() {
-        PlayerRelated.changeVanishState(player);
+        EterniaServer.getUserAPI().changeVanishState(player);
     }
 
     public void setItemInMainHand(ItemStack item) {
@@ -412,42 +345,19 @@ public class User {
     }
 
     public void putBackLocation(Location location) {
-        PlayerRelated.putBackLocation(uuid, location);
+        EterniaServer.getUserAPI().putBackLocation(uuid, location);
     }
 
     public boolean hasBackLocation() {
-        return PlayerRelated.hasBackLocation(uuid);
+        return EterniaServer.getUserAPI().hasBackLocation(uuid);
     }
 
     public Location getBackLocation() {
-        return PlayerRelated.getBackLocation(uuid);
+        return EterniaServer.getUserAPI().getBackLocation(uuid);
     }
 
     public void changeNick(String nick) {
-        if (nick.equals(EterniaServer.getString(Strings.CLEAR_STRING))) {
-            sendMessage(Messages.CHAT_NICK_CLEAR);
-            playerProfile.setPlayerDisplayName(playerName);
-            player.setDisplayName(playerName);
-    
-            Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-            update.set.set("player_display", playerProfile.getPlayerDisplayName());
-            update.where.set("uuid", uuid.toString());
-            SQL.executeAsync(update);
-            return;
-        }
-
-        if (!hasPermission(EterniaServer.getString(Strings.PERM_CHAT_COLOR_NICK))) {
-            nick = ChatColor.stripColor(nick);
-        }
-
-        playerProfile.setPlayerDisplayName(nick);
-        player.setDisplayName(nick);
-        sendMessage(Messages.CHAT_NICK_CHANGE, nick);
-
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-        update.set.set("player_display", playerProfile.getPlayerDisplayName());
-        update.where.set("uuid", uuid.toString());
-        SQL.executeAsync(update);
+        EterniaServer.getUserAPI().changeNick(nick, player, playerName, uuid, playerProfile);
     }
 
     public void setDisplayName() {
@@ -455,11 +365,11 @@ public class User {
     }
 
     public long getBedCooldown() {
-        return ServerRelated.getBedCooldown(uuid);
+        return EterniaServer.getUserAPI().getBedCooldown(uuid);
     }
 
     public void updateBedCooldown() {
-        ServerRelated.updateBedCooldown(uuid);
+        EterniaServer.getUserAPI().updateBedCooldown(uuid);
     }
 
     public int getExp() {
@@ -472,12 +382,7 @@ public class User {
     }
 
     public void setExp(int amount) {
-        playerProfile.setXp(amount);
-
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
-        update.set.set("xp", amount);
-        update.where.set("uuid", uuid.toString());
-        SQL.executeAsync(update);
+        EterniaServer.getUserAPI().setExp(playerProfile, amount, uuid);
     }
 
     public void addExp(int amount) {

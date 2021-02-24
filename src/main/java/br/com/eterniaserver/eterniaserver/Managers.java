@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.CommandManager;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
 import br.com.eterniaserver.eterniaserver.core.EterniaTick;
@@ -18,8 +18,6 @@ import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Commands;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
-import org.bukkit.Bukkit;
-
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
@@ -29,8 +27,8 @@ import java.util.stream.Stream;
 public class Managers {
 
     private final EterniaServer plugin;
-    private String baltopName;
 
+    private String baltopName;
     private String channelCommand;
 
     public Managers(EterniaServer plugin) {
@@ -61,7 +59,7 @@ public class Managers {
     }
 
     private void loadCommandsLocale() {
-        CommandsLocaleCfg cmdsLocale = new CommandsLocaleCfg();
+        CommandsLocaleCfg cmdsLocale = new CommandsLocaleCfg(plugin);
 
         this.channelCommand = cmdsLocale.getName(Commands.CHANNEL).split("\\|")[0];
 
@@ -99,7 +97,7 @@ public class Managers {
         });
 
         CommandManager.getCommandConditions().addCondition(String.class, "channel", (c, exec, value) -> {
-            if (value == null || !EterniaServer.getChannels().contains(value)) {
+            if (value == null || !plugin.getChannels().contains(value)) {
                 throw new ConditionFailedException("Você precisa informar um canal válido");
             }
         });
@@ -109,123 +107,122 @@ public class Managers {
     private void loadCompletions() {
         CommandManager.getCommandCompletions().registerStaticCompletion("colors", Stream.of(Colors.values()).map(Enum::name).collect(Collectors.toList()));
         CommandManager.getCommandCompletions().registerStaticCompletion("entidades", Stream.of(Entities.values()).map(Enum::name).collect(Collectors.toList()));
-        CommandManager.getCommandCompletions().registerStaticCompletion("channels", EterniaServer.getChannels());
-        CommandManager.getCommandCompletions().registerCompletion("list_of_shops", shop -> ServerRelated.getShopList());
+        CommandManager.getCommandCompletions().registerStaticCompletion("channels", plugin.getChannels());
+        CommandManager.getCommandCompletions().registerCompletion("list_of_shops", shop -> plugin.getShopList());
     }
 
     private void loadBedManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_BED), "Bed")) {
-            new CheckWorld(plugin).runTaskTimer(plugin, 0L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 40);
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_BED), "Bed")) {
+            new CheckWorld(plugin).runTaskTimer(plugin, 0L, (long) plugin.getInteger(Integers.PLUGIN_TICKS) * 40);
         }
     }
 
     private void loadBlockRewardsManager() {
-        sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_BLOCK), "Block-Reward");
+        sendModuleStatus(plugin.getBoolean(Booleans.MODULE_BLOCK), "Block-Reward");
     }
 
     private void loadCommandsManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_COMMANDS), "Commands")) {
-            EterniaServer.getCustomCommandMap().forEach((commandName, commandObject) -> new CustomCommand(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_COMMANDS), "Commands")) {
+            plugin.getCustomCommandMap().forEach((commandName, commandObject) -> new CustomCommand(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
         }
     }
 
     private void loadCashManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_CASH), "Cash")) {
-            CommandManager.registerCommand(new Cash());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_CASH), "Cash")) {
+            CommandManager.registerCommand(new Cash(plugin));
         }
     }
 
     private void loadChatManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_CHAT), "Chat")) {
-            CommandManager.registerCommand(new Mute());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_CHAT), "Chat")) {
+            CommandManager.registerCommand(new Mute(plugin));
             CommandManager.registerCommand(new Chat(plugin));
-            EterniaServer.getChannelsMap().forEach((ignored, commandObject) -> new ChannelCommand(commandObject.getName(), "chat", commandObject.getPerm(), channelCommand));
+            plugin.getChannelsMap().forEach((ignored, commandObject) -> new ChannelCommand(plugin, commandObject.getName(), "chat", commandObject.getPerm(), channelCommand));
         }
     }
 
     private void loadEconomyManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_ECONOMY), "Economy")) {
-            CommandManager.registerCommand(new Economy(baltopName));
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_ECONOMY), "Economy")) {
+            CommandManager.registerCommand(new Economy(plugin, baltopName));
         }
     }
 
     private void loadElevatorManager() {
-        sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_ELEVATOR), "Elevator");
+        sendModuleStatus(plugin.getBoolean(Booleans.MODULE_ELEVATOR), "Elevator");
     }
 
     private void loadExperienceManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_EXPERIENCE), "Experience"))
-            CommandManager.registerCommand(new Experience());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_EXPERIENCE), "Experience"))
+            CommandManager.registerCommand(new Experience(plugin));
     }
 
     private void loadGenericManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_GENERIC), "Generic")) {
-            CommandManager.registerCommand(new Intern(plugin));
-            CommandManager.registerCommand(new Inventory());
-            CommandManager.registerCommand(new Gamemode());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_GENERIC), "Generic")) {
+            CommandManager.registerCommand(new Inventory(plugin));
+            CommandManager.registerCommand(new Gamemode(plugin));
             CommandManager.registerCommand(new Glow(plugin));
-            CommandManager.registerCommand(new Item());
+            CommandManager.registerCommand(new Item(plugin));
         }
         CommandManager.registerCommand(new Generic(plugin));
     }
 
     private void loadHomesManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_HOMES), "Homes")) {
-            CommandManager.registerCommand(new Home());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_HOMES), "Homes")) {
+            CommandManager.registerCommand(new Home(plugin));
         }
     }
 
     private void loadKitManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_KITS), "Kits")) {
-            CommandManager.registerCommand(new Kit());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_KITS), "Kits")) {
+            CommandManager.registerCommand(new Kit(plugin));
         }
     }
 
     private void loadEterniaTick() {
-        new EterniaTick().runTaskTimer(plugin, 20L, (long) EterniaServer.getInteger(Integers.PLUGIN_TICKS) * 20L);
+        new EterniaTick(plugin).runTaskTimer(plugin, 20L, (long) plugin.getInteger(Integers.PLUGIN_TICKS) * 20L);
     }
 
     private void loadClearManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_ENTITY), "Mob Control")) {
-            new PluginClearSchedule(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) EterniaServer.getInteger(Integers.CLEAR_TIMER) * 20);
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_ENTITY), "Mob Control")) {
+            new PluginClearSchedule(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) plugin.getInteger(Integers.CLEAR_TIMER) * 20);
         }
     }
 
     private void loadRewardsManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_REWARDS), "Rewards")) {
-            CommandManager.registerCommand(new Reward());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_REWARDS), "Rewards")) {
+            CommandManager.registerCommand(new Reward(plugin));
         }
     }
 
     private void loadSpawnersManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS), "Spawners")) {
-            CommandManager.registerCommand(new Spawner());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_SPAWNERS), "Spawners")) {
+            CommandManager.registerCommand(new Spawner(plugin));
         }
     }
 
     private void loadTeleportsManager() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_TELEPORTS), "Teleports")) {
-            CommandManager.registerCommand(new Warp());
-            CommandManager.registerCommand(new Teleport());
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_TELEPORTS), "Teleports")) {
+            CommandManager.registerCommand(new Warp(plugin));
+            CommandManager.registerCommand(new Teleport(plugin));
         }
     }
 
     private void loadScheduleTasks() {
-        if (sendModuleStatus(EterniaServer.getBoolean(Booleans.MODULE_SCHEDULE), "Schedule")) {
-            long time = ChronoUnit.SECONDS.between(LocalTime.now(), LocalTime.of(EterniaServer.getInteger(Integers.SCHEDULE_HOUR), EterniaServer.getInteger(Integers.SCHEDULE_MINUTE), EterniaServer.getInteger(Integers.SCHEDULE_SECONDS)));
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_SCHEDULE), "Schedule")) {
+            long time = ChronoUnit.SECONDS.between(LocalTime.now(), LocalTime.of(plugin.getInteger(Integers.SCHEDULE_HOUR), plugin.getInteger(Integers.SCHEDULE_MINUTE), plugin.getInteger(Integers.SCHEDULE_SECONDS)));
             if (time < 0) {
-                time += TimeUnit.HOURS.toSeconds(EterniaServer.getInteger(Integers.SCHEDULE_DELAY));
+                time += TimeUnit.HOURS.toSeconds(plugin.getInteger(Integers.SCHEDULE_DELAY));
             }
-            new PluginSchedule(plugin).runTaskTimer(plugin, time * 20L, TimeUnit.HOURS.toSeconds(EterniaServer.getInteger(Integers.SCHEDULE_DELAY)) * 20L);
+            new PluginSchedule(plugin).runTaskTimer(plugin, time * 20L, TimeUnit.HOURS.toSeconds(plugin.getInteger(Integers.SCHEDULE_DELAY)) * 20L);
         }
     }
 
     private boolean sendModuleStatus(final boolean enable, final String module) {
         if (enable) {
-            Bukkit.getConsoleSender().sendMessage(EterniaServer.getMessage(Messages.SERVER_MODULE_ENABLED, true, module));
+            EterniaLib.report(plugin.getMessage(Messages.SERVER_MODULE_ENABLED, true, module));
             return true;
         }
-        Bukkit.getConsoleSender().sendMessage(EterniaServer.getMessage(Messages.SERVER_MODULE_DISABLED, true, module));
+        EterniaLib.report(plugin.getMessage(Messages.SERVER_MODULE_DISABLED, true, module));
         return false;
     }
 

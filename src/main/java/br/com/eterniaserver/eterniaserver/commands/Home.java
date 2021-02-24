@@ -7,14 +7,13 @@ import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eternialib.SQL;
-import br.com.eterniaserver.eternialib.sql.queries.Delete;
-import br.com.eterniaserver.eternialib.sql.queries.Insert;
-import br.com.eterniaserver.eternialib.sql.queries.Update;
+import br.com.eterniaserver.eternialib.core.queries.Delete;
+import br.com.eterniaserver.eternialib.core.queries.Insert;
+import br.com.eterniaserver.eternialib.core.queries.Update;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.objects.LocationQuery;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -27,8 +26,15 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 public class Home extends BaseCommand {
+
+    private final EterniaServer plugin;
+
+    public Home(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
 
     @CommandAlias("%delhome")
     @Syntax("%delhome_syntax")
@@ -39,11 +45,11 @@ public class Home extends BaseCommand {
 
         if (existHome(nome.toLowerCase(), user)) {
             delHome(nome.toLowerCase(), user.getName());
-            user.sendMessage(Messages.HOME_DELETED, nome);
+            plugin.sendMessage(player, Messages.HOME_DELETED, nome);
             return;
         }
 
-        EterniaServer.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
+        plugin.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
     }
 
     @CommandAlias("%home")
@@ -54,26 +60,26 @@ public class Home extends BaseCommand {
         User user = new User(player);
 
         if (user.isTeleporting()) {
-            user.sendMessage(Messages.SERVER_IN_TELEPORT);
+            plugin.sendMessage(player, Messages.SERVER_IN_TELEPORT);
         }
 
         if (targets == null) {
-            Location location = ServerRelated.getLocation(nome.toLowerCase() + "." + user.getName());
+            Location location = plugin.getLocation(nome.toLowerCase() + "." + user.getName());
             if (locationExists(location, player, nome)) {
-                user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.getMessage(Messages.HOME_GOING, true, nome)));
+                user.putInTeleport(new PlayerTeleport(plugin, player, location, plugin.getMessage(Messages.HOME_GOING, true, nome)));
             }
             return;
         }
 
-        if (user.hasPermission(EterniaServer.getString(Strings.PERM_HOME_OTHER))) {
-            Location location = ServerRelated.getLocation(nome.toLowerCase() + "." + targets.getPlayer().getName());
+        if (user.hasPermission(plugin.getString(Strings.PERM_HOME_OTHER))) {
+            Location location = plugin.getLocation(nome.toLowerCase() + "." + targets.getPlayer().getName());
             if (locationExists(location, player, nome)) {
-                user.putInTeleport(new PlayerTeleport(player, location, EterniaServer.getMessage(Messages.HOME_GOING, true, nome)));
+                user.putInTeleport(new PlayerTeleport(plugin, player, location, plugin.getMessage(Messages.HOME_GOING, true, nome)));
             }
             return;
         }
 
-        user.sendMessage(Messages.SERVER_NO_PERM);
+        plugin.sendMessage(player, Messages.SERVER_NO_PERM);
     }
 
     @CommandAlias("%homes")
@@ -86,12 +92,12 @@ public class Home extends BaseCommand {
             return;
         }
 
-        if (player.hasPermission(EterniaServer.getString(Strings.PERM_HOME_OTHER))) {
+        if (player.hasPermission(plugin.getString(Strings.PERM_HOME_OTHER))) {
             showHomes(player, target.getPlayer());
             return;
         }
 
-        EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
+        plugin.sendMessage(player, Messages.SERVER_NO_PERM);
     }
 
     private void showHomes(Player player, Player target) {
@@ -104,11 +110,11 @@ public class Home extends BaseCommand {
         }
         finalResult = result.toString();
         if (finalResult.length() > 2) {
-            EterniaServer.sendMessage(player, Messages.HOME_LIST, finalResult.substring(0, finalResult.length() - 2));
+            plugin.sendMessage(player, Messages.HOME_LIST, finalResult.substring(0, finalResult.length() - 2));
             return;
         }
 
-        EterniaServer.sendMessage(player, Messages.HOME_LIST, "");
+        plugin.sendMessage(player, Messages.HOME_LIST, "");
     }
 
     @CommandAlias("%sethome")
@@ -118,48 +124,47 @@ public class Home extends BaseCommand {
     public void onSetHome(Player player, String nome) {
         User user = new User(player);
         int i = 4;
-        for (int v = 5; v <= 93; v++) if (player.hasPermission(EterniaServer.getString(Strings.PERM_SETHOME_LIMIT_PREFIX) + v)) i = v;
+        for (int v = 5; v <= 93; v++) if (player.hasPermission(plugin.getString(Strings.PERM_SETHOME_LIMIT_PREFIX) + v)) i = v;
 
         nome = nome.replaceAll("[^a-zA-Z0-9]", "");
         if (nome.length() > 10) {
-            user.sendMessage(Messages.HOME_STRING_LIMIT, nome);
+            plugin.sendMessage(player, Messages.HOME_STRING_LIMIT, nome);
             return;
         }
 
         if (canHome(user) < i || (existHome(nome.toLowerCase(), user))) {
             setHome(player.getLocation(), nome.toLowerCase(), user.getName());
-            user.sendMessage(Messages.HOME_CREATED);
+            plugin.sendMessage(player, Messages.HOME_CREATED);
             return;
         }
 
-        if (!user.hasPermission(EterniaServer.getString(Strings.PERM_HOME_COMPASS))) {
-            user.sendMessage(Messages.HOME_NO_PERM_TO_COMPASS);
+        if (!user.hasPermission(plugin.getString(Strings.PERM_HOME_COMPASS))) {
+            plugin.sendMessage(player, Messages.HOME_NO_PERM_TO_COMPASS);
             return;
         }
 
         final ItemStack item = new ItemStack(Material.COMPASS);
         final ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(EterniaServer.getMessage(Messages.HOME_ITEM_NAME, false, nome));
+        final Location loc = player.getLocation();
+
+        meta.setDisplayName(plugin.getMessage(Messages.HOME_ITEM_NAME, false, nome));
+        meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.INTEGER, 1);
+        meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_WORLD), PersistentDataType.STRING, loc.getWorld().getName());
+        meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_COORD_X), PersistentDataType.DOUBLE, loc.getX());
+        meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_COORD_Y), PersistentDataType.DOUBLE, loc.getY());
+        meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_COORD_Z), PersistentDataType.DOUBLE, loc.getZ());
+        meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_COORD_YAW), PersistentDataType.FLOAT, loc.getYaw());
+        meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_COORD_PITCH), PersistentDataType.FLOAT, loc.getPitch());
+        meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_LOC_NAME), PersistentDataType.STRING, nome.toLowerCase());
         item.setItemMeta(meta);
 
-        final NBTItem nbtItem = new NBTItem(item);
-        final Location loc = player.getLocation();
-        nbtItem.setInteger(Constants.NBT_FUNCTION, 1);
-        nbtItem.setString(Constants.NBT_WORLD, loc.getWorld().getName());
-        nbtItem.setDouble(Constants.NBT_COORD_X, loc.getX());
-        nbtItem.setDouble(Constants.NBT_COORD_Y, loc.getY());
-        nbtItem.setDouble(Constants.NBT_COORD_Z, loc.getZ());
-        nbtItem.setFloat(Constants.NBT_COORD_YAW, loc.getYaw());
-        nbtItem.setFloat(Constants.NBT_COORD_PITCH, loc.getPitch());
-        nbtItem.setString(Constants.NBT_LOC_NAME, nome.toLowerCase());
-
-        player.getInventory().addItem(nbtItem.getItem());
-        user.sendMessage(Messages.HOME_LIMIT_REACHED);
+        player.getInventory().addItem(item);
+        plugin.sendMessage(player, Messages.HOME_LIMIT_REACHED);
     }
 
     private boolean locationExists(final Location location, final Player player, final String nome) {
-        if (location == ServerRelated.getError()) {
-            EterniaServer.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
+        if (location == plugin.getError()) {
+            plugin.sendMessage(player, Messages.HOME_NOT_FOUND, nome);
             return false;
         }
         return true;
@@ -168,11 +173,14 @@ public class Home extends BaseCommand {
     public void setHome(Location loc, String home, String jogador) {
         final String homeName = home + "." + jogador;
         final User user = new User(jogador);
+        if (user.getUUID() == null) {
+            return;
+        }
 
-        ServerRelated.putLocation(homeName, loc);
+        plugin.putLocation(homeName, loc);
 
         if (user.getHomes().contains(home)) {
-            LocationQuery locationQuery = new LocationQuery(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            LocationQuery locationQuery = new LocationQuery(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
             locationQuery.setLocation(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
             locationQuery.where.set("name", homeName);
             SQL.execute(locationQuery);
@@ -186,12 +194,12 @@ public class Home extends BaseCommand {
         }
         final String finalResult = result.toString();
 
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+        Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
         update.set.set("homes", finalResult.substring(0, finalResult.length() - 1));
         update.where.set("uuid", user.getUUID().toString());
         SQL.executeAsync(update);
 
-        Insert insert = new Insert(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+        Insert insert = new Insert(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
         insert.columns.set("name", "world", "coord_x", "coord_y", "coord_z", "coord_yaw", "coord_pitch");
         insert.values.set(homeName, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         SQL.executeAsync(insert);
@@ -199,22 +207,26 @@ public class Home extends BaseCommand {
 
     public void delHome(String home, String jogador) {
         final User user = new User(jogador);
+        if (user.getUUID() == null) {
+            return;
+        }
+
         final String homeName = home + "." + jogador;
         final StringBuilder result = new StringBuilder();
 
-        ServerRelated.removeLocation(homeName);
+        plugin.removeLocation(homeName);
         user.getHomes().remove(home);
         for (String actualHomeName : user.getHomes()) {
             result.append(actualHomeName).append(":");
         }
         final String finalResult = result.toString();
 
-        final Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+        final Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
         update.set.set("homes", finalResult.substring(0, finalResult.length() - 1));
         update.where.set("uuid", user.getUUID().toString());
         SQL.executeAsync(update);
 
-        final Delete delete = new Delete(EterniaServer.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+        final Delete delete = new Delete(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
         delete.where.set("name", homeName);
         SQL.executeAsync(delete);
     }

@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations;
 
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
@@ -17,20 +17,23 @@ import java.util.List;
 
 public class GenericCfg {
 
+    private final EterniaServer plugin;
+
     private final String[] strings;
-    private final Boolean[] booleans;
-    private final Integer[] integers;
-    private final Double[] doubles;
-    private final List<List<String>> lists;
+    private final boolean[] booleans;
+    private final int[] integers;
+    private final double[] doubles;
 
-    protected GenericCfg(String[] strings, Boolean[] booleans, Integer[] integers, Double[] doubles, List<List<String>> lists) {
-
+    protected GenericCfg(final EterniaServer plugin,
+                         final String[] strings,
+                         final boolean[] booleans,
+                         final int[] integers, final
+                         double[] doubles) {
+        this.plugin = plugin;
         this.strings = strings;
         this.booleans = booleans;
         this.integers = integers;
         this.doubles = doubles;
-        this.lists = lists;
-
     }
 
     protected void saveFile(FileConfiguration fileConfiguration, String filePath) {
@@ -38,7 +41,7 @@ public class GenericCfg {
             fileConfiguration.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
             fileConfiguration.save(filePath);
         } catch (IOException exception) {
-            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
+            plugin.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
     }
 
@@ -67,8 +70,8 @@ public class GenericCfg {
         if (list.isEmpty()) {
             list.addAll(Arrays.asList(values));
         }
-        lists.set(configLists.ordinal(), list);
-        outFile.set(key, lists.get(configLists.ordinal()));
+        plugin.stringLists.set(configLists.ordinal(), list);
+        outFile.set(key, plugin.stringLists.get(configLists.ordinal()));
     }
 
     protected void setMaterials(List<Material> elevatorMaterials, FileConfiguration file, FileConfiguration outFile, String... values) {
@@ -82,7 +85,7 @@ public class GenericCfg {
         for (String value : list) {
             Material material = Material.getMaterial(value);
             if (material == null) {
-                ServerRelated.logError("Configuração de elevadores material " + value + " não encontrado", 2);
+                plugin.logError("Configuração de elevadores material " + value + " não encontrado", 2);
             } else {
                 elevatorMaterials.add(material);
             }

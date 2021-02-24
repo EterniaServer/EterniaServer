@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
-import br.com.eterniaserver.eternialib.interfaces.Query;
+import br.com.eterniaserver.eternialib.core.interfaces.Query;
 
 public class BalanceTop implements Query {
 

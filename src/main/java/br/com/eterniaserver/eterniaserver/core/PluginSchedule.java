@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,28 +24,28 @@ public class PluginSchedule extends BukkitRunnable {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         switch (day) {
             case Calendar.SUNDAY:
-                runDay(EterniaServer.getScheduleMap().get("sunday"));
+                runDay(plugin.getScheduleMap().get("sunday"));
                 break;
             case Calendar.MONDAY:
-                runDay(EterniaServer.getScheduleMap().get("monday"));
+                runDay(plugin.getScheduleMap().get("monday"));
                 break;
             case Calendar.TUESDAY:
-                runDay(EterniaServer.getScheduleMap().get("tuesday"));
+                runDay(plugin.getScheduleMap().get("tuesday"));
                 break;
             case Calendar.WEDNESDAY:
-                runDay(EterniaServer.getScheduleMap().get("wednesday"));
+                runDay(plugin.getScheduleMap().get("wednesday"));
                 break;
             case Calendar.THURSDAY:
-                runDay(EterniaServer.getScheduleMap().get("thursday"));
+                runDay(plugin.getScheduleMap().get("thursday"));
                 break;
             case Calendar.FRIDAY:
-                runDay(EterniaServer.getScheduleMap().get("friday"));
+                runDay(plugin.getScheduleMap().get("friday"));
                 break;
             case Calendar.SATURDAY:
-                runDay(EterniaServer.getScheduleMap().get("saturday"));
+                runDay(plugin.getScheduleMap().get("saturday"));
                 break;
             default:
-                ServerRelated.logError("Talvez você não seja da terra", 3);
+                plugin.logError("Talvez você não seja da terra", 3);
         }
     }
 

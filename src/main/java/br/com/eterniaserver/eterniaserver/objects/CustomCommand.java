@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -34,7 +33,7 @@ public class CustomCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (EterniaServer.getBoolean(Booleans.MODULE_COMMANDS)) {
+        if (plugin.getBoolean(Booleans.MODULE_COMMANDS)) {
             checkCommands((Player) sender, commandString);
             return true;
         }
@@ -42,19 +41,19 @@ public class CustomCommand extends AbstractCommand {
     }
 
     private void checkCommands(final Player player, final String cmd) {
-        if (player.hasPermission(EterniaServer.getString(Strings.PERM_BASE_COMMAND) + cmd)) {
+        if (player.hasPermission(plugin.getString(Strings.PERM_BASE_COMMAND) + cmd)) {
             for (String line : commandsStrings) {
                 if (console) {
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), ServerRelated.setPlaceholders(player, line));
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), plugin.setPlaceholders(player, line));
                 } else {
-                    player.performCommand(ServerRelated.setPlaceholders(player, line));
+                    player.performCommand(plugin.setPlaceholders(player, line));
                 }
             }
             for (String line : messagesStrings) {
-                player.sendMessage(ServerRelated.getColor(ServerRelated.setPlaceholders(player, line)));
+                player.sendMessage(plugin.getColor(plugin.setPlaceholders(player, line)));
             }
         } else {
-            EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
+            plugin.sendMessage(player, Messages.SERVER_NO_PERM);
         }
     }
 

@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.locales;
 
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Commands;
 import br.com.eterniaserver.eterniaserver.objects.CommandLocale;
 
@@ -22,8 +22,7 @@ public class CommandsLocaleCfg {
     private final String[] perms;
     private final String[] aliases;
 
-    public CommandsLocaleCfg() {
-
+    public CommandsLocaleCfg(final EterniaServer plugin) {
         this.defaults = new HashMap<>();
         this.commands = new String[Commands.values().length];
         this.syntax = new String[Commands.values().length];
@@ -131,12 +130,6 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.SETWARP, "setwarp", "eternia.setwarp", " <warp>", " Define uma nova warp", null);
         this.addDefault(Commands.DELWARP, "delwarp", "eternia.delwarp", " <warp>", " Delete uma warp", null);
         this.addDefault(Commands.LISTWARP, "warps", "eternia.listwarp", null, " Veja todas as warps disponíveis", null);
-        this.addDefault(Commands.RELOAD, "reload", "eternia.reload", " <modulo>", " Reinicia um módulo especifico ou todos.", null);
-        this.addDefault(Commands.SETTINGS, "settings", "eternia.settings", " <setting>", "Edite alguma configuração do plugin", null);
-        this.addDefault(Commands.INTERN, "eternia", "eternia.eternia", " <página>", " Receba ajuda para o sistema interno do EterniaServer plugin", null);
-        this.addDefault(Commands.COMMAND, "command", "eternia.spawn", " <página>", " Receba ajuda para o sistema de confirmação de comandos", null);
-        this.addDefault(Commands.COMMAND_ACCEPT, "accept", "eternia.spawn", null, " Confirme o uso de um comando", null);
-        this.addDefault(Commands.COMMAND_DENY, "deny", "eternia.spawn", null, " Negue o uso de um comando", null);
         this.addDefault(Commands.TITLE, "title", "eternia.title", " <página>", " Ajuda para o sistema de titulos", null);
 
         final FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_LOCALE_FILE_PATH));
@@ -166,13 +159,13 @@ public class CommandsLocaleCfg {
         }
 
         if (new File(Constants.DATA_LOCALE_FOLDER_PATH).mkdir()) {
-            ServerRelated.logError("Pasta de locales criada com sucesso", 1);
+            plugin.logError("Pasta de locales criada com sucesso", 1);
         }
 
         try {
             config.save(Constants.COMMANDS_LOCALE_FILE_PATH);
         } catch (IOException exception) {
-            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
+            plugin.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
         }
 
     }

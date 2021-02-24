@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.configurations.configs.BlocksCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.CashCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ChatCfg;
@@ -12,280 +13,148 @@ import br.com.eterniaserver.eterniaserver.configurations.configs.KitsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.RewardsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.configs.ScheduleCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.TableCfg;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.Placeholders;
-import br.com.eterniaserver.eterniaserver.configurations.dependencies.VaultHook;
+import br.com.eterniaserver.eterniaserver.craft.CraftCash;
+import br.com.eterniaserver.eterniaserver.craft.CraftEconomy;
+import br.com.eterniaserver.eterniaserver.craft.CraftEterniaServer;
+import br.com.eterniaserver.eterniaserver.craft.CraftUser;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
-import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
-import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.handlers.BlockHandler;
+import br.com.eterniaserver.eterniaserver.handlers.BlocksHandler;
 import br.com.eterniaserver.eterniaserver.handlers.EntityHandler;
 import br.com.eterniaserver.eterniaserver.handlers.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.handlers.ServerHandler;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.objects.CashItem;
-import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
-import br.com.eterniaserver.eterniaserver.objects.CommandData;
-import br.com.eterniaserver.eterniaserver.objects.CustomKit;
-import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
-import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
+public class EterniaServer extends CraftEterniaServer {
 
-public class EterniaServer extends JavaPlugin {
+    private final int[] integers = new int[Integers.values().length];
+    private final double[] doubles = new double[Doubles.values().length];
+    private final boolean[] booleans = new boolean[Booleans.values().length];
 
-    protected static final String[] messages = new String[Messages.values().length];
+    private final String[] messages = new String[Messages.values().length];
+    private final String[] strings = new String[Strings.values().length];
+    private final EntityControl[] entities = new EntityControl[EntityType.values().length];
+    private final NamespacedKey[] namespaceKeys = new NamespacedKey[ItemsKeys.values().length];
 
-    private static Pattern filter;
+    // APIs
+    private static CraftCash cashAPI;
+    private static CraftEconomy economyAPI;
+    private static CraftUser userAPI;
 
-    private static final String[] strings = new String[Strings.values().length];
-    private static final Boolean[] booleans = new Boolean[Booleans.values().length];
-    private static final Integer[] integers = new Integer[Integers.values().length];
-    private static final Double[] doubles = new Double[Doubles.values().length];
-
-    private static final List<List<String>> stringLists = new ArrayList<>();
-    private static final List<Material> elevatorMaterials = new ArrayList<>();
-    private static final List<ItemStack> menuGui = new ArrayList<>();
-    private static final List<Map<String, Map<Double, List<String>>>> chanceMaps = new ArrayList<>();
-
-    private static final Map<String, CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
-    private static final Map<String, CommandData> customCommandMap = new HashMap<>();
-    private static final Map<String, CustomKit> kitList = new HashMap<>();
-    private static final Map<String, Map<Integer, List<String>>> scheduleMap = new HashMap<>();
-    private static final Map<Integer, String> guis = new HashMap<>();
-    private static final Map<String, Integer> guisInvert = new HashMap<>();
-    private static final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
-    private static final Map<Integer, ChannelObject> channelsMap = new HashMap<>();
-    private static final List<String> channels = new ArrayList<>();
-
-    private static final EntityControl[] entities = new EntityControl[EntityType.values().length];
+    public static CraftCash getCashAPI() { return cashAPI; }
+    public static CraftEconomy getEconomyAPI() { return economyAPI; }
+    public static CraftUser getUserAPI() { return userAPI; }
 
     @Override
     public void onEnable() {
+        userAPI = new CraftUser(this);
+        cashAPI = new CraftCash(this);
+        economyAPI = new CraftEconomy(this);
 
+        loadConfiguration();
+
+        new Placeholders(this).register();
         new MetricsLite(this, 10160);
-        
-        for (int i = 0; i < Lists.values().length; i++) {
-            stringLists.add(new ArrayList<>());
-        }
-
-        for (int i = 0; i < ChanceMaps.values().length; i++) {
-            chanceMaps.add(new HashMap<>());
-        }
-
-        constants();
-        messages();
-        configs();
-        commands();
-        blocks();
-        chat();
-        entity();
-        kits();
-        cash();
-        rewards();
-        schedule();
-
-        new TableCfg();
-        new Placeholders().register();
         new Managers(this);
-        new VaultHook(this);
 
-        this.getServer().getPluginManager().registerEvents(new BlockHandler(), this);
-        this.getServer().getPluginManager().registerEvents(new EntityHandler(), this);
+        this.getServer().getPluginManager().registerEvents(new BlocksHandler(this), this);
+        this.getServer().getPluginManager().registerEvents(new EntityHandler(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerHandler(this), this);
-        this.getServer().getPluginManager().registerEvents(new ServerHandler(), this);
-
+        this.getServer().getPluginManager().registerEvents(new ServerHandler(this), this);
     }
 
-    public void constants() {
-        new ConstantsCfg(strings);
+    private void loadConfiguration() {
+        final ConstantsCfg constantsCfg = new ConstantsCfg(this, strings, namespaceKeys);
+        final MsgCfg msgCfg = new MsgCfg(this, messages);
+        final ConfigsCfg configsCfg = new ConfigsCfg(this, strings, booleans, integers, doubles);
+        final CommandsCfg commandsCfg = new CommandsCfg(this);
+        final BlocksCfg blocksCfg = new BlocksCfg(this);
+        final ChatCfg chatCfg = new ChatCfg(this, strings, integers);
+        final CashCfg cashCfg = new CashCfg(this);
+        final EntityCfg entityCfg = new EntityCfg(booleans, integers, entities);
+        final KitsCfg kitsCfg = new KitsCfg(this);
+        final RewardsCfg rewardsCfg = new RewardsCfg(this);
+        final ScheduleCfg scheduleCfg = new ScheduleCfg(this, integers);
+
+        EterniaLib.addReloadableConfiguration("eterniaserver", "constants", constantsCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "messages", msgCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "configs", configsCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "blocks", blocksCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "chat", chatCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "cash", cashCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "entities", entityCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "kits", kitsCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "rewards", rewardsCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "schedule", scheduleCfg);
+
+        constantsCfg.executeConfig();
+        msgCfg.executeConfig();
+        configsCfg.executeConfig();
+        commandsCfg.executeConfig();
+        blocksCfg.executeConfig();
+        chatCfg.executeConfig();
+        cashCfg.executeConfig();
+        entityCfg.executeConfig();
+        kitsCfg.executeConfig();
+        rewardsCfg.executeConfig();
+        scheduleCfg.executeConfig();
+        economyAPI.setUp(booleans);
+        configsCfg.executeCritical();
     }
 
-    public void messages() {
-        new MsgCfg(messages);
+    public NamespacedKey getKey(final ItemsKeys entry) {
+        return namespaceKeys[entry.ordinal()];
     }
 
-    public void configs() {
-        new ConfigsCfg(strings, booleans, integers, doubles, stringLists, elevatorMaterials);
-    }
-
-    public void commands() {
-        new CommandsCfg(customCommandMap);
-    }
-
-    public void entity() {
-        new EntityCfg(booleans, integers, entities);
-    }
-
-    public void blocks() {
-        new BlocksCfg(chanceMaps);
-    }
-
-    public void chat() {
-        new ChatCfg(customPlaceholdersObjectsMap, channelsMap, channels, integers, strings);
-    }
-
-    public void kits() {
-        new KitsCfg(kitList);
-    }
-
-    public void cash() {
-        new CashCfg(menuGui, guis, guisInvert, othersGui);
-    }
-
-    public void rewards() {
-        new RewardsCfg(chanceMaps);
-    }
-
-    public void schedule() {
-        new ScheduleCfg(scheduleMap, integers);
-    }
-
-    public static boolean changeState(String string, Boolean state) {
-        switch (string) {
-            case "entities_module":
-                booleans[Booleans.MODULE_ENTITY.ordinal()] = state;
-                return true;
-            case "entities_editor":
-                booleans[Booleans.ENTITY_EDITOR.ordinal()] = state;
-                return true;
-            case "entities_limiter":
-                booleans[Booleans.ENTITY_LIMITER.ordinal()] = state;
-                return true;
-            case "entities_breeding":
-                booleans[Booleans.BREEDING_LIMITER.ordinal()] = state;
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public static boolean changeState(String string) {
-        switch (string) {
-            case "entities_module":
-                booleans[Booleans.MODULE_ENTITY.ordinal()] = !booleans[Booleans.MODULE_ENTITY.ordinal()];
-                return true;
-            case "entities_editor":
-                booleans[Booleans.ENTITY_EDITOR.ordinal()] = !booleans[Booleans.ENTITY_EDITOR.ordinal()];
-                return true;
-            case "entities_limiter":
-                booleans[Booleans.ENTITY_LIMITER.ordinal()] = !booleans[Booleans.ENTITY_LIMITER.ordinal()];
-                return true;
-            case "entities_breeding":
-                booleans[Booleans.BREEDING_LIMITER.ordinal()] = !booleans[Booleans.BREEDING_LIMITER.ordinal()];
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public static EntityControl getControl(EntityType entityType) {
+    public EntityControl getControl(EntityType entityType) {
         return entities[entityType.ordinal()];
     }
 
-    public static String getString(Strings configName) {
+    public String getString(Strings configName) {
         return strings[configName.ordinal()];
     }
 
-    public static boolean getBoolean(Booleans configName) {
+    public boolean getBoolean(Booleans configName) {
         return booleans[configName.ordinal()];
     }
 
-    public static int getInteger(Integers configName) {
+    public int getInteger(Integers configName) {
         return integers[configName.ordinal()];
     }
 
-    public static double getDouble(Doubles configName) {
+    public double getDouble(Doubles configName) {
         return doubles[configName.ordinal()];
     }
 
-    public static void setFilter(Pattern pattern) {
-        filter = pattern;
+    public void sendMessage(CommandSender sender, Messages messagesId, String... args) {
+        sendMessage(sender, messagesId, true, args);
     }
 
-    public static Pattern getFilter() {
-        return filter;
+    public void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
+        sender.sendMessage(getMessage(messagesId, prefix, args));
     }
 
-    public static List<String> getStringList(Lists configName) {
-        return stringLists.get(configName.ordinal());
-    }
+    public String getMessage(Messages messagesId, boolean prefix, String... args) {
+        String message = messages[messagesId.ordinal()];
 
-    public static List<Material> getElevatorMaterials() {
-        return elevatorMaterials;
-    }
+        for (int i = 0; i < args.length; i++) {
+            message = message.replace("{" + i + "}", args[i]);
+        }
 
-    public static List<ItemStack> getMenuGui() {
-        return menuGui;
-    }
+        if (prefix) {
+            return strings[Strings.SERVER_PREFIX.ordinal()] + message;
+        }
 
-    public static Map<String, CustomPlaceholder> getCustomPlaceholders() {
-        return customPlaceholdersObjectsMap;
-    }
-
-    public static Map<String, CommandData> getCustomCommandMap() {
-        return customCommandMap;
-    }
-
-    public static Map<String, CustomKit> getKitList() {
-        return kitList;
-    }
-
-    public static Map<Integer, String> getGuis() {
-        return guis;
-    }
-
-    public static Map<String, Integer> getGuisInvert() {
-        return guisInvert;
-    }
-
-    public static Map<Integer, List<CashItem>> getOthersGui() {
-        return othersGui;
-    }
-
-    public static Map<String, Map<Integer, List<String>>> getScheduleMap() {
-        return scheduleMap;
-    }
-
-    public static Map<Integer, ChannelObject> getChannelsMap() {
-        return channelsMap;
-    }
-
-    public static Map<String, Map<Double, List<String>>> getChanceMap(ChanceMaps configName) {
-        return chanceMaps.get(configName.ordinal());
-    }
-
-    public static List<String> getChannels() {
-        return channels;
-    }
-
-    public static ChannelObject channelObject(int value) {
-        return channelsMap.get(value);
-    }
-
-    public static String getMessage(Messages messagesId, boolean prefix, String... args) {
-        return Constants.getMessage(messagesId, prefix, args);
-    }
-
-    public static void sendMessage(CommandSender sender, Messages messagesId, String... args) {
-        Constants.sendMessage(sender, messagesId, true, args);
-    }
-
-    public static void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
-        Constants.sendMessage(sender, messagesId, prefix, args);
+        return message;
     }
 
 }

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.handlers;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.core.ChatFormatter;
@@ -30,33 +29,34 @@ import java.util.Set;
 
 public class ServerHandler implements Listener {
 
-    private final ChatFormatter chatFormatter = new ChatFormatter();
+    private final EterniaServer plugin;
+
+    private final ChatFormatter chatFormatter;
     private static final int tellHashCode = "tell".hashCode();
 
     private String messageMOTD;
     private String message2;
 
-    public ServerHandler() {
-
-        messageMOTD = ChatColor.translateAlternateColorCodes('&', EterniaServer.getMessage(Messages.SERVER_MOTD_1, false));
-        message2 = ChatColor.translateAlternateColorCodes('&', EterniaServer.getMessage(Messages.SERVER_MOTD_2, false));
-
-        if (ServerRelated.getVersion() >= 116) {
-            messageMOTD = ServerRelated.translateHex(messageMOTD);
-            message2 = ServerRelated.translateHex(message2);
+    public ServerHandler(final EterniaServer plugin) {
+        this.plugin = plugin;
+        this.chatFormatter= new ChatFormatter(plugin);
+        messageMOTD = ChatColor.translateAlternateColorCodes('&', plugin.getMessage(Messages.SERVER_MOTD_1, false));
+        message2 = ChatColor.translateAlternateColorCodes('&', plugin.getMessage(Messages.SERVER_MOTD_2, false));
+        if (plugin.getVersion() >= 116) {
+            messageMOTD = plugin.translateHex(messageMOTD);
+            message2 = plugin.translateHex(message2);
         }
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPreCreatureSpawn(PreCreatureSpawnEvent event) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.ENTITY_LIMITER)) {
+        if (!plugin.getBoolean(Booleans.MODULE_ENTITY) || !plugin.getBoolean(Booleans.ENTITY_LIMITER)) {
             return;
         }
 
         int amount = 0;
         EntityType entityType = event.getType();
-        EntityControl entityControl = EterniaServer.getControl(entityType);
+        EntityControl entityControl = plugin.getControl(entityType);
 
         if (entityControl.getSpawnLimit() == -1) {
             return;
@@ -75,12 +75,12 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.ENTITY_EDITOR)) {
+        if (!plugin.getBoolean(Booleans.MODULE_ENTITY) || !plugin.getBoolean(Booleans.ENTITY_EDITOR)) {
             return;
         }
 
         LivingEntity entity = event.getEntity();
-        EntityControl entityControl = EterniaServer.getControl(entity.getType());
+        EntityControl entityControl = plugin.getControl(entity.getType());
 
         if (!entityControl.getEditorState()) {
             return;
@@ -99,21 +99,21 @@ public class ServerHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_CHAT) || e.isCancelled()) {
+        if (!plugin.getBoolean(Booleans.MODULE_CHAT) || e.isCancelled()) {
             return;
         }
 
         User user = new User(e.getPlayer());
 
-        if (ServerRelated.isChatMuted() && !user.hasPermission(EterniaServer.getString(Strings.PERM_MUTE_BYPASS))) {
+        if (plugin.isChatMuted() && !user.hasPermission(plugin.getString(Strings.PERM_MUTE_BYPASS))) {
             e.setCancelled(true);
             return;
         }
 
         long time = user.getMuteTime();
 
-        if (ServerRelated.isInFutureCooldown(time)) {
-            user.sendMessage(Messages.CHAT_ARE_MUTED, ServerRelated.getTimeLeftOfCooldown(time));
+        if (plugin.isInFutureCooldown(time)) {
+            plugin.sendMessage(user.getPlayer(), Messages.CHAT_ARE_MUTED, plugin.getTimeLeftOfCooldown(time));
             e.setCancelled(true);
             return;
         }
@@ -123,14 +123,14 @@ public class ServerHandler implements Listener {
 
     private boolean getChannel(AsyncPlayerChatEvent e, User user) {
         String message = e.getMessage();
-        if (!user.hasPermission(EterniaServer.getString(Strings.PERM_CHAT_BYPASS_PROTECTION))) {
-            message = EterniaServer.getFilter().matcher(message).replaceAll("");
+        if (!user.hasPermission(plugin.getString(Strings.PERM_CHAT_BYPASS_PROTECTION))) {
+            message = plugin.getFilter().matcher(message).replaceAll("");
         }
 
         Set<Player> players = e.getRecipients();
 
-        if (user.getChannel() == EterniaServer.getString(Strings.DISCORD_SRV).hashCode()) {
-            chatFormatter.filter(user, message, EterniaServer.channelObject(user.getChannel()), players);
+        if (user.getChannel() == plugin.getString(Strings.DISCORD_SRV).hashCode()) {
+            chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), players);
             return false;
         }
 
@@ -139,20 +139,20 @@ public class ServerHandler implements Listener {
             return true;
         }
 
-        chatFormatter.filter(user, message, EterniaServer.channelObject(user.getChannel()), players);
+        chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), players);
         return true;
     }
 
     private void sendTell(User user, String msg) {
         if (!user.isTell() || user.getTellingPlayerName() == null) {
-            user.sendMessage(Messages.CHAT_NO_ONE_TO_RESP);
+            plugin.sendMessage(user.getPlayer(), Messages.CHAT_NO_ONE_TO_RESP);
             return;
         }
 
         Player target = Bukkit.getPlayer(user.getTellingPlayerName());
 
         if (target == null || !target.isOnline()) {
-            user.sendMessage(Messages.CHAT_NO_ONE_TO_RESP);
+            plugin.sendMessage(user.getPlayer(), Messages.CHAT_NO_ONE_TO_RESP);
             return;
         }
 

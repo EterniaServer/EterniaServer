@@ -2,6 +2,8 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import java.io.File;
 
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
@@ -12,11 +14,22 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
-public class EntityCfg extends GenericCfg {
-    public EntityCfg(Boolean[] booleans, Integer[] integers, EntityControl[] entities) {
+public class EntityCfg extends GenericCfg implements ReloadableConfiguration {
 
-        super(null, booleans, integers, null, null);
+    private final EntityControl[] entities;
 
+    public EntityCfg(final boolean[] booleans, int[] integers, EntityControl[] entities) {
+        super(null, null, booleans, integers, null);
+        this.entities = entities;
+    }
+
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.GENERIC;
+    }
+
+    @Override
+    public void executeConfig() {
         FileConfiguration file = YamlConfiguration.loadConfiguration(new File(Constants.ENTITY_FILE_PATH));
         FileConfiguration outFile = new YamlConfiguration();
 
@@ -44,8 +57,8 @@ public class EntityCfg extends GenericCfg {
             outFile.set(entry + "editor.state", editorState);
             outFile.set(entry + "editor.health", health);
             outFile.set(entry + "editor.attack-damage", attackDamage);
-            outFile.set(entry + "editor.speed", speed);  
-            
+            outFile.set(entry + "editor.speed", speed);
+
             EntityControl entityControl = new EntityControl(clearAmount, spawnLimit, breedingLimit, editorState);
             entityControl.setAttackDamage(attackDamage);
             entityControl.setHealth(health);
@@ -54,6 +67,10 @@ public class EntityCfg extends GenericCfg {
         }
 
         saveFile(outFile, Constants.ENTITY_FILE_PATH);
+    }
+
+    @Override
+    public void executeCritical() {
 
     }
 }

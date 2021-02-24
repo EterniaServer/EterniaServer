@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 
 import org.bukkit.Bukkit;
@@ -22,19 +21,19 @@ public class CheckWorld extends BukkitRunnable {
     }
 
     private void checkWorld(final World world) {
-        final int sleeping = ServerRelated.getSleeping(world).size();
+        final int sleeping = plugin.getSleeping(world).size();
         if (sleeping > 0) {
-            ServerRelated.putInSkipping(world);
+            plugin.putInSkipping(world);
             new PassNight(world, plugin).runTaskTimer(plugin, 1, 1);
         }
     }
 
     private boolean validateWorld(final World world) {
-        return !isBlacklisted(world) && !ServerRelated.isSkipping(world) && isNight(world);
+        return !isBlacklisted(world) && !plugin.isSkipping(world) && isNight(world);
     }
 
     private boolean isBlacklisted(final World world) {
-        return EterniaServer.getStringList(Lists.BLACKLISTED_WORLDS_SLEEP).contains(world.getName());
+        return plugin.getStringList(Lists.BLACKLISTED_WORLDS_SLEEP).contains(world.getName());
     }
 
     private boolean isNight(final World world) {

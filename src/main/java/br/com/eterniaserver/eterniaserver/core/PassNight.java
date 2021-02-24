@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -20,32 +19,32 @@ public class PassNight extends BukkitRunnable {
     public PassNight(final World world, EterniaServer plugin) {
         this.plugin = plugin;
         this.world = world;
-        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - ServerRelated.getNightMessageTime()) > 300) {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.NIGHT_SKIPPING, true, world.getName()));
+        if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - plugin.getNightMessageTime()) > 300) {
+            Bukkit.broadcastMessage(plugin.getMessage(Messages.NIGHT_SKIPPING, true, world.getName()));
         }
     }
 
     @Override
     public void run() {
         final long time = world.getTime();
-        final int sleeping = ServerRelated.getSleeping(world).size();
+        final int sleeping = plugin.getSleeping(world).size();
         final int players = plugin.getServer().getMaxPlayers();
         if (sleeping > 0) {
             int x = players / sleeping;
-            int timeRate = EterniaServer.getInteger(Integers.NIGHT_SPEED) / x;
+            int timeRate = plugin.getInteger(Integers.NIGHT_SPEED) / x;
             if (time >= (1200 - timeRate * 1.5) && time <= 1200) {
                 world.setStorm(false);
                 world.setThundering(false);
                 world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
-                Bukkit.getScheduler().runTaskLater(plugin, () -> ServerRelated.removeFromSkipping(world), 20);
-                Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.NIGHT_SKIPPED, true, world.getName()));
-                ServerRelated.updateNightMessageTime();
+                Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.removeFromSkipping(world), 20);
+                Bukkit.broadcastMessage(plugin.getMessage(Messages.NIGHT_SKIPPED, true, world.getName()));
+                plugin.updateNightMessageTime();
                 this.cancel();
             } else {
                 world.setTime(time + timeRate);
             }
-        } else if (ServerRelated.isSkipping(world)) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> ServerRelated.removeFromSkipping(world), 20);
+        } else if (plugin.isSkipping(world)) {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.removeFromSkipping(world), 20);
             this.cancel();
         }
     }

@@ -1,28 +1,63 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.SQL;
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.core.queries.CreateTable;
+import br.com.eterniaserver.eternialib.core.queries.Insert;
+import br.com.eterniaserver.eternialib.core.queries.Select;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
-import org.bukkit.Material;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-public class ConfigsCfg extends GenericCfg {
+public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
 
-    public ConfigsCfg(String[] strings, Boolean[] booleans, Integer[] integers, Double[] doubles, List<List<String>> lists, List<Material> elevatorMaterials) {
+    private final EterniaServer plugin;
 
-        super(strings, booleans, integers, doubles, lists);
+    public ConfigsCfg(final EterniaServer plugin,
+                      final String[] strings,
+                      final boolean[] booleans,
+                      final int[] integers,
+                      final double[] doubles) {
+        super(plugin, strings, booleans, integers, doubles);
+        this.plugin = plugin;
+    }
 
-        FileConfiguration file = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
-        FileConfiguration outFile = new YamlConfiguration();
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.WARNING_ADVICE;
+    }
+
+    @Override
+    public void executeConfig() {
+        final FileConfiguration file = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
+        final FileConfiguration outFile = new YamlConfiguration();
 
         setBoolean(Booleans.MODULE_BED, file, outFile, "module.bed", true);
         setBoolean(Booleans.MODULE_BLOCK, file, outFile, "module.block-reward", true);
@@ -79,10 +114,232 @@ public class ConfigsCfg extends GenericCfg {
         setList(Lists.PROFILE_CUSTOM_MESSAGES, file, outFile, "profile.custom-messages");
         setList(Lists.TITLE_LIST, file, outFile, "titles", "Maníaco", "Farmer");
 
-        setMaterials(elevatorMaterials, file, outFile, "IRON_BLOCK");
+        setMaterials(plugin.elevatorMaterials, file, outFile, "IRON_BLOCK");
 
         saveFile(outFile, Constants.CONFIG_FILE_PATH);
+    }
 
+    @Override
+    public void executeCritical() {
+        CreateTable createTable;
+        if (EterniaLib.getMySQL()) {
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_KITS));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "name VARCHAR(32)", "cooldown BIGINT(20)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_PLAYER));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "player_name VARCHAR(16)",
+                    "player_display VARCHAR(512)", "time BIGINT(20)", "last BIGINT(20)", "hours BIGINT(20)", "balance DOUBLE(20,4)",
+                    "cash BIGINT(20)", "xp BIGINT(20)", "muted BIGINT(20)", "homes VARCHAR(1024)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "name VARCHAR(64)", "world VARCHAR(32)",
+                    "coord_x DOUBLE", "coord_y DOUBLE", "coord_z DOUBLE", "coord_yaw FLOAT", "coord_pitch FLOAT");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_TITLES));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "key_code VARCHAR(16)", "group_name VARCHAR(16)");
+        } else {
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_KITS));
+            createTable.columns.set("name VARCHAR(32)", "cooldown INTEGER");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_PLAYER));
+            createTable.columns.set("uuid VARCHAR(36)", "player_name VARCHAR(16)",
+                    "player_display VARCHAR(512)", "time INTEGER", "last INTEGER", "hours INTEGER", "balance DOUBLE(22)",
+                    "cash INTEGER", "xp INTEGER", "muted INTEGER", "homes VARCHAR(1024)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            createTable.columns.set("name VARCHAR(64)", "world VARCHAR(32)", "coord_x DOUBLE", "coord_y DOUBLE",
+                    "coord_z DOUBLE", "coord_yaw FLOAT", "coord_pitch FLOAT");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_TITLES));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
+            createTable.columns.set("key_code VARCHAR(16)", "group_name VARCHAR(16)");
+        }
+
+        SQL.execute(createTable);
+
+        convertingDisplayNameSize();
+        convertingOldTable(plugin.getString(Strings.TABLE_LOCATIONS));
+
+        loadPlayers();
+        loadKits();
+        loadRewards();
+        loadTitles();
+    }
+
+    private void loadPlayers() {
+        final Set<String> playersName = new HashSet<>();
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_PLAYER)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()){
+            while (resultSet.next()) {
+                final String playerName = resultSet.getString("player_name");
+                PlayerProfile playerProfile = new PlayerProfile(
+                        playerName,
+                        resultSet.getLong("time"),
+                        resultSet.getLong("last"),
+                        resultSet.getLong("hours")
+                );
+                final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
+                if (plugin.getBoolean(Booleans.MODULE_ECONOMY)) {
+                    EterniaServer.getEconomyAPI().putInMoney(uuid, resultSet.getDouble("balance"));
+                }
+                getModules(playerProfile, resultSet);
+                EterniaServer.getUserAPI().putProfile(uuid, playerProfile);
+                if (playerName != null) {
+                    playersName.add(playerName.toLowerCase());
+                }
+            }
+        } catch (SQLException ignored) {
+            plugin.logError("Erro ao carregar database", 3);
+        }
+
+        final List<String> shopList = plugin.getShopList();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+            try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+                plugin.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
+                while (resultSet.next()) {
+                    final String name = resultSet.getString("name");
+                    final String worldName = resultSet.getString("world");
+                    final double x = resultSet.getDouble("coord_x");
+                    final double y = resultSet.getDouble("coord_y");
+                    final double z = resultSet.getDouble("coord_z");
+                    final float yaw = resultSet.getFloat("coord_yaw");
+                    final float pitch = resultSet.getFloat("coord_pitch");
+
+                    if (name == null || worldName == null) {
+                        continue;
+                    }
+
+                    final World world = Bukkit.getWorld(worldName);
+
+                    if (world == null) {
+                        continue;
+                    }
+
+                    plugin.putLocation(name, new Location(world, x, y, z, yaw, pitch));
+                    if (playersName.contains(name)) {
+                        shopList.add(name);
+                    }
+                }
+            } catch (SQLException ignored) {
+                plugin.logError("Erro ao carregar database", 3);
+            }
+        });
+        EterniaLib.report(plugin.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(EterniaServer.getUserAPI().getProfileMapSize())));
+    }
+
+    private void loadKits() {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_KITS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                EterniaServer.getUserAPI().putKitCooldown(resultSet.getString("name"), resultSet.getLong("cooldown"));
+            }
+        } catch (SQLException e) {
+            plugin.logError("Erro ao pegar arquivos da database", 3);
+            e.printStackTrace();
+        }
+    }
+
+    private void loadRewards() {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_REWARD)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                plugin.updateRewardMap(resultSet.getString("key_code"), resultSet.getString("group_name"));
+            }
+        } catch (SQLException ignored) {
+            plugin.logError("Erro ao pegar arquivos da database", 3);
+        }
+        EterniaLib.report(plugin.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(plugin.getRewardMapSize())));
+    }
+
+    private void loadTitles() {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_TITLES)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                PlayerProfile playerProfile = EterniaServer.getUserAPI().getProfile(UUID.fromString(resultSet.getString("uuid")));
+                playerProfile.getTitles().addAll(Arrays.asList(resultSet.getString("titles_array").split(":")));
+                playerProfile.setActiveTitle(resultSet.getString("default_title"));
+            }
+        } catch (SQLException exception) {
+            plugin.logError("Erro ao carregar database", 3);
+        }
+    }
+
+    private void getModules(PlayerProfile playerProfile, ResultSet resultSet) throws SQLException {
+        if (plugin.getBoolean(Booleans.MODULE_CASH)) {
+            playerProfile.setCash(resultSet.getInt("cash"));
+        }
+        if (plugin.getBoolean(Booleans.MODULE_EXPERIENCE)) {
+            playerProfile.setXp(resultSet.getInt("xp"));
+        }
+        if (plugin.getBoolean(Booleans.MODULE_HOMES)) {
+            String result = resultSet.getString("homes");
+            if (result != null) {
+                for (String home : result.split(":")) {
+                    playerProfile.getHomes().add(home);
+                }
+            }
+        }
+        if (plugin.getBoolean(Booleans.MODULE_CHAT)) {
+            playerProfile.setMuted(resultSet.getLong("muted"));
+            playerProfile.setPlayerDisplayName(resultSet.getString("player_display"));
+        }
+    }
+
+    private void convertingDisplayNameSize() {
+        try (Connection connection = SQL.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("ALTER TABLE " + plugin.getString(Strings.TABLE_PLAYER) +
+                    " MODIFY player_display VARCHAR(512);");
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException ignored) { }
+    }
+
+    private void convertingOldTable(final String oldTable) {
+        final List<Insert> insertList = new ArrayList<>();
+        boolean converted;
+
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(oldTable).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                final String[] split = resultSet.getString("location").split(":");
+                final Insert insert = new Insert(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+                insert.columns.set("name", "world", "coord_x", "coord_y", "coord_z", "coord_yaw", "coord_pitch");
+                insert.values.set(
+                        resultSet.getString("name"),
+                        split[0],
+                        Double.parseDouble(split[1]),
+                        Double.parseDouble(split[2]),
+                        Double.parseDouble(split[3]),
+                        Float.parseFloat(split[4]),
+                        Float.parseFloat(split[5]));
+                insertList.add(insert);
+            }
+            converted = true;
+        } catch (SQLException ignored) {
+            converted = false;
+        }
+
+        if (!converted) {
+            return;
+        }
+
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS " + oldTable + ";")) {
+            preparedStatement.execute();
+        } catch (SQLException ignored) {}
+
+        for (final Insert insert : insertList) {
+            SQL.execute(insert);
+        }
+
+        Bukkit.getConsoleSender().sendMessage(plugin.getMessage(Messages.SERVER_CONVERTING_DATABASE, true, "100"));
     }
 
 }

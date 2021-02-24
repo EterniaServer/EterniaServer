@@ -1,9 +1,9 @@
 package br.com.eterniaserver.eterniaserver.configurations.locales;
 
-import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CustomizableMessage;
 
@@ -15,13 +15,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MsgCfg {
+public class MsgCfg implements ReloadableConfiguration {
+
+    private final EterniaServer plugin;
+    private final String[] messages;
 
     private final Map<String, CustomizableMessage> defaults;
 
-
-    public MsgCfg(String[] messages) {
-
+    public MsgCfg(final EterniaServer plugin, final String[] messages) {
+        this.plugin = plugin;
+        this.messages = messages;
         this.defaults = new HashMap<>();
 
         this.addDefault(Messages.SERVER_NO_PERM, "Você não possui permissão para isso$8.", null);
@@ -218,41 +221,6 @@ public class MsgCfg {
         this.addDefault(Messages.COMMAND_DENIED, "Comando cancelado$8.", null);
         this.addDefault(Messages.COMMAND_NOT, "Nenhum comando para ser aceito$8.", null);
         this.addDefault(Messages.COMMAND_COST, "Esse comando custa $3{0}$7 para aceitar use $6/command accept $7para negar use $6/command deny$8.", "0: custo do comando");
-
-        final FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.MESSAGES_FILE_PATH));
-
-        for (Messages messagesEnum : Messages.values()) {
-            CustomizableMessage messageData = defaults.get(messagesEnum.name());
-
-            final String path = getPath(messagesEnum);
-
-            if (messageData == null) {
-                messageData = new CustomizableMessage(messagesEnum, EterniaServer.getString(Strings.SERVER_PREFIX) +"Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
-                ServerRelated.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
-            }
-
-            messages[messagesEnum.ordinal()] = config.getString(path + messagesEnum.name() + ".text", messageData.text);
-            config.set(path + messagesEnum.name() + ".text", messages[messagesEnum.ordinal()]);
-
-            messages[messagesEnum.ordinal()] = messages[messagesEnum.ordinal()].replace('$', (char) 0x00A7);
-
-            if (messageData.getNotes() != null) {
-                messageData.setNotes(config.getString(path + messagesEnum.name() + ".notes", messageData.getNotes()));
-                config.set(path + messagesEnum.name() + ".notes", messageData.getNotes());
-            }
-
-        }
-
-        if (new File(Constants.DATA_LOCALE_FOLDER_PATH).mkdir()) {
-            ServerRelated.logError("Pasta de locales criada com sucesso", 1);
-        }
-
-        try {
-            config.save(Constants.MESSAGES_FILE_PATH);
-        } catch (IOException exception) {
-            ServerRelated.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
-        }
-
     }
 
     private void addDefault(Messages id, String text, String notes) {
@@ -287,4 +255,45 @@ public class MsgCfg {
         }
     }
 
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.GENERIC;
+    }
+
+    @Override
+    public void executeConfig() {
+        final FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.MESSAGES_FILE_PATH));
+
+        for (Messages messagesEnum : Messages.values()) {
+            CustomizableMessage messageData = defaults.get(messagesEnum.name());
+            final String path = getPath(messagesEnum);
+            if (messageData == null) {
+                messageData = new CustomizableMessage(messagesEnum, "Mensagem faltando para $3" + messagesEnum.name() + "$8.", null);
+                plugin.logError("Entrada para a mensagem " + messagesEnum.name(), 2);
+            }
+
+            messages[messagesEnum.ordinal()] = config.getString(path + messagesEnum.name() + ".text", messageData.text);
+            config.set(path + messagesEnum.name() + ".text", messages[messagesEnum.ordinal()]);
+            messages[messagesEnum.ordinal()] = messages[messagesEnum.ordinal()].replace('$', (char) 0x00A7);
+            if (messageData.getNotes() != null) {
+                messageData.setNotes(config.getString(path + messagesEnum.name() + ".notes", messageData.getNotes()));
+                config.set(path + messagesEnum.name() + ".notes", messageData.getNotes());
+            }
+        }
+
+        if (new File(Constants.DATA_LOCALE_FOLDER_PATH).mkdir()) {
+            plugin.logError("Pasta de locales criada com sucesso", 1);
+        }
+
+        try {
+            config.save(Constants.MESSAGES_FILE_PATH);
+        } catch (IOException exception) {
+            plugin.logError("Impossível de criar arquivos em " + Constants.DATA_LOCALE_FOLDER_PATH, 3);
+        }
+    }
+
+    @Override
+    public void executeCritical() {
+
+    }
 }

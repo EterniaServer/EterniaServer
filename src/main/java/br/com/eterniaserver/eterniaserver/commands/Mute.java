@@ -14,9 +14,8 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.SQL;
-import br.com.eterniaserver.eternialib.sql.queries.Update;
+import br.com.eterniaserver.eternialib.core.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.ServerRelated;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -29,6 +28,12 @@ import java.util.Date;
 
 @CommandAlias("%mute")
 public class Mute extends BaseCommand {
+
+    private final EterniaServer plugin;
+
+    public Mute(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
 
     @Default
     @CatchUnknown
@@ -44,12 +49,12 @@ public class Mute extends BaseCommand {
     @CommandPermission("%mute_channels_perm")
     @Description("%mute_channels_description")
     public void muteChannels(Player sender) {
-        if (ServerRelated.isChatMuted()) {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_CHANNELS_DISABLED, true, sender.getName(), sender.getDisplayName()));
+        if (plugin.isChatMuted()) {
+            Bukkit.broadcastMessage(plugin.getMessage(Messages.CHAT_CHANNELS_DISABLED, true, sender.getName(), sender.getDisplayName()));
         } else {
-            Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_CHANNELS_ENABLED, true, sender.getName(), sender.getDisplayName()));
+            Bukkit.broadcastMessage(plugin.getMessage(Messages.CHAT_CHANNELS_ENABLED, true, sender.getName(), sender.getDisplayName()));
         }
-        ServerRelated.changeChatLockState();
+        plugin.changeChatLockState();
     }
 
     @CommandCompletion("@players Mensagem")
@@ -64,9 +69,9 @@ public class Mute extends BaseCommand {
         cal.setTime(new Date());
         cal.add(Calendar.YEAR, 20);
         long time = cal.getTimeInMillis();
-        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_MUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName(), message));
+        Bukkit.broadcastMessage(plugin.getMessage(Messages.CHAT_BROADCAST_MUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName(), message));
 
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+        Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
         update.set.set("time", time);
         update.where.set("uuid", target.getUUID().toString());
         SQL.executeAsync(update);
@@ -84,9 +89,9 @@ public class Mute extends BaseCommand {
         final long time = System.currentTimeMillis();
 
         target.putMutedTime(time);
-        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_UNMUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName()));
+        Bukkit.broadcastMessage(plugin.getMessage(Messages.CHAT_BROADCAST_UNMUTE, true, target.getName(), target.getDisplayName(), player.getName(), player.getDisplayName()));
 
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+        Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
         update.set.set("time", time);
         update.where.set("uuid", target.getUUID().toString());
         SQL.executeAsync(update);
@@ -104,9 +109,9 @@ public class Mute extends BaseCommand {
         cal.add(Calendar.MINUTE, time);
         final long timeInMillis = cal.getTimeInMillis();
 
-        Bukkit.broadcastMessage(EterniaServer.getMessage(Messages.CHAT_BROADCAST_TEMP_MUTE, true, target.getName(), target.getDisplayName(), String.valueOf(time), player.getName(), player.getDisplayName(), message));
+        Bukkit.broadcastMessage(plugin.getMessage(Messages.CHAT_BROADCAST_TEMP_MUTE, true, target.getName(), target.getDisplayName(), String.valueOf(time), player.getName(), player.getDisplayName(), message));
 
-        Update update = new Update(EterniaServer.getString(Strings.TABLE_PLAYER));
+        Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
         update.set.set("time", time);
         update.where.set("uuid", target.getUUID().toString());
         SQL.executeAsync(update);

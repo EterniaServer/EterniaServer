@@ -22,7 +22,7 @@ public class PluginClearSchedule extends BukkitRunnable {
 
     public PluginClearSchedule(EterniaServer plugin) {
         this.plugin = plugin;
-        length = EterniaServer.getInteger(Integers.CLEAR_RANGE);
+        length = plugin.getInteger(Integers.CLEAR_RANGE);
 
         int lengthCube = (this.length * 2) + 1;
 
@@ -31,7 +31,7 @@ public class PluginClearSchedule extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!EterniaServer.getBoolean(Booleans.CLEAR_ENTITIES)) {
+        if (!plugin.getBoolean(Booleans.CLEAR_ENTITIES)) {
             return;
         }
 
@@ -63,7 +63,7 @@ public class PluginClearSchedule extends BukkitRunnable {
 
         for (Entity e : entities) {
             EntityType entityType = e.getType();
-            EntityControl entityControl = EterniaServer.getControl(entityType);
+            EntityControl entityControl = plugin.getControl(entityType);
 
             if (entityControl.getClearAmount() == -1) {
                 continue;

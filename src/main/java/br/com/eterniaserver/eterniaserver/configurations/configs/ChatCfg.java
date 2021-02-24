@@ -1,5 +1,7 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.Constants;
@@ -13,19 +15,31 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class ChatCfg extends GenericCfg {
+public class ChatCfg extends GenericCfg implements ReloadableConfiguration {
 
-    public ChatCfg(Map<String, CustomPlaceholder> customPlaceholdersObjectsMap, Map<Integer, ChannelObject> channelObjectMap, List<String> channels, Integer[] integers, String[] strings) {
-        super(strings, null, integers, null, null);
+    private final EterniaServer plugin;
 
-        channelObjectMap.clear();
-        customPlaceholdersObjectsMap.clear();
-        channels.clear();
+    public ChatCfg(final EterniaServer plugin,
+                   final String[] strings,
+                   final int[] integers) {
+        super(plugin, strings, null, integers, null);
+        this.plugin = plugin;
+    }
+
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.GENERIC;
+    }
+
+    @Override
+    public void executeConfig() {
+        plugin.channelsMap.clear();
+        plugin.customPlaceholdersObjectsMap.clear();
+        plugin.channels.clear();
 
         FileConfiguration chatConfig = YamlConfiguration.loadConfiguration(new File(Constants.CHAT_FILE_PATH));
         FileConfiguration outChat = new YamlConfiguration();
@@ -46,24 +60,24 @@ public class ChatCfg extends GenericCfg {
                         chatConfig.getBoolean("channels." + channel + ".range", false),
                         chatConfig.getInt("channels." + channel + ".range-value", 0)
                 );
-                channelObjectMap.put(channel.hashCode(), channelObject);
+                plugin.channelsMap.put(channel.hashCode(), channelObject);
             }
         }
 
         setString(Strings.DEFAULT_CHANNEL, chatConfig, outChat, "default-channel", "global");
         setString(Strings.DISCORD_SRV, chatConfig, outChat, "discord-srv-channel", "global");
 
-        if (channelObjectMap.isEmpty()) {
-            channelObjectMap.putAll(tempChannelMap);
+        if (plugin.channelsMap.isEmpty()) {
+            plugin.channelsMap.putAll(tempChannelMap);
         }
 
         if (lista == null || lista.isEmpty()) {
             lista = Set.of("global");
         }
 
-        channels.addAll(lista);
+        plugin.channels.addAll(lista);
 
-        channelObjectMap.forEach((k, v) -> {
+        plugin.channelsMap.forEach((k, v) -> {
             String channel = v.getName();
             outChat.set("channels." + channel + ".format", v.getFormat());
             outChat.set("channels." + channel + ".perm", v.getPerm());
@@ -76,15 +90,15 @@ public class ChatCfg extends GenericCfg {
 
         outChat.set("filter", filter);
 
-        EterniaServer.setFilter(Pattern.compile(filter));
+        plugin.setFilter(Pattern.compile(filter));
 
-        customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.default", "%vault_prefix%", "", "", 3, false));
-        customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.default", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4, false));
-        customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.default", " &8➤ ", "", "", 6, true));
-        customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholder("eternia.chat.default", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2, false));
-        customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.default", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1, false));
-        customPlaceholdersObjectsMap.put("global", new CustomPlaceholder("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0, true));
-        customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.default", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5, false));
+        plugin.customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.default", "%vault_prefix%", "", "", 3, false));
+        plugin.customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.default", "%player_displayname% ", "&7Nome real&8: &3%player_name%&8.", "/profile %player_name%", 4, false));
+        plugin.customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.default", " &8➤ ", "", "", 6, true));
+        plugin.customPlaceholdersObjectsMap.put("sufix", new CustomPlaceholder("eternia.chat.default", "%vault_suffix% ", "&7Clique para enviar uma mensagem&8.", "/msg %player_name% ", 2, false));
+        plugin.customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.default", "%simpleclans_tag_label%", "&7Clan&8: &3%simpleclans_clan_name%&8.", "", 1, false));
+        plugin.customPlaceholdersObjectsMap.put("global", new CustomPlaceholder("eternia.chat.global", "&8[&fG&8] ", "&7Clique para entrar no &fGlobal&8.", "/global ", 0, true));
+        plugin.customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.default", "%eterniamarriage_statusheart%", "&7Casado(a) com&8: &3%eterniamarriage_partner%&8.", "", 5, false));
 
         Map<String, CustomPlaceholder> tempCustomPlaceholdersMap = new HashMap<>();
         ConfigurationSection configurationSection = chatConfig.getConfigurationSection("placeholders");
@@ -101,11 +115,11 @@ public class ChatCfg extends GenericCfg {
         }
 
         if (tempCustomPlaceholdersMap.isEmpty()) {
-            tempCustomPlaceholdersMap = new HashMap<>(customPlaceholdersObjectsMap);
+            tempCustomPlaceholdersMap = new HashMap<>(plugin.customPlaceholdersObjectsMap);
         }
 
-        customPlaceholdersObjectsMap.clear();
-        tempCustomPlaceholdersMap.forEach(customPlaceholdersObjectsMap::put);
+        plugin.customPlaceholdersObjectsMap.clear();
+        tempCustomPlaceholdersMap.forEach(plugin.customPlaceholdersObjectsMap::put);
 
         tempCustomPlaceholdersMap.forEach((k, v) -> {
             outChat.set("placeholders." + k + ".perm", v.getPermission());
@@ -117,7 +131,10 @@ public class ChatCfg extends GenericCfg {
         });
 
         saveFile(outChat, Constants.CHAT_FILE_PATH);
-
     }
 
+    @Override
+    public void executeCritical() {
+
+    }
 }

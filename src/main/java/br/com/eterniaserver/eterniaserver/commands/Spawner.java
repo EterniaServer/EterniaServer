@@ -8,7 +8,6 @@ import br.com.eterniaserver.acf.annotation.Default;
 import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
-import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Entities;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -30,7 +29,12 @@ import java.util.stream.Stream;
 @CommandAlias("%spawnergive")
 public class Spawner extends BaseCommand {
 
+    private final EterniaServer plugin;
     private final static List<String> entities = Stream.of(Entities.values()).map(Enum::name).collect(Collectors.toList());
+
+    public Spawner(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
 
     @Default
     @CommandCompletion("@entidades 1 @players")
@@ -46,12 +50,12 @@ public class Spawner extends BaseCommand {
             EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
             if (inventory.firstEmpty() == -1) {
-                EterniaServer.sendMessage(player, Messages.SPAWNER_INV_FULL);
+                plugin.sendMessage(player, Messages.SPAWNER_INV_FULL);
             } else {
                 inventory.addItem(getSpawner(spawnerName, value));
                 final String playerDisplay = player instanceof Player ? ((Player) player).getPlayer().getDisplayName() : player.getName();
-                EterniaServer.sendMessage(targetP, Messages.SPAWNER_RECEIVED, spawnerName, player.getName(), playerDisplay, String.valueOf(value));
-                EterniaServer.sendMessage(player, Messages.SPAWNER_SENT, spawnerName, targetP.getName(), targetP.getDisplayName(), String.valueOf(value));
+                plugin.sendMessage(targetP, Messages.SPAWNER_RECEIVED, spawnerName, player.getName(), playerDisplay, String.valueOf(value));
+                plugin.sendMessage(player, Messages.SPAWNER_SENT, spawnerName, targetP.getName(), targetP.getDisplayName(), String.valueOf(value));
             }
         } else {
             sendTypes(player);
@@ -62,11 +66,9 @@ public class Spawner extends BaseCommand {
         ItemStack item = new ItemStack(Material.SPAWNER);
         ItemMeta meta = item.getItemMeta();
         item.setAmount(value);
-        meta.setDisplayName("§8[" + EterniaServer.getString(Strings.SPAWNERS_COLORS) + spawnerName + " §7Spawner§8]");
+        meta.setDisplayName("§8[" + plugin.getString(Strings.SPAWNERS_COLORS) + spawnerName + " §7Spawner§8]");
         item.setItemMeta(meta);
-        NBTItem nbtItem = new NBTItem(item);
-        nbtItem.setString("ms_mob", spawnerName.toUpperCase());
-        return nbtItem.getItem();
+        return item;
     }
 
     private void sendTypes(final CommandSender player) {
@@ -78,7 +80,7 @@ public class Spawner extends BaseCommand {
                 str.append(ChatColor.DARK_AQUA).append(entities.get(i)).append(ChatColor.DARK_GRAY).append(", ");
             }
         }
-        EterniaServer.sendMessage(player, Messages.SPAWNER_SEND_TYPES, str.toString());
+        plugin.sendMessage(player, Messages.SPAWNER_SEND_TYPES, str.toString());
     }
 
 }

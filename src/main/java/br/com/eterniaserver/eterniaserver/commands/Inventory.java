@@ -6,7 +6,6 @@ import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Syntax;
-import br.com.eterniaserver.eternialib.NBTItem;
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -18,6 +17,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Inventory extends BaseCommand {
+
+    private final EterniaServer plugin;
+
+    public Inventory(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
 
     @CommandAlias("%workbench")
     @Description("%workbench_description")
@@ -46,12 +51,12 @@ public class Inventory extends BaseCommand {
             return;
         }
 
-        if (player.hasPermission(EterniaServer.getString(Strings.PERM_EC_OTHER))) {
+        if (player.hasPermission(plugin.getString(Strings.PERM_EC_OTHER))) {
             player.openInventory(target.getPlayer().getEnderChest());
             return;
         }
 
-        EterniaServer.sendMessage(player, Messages.SERVER_NO_PERM);
+        plugin.sendMessage(player, Messages.SERVER_NO_PERM);
     }
 
     @CommandAlias("%hat")
@@ -61,16 +66,13 @@ public class Inventory extends BaseCommand {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         if (itemStack.getType() == Material.AIR) {
-            EterniaServer.sendMessage(player, Messages.ITEM_NOT_FOUND);
+            plugin.sendMessage(player, Messages.ITEM_NOT_FOUND);
             return;
         }
 
-        if (new NBTItem(itemStack).hasKey("EterniaLock").equals(Boolean.TRUE)) {
-            return;
-        }
         dropHelmet(player);
         setHelmet(player);
-        EterniaServer.sendMessage(player, Messages.ITEM_HELMET);
+        plugin.sendMessage(player, Messages.ITEM_HELMET);
     }
 
     private void dropHelmet(Player player) {

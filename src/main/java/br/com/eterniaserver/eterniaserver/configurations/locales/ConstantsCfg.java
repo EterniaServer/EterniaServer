@@ -1,22 +1,39 @@
 package br.com.eterniaserver.eterniaserver.configurations.locales;
 
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public class ConstantsCfg extends GenericCfg {
+public class ConstantsCfg extends GenericCfg implements ReloadableConfiguration {
 
-    public ConstantsCfg(String[] strings) {
+    private final EterniaServer plugin;
+    private final NamespacedKey[] namespaceKeys;
 
-        super(strings, null, null, null, null);
+    public ConstantsCfg(final EterniaServer plugin, final String[] strings, final NamespacedKey[] namespaceKeys) {
+        super(plugin, strings, null, null, null);
+        this.plugin = plugin;
+        this.namespaceKeys = namespaceKeys;
+    }
 
-        FileConfiguration file = YamlConfiguration.loadConfiguration(new File(Constants.CONSTANTS_FILE_PATH));
-        FileConfiguration outFile = new YamlConfiguration();
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.GENERIC;
+    }
+
+    @Override
+    public void executeConfig() {
+        final FileConfiguration file = YamlConfiguration.loadConfiguration(new File(Constants.CONSTANTS_FILE_PATH));
+        final FileConfiguration outFile = new YamlConfiguration();
 
         setString(Strings.SERVER_PREFIX, file, outFile, "server.prefix", "$8[$aE$9S$8]$7 ");
         setString(Strings.BALANCE_TOP_TAG, file, outFile, "server.baltop", "$8[$2Magnata$8]");
@@ -96,6 +113,23 @@ public class ConstantsCfg extends GenericCfg {
         outFile.set("spy.local.notes", "0: nome do jogador; 1: apelido do jogador; 2: mensagem");
 
         saveFile(outFile, Constants.CONSTANTS_FILE_PATH);
+
+        namespaceKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(plugin, Constants.TAG_FUNCTION);
+        namespaceKeys[ItemsKeys.TAG_RUN_COMMAND.ordinal()] = new NamespacedKey(plugin, Constants.TAG_RUN_COMMAND);
+        namespaceKeys[ItemsKeys.TAG_RUN_IN_CONSOLE.ordinal()] = new NamespacedKey(plugin, Constants.TAG_RUN_IN_CONSOLE);
+        namespaceKeys[ItemsKeys.TAG_USAGES.ordinal()] = new NamespacedKey(plugin, Constants.TAG_USAGES);
+        namespaceKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(plugin, Constants.TAG_INT_VALUE);
+        namespaceKeys[ItemsKeys.TAG_WORLD.ordinal()] = new NamespacedKey(plugin, Constants.TAG_WORLD);
+        namespaceKeys[ItemsKeys.TAG_COORD_X.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_X);
+        namespaceKeys[ItemsKeys.TAG_COORD_Y.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_Y);
+        namespaceKeys[ItemsKeys.TAG_COORD_Z.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_Z);
+        namespaceKeys[ItemsKeys.TAG_COORD_YAW.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_YAW);
+        namespaceKeys[ItemsKeys.TAG_COORD_PITCH.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_PITCH);
+        namespaceKeys[ItemsKeys.TAG_LOC_NAME.ordinal()] = new NamespacedKey(plugin, Constants.TAG_LOC_NAME);
+    }
+
+    @Override
+    public void executeCritical() {
 
     }
 

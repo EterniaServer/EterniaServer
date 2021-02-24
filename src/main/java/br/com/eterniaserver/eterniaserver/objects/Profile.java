@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
-import br.com.eterniaserver.eternialib.interfaces.Query;
-import br.com.eterniaserver.eternialib.sql.objects.Cells;
+import br.com.eterniaserver.eternialib.core.baseobjects.Cells;
+import br.com.eterniaserver.eternialib.core.interfaces.Query;
 
 public class Profile implements Query {
 

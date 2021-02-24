@@ -1,5 +1,2 @@
-.project
-.settings/
-.git/
-/target/
-/.idea/
+/build/
+build/

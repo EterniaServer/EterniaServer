@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.handlers;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.CashRelated;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
@@ -24,6 +23,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class EntityHandler implements Listener {
 
+    private final EterniaServer plugin;
+
+    public EntityHandler(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
@@ -39,9 +44,9 @@ public class EntityHandler implements Listener {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getDamager();
             User user = new User(player);
-            if (player.isFlying() && !player.hasPermission(EterniaServer.getString(Strings.PERM_FLY_BYPASS))) {
+            if (player.isFlying() && !player.hasPermission(plugin.getString(Strings.PERM_FLY_BYPASS))) {
                 user.setIsOnPvP();
-                user.sendMessage(Messages.FLY_ENTER_PVP);
+                plugin.sendMessage(player, Messages.FLY_ENTER_PVP);
                 player.setAllowFlight(false);
                 player.setFlying(false);
             }
@@ -50,12 +55,12 @@ public class EntityHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityBreed(EntityBreedEvent event) {
-        if (!EterniaServer.getBoolean(Booleans.MODULE_ENTITY) || !EterniaServer.getBoolean(Booleans.BREEDING_LIMITER)) {
+        if (!plugin.getBoolean(Booleans.MODULE_ENTITY) || !plugin.getBoolean(Booleans.BREEDING_LIMITER)) {
             return;
         }
 
         EntityType entityType = event.getEntityType();
-        EntityControl entityControl = EterniaServer.getControl(entityType);
+        EntityControl entityControl = plugin.getControl(entityType);
 
         if (entityControl.getBreedingLimit() == -1) {
             return;
@@ -75,27 +80,27 @@ public class EntityHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onEntityInventoryClick(InventoryClickEvent e) {
-        if ((!EterniaServer.getBoolean(Booleans.MODULE_CASH) && !EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)) || e.isCancelled()) {
+        if ((!plugin.getBoolean(Booleans.MODULE_CASH) && !plugin.getBoolean(Booleans.MODULE_SPAWNERS)) || e.isCancelled()) {
             return;
         }
 
         final Player player = (Player) e.getWhoClicked();
         final ItemStack itemStack = e.getCurrentItem();
-        if (itemStack != null && (EterniaServer.getBoolean(Booleans.PREVENT_ANVIL)
-                && EterniaServer.getBoolean(Booleans.MODULE_SPAWNERS)
+        if (itemStack != null && (plugin.getBoolean(Booleans.PREVENT_ANVIL)
+                && plugin.getBoolean(Booleans.MODULE_SPAWNERS)
                 && e.getInventory().getType() == InventoryType.ANVIL
                 && itemStack.getType() == Material.SPAWNER)) {
             e.setCancelled(true);
-            EterniaServer.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
+            plugin.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
         }
 
-        if (EterniaServer.getBoolean(Booleans.MODULE_CASH)) {
+        if (plugin.getBoolean(Booleans.MODULE_CASH)) {
             String title = e.getView().getTitle();
             if ("Cash".equals(title)) {
-                CashRelated.menuGui(player, e.getSlot());
+                EterniaServer.getCashAPI().menuGui(player, e.getSlot());
                 e.setCancelled(true);
-            } else if (EterniaServer.getGuisInvert().containsKey(title)) {
-                CashRelated.permGui(player, title, e.getSlot());
+            } else if (plugin.getGuisInvert().containsKey(title)) {
+                EterniaServer.getCashAPI().permGui(player, title, e.getSlot());
                 e.setCancelled(true);
             }
         }

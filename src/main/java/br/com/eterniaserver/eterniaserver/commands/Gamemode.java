@@ -25,6 +25,12 @@ import org.bukkit.entity.Player;
 @CommandAlias("%gamemode")
 public class Gamemode extends BaseCommand {
 
+    private final EterniaServer plugin;
+
+    public Gamemode(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
     @Default
     @CatchUnknown
     @HelpCommand
@@ -111,7 +117,7 @@ public class Gamemode extends BaseCommand {
         String typeName = getType(type);
 
         user.getPlayer().setGameMode(gameMode);
-        user.sendMessage(Messages.GAMEMODE_SETED, typeName);
+        plugin.sendMessage(user.getPlayer(), Messages.GAMEMODE_SETED, typeName);
     }
 
     private void setGamemode(User user, Player targets, GameMode gameMode, int type) {
@@ -119,20 +125,20 @@ public class Gamemode extends BaseCommand {
         User target = new User(targets);
 
         target.getPlayer().setGameMode(gameMode);
-        target.sendMessage(Messages.GAMEMODE_SETED, typeName);
-        user.sendMessage(Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
+        plugin.sendMessage(target.getPlayer(), Messages.GAMEMODE_SETED, typeName);
+        plugin.sendMessage(user.getPlayer(), Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
     }
 
     private String getType(int type) {
         switch (type) {
             case 0:
-                return EterniaServer.getString(Strings.CONS_SURVIVAL);
+                return plugin.getString(Strings.CONS_SURVIVAL);
             case 1:
-                return EterniaServer.getString(Strings.CONS_CREATIVE);
+                return plugin.getString(Strings.CONS_CREATIVE);
             case 2:
-                return EterniaServer.getString(Strings.CONS_ADVENTURE);
+                return plugin.getString(Strings.CONS_ADVENTURE);
             default:
-                return EterniaServer.getString(Strings.CONS_SPECTATOR);
+                return plugin.getString(Strings.CONS_SPECTATOR);
         }
     }
 

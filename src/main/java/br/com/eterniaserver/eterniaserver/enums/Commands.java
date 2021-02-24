@@ -100,12 +100,6 @@ public enum Commands {
     SETWARP,
     DELWARP,
     LISTWARP,
-    INTERN,
-    RELOAD,
-    SETTINGS,
-    COMMAND,
-    COMMAND_ACCEPT,
-    COMMAND_DENY,
     TITLE
 
 }
