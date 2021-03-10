@@ -69,6 +69,7 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setBoolean(Booleans.MODULE_ELEVATOR, file, outFile, "module.elevator", true);
         setBoolean(Booleans.MODULE_EXPERIENCE, file, outFile, "module.experience", true);
         setBoolean(Booleans.MODULE_HOMES, file, outFile, "module.home", true);
+        setBoolean(Booleans.MODULE_SHOP, file, outFile, "module.shop", true);
         setBoolean(Booleans.MODULE_KITS, file, outFile, "module.kits", true);
         setBoolean(Booleans.MODULE_GENERIC, file, outFile, "module.generic", true);
         setBoolean(Booleans.MODULE_SPAWNERS, file, outFile, "module.spawners", true);

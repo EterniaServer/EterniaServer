@@ -31,7 +31,7 @@ public class Managers {
     private String baltopName;
     private String channelCommand;
 
-    public Managers(EterniaServer plugin) {
+    public Managers(final EterniaServer plugin) {
 
         this.plugin = plugin;
 
@@ -47,6 +47,7 @@ public class Managers {
         loadEconomyManager();
         loadElevatorManager();
         loadExperienceManager();
+        loadShopManager();
         loadHomesManager();
         loadEterniaTick();
         loadClearManager();
@@ -130,6 +131,12 @@ public class Managers {
     private void loadCashManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_CASH), "Cash")) {
             CommandManager.registerCommand(new Cash(plugin));
+        }
+    }
+
+    private void loadShopManager() {
+        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_SHOP), "Shop")) {
+            CommandManager.registerCommand(new Shop(plugin));
         }
     }
 
