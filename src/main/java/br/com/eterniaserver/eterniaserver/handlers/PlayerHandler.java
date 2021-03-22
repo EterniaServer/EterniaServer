@@ -129,13 +129,12 @@ public class PlayerHandler implements Listener {
         final Player player = user.getPlayer();
         final ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if (itemMeta.getPersistentDataContainer().has(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.STRING)) {
-            final String cmd = itemMeta.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.STRING);
+        if (itemMeta.getPersistentDataContainer().has(plugin.getKey(ItemsKeys.TAG_RUN_COMMAND), PersistentDataType.STRING)) {
+            final String cmd = itemMeta.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.TAG_RUN_COMMAND), PersistentDataType.STRING);
             if (itemMeta.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.TAG_RUN_IN_CONSOLE), PersistentDataType.INTEGER) == 1) {
                 plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), plugin.setPlaceholders(player, cmd));
             } else {
                 player.performCommand(plugin.setPlaceholders(player, cmd));
-
             }
 
             final int itemUsages = itemMeta.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.TAG_USAGES), PersistentDataType.INTEGER);
