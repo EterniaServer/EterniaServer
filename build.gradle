@@ -4,7 +4,7 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://repo.pl3x.net/") }
+    maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
     maven { url = uri('https://raw.github.com/yurinogueira/EterniaLib/repository') }
     maven { url = uri('https://jitpack.io') }
     maven { url = uri('https://repo.extendedclip.com/content/repositories/placeholderapi/') }
@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'net.pl3x.purpur:purpur-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly 'br.com.eterniaserver:EterniaLib:2.0.2-STABLE'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     compileOnly 'me.clip:placeholderapi:2.10.9'
