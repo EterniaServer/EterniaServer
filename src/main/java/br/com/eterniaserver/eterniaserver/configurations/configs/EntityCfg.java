@@ -2,12 +2,12 @@ package br.com.eterniaserver.eterniaserver.configurations.configs;
 
 import java.io.File;
 
-import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
-import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;

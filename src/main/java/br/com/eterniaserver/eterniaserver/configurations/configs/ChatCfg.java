@@ -45,7 +45,7 @@ public class ChatCfg extends GenericCfg implements ReloadableConfiguration {
         FileConfiguration outChat = new YamlConfiguration();
 
         Map<Integer, ChannelObject> tempChannelMap = new HashMap<>();
-        tempChannelMap.put("global".hashCode(), new ChannelObject("{global}{clan}{sufix}{prefix}{player}{marry}{separator}", "global", "eternia.chat.global", "$f", false, 0));
+        tempChannelMap.put("global".hashCode(), new ChannelObject("{global}{clan}{sufix}{prefix}{player}{marry}{separator}", "global", "eternia.chat.global", "&f", false, 0));
 
         Set<String> lista = null;
         if (chatConfig.getConfigurationSection("channels") != null) {
@@ -56,7 +56,7 @@ public class ChatCfg extends GenericCfg implements ReloadableConfiguration {
                         chatConfig.getString("channels." + channel + ".format", "{player}"),
                         channel,
                         chatConfig.getString("channels." + channel + ".perm", "eternia.chat.default"),
-                        chatConfig.getString("channels." + channel + ".color", "$f"),
+                        chatConfig.getString("channels." + channel + ".color", "&f"),
                         chatConfig.getBoolean("channels." + channel + ".range", false),
                         chatConfig.getInt("channels." + channel + ".range-value", 0)
                 );

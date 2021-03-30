@@ -7,12 +7,13 @@ import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.objects.User;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.identity.Identity;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
@@ -27,6 +28,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.function.UnaryOperator;
 
 public class ChatFormatter {
 
@@ -48,12 +50,15 @@ public class ChatFormatter {
 			return;
 		}
 
-		BaseComponent[] baseComponents = customPlaceholder(user.getPlayer(), channelObject.getFormat(), channelObject.getChannelColor(), message);
-
+		Component[] baseComponents = customPlaceholder(user.getPlayer(), channelObject.getFormat(), channelObject.getChannelColor(), message);
+		Component component = Component.empty();
+		for (Component entry : baseComponents) {
+			component = component.append(entry);
+		}
 		if (!channelObject.isHasRange()) {
 			for (Player player : players) {
 				if (player.hasPermission(channelObject.getPerm())) {
-					player.spigot().sendMessage(user.getUUID(), baseComponents);
+					player.sendMessage(Identity.identity(user.getUUID()), component);
 				}
 			}
 			players.clear();
@@ -64,7 +69,7 @@ public class ChatFormatter {
 		for (Player p : players) {
 			if ((user.getPlayer().getWorld() == p.getWorld() && p.getLocation().distanceSquared(user.getPlayer().getLocation()) <= Math.pow(channelObject.getRange(), 2)) || channelObject.getRange() <= 0) {
 				pes += 1;
-				p.spigot().sendMessage(user.getUUID(), baseComponents);
+				p.sendMessage(Identity.identity(user.getUUID()), component);
 			} else if (p.hasPermission(plugin.getString(Strings.PERM_SPY)) && EterniaServer.getUserAPI().isSpying(p.getUniqueId())) {
 				p.sendMessage(user.getUUID(), plugin.getColor(plugin.getString(Strings.CONS_SPY_LOCAL)
 						.replace("{0}", user.getName())
@@ -80,7 +85,7 @@ public class ChatFormatter {
 		players.clear();
 	}
 
-	private BaseComponent[] customPlaceholder(final Player player, final String format, final String channelColor, final String message) {
+	private Component[] customPlaceholder(final Player player, final String format, final String channelColor, final String message) {
 
 		final Map<Integer, TextComponent> textComponentMap = new TreeMap<>();
 
@@ -95,7 +100,7 @@ public class ChatFormatter {
 
 		for (final String string : message.split(" ")) {
 
-			final TextComponent textComponent = getComponent(ChatColor.stripColor(string), player);
+			final TextComponent textComponent = getComponent(PlainComponentSerializer.plain().serialize(LegacyComponentSerializer.legacySection().deserialize(string)), player);
 
 			if (textComponent != null) {
 				textComponentList.add(getText(stringBuilder.toString(), player));
@@ -111,14 +116,14 @@ public class ChatFormatter {
 			textComponentList.add(getText(stringBuilder.toString(), player));
 		}
 
-		final BaseComponent[] baseComponents = new BaseComponent[textComponentMap.size() + textComponentList.size()];
+		final Component[] baseComponents = new Component[textComponentMap.size() + textComponentList.size()];
 		int i = 0;
 
 		for (TextComponent textComponent : textComponentMap.values()) {
 			baseComponents[i++] = textComponent;
 		}
 
-		for (BaseComponent textComponent : textComponentList) {
+		for (Component textComponent : textComponentList) {
 			baseComponents[i++] = textComponent;
 		}
 
@@ -141,7 +146,7 @@ public class ChatFormatter {
 								.replace("{1}", player.getDisplayName()), 10, 40, 10);
 			}
 
-			return new TextComponent("§3" + string + " ");
+			return Component.text("$3" + string + " ");
 		}
 
 		if (player.hasPermission(plugin.getString(Strings.PERM_CHAT_ITEM)) && string.equals(plugin.getString(Strings.SHOW_ITEM_PLACEHOLDER))) {
@@ -157,41 +162,31 @@ public class ChatFormatter {
 	private TextComponent getText(final String string, final Player player) {
 
 		if (player.hasPermission(plugin.getString(Strings.PERM_CHAT_COLOR))) {
-			return new TextComponent(TextComponent.fromLegacyText(plugin.translateHex(string)));
+			return LegacyComponentSerializer.legacySection().deserialize(plugin.translateHex(string));
 		}
 
-		return new TextComponent(TextComponent.fromLegacyText(string));
+		return LegacyComponentSerializer.legacySection().deserialize(string);
 
 	}
 
 	private	TextComponent getItemComponentText(final String string, final ItemStack itemStack) {
-
-		if (plugin.getVersion() < 116) {
-			return new TextComponent(plugin.getString(Strings.NOT_SUPPORTED));
-		}
-
-		final TextComponent textComponent = new TextComponent(string
+		final TextComponent textComponent = Component.text(string
 				.replace(plugin.getString(Strings.SHOW_ITEM_PLACEHOLDER),
 						plugin.getString(Strings.CONS_SHOW_ITEM)
 								.replace("{0}", String.valueOf(itemStack.getAmount()))
 								.replace("{1}", itemStack.getType().toString())));
 
-		textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, Bukkit.getItemFactory().hoverContentOf(itemStack)));
-
-		return textComponent;
+		return textComponent.hoverEvent(Bukkit.getItemFactory().asHoverEvent(itemStack, UnaryOperator.identity()));
 
 	}
 
 	private TextComponent getJsonTagText(final Player player, final CustomPlaceholder object) {
-
 		if (object.getIsStatic()) {
-
 			if (!staticComponents.containsKey(object.getValue())) {
 				final TextComponent textComponent = loadComponent(player, object);
 				staticComponents.put(object.getValue(), textComponent);
 				return textComponent;
 			}
-
 			return staticComponents.get(object.getValue());
 		}
 
@@ -201,14 +196,14 @@ public class ChatFormatter {
 
 	private TextComponent loadComponent(final Player player, final CustomPlaceholder object) {
 
-		final TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(plugin.translateHex(plugin.setPlaceholders(player, object.getValue()))));
+		TextComponent textComponent = LegacyComponentSerializer.legacySection().deserialize(plugin.translateHex(plugin.setPlaceholders(player, object.getValue())));
 
 		if (!object.getHoverText().equals("")) {
-			textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(TextComponent.fromLegacyText(plugin.translateHex(plugin.setPlaceholders(player, object.getHoverText()))))));
+			textComponent = textComponent.hoverEvent(HoverEvent.showText(LegacyComponentSerializer.legacySection().deserialize(plugin.translateHex(plugin.setPlaceholders(player, object.getHoverText())))));
 		}
 
 		if (!object.getSuggestCmd().equals("")) {
-			textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.translateHex(plugin.setPlaceholders(player, object.getSuggestCmd()))));
+			textComponent = textComponent.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.translateHex(plugin.setPlaceholders(player, object.getSuggestCmd()))));
 		}
 
 		return textComponent;
