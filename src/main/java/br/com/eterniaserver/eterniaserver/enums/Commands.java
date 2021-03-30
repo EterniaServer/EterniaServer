@@ -55,6 +55,7 @@ public enum Commands {
     DELHOME,
     SETHOME,
     HOMES,
+    SENDMESSAGE,
     HAT,
     WORKBENCH,
     ENDERCHEST,

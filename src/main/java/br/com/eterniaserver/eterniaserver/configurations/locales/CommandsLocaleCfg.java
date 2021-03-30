@@ -30,6 +30,7 @@ public class CommandsLocaleCfg {
         this.perms = new String[Commands.values().length];
         this.aliases = new String[Commands.values().length];
 
+        this.addDefault(Commands.SENDMESSAGE, "sendmessage", "eternia.sendmessage", " <jogador> <mensagem>", " Envia uma mensagem a um joagdor", null);
         this.addDefault(Commands.CASH, "cash", "eternia.cash", null, "  Abre a GUI da loja de Cash", null);
         this.addDefault(Commands.CASH_PAY, "pay", "eternia.cash", " <jogador> <quantia>", " Paga uma quantia de cash a um jogador", null);
         this.addDefault(Commands.CASH_ACCEPT, "accept", "eternia.cash", null, " Aceita uma compra da loja de cash", null);
@@ -97,7 +98,7 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.ITEM_NBT_DEFINECONSOLE, "defineconsole", "eternia.item.nbt", " <1 ou 0>", " Define se os comandos serão rodados pelo console ou pelo jogador", null);
         this.addDefault(Commands.ITEM_NBT_ADDCOMMAND, "addcommand", "eternia.item.nbt", " <comando>", " Adiciona um comando a mais para ser executado", null);
         this.addDefault(Commands.ITEM_NBT_SETUSAGES, "setusages", "eternia.item.nbt", " <valor>", " Define a quantia de vezes que o item pode ser usado", null);
-        this.addDefault(Commands.ITEM_SEND_CUSTON, "sendcustom", "eternia.item.nbt", " <jogador> <usos> <console> <tipo do item> <comandos...> (separado por |)", "Envia um item custom para um jogador", null);
+        this.addDefault(Commands.ITEM_SEND_CUSTON, "sendcustom", "eternia.item.nbt", " <jogador> <usos> <console> <tipo do item> <comandos...> (separado por ;)", "Envia um item custom para um jogador", null);
         this.addDefault(Commands.ITEM_CLEAR, "clear", "eternia.item", " <página>", " Ajuda para o sistema de Clear de Items", null);
         this.addDefault(Commands.ITEM_CLEAR_LORE, "lore", "eternia.item", null, " Remove a lore de um item", null);
         this.addDefault(Commands.ITEM_CLEAR_NAME, "name", "eternia.item", null, " Remove o nome de um item", null);

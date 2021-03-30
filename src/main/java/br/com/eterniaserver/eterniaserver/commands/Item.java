@@ -2,14 +2,7 @@ package br.com.eterniaserver.eterniaserver.commands;
 
 import br.com.eterniaserver.acf.BaseCommand;
 import br.com.eterniaserver.acf.CommandHelp;
-import br.com.eterniaserver.acf.annotation.CommandAlias;
-import br.com.eterniaserver.acf.annotation.CommandPermission;
-import br.com.eterniaserver.acf.annotation.Conditions;
-import br.com.eterniaserver.acf.annotation.Default;
-import br.com.eterniaserver.acf.annotation.Description;
-import br.com.eterniaserver.acf.annotation.HelpCommand;
-import br.com.eterniaserver.acf.annotation.Subcommand;
-import br.com.eterniaserver.acf.annotation.Syntax;
+import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
@@ -45,10 +38,11 @@ public class Item extends BaseCommand {
     @Subcommand("%item_send_custon")
     @CommandPermission("%item_send_custon_perm")
     @Description("%item_send_custon_description")
+    @CommandCompletion("players 3 1 STONE sendmessage %player_name% &8[&aE&9S&8] &7Item preula;give %player_name% minecraft:stone")
     @Syntax("%item_send_custon_syntax")
     public void sendItemCustom(final CommandSender sender, final OnlinePlayer target,
-                               @Conditions("limits:min=0,max=2147483647") final int usages,
-                               @Conditions("limits:min=0,max=1") final int console, final String item, final String line) {
+                               @Conditions("limits:min=0,max=2147483647") final Integer usages,
+                               @Conditions("limits:min=0,max=1") final Integer console, final String item, final String line) {
         try {
             final ItemStack itemStack = new ItemStack(Material.valueOf(item));
             final ItemMeta itemMeta = itemStack.getItemMeta();

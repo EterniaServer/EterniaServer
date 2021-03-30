@@ -48,6 +48,15 @@ public class Generic extends BaseCommand {
         this.sdf = new SimpleDateFormat(plugin.getString(Strings.DATA_FORMAT));
     }
 
+    @CommandAlias("%sendmessage")
+    @Syntax("%sendmessage_syntax")
+    @Description("%sendmessage_description")
+    @CommandPermission("%sendmessage_perm")
+    public void messageTo(OnlinePlayer onlinePlayer, String message) {
+        Player player = onlinePlayer.getPlayer();
+        player.sendMessage(plugin.translateHex(plugin.setPlaceholders(player, message)));
+    }
+
     @CommandAlias("%speed")
     @Syntax("%speed_syntax")
     @Description("%speed_description")
