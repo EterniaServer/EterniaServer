@@ -10,7 +10,9 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 
-import net.md_5.bungee.api.ChatColor;
+import io.papermc.paper.event.player.AsyncChatEvent;
+
+import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
@@ -22,7 +24,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import java.util.Set;
@@ -34,18 +35,14 @@ public class ServerHandler implements Listener {
     private final ChatFormatter chatFormatter;
     private static final int tellHashCode = "tell".hashCode();
 
-    private String messageMOTD;
-    private String message2;
+    private final String messageMOTD;
+    private final String message2;
 
     public ServerHandler(final EterniaServer plugin) {
         this.plugin = plugin;
         this.chatFormatter= new ChatFormatter(plugin);
-        messageMOTD = ChatColor.translateAlternateColorCodes('&', plugin.getMessage(Messages.SERVER_MOTD_1, false));
-        message2 = ChatColor.translateAlternateColorCodes('&', plugin.getMessage(Messages.SERVER_MOTD_2, false));
-        if (plugin.getVersion() >= 116) {
-            messageMOTD = plugin.translateHex(messageMOTD);
-            message2 = plugin.translateHex(message2);
-        }
+        this.messageMOTD = plugin.translateHex(plugin.getMessage(Messages.SERVER_MOTD_1, false));
+        this.message2 = plugin.translateHex(plugin.getMessage(Messages.SERVER_MOTD_2, false));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -98,15 +95,15 @@ public class ServerHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        if (!plugin.getBoolean(Booleans.MODULE_CHAT) || e.isCancelled()) {
+    public void onAsyncChat(AsyncChatEvent event) {
+        if (!plugin.getBoolean(Booleans.MODULE_CHAT) || event.isCancelled()) {
             return;
         }
 
-        User user = new User(e.getPlayer());
+        User user = new User(event.getPlayer());
 
         if (plugin.isChatMuted() && !user.hasPermission(plugin.getString(Strings.PERM_MUTE_BYPASS))) {
-            e.setCancelled(true);
+            event.setCancelled(true);
             return;
         }
 
@@ -114,20 +111,20 @@ public class ServerHandler implements Listener {
 
         if (plugin.isInFutureCooldown(time)) {
             plugin.sendMessage(user.getPlayer(), Messages.CHAT_ARE_MUTED, plugin.getTimeLeftOfCooldown(time));
-            e.setCancelled(true);
+            event.setCancelled(true);
             return;
         }
 
-        e.setCancelled(getChannel(e, user));
+        event.setCancelled(getChannel(event, user));
     }
 
-    private boolean getChannel(AsyncPlayerChatEvent e, User user) {
-        String message = e.getMessage();
+    private boolean getChannel(AsyncChatEvent event, User user) {
+        String message = PlainComponentSerializer.plain().serialize(event.message());
         if (!user.hasPermission(plugin.getString(Strings.PERM_CHAT_BYPASS_PROTECTION))) {
             message = plugin.getFilter().matcher(message).replaceAll("");
         }
 
-        Set<Player> players = e.getRecipients();
+        Set<Player> players = event.recipients();
 
         if (user.getChannel() == plugin.getString(Strings.DISCORD_SRV).hashCode()) {
             chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), players);

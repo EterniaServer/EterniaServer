@@ -19,9 +19,8 @@ import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -191,24 +190,19 @@ public class Economy extends BaseCommand {
             }
         }
 
-        final BaseComponent[] baseComponents = new BaseComponent[3];
-        final TextComponent textComponentLeft = new TextComponent(" <<<");
+        Component component = Component.empty();
+
         if ((page - 1) > 0) {
-            textComponentLeft.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + baltopName + " " + (page - 1)));
+            component = component.append(Component.text(" <<<").clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/" + baltopName + " " + (page - 1))));
         }
-        final TextComponent textComponentRight = new TextComponent(">>>");
+
+        component = component.append(Component.text(plugin.getMessage(Messages.ECO_BALTOP_PAGE, false)));
+
         if ((page + 1) < maxPage) {
-            textComponentRight.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + baltopName + " " + (page + 1)));
+            component = component.append(Component.text(">>> ").clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/" + baltopName + " " + (page + 1))));
         }
-        final TextComponent textComponentCenter = new TextComponent(plugin.getMessage(Messages.ECO_BALTOP_PAGE, false));
-        baseComponents[0] = textComponentLeft;
-        baseComponents[1] = textComponentCenter;
-        baseComponents[2] = textComponentRight;
-        sender.sendMessage(baseComponents);
 
-
+        sender.sendMessage(component);
     }
-
-
 
 }

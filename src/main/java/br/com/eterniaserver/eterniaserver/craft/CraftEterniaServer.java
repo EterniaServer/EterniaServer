@@ -11,9 +11,10 @@ import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.format.TextColor;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -370,7 +371,7 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         StringBuffer buffer = new StringBuffer();
 
         while(matcher.find()) {
-            matcher.appendReplacement(buffer, ChatColor.of(matcher.group(1)).toString());
+            matcher.appendReplacement(buffer, TextColor.color(Integer.parseInt(matcher.group(1))).toString());
         }
 
         return matcher.appendTail(buffer).toString().replace('&', (char) 0x00A7);
