@@ -14,7 +14,8 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.objects.User;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.GameMode;
@@ -23,6 +24,12 @@ import org.bukkit.entity.Player;
 
 @CommandAlias("%gamemode")
 public class Gamemode extends BaseCommand {
+
+    private final EterniaServer plugin;
+
+    public Gamemode(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
 
     @Default
     @CatchUnknown
@@ -110,28 +117,28 @@ public class Gamemode extends BaseCommand {
         String typeName = getType(type);
 
         user.getPlayer().setGameMode(gameMode);
-        user.sendMessage(Messages.GAMEMODE_SETED, typeName);
+        plugin.sendMessage(user.getPlayer(), Messages.GAMEMODE_SETED, typeName);
     }
 
     private void setGamemode(User user, Player targets, GameMode gameMode, int type) {
         String typeName = getType(type);
         User target = new User(targets);
 
-        user.getPlayer().setGameMode(gameMode);
-        target.sendMessage(Messages.GAMEMODE_SETED, typeName);
-        user.sendMessage(Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
+        target.getPlayer().setGameMode(gameMode);
+        plugin.sendMessage(target.getPlayer(), Messages.GAMEMODE_SETED, typeName);
+        plugin.sendMessage(user.getPlayer(), Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
     }
 
     private String getType(int type) {
         switch (type) {
             case 0:
-                return EterniaServer.constants.gmSurvival;
+                return plugin.getString(Strings.CONS_SURVIVAL);
             case 1:
-                return EterniaServer.constants.gmCreative;
+                return plugin.getString(Strings.CONS_CREATIVE);
             case 2:
-                return EterniaServer.constants.gmAdventure;
+                return plugin.getString(Strings.CONS_ADVENTURE);
             default:
-                return EterniaServer.constants.gmSpectator;
+                return plugin.getString(Strings.CONS_SPECTATOR);
         }
     }
 

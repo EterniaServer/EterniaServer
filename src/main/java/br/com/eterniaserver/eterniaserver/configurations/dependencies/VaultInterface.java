@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eternialib.UUIDFetcher;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APIEconomy;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -37,135 +36,159 @@ public class VaultInterface implements Economy {
 
     @Override
     public String format(double amount) {
-        return APIEconomy.format(amount);
+        return EterniaServer.getEconomyAPI().format(amount);
     }
 
     @Override
     public String currencyNamePlural() {
-        return APIEconomy.pluralName();
+        return EterniaServer.getEconomyAPI().pluralName();
     }
 
     @Override
     public String currencyNameSingular() {
-        return APIEconomy.singularName();
+        return EterniaServer.getEconomyAPI().singularName();
     }
 
     @Override
     public boolean hasAccount(String playerName) {
-        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(playerName));
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (uuid == null) {
+            return false;
+        }
+        return EterniaServer.getEconomyAPI().hasAccount(uuid);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(player.getName()));
+        return EterniaServer.getEconomyAPI().hasAccount(player.getUniqueId());
     }
 
     @Override
     public boolean hasAccount(String playerName, String worldName) {
-        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(playerName));
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (uuid == null) {
+            return false;
+        }
+        return EterniaServer.getEconomyAPI().hasAccount(uuid);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player, String worldName) {
-        return APIEconomy.hasAccount(UUIDFetcher.getUUIDOf(player.getName()));
+        return EterniaServer.getEconomyAPI().hasAccount(player.getUniqueId());
     }
 
     @Override
     public double getBalance(String playerName) {
-        return APIEconomy.getMoney(UUIDFetcher.getUUIDOf(playerName));
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (uuid == null) {
+            return 0.0;
+        }
+        return EterniaServer.getEconomyAPI().getMoney(uuid);
     }
 
     @Override
     public double getBalance(OfflinePlayer player) {
-        return APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
+        return EterniaServer.getEconomyAPI().getMoney(player.getUniqueId());
     }
 
     @Override
     public double getBalance(String playerName, String world) {
-        return APIEconomy.getMoney(UUIDFetcher.getUUIDOf(playerName));
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (uuid == null) {
+            return 0.0;
+        }
+        return EterniaServer.getEconomyAPI().getMoney(uuid);
     }
 
     @Override
     public double getBalance(OfflinePlayer player, String world) {
-        return APIEconomy.getMoney(UUIDFetcher.getUUIDOf(player.getName()));
+        return EterniaServer.getEconomyAPI().getMoney(player.getUniqueId());
     }
 
     @Override
     public boolean has(String playerName, double amount) {
-        return APIEconomy.hasMoney(UUIDFetcher.getUUIDOf(playerName), amount);
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (uuid == null) {
+            return false;
+        }
+        return EterniaServer.getEconomyAPI().hasMoney(uuid, amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return APIEconomy.hasMoney(UUIDFetcher.getUUIDOf(player.getName()), amount);
+        return EterniaServer.getEconomyAPI().hasMoney(player.getUniqueId(), amount);
     }
 
     @Override
     public boolean has(String playerName, String worldName, double amount) {
-        return APIEconomy.hasMoney(UUIDFetcher.getUUIDOf(playerName), amount);
+        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
+        if (uuid == null) {
+            return false;
+        }
+        return EterniaServer.getEconomyAPI().hasMoney(uuid, amount);
     }
 
     @Override
     public boolean has(OfflinePlayer player, String worldName, double amount) {
-        return APIEconomy.hasMoney(UUIDFetcher.getUUIDOf(player.getName()), amount);
+        return EterniaServer.getEconomyAPI().hasMoney(player.getUniqueId(), amount);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        return withdraw(playerName, amount);
+        return withdraw(UUIDFetcher.getUUIDOf(playerName), amount);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        return withdraw(player.getName(), amount);
+        return withdraw(player.getUniqueId(), amount);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
-        return withdraw(playerName, amount);
+        return withdraw(UUIDFetcher.getUUIDOf(playerName), amount);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
-        return withdraw(player.getName(), amount);
+        return withdraw(player.getUniqueId(), amount);
     }
 
-    private EconomyResponse withdraw(final String playerName, double amount) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (APIEconomy.hasMoney(uuid, amount)) {
-            APIEconomy.removeMoney(uuid, amount);
-            return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
-        } else {
-            return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.FAILURE, null);
+    private EconomyResponse withdraw(final UUID uuid, double amount) {
+        if (uuid != null && EterniaServer.getEconomyAPI().hasMoney(uuid, amount)) {
+            EterniaServer.getEconomyAPI().removeMoney(uuid, amount);
+            return new EconomyResponse(amount, EterniaServer.getEconomyAPI().getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
         }
+        final double balance = uuid != null ? EterniaServer.getEconomyAPI().getMoney(uuid) : 0.0D;
+        return new EconomyResponse(amount, balance, EconomyResponse.ResponseType.FAILURE, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        APIEconomy.addMoney(uuid, amount);
-        return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        return deposit(UUIDFetcher.getUUIDOf(playerName), amount);
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        APIEconomy.addMoney(uuid, amount);
-        return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        return deposit(player.getUniqueId(), amount);
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        APIEconomy.addMoney(uuid, amount);
-        return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        return deposit(UUIDFetcher.getUUIDOf(playerName), amount);
+
     }
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        APIEconomy.addMoney(uuid, amount);
-        return new EconomyResponse(amount, APIEconomy.getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        return deposit(player.getUniqueId(), amount);
+    }
+
+    private EconomyResponse deposit(final UUID uuid, final double amount) {
+        if (uuid != null) {
+            EterniaServer.getEconomyAPI().addMoney(uuid, amount);
+            return new EconomyResponse(amount, EterniaServer.getEconomyAPI().getMoney(uuid), EconomyResponse.ResponseType.SUCCESS, null);
+        }
+        return new EconomyResponse(amount, 0.0D, EconomyResponse.ResponseType.FAILURE, null);
     }
 
     @Override
@@ -224,7 +247,7 @@ public class VaultInterface implements Economy {
     }
 
     private EconomyResponse createUnsupportedResponse() {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, EterniaServer.constants.noSupport);
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, EterniaServer.getEconomyAPI().notSupported());
     }
 
     @Override
@@ -234,36 +257,33 @@ public class VaultInterface implements Economy {
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (APIEconomy.hasAccount(uuid)) return false;
-        APIEconomy.createAccount(uuid);
-        return true;
+        return createAccount(UUIDFetcher.getUUIDOf(playerName));
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        if (APIEconomy.hasAccount(uuid)) return false;
-        APIEconomy.createAccount(uuid);
-        return true;
+        return createAccount(player.getUniqueId());
     }
 
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
-        if (APIEconomy.hasAccount(uuid)) return false;
-        APIEconomy.createAccount(uuid);
-        return true;
+        return createAccount(UUIDFetcher.getUUIDOf(playerName));
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
-        final UUID uuid = UUIDFetcher.getUUIDOf(player.getName());
-        if (APIEconomy.hasAccount(uuid)) return false;
-        APIEconomy.createAccount(uuid);
-        return true;
+        return createAccount(player.getUniqueId());
     }
 
-
+    private boolean createAccount(final UUID uuid) {
+        if (uuid == null) {
+            return false;
+        }
+        if (EterniaServer.getEconomyAPI().hasAccount(uuid)) {
+            return false;
+        }
+        EterniaServer.getEconomyAPI().createAccount(uuid);
+        return true;
+    }
 
 }

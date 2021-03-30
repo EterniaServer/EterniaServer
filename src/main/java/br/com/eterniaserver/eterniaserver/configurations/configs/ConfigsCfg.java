@@ -1,263 +1,346 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.SQL;
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.core.queries.CreateTable;
+import br.com.eterniaserver.eternialib.core.queries.Insert;
+import br.com.eterniaserver.eternialib.core.queries.Select;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.core.APIServer;
-import br.com.eterniaserver.eterniaserver.core.Vars;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-public class ConfigsCfg {
+public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
 
-    public final boolean moduleBed;
-    public final boolean moduleBlock;
-    public final boolean moduleCash;
-    public final boolean moduleChat;
-    public final boolean moduleClear;
-    public final boolean moduleCommands;
-    public final boolean moduleEconomy;
-    public final boolean moduleElevator;
-    public final boolean moduleExperience;
-    public final boolean moduleHomes;
-    public final boolean moduleKits;
-    public final boolean moduleSpawners;
-    public final boolean moduleTeleports;
-    public final boolean moduleRewards;
-    public final boolean moduleSchedule;
+    private final EterniaServer plugin;
 
-    public final String tableKits;
-    public final String tablePlayer;
-    public final String tableRewards;
-    public final String tableLocations;
-
-    public final boolean asyncCheck;
-    public final int pluginTicks;
-    public final int scheduleThreads;
-    public final int afkTimer;
-    public final boolean afkKick;
-    public final int cooldown;
-    public final int pvpTime;
-    public final int clearRange;
-    public final List<String> blacklistedFly = new ArrayList<>();
-
-    public final List<Material> elevatorMaterials = new ArrayList<>();
-    public final int elevatorMax;
-    public final int elevatorMin;
-
-    public final double startMoney;
-    public final double backCost;
-    public final double nickCost;
-    public final String singularName;
-    public final String pluralName;
-    public final List<String> blacklistedBaltop = new ArrayList<>();
-
-    public final int nightSpeed;
-    public final List<String> blacklistedWorldsBed = new ArrayList<>();
-
-    public final List<String> blockedCommands = new ArrayList<>();
-
-    public final ChatColor mobSpawnerColor;
-    public final boolean invDrop;
-    public final double dropChance;
-    public final boolean preventAnvil;
-    public final List<String> blacklistedWorldsSpawners = new ArrayList<>();
-
-    public final List<String> profileCustomMessages = new ArrayList<>();
-
-    public ConfigsCfg() {
-
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
-        FileConfiguration outConfig = new YamlConfiguration();
-
-        this.moduleBed = config.getBoolean("module.bed", true);
-        this.moduleBlock = config.getBoolean("module.block-reward", true);
-        this.moduleCash = config.getBoolean("module.cash", true);
-        this.moduleChat = config.getBoolean("module.chat", true);
-        this.moduleClear = config.getBoolean("module.clear", true);
-        this.moduleCommands = config.getBoolean("module.commands", true);
-        this.moduleEconomy = config.getBoolean("module.economy", true);
-        this.moduleElevator = config.getBoolean("module.elevator", true);
-        this.moduleExperience = config.getBoolean("module.experience", true);
-        this.moduleHomes = config.getBoolean("module.home", true);
-        this.moduleKits = config.getBoolean("module.kits", true);
-        this.moduleSpawners = config.getBoolean("module.spawners", true);
-        this.moduleTeleports = config.getBoolean("module.teleports", true);
-        this.moduleRewards = config.getBoolean("module.rewards", true);
-        this.moduleSchedule = config.getBoolean("module.schedule", true);
-
-        this.tableKits = config.getString("sql.table-kits", "es_kits");
-        this.tablePlayer = config.getString("sql.table-player", "es_players");
-        this.tableRewards = config.getString("sql.table-rewards", "es_rewards");
-        this.tableLocations = config.getString("sql.table-locations", "es_locations");
-
-        this.asyncCheck = config.getBoolean("server.async-check", true);
-        this.pluginTicks = config.getInt("server.checks", 1);
-        this.scheduleThreads = config.getInt("server.schedule-threads", 1);
-        this.afkTimer = config.getInt("server.afk-timer", 900);
-        this.afkKick = config.getBoolean("server.afk-kick", true);
-        this.cooldown = config.getInt("server.cooldown", 4);
-        this.pvpTime = config.getInt("server.pvp-time", 15);
-        this.clearRange = config.getInt("server.clear-range", 1);
-        this.blacklistedFly.add("world_evento");
-
-        this.elevatorMaterials.add(Material.IRON_BLOCK);
-        this.elevatorMax = config.getInt("elevator.max", 50);
-        this.elevatorMin = config.getInt("elevator.min", 2);
-
-        this.startMoney = config.getDouble("money.start", 300.0);
-        this.backCost = config.getDouble("money.back", 1000.0);
-        this.nickCost = config.getDouble("money.nick", 500000.0);
-        this.singularName = config.getString("money.singular", "Eternia");
-        this.pluralName = config.getString("money.plural", "Eternias");
-        this.blacklistedBaltop.add("yurinogueira");
-
-        this.nightSpeed = config.getInt("bed.speed", 100);
-        this.blacklistedWorldsBed.add("world_evento");
-
-        this.blockedCommands.add("/op");
-        this.blockedCommands.add("/deop");
-        this.blockedCommands.add("/stop");
-
-        this.mobSpawnerColor = Vars.colors.get(config.getInt("spawners.color", 13));
-        this.invDrop = config.getBoolean("spawners.drop-in-inventory", true);
-        this.dropChance = config.getDouble("spawners.drop-chance", 1.0);
-        this.preventAnvil = config.getBoolean("spawners.prevent-anvil", true);
-        this.blacklistedWorldsSpawners.add("world_evento");
-
-        List<String> defaultMaterialBlocksList = new ArrayList<>();
-        for (Material material : this.elevatorMaterials) {
-            defaultMaterialBlocksList.add(material.name());
-        }
-
-        List<String> tempBlacklistedFly = config.getStringList("server.blacklisted-fly-worlds");
-        List<String> tempBlockMaterials = config.getStringList("elevator.block");
-        List<String> tempBlockBaltop = config.getStringList("money.blacklisted-baltop");
-        List<String> tempBlockWorld = config.getStringList("bed.blacklisted-worlds");
-        List<String> tempBlockedCommands = config.getStringList("blocked-commands");
-        List<String> tempBlockWorldSpawners = config.getStringList("spawners.blacklisted-worlds");
-        List<String> tempCustomProfileMessages = config.getStringList("profile.custom-messages");
-
-        if (tempBlacklistedFly.isEmpty()) {
-            tempBlacklistedFly = new ArrayList<>(blacklistedFly);
-        }
-
-        if (tempCustomProfileMessages.isEmpty()) {
-            tempCustomProfileMessages = new ArrayList<>(profileCustomMessages);
-        }
-
-        if (tempBlockMaterials.isEmpty()) {
-            tempBlockMaterials = defaultMaterialBlocksList;
-        }
-
-        if (tempBlockBaltop.isEmpty()) {
-            tempBlockBaltop = new ArrayList<>(blacklistedBaltop);
-        }
-
-        if (tempBlockWorld.isEmpty()) {
-            tempBlockWorld = new ArrayList<>(blacklistedWorldsBed);
-        }
-
-        if (tempBlockedCommands.isEmpty()) {
-            tempBlockedCommands = new ArrayList<>(blockedCommands);
-        }
-
-        if (tempBlockWorldSpawners.isEmpty()) {
-            tempBlockWorldSpawners = new ArrayList<>(blacklistedWorldsSpawners);
-        }
-
-        blacklistedFly.clear();
-        blacklistedFly.addAll(tempBlacklistedFly);
-        this.elevatorMaterials.clear();
-        for (String material : tempBlockMaterials) {
-            Material blockMaterial = Material.getMaterial(material);
-            if (blockMaterial == null) {
-                APIServer.logError("Configuração de elevadores material " + material + " não encontrado", 2);
-            } else {
-                this.elevatorMaterials.add(blockMaterial);
-            }
-        }
-        this.blacklistedBaltop.clear();
-        this.blacklistedBaltop.addAll(tempBlockBaltop);
-        this.blacklistedWorldsBed.clear();
-        this.blacklistedWorldsBed.addAll(tempBlockWorld);
-        this.blockedCommands.clear();
-        this.blockedCommands.addAll(tempBlockedCommands);
-        this.blacklistedWorldsSpawners.clear();
-        this.blacklistedWorldsSpawners.addAll(tempBlockWorldSpawners);
-        this.profileCustomMessages.clear();
-        this.profileCustomMessages.addAll(tempCustomProfileMessages);
-
-        outConfig.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
-
-        outConfig.set("module.bed", this.moduleBed);
-        outConfig.set("module.block-reward", this.moduleBlock);
-        outConfig.set("module.cash", this.moduleCash);
-        outConfig.set("module.chat", this.moduleChat);
-        outConfig.set("module.clear", this.moduleClear);
-        outConfig.set("module.commands", this.moduleCommands);
-        outConfig.set("module.economy", this.moduleEconomy);
-        outConfig.set("module.elevator", this.moduleElevator);
-        outConfig.set("module.experience", this.moduleExperience);
-        outConfig.set("module.home", this.moduleHomes);
-        outConfig.set("module.kits", this.moduleKits);
-        outConfig.set("module.spawners", this.moduleSpawners);
-        outConfig.set("module.teleports", this.moduleTeleports);
-        outConfig.set("module.rewards", this.moduleRewards);
-        outConfig.set("module.schedule", this.moduleSchedule);
-
-        outConfig.set("sql.table-kits", this.tableKits);
-        outConfig.set("sql.table-player", this.tablePlayer);
-        outConfig.set("sql.table-rewards", this.tableRewards);
-        outConfig.set("sql.table-locations", this.tableLocations);
-
-        outConfig.set("server.async-check", this.asyncCheck);
-        outConfig.set("server.checks", this.pluginTicks);
-        outConfig.set("server.schedule-threads", this.scheduleThreads);
-        outConfig.set("server.afk-timer", this.afkTimer);
-        outConfig.set("server.afk-kick", this.afkKick);
-        outConfig.set("server.cooldown", this.cooldown);
-        outConfig.set("server.pvp-time", this.pvpTime);
-        outConfig.set("server.clear-range", this.clearRange);
-        outConfig.set("blacklisted-fly-worlds", tempBlacklistedFly);
-
-        outConfig.set("elevator.block", tempBlockMaterials);
-        outConfig.set("elevator.max", this.elevatorMax);
-        outConfig.set("elevator.min", this.elevatorMin);
-
-        outConfig.set("money.start", this.startMoney);
-        outConfig.set("money.back", this.backCost);
-        outConfig.set("money.nick", this.nickCost);
-        outConfig.set("money.singular", this.singularName);
-        outConfig.set("money.plural", this.pluralName);
-        outConfig.set("money.blacklisted-baltop", tempBlockBaltop);
-
-        outConfig.set("bed.speed", this.nightSpeed);
-        outConfig.set("bed.blacklisted-worlds", tempBlockWorld);
-
-        outConfig.set("blocked-commands", tempBlockedCommands);
-
-        outConfig.set("spawners.color", config.getInt("spawners.color", 14));
-        outConfig.set("spawners.drop-in-inventory", this.invDrop);
-        outConfig.set("spawners.drop-chance", this.dropChance);
-        outConfig.set("spawners.prevent-anvil", this.preventAnvil);
-        outConfig.set("spawners.blacklisted-worlds", tempBlockWorldSpawners);
-
-        outConfig.set("profile.custom-messages", tempCustomProfileMessages);
-
-        try {
-            outConfig.save(Constants.CONFIG_FILE_PATH);
-        } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
-        }
-
+    public ConfigsCfg(final EterniaServer plugin,
+                      final String[] strings,
+                      final boolean[] booleans,
+                      final int[] integers,
+                      final double[] doubles) {
+        super(plugin, strings, booleans, integers, doubles);
+        this.plugin = plugin;
     }
 
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.WARNING_ADVICE;
+    }
+
+    @Override
+    public void executeConfig() {
+        final FileConfiguration file = YamlConfiguration.loadConfiguration(new File(Constants.CONFIG_FILE_PATH));
+        final FileConfiguration outFile = new YamlConfiguration();
+
+        setBoolean(Booleans.MODULE_BED, file, outFile, "module.bed", true);
+        setBoolean(Booleans.MODULE_BLOCK, file, outFile, "module.block-reward", true);
+        setBoolean(Booleans.MODULE_CASH, file, outFile, "module.cash", true);
+        setBoolean(Booleans.MODULE_CHAT, file, outFile, "module.chat", true);
+        setBoolean(Booleans.MODULE_ENTITY, file, outFile, "module.entity", true);
+        setBoolean(Booleans.MODULE_COMMANDS, file, outFile, "module.commands", true);
+        setBoolean(Booleans.MODULE_ECONOMY, file, outFile, "module.economy", true);
+        setBoolean(Booleans.MODULE_ELEVATOR, file, outFile, "module.elevator", true);
+        setBoolean(Booleans.MODULE_EXPERIENCE, file, outFile, "module.experience", true);
+        setBoolean(Booleans.MODULE_HOMES, file, outFile, "module.home", true);
+        setBoolean(Booleans.MODULE_SHOP, file, outFile, "module.shop", true);
+        setBoolean(Booleans.MODULE_KITS, file, outFile, "module.kits", true);
+        setBoolean(Booleans.MODULE_GENERIC, file, outFile, "module.generic", true);
+        setBoolean(Booleans.MODULE_SPAWNERS, file, outFile, "module.spawners", true);
+        setBoolean(Booleans.MODULE_TELEPORTS, file, outFile, "module.teleports", true);
+        setBoolean(Booleans.MODULE_REWARDS, file, outFile, "module.rewards", true);
+        setBoolean(Booleans.MODULE_SCHEDULE, file, outFile, "module.schedule", true);
+        setBoolean(Booleans.ASYNC_CHECK, file, outFile, "server.async-check", true);
+        setBoolean(Booleans.AFK_KICK, file, outFile, "server.afk-kick", true);
+        setBoolean(Booleans.INV_DROP, file, outFile, "spawners.drop-in-inventory", true);
+        setBoolean(Booleans.PREVENT_ANVIL, file, outFile, "spawners.prevent-anvil", true);
+        setBoolean(Booleans.ITEMS_FUNCTIONS, file, outFile, "server.item-function", true);
+
+        setString(Strings.TABLE_KITS, file, outFile, "sql.table-kits", "es_kits");
+        setString(Strings.TABLE_PLAYER, file, outFile, "sql.table-player", "es_players");
+        setString(Strings.TABLE_REWARD, file, outFile, "sql.table-rewards", "es_rewards");
+        setString(Strings.TABLE_LOCATIONS, file, outFile, "sql.table-locations", "es_locations");
+        setString(Strings.TABLE_TITLES, file, outFile, "sql.table-titles", "es_titles");
+        setString(Strings.MONEY_SINGULAR, file, outFile, "money.singular", "Eternia");
+        setString(Strings.MONEY_PLURAL, file, outFile, "money.plural", "Eternias");
+        setString(Strings.SERVER_BALANCE_ACCOUNT, file, outFile, "money.balance-account", "yurinogueira");
+        setString(Strings.SPAWNERS_COLORS, file, outFile, "spawners.color", "§e");
+
+        setInteger(Integers.PLUGIN_TICKS, file, outFile, "server.checks", 1);
+        setInteger(Integers.AFK_TIMER, file, outFile, "server.afk-timer", 900);
+        setInteger(Integers.COOLDOWN, file, outFile, "server.cooldown", 4);
+        setInteger(Integers.PVP_TIME, file, outFile, "server.pvp-time", 15);
+        setInteger(Integers.ELEVATOR_MAX, file, outFile, "elevator.max", 50);
+        setInteger(Integers.ELEVATOR_MIN, file, outFile, "elevator.min", 2);
+        setInteger(Integers.NIGHT_SPEED, file, outFile, "bed.speed", 100);
+        setInteger(Integers.COMMAND_CONFIRM_TIME, file, outFile, "command-confirm.time", 60);
+
+        setDouble(Doubles.START_MONEY, file, outFile, "money.start", 300.0);
+        setDouble(Doubles.BACK_COST, file, outFile, "money.back", 1000.0);
+        setDouble(Doubles.NICK_COST, file, outFile, "money.nick", 500000.0);
+        setDouble(Doubles.DROP_CHANCE, file, outFile, "spawners.drop-chance", 1.0);
+
+        setList(Lists.BLACKLISTED_BALANCE_TOP, file, outFile, "money.blacklisted-baltop", "yurinogueira");
+        setList(Lists.BLACKLISTED_WORLDS_FLY, file, outFile, "server.blacklisted-fly-worlds", "world_evento");
+        setList(Lists.BLACKLISTED_WORLDS_SLEEP, file, outFile, "bed.blacklisted-worlds", "world_evento");
+        setList(Lists.BLACKLISTED_COMMANDS, file, outFile, "blocked-commands", "/op", "/deop", "/stop");
+        setList(Lists.BLACKLISTED_WORLDS_SPAWNERS, file, outFile, "spawners.blacklisted-worlds", "world_evento");
+        setList(Lists.BLACKLISTED_WORLDS_BACK, file, outFile, "back.blacklisted-worlds", "world_evento", "world_pvp");
+        setList(Lists.PROFILE_CUSTOM_MESSAGES, file, outFile, "profile.custom-messages");
+        setList(Lists.TITLE_LIST, file, outFile, "titles", "Maníaco", "Farmer");
+
+        setMaterials(plugin.elevatorMaterials, file, outFile, "IRON_BLOCK");
+
+        saveFile(outFile, Constants.CONFIG_FILE_PATH);
+    }
+
+    @Override
+    public void executeCritical() {
+        CreateTable createTable;
+        if (EterniaLib.getMySQL()) {
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_KITS));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "name VARCHAR(32)", "cooldown BIGINT(20)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_PLAYER));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "player_name VARCHAR(16)",
+                    "player_display VARCHAR(512)", "time BIGINT(20)", "last BIGINT(20)", "hours BIGINT(20)", "balance DOUBLE(20,4)",
+                    "cash BIGINT(20)", "xp BIGINT(20)", "muted BIGINT(20)", "homes VARCHAR(1024)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "name VARCHAR(64)", "world VARCHAR(32)",
+                    "coord_x DOUBLE", "coord_y DOUBLE", "coord_z DOUBLE", "coord_yaw FLOAT", "coord_pitch FLOAT");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_TITLES));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "key_code VARCHAR(16)", "group_name VARCHAR(16)");
+        } else {
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_KITS));
+            createTable.columns.set("name VARCHAR(32)", "cooldown INTEGER");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_PLAYER));
+            createTable.columns.set("uuid VARCHAR(36)", "player_name VARCHAR(16)",
+                    "player_display VARCHAR(512)", "time INTEGER", "last INTEGER", "hours INTEGER", "balance DOUBLE(22)",
+                    "cash INTEGER", "xp INTEGER", "muted INTEGER", "homes VARCHAR(1024)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+            createTable.columns.set("name VARCHAR(64)", "world VARCHAR(32)", "coord_x DOUBLE", "coord_y DOUBLE",
+                    "coord_z DOUBLE", "coord_yaw FLOAT", "coord_pitch FLOAT");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_TITLES));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
+            createTable.columns.set("key_code VARCHAR(16)", "group_name VARCHAR(16)");
+        }
+
+        SQL.execute(createTable);
+
+        convertingDisplayNameSize();
+        convertingOldTable(plugin.getString(Strings.TABLE_LOCATIONS));
+
+        loadPlayers();
+        loadKits();
+        loadRewards();
+        loadTitles();
+    }
+
+    private void loadPlayers() {
+        final Set<String> playersName = new HashSet<>();
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_PLAYER)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()){
+            while (resultSet.next()) {
+                final String playerName = resultSet.getString("player_name");
+                PlayerProfile playerProfile = new PlayerProfile(
+                        playerName,
+                        resultSet.getLong("time"),
+                        resultSet.getLong("last"),
+                        resultSet.getLong("hours")
+                );
+                final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
+                if (plugin.getBoolean(Booleans.MODULE_ECONOMY)) {
+                    EterniaServer.getEconomyAPI().putInMoney(uuid, resultSet.getDouble("balance"));
+                }
+                getModules(playerProfile, resultSet);
+                EterniaServer.getUserAPI().putProfile(uuid, playerProfile);
+                if (playerName != null) {
+                    playersName.add(playerName.toLowerCase());
+                }
+            }
+        } catch (SQLException ignored) {
+            plugin.logError("Erro ao carregar database", 3);
+        }
+
+        final List<String> shopList = plugin.getShopList();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+            try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+                plugin.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
+                while (resultSet.next()) {
+                    final String name = resultSet.getString("name");
+                    final String worldName = resultSet.getString("world");
+                    final double x = resultSet.getDouble("coord_x");
+                    final double y = resultSet.getDouble("coord_y");
+                    final double z = resultSet.getDouble("coord_z");
+                    final float yaw = resultSet.getFloat("coord_yaw");
+                    final float pitch = resultSet.getFloat("coord_pitch");
+
+                    if (name == null || worldName == null) {
+                        continue;
+                    }
+
+                    final World world = Bukkit.getWorld(worldName);
+
+                    if (world == null) {
+                        continue;
+                    }
+
+                    plugin.putLocation(name, new Location(world, x, y, z, yaw, pitch));
+                    if (playersName.contains(name)) {
+                        shopList.add(name);
+                    }
+                }
+            } catch (SQLException ignored) {
+                plugin.logError("Erro ao carregar database", 3);
+            }
+        });
+        EterniaLib.report(plugin.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(EterniaServer.getUserAPI().getProfileMapSize())));
+    }
+
+    private void loadKits() {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_KITS)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                EterniaServer.getUserAPI().putKitCooldown(resultSet.getString("name"), resultSet.getLong("cooldown"));
+            }
+        } catch (SQLException e) {
+            plugin.logError("Erro ao pegar arquivos da database", 3);
+            e.printStackTrace();
+        }
+    }
+
+    private void loadRewards() {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_REWARD)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                plugin.updateRewardMap(resultSet.getString("key_code"), resultSet.getString("group_name"));
+            }
+        } catch (SQLException ignored) {
+            plugin.logError("Erro ao pegar arquivos da database", 3);
+        }
+        EterniaLib.report(plugin.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(plugin.getRewardMapSize())));
+    }
+
+    private void loadTitles() {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_TITLES)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                PlayerProfile playerProfile = EterniaServer.getUserAPI().getProfile(UUID.fromString(resultSet.getString("uuid")));
+                playerProfile.getTitles().addAll(Arrays.asList(resultSet.getString("titles_array").split(":")));
+                playerProfile.setActiveTitle(resultSet.getString("default_title"));
+            }
+        } catch (SQLException exception) {
+            plugin.logError("Erro ao carregar database", 3);
+        }
+    }
+
+    private void getModules(PlayerProfile playerProfile, ResultSet resultSet) throws SQLException {
+        if (plugin.getBoolean(Booleans.MODULE_CASH)) {
+            playerProfile.setCash(resultSet.getInt("cash"));
+        }
+        if (plugin.getBoolean(Booleans.MODULE_EXPERIENCE)) {
+            playerProfile.setXp(resultSet.getInt("xp"));
+        }
+        if (plugin.getBoolean(Booleans.MODULE_HOMES)) {
+            String result = resultSet.getString("homes");
+            if (result != null) {
+                for (String home : result.split(":")) {
+                    playerProfile.getHomes().add(home);
+                }
+            }
+        }
+        if (plugin.getBoolean(Booleans.MODULE_CHAT)) {
+            playerProfile.setMuted(resultSet.getLong("muted"));
+            playerProfile.setPlayerDisplayName(resultSet.getString("player_display"));
+        }
+    }
+
+    private void convertingDisplayNameSize() {
+        try (Connection connection = SQL.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("ALTER TABLE " + plugin.getString(Strings.TABLE_PLAYER) +
+                    " MODIFY player_display VARCHAR(512);");
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException ignored) { }
+    }
+
+    private void convertingOldTable(final String oldTable) {
+        final List<Insert> insertList = new ArrayList<>();
+        boolean converted;
+
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(oldTable).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                final String[] split = resultSet.getString("location").split(":");
+                final Insert insert = new Insert(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW);
+                insert.columns.set("name", "world", "coord_x", "coord_y", "coord_z", "coord_yaw", "coord_pitch");
+                insert.values.set(
+                        resultSet.getString("name"),
+                        split[0],
+                        Double.parseDouble(split[1]),
+                        Double.parseDouble(split[2]),
+                        Double.parseDouble(split[3]),
+                        Float.parseFloat(split[4]),
+                        Float.parseFloat(split[5]));
+                insertList.add(insert);
+            }
+            converted = true;
+        } catch (SQLException ignored) {
+            converted = false;
+        }
+
+        if (!converted) {
+            return;
+        }
+
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS " + oldTable + ";")) {
+            preparedStatement.execute();
+        } catch (SQLException ignored) {}
+
+        for (final Insert insert : insertList) {
+            SQL.execute(insert);
+        }
+
+        Bukkit.getConsoleSender().sendMessage(plugin.getMessage(Messages.SERVER_CONVERTING_DATABASE, true, "100"));
+    }
 
 }

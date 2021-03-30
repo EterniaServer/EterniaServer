@@ -1,6 +1,8 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -12,12 +14,12 @@ public class PlayerTeleport {
     private final String message;
     private int cooldown;
 
-    public PlayerTeleport(Player player, Location wantLocation, String message) {
+    public PlayerTeleport(final EterniaServer plugin, final Player player, final Location wantLocation, final String message) {
         this.player = player;
         this.firstLocation = player.getLocation();
         this.wantLocation = wantLocation;
         this.message = message;
-        this.cooldown = EterniaServer.configs.cooldown;
+        this.cooldown = plugin.getInteger(Integers.COOLDOWN);
     }
 
     public boolean hasMoved() {

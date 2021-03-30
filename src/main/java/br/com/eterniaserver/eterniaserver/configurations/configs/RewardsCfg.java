@@ -1,7 +1,10 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,19 +16,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RewardsCfg {
+public class RewardsCfg implements ReloadableConfiguration {
 
-    public final Map<String, Map<Double, List<String>>> rewardsMap = new HashMap<>();
+    private final EterniaServer plugin;
 
-    public RewardsCfg() {
+    public RewardsCfg(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
 
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.GENERIC;
+    }
+
+    @Override
+    public void executeConfig() {
         FileConfiguration rewardsConfig = YamlConfiguration.loadConfiguration(new File(Constants.REWARDS_FILE_PATH));
         FileConfiguration outRewards = new YamlConfiguration();
 
         Map<Double, List<String>> tempRewardsMapP = new HashMap<>();
         tempRewardsMapP.put(1.0, List.of("lp user %player_name% parent removetemp cliente", "lp user %player_name% parent addtemp cliente 30d", "broadcast &3%player_name% &7virou um cliente pelos próximos &330 &7dias&8."));
         tempRewardsMapP.put(0.2, List.of("crates givekey %player_name% farmraros"));
-        this.rewardsMap.put("cliente", tempRewardsMapP);
+
+        Map<String, Map<Double, List<String>>> rewardsMap = new HashMap<>();
+
+        rewardsMap.put("cliente", tempRewardsMapP);
 
         Map<String, Map<Double, List<String>>> tempRewardsMap = new HashMap<>();
 
@@ -44,23 +59,26 @@ public class RewardsCfg {
         }
 
         if (tempRewardsMap.isEmpty()) {
-            tempRewardsMap = new HashMap<>(this.rewardsMap);
+            tempRewardsMap = new HashMap<>(rewardsMap);
         }
 
-        this.rewardsMap.clear();
-        tempRewardsMap.forEach(this.rewardsMap::put);
+        rewardsMap.clear();
+        tempRewardsMap.forEach(rewardsMap::put);
 
-        this.rewardsMap.forEach((k, v) -> v.forEach((l, b) -> outRewards.set("rewards." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
+        rewardsMap.forEach((k, v) -> v.forEach((l, b) -> outRewards.set("rewards." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
         outRewards.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
+
+        plugin.chanceMaps.set(ChanceMaps.REWARDS.ordinal(), rewardsMap);
 
         try {
             outRewards.save(Constants.REWARDS_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
+            plugin.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
-
-        System.gc();
-
     }
 
+    @Override
+    public void executeCritical() {
+
+    }
 }

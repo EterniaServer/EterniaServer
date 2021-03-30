@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.Constants;
-import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.objects.CommandData;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,23 +17,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandsCfg {
+public class CommandsCfg implements ReloadableConfiguration {
 
-    public final Map<String, CustomCommand> customCommandMap = new HashMap<>();
+    private final EterniaServer plugin;
 
-    public CommandsCfg() {
+    public CommandsCfg(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.GENERIC;
+    }
+
+    @Override
+    public void executeConfig() {
+        plugin.customCommandMap.clear();
 
         FileConfiguration commandsConfig = YamlConfiguration.loadConfiguration(new File(Constants.COMMANDS_FILE_PATH));
         FileConfiguration outCommands = new YamlConfiguration();
 
-        this.customCommandMap.put("discord", new CustomCommand("Informa o link do discord", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8."), false));
-        this.customCommandMap.put("facebook", new CustomCommand("Informa o link do facebook", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8."), false));
+        plugin.customCommandMap.put("discord", new CommandData("Informa o link do discord", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso discord&8: &3https://discord.gg/Qs3RxMq&8."), false));
+        plugin.customCommandMap.put("facebook", new CommandData("Informa o link do facebook", new ArrayList<>(), new ArrayList<>(), List.of("&8[&aE&9S&8] &7Entre em nosso facebook&8: &3https://facebook.com/eterniaserver&8."), false));
 
-        Map<String, CustomCommand> tempCustomCommandMap = new HashMap<>();
+        Map<String, CommandData> tempCustomCommandMap = new HashMap<>();
         ConfigurationSection configurationSection = commandsConfig.getConfigurationSection("commands");
         if (configurationSection != null) {
             for (String key : configurationSection.getKeys(false)) {
-                tempCustomCommandMap.put(key, new CustomCommand(commandsConfig.getString("commands." + key + ".description"),
+                tempCustomCommandMap.put(key, new CommandData(commandsConfig.getString("commands." + key + ".description"),
                         commandsConfig.getStringList("commands." + key + ".aliases"),
                         commandsConfig.getStringList("commands." + key + ".command"),
                         commandsConfig.getStringList("commands." + key + ".text"),
@@ -40,11 +53,11 @@ public class CommandsCfg {
         }
 
         if (tempCustomCommandMap.isEmpty()) {
-            tempCustomCommandMap = new HashMap<>(this.customCommandMap);
+            tempCustomCommandMap = new HashMap<>(plugin.customCommandMap);
         }
 
-        this.customCommandMap.clear();
-        tempCustomCommandMap.forEach(this.customCommandMap::put);
+        plugin.customCommandMap.clear();
+        tempCustomCommandMap.forEach(plugin.customCommandMap::put);
 
         tempCustomCommandMap.forEach((k, v) -> {
             outCommands.set("commands." + k + ".description", v.getDescription());
@@ -59,9 +72,12 @@ public class CommandsCfg {
         try {
             outCommands.save(Constants.COMMANDS_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
+            plugin.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
-
     }
 
+    @Override
+    public void executeCritical() {
+
+    }
 }

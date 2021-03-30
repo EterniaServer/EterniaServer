@@ -1,7 +1,9 @@
 package br.com.eterniaserver.eterniaserver.configurations.configs;
 
-import br.com.eterniaserver.eterniaserver.core.APIServer;
+import br.com.eterniaserver.eternialib.core.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.Constants;
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 
 import org.bukkit.Material;
@@ -17,17 +19,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CashCfg {
+public class CashCfg implements ReloadableConfiguration {
 
-    public final List<ItemStack> menuGui = new ArrayList<>();
-    public final Map<Integer, String> guis = new HashMap<>();
-    public final Map<String, Integer> guisInvert = new HashMap<>();
-    public final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
+    private final EterniaServer plugin;
 
-    public CashCfg() {
+    public CashCfg(final EterniaServer plugin) {
+        this.plugin = plugin;
+    }
 
-        FileConfiguration cashGui = YamlConfiguration.loadConfiguration(new File(Constants.CASHGUI_FILE_PATH));
-        FileConfiguration outCash = new YamlConfiguration();
+    @Override
+    public ConfigurationCategory category() {
+        return ConfigurationCategory.WARNING_ADVICE;
+    }
+
+    @Override
+    public void executeConfig() {
+        plugin.menuGui.clear();
+        plugin.guis.clear();
+        plugin.guisInvert.clear();
+        plugin.othersGui.clear();
+
+        final FileConfiguration cashGui = YamlConfiguration.loadConfiguration(new File(Constants.CASHGUI_FILE_PATH));
+        final FileConfiguration outCash = new YamlConfiguration();
 
         loadDefaultValues();
 
@@ -39,20 +52,20 @@ public class CashCfg {
         loadMapFromArchive(cashGui, othersGuiTemp, menuGuiTemp, guisTemp, guisTempInvert);
 
         if (othersGuiTemp.isEmpty()) {
-            menuGuiTemp = new ArrayList<>(this.menuGui);
-            guisTemp = new HashMap<>(guis);
-            guisTempInvert = new HashMap<>(guisInvert);
-            othersGuiTemp = new HashMap<>(othersGui);
+            menuGuiTemp = new ArrayList<>(plugin.menuGui);
+            guisTemp = new HashMap<>(plugin.guis);
+            guisTempInvert = new HashMap<>(plugin.guisInvert);
+            othersGuiTemp = new HashMap<>(plugin.othersGui);
         }
 
-        this.menuGui.clear();
-        menuGui.addAll(menuGuiTemp);
-        this.guis.clear();
-        guisTemp.forEach(this.guis::put);
-        this.guisInvert.clear();
-        guisTempInvert.forEach(this.guisInvert::put);
-        othersGui.clear();
-        othersGuiTemp.forEach(this.othersGui::put);
+        plugin.menuGui.clear();
+        plugin.menuGui.addAll(menuGuiTemp);
+        plugin.guis.clear();
+        guisTemp.forEach(plugin.guis::put);
+        plugin.guisInvert.clear();
+        guisTempInvert.forEach(plugin.guisInvert::put);
+        plugin.othersGui.clear();
+        othersGuiTemp.forEach(plugin.othersGui::put);
 
         outCash.options().header("Caso precise de ajuda acesse https://github.com/EterniaServer/EterniaServer/wiki");
         outCash.set("menu.size", menuGuiTemp.size());
@@ -86,8 +99,12 @@ public class CashCfg {
         try {
             outCash.save(Constants.CASHGUI_FILE_PATH);
         } catch (IOException exception) {
-            APIServer.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
+            plugin.logError("Impossível de criar arquivos em " + Constants.DATA_LAYER_FOLDER_PATH, 3);
         }
+    }
+
+    @Override
+    public void executeCritical() {
 
     }
 
@@ -99,9 +116,9 @@ public class CashCfg {
                 itemMeta.setDisplayName("$7Permissões$8.".replace('$', (char) 0x00A7));
                 itemMeta.setLore(List.of( "$7Compre permissões".replace('$', (char) 0x00A7), "$7para lhe ajudar".replace('$', (char) 0x00A7), "$7nessa jornada$8.".replace('$', (char) 0x00A7)));
                 itemStack.setItemMeta(itemMeta);
-                guis.put(10, "Perm");
-                guisInvert.put("Perm", 10);
-                menuGui.add(itemStack);
+                plugin.guis.put(10, "Perm");
+                plugin.guisInvert.put("Perm", 10);
+                plugin.menuGui.add(itemStack);
                 List<CashItem> tempList = new ArrayList<>();
                 for (int j = 0; j < 36; j++) {
                     if (j == 10) {
@@ -115,9 +132,9 @@ public class CashCfg {
                         tempList.add(new CashItem(getGlass(), 0, null, null, true));
                     }
                 }
-                this.othersGui.put(i, tempList);
+                plugin.othersGui.put(i, tempList);
             } else {
-                this.menuGui.add(getGlass());
+                plugin.menuGui.add(getGlass());
             }
         }
     }
@@ -129,7 +146,7 @@ public class CashCfg {
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(cashGui.getString("menu." + i + ".name").replace('$', (char) 0x00A7));
                 List<String> listando = cashGui.getStringList("menu." + i + ".lore");
-                APIServer.putColorOnList(listando);
+                plugin.putColorOnList(listando);
                 itemMeta.setLore(listando);
                 itemStack.setItemMeta(itemMeta);
                 menuGuiTemp.add(itemStack);
@@ -143,12 +160,12 @@ public class CashCfg {
                         ItemMeta guiMeta = guiItem.getItemMeta();
                         guiMeta.setDisplayName(cashGui.getString("guis." + guiName + "." + j + ".name").replace('$', (char) 0x00A7));
                         List<String> listandoNovo = cashGui.getStringList("guis." + guiName + "." + j + ".lore");
-                        APIServer.putColorOnList(listandoNovo);
+                        plugin.putColorOnList(listandoNovo);
                         guiMeta.setLore(listandoNovo);
                         guiItem.setItemMeta(guiMeta);
                         List<String> commands = cashGui.getStringList("guis." + guiName + "." + j + ".commands");
                         List<String> msgs = cashGui.getStringList("guis." + guiName + "." + j + ".messages");
-                        APIServer.putColorOnList(msgs);
+                        plugin.putColorOnList(msgs);
                         tempList.add(new CashItem(guiItem, cashGui.getInt("guis." + guiName + "." + j + ".cost"), msgs, commands, false));
                     } else {
                         tempList.add(new CashItem(getGlass(), 0, null, null, true));

@@ -41,7 +41,7 @@ public abstract class AbstractCommand implements CommandExecutor {
     protected final String description;
     protected final List<String> alias;
 
-    public AbstractCommand(String command, String description, List<String> aliases) {
+    protected AbstractCommand(String command, String description, List<String> aliases) {
         this.command = command.toLowerCase();
         this.description = description;
         this.alias = aliases;

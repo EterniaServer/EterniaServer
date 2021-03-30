@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.configurations.dependencies;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.core.APICash;
-import br.com.eterniaserver.eterniaserver.core.User;
+import br.com.eterniaserver.eterniaserver.objects.User;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
@@ -13,7 +13,13 @@ import javax.annotation.Nonnull;
 
 public class Placeholders extends PlaceholderExpansion {
 
-    private final String version = this.getClass().getPackage().getImplementationVersion();
+    private final EterniaServer plugin;
+    private final String version;
+
+    public Placeholders(final EterniaServer plugin) {
+        this.plugin = plugin;
+        this.version = plugin.getClass().getPackage().getImplementationVersion();
+    }
 
     @Override
     public boolean persist(){
@@ -73,13 +79,13 @@ public class Placeholders extends PlaceholderExpansion {
             case 1:
                 return user.getAfkPlaceholder();
             case 2:
-                return String.valueOf(APICash.getCash(user.getUUID()));
+                return String.valueOf(EterniaServer.getCashAPI().getCash(user.getUUID()));
             case 3:
                 return user.getGlowColor();
             case 4:
                 return user.getGodeModePlaceholder();
             default:
-                return EterniaServer.constants.noSupport;
+                return plugin.getString(Strings.NOT_SUPPORTED);
         }
     }
 
