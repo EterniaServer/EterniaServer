@@ -181,15 +181,12 @@ public class ChatFormatter {
 	}
 
 	private TextComponent getJsonTagText(final Player player, final CustomPlaceholder object) {
-
 		if (object.getIsStatic()) {
-
 			if (!staticComponents.containsKey(object.getValue())) {
 				final TextComponent textComponent = loadComponent(player, object);
 				staticComponents.put(object.getValue(), textComponent);
 				return textComponent;
 			}
-
 			return staticComponents.get(object.getValue());
 		}
 
