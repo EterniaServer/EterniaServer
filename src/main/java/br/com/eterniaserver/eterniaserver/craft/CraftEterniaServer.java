@@ -371,7 +371,7 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         StringBuffer buffer = new StringBuffer();
 
         while(matcher.find()) {
-            matcher.appendReplacement(buffer, TextColor.color(Integer.parseInt(matcher.group(1))).toString());
+            matcher.appendReplacement(buffer, TextColor.color(Integer.parseInt(matcher.group(1).substring(1))).toString());
         }
 
         return matcher.appendTail(buffer).toString().replace('&', (char) 0x00A7);
