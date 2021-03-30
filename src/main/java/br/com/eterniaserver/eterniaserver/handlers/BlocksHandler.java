@@ -103,9 +103,6 @@ public class BlocksHandler implements Listener {
                 event.setCancelled(true);
                 plugin.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
             }
-        } else if (!player.hasPermission(plugin.getString(Strings.PERM_SPAWNERS_BREAK)) && block.getType() == Material.SPAWNER) {
-            plugin.sendMessage(player, Messages.SERVER_NO_PERM);
-            event.setCancelled(true);
         } else if (isBlackListWorld(block.getWorld().getName()) && block.getType() == Material.SPAWNER) {
             plugin.sendMessage(player, Messages.SPAWNER_WORLD_BLOCKED);
             event.setCancelled(true);
