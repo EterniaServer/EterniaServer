@@ -1,18 +1,10 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eterniaserver.configurations.configs.BlocksCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.CashCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.ChatCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.EntityCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.CommandsCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.ConfigsCfg;
+import br.com.eterniaserver.eterniaserver.configurations.configs.*;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.MetricsLite;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.KitsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.RewardsCfg;
-import br.com.eterniaserver.eterniaserver.configurations.configs.ScheduleCfg;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.Placeholders;
 import br.com.eterniaserver.eterniaserver.craft.CraftCash;
 import br.com.eterniaserver.eterniaserver.craft.CraftEconomy;
@@ -84,6 +76,7 @@ public class EterniaServer extends CraftEterniaServer {
         final KitsCfg kitsCfg = new KitsCfg(this);
         final RewardsCfg rewardsCfg = new RewardsCfg(this);
         final ScheduleCfg scheduleCfg = new ScheduleCfg(this, integers);
+        final EconomyCfg economyCfg = new EconomyCfg(this, booleans, doubles, strings, materialLimitPrice);
 
         EterniaLib.addReloadableConfiguration("eterniaserver", "constants", constantsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "messages", msgCfg);
@@ -95,6 +88,7 @@ public class EterniaServer extends CraftEterniaServer {
         EterniaLib.addReloadableConfiguration("eterniaserver", "kits", kitsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "rewards", rewardsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "schedule", scheduleCfg);
+        EterniaLib.addReloadableConfiguration("eterniaserver", "economy", economyCfg);
 
         constantsCfg.executeConfig();
         msgCfg.executeConfig();
@@ -107,6 +101,7 @@ public class EterniaServer extends CraftEterniaServer {
         kitsCfg.executeConfig();
         rewardsCfg.executeConfig();
         scheduleCfg.executeConfig();
+        economyCfg.executeConfig();
         economyAPI.setUp(booleans);
         configsCfg.executeCritical();
     }

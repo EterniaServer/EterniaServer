@@ -61,6 +61,7 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     public final Map<String, CommandData> customCommandMap = new HashMap<>();
     public final Map<String, CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
     public final Map<String, Map<Integer, List<String>>> scheduleMap = new HashMap<>();
+    public final Map<Material, Integer> materialLimitPrice = new HashMap<>();
 
     public final Map<Integer, String> guis = new HashMap<>();
     public final Map<Integer, ChannelObject> channelsMap = new HashMap<>();

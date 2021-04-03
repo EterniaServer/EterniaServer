@@ -19,6 +19,7 @@ public enum Booleans {
     MODULE_REWARDS,
     MODULE_SCHEDULE,
     MODULE_GENERIC,
+    CHEST_SHOP_SUPPORT,
     ASYNC_CHECK,
     AFK_KICK,
     INV_DROP,

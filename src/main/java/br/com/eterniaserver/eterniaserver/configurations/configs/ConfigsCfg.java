@@ -87,9 +87,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setString(Strings.TABLE_REWARD, file, outFile, "sql.table-rewards", "es_rewards");
         setString(Strings.TABLE_LOCATIONS, file, outFile, "sql.table-locations", "es_locations");
         setString(Strings.TABLE_TITLES, file, outFile, "sql.table-titles", "es_titles");
-        setString(Strings.MONEY_SINGULAR, file, outFile, "money.singular", "Eternia");
-        setString(Strings.MONEY_PLURAL, file, outFile, "money.plural", "Eternias");
-        setString(Strings.SERVER_BALANCE_ACCOUNT, file, outFile, "money.balance-account", "yurinogueira");
         setString(Strings.SPAWNERS_COLORS, file, outFile, "spawners.color", "§e");
 
         setInteger(Integers.PLUGIN_TICKS, file, outFile, "server.checks", 1);
@@ -101,12 +98,8 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setInteger(Integers.NIGHT_SPEED, file, outFile, "bed.speed", 100);
         setInteger(Integers.COMMAND_CONFIRM_TIME, file, outFile, "command-confirm.time", 60);
 
-        setDouble(Doubles.START_MONEY, file, outFile, "money.start", 300.0);
-        setDouble(Doubles.BACK_COST, file, outFile, "money.back", 1000.0);
-        setDouble(Doubles.NICK_COST, file, outFile, "money.nick", 500000.0);
         setDouble(Doubles.DROP_CHANCE, file, outFile, "spawners.drop-chance", 1.0);
 
-        setList(Lists.BLACKLISTED_BALANCE_TOP, file, outFile, "money.blacklisted-baltop", "yurinogueira");
         setList(Lists.BLACKLISTED_WORLDS_FLY, file, outFile, "server.blacklisted-fly-worlds", "world_evento");
         setList(Lists.BLACKLISTED_WORLDS_SLEEP, file, outFile, "bed.blacklisted-worlds", "world_evento");
         setList(Lists.BLACKLISTED_COMMANDS, file, outFile, "blocked-commands", "/op", "/deop", "/stop");

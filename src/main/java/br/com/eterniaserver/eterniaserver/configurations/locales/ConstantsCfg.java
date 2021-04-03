@@ -126,6 +126,8 @@ public class ConstantsCfg extends GenericCfg implements ReloadableConfiguration 
         namespaceKeys[ItemsKeys.TAG_COORD_YAW.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_YAW);
         namespaceKeys[ItemsKeys.TAG_COORD_PITCH.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_PITCH);
         namespaceKeys[ItemsKeys.TAG_LOC_NAME.ordinal()] = new NamespacedKey(plugin, Constants.TAG_LOC_NAME);
+        namespaceKeys[ItemsKeys.CHEST_BUY.ordinal()] = new NamespacedKey(plugin, "ChestBuy_E");
+        namespaceKeys[ItemsKeys.CHEST_SELL.ordinal()] = new NamespacedKey(plugin, "ChestSell_E");
     }
 
     @Override

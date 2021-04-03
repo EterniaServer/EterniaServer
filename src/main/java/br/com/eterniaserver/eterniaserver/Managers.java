@@ -12,6 +12,8 @@ import br.com.eterniaserver.eterniaserver.core.CheckWorld;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Entities;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.handlers.BlocksHandler;
+import br.com.eterniaserver.eterniaserver.handlers.ChestShopHandler;
 import br.com.eterniaserver.eterniaserver.objects.ChannelCommand;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
@@ -56,7 +58,14 @@ public class Managers {
         loadSpawnersManager();
         loadTeleportsManager();
         loadScheduleTasks();
+        loadChestShopComp();
 
+    }
+
+    private void loadChestShopComp() {
+        if (plugin.getBoolean(Booleans.CHEST_SHOP_SUPPORT)) {
+            plugin.getServer().getPluginManager().registerEvents(new ChestShopHandler(plugin), plugin);
+        }
     }
 
     private void loadCommandsLocale() {
