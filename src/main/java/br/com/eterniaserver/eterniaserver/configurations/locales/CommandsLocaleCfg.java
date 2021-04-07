@@ -106,6 +106,7 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.ITEM_SET, "set", "eternia.item", " <página>", " Ajuda para o sistema de Set de Items", null);
         this.addDefault(Commands.ITEM_SET_LORE, "lore", "eternia.item", " <lore>", " Define a lore do item", null);
         this.addDefault(Commands.ITEM_SET_NAME, "name", "eternia.item", " <nome>", " Define o nome do item", null);
+        this.addDefault(Commands.ITEM_CUSTOM_MODEL, "setcustommodeldata", "eternia.item", " <id>", " Define uma custom model data para um item", null);
         this.addDefault(Commands.KIT, "kit", "eternia.kit", " <kit>", " Escolha um kit para pegar", null);
         this.addDefault(Commands.KITS, "kits", "eternia.kits", null, " Veja a lista de kits disponíveis", null);
         this.addDefault(Commands.MUTE, "mute", "eternia.mute", " <página>", " Receba ajuda para o sistema de Mute", null);
