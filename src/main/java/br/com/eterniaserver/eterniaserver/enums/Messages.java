@@ -158,6 +158,7 @@ public enum Messages {
     ITEM_SET_NAME,
     ITEM_CONDENSER,
     ITEM_HELMET,
+    ITEM_SET_CUSTOM,
     SPEED_SET,
     SPEED_LIMIT,
     PROFILE_TITLE,

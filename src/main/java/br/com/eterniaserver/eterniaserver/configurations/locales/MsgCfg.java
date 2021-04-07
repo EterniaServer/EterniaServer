@@ -182,6 +182,7 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.ITEM_SET_LORE, "A lore foi limpa e definida como$3 {0}$8.", "0: lore");
         this.addDefault(Messages.ITEM_SET_NAME, "O nome do item foi definido como $3{0}$8.", "0: nome do item");
         this.addDefault(Messages.ITEM_HELMET, "Você equipou seu caçapete$8.", null);
+        this.addDefault(Messages.ITEM_SET_CUSTOM, "Você atribuiu a CustomModelData $3{0} $7ao item$8.", "0: id da custom model data");
         this.addDefault(Messages.SPEED_SET, "Sua velocidade foi definida para $3{0}$8.", "0: nova velocidade");
         this.addDefault(Messages.SPEED_LIMIT, "Você precisa escolher um valor entre $31 $7e $310$8.", null);
         this.addDefault(Messages.PROFILE_TITLE, "$8[]====[$7Perfil$8]====[]", null);

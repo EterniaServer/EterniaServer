@@ -38,7 +38,7 @@ public class Item extends BaseCommand {
     @Subcommand("%item_send_custon")
     @CommandPermission("%item_send_custon_perm")
     @Description("%item_send_custon_description")
-    @CommandCompletion("players 3 1 STONE sendmessage %player_name% &8[&aE&9S&8] &7Item preula;give %player_name% minecraft:stone")
+    @CommandCompletion("@players 3 1 STONE sendmessage %player_name% &8[&aE&9S&8] &7Item preula;give %player_name% minecraft:stone")
     @Syntax("%item_send_custon_syntax")
     public void sendItemCustom(final CommandSender sender, final OnlinePlayer target,
                                @Conditions("limits:min=0,max=2147483647") final Integer usages,
@@ -64,6 +64,20 @@ public class Item extends BaseCommand {
         } catch (Exception ignored) {
             plugin.sendMessage(sender, Messages.ITEM_NBT_CANT_GIVE, true);
         }
+    }
+
+    @Subcommand("%item_custom_model")
+    @CommandPermission("%item_custom_model_perm")
+    @Description("%item_custom_model_description")
+    @CommandCompletion("0")
+    @Syntax("%item_custom_model_syntax")
+    public void setCustomModelData(final Player player, @Conditions("limits:min=0,max=2147483647") final Integer integer) {
+        final ItemStack itemStack = player.getInventory().getItemInMainHand();
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setCustomModelData(integer);
+        itemStack.setItemMeta(itemMeta);
+        player.getInventory().setItemInMainHand(itemStack);
+        plugin.sendMessage(player, Messages.ITEM_SET_CUSTOM, String.valueOf(integer));
     }
 
     @Subcommand("%item_clear")

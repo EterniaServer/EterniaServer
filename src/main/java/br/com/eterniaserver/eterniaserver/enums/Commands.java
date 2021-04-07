@@ -76,6 +76,7 @@ public enum Commands {
     ITEM_SET,
     ITEM_SET_LORE,
     ITEM_SET_NAME,
+    ITEM_CUSTOM_MODEL,
     KIT,
     KITS,
     MUTE,
