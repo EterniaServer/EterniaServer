@@ -86,7 +86,7 @@ public class ChestShopHandler implements Listener {
 
         final double finalPrice = (roofPrice - (amountSell * (roofPrice * 100000)));
 
-        if (finalPrice < roofPrice) {
+        if (finalPrice < 0) {
             return;
         }
 
