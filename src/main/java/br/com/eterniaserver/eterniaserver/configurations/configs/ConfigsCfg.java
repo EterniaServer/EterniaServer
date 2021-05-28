@@ -277,7 +277,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
             }
         } catch (SQLException e) {
             plugin.logError("Erro ao pegar arquivos da database", 3);
-            e.printStackTrace();
         }
     }
 
@@ -326,11 +325,12 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
     }
 
     private void convertingDisplayNameSize() {
-        try (Connection connection = SQL.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("ALTER TABLE " + plugin.getString(Strings.TABLE_PLAYER) +
-                    " MODIFY player_display VARCHAR(512);");
+        try (Connection connection = SQL.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "ALTER TABLE ? MODIFY ? VARCHAR(512);")) {
+            preparedStatement.setString(1, plugin.getString(Strings.TABLE_PLAYER));
+            preparedStatement.setString(2, "player_display");
             preparedStatement.execute();
-            preparedStatement.close();
         } catch (SQLException ignored) { }
     }
 
@@ -362,7 +362,8 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
             return;
         }
 
-        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS " + oldTable + ";")) {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS ?;")) {
+            preparedStatement.setString(1, oldTable);
             preparedStatement.execute();
         } catch (SQLException ignored) {}
 

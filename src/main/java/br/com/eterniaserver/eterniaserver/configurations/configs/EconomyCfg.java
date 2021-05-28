@@ -15,8 +15,6 @@ import java.io.File;
 
 public class EconomyCfg extends GenericCfg implements ReloadableConfiguration {
 
-    private final EterniaServer plugin;
-
     private final int[] chestShopBuyRoof;
     private final int[] chestShopSellRoof;
 
@@ -27,7 +25,6 @@ public class EconomyCfg extends GenericCfg implements ReloadableConfiguration {
                       final int[] chestShopBuyRoof,
                       final int[] chestShopSellRoof) {
         super(plugin, strings, booleans, null, doubles);
-        this.plugin = plugin;
         this.chestShopBuyRoof = chestShopBuyRoof;
         this.chestShopSellRoof = chestShopSellRoof;
     }
