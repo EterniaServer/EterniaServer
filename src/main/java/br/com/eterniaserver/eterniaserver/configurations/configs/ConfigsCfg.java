@@ -87,9 +87,7 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setString(Strings.TABLE_REWARD, file, outFile, "sql.table-rewards", "es_rewards");
         setString(Strings.TABLE_LOCATIONS, file, outFile, "sql.table-locations", "es_locations");
         setString(Strings.TABLE_TITLES, file, outFile, "sql.table-titles", "es_titles");
-        setString(Strings.MONEY_SINGULAR, file, outFile, "money.singular", "Eternia");
-        setString(Strings.MONEY_PLURAL, file, outFile, "money.plural", "Eternias");
-        setString(Strings.SERVER_BALANCE_ACCOUNT, file, outFile, "money.balance-account", "yurinogueira");
+        setString(Strings.TABLE_SHOP_ADDON, file, outFile, "sql.table-chest-shop-addon", "es_cs_addon");
         setString(Strings.SPAWNERS_COLORS, file, outFile, "spawners.color", "§e");
 
         setInteger(Integers.PLUGIN_TICKS, file, outFile, "server.checks", 1);
@@ -101,12 +99,8 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setInteger(Integers.NIGHT_SPEED, file, outFile, "bed.speed", 100);
         setInteger(Integers.COMMAND_CONFIRM_TIME, file, outFile, "command-confirm.time", 60);
 
-        setDouble(Doubles.START_MONEY, file, outFile, "money.start", 300.0);
-        setDouble(Doubles.BACK_COST, file, outFile, "money.back", 1000.0);
-        setDouble(Doubles.NICK_COST, file, outFile, "money.nick", 500000.0);
         setDouble(Doubles.DROP_CHANCE, file, outFile, "spawners.drop-chance", 1.0);
 
-        setList(Lists.BLACKLISTED_BALANCE_TOP, file, outFile, "money.blacklisted-baltop", "yurinogueira");
         setList(Lists.BLACKLISTED_WORLDS_FLY, file, outFile, "server.blacklisted-fly-worlds", "world_evento");
         setList(Lists.BLACKLISTED_WORLDS_SLEEP, file, outFile, "bed.blacklisted-worlds", "world_evento");
         setList(Lists.BLACKLISTED_COMMANDS, file, outFile, "blocked-commands", "/op", "/deop", "/stop");
@@ -145,6 +139,11 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
 
             createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
             createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "key_code VARCHAR(16)", "group_name VARCHAR(16)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_SHOP_ADDON));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "shop_uuid VARCHAR(36)", "world VARCHAR(32)", "coord_x INT",
+                    "coord_y INT", "coord_z INT");
         } else {
             createTable = new CreateTable(plugin.getString(Strings.TABLE_KITS));
             createTable.columns.set("name VARCHAR(32)", "cooldown INTEGER");
@@ -162,11 +161,16 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
             SQL.execute(createTable);
 
             createTable = new CreateTable(plugin.getString(Strings.TABLE_TITLES));
-            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
+            createTable.columns.set("uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
             SQL.execute(createTable);
 
             createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
             createTable.columns.set("key_code VARCHAR(16)", "group_name VARCHAR(16)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_SHOP_ADDON));
+            createTable.columns.set("shop_uuid VARCHAR(36)", "world VARCHAR(32)", "coord_x INTEGER",
+                    "coord_y INTEGER", "coord_z INTEGER");
         }
 
         SQL.execute(createTable);
@@ -207,8 +211,8 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
 
         final List<String> shopList = plugin.getShopList();
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+            plugin.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
             try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
-                plugin.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
                 while (resultSet.next()) {
                     final String name = resultSet.getString("name");
                     final String worldName = resultSet.getString("world");
@@ -237,6 +241,32 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
                 plugin.logError("Erro ao carregar database", 3);
             }
         });
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+            try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_SHOP_ADDON)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    final String shopUUID = resultSet.getString("shop_uuid");
+                    final String worldName = resultSet.getString("world");
+                    final int x = resultSet.getInt("coord_x");
+                    final int y = resultSet.getInt("coord_y");
+                    final int z = resultSet.getInt("coord_z");
+
+                    if (shopUUID == null || worldName == null) {
+                        continue;
+                    }
+
+                    final World world = Bukkit.getWorld(worldName);
+
+                    if (world == null) {
+                        continue;
+                    }
+
+                    EterniaServer.getEconomyAPI().addSign(shopUUID, new Location(world, x, y, z));
+                }
+            } catch (SQLException ignored) {
+                plugin.logError("Erro ao carregar database", 3);
+            }
+        });
         EterniaLib.report(plugin.getMessage(Messages.SERVER_DATA_LOADED, true, "Player Profiles", String.valueOf(EterniaServer.getUserAPI().getProfileMapSize())));
     }
 
@@ -247,7 +277,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
             }
         } catch (SQLException e) {
             plugin.logError("Erro ao pegar arquivos da database", 3);
-            e.printStackTrace();
         }
     }
 
@@ -296,11 +325,12 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
     }
 
     private void convertingDisplayNameSize() {
-        try (Connection connection = SQL.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("ALTER TABLE " + plugin.getString(Strings.TABLE_PLAYER) +
-                    " MODIFY player_display VARCHAR(512);");
+        try (Connection connection = SQL.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "ALTER TABLE ? MODIFY ? VARCHAR(512);")) {
+            preparedStatement.setString(1, plugin.getString(Strings.TABLE_PLAYER));
+            preparedStatement.setString(2, "player_display");
             preparedStatement.execute();
-            preparedStatement.close();
         } catch (SQLException ignored) { }
     }
 
@@ -332,7 +362,8 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
             return;
         }
 
-        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS " + oldTable + ";")) {
+        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS ?;")) {
+            preparedStatement.setString(1, oldTable);
             preparedStatement.execute();
         } catch (SQLException ignored) {}
 

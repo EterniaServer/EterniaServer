@@ -8,4 +8,4 @@ load: STARTUP
 api-version: '1.14'
 website: www.eterniaserver.com.br
 depend: [EterniaLib, PlaceholderAPI]
-softdepend: [Vault]
+softdepend: [Vault, ChestShop]

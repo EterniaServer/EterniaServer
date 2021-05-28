@@ -12,6 +12,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
@@ -145,8 +146,7 @@ public class ChatFormatter {
 								.replace("{0}", player.getName())
 								.replace("{1}", player.getDisplayName()), 10, 40, 10);
 			}
-
-			return Component.text("$3" + string + " ");
+			return Component.text(string + " ").color(TextColor.color(3));
 		}
 
 		if (player.hasPermission(plugin.getString(Strings.PERM_CHAT_ITEM)) && string.equals(plugin.getString(Strings.SHOW_ITEM_PLACEHOLDER))) {
@@ -176,7 +176,7 @@ public class ChatFormatter {
 								.replace("{0}", String.valueOf(itemStack.getAmount()))
 								.replace("{1}", itemStack.getType().toString())));
 
-		return textComponent.hoverEvent(Bukkit.getItemFactory().asHoverEvent(itemStack, UnaryOperator.identity()));
+		return textComponent.hoverEvent(Bukkit.getItemFactory().asHoverEvent(itemStack, UnaryOperator.identity())).color(TextColor.color(3));
 
 	}
 
@@ -189,7 +189,6 @@ public class ChatFormatter {
 			}
 			return staticComponents.get(object.getValue());
 		}
-
 		return loadComponent(player, object);
 
 	}

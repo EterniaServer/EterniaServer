@@ -11,18 +11,13 @@ import br.com.eterniaserver.eterniaserver.enums.Strings;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class CraftEconomy {
@@ -36,6 +31,7 @@ public class CraftEconomy {
 
     private final Map<UUID, Double> economyMap = new HashMap<>();
     private final Map<UUID, Double> economyOrdered = new LinkedHashMap<>();
+    private final Map<String, Location> shopSigns = new HashMap<>();
 
     public CraftEconomy(final EterniaServer plugin) {
         this.plugin = plugin;
@@ -63,6 +59,18 @@ public class CraftEconomy {
 
     public void putInMoney(UUID uuid, double money) {
         economyMap.put(uuid, money);
+    }
+
+    public Collection<Location> getSigns() {
+        return shopSigns.values();
+    }
+
+    public void deleteSign(String uuid) {
+        shopSigns.remove(uuid);
+    }
+
+    public void addSign(String uuid, Location location) {
+        shopSigns.put(uuid, location);
     }
 
     /**

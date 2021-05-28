@@ -5,13 +5,11 @@ import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.commands.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.CommandsLocaleCfg;
-import br.com.eterniaserver.eterniaserver.core.EterniaTick;
-import br.com.eterniaserver.eterniaserver.core.PluginClearSchedule;
-import br.com.eterniaserver.eterniaserver.core.PluginSchedule;
-import br.com.eterniaserver.eterniaserver.core.CheckWorld;
+import br.com.eterniaserver.eterniaserver.core.*;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Entities;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.handlers.ChestShopHandler;
 import br.com.eterniaserver.eterniaserver.objects.ChannelCommand;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
@@ -56,7 +54,14 @@ public class Managers {
         loadSpawnersManager();
         loadTeleportsManager();
         loadScheduleTasks();
+        loadChestShopComp();
 
+    }
+
+    private void loadChestShopComp() {
+        if (plugin.getBoolean(Booleans.CHEST_SHOP_SUPPORT)) {
+            plugin.getServer().getPluginManager().registerEvents(new ChestShopHandler(plugin), plugin);
+        }
     }
 
     private void loadCommandsLocale() {
@@ -151,6 +156,10 @@ public class Managers {
     private void loadEconomyManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_ECONOMY), "Economy")) {
             CommandManager.registerCommand(new Economy(plugin, baltopName));
+        }
+
+        if (plugin.getBoolean(Booleans.CHEST_SHOP_SUPPORT)) {
+            new ChestShopAddonTick(plugin).runTaskTimerAsynchronously(plugin, 0L, TimeUnit.HOURS.toSeconds(plugin.getInteger(Integers.CS_CLEAR_SCHEDULE_TIME)) * 20L);
         }
     }
 
