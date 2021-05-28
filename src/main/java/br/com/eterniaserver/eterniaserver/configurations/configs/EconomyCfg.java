@@ -5,10 +5,7 @@ import br.com.eterniaserver.eternialib.core.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
-import br.com.eterniaserver.eterniaserver.enums.Booleans;
-import br.com.eterniaserver.eterniaserver.enums.Doubles;
-import br.com.eterniaserver.eterniaserver.enums.Lists;
-import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.enums.*;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,6 +48,10 @@ public class EconomyCfg extends GenericCfg implements ReloadableConfiguration {
         setString(Strings.SERVER_BALANCE_ACCOUNT, file, outFile, "general.balance-account", "EterniaServer");
 
         setBoolean(Booleans.CHEST_SHOP_SUPPORT, file, outFile, "supports.chest-shop", true);
+
+        setInteger(Integers.CS_AMOUNT_REMOVED, file, outFile, "supports.cs-amount-removed", 500);
+        setInteger(Integers.CS_CLEAR_SCHEDULE_TIME, file, outFile, "supports.cs-clear-schedule-time", 12);
+        setInteger(Integers.CS_CLEAR_TICK, file, outFile, "supports.cs-clear-tick", 40);
 
         setDouble(Doubles.START_MONEY, file, outFile, "general.start", 15.0);
         setDouble(Doubles.BACK_COST, file, outFile, "command.back-cost", 500.0);

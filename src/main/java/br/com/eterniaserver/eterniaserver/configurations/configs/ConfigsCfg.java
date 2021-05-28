@@ -87,6 +87,7 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setString(Strings.TABLE_REWARD, file, outFile, "sql.table-rewards", "es_rewards");
         setString(Strings.TABLE_LOCATIONS, file, outFile, "sql.table-locations", "es_locations");
         setString(Strings.TABLE_TITLES, file, outFile, "sql.table-titles", "es_titles");
+        setString(Strings.TABLE_SHOP_ADDON, file, outFile, "sql.table-chest-shop-addon", "es_cs_addon");
         setString(Strings.SPAWNERS_COLORS, file, outFile, "spawners.color", "§e");
 
         setInteger(Integers.PLUGIN_TICKS, file, outFile, "server.checks", 1);
@@ -138,6 +139,11 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
 
             createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
             createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "key_code VARCHAR(16)", "group_name VARCHAR(16)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_SHOP_ADDON));
+            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "shop_uuid VARCHAR(36)", "world VARCHAR(32)", "coord_x INT",
+                    "coord_y INT", "coord_z INT");
         } else {
             createTable = new CreateTable(plugin.getString(Strings.TABLE_KITS));
             createTable.columns.set("name VARCHAR(32)", "cooldown INTEGER");
@@ -155,11 +161,16 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
             SQL.execute(createTable);
 
             createTable = new CreateTable(plugin.getString(Strings.TABLE_TITLES));
-            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
+            createTable.columns.set("uuid VARCHAR(36)", "titles_array VARCHAR(4096)", "default_title VARCHAR(36)");
             SQL.execute(createTable);
 
             createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
             createTable.columns.set("key_code VARCHAR(16)", "group_name VARCHAR(16)");
+            SQL.execute(createTable);
+
+            createTable = new CreateTable(plugin.getString(Strings.TABLE_SHOP_ADDON));
+            createTable.columns.set("shop_uuid VARCHAR(36)", "world VARCHAR(32)", "coord_x INTEGER",
+                    "coord_y INTEGER", "coord_z INTEGER");
         }
 
         SQL.execute(createTable);
@@ -200,8 +211,8 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
 
         final List<String> shopList = plugin.getShopList();
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+            plugin.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
             try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_LOCATIONS) + Constants.NEW).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
-                plugin.setError(new Location(Bukkit.getWorld("world"), 666, 666, 666, 666, 666));
                 while (resultSet.next()) {
                     final String name = resultSet.getString("name");
                     final String worldName = resultSet.getString("world");
@@ -225,6 +236,32 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
                     if (playersName.contains(name)) {
                         shopList.add(name);
                     }
+                }
+            } catch (SQLException ignored) {
+                plugin.logError("Erro ao carregar database", 3);
+            }
+        });
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+            try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_SHOP_ADDON)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    final String shopUUID = resultSet.getString("shop_uuid");
+                    final String worldName = resultSet.getString("world");
+                    final int x = resultSet.getInt("coord_x");
+                    final int y = resultSet.getInt("coord_y");
+                    final int z = resultSet.getInt("coord_z");
+
+                    if (shopUUID == null || worldName == null) {
+                        continue;
+                    }
+
+                    final World world = Bukkit.getWorld(worldName);
+
+                    if (world == null) {
+                        continue;
+                    }
+
+                    EterniaServer.getEconomyAPI().addSign(shopUUID, new Location(world, x, y, z));
                 }
             } catch (SQLException ignored) {
                 plugin.logError("Erro ao carregar database", 3);
