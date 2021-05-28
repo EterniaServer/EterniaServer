@@ -14,9 +14,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.text.DecimalFormat;
+
 public class ChestShopHandler implements Listener {
 
     private final EterniaServer plugin;
+    private final DecimalFormat economyFormat = new DecimalFormat(".##");
 
     public ChestShopHandler(final EterniaServer plugin) {
         this.plugin = plugin;
@@ -24,13 +27,12 @@ public class ChestShopHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onSignCreated(ShopCreatedEvent event) {
-        final Sign sign = event.getSign();
-
-        if (!ChestShopSign.isAdminShop(sign)) {
+        if (!ChestShopSign.isAdminShop(event.getSignLine(ChestShopSign.NAME_LINE))) {
             return;
         }
 
-        final TransactionEvent.TransactionType type = sign.getLine(ChestShopSign.PRICE_LINE).contains("B") ?
+        final Sign sign = event.getSign();
+        final TransactionEvent.TransactionType type = event.getSignLine(ChestShopSign.PRICE_LINE).contains("B") ?
                 TransactionEvent.TransactionType.BUY : TransactionEvent.TransactionType.SELL;
 
         if (type == TransactionEvent.TransactionType.BUY) {
@@ -46,18 +48,12 @@ public class ChestShopHandler implements Listener {
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onTransaction(TransactionEvent event) {
         final Sign sign = event.getSign();
-        final Material material;
 
         if (!ChestShopSign.isAdminShop(sign)) {
             return;
         }
 
-        try {
-            material = Material.valueOf(sign.getLine(ChestShopSign.ITEM_LINE));
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-
+        final Material material = Material.getMaterial(sign.getLine(ChestShopSign.ITEM_LINE).toUpperCase());
         final TransactionEvent.TransactionType Type = event.getTransactionType();
 
         if (Type == TransactionEvent.TransactionType.BUY) {
@@ -66,46 +62,37 @@ public class ChestShopHandler implements Listener {
         else {
             chestShopSell(sign, material);
         }
-        sign.update();
     }
 
     private void chestShopBuy(final Sign sign, final Material material) {
-        final double price = getPrice(sign.getLine(ChestShopSign.PRICE_LINE), true);
         final double roofPrice = plugin.getChestShopBuyRoof(material);
+        final int amountBuying = Integer.parseInt(sign.getLine(ChestShopSign.QUANTITY_LINE));
+        final int amountBuy = sign.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.CHEST_BUY_AMOUNT), PersistentDataType.INTEGER) + amountBuying;
+        final double finalPrice = (roofPrice + (amountBuy * (roofPrice * 100000)));
 
-        if (price >= roofPrice) {
+        if (finalPrice >= roofPrice) {
             return;
         }
 
-        final int amountBuying = Integer.parseInt(sign.getLine(ChestShopSign.QUANTITY_LINE));
-        final int amountBuy = sign.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.CHEST_BUY_AMOUNT), PersistentDataType.INTEGER) + amountBuying;
-        final double finalPrice = (roofPrice / 100000 * amountBuy) + price;
-
-        sign.setLine(ChestShopSign.PRICE_LINE, "B " + finalPrice);
+        sign.setLine(ChestShopSign.PRICE_LINE, "B " + economyFormat.format(finalPrice));
         sign.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CHEST_BUY_AMOUNT), PersistentDataType.INTEGER, amountBuy);
+        sign.update();
     }
 
     private void chestShopSell(final Sign sign, final Material material) {
-        final double price = getPrice(sign.getLine(ChestShopSign.PRICE_LINE), false);
         final double roofPrice = plugin.getChestShopSellRoof(material);
+        final int amountSelling = Integer.parseInt(sign.getLine(ChestShopSign.QUANTITY_LINE));
+        final int amountSell = sign.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.CHEST_SELL_AMOUNT), PersistentDataType.INTEGER) + amountSelling;
 
-        if (price < roofPrice) {
+        final double finalPrice = (roofPrice - (amountSell * (roofPrice * 100000)));
+
+        if (finalPrice < roofPrice) {
             return;
         }
 
-        final int amountSelling = Integer.parseInt(sign.getLine(ChestShopSign.QUANTITY_LINE));
-        final int amountSell = sign.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.CHEST_SELL_AMOUNT), PersistentDataType.INTEGER) + amountSelling;
-        final double finalPrice = (roofPrice / 100000 * amountSell) + price;
-
-        sign.setLine(ChestShopSign.PRICE_LINE, "B " + finalPrice);
+        sign.setLine(ChestShopSign.PRICE_LINE, "S " + finalPrice);
         sign.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CHEST_SELL_AMOUNT), PersistentDataType.INTEGER, amountSell);
-    }
-
-    private double getPrice(final String line, final boolean buying) {
-        if (buying) {
-            return Double.parseDouble(line.replace("B ", ""));
-        }
-        return Double.parseDouble(line.replace("S ", ""));
+        sign.update();
     }
 
 }
