@@ -13,6 +13,6 @@ public enum ItemsKeys {
     TAG_COORD_YAW,
     TAG_COORD_PITCH,
     TAG_LOC_NAME,
-    CHEST_SELL,
-    CHEST_BUY
+    CHEST_SELL_AMOUNT,
+    CHEST_BUY_AMOUNT,
 }

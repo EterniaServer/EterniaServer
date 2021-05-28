@@ -22,6 +22,7 @@ import br.com.eterniaserver.eterniaserver.handlers.ServerHandler;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -29,6 +30,8 @@ import org.bukkit.entity.EntityType;
 public class EterniaServer extends CraftEterniaServer {
 
     private final int[] integers = new int[Integers.values().length];
+    private final int[] chestShopBuyRoof = new int[Material.values().length];
+    private final int[] chestShopSellRoof = new int[Material.values().length];
     private final double[] doubles = new double[Doubles.values().length];
     private final boolean[] booleans = new boolean[Booleans.values().length];
 
@@ -76,7 +79,7 @@ public class EterniaServer extends CraftEterniaServer {
         final KitsCfg kitsCfg = new KitsCfg(this);
         final RewardsCfg rewardsCfg = new RewardsCfg(this);
         final ScheduleCfg scheduleCfg = new ScheduleCfg(this, integers);
-        final EconomyCfg economyCfg = new EconomyCfg(this, booleans, doubles, strings, materialLimitPrice);
+        final EconomyCfg economyCfg = new EconomyCfg(this, booleans, doubles, strings, chestShopBuyRoof, chestShopSellRoof);
 
         EterniaLib.addReloadableConfiguration("eterniaserver", "constants", constantsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "messages", msgCfg);
@@ -128,6 +131,14 @@ public class EterniaServer extends CraftEterniaServer {
 
     public double getDouble(Doubles configName) {
         return doubles[configName.ordinal()];
+    }
+
+    public int getChestShopBuyRoof(Material material) {
+        return chestShopBuyRoof[material.ordinal()];
+    }
+
+    public int getChestShopSellRoof(Material material) {
+        return chestShopSellRoof[material.ordinal()];
     }
 
     public void sendMessage(CommandSender sender, Messages messagesId, String... args) {

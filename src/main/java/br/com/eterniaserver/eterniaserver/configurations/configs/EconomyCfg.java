@@ -15,22 +15,24 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.Map;
 
 public class EconomyCfg extends GenericCfg implements ReloadableConfiguration {
 
     private final EterniaServer plugin;
 
-    private final Map<Material, Integer> limit;
+    private final int[] chestShopBuyRoof;
+    private final int[] chestShopSellRoof;
 
     public EconomyCfg(final EterniaServer plugin,
                       final boolean[] booleans,
                       final double[] doubles,
                       final String[] strings,
-                      final Map<Material, Integer> limit) {
+                      final int[] chestShopBuyRoof,
+                      final int[] chestShopSellRoof) {
         super(plugin, strings, booleans, null, doubles);
         this.plugin = plugin;
-        this.limit = limit;
+        this.chestShopBuyRoof = chestShopBuyRoof;
+        this.chestShopSellRoof = chestShopSellRoof;
     }
 
 
@@ -55,6 +57,14 @@ public class EconomyCfg extends GenericCfg implements ReloadableConfiguration {
         setDouble(Doubles.NICK_COST, file, outFile, "command.nick-cost", 250000.0);
 
         setList(Lists.BLACKLISTED_BALANCE_TOP, file, outFile, "general.blacklisted-baltop", "NadaParaSeVerAqui");
+
+        for (final Material material : Material.values()) {
+            chestShopBuyRoof[material.ordinal()] = file.getInt("chest-shop." + material.name() + ".buy", 23040);
+            chestShopSellRoof[material.ordinal()] = file.getInt("chest-shop." + material.name() + ".sell", 230400);
+
+            outFile.set("chest-shop." + material.name() + ".buy", chestShopBuyRoof[material.ordinal()]);
+            outFile.set("chest-shop." + material.name() + ".sell", chestShopSellRoof[material.ordinal()]);
+        }
 
         saveFile(outFile, Constants.ECONOMY_FILE_PATH);
     }
