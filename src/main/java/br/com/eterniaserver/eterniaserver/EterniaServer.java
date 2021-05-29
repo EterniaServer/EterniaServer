@@ -26,6 +26,10 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.java.JavaPluginLoader;
+
+import java.io.File;
 
 public class EterniaServer extends CraftEterniaServer {
 
@@ -49,6 +53,22 @@ public class EterniaServer extends CraftEterniaServer {
     public static CraftEconomy getEconomyAPI() { return economyAPI; }
     public static CraftUser getUserAPI() { return userAPI; }
 
+    private static boolean isTesting;
+
+    public EterniaServer() {
+        super();
+        isTesting = false;
+    }
+
+    public EterniaServer(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+        isTesting = true;
+    }
+
+    public boolean isTesting() {
+        return isTesting;
+    }
+
     @Override
     public void onEnable() {
         userAPI = new CraftUser(this);
@@ -57,7 +77,10 @@ public class EterniaServer extends CraftEterniaServer {
 
         loadConfiguration();
 
-        new Placeholders(this).register();
+        if (!isTesting) {
+            new Placeholders(this).register();
+        }
+
         new MetricsLite(this, 10160);
         new Managers(this);
 

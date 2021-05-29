@@ -88,7 +88,6 @@ public class PlayerHandler implements Listener {
             return false;
         }
 
-
         if (list.contains(block.getType())) {
             final Location location = block.getLocation();
             for (Entity entity : location.getNearbyEntities(2, 2, 2)) {

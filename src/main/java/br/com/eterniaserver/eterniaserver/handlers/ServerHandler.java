@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.handlers;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 import br.com.eterniaserver.eterniaserver.objects.User;
-import br.com.eterniaserver.eterniaserver.core.ChatFormatter;
+import br.com.eterniaserver.eterniaserver.core.Formatter;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -32,7 +32,7 @@ public class ServerHandler implements Listener {
 
     private final EterniaServer plugin;
 
-    private final ChatFormatter chatFormatter;
+    private final Formatter chatFormatter;
     private static final int tellHashCode = "tell".hashCode();
 
     private final String messageMOTD;
@@ -40,7 +40,7 @@ public class ServerHandler implements Listener {
 
     public ServerHandler(final EterniaServer plugin) {
         this.plugin = plugin;
-        this.chatFormatter= new ChatFormatter(plugin);
+        this.chatFormatter= new Formatter(plugin);
         this.messageMOTD = plugin.translateHex(plugin.getMessage(Messages.SERVER_MOTD_1, false));
         this.message2 = plugin.translateHex(plugin.getMessage(Messages.SERVER_MOTD_2, false));
     }

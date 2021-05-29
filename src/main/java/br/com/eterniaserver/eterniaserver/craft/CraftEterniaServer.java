@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CraftEterniaServer extends JavaPlugin {
+public abstract class CraftEterniaServer extends JavaPlugin {
 
     private Pattern filter;
     private Location error;
@@ -77,6 +77,12 @@ public class CraftEterniaServer extends JavaPlugin {
 
     public CraftEterniaServer(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
+        for (int i = 0; i < Lists.values().length; i++) {
+            stringLists.add(new ArrayList<>());
+        }
+        for (int i = 0; i < ChanceMaps.values().length; i++) {
+            chanceMaps.add(new HashMap<>());
+        }
     }
 
     public void setFilter(Pattern pattern) {
