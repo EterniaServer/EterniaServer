@@ -18,8 +18,11 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class CraftEterniaServer extends JavaPlugin {
+public class CraftEterniaServer extends JavaPlugin {
 
     private Pattern filter;
     private Location error;
@@ -63,6 +66,7 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     public final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
 
     public CraftEterniaServer() {
+        super();
         for (int i = 0; i < Lists.values().length; i++) {
             stringLists.add(new ArrayList<>());
         }
@@ -71,6 +75,9 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         }
     }
 
+    public CraftEterniaServer(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
 
     public void setFilter(Pattern pattern) {
         filter = pattern;
@@ -380,7 +387,6 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         }
 
         return matcher.appendTail(builder).toString().replace('&', (char) 0x00A7);
-
     }
 
     /**

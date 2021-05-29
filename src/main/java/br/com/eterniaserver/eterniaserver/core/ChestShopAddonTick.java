@@ -3,8 +3,10 @@ package br.com.eterniaserver.eterniaserver.core;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
+
 import com.Acrobot.ChestShop.Events.TransactionEvent;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,12 +15,12 @@ import org.bukkit.block.Sign;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.text.DecimalFormat;
+import java.util.Locale;
+
 
 public class ChestShopAddonTick extends BukkitRunnable {
 
     private final EterniaServer plugin;
-    private final DecimalFormat economyFormat = new DecimalFormat(".##");
 
     public ChestShopAddonTick(final EterniaServer plugin) {
         this.plugin = plugin;
@@ -59,13 +61,13 @@ public class ChestShopAddonTick extends BukkitRunnable {
 
             final double roofPrice = plugin.getChestShopBuyRoof(material);
             final int amountBuy = amount - removed;
-            final double finalPrice = roofPrice + (amountBuy * (roofPrice * 100000));
+            final double finalPrice = roofPrice + (amountBuy * (roofPrice / 100000));
 
             if (finalPrice >= roofPrice) {
                 return;
             }
 
-            sign.setLine(ChestShopSign.PRICE_LINE, "B " + economyFormat.format(finalPrice));
+            sign.setLine(ChestShopSign.PRICE_LINE, "B " + String.format(Locale.US, "%.2f", finalPrice));
             sign.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CHEST_BUY_AMOUNT), PersistentDataType.INTEGER, amountBuy);
         }
         else {
@@ -78,13 +80,13 @@ public class ChestShopAddonTick extends BukkitRunnable {
             final double roofPrice = plugin.getChestShopSellRoof(material);
             final int amountSell = amount - removed;
 
-            final double finalPrice = roofPrice - (amountSell * (roofPrice * 100000));
+            final double finalPrice = roofPrice - (amountSell * (roofPrice / 100000));
 
             if (finalPrice < 0) {
                 return;
             }
 
-            sign.setLine(ChestShopSign.PRICE_LINE, "S " + finalPrice);
+            sign.setLine(ChestShopSign.PRICE_LINE, "S " + String.format(Locale.US, "%.2f", finalPrice));
             sign.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CHEST_SELL_AMOUNT), PersistentDataType.INTEGER, amountSell);
         }
 

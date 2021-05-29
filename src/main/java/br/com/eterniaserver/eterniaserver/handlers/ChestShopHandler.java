@@ -19,13 +19,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.text.DecimalFormat;
+import java.util.Locale;
 import java.util.UUID;
 
 public class ChestShopHandler implements Listener {
 
     private final EterniaServer plugin;
-    private final DecimalFormat economyFormat = new DecimalFormat(".##");
 
     public ChestShopHandler(final EterniaServer plugin) {
         this.plugin = plugin;
@@ -105,16 +104,16 @@ public class ChestShopHandler implements Listener {
             return;
         }
 
-        final double roofPrice = plugin.getChestShopBuyRoof(material);
+        final double basePrice = plugin.getChestShopBuyRoof(material);
         final int amountBuying = Integer.parseInt(sign.getLine(ChestShopSign.QUANTITY_LINE));
         final int amountBuy = buySaved + amountBuying;
-        final double finalPrice = (roofPrice + (amountBuy * (roofPrice * 100000)));
+        final double finalPrice = (basePrice + (amountBuy * (basePrice / 100000)));
 
-        if (finalPrice >= roofPrice) {
+        if (finalPrice >= basePrice * 10) {
             return;
         }
 
-        sign.setLine(ChestShopSign.PRICE_LINE, "B " + economyFormat.format(finalPrice));
+        sign.setLine(ChestShopSign.PRICE_LINE, "B " + String.format(Locale.US, "%.2f", finalPrice));
         sign.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CHEST_BUY_AMOUNT), PersistentDataType.INTEGER, amountBuy);
         sign.update();
     }
@@ -130,13 +129,13 @@ public class ChestShopHandler implements Listener {
         final int amountSelling = Integer.parseInt(sign.getLine(ChestShopSign.QUANTITY_LINE));
         final int amountSell = sellSaved + amountSelling;
 
-        final double finalPrice = (roofPrice - (amountSell * (roofPrice * 100000)));
+        final double finalPrice = (roofPrice - (amountSell * (roofPrice / 100000)));
 
         if (finalPrice < 0) {
             return;
         }
 
-        sign.setLine(ChestShopSign.PRICE_LINE, "S " + finalPrice);
+        sign.setLine(ChestShopSign.PRICE_LINE, "S " + String.format(Locale.US, "%.2f", finalPrice));
         sign.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CHEST_SELL_AMOUNT), PersistentDataType.INTEGER, amountSell);
         sign.update();
     }

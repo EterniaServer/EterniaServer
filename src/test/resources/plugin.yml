@@ -1,4 +1,4 @@
-main: br.com.eterniaserver.eterniaserver.EterniaServer
+main: br.com.eterniaserver.eterniaserver.craft.CraftEterniaServer
 name: EterniaServer
 version: 2.0.0-STABLE
 author: Yuri Nogueira

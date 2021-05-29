@@ -22,9 +22,10 @@ public class EconomyCfg extends GenericCfg implements ReloadableConfiguration {
                       final boolean[] booleans,
                       final double[] doubles,
                       final String[] strings,
+                      final int[] integers,
                       final int[] chestShopBuyRoof,
                       final int[] chestShopSellRoof) {
-        super(plugin, strings, booleans, null, doubles);
+        super(plugin, strings, booleans, integers, doubles);
         this.chestShopBuyRoof = chestShopBuyRoof;
         this.chestShopSellRoof = chestShopSellRoof;
     }

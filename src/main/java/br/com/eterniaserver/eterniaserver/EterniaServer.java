@@ -7,8 +7,8 @@ import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.Placeholders;
 import br.com.eterniaserver.eterniaserver.craft.CraftCash;
-import br.com.eterniaserver.eterniaserver.craft.CraftEconomy;
 import br.com.eterniaserver.eterniaserver.craft.CraftEterniaServer;
+import br.com.eterniaserver.eterniaserver.craft.CraftEconomy;
 import br.com.eterniaserver.eterniaserver.craft.CraftUser;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
@@ -79,7 +79,7 @@ public class EterniaServer extends CraftEterniaServer {
         final KitsCfg kitsCfg = new KitsCfg(this);
         final RewardsCfg rewardsCfg = new RewardsCfg(this);
         final ScheduleCfg scheduleCfg = new ScheduleCfg(this, integers);
-        final EconomyCfg economyCfg = new EconomyCfg(this, booleans, doubles, strings, chestShopBuyRoof, chestShopSellRoof);
+        final EconomyCfg economyCfg = new EconomyCfg(this, booleans, doubles, strings, integers, chestShopBuyRoof, chestShopSellRoof);
 
         EterniaLib.addReloadableConfiguration("eterniaserver", "constants", constantsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "messages", msgCfg);
