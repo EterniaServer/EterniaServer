@@ -53,20 +53,12 @@ public class EterniaServer extends CraftEterniaServer {
     public static CraftEconomy getEconomyAPI() { return economyAPI; }
     public static CraftUser getUserAPI() { return userAPI; }
 
-    private static boolean isTesting;
-
     public EterniaServer() {
         super();
-        isTesting = false;
     }
 
     public EterniaServer(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
-        isTesting = true;
-    }
-
-    public boolean isTesting() {
-        return isTesting;
     }
 
     @Override
@@ -77,10 +69,7 @@ public class EterniaServer extends CraftEterniaServer {
 
         loadConfiguration();
 
-        if (!isTesting) {
-            new Placeholders(this).register();
-        }
-
+        new Placeholders(this).register();
         new MetricsLite(this, 10160);
         new Managers(this);
 
