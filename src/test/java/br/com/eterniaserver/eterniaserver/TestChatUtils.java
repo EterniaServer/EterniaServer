@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 

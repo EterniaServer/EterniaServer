@@ -12,6 +12,7 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
 import org.bukkit.Bukkit;
@@ -124,10 +125,10 @@ public class ServerHandler implements Listener {
             message = plugin.getFilter().matcher(message).replaceAll("");
         }
 
-        Set<Player> players = event.recipients();
+        Set<Audience> audiences = event.viewers();
 
         if (user.getChannel() == plugin.getString(Strings.DISCORD_SRV).hashCode()) {
-            chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), players);
+            chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), audiences);
             return false;
         }
 
@@ -136,7 +137,7 @@ public class ServerHandler implements Listener {
             return true;
         }
 
-        chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), players);
+        chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), audiences);
         return true;
     }
 

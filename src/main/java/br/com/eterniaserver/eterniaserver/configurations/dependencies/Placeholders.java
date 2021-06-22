@@ -9,8 +9,6 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
-
 public class Placeholders {
 
     private final EterniaServer plugin;
@@ -41,25 +39,22 @@ public class Placeholders {
         }
 
         @Override
-        @Nonnull
         public String getAuthor() {
             return "yurinogueira";
         }
 
         @Override
-        @Nonnull
         public String getIdentifier() {
             return "eterniaserver";
         }
 
         @Override
-        @Nonnull
         public String getVersion() {
             return version;
         }
 
         @Override
-        public String onRequest(OfflinePlayer p, @Nonnull String identifier) {
+        public String onRequest(OfflinePlayer p, String identifier) {
             return p != null ? getPlaceHolder(getIdentifier(identifier), p.getPlayer()) : "";
         }
 

@@ -364,7 +364,8 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     public int getVersion() {
         if (version == 0) {
             String bukkitVersion = Bukkit.getBukkitVersion();
-            if (bukkitVersion.contains("1.16")) version = 116;
+            if (bukkitVersion.contains("1.17")) version = 117;
+            else if (bukkitVersion.contains("1.16")) version = 116;
             else if (bukkitVersion.contains("1.15")) version = 115;
             else if (bukkitVersion.contains("1.14")) version = 114;
             else version = 113;

@@ -7,7 +7,10 @@ import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 import br.com.eterniaserver.eterniaserver.objects.User;
 
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
+import net.kyori.adventure.permission.PermissionChecker;
+import net.kyori.adventure.pointer.Pointer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -41,7 +44,7 @@ public class Formatter {
 		this.plugin = plugin;
 	}
 
-	public void filter(final User user, final String message, ChannelObject channelObject, final Set<Player> players) {
+	public void filter(final User user, final String message, ChannelObject channelObject, final Set<Audience> audiences) {
 		if (channelObject == null) {
 			channelObject = plugin.getChannelsMap().get(plugin.getString(Strings.DEFAULT_CHANNEL).hashCode());
 		}
@@ -57,17 +60,27 @@ public class Formatter {
 			component = component.append(entry);
 		}
 		if (!channelObject.isHasRange()) {
-			for (Player player : players) {
-				if (player.hasPermission(channelObject.getPerm())) {
-					player.sendMessage(Identity.identity(user.getUUID()), component);
+			for (Audience audience : audiences) {
+				var pointer = audience.get(PermissionChecker.POINTER);
+				if (pointer.isEmpty() || pointer.get().test(channelObject.getPerm())) {
+					audience.sendMessage(Identity.identity(user.getUUID()), component);
 				}
 			}
-			players.clear();
+			audiences.clear();
 			return;
 		}
 
 		int pes = 0;
-		for (Player p : players) {
+		for (Audience audience : audiences) {
+			var pointer = audience.get(Identity.UUID);
+			Player p = null;
+			if (pointer.isPresent()) {
+				p = Bukkit.getPlayer(pointer.get());
+			}
+			if (p == null) {
+				continue;
+			}
+
 			if ((user.getPlayer().getWorld() == p.getWorld() && p.getLocation().distanceSquared(user.getPlayer().getLocation()) <= Math.pow(channelObject.getRange(), 2)) || channelObject.getRange() <= 0) {
 				pes += 1;
 				p.sendMessage(Identity.identity(user.getUUID()), component);
@@ -83,7 +96,7 @@ public class Formatter {
 			plugin.sendMessage(user.getPlayer(), Messages.CHAT_NO_ONE_NEAR);
 		}
 
-		players.clear();
+		audiences.clear();
 	}
 
 	private Component[] customPlaceholder(final Player player, final String format, final String channelColor, final String message) {
