@@ -8,6 +8,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class Placeholders {
 
@@ -39,22 +40,22 @@ public class Placeholders {
         }
 
         @Override
-        public String getAuthor() {
+        public @NotNull String getAuthor() {
             return "yurinogueira";
         }
 
         @Override
-        public String getIdentifier() {
+        public @NotNull String getIdentifier() {
             return "eterniaserver";
         }
 
         @Override
-        public String getVersion() {
+        public @NotNull String getVersion() {
             return version;
         }
 
         @Override
-        public String onRequest(OfflinePlayer p, String identifier) {
+        public String onRequest(OfflinePlayer p, @NotNull String identifier) {
             return p != null ? getPlaceHolder(getIdentifier(identifier), p.getPlayer()) : "";
         }
 
