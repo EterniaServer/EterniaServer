@@ -11,6 +11,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.permission.PermissionChecker;
 import net.kyori.adventure.pointer.Pointer;
+import net.kyori.adventure.pointer.Pointers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -44,7 +45,7 @@ public class Formatter {
 		this.plugin = plugin;
 	}
 
-	public void filter(final User user, final String message, ChannelObject channelObject, final Set<Audience> audiences) {
+	public void filter(final User user, final String message, ChannelObject channelObject) {
 		if (channelObject == null) {
 			channelObject = plugin.getChannelsMap().get(plugin.getString(Strings.DEFAULT_CHANNEL).hashCode());
 		}
@@ -60,27 +61,16 @@ public class Formatter {
 			component = component.append(entry);
 		}
 		if (!channelObject.isHasRange()) {
-			for (Audience audience : audiences) {
-				var pointer = audience.get(PermissionChecker.POINTER);
-				if (pointer.isEmpty() || pointer.get().test(channelObject.getPerm())) {
-					audience.sendMessage(Identity.identity(user.getUUID()), component);
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				if (player.hasPermission(channelObject.getPerm())) {
+					player.sendMessage(Identity.identity(user.getUUID()), component);
 				}
 			}
-			audiences.clear();
 			return;
 		}
 
 		int pes = 0;
-		for (Audience audience : audiences) {
-			var pointer = audience.get(Identity.UUID);
-			Player p = null;
-			if (pointer.isPresent()) {
-				p = Bukkit.getPlayer(pointer.get());
-			}
-			if (p == null) {
-				continue;
-			}
-
+		for (Player p : Bukkit.getOnlinePlayers()) {
 			if ((user.getPlayer().getWorld() == p.getWorld() && p.getLocation().distanceSquared(user.getPlayer().getLocation()) <= Math.pow(channelObject.getRange(), 2)) || channelObject.getRange() <= 0) {
 				pes += 1;
 				p.sendMessage(Identity.identity(user.getUUID()), component);
@@ -95,8 +85,6 @@ public class Formatter {
 		if (pes <= 1) {
 			plugin.sendMessage(user.getPlayer(), Messages.CHAT_NO_ONE_NEAR);
 		}
-
-		audiences.clear();
 	}
 
 	private Component[] customPlaceholder(final Player player, final String format, final String channelColor, final String message) {

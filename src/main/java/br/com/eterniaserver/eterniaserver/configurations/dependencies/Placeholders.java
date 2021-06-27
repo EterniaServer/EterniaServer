@@ -22,7 +22,7 @@ public class Placeholders {
     }
 
     public void register() {
-        if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PlaceHoldersEnabled().register();
         }
     }

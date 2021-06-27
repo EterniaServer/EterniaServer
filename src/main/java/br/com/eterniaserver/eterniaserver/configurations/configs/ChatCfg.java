@@ -56,7 +56,7 @@ public class ChatCfg extends GenericCfg implements ReloadableConfiguration {
                         chatConfig.getString("channels." + channel + ".format", "{player}"),
                         channel,
                         chatConfig.getString("channels." + channel + ".perm", "eternia.chat.default"),
-                        chatConfig.getString("channels." + channel + ".color", "&f"),
+                        chatConfig.getString("channels." + channel + ".color", "§f"),
                         chatConfig.getBoolean("channels." + channel + ".range", false),
                         chatConfig.getInt("channels." + channel + ".range-value", 0)
                 );

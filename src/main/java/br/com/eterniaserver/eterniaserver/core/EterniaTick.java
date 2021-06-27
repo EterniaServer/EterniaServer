@@ -28,14 +28,16 @@ public class EterniaTick extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            User user = new User(player);
+            if (player != null) {
+                User user = new User(player);
 
-            tpaTime(user);
-            // checkNetherTrap(user); todo Optimize the method.
-            checkAFK(user);
-            getPlayersInTp(user);
-            refreshPlayers(user);
-            optimizedMoveEvent(user);
+                tpaTime(user);
+                // checkNetherTrap(user); todo Optimize the method.
+                checkAFK(user);
+                getPlayersInTp(user);
+                refreshPlayers(user);
+                optimizedMoveEvent(user);
+            }
         }
     }
 

@@ -13,6 +13,7 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 import io.papermc.paper.event.player.AsyncChatEvent;
 
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
 import org.bukkit.Bukkit;
@@ -116,19 +117,18 @@ public class ServerHandler implements Listener {
             return;
         }
 
-        event.setCancelled(getChannel(event, user));
+        event.viewers().clear();
+        event.setCancelled(getChannel(event.message(), user));
     }
 
-    private boolean getChannel(AsyncChatEvent event, User user) {
-        String message = PlainComponentSerializer.plain().serialize(event.message());
+    private boolean getChannel(Component msgComponent, User user) {
+        String message = PlainComponentSerializer.plain().serialize(msgComponent);
         if (!user.hasPermission(plugin.getString(Strings.PERM_CHAT_BYPASS_PROTECTION))) {
             message = plugin.getFilter().matcher(message).replaceAll("");
         }
 
-        Set<Audience> audiences = event.viewers();
-
         if (user.getChannel() == plugin.getString(Strings.DISCORD_SRV).hashCode()) {
-            chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), audiences);
+            chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()));
             return false;
         }
 
@@ -137,7 +137,7 @@ public class ServerHandler implements Listener {
             return true;
         }
 
-        chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()), audiences);
+        chatFormatter.filter(user, message, plugin.channelObject(user.getChannel()));
         return true;
     }
 
