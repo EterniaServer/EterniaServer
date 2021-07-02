@@ -54,6 +54,7 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.ECO_MONEY, "money", "eternia.money.user", " <jogador>", " Verifica o saldo de um jogador", "money|balance");
         this.addDefault(Commands.ECO_PAY, "pay", "eternia.money.user", " <jogador> <quantia>", " Paga uma quantia a um jogador", "pay");
         this.addDefault(Commands.ECO_BALTOP, "baltop", "eternia.money.user", null, " Verifica a lista de mais ricos", "baltop");
+        this.addDefault(Commands.ECO_GEN_PRICES, "genprice", "eternia.money.admin", null, " Gere a economia se baseando em um arquivo xlsx", null);
         this.addDefault(Commands.XP, "xp", "eternia.xp.user", " <página>", " Ajuda para o sistema de Experiência", null);
         this.addDefault(Commands.XP_SET, "set", "eternia.xp.admin", " <jogador> <quantia>", " Define o nível do jogador", null);
         this.addDefault(Commands.XP_TAKE, "take", "eternia.xp.admin", " <jogador> <quantia>", " Retira uma quantidade de nível do jogador", null);

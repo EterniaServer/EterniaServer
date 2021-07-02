@@ -59,6 +59,7 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.ECO_BALTOP_LIST, "$3{1} $8- $7Saldo$8: $3{2}", "0: nome do jogador; 1: apelido do jogador; 2: saldo do jogador");
         this.addDefault(Messages.ECO_BALTOP_PAGE, "$8---", "Left: Página anterior; Right: Próxima página");
         this.addDefault(Messages.ECO_BALTOP_PAGE_LIMIT, "$7Você passou do limite de páginas$8.", null);
+        this.addDefault(Messages.ECO_XLSX_NOT_FOUND, "$7Arquivo csv não encontrado$8.", null);
         this.addDefault(Messages.CASH_BALANCE, "Você possui $3{0} $7de cash$8.", "0: quantia de cash");
         this.addDefault(Messages.CASH_BALANCE_OTHER, "$3{2} $7possui $3{0} $7de cash$8.", "0: quantia de cash; 1: nome do jogador; 2: apelido do jogador");
         this.addDefault(Messages.CASH_NOTHING_TO_BUY, "Você não possui nada para comprar$8.", null);

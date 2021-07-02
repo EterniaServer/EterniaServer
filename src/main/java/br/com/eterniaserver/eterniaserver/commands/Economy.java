@@ -19,16 +19,17 @@ import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
+import com.Acrobot.Breeze.Utils.MaterialUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @CommandAlias("%eco")
@@ -51,6 +52,39 @@ public class Economy extends BaseCommand {
     @Description("%eco_description")
     public void ecoHelp(CommandHelp help) {
         help.showHelp();
+    }
+
+    @Syntax("%eco_gen_prices_syntax")
+    @Subcommand("%eco_gen_prices")
+    @Description("%eco_gen_prices_description")
+    @CommandPermission("%eco_gen_prices_perm")
+    public void onGenPrices(CommandSender sender) {
+        File csv = new File(plugin.getDataFolder(), "economy_database.csv");
+        if (!csv.exists()) {
+            plugin.sendMessage(sender, Messages.ECO_XLSX_NOT_FOUND);
+            return;
+        }
+
+        try (Scanner scanner = new Scanner(csv)) {
+            scanner.nextLine();
+            scanner.nextLine();
+
+            int[] chestShopSellRoof = new int[Material.values().length];
+            int[] chestShopBuyRoof = new int[Material.values().length];
+
+            while (scanner.hasNextLine()) {
+                String[] line = scanner.nextLine().split("\",\"");
+                Material material = MaterialUtil.getMaterial(line[0].substring(1));
+                if (material == null) {
+                    System.out.println(line[0].substring(1));
+                    continue;
+                }
+                chestShopBuyRoof[material.ordinal()] = Integer.parseInt(line[11]);
+                chestShopSellRoof[material.ordinal()] = Integer.parseInt(line[12]);
+            }
+
+            plugin.saveEconomy(chestShopBuyRoof, chestShopSellRoof);
+        } catch (IOException ignored) { }
     }
 
     @CommandCompletion("@players 100")

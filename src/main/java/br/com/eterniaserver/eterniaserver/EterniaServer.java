@@ -149,6 +149,10 @@ public class EterniaServer extends CraftEterniaServer {
         return chestShopBuyRoof[material.ordinal()];
     }
 
+    public void saveEconomy(int[] chestShopBuyRoofNew, int[] chestShopSellRoofNew) {
+        new EconomySaveCfg(this, chestShopBuyRoof, chestShopSellRoof).saveToFile(chestShopSellRoofNew, chestShopBuyRoofNew);
+    }
+
     public int getChestShopSellRoof(Material material) {
         return chestShopSellRoof[material.ordinal()];
     }

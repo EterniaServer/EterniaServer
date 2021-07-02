@@ -7,6 +7,10 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import com.Acrobot.Breeze.Utils.InventoryUtil;
+import com.Acrobot.Breeze.Utils.MaterialUtil;
+import com.Acrobot.ChestShop.ChestShop;
+import com.Acrobot.ChestShop.Events.ItemParseEvent;
 import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
 import com.Acrobot.ChestShop.Events.TransactionEvent;
@@ -32,7 +36,8 @@ public class ChestShopHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onShopCreated(ShopCreatedEvent event) {
-        if (!ChestShopSign.isAdminShop(event.getSignLine(ChestShopSign.NAME_LINE))) {
+        if (!ChestShopSign.isAdminShop(event.getSignLine(ChestShopSign.NAME_LINE))
+                || event.getSignLine(ChestShopSign.PRICE_LINE).contains(":")) {
             return;
         }
 
@@ -61,7 +66,8 @@ public class ChestShopHandler implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onShopDeleted(ShopDestroyedEvent event) {
-        if (!ChestShopSign.isAdminShop(event.getSign().getLine(ChestShopSign.NAME_LINE))) {
+        if (!ChestShopSign.isAdminShop(event.getSign().getLine(ChestShopSign.NAME_LINE))
+                || event.getSign().getLine(ChestShopSign.PRICE_LINE).contains(":")) {
             return;
         }
 
@@ -82,22 +88,23 @@ public class ChestShopHandler implements Listener {
     public void onTransaction(TransactionEvent event) {
         final Sign sign = event.getSign();
 
-        if (!ChestShopSign.isAdminShop(sign)) {
+        if (!ChestShopSign.isAdminShop(sign) || sign.getLine(ChestShopSign.PRICE_LINE).contains(":")) {
             return;
         }
 
-        final Material material = Material.getMaterial(sign.getLine(ChestShopSign.ITEM_LINE).toUpperCase());
+        final Material material = MaterialUtil.getMaterial(sign.getLine(ChestShopSign.ITEM_LINE));
         final TransactionEvent.TransactionType Type = event.getTransactionType();
+        final int amount = InventoryUtil.countItems(event.getStock());
 
         if (Type == TransactionEvent.TransactionType.BUY) {
-            chestShopBuy(sign, material);
+            chestShopBuy(sign, material, amount);
         }
         else {
-            chestShopSell(sign, material);
+            chestShopSell(sign, material, amount);
         }
     }
 
-    private void chestShopBuy(final Sign sign, final Material material) {
+    private void chestShopBuy(final Sign sign, final Material material, final int amountBuying) {
         final Integer buySaved = sign.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.CHEST_BUY_AMOUNT), PersistentDataType.INTEGER);
 
         if (buySaved == null) {
@@ -105,7 +112,6 @@ public class ChestShopHandler implements Listener {
         }
 
         final double basePrice = plugin.getChestShopBuyRoof(material);
-        final int amountBuying = Integer.parseInt(sign.getLine(ChestShopSign.QUANTITY_LINE));
         final int amountBuy = buySaved + amountBuying;
         final double finalPrice = (basePrice + (amountBuy * (basePrice / 100000)));
 
@@ -118,7 +124,7 @@ public class ChestShopHandler implements Listener {
         sign.update();
     }
 
-    private void chestShopSell(final Sign sign, final Material material) {
+    private void chestShopSell(final Sign sign, final Material material, final int amountSelling) {
         final Integer sellSaved = sign.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.CHEST_SELL_AMOUNT), PersistentDataType.INTEGER);
 
         if (sellSaved == null) {
@@ -126,7 +132,6 @@ public class ChestShopHandler implements Listener {
         }
 
         final double roofPrice = plugin.getChestShopSellRoof(material);
-        final int amountSelling = Integer.parseInt(sign.getLine(ChestShopSign.QUANTITY_LINE));
         final int amountSell = sellSaved + amountSelling;
 
         final double finalPrice = (roofPrice - (amountSell * (roofPrice / 100000)));

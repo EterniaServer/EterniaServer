@@ -30,7 +30,6 @@ public class EconomyCfg extends GenericCfg implements ReloadableConfiguration {
         this.chestShopSellRoof = chestShopSellRoof;
     }
 
-
     @Override
     public ConfigurationCategory category() {
         return ConfigurationCategory.GENERIC;
