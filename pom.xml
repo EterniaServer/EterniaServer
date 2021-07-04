@@ -54,6 +54,7 @@
                 <directory>src/resources</directory>
                 <includes>
                     <include>plugin.yml</include>
+                    <include>economy_database.xlsx</include>
                 </includes>
             </resource>
         </resources>
