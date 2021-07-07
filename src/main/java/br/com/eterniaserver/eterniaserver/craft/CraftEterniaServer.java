@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver.craft;
 
+import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CommandData;
@@ -11,11 +13,15 @@ import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -65,6 +71,8 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     public final Map<Integer, ChannelObject> channelsMap = new HashMap<>();
     public final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
 
+    private final Component[] entityComponents = new Component[EntityType.values().length];
+
     public CraftEterniaServer() {
         super();
         for (int i = 0; i < Lists.values().length; i++) {
@@ -83,6 +91,17 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         for (int i = 0; i < ChanceMaps.values().length; i++) {
             chanceMaps.add(new HashMap<>());
         }
+    }
+
+    public void loadMetaData(final EterniaServer plugin) {
+        for (EntityType type : EntityType.values()) {
+            final String spawnerName = plugin.getString(Strings.SPAWNERS_FORMAT).replace("%spawner_name%", type.name());
+            this.entityComponents[type.ordinal()] = LegacyComponentSerializer.legacySection().deserialize(spawnerName);
+        }
+    }
+
+    public Component getSpawnerName(final EntityType entityType) {
+        return this.entityComponents[entityType.ordinal()];
     }
 
     public void setFilter(Pattern pattern) {
@@ -357,27 +376,7 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         return chatMuted;
     }
 
-    /**
-     * Get the version compatibility of Plugin
-     * @return the int version
-     */
-    public int getVersion() {
-        if (version == 0) {
-            String bukkitVersion = Bukkit.getBukkitVersion();
-            if (bukkitVersion.contains("1.17")) version = 117;
-            else if (bukkitVersion.contains("1.16")) version = 116;
-            else if (bukkitVersion.contains("1.15")) version = 115;
-            else if (bukkitVersion.contains("1.14")) version = 114;
-            else version = 113;
-        }
-        return version;
-    }
-
     public String translateHex(final String message) {
-        if (getVersion() < 116) {
-            return message;
-        }
-
         Matcher matcher = colorPattern.matcher(message);
 
         StringBuilder builder = new StringBuilder();

@@ -79,6 +79,7 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setBoolean(Booleans.ASYNC_CHECK, file, outFile, "server.async-check", true);
         setBoolean(Booleans.AFK_KICK, file, outFile, "server.afk-kick", true);
         setBoolean(Booleans.INV_DROP, file, outFile, "spawners.drop-in-inventory", true);
+        setBoolean(Booleans.BLOCK_BREAK_SPAWNERS, file, outFile, "spawners.block-break-if-no-perm", true);
         setBoolean(Booleans.PREVENT_ANVIL, file, outFile, "spawners.prevent-anvil", true);
         setBoolean(Booleans.ITEMS_FUNCTIONS, file, outFile, "server.item-function", true);
 
@@ -88,7 +89,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setString(Strings.TABLE_LOCATIONS, file, outFile, "sql.table-locations", "es_locations");
         setString(Strings.TABLE_TITLES, file, outFile, "sql.table-titles", "es_titles");
         setString(Strings.TABLE_SHOP_ADDON, file, outFile, "sql.table-chest-shop-addon", "es_cs_addon");
-        setString(Strings.SPAWNERS_COLORS, file, outFile, "spawners.color", "§e");
 
         setInteger(Integers.PLUGIN_TICKS, file, outFile, "server.checks", 1);
         setInteger(Integers.AFK_TIMER, file, outFile, "server.afk-timer", 900);

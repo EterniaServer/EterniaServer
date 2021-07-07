@@ -16,6 +16,7 @@ import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.Runtime;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;

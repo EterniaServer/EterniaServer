@@ -10,7 +10,6 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Entities;
-import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import org.bukkit.ChatColor;
@@ -47,12 +46,12 @@ public class Spawner extends BaseCommand {
         final String spawnerName = spawner.toUpperCase();
 
         if (entities.contains(spawner)) {
-            EntityType.valueOf(spawnerName);
+            EntityType type = EntityType.valueOf(spawnerName);
             if (value <= 0) value = 1;
             if (inventory.firstEmpty() == -1) {
                 plugin.sendMessage(player, Messages.SPAWNER_INV_FULL);
             } else {
-                inventory.addItem(getSpawner(spawnerName, value));
+                inventory.addItem(getSpawner(type, value));
                 final String playerDisplay = player instanceof Player ? ((Player) player).getPlayer().getDisplayName() : player.getName();
                 plugin.sendMessage(targetP, Messages.SPAWNER_RECEIVED, spawnerName, player.getName(), playerDisplay, String.valueOf(value));
                 plugin.sendMessage(player, Messages.SPAWNER_SENT, spawnerName, targetP.getName(), targetP.getDisplayName(), String.valueOf(value));
@@ -62,11 +61,12 @@ public class Spawner extends BaseCommand {
         }
     }
 
-    private ItemStack getSpawner(final String spawnerName, final int value) {
+    private ItemStack getSpawner(final EntityType entityType, final int value) {
         ItemStack item = new ItemStack(Material.SPAWNER);
         ItemMeta meta = item.getItemMeta();
+
         item.setAmount(value);
-        meta.setDisplayName("§8[" + plugin.getString(Strings.SPAWNERS_COLORS) + spawnerName + " §7Spawner§8]");
+        meta.displayName(plugin.getSpawnerName(entityType));
         item.setItemMeta(meta);
         return item;
     }

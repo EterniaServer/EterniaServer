@@ -38,6 +38,7 @@ public class ConstantsCfg extends GenericCfg implements ReloadableConfiguration 
         setString(Strings.SERVER_PREFIX, file, outFile, "server.prefix", "$8[$aE$9S$8]$7 ");
         setString(Strings.BALANCE_TOP_TAG, file, outFile, "server.baltop", "$8[$2Magnata$8]");
         setString(Strings.BOTTLE_EXP_NAME, file, outFile, "server.bottle-exp", "$8[$eGarrafa de EXP$8]");
+        setString(Strings.SPAWNERS_FORMAT, file, outFile, "server.spawner-format", "$8[$e%spawner_name% $7Spawner$8]");
         setString(Strings.NOT_SUPPORTED, file, outFile, "server.no-supported", "$7Sem suporte");
         setString(Strings.CLEAR_STRING, file, outFile, "server.clear-str", "clear");
         setString(Strings.NO_REGISTER, file, outFile, "server.no-registered", "Sem registro");

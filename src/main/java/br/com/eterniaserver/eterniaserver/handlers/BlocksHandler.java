@@ -8,6 +8,9 @@ import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,7 +33,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class BlocksHandler implements Listener {
 
@@ -99,12 +101,16 @@ public class BlocksHandler implements Listener {
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(plugin.getString(Strings.PERM_SPAWNERS_NO_SILK))) {
                 giveSpawner(player, block);
                 event.setExpToDrop(0);
-            } else {
-                event.setCancelled(true);
-                plugin.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
+                return;
             }
-        } else if (isBlackListWorld(block.getWorld().getName()) && block.getType() == Material.SPAWNER) {
-            plugin.sendMessage(player, Messages.SPAWNER_WORLD_BLOCKED);
+
+            event.setCancelled(true);
+            plugin.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
+            return;
+        }
+
+        if (plugin.getBoolean(Booleans.BLOCK_BREAK_SPAWNERS)) {
+            plugin.sendMessage(player, Messages.SPAWNER_WITHOUT_PERM);
             event.setCancelled(true);
         }
     }
@@ -121,14 +127,16 @@ public class BlocksHandler implements Listener {
 
     private void randomizeAndReward(Player player, Map<Double, List<String>> map) {
         double randomNumber = Math.random();
-        AtomicReference<List<String>> reward = new AtomicReference<>();
-        map.forEach((k, v) -> {
-            if (k > randomNumber) {
-                reward.set(v);
+        List<String> reward = null;
+        for (Map.Entry<Double, List<String>> entry : map.entrySet()) {
+            if (entry.getKey() > randomNumber) {
+                reward = entry.getValue();
             }
-        });
-        if (reward.get() == null) return;
-        for (String command : reward.get()) {
+        }
+        if (reward == null) {
+            return;
+        }
+        for (String command : reward) {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.setPlaceholders(player, command));
         }
     }
@@ -158,8 +166,7 @@ public class BlocksHandler implements Listener {
         CreatureSpawner spawner = (CreatureSpawner) block.getState();
         ItemStack item = new ItemStack(block.getType());
         ItemMeta meta = item.getItemMeta();
-        String mobFormatted = spawner.getSpawnedType().toString();
-        meta.setDisplayName("§8[" + plugin.getString(Strings.SPAWNERS_COLORS) + mobFormatted + " §7Spawner§8]");
+        meta.displayName(plugin.getSpawnerName(spawner.getSpawnedType()));
         item.setItemMeta(meta);
         return item;
     }

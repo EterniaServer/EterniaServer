@@ -159,6 +159,7 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.SPAWNER_WORLD_BLOCKED, "Você não pode quebrar spawners nesse mundo$8.", null);
         this.addDefault(Messages.SPAWNER_DROP_FAILED, "Não foi dessa vez$8.", null);
         this.addDefault(Messages.SPAWNER_SILK_REQUESTED, "Você precisa de uma picareta com toque suave para isso$8.", null);
+        this.addDefault(Messages.SPAWNER_WITHOUT_PERM, "Você precisa de permissão para isso$8.", null);
         this.addDefault(Messages.HOME_NOT_FOUND, "A home $3{0}$7 não existe$8.", "0: nome da home");
         this.addDefault(Messages.HOME_DELETED, "Você deletou a home $3{0}$8.", "0: nome da home");
         this.addDefault(Messages.HOME_LIMIT_REACHED, "Você alcançou o limite de homes$8, $7tome um bússola$8.", null);
