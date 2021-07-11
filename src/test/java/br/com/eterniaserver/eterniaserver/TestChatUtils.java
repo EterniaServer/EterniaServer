@@ -3,11 +3,15 @@ package br.com.eterniaserver.eterniaserver;
 import be.seeseemelk.mockbukkit.MockBukkit;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-
 import br.com.eterniaserver.eterniaserver.enums.Colors;
-import org.junit.jupiter.api.*;
 
-public class TestChatUtils {
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Assertions;
+
+class TestChatUtils {
 
     private static EterniaServer plugin;
 
