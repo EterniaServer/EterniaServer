@@ -8,6 +8,6 @@ jobs:
   include:
     - stage: "Unit Tests & SonarCloud Analysis"
       script:
-        - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent verify org.jacoco:jacoco-maven-plugin:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        - mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent verify org.jacoco:jacoco-maven-plugin:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.login=$SONAR_CLOUD_TOKEN -Dsonar.projectKey=EterniaServer_EterniaServer
 jdk:
   - openjdk16
