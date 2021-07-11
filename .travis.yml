@@ -3,8 +3,11 @@ addons:
   sonarcloud:
     organization: eterniaserver
     token:
-      secure: "$SONAR_CLOUD_TOKEN"
-script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=EterniaServer_EterniaServer --token "$SONAR_CLOUD_TOKEN"
+      secure: $SONAR_CLOUD_TOKEN
+jobs:
+  include:
+    - stage: "Unit Tests & SonarCloud Analysis"
+      script:
+        - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.login=$SONAR_CLOUD_TOKEN -Dsonar.projectKey=EterniaServer_EterniaServer
 jdk:
   - openjdk16
