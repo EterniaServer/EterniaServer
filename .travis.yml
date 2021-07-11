@@ -5,6 +5,6 @@ addons:
     token:
       secure: "$SONAR_CLOUD_TOKEN"
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=EterniaServer_EterniaServer
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=EterniaServer_EterniaServer --token "$SONAR_CLOUD_TOKEN"
 jdk:
   - openjdk16
