@@ -401,4 +401,8 @@ public class User {
         return playerDisplayName;
     }
 
+    public boolean isBalanceTop() {
+        return EterniaServer.getEconomyAPI().isBalanceTop(this.uuid);
+    }
+
 }

@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class CustomCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (plugin.getBoolean(Booleans.MODULE_COMMANDS)) {
             checkCommands((Player) sender, commandString);
             return true;

@@ -12,7 +12,6 @@ import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
@@ -27,8 +26,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.server.ServerListPingEvent;
-
-import java.util.Set;
 
 public class ServerHandler implements Listener {
 

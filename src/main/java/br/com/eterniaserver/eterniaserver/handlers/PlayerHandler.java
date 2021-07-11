@@ -200,7 +200,7 @@ public class PlayerHandler implements Listener {
 
         if (plugin.getBoolean(Booleans.MODULE_TELEPORTS)) {
             final Player player = event.getPlayer();
-            new User(player).putBackLocation(player.getLocation());
+            new User(player).putBackLocation(event.getFrom());
         }
     }
 

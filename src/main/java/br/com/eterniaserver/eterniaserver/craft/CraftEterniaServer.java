@@ -14,7 +14,6 @@ import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

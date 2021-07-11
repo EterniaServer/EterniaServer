@@ -61,16 +61,18 @@ public class Placeholders {
 
         private byte getIdentifier(String identifier) {
             switch(identifier.hashCode()) {
-                case -690213213:
+                case -690213213: // "register"
                     return 0;
-                case 96486:
+                case -500526734: // "balance_top"
                     return 1;
-                case 3046195:
+                case 96486:  // "afk"
                     return 2;
-                case 3175821:
+                case 3046195: // "cash"
                     return 3;
-                case 197143583:
+                case 3175821: // "glow"
                     return 4;
+                case 197143583: // "godmode"
+                    return 5;
                 default:
                     return 12;
             }
@@ -82,16 +84,22 @@ public class Placeholders {
                 case 0:
                     return user.getFirstLoginPlaceholder();
                 case 1:
-                    return user.getAfkPlaceholder();
+                    return getBalanceTopPlaceholder(user);
                 case 2:
-                    return String.valueOf(EterniaServer.getCashAPI().getCash(user.getUUID()));
+                    return user.getAfkPlaceholder();
                 case 3:
-                    return user.getGlowColor();
+                    return String.valueOf(EterniaServer.getCashAPI().getCash(user.getUUID()));
                 case 4:
+                    return user.getGlowColor();
+                case 5:
                     return user.getGodeModePlaceholder();
                 default:
                     return plugin.getString(Strings.NOT_SUPPORTED);
             }
+        }
+
+        private String getBalanceTopPlaceholder(User user) {
+            return user.isBalanceTop() ? plugin.getString(Strings.BALANCE_TOP_TAG) : "";
         }
 
     }

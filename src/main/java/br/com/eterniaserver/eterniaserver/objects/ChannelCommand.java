@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ChannelCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean onCommand(final CommandSender commandSender, final Command command, final String s, final String[] strings) {
+    public boolean onCommand(final CommandSender commandSender, final @NotNull Command command, final @NotNull String s, final String[] strings) {
         if (commandSender.hasPermission(perm)) {
             Player player = (Player) commandSender;
             StringBuilder str = new StringBuilder(orig);

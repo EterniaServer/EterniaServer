@@ -19,6 +19,7 @@ import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -48,7 +49,7 @@ public class Cash extends BaseCommand {
     @CommandPermission("%cash_perm")
     public void onCash(Player player) {
         player.closeInventory();
-        Inventory gui = Bukkit.getServer().createInventory(player, plugin.getMenuGui().size(), "Cash");
+        Inventory gui = Bukkit.getServer().createInventory(player, plugin.getMenuGui().size(), Component.text("Cash"));
 
         for (int i = 0; i < plugin.getMenuGui().size(); i++) {
             gui.setItem(i, plugin.getMenuGui().get(i));

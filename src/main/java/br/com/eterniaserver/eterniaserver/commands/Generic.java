@@ -16,7 +16,6 @@ import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.Runtime;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -291,7 +290,7 @@ public class Generic extends BaseCommand {
         for (String object : plugin.getStringList(Lists.PROFILE_CUSTOM_MESSAGES)) {
             player.sendMessage(plugin.getColor(plugin.setPlaceholders(targets, object)));
         }
-        player.sendMessage(plugin.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new          Date(target.getFirstLogin()))));
+        player.sendMessage(plugin.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(target.getFirstLogin()))));
         player.sendMessage(plugin.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(target.getLastLogin()))));
         player.sendMessage(plugin.getMessage(Messages.PROFILE_ACCOUNT_HOURS, false, hms));
         player.sendMessage(plugin.getMessage(Messages.PROFILE_TITLE, false));

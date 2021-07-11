@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -95,7 +96,7 @@ public class EntityHandler implements Listener {
         }
 
         if (plugin.getBoolean(Booleans.MODULE_CASH)) {
-            String title = e.getView().getTitle();
+            String title = LegacyComponentSerializer.legacySection().serialize(e.getView().title());
             if ("Cash".equals(title)) {
                 EterniaServer.getCashAPI().menuGui(player, e.getSlot());
                 e.setCancelled(true);
