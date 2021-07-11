@@ -12,8 +12,6 @@
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.log.level>DEBUG</sonar.log.level>
         <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
@@ -76,29 +74,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.0</version>
-
-                <configuration>
-                    <reportOutputDirectory>${project.basedir}</reportOutputDirectory>
-                    <destDir>docs</destDir>
-
-                    <doctitle>EterniaServer - Javadocs</doctitle>
-                    <windowtitle>EterniaServer - Javadocs</windowtitle>
-                    <detectOfflineLinks>false</detectOfflineLinks>
-                    <additionalJOption>-html5</additionalJOption>
-
-                    <groups>
-                        <group>
-                            <title>EterniaServer API</title>
-                            <packages>br.com.eterniaserver.eterniaserver.craft*</packages>
-                        </group>
-                    </groups>
-                </configuration>
             </plugin>
         </plugins>
         <resources>
