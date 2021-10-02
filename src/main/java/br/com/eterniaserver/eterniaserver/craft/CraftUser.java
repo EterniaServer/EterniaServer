@@ -516,6 +516,27 @@ public class CraftUser {
     }
 
     /**
+     * Create a new PlayerProfile to a user uuid
+     * @param uuid of user
+     * @param playerName of user
+     * @return PlayerProfile
+     */
+    public PlayerProfile createPlayerProfile(UUID uuid, String playerName) {
+        long time = System.currentTimeMillis();
+
+        Insert insert = new Insert(plugin.getString(Strings.TABLE_PLAYER));
+        insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance", "muted");
+        insert.values.set(uuid.toString(), playerName, time, time, 0, plugin.getDouble(Doubles.START_MONEY), time);
+        SQL.executeAsync(insert);
+
+        PlayerProfile playerProfile = new PlayerProfile(playerName, time, time, 0);
+        EterniaServer.getEconomyAPI().putInMoney(uuid, plugin.getDouble(Doubles.START_MONEY));
+        playerProfile.setMuted(time);
+        playerProfiles.put(uuid, playerProfile);
+        return playerProfile;
+    }
+
+    /**
      * @return the amount of saved PlayerProfile's
      */
     public int getProfileMapSize() {

@@ -56,7 +56,18 @@ public class Managers {
         loadScheduleTasks();
         loadChestShopComp();
 
+        //loadUserSender();
     }
+
+    /*private void loadUserSender() {
+        CommandManager.getCommandContexts().registerIssuerAwareContext(User.class, c -> {
+            if ("false".equalsIgnoreCase(c.getFlagValue("other", "false"))) {
+                return UserManager.get(c.getSender().getName()).orElseThrow(() -> new UserException("Unknown user " + c.getSender().getName()));
+            } else {
+                return UserManager.get(c.getFirstArg()).orElseThrow(() -> new UserException("Unknown user " + c.getFirstArg()));
+            }
+        });
+    }*/
 
     private void loadChestShopComp() {
         if (plugin.getBoolean(Booleans.CHEST_SHOP_SUPPORT)) {

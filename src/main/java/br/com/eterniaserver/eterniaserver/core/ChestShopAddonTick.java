@@ -63,7 +63,8 @@ public class ChestShopAddonTick extends BukkitRunnable {
             final int amountBuy = amount - removed;
             final double finalPrice = roofPrice + (amountBuy * (roofPrice / 100000));
 
-            if (finalPrice >= roofPrice) {
+
+            if (finalPrice > roofPrice) {
                 return;
             }
 
@@ -79,10 +80,9 @@ public class ChestShopAddonTick extends BukkitRunnable {
 
             final double roofPrice = plugin.getChestShopSellRoof(material);
             final int amountSell = amount - removed;
-
             final double finalPrice = roofPrice - (amountSell * (roofPrice / 100000));
 
-            if (finalPrice < 0) {
+            if (finalPrice < roofPrice) {
                 return;
             }
 

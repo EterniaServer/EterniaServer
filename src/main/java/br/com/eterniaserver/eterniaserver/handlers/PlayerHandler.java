@@ -60,9 +60,13 @@ public class PlayerHandler implements Listener {
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!plugin.getBoolean(Booleans.MODULE_HOMES) && !plugin.getBoolean(Booleans.MODULE_EXPERIENCE) && !plugin.getBoolean(Booleans.MODULE_SPAWNERS)) return;
+        if (!plugin.getBoolean(Booleans.MODULE_HOMES)
+                && !plugin.getBoolean(Booleans.MODULE_EXPERIENCE)
+                && !plugin.getBoolean(Booleans.MODULE_SPAWNERS)) {
+            return;
+        }
 
-        User user = new User(event.getPlayer());
+        final User user = new User(event.getPlayer());
         final Action action = event.getAction();
 
         if (action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -112,16 +116,12 @@ public class PlayerHandler implements Listener {
         }
 
         final int function = container.get(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.INTEGER);
-        switch (function) {
-            case 0:
-                return expFunction(user, container);
-            case 1:
-                return homesFunction(user, container);
-            case 2:
-                return customFunction(user, itemStack);
-            default:
-                return false;
-        }
+        return switch (function) {
+            case 0 -> expFunction(user, itemStack);
+            case 1 -> homesFunction(user, container);
+            case 2 -> customFunction(user, itemStack);
+            default -> false;
+        };
     }
 
     private boolean customFunction(final User user, final ItemStack itemStack) {
@@ -142,24 +142,41 @@ public class PlayerHandler implements Listener {
 
             final int itemUsages = itemMeta.getPersistentDataContainer().get(plugin.getKey(ItemsKeys.TAG_USAGES), PersistentDataType.INTEGER);
             if (itemUsages == 1) {
-                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-            } else if (itemUsages > 1) {
+                if (compareItems(user, itemStack)) {
+                    user.setItemInMainHand(new ItemStack(Material.AIR));
+                } else {
+                    user.setItemInOffHand(new ItemStack(Material.AIR));
+                }
+            }
+            else if (itemUsages > 1) {
                 itemMeta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_USAGES), PersistentDataType.INTEGER, (itemUsages - 1));
                 itemStack.setItemMeta(itemMeta);
-                player.getInventory().setItemInMainHand(itemStack);
+                if (compareItems(user, itemStack)) {
+                    user.setItemInMainHand(new ItemStack(Material.AIR));
+                } else {
+                    user.setItemInOffHand(new ItemStack(Material.AIR));
+                }
             }
             return true;
         }
         return false;
     }
 
-    private boolean expFunction(final User user, final PersistentDataContainer container) {
+    private boolean compareItems(final User user, final ItemStack itemStack) {
+        return user.getItemInMainHand() == itemStack;
+    }
+
+    private boolean expFunction(final User user, final ItemStack itemStack) {
         if (!plugin.getBoolean(Booleans.MODULE_EXPERIENCE)) {
             return false;
         }
 
-        user.setItemInMainHand(new ItemStack(Material.AIR));
-        user.giveExp(container.get(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER));
+        if (user.getItemInMainHand() == itemStack) {
+            user.setItemInMainHand(new ItemStack(Material.AIR));
+        } else {
+            user.setItemInOffHand(new ItemStack(Material.AIR));
+        }
+        user.giveExp(itemStack.getItemMeta().getPersistentDataContainer().get(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER));
         return true;
     }
 
