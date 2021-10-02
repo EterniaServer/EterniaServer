@@ -1,16 +1,16 @@
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
-plugins {
-  `java-library`
-  id("com.github.johnrengelman.shadow") version "7.0.0"
-  id("io.papermc.paperweight.userdev") version "1.1.11"
-  id("xyz.jpenilla.run-paper") version "1.0.4"
-  id("net.minecrell.plugin-yml.bukkit") version "0.5.0"
-}
-
 group = "br.com.eterniaserver"
 version = "3.0.0"
 description = "Blablabla"
+
+plugins {
+    `java-library`
+    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("io.papermc.paperweight.userdev") version "1.1.11"
+    id("xyz.jpenilla.run-paper") version "1.0.4"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.0"
+}
 
 repositories {
     mavenCentral()
@@ -32,33 +32,36 @@ dependencies {
 }
 
 tasks {
-  shadowJar {
-    listOf(
-            "org.bstats"
-    ).forEach { relocate(it, "${rootProject.group}.lib.$it") }
-  }
+    shadowJar {
+        listOf(
+                "org.bstats"
+        ).forEach { relocate(it, "${rootProject.group}.lib.$it") }
+    }
 
-  build {
-    dependsOn(reobfJar)
-  }
+    build {
+        dependsOn(reobfJar)
+    }
 
-  compileJava {
-    options.encoding = Charsets.UTF_8.name()
-    options.release.set(16)
-  }
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(16)
+    }
 
-  javadoc {
-    options.encoding = Charsets.UTF_8.name()
-  }
+    javadoc {
+        options.encoding = Charsets.UTF_8.name()
+    }
 
-  processResources {
-    filteringCharset = Charsets.UTF_8.name()
-  }
+    processResources {
+        filteringCharset = Charsets.UTF_8.name()
+    }
 }
 
 bukkit {
-  load = BukkitPluginDescription.PluginLoadOrder.STARTUP
-  main = "br.com.eterniaserver.eterniaserver.EterniaServer"
-  apiVersion = "1.17"
-  authors = listOf("Yuri Nogueira")
+    load = BukkitPluginDescription.PluginLoadOrder.STARTUP
+    main = "br.com.eterniaserver.eterniaserver.EterniaServer"
+    apiVersion = "1.17"
+    website = "www.eterniaserver.com.br"
+    depend = listOf("EterniaLib", "PlaceholderAPI")
+    softDepend = listOf("Vault", "ChestShop")
+    authors = listOf("Yuri Nogueira")
 }
