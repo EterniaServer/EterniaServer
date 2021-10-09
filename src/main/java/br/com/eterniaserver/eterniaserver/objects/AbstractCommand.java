@@ -23,7 +23,6 @@
  */
 package br.com.eterniaserver.eterniaserver.objects;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -49,18 +48,11 @@ public abstract class AbstractCommand implements CommandExecutor {
     }
 
     private void register() {
-        try {
-            Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            f.setAccessible(true);
-            CommandMap cmap = (CommandMap) f.get(Bukkit.getServer());
-            ReflectCommand cmd = new ReflectCommand(this.command, this);
-            if (this.alias != null) cmd.setAliases(this.alias);
-            if (this.description != null) cmd.setDescription(this.description);
-            cmap.register("eterniaserver", cmd);
-            f.setAccessible(false);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
+        CommandMap cmap =  Bukkit.getServer().getCommandMap();
+        ReflectCommand cmd = new ReflectCommand(this.command, this);
+        if (this.alias != null) cmd.setAliases(this.alias);
+        if (this.description != null) cmd.setDescription(this.description);
+        cmap.register("eterniaserver", cmd);
     }
 
 }

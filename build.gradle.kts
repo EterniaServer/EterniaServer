@@ -18,6 +18,7 @@ repositories {
     maven("https://raw.github.com/yurinogueira/EterniaLib/repository")
     maven("https://jitpack.io")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://repo.minebench.de/")
     mavenLocal()
 }
@@ -25,6 +26,7 @@ repositories {
 dependencies {
     paperDevBundle("1.17.1-R0.1-SNAPSHOT")
     implementation("org.bstats", "bstats-bukkit", "2.2.1")
+    implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
     compileOnly("br.com.eterniaserver", "EterniaLib", "3.0.0-STABLE")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     compileOnly("me.clip", "placeholderapi", "2.10.10")

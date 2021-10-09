@@ -151,15 +151,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.CHAT_BROADCAST_TEMP_MUTE, "$3{1}$7 foi mutado em $3{2}$7 por $3{4}$7 motivo$8:$3{5}", "0: nome do mutado; 1: apelido do mutado; 2: tempo mutado; 3: nome de quem mutou; 4: apelido de quem mutou; 5: motivo");
         this.addDefault(Messages.CHAT_BROADCAST_UNMUTE, "$3{1}$7 foi desmutado por $3{3}$8.", "0: nome do mutado; 1: apelido do mutado; 2: nome de quem mutou; 3: apelido de quem mutou");
         this.addDefault(Messages.CHAT_BROADCAST_MUTE, "$3{1}$7 foi mutado permanentemente por $3{3}$7 motivo$8:$3{4}", "0: nome do mutado; 1: apelido do mutado; 2: nome de quem mutou; 3: apelido de quem mutou; 4: motivo");
-        this.addDefault(Messages.SPAWNER_INV_FULL, "O inventário do jogador está cheio$8.", null);
-        this.addDefault(Messages.SPAWNER_RECEIVED, "Você recebeu $3{3}$7 spawner de $3{0}$7 por $3{2}$8.", "0: mob; 1: nome do jogador; 2: apelido do jogador; 3: quantia");
-        this.addDefault(Messages.SPAWNER_SENT, "Você enviou $3{3} spawner de $3{0}$7 para $3{2}$8.", "0: mob; 1: nome do jogador; 2: apelido do jogador; 3: quantia");
-        this.addDefault(Messages.SPAWNER_SEND_TYPES, "Os tipos de spawners válidos são$8: $3{0}$8.", "0: tipos");
-        this.addDefault(Messages.SPAWNER_CANT_CHANGE_NAME, "Você não pode renomear spawners$8.", null);
-        this.addDefault(Messages.SPAWNER_WORLD_BLOCKED, "Você não pode quebrar spawners nesse mundo$8.", null);
-        this.addDefault(Messages.SPAWNER_DROP_FAILED, "Não foi dessa vez$8.", null);
-        this.addDefault(Messages.SPAWNER_SILK_REQUESTED, "Você precisa de uma picareta com toque suave para isso$8.", null);
-        this.addDefault(Messages.SPAWNER_WITHOUT_PERM, "Você precisa de permissão para isso$8.", null);
         this.addDefault(Messages.HOME_NOT_FOUND, "A home $3{0}$7 não existe$8.", "0: nome da home");
         this.addDefault(Messages.HOME_DELETED, "Você deletou a home $3{0}$8.", "0: nome da home");
         this.addDefault(Messages.HOME_LIMIT_REACHED, "Você alcançou o limite de homes$8, $7tome um bússola$8.", null);

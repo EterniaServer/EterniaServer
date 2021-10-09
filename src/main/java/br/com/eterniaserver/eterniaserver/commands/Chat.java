@@ -22,7 +22,6 @@ import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
-import br.com.eterniaserver.eterniaserver.users.EterniaUser;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -33,12 +32,6 @@ public class Chat extends BaseCommand {
 
     public Chat(EterniaServer plugin) {
         this.plugin = plugin;
-    }
-
-    @CommandAlias("debugchat")
-    public void commandChat(Player player) {
-        EterniaUser eterniaUser = (EterniaUser) player;
-        Bukkit.broadcastMessage(eterniaUser.displayName);
     }
 
     @Default

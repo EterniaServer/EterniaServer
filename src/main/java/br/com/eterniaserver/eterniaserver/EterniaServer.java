@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.configurations.configs.*;
-import br.com.eterniaserver.eterniaserver.configurations.dependencies.MetricsLite;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
 import br.com.eterniaserver.eterniaserver.configurations.dependencies.Placeholders;
@@ -22,16 +21,26 @@ import br.com.eterniaserver.eterniaserver.handlers.ServerHandler;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.markdown.DiscordFlavor;
+import net.kyori.adventure.text.minimessage.transformation.TransformationType;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPluginLoader;
 
-import java.io.File;
+import java.util.List;
 
 public class EterniaServer extends CraftEterniaServer {
+
+    private final MiniMessage miniMessage = MiniMessage.builder()
+            .removeDefaultTransformations()
+            .transformation(TransformationType.COLOR)
+            .transformation(TransformationType.DECORATION)
+            .markdown()
+            .markdownFlavor(DiscordFlavor.get())
+            .build();
 
     private final int[] integers = new int[Integers.values().length];
     private final int[] chestShopBuyRoof = new int[Material.values().length];
@@ -53,12 +62,28 @@ public class EterniaServer extends CraftEterniaServer {
     public static CraftEconomy getEconomyAPI() { return economyAPI; }
     public static CraftUser getUserAPI() { return userAPI; }
 
-    public EterniaServer() {
-        super();
+    public int[] integers() {
+        return integers;
     }
 
-    public EterniaServer(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file);
+    public double[] doubles() {
+        return doubles;
+    }
+
+    public boolean[] booleans() {
+        return booleans;
+    }
+
+    public String[] strings() {
+        return strings;
+    }
+
+    public String[] messages() {
+        return messages;
+    }
+
+    public List<List<String>> stringLists() {
+        return stringLists;
     }
 
     @Override
@@ -70,7 +95,7 @@ public class EterniaServer extends CraftEterniaServer {
         loadConfiguration();
 
         new Placeholders(this).register();
-        new MetricsLite(this, 10160);
+        new Metrics(this, 10160);
         new Managers(this);
 
         this.getServer().getPluginManager().registerEvents(new BlocksHandler(this), this);
@@ -157,6 +182,15 @@ public class EterniaServer extends CraftEterniaServer {
 
     public int getChestShopSellRoof(Material material) {
         return chestShopSellRoof[material.ordinal()];
+    }
+
+    public void sendMiniMessages(CommandSender sender, Messages messagesId, String... args) {
+        sendMiniMessages(sender, messagesId, true, args);
+
+    }
+
+    public void sendMiniMessages(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
+        sender.sendMessage(miniMessage.parse(getMessage(messagesId, prefix, args)));
     }
 
     public void sendMessage(CommandSender sender, Messages messagesId, String... args) {

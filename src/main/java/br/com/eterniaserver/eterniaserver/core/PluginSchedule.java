@@ -23,29 +23,14 @@ public class PluginSchedule extends BukkitRunnable {
     public void run() {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         switch (day) {
-            case Calendar.SUNDAY:
-                runDay(plugin.getScheduleMap().get("sunday"));
-                break;
-            case Calendar.MONDAY:
-                runDay(plugin.getScheduleMap().get("monday"));
-                break;
-            case Calendar.TUESDAY:
-                runDay(plugin.getScheduleMap().get("tuesday"));
-                break;
-            case Calendar.WEDNESDAY:
-                runDay(plugin.getScheduleMap().get("wednesday"));
-                break;
-            case Calendar.THURSDAY:
-                runDay(plugin.getScheduleMap().get("thursday"));
-                break;
-            case Calendar.FRIDAY:
-                runDay(plugin.getScheduleMap().get("friday"));
-                break;
-            case Calendar.SATURDAY:
-                runDay(plugin.getScheduleMap().get("saturday"));
-                break;
-            default:
-                plugin.logError("Talvez você não seja da terra", 3);
+            case Calendar.SUNDAY -> runDay(plugin.getScheduleMap().get("sunday"));
+            case Calendar.MONDAY -> runDay(plugin.getScheduleMap().get("monday"));
+            case Calendar.TUESDAY -> runDay(plugin.getScheduleMap().get("tuesday"));
+            case Calendar.WEDNESDAY -> runDay(plugin.getScheduleMap().get("wednesday"));
+            case Calendar.THURSDAY -> runDay(plugin.getScheduleMap().get("thursday"));
+            case Calendar.FRIDAY -> runDay(plugin.getScheduleMap().get("friday"));
+            case Calendar.SATURDAY -> runDay(plugin.getScheduleMap().get("saturday"));
+            default -> plugin.logError("Talvez você não seja da terra", 3);
         }
     }
 
