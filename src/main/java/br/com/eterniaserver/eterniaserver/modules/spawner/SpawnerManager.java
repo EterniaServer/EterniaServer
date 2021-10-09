@@ -46,12 +46,12 @@ public class SpawnerManager implements Module {
 
     @Override
     public void loadListeners() {
-        plugin.getLogger().log(Level.INFO, "empty");
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin), plugin);
     }
 
     @Override
     public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "empty");
+        plugin.getLogger().log(Level.INFO, "Spawner module: no schedules");
     }
 
     @Override

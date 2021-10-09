@@ -7,8 +7,6 @@ description = "Blablabla"
 plugins {
     `java-library`
     id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("io.papermc.paperweight.userdev") version "1.1.11"
-    id("xyz.jpenilla.run-paper") version "1.0.4"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.0"
 }
 
@@ -24,9 +22,11 @@ repositories {
 }
 
 dependencies {
-    paperDevBundle("1.17.1-R0.1-SNAPSHOT")
     implementation("org.bstats", "bstats-bukkit", "2.2.1")
-    implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
+    implementation("net.kyori", "adventure-text-minimessage", "4.2.0-SNAPSHOT") {
+        exclude("net.kyori", "adventure-api")
+    }
+    compileOnly("io.papermc.paper", "paper-api", "1.17.1-R0.1-SNAPSHOT")
     compileOnly("br.com.eterniaserver", "EterniaLib", "3.0.0-STABLE")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     compileOnly("me.clip", "placeholderapi", "2.10.10")
@@ -36,12 +36,13 @@ dependencies {
 tasks {
     shadowJar {
         listOf(
-                "org.bstats"
+                "org.bstats",
+                "net.kyori.adventure.text.minimessage",
         ).forEach { relocate(it, "${rootProject.group}.lib.$it") }
     }
 
     build {
-        dependsOn(reobfJar)
+        dependsOn(shadowJar)
     }
 
     compileJava {

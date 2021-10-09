@@ -10,6 +10,7 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Entities;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.handlers.ChestShopHandler;
+import br.com.eterniaserver.eterniaserver.modules.Manager;
 import br.com.eterniaserver.eterniaserver.objects.ChannelCommand;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
@@ -51,10 +52,10 @@ public class Managers {
         loadClearManager();
         loadKitManager();
         loadRewardsManager();
-        loadSpawnersManager();
         loadTeleportsManager();
         loadScheduleTasks();
         loadChestShopComp();
+        new Manager(plugin);
 
         //loadUserSender();
     }
@@ -218,12 +219,6 @@ public class Managers {
     private void loadRewardsManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_REWARDS), "Rewards")) {
             CommandManager.registerCommand(new Reward(plugin));
-        }
-    }
-
-    private void loadSpawnersManager() {
-        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_SPAWNERS), "Spawners")) {
-            CommandManager.registerCommand(new Spawner(plugin));
         }
     }
 

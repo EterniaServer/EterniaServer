@@ -32,10 +32,10 @@ final class Configurations {
 
             commandsLocalesArray[Enums.Commands.SPAWNER_GIVE.ordinal()] = new CommandI18n(
                     Enums.Commands.SPAWNER_GIVE.name(),
-                    "spawnergive",
-                    "eternia.spawnergive",
+                    "spawnergive|darspawner",
                     " <mob> <quantia> <jogador>",
-                    " Dá uma quantia de spawners para um jogador"
+                    " Dá uma quantia de spawners para um jogador",
+                    "eternia.spawnergive"
             );
 
             syncToFile();

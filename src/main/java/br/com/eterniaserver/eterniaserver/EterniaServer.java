@@ -22,8 +22,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.markdown.DiscordFlavor;
-import net.kyori.adventure.text.minimessage.transformation.TransformationType;
+
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -34,13 +33,7 @@ import java.util.List;
 
 public class EterniaServer extends CraftEterniaServer {
 
-    private final MiniMessage miniMessage = MiniMessage.builder()
-            .removeDefaultTransformations()
-            .transformation(TransformationType.COLOR)
-            .transformation(TransformationType.DECORATION)
-            .markdown()
-            .markdownFlavor(DiscordFlavor.get())
-            .build();
+    private final MiniMessage miniMessage = MiniMessage.builder().build();
 
     private final int[] integers = new int[Integers.values().length];
     private final int[] chestShopBuyRoof = new int[Material.values().length];
