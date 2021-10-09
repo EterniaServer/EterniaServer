@@ -79,11 +79,13 @@ final class Commands {
         }
 
         private void sendTypes(final CommandSender player) {
-            final String divider = plugin.getString(Strings.MINI_MESSAGES_ENTITIES_DIVIDER);
-            final String period = plugin.getString(Strings.MINI_MESSAGES_ENTITIES_PERIOD);
-            final String creatureTypes = String.join(divider, entities) + period;
-
-            plugin.sendMiniMessages(player, Messages.SPAWNER_SEND_TYPES, creatureTypes);
+            plugin.sendMiniMessages(
+                    player,
+                    Messages.SPAWNER_SEND_TYPES,
+                    String.join(
+                            plugin.getString(Strings.MINI_MESSAGES_ENTITIES_DIVIDER), entities
+                    )
+            );
         }
 
     }

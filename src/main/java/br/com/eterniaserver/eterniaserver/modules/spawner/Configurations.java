@@ -95,7 +95,6 @@ final class Configurations {
             doubles[Doubles.DROP_CHANCE.ordinal()] = inFile.getDouble("configs.drop-chance", 1.0);
             // Strings
             strings[Strings.MINI_MESSAGES_ENTITIES_DIVIDER.ordinal()] = inFile.getString("mini-messages.entities-divider", "<color:#555555>, <color:#00aaaa>");
-            strings[Strings.MINI_MESSAGES_ENTITIES_PERIOD.ordinal()] = inFile.getString("mini-messages.entities-period", "<color:#555555>.");
             // Lists
             final List<String> list = inFile.getStringList("configs.blacklisted-worlds");
             stringLists.set(Lists.BLACKLISTED_WORLDS_SPAWNERS.ordinal(), list.isEmpty() ? List.of("world_evento") : list);
@@ -108,7 +107,6 @@ final class Configurations {
             outFile.set("configs.drop-chance", doubles[Doubles.DROP_CHANCE.ordinal()]);
             // Strings
             outFile.set("mini-messages.entities-divider", strings[Strings.MINI_MESSAGES_ENTITIES_DIVIDER.ordinal()]);
-            outFile.set("mini-messages.entities-period", strings[Strings.MINI_MESSAGES_ENTITIES_PERIOD.ordinal()]);
             // Lists
             outFile.set("configs.blacklisted-worlds", plugin.stringLists.get(Lists.BLACKLISTED_WORLDS_SPAWNERS.ordinal()));
 
