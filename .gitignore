@@ -1,6 +1,3 @@
 .idea/
-/.idea/
-target/
-/target/
-plugins/
-/plugins/
+build/
+.gradle/

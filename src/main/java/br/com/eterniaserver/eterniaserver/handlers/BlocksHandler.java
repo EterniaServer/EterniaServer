@@ -48,23 +48,6 @@ public class BlocksHandler implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerBlockPlace(BlockPlaceEvent event) {
-        if (!plugin.getBoolean(Booleans.MODULE_SPAWNERS)) return;
-
-        final Block block = event.getBlockPlaced();
-        if (block.getType() == Material.SPAWNER) {
-            final ItemMeta meta = event.getItemInHand().getItemMeta();
-            if (meta != null) {
-                String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
-                EntityType entity = EntityType.valueOf(entityName);
-                CreatureSpawner spawner = (CreatureSpawner) block.getState();
-                spawner.setSpawnedType(entity);
-                spawner.update();
-            }
-        }
-    }
-
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onPlayerBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
@@ -74,12 +57,6 @@ public class BlocksHandler implements Listener {
         final Block block = event.getBlock();
         final Material material = block.getType();
         final String materialName = material.name().toUpperCase();
-        final String worldName = block.getWorld().getName();
-
-        if (plugin.getBoolean(Booleans.MODULE_SPAWNERS) && material == Material.SPAWNER && !isBlackListWorld(worldName)) {
-            getSpawner(event.getPlayer(), event, block);
-            return;
-        }
 
         if (plugin.getBoolean(Booleans.MODULE_BLOCK) && plugin.getChanceMap(ChanceMaps.BLOCK_DROPS).containsKey(materialName)) {
             randomizeAndReward(event.getPlayer(), plugin.getChanceMap(ChanceMaps.BLOCK_DROPS).get(materialName));
@@ -90,26 +67,6 @@ public class BlocksHandler implements Listener {
             winFarmReward(event.getBlock(), event.getPlayer());
         }
 
-    }
-
-    private void getSpawner(Player player, BlockBreakEvent event, Block block) {
-        if (player.hasPermission(plugin.getString(Strings.PERM_SPAWNERS_BREAK))) {
-            ItemStack itemInHand = player.getInventory().getItemInMainHand();
-            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(plugin.getString(Strings.PERM_SPAWNERS_NO_SILK))) {
-                giveSpawner(player, block);
-                event.setExpToDrop(0);
-                return;
-            }
-
-            event.setCancelled(true);
-            plugin.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
-            return;
-        }
-
-        if (plugin.getBoolean(Booleans.BLOCK_BREAK_SPAWNERS)) {
-            plugin.sendMessage(player, Messages.SPAWNER_WITHOUT_PERM);
-            event.setCancelled(true);
-        }
     }
 
     private void winFarmReward(Block block, Player player) {
@@ -136,40 +93,6 @@ public class BlocksHandler implements Listener {
         for (String command : reward) {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.setPlaceholders(player, command));
         }
-    }
-
-    private void giveSpawner(Player player, Block block) {
-        double random = Math.random();
-        if (random < plugin.getDouble(Doubles.DROP_CHANCE)) {
-            if (plugin.getBoolean(Booleans.INV_DROP)) {
-                if (player.getInventory().firstEmpty() != -1) {
-                    player.getInventory().addItem(getSpawner(block));
-                    block.getDrops().clear();
-                } else {
-                    plugin.sendMessage(player, Messages.SPAWNER_INV_FULL);
-                    final Location loc = block.getLocation();
-                    loc.getWorld().dropItemNaturally(loc, getSpawner(block));
-                }
-            } else {
-                final Location loc = block.getLocation();
-                loc.getWorld().dropItemNaturally(loc, getSpawner(block));
-            }
-        } else {
-            plugin.sendMessage(player, Messages.SPAWNER_DROP_FAILED);
-        }
-    }
-
-    private ItemStack getSpawner(Block block) {
-        CreatureSpawner spawner = (CreatureSpawner) block.getState();
-        ItemStack item = new ItemStack(block.getType());
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(plugin.getSpawnerName(spawner.getSpawnedType()));
-        item.setItemMeta(meta);
-        return item;
-    }
-
-    private boolean isBlackListWorld(final String worldName) {
-        return plugin.getStringList(Lists.BLACKLISTED_WORLDS_SPAWNERS).contains(worldName);
     }
 
 }

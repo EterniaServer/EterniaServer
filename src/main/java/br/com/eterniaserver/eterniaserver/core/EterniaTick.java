@@ -32,7 +32,6 @@ public class EterniaTick extends BukkitRunnable {
                 User user = new User(player);
 
                 tpaTime(user);
-                // checkNetherTrap(user); todo Optimize the method.
                 checkAFK(user);
                 getPlayersInTp(user);
                 refreshPlayers(user);
@@ -65,35 +64,6 @@ public class EterniaTick extends BukkitRunnable {
         if (EterniaServer.getUserAPI().hasTpaRequest(user.getUUID()) && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - EterniaServer.getUserAPI().getAFKTime(user.getUUID())) >= 25) {
             EterniaServer.getUserAPI().removeTpaRequest(user.getUUID());
         }
-    }
-
-    private void checkNetherTrap(User user) {
-
-        if (user.getLocation().getBlock().getType() != Material.NETHER_PORTAL) {
-            EterniaServer.getUserAPI().putInPortal(user.getUUID(), -1);
-            return;
-        }
-
-        int time = EterniaServer.getUserAPI().getInPortal(user.getUUID());
-
-        if (time == -1) {
-            EterniaServer.getUserAPI().putInPortal(user.getUUID(), 10);
-            return;
-        }
-
-        if (time == 1) {
-            EterniaServer.getUserAPI().putInPortal(user.getUUID(), -1);
-            PaperLib.teleportAsync(user.getPlayer(), plugin.getLocation("warp.spawn"));
-            plugin.sendMessage(user.getPlayer(), Messages.WARP_SPAWN_TELEPORTED);
-            return;
-        }
-
-        if (--time < 5) {
-            plugin.sendMessage(user.getPlayer(), Messages.SERVER_NETHER_TRAP_TIMING, String.valueOf(time));
-        }
-
-        EterniaServer.getUserAPI().putInPortal(user.getUUID(), time);
-
     }
 
     private void checkAFK(User user) {

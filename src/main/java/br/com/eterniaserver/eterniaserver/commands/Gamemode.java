@@ -130,16 +130,12 @@ public class Gamemode extends BaseCommand {
     }
 
     private String getType(int type) {
-        switch (type) {
-            case 0:
-                return plugin.getString(Strings.CONS_SURVIVAL);
-            case 1:
-                return plugin.getString(Strings.CONS_CREATIVE);
-            case 2:
-                return plugin.getString(Strings.CONS_ADVENTURE);
-            default:
-                return plugin.getString(Strings.CONS_SPECTATOR);
-        }
+        return switch (type) {
+            case 0 -> plugin.getString(Strings.CONS_SURVIVAL);
+            case 1 -> plugin.getString(Strings.CONS_CREATIVE);
+            case 2 -> plugin.getString(Strings.CONS_ADVENTURE);
+            default -> plugin.getString(Strings.CONS_SPECTATOR);
+        };
     }
 
 }

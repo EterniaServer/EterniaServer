@@ -10,6 +10,7 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Entities;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.handlers.ChestShopHandler;
+import br.com.eterniaserver.eterniaserver.modules.Manager;
 import br.com.eterniaserver.eterniaserver.objects.ChannelCommand;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
 import br.com.eterniaserver.eterniaserver.enums.Colors;
@@ -51,12 +52,23 @@ public class Managers {
         loadClearManager();
         loadKitManager();
         loadRewardsManager();
-        loadSpawnersManager();
         loadTeleportsManager();
         loadScheduleTasks();
         loadChestShopComp();
+        new Manager(plugin);
 
+        //loadUserSender();
     }
+
+    /*private void loadUserSender() {
+        CommandManager.getCommandContexts().registerIssuerAwareContext(User.class, c -> {
+            if ("false".equalsIgnoreCase(c.getFlagValue("other", "false"))) {
+                return UserManager.get(c.getSender().getName()).orElseThrow(() -> new UserException("Unknown user " + c.getSender().getName()));
+            } else {
+                return UserManager.get(c.getFirstArg()).orElseThrow(() -> new UserException("Unknown user " + c.getFirstArg()));
+            }
+        });
+    }*/
 
     private void loadChestShopComp() {
         if (plugin.getBoolean(Booleans.CHEST_SHOP_SUPPORT)) {
@@ -207,12 +219,6 @@ public class Managers {
     private void loadRewardsManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_REWARDS), "Rewards")) {
             CommandManager.registerCommand(new Reward(plugin));
-        }
-    }
-
-    private void loadSpawnersManager() {
-        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_SPAWNERS), "Spawners")) {
-            CommandManager.registerCommand(new Spawner(plugin));
         }
     }
 

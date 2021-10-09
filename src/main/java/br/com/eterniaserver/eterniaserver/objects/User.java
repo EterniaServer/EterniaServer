@@ -16,6 +16,7 @@ import java.util.UUID;
 public class User {
 
     private final String playerName;
+    private CommandSender commandSender;
 
     private Player player = null;
     private OfflinePlayer offlinePlayer = null;
@@ -24,6 +25,34 @@ public class User {
     private String playerDisplayName;
     private UUID uuid;
     private boolean firstLogin = false;
+
+    public User(final String playerName,
+                final String playerDisplayName,
+                final UUID uuid,
+                final OfflinePlayer offlinePlayer,
+                final Player player,
+                final boolean firstLogin) {
+        this.playerName = playerName;
+        this.playerDisplayName = playerDisplayName;
+        this.uuid = uuid;
+        this.offlinePlayer = offlinePlayer;
+        this.player = player;
+        this.firstLogin = firstLogin;
+
+        this.commandSender = player;
+    }
+
+    public User(CommandSender sender) {
+        if (sender instanceof Player) {
+            this.player = (Player) sender;
+            this.playerName = player.getName();
+            this.uuid = player.getUniqueId();
+            getInfo();
+        } else {
+            this.playerName = sender.getName();
+            this.playerDisplayName = sender.getName();
+        }
+    }
 
     public User(final String playerName) {
         final UUID uuid = UUIDFetcher.getUUIDOf(playerName);
@@ -67,17 +96,6 @@ public class User {
         getInfo();
     }
 
-    public User(CommandSender sender) {
-        if (sender instanceof Player) {
-            this.player = (Player) sender;
-            this.playerName = player.getName();
-            this.uuid = player.getUniqueId();
-            getInfo();
-        } else {
-            this.playerName = sender.getName();
-            this.playerDisplayName = sender.getName();
-        }
-    }
     private void getInfo() {
         if (!EterniaServer.getUserAPI().hasProfile(this.uuid)) {
             EterniaServer.getUserAPI().createProfile(uuid, playerName);
@@ -94,7 +112,6 @@ public class User {
     }
 
     // API
-
     public void teleport() {
         if (!firstLogin) {
             return;
@@ -338,6 +355,10 @@ public class User {
 
     public void setItemInMainHand(ItemStack item) {
         player.getInventory().setItemInMainHand(item);
+    }
+
+    public void setItemInOffHand(ItemStack item) {
+        player.getInventory().setItemInOffHand(item);
     }
 
     public ItemStack getItemInMainHand() {
