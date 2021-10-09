@@ -2,32 +2,44 @@ package br.com.eterniaserver.eterniaserver.modules;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.Module;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.core.CoreManager;
 import br.com.eterniaserver.eterniaserver.modules.spawner.SpawnerManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Manager {
 
-    private final List<Module> modules = new ArrayList<>();
+    private final EterniaServer plugin;
+
+    private final Map<Booleans, Module> modules = new HashMap<>();
 
     public Manager(final EterniaServer plugin) {
-        modules.add(new CoreManager(plugin));
-        modules.add(new SpawnerManager(plugin));
+        this.plugin = plugin;
+
+        loadModule(new CoreManager(plugin));
+
+        modules.put(Booleans.MODULE_SPAWNERS, new SpawnerManager(plugin));
 
         loadModules();
     }
 
     private void loadModules() {
-        for (final Module module : modules) {
-            module.loadConfigurations();
-            module.loadCommandsLocales();
-            module.loadCommandsCompletions();
-            module.loadListeners();
-            module.loadSchedules();
-            module.loadCommands();
-        }
+        modules.forEach((moduleEnum, module) -> {
+            if (plugin.getBoolean(moduleEnum)) {
+                loadModule(module);
+            }
+        });
+    }
+
+    private void loadModule(Module module) {
+        module.loadConfigurations();
+        module.loadCommandsLocales();
+        module.loadCommandsCompletions();
+        module.loadListeners();
+        module.loadSchedules();
+        module.loadCommands();
     }
 
 }
