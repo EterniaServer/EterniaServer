@@ -92,8 +92,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.EXP_INSUFFICIENT, "Você não possui tudo isso de exp$8.", null);
         this.addDefault(Messages.EXP_WITHDRAW, "Você sacou $3{0}$7 níveis$8.", "0: quantia de nível");
         this.addDefault(Messages.EXP_DEPOSIT, "Você depositou $3{0}$7 níveis$8.", "0: quantia de nível");
-        this.addDefault(Messages.GAMEMODE_SETED, "Seu modo de jogo foi definido para {0}$8.", "0: modo de jogo");
-        this.addDefault(Messages.GAMEMODE_SET_FROM, "O modo de jogo de $3{2}$7 foi definido para {0}$8.", "0: modo de jogo; 1: nome do jogador; 2: apelido do jogador");
         this.addDefault(Messages.WARP_TELEPORTED, "Você foi teleportado até o $3{0}$8.", "0: nome da warp");
         this.addDefault(Messages.WARP_CREATED, "A warp $3{0}$7 foi criada com sucesso$8.", "0: nome da warp");
         this.addDefault(Messages.WARP_DELETED, "A warp $3{0}$7 foi deletada$8.", "0: nome da warp");

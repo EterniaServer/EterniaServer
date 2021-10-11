@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
+import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.Module;
 
@@ -17,11 +18,9 @@ public class CoreManager implements Module {
     @Override
     public void loadConfigurations() {
         new Configurations.Configs(plugin);
-    }
+        new Configurations.Locales(plugin);
 
-    @Override
-    public void loadCommandsLocales() {
-        plugin.getLogger().log(Level.INFO, "Core module: no commands locales");
+        loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
     }
 
     @Override
@@ -41,12 +40,13 @@ public class CoreManager implements Module {
 
     @Override
     public void loadCommands() {
-        plugin.getLogger().log(Level.INFO, "Core module: no commands");
+        CommandManager.registerCommand(new Commands.EGameMode(plugin));
     }
 
     @Override
     public void reloadConfigurations() {
-
+        new Configurations.Configs(plugin);
+        new Configurations.Locales(plugin);
     }
 
 }

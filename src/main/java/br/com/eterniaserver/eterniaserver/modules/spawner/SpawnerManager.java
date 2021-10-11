@@ -20,20 +20,8 @@ public class SpawnerManager implements Module {
     public void loadConfigurations() {
         new Configurations.Configs(plugin);
         new Configurations.Locales(plugin);
-    }
 
-    @Override
-    public void loadCommandsLocales() {
-        Configurations.CommandsLocales commandsLocales = new Configurations.CommandsLocales();
-
-        for (final Enums.Commands command : Enums.Commands.values()) {
-            CommandManager.getCommandReplacements().addReplacements(
-                    command.name(), commandsLocales.getName(command.ordinal()),
-                    command.name() + "_DESCRIPTION", commandsLocales.getDescription(command.ordinal()),
-                    command.name() + "_SYNTAX", commandsLocales.getSyntax(command.ordinal()),
-                    command.name() + "_PERM", commandsLocales.getPerm(command.ordinal())
-            );
-        }
+        loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
     }
 
     @Override
@@ -61,7 +49,8 @@ public class SpawnerManager implements Module {
 
     @Override
     public void reloadConfigurations() {
-
+        new Configurations.Configs(plugin);
+        new Configurations.Locales(plugin);
     }
 
 }

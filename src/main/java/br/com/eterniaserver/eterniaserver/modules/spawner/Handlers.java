@@ -6,8 +6,8 @@ import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -38,9 +38,7 @@ final class Handlers implements Listener {
         }
 
         final ItemMeta meta = event.getItemInHand().getItemMeta();
-        if (meta == null) {
-            return;
-        }
+        if (meta == null) return;
 
         final String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
         final EntityType entity = EntityType.valueOf(entityName);
@@ -54,54 +52,53 @@ final class Handlers implements Listener {
     private void onBlockBreakEvent(BlockBreakEvent event) {
         final Block block = event.getBlock();
         final Material material = block.getType();
-        if (material != Material.SPAWNER) {
-            return;
-        }
+
+        if (material != Material.SPAWNER) return;
 
         final String worldName = block.getWorld().getName();
-        if (isBlackListWorld(worldName)) {
-            return;
-        }
+
+        if (isBlackListWorld(worldName)) return;
 
         final Player player = event.getPlayer();
         final String spawnerBreakPerm = plugin.getString(Strings.PERM_SPAWNERS_BREAK);
+
         if (!player.hasPermission(spawnerBreakPerm) && plugin.getBoolean(Booleans.BLOCK_BREAK_SPAWNERS)) {
-            plugin.sendMessage(player, Messages.SPAWNER_WITHOUT_PERM);
+            plugin.sendMiniMessages(player, Messages.SPAWNER_WITHOUT_PERM);
             event.setCancelled(true);
         }
-
-        if (player.hasPermission(spawnerBreakPerm)) {
+        else if (player.hasPermission(spawnerBreakPerm)) {
             final ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(plugin.getString(Strings.PERM_SPAWNERS_NO_SILK))) {
                 giveSpawner(player, block);
                 event.setExpToDrop(0);
-                return;
             }
-
-            event.setCancelled(true);
-            plugin.sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
+            else {
+                event.setCancelled(true);
+                plugin.sendMiniMessages(player, Messages.SPAWNER_SILK_REQUESTED);
+            }
         }
     }
 
     private void giveSpawner(Player player, Block block) {
         double random = Math.random();
-        if (random < plugin.getDouble(Doubles.DROP_CHANCE)) {
-            if (plugin.getBoolean(Booleans.INV_DROP)) {
-                if (player.getInventory().firstEmpty() != -1) {
-                    player.getInventory().addItem(getSpawner(block));
-                    block.getDrops().clear();
-                } else {
-                    plugin.sendMessage(player, Messages.SPAWNER_INV_FULL);
-                    final Location loc = block.getLocation();
-                    loc.getWorld().dropItemNaturally(loc, getSpawner(block));
-                }
-            } else {
-                final Location loc = block.getLocation();
-                loc.getWorld().dropItemNaturally(loc, getSpawner(block));
-            }
-        } else {
-            plugin.sendMessage(player, Messages.SPAWNER_DROP_FAILED);
+        if (random > plugin.getDouble(Doubles.DROP_CHANCE)) {
+            plugin.sendMiniMessages(player, Messages.SPAWNER_DROP_FAILED);
+            return;
         }
+
+        if (!plugin.getBoolean(Booleans.INV_DROP)) {
+            block.getWorld().dropItemNaturally(block.getLocation(), getSpawner(block));
+            return;
+        }
+
+        if (player.getInventory().firstEmpty() == -1) {
+            block.getWorld().dropItemNaturally(block.getLocation(), getSpawner(block));
+            plugin.sendMiniMessages(player, Messages.SPAWNER_INV_FULL);
+            return;
+        }
+
+        player.getInventory().addItem(getSpawner(block));
+        block.getDrops().clear();
     }
 
     private ItemStack getSpawner(Block block) {

@@ -64,11 +64,6 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.XP_WITHDRAW, "withdraw", "eternia.xp.user", " <quantia>", " Retira uma quantia de nível", null);
         this.addDefault(Commands.XP_DEPOSIT, "deposit", "eternia.xp.user", " <quantia>", " Guarda uma quantia de nível", null);
         this.addDefault(Commands.XP_DEPOSIT, "deposit", "eternia.xp.user", " <quantia>", " Guarda uma quantia de nível", null);
-        this.addDefault(Commands.GAMEMODE, "gamemode|gm", "eternia.gamemode", " <página>", " Ajuda para o sistema de Gamemode", null);
-        this.addDefault(Commands.GAMEMODE_SURVIVAL, "survival|s|0", "eternia.gamemode", " <jogador>", " Define o modo de jogo seu ou de alguém para survival", null);
-        this.addDefault(Commands.GAMEMODE_CREATIVE, "creative|c|1", "eternia.gamemode", " <jogador>", " Define o modo de jogo seu ou de alguém para criativo", null);
-        this.addDefault(Commands.GAMEMODE_ADVENTURE, "adventure|a|2", "eternia.gamemode", " <jogador>", " Define o modo de jogo seu ou de alguém para aventura", null);
-        this.addDefault(Commands.GAMEMODE_SPECTATOR, "spectator|spec|3", "eternia.gamemode", " <jogador>", " Define o modo de jogo seu ou de alguém para espectador", null);
         this.addDefault(Commands.SPEED, "speed", "eternia.speed", " <valor>", " Define a velocidade do jogador", null);
         this.addDefault(Commands.GOD, "god", "eternia.god", " <jogador>", " Ativa o modo deus para você ou para um joador", null);
         this.addDefault(Commands.PROFILE, "profile", "eternia.profile", " <jogador>", " Veja o seu perfil ou o de outro jogador", null);

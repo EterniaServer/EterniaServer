@@ -35,7 +35,6 @@ public class Manager {
 
     private void loadModule(Module module) {
         module.loadConfigurations();
-        module.loadCommandsLocales();
         module.loadCommandsCompletions();
         module.loadListeners();
         module.loadSchedules();

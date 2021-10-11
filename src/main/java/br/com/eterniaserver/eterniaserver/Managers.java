@@ -55,7 +55,6 @@ public class Managers {
         loadTeleportsManager();
         loadScheduleTasks();
         loadChestShopComp();
-        new Manager(plugin);
 
         //loadUserSender();
     }
@@ -187,7 +186,6 @@ public class Managers {
     private void loadGenericManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_GENERIC), "Generic")) {
             CommandManager.registerCommand(new Inventory(plugin));
-            CommandManager.registerCommand(new Gamemode(plugin));
             CommandManager.registerCommand(new Glow(plugin));
             CommandManager.registerCommand(new Item(plugin));
         }

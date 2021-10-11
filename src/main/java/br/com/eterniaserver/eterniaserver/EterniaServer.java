@@ -19,6 +19,7 @@ import br.com.eterniaserver.eterniaserver.handlers.EntityHandler;
 import br.com.eterniaserver.eterniaserver.handlers.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.handlers.ServerHandler;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.modules.Manager;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -90,6 +91,7 @@ public class EterniaServer extends CraftEterniaServer {
         new Placeholders(this).register();
         new Metrics(this, 10160);
         new Managers(this);
+        new Manager(this);
 
         this.getServer().getPluginManager().registerEvents(new BlocksHandler(this), this);
         this.getServer().getPluginManager().registerEvents(new EntityHandler(this), this);
