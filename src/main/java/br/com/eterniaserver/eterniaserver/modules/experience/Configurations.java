@@ -3,8 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.experience;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.api.FileCfg;
-import br.com.eterniaserver.eterniaserver.enums.Booleans;
-import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -101,12 +99,12 @@ final class Configurations {
 
         @Override
         public String getFolderPath() {
-            return Constants.DATA_MODULE_FOLDER_PATH;
+            return Constants.EXPERIENCE_MODULE_FOLDER_PATH;
         }
 
         @Override
         public String getFilePath() {
-            return Constants.CORE_COMMAND_FILE_PATH;
+            return Constants.EXPERIENCE_COMMAND_FILE_PATH;
         }
 
         @Override
@@ -153,12 +151,12 @@ final class Configurations {
 
         @Override
         public String getFolderPath() {
-            return Constants.DATA_MODULE_FOLDER_PATH;
+            return Constants.EXPERIENCE_MODULE_FOLDER_PATH;
         }
 
         @Override
         public String getFilePath() {
-            return Constants.CORE_CONFIG_FILE_PATH;
+            return Constants.EXPERIENCE_CONFIG_FILE_PATH;
         }
 
         @Override
@@ -241,12 +239,12 @@ final class Configurations {
 
         @Override
         public String getFolderPath() {
-            return Constants.SPAWNER_MODULE_FOLDER_PATH;
+            return Constants.EXPERIENCE_MODULE_FOLDER_PATH;
         }
 
         @Override
         public String getFilePath() {
-            return Constants.SPAWNER_MESSAGE_FILE_PATH;
+            return Constants.EXPERIENCE_MESSAGE_FILE_PATH;
         }
 
         @Override

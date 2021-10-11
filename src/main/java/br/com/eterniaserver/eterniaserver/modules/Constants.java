@@ -15,4 +15,9 @@ public class Constants {
     public static final String SPAWNER_COMMAND_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "spawner-cmd.yml";
     public static final String SPAWNER_MESSAGE_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "spawner-msg.yml";
 
+    public static final String EXPERIENCE_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "experience";
+    public static final String EXPERIENCE_CONFIG_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience.yml";
+    public static final String EXPERIENCE_COMMAND_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience-cmd.yml";
+    public static final String EXPERIENCE_MESSAGE_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience-msg.yml";
+
 }
