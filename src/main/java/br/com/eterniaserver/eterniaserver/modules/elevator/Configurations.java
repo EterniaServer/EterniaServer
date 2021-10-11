@@ -35,7 +35,7 @@ final class Configurations {
             strings[Strings.PERM_ELEVATOR.ordinal()] = inFile.getString("permission", "eternia.elevator");
             // Integers
             integers[Integers.ELEVATOR_MAX.ordinal()] = inFile.getInt("space-between.max", 50);
-            integers[Integers.ELEVATOR_MIN.ordinal()] = inFile.getInt("space-between.min", 2);
+            integers[Integers.ELEVATOR_MIN.ordinal()] = inFile.getInt("space-between.min", 3);
             // Lists
             List<String> list = inFile.getStringList("valid-materials");
             list = list.isEmpty() ? List.of("IRON_BLOCK") : list;

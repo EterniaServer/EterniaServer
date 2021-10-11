@@ -21,6 +21,6 @@ public class Constants {
     public static final String EXPERIENCE_MESSAGE_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience-msg.yml";
 
     public static final String ELEVATOR_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "elevator";
-    public static final String ELEVATOR_CONFIG_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "elevator.yml";
+    public static final String ELEVATOR_CONFIG_FILE_PATH = ELEVATOR_MODULE_FOLDER_PATH + File.separator + "elevator.yml";
 
 }

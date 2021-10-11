@@ -1,12 +1,12 @@
 package br.com.eterniaserver.eterniaserver.modules.elevator;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-
-import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.paperlib.PaperLib;
+
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+
 
 final class Handlers implements Listener {
 
@@ -38,14 +39,14 @@ final class Handlers implements Listener {
 
         if (!plugin.elevatorMaterials().contains(baseMaterial)) return;
 
-        final int max_space = plugin.getInteger(Integers.ELEVATOR_MIN);
+        final int max_space = plugin.getInteger(Integers.ELEVATOR_MAX);
         final int min_space = plugin.getInteger(Integers.ELEVATOR_MIN);
         Block block = baseBlock.getRelative(BlockFace.UP, min_space);
 
-        for (int i = max_space; i > min_space; i--) {
+        for (int i = min_space + 1; i < max_space; i++) {
             if (block.getType() == baseMaterial) {
                 Location location = player.getLocation();
-                location.setY((location.getY() + max_space + 3.0D - (double) i) - 1);
+                location.setY(location.getY() + i - 0.5D);
                 PaperLib.teleportAsync(player, location);
                 player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
                 break;
@@ -65,14 +66,14 @@ final class Handlers implements Listener {
 
         if (!plugin.elevatorMaterials().contains(baseMaterial)) return;
 
-        final int max_space = plugin.getInteger(Integers.ELEVATOR_MIN);
+        final int max_space = plugin.getInteger(Integers.ELEVATOR_MAX);
         final int min_space = plugin.getInteger(Integers.ELEVATOR_MIN);
         Block block = baseBlock.getRelative(BlockFace.DOWN, min_space);
 
-        for (int i = max_space; i > min_space; i--) {
+        for (int i = min_space + 1; i < max_space; i++) {
             if (block.getType() == baseMaterial) {
                 Location location = player.getLocation();
-                location.setY((location.getY() - max_space - 3.0D + (double) i) + 1);
+                location.setY(location.getY() - i + 1.15D);
                 PaperLib.teleportAsync(player, location);
                 player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.D));
                 break;
