@@ -63,6 +63,13 @@ final class Configurations {
                     " Verifica a quantia de níveis guardados",
                     "eternia.xp.user"
             );
+            commandsLocalesArray[Enums.Commands.EXPERIENCE_BOTTLE.ordinal()] = new CommandI18n(
+                    Enums.Commands.EXPERIENCE_BOTTLE.name(),
+                    "bottle|garrafinhas",
+                    " <quantia>",
+                    " Enganharra sua experiência atual",
+                    "eternia.xp.user"
+            );
             commandsLocalesArray[Enums.Commands.EXPERIENCE_WITHDRAW.ordinal()] = new CommandI18n(
                     Enums.Commands.EXPERIENCE_WITHDRAW.name(),
                     "withdraw|sacar",

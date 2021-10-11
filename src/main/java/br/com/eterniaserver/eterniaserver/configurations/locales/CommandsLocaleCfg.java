@@ -126,6 +126,9 @@ public class CommandsLocaleCfg {
 
         for (Commands commandsEnum : Commands.values()) {
             CommandLocale commandLocale = defaults.get(commandsEnum.name());
+            if (commandLocale == null) {
+                continue;
+            }
 
             this.commands[commandsEnum.ordinal()] = config.getString(commandsEnum.name() + ".name", commandLocale.name);
             config.set(commandsEnum.name() + ".name", this.commands[commandsEnum.ordinal()]);
