@@ -72,6 +72,10 @@ public abstract class CraftEterniaServer extends JavaPlugin {
 
     private final Component[] entityComponents = new Component[EntityType.values().length];
 
+    public List<Material> elevatorMaterials() {
+        return elevatorMaterials;
+    }
+
     public CraftEterniaServer() {
         super();
         for (int i = 0; i < Lists.values().length; i++) {

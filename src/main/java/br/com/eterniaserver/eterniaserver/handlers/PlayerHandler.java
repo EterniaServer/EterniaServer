@@ -285,42 +285,6 @@ public class PlayerHandler implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
-    public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
-        final Player player = event.getPlayer();
-        if (plugin.getBoolean(Booleans.MODULE_ELEVATOR) && player.hasPermission(plugin.getString(Strings.PERM_ELEVATOR)) && !player.isSneaking()) {
-            Block block = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
-            Material material = block.getType();
-            for (Material value : plugin.getElevatorMaterials()) {
-                if (value == material) {
-                    block = block.getRelative(BlockFace.DOWN, plugin.getInteger(Integers.ELEVATOR_MIN));
-                    int i;
-                    for (i = plugin.getInteger(Integers.ELEVATOR_MAX); i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.DOWN)) --i;
-                    elevatorDown(player, i);
-                    break;
-                }
-            }
-        }
-    }
-
-    @EventHandler (priority = EventPriority.LOWEST)
-    public void onPlayerJump(PlayerJumpEvent event) {
-        final Player player = event.getPlayer();
-        if (plugin.getBoolean(Booleans.MODULE_ELEVATOR) && player.hasPermission(plugin.getString(Strings.PERM_ELEVATOR))) {
-            Block block = event.getTo().getBlock().getRelative(BlockFace.DOWN);
-            Material material = block.getType();
-            for (Material value : plugin.getElevatorMaterials()) {
-                if (value == material) {
-                    block = block.getRelative(BlockFace.UP, plugin.getInteger(Integers.ELEVATOR_MIN));
-                    int i;
-                    for (i = plugin.getInteger(Integers.ELEVATOR_MAX); i > 0 && (block.getType() != material); block = block.getRelative(BlockFace.UP)) -- i;
-                    elevatorUp(player, i);
-                    break;
-                }
-            }
-        }
-    }
-
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         User user = new User(event.getPlayer());
@@ -349,24 +313,6 @@ public class PlayerHandler implements Listener {
         user.disableFly();
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, user::teleport, 10L);
-    }
-
-    private void elevatorUp(final Player player, final int i) {
-        if (i > 0) {
-            Location location = player.getLocation();
-            location.setY((location.getY() + plugin.getInteger(Integers.ELEVATOR_MAX) + 3.0D - (double) i) - 1);
-            PaperLib.teleportAsync(player, location);
-            player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
-        }
-    }
-
-    private void elevatorDown(final Player player, final int i) {
-        if (i > 0) {
-            Location location = player.getLocation();
-            location.setY((location.getY() - plugin.getInteger(Integers.ELEVATOR_MAX) - 3.0D + (double) i) + 1);
-            PaperLib.teleportAsync(player, location);
-            player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.D));
-        }
     }
 
 }
