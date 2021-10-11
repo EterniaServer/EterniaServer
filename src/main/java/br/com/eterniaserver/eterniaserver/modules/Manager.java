@@ -7,32 +7,25 @@ import br.com.eterniaserver.eterniaserver.modules.core.CoreManager;
 import br.com.eterniaserver.eterniaserver.modules.experience.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.modules.spawner.SpawnerManager;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Manager {
 
-    private final EterniaServer plugin;
-
-    private final Map<Booleans, Module> modules = new HashMap<>();
+    private final List<Module> modules = new ArrayList<>();
 
     public Manager(final EterniaServer plugin) {
-        this.plugin = plugin;
 
         loadModule(new CoreManager(plugin));
 
-        modules.put(Booleans.MODULE_SPAWNERS, new SpawnerManager(plugin));
-        modules.put(Booleans.MODULE_EXPERIENCE, new ExperienceManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_SPAWNERS)) modules.add(new SpawnerManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_EXPERIENCE)) modules.add(new ExperienceManager(plugin));
 
         loadModules();
     }
 
     private void loadModules() {
-        modules.forEach((moduleEnum, module) -> {
-            if (plugin.getBoolean(moduleEnum)) {
-                loadModule(module);
-            }
-        });
+        modules.forEach(this::loadModule);
     }
 
     private void loadModule(Module module) {
