@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.Module;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.core.CoreManager;
+import br.com.eterniaserver.eterniaserver.modules.experience.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.modules.spawner.SpawnerManager;
 
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class Manager {
         loadModule(new CoreManager(plugin));
 
         modules.put(Booleans.MODULE_SPAWNERS, new SpawnerManager(plugin));
+        modules.put(Booleans.MODULE_EXPERIENCE, new ExperienceManager(plugin));
 
         loadModules();
     }

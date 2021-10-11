@@ -22,6 +22,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Manager;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import org.bstats.bukkit.Metrics;
@@ -186,6 +187,10 @@ public class EterniaServer extends CraftEterniaServer {
 
     public void sendMiniMessages(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
         sender.sendMessage(miniMessage.parse(getMessage(messagesId, prefix, args)));
+    }
+
+    public Component parseColor(String string) {
+        return miniMessage.parse(string);
     }
 
     public void sendMessage(CommandSender sender, Messages messagesId, String... args) {

@@ -81,17 +81,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.GLOW_ENABLED, "Glow ativado$8.", null);
         this.addDefault(Messages.GLOW_DISABLED, "Glow desativado$8.", null);
         this.addDefault(Messages.GLOW_COLOR_CHANGED, "Cor do glow alterada para $3{0}$8.", "0: cor do glow");
-        this.addDefault(Messages.EXP_SET_FROM, "Você definiu para $3{0} $7o saldo de exp de $3{2}$8.", "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(Messages.EXP_SETED, "O seu saldo de exp foi definido para $3{0} $7por $3{2}$8.", "0: quantia de exp; 1: nome de quem alterou; 2: apelido de quem alterou");
-        this.addDefault(Messages.EXP_REMOVE_FROM, "Você removeu $3{0} $7do saldo de exp de $3{2}$8.", "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(Messages.EXP_REMOVED, "Foi retirado $3{0} $7do seu saldo de exp por $3{2}$8.", "0: quantia de exp; 1: nome de quem removeu; 2: apelido de quem alterou");
-        this.addDefault(Messages.EXP_GIVE_FROM, "Você deu $3{0} $7de saldo de exp de $3{2}$8.", "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador");
-        this.addDefault(Messages.EXP_GIVED, "Foi recebeu $3{0} $7de saldo de exp por $3{2}$8.", "0: quantia de exp; 1: nome de quem deu; 2: apelido de quem alterou");
-        this.addDefault(Messages.EXP_BALANCE, "Você possui $3{0}$7 de exp$8.", "0: quantia de exp");
-        this.addDefault(Messages.EXP_BOTTLED, "Tome sua garrafinha$8.", null);
-        this.addDefault(Messages.EXP_INSUFFICIENT, "Você não possui tudo isso de exp$8.", null);
-        this.addDefault(Messages.EXP_WITHDRAW, "Você sacou $3{0}$7 níveis$8.", "0: quantia de nível");
-        this.addDefault(Messages.EXP_DEPOSIT, "Você depositou $3{0}$7 níveis$8.", "0: quantia de nível");
         this.addDefault(Messages.WARP_TELEPORTED, "Você foi teleportado até o $3{0}$8.", "0: nome da warp");
         this.addDefault(Messages.WARP_CREATED, "A warp $3{0}$7 foi criada com sucesso$8.", "0: nome da warp");
         this.addDefault(Messages.WARP_DELETED, "A warp $3{0}$7 foi deletada$8.", "0: nome da warp");

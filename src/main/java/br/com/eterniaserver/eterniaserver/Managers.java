@@ -45,7 +45,6 @@ public class Managers {
         loadChatManager();
         loadEconomyManager();
         loadElevatorManager();
-        loadExperienceManager();
         loadShopManager();
         loadHomesManager();
         loadEterniaTick();
@@ -176,11 +175,6 @@ public class Managers {
 
     private void loadElevatorManager() {
         sendModuleStatus(plugin.getBoolean(Booleans.MODULE_ELEVATOR), "Elevator");
-    }
-
-    private void loadExperienceManager() {
-        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_EXPERIENCE), "Experience"))
-            CommandManager.registerCommand(new Experience(plugin));
     }
 
     private void loadGenericManager() {
