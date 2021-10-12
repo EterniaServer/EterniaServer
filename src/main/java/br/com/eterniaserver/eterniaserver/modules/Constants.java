@@ -24,8 +24,8 @@ public class Constants {
     public static final String ELEVATOR_CONFIG_FILE_PATH = ELEVATOR_MODULE_FOLDER_PATH + File.separator + "elevator.yml";
 
     public static final String REWARDS_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "rewards";
-    public static final String REWARDS_CONFIG_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "rewards.yml";
-    public static final String REWARDS_COMMAND_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "rewards-cmd.yml";
-    public static final String REWARDS_MESSAGE_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "rewards-msg.yml";
+    public static final String REWARDS_CONFIG_FILE_PATH = REWARDS_MODULE_FOLDER_PATH + File.separator + "rewards.yml";
+    public static final String REWARDS_COMMAND_FILE_PATH = REWARDS_MODULE_FOLDER_PATH + File.separator + "rewards-cmd.yml";
+    public static final String REWARDS_MESSAGE_FILE_PATH = REWARDS_MODULE_FOLDER_PATH + File.separator + "rewards-msg.yml";
 
 }

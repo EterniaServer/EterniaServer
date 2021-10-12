@@ -93,7 +93,7 @@ final class Configurations {
 
             // Maps
             chanceMap.set(ChanceMaps.REWARDS.ordinal(), getChanceMap("rewards", "vip"));
-            chanceMap.set(ChanceMaps.FARM_DROPS.ordinal(), getChanceMap("farm", "CARROT"));
+            chanceMap.set(ChanceMaps.FARM_DROPS.ordinal(), getChanceMap("farms", "CARROTS"));
             chanceMap.set(ChanceMaps.BLOCK_DROPS.ordinal(), getChanceMap("blocks", "STONE"));
 
             // Maps
