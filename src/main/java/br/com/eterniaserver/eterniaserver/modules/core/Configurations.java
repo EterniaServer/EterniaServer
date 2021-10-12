@@ -112,11 +112,13 @@ final class Configurations {
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
             booleans[Booleans.MODULE_EXPERIENCE.ordinal()] = inFile.getBoolean("modules.experience", true);
             booleans[Booleans.MODULE_ELEVATOR.ordinal()] = inFile.getBoolean("modules.elevator", true);
+            booleans[Booleans.MODULE_REWARDS.ordinal()] = inFile.getBoolean("modules.rewards", true);
 
             // Booleans
             outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
             outFile.set("modules.experience", booleans[Booleans.MODULE_EXPERIENCE.ordinal()]);
             outFile.set("modules.elevator", booleans[Booleans.MODULE_ELEVATOR.ordinal()]);
+            outFile.set("modules.rewards", booleans[Booleans.MODULE_REWARDS.ordinal()]);
 
             saveConfiguration(true);
         }

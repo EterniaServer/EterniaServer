@@ -86,14 +86,6 @@ public class EntityHandler implements Listener {
         }
 
         final Player player = (Player) e.getWhoClicked();
-        final ItemStack itemStack = e.getCurrentItem();
-        if (itemStack != null && (plugin.getBoolean(Booleans.PREVENT_ANVIL)
-                && plugin.getBoolean(Booleans.MODULE_SPAWNERS)
-                && e.getInventory().getType() == InventoryType.ANVIL
-                && itemStack.getType() == Material.SPAWNER)) {
-            e.setCancelled(true);
-            plugin.sendMessage(player, Messages.SPAWNER_CANT_CHANGE_NAME);
-        }
 
         if (plugin.getBoolean(Booleans.MODULE_CASH)) {
             String title = LegacyComponentSerializer.legacySection().serialize(e.getView().title());

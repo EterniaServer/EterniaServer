@@ -76,6 +76,10 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         return elevatorMaterials;
     }
 
+    public List<Map<String, Map<Double, List<String>>>> chanceMaps() {
+        return chanceMaps;
+    }
+
     public CraftEterniaServer() {
         super();
         for (int i = 0; i < Lists.values().length; i++) {

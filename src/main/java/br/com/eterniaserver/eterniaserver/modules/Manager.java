@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.core.CoreManager;
 import br.com.eterniaserver.eterniaserver.modules.elevator.ElevatorManager;
 import br.com.eterniaserver.eterniaserver.modules.experience.ExperienceManager;
+import br.com.eterniaserver.eterniaserver.modules.reward.RewardManager;
 import br.com.eterniaserver.eterniaserver.modules.spawner.SpawnerManager;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class Manager {
         if (plugin.getBoolean(Booleans.MODULE_SPAWNERS)) modules.add(new SpawnerManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_EXPERIENCE)) modules.add(new ExperienceManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_ELEVATOR)) modules.add(new ElevatorManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_REWARDS)) modules.add(new RewardManager(plugin));
 
         loadModules();
     }

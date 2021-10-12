@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,6 +20,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -79,6 +82,17 @@ final class Handlers implements Listener {
         }
     }
 
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void onEntityInventoryClick(InventoryClickEvent event) {
+        final ItemStack itemStack = event.getCurrentItem();
+        if (itemStack == null || plugin.getBoolean(Booleans.PREVENT_ANVIL)) return;
+
+        if (event.getInventory().getType() == InventoryType.ANVIL && itemStack.getType() == Material.SPAWNER) {
+            plugin.sendMiniMessages(event.getWhoClicked(), Messages.SPAWNER_CANT_CHANGE_NAME);
+            event.setCancelled(true);
+        }
+    }
+
     private void giveSpawner(Player player, Block block) {
         double random = Math.random();
         if (random > plugin.getDouble(Doubles.DROP_CHANCE)) {
@@ -109,7 +123,6 @@ final class Handlers implements Listener {
         item.setItemMeta(meta);
         return item;
     }
-
 
     private boolean isBlackListWorld(final String worldName) {
         return plugin.getStringList(Lists.BLACKLISTED_WORLDS_SPAWNERS).contains(worldName);
