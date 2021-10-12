@@ -103,9 +103,6 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.MUTE_UNDO, "unmute", "eternia.mute", " <jogador>", " Desmuta um jogador", null);
         this.addDefault(Commands.MUTE_TEMP, "temp", "eternia.mute", " <jogador> <tempo> <mensagem>", " Muta um jogador temporariamente", null);
         this.addDefault(Commands.NICK, "nick", "eternia.nickname", " <novo nome> ou <novo nome> <jogador>", " Altera o seu apelido ou de um jogador", null);
-        this.addDefault(Commands.USEKEY, "usekey", "eternia.usekey", " <chave>", " Ative uma key de rewards", null);
-        this.addDefault(Commands.GENKEY, "genkey", "eterniaMessages.ECO_BALTOP_LIST.genkey", " <reward>", " Crie uma key de rewards", null);
-        this.addDefault(Commands.SPAWNERGIVE, "spawnergive", "eternia.spawnergive", " <mob> <quantia> <jogador>", " Dá uma quantia de spawners para um jogador", null);
         this.addDefault(Commands.TPALL, "tpall", "eternia.tpall", null, " Teleporte todos jogadores até você", null);
         this.addDefault(Commands.BACK, "back", "eternia.back", null, " Volte ao seu ultimo local", null);
         this.addDefault(Commands.TPA, "tpa", "eternia.tpa", " <jogador>", " Envie um pedido de tpa a um jogador", null);

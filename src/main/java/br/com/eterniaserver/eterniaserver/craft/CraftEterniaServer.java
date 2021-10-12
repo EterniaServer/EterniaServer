@@ -51,7 +51,6 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     private final List<String> shopList = new ArrayList<>();
 
     private final Map<UUID, Long> bedCooldown = new HashMap<>();
-    private final Map<String, String> rewards = new HashMap<>();
     private final Map<String, Location> locations = new HashMap<>();
 
     public final List<String> channels = new ArrayList<>();
@@ -400,58 +399,6 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         }
 
         return matcher.appendTail(builder).toString().replace('&', (char) 0x00A7);
-    }
-
-    /**
-     * Add a new reward to the memory
-     * @param key of reward
-     * @param value reward
-     */
-    public void updateRewardMap(String key, String value) {
-        rewards.put(key, value);
-    }
-
-    /**
-     * Get the amount of rewards in memory
-     * @return the size
-     */
-    public int getRewardMapSize() {
-        return rewards.size();
-    }
-
-    /**
-     * Checks if exists a reward
-     * @param key of reward
-     * @return if has
-     */
-    public boolean hasReward(String key) {
-        return rewards.containsKey(key);
-    }
-
-    /**
-     * Add a reward to the memory
-     * @param key of reward
-     * @param reward
-     */
-    public void addReward(String key, String reward) {
-        rewards.put(key, reward);
-    }
-
-    /**
-     * Remove a reward from the memory
-     * @param key
-     */
-    public void removeReward(String key) {
-        rewards.remove(key);
-    }
-
-    /**
-     * Get a reward name searching by string key
-     * @param key
-     * @return the reward name
-     */
-    public String getReward(String key) {
-        return rewards.get(key);
     }
 
     /**

@@ -105,7 +105,6 @@ public class EterniaServer extends CraftEterniaServer {
         final MsgCfg msgCfg = new MsgCfg(this, messages);
         final ConfigsCfg configsCfg = new ConfigsCfg(this, strings, booleans, integers, doubles);
         final CommandsCfg commandsCfg = new CommandsCfg(this);
-        final BlocksCfg blocksCfg = new BlocksCfg(this);
         final ChatCfg chatCfg = new ChatCfg(this, strings, integers);
         final CashCfg cashCfg = new CashCfg(this);
         final EntityCfg entityCfg = new EntityCfg(booleans, integers, entities);
@@ -116,7 +115,6 @@ public class EterniaServer extends CraftEterniaServer {
         EterniaLib.addReloadableConfiguration("eterniaserver", "constants", constantsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "messages", msgCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "configs", configsCfg);
-        EterniaLib.addReloadableConfiguration("eterniaserver", "blocks", blocksCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "chat", chatCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "cash", cashCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "entities", entityCfg);
@@ -128,7 +126,6 @@ public class EterniaServer extends CraftEterniaServer {
         msgCfg.executeConfig();
         configsCfg.executeConfig();
         commandsCfg.executeConfig();
-        blocksCfg.executeConfig();
         chatCfg.executeConfig();
         cashCfg.executeConfig();
         entityCfg.executeConfig();

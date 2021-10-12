@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.api.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.objects.CommandI18n;
 
@@ -28,6 +29,21 @@ final class Configurations {
         protected CommandsLocales() {
             this.inFileConfiguration = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFileConfiguration = new YamlConfiguration();
+
+            commandsLocalesArray[Enums.Commands.USE_KEY.ordinal()] = new CommandI18n(
+                    Enums.Commands.USE_KEY.name(),
+                    "usekey|usarchave",
+                    " <chave>",
+                    " Utilize uma chave de Reward",
+                    "eternia.usekey"
+            );
+            commandsLocalesArray[Enums.Commands.GEN_KEY.ordinal()] = new CommandI18n(
+                    Enums.Commands.GEN_KEY.name(),
+                    "genkey|gerarchave",
+                    " <reward>",
+                    " Gere uma chave para um Reward",
+                    "eternia.genkey"
+            );
 
             syncToFile();
             saveConfiguration(true);
@@ -152,6 +168,18 @@ final class Configurations {
 
             this.messages = plugin.messages();
 
+            addMessage(Messages.REWARD_INVALID_KEY,
+                    "A chave <color:#00aaaa>{0}<color:#aaaaaa> é inválida<color:#555555>.",
+                    "0: chave"
+            );
+            addMessage(Messages.REWARD_CREATED,
+                    "Reward criado com sucesso<color:#555555>, <color:#aaaaaa>chave<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
+                    "0: chave"
+            );
+            addMessage(Messages.REWARD_INVALID_KEY,
+                    "Não foi encontrado nenhum reward com o nome de <color:#00aaaa>{0}<color:#555555>.",
+                    "0: reward"
+            );
 
             saveConfiguration(true);
         }

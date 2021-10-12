@@ -115,9 +115,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.TELEPORT_BACK_WITH_COST, "Você foi teleportado até o seu local anterior por $3{0}$8.", "0: custo do back");
         this.addDefault(Messages.TELEPORT_BACK_WITHOUT_COST, "Você foi teleportado até o seu local anterior de graça$8.", null);
         this.addDefault(Messages.TELEPORT_BACK_WORLD_BLOCKED, "Você não pode utilizar o $6/back $7para esse mundo$8.", null);
-        this.addDefault(Messages.REWARD_INVALID_KEY, "$3{0}$7 não é uma chave válida$8.", "0: chave");
-        this.addDefault(Messages.REWARD_CREATED, "Reward criado com sucesso chave $3{0}$8.", "0: chave");
-        this.addDefault(Messages.REWARD_NOT_FOUND, "Não foi encontrado nenhum reward com o nome de $3{0}$8.", "0: reward");
         this.addDefault(Messages.CHAT_NICK_CLEAR, "Seu apelido foi removido$8.", null);
         this.addDefault(Messages.CHAT_NICK_CHANGE, "Seu apelido foi alterado para $3{0}$8.", "0: novo apelido");
         this.addDefault(Messages.CHAT_NICK_CHANGE_TO, "Você mudou para $3{0}$7 o apelido de $3{2}$8.", "0: novo apelido; 1: nome de quem alterou; 2: apelido de quem alterou");

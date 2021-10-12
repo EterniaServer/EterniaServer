@@ -167,7 +167,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
 
         loadPlayers();
         loadKits();
-        loadRewards();
         loadTitles();
     }
 
@@ -265,17 +264,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         } catch (SQLException e) {
             plugin.logError("Erro ao pegar arquivos da database", 3);
         }
-    }
-
-    private void loadRewards() {
-        try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_REWARD)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                plugin.updateRewardMap(resultSet.getString("key_code"), resultSet.getString("group_name"));
-            }
-        } catch (SQLException ignored) {
-            plugin.logError("Erro ao pegar arquivos da database", 3);
-        }
-        EterniaLib.report(plugin.getMessage(Messages.SERVER_DATA_LOADED, true, "Keys", String.valueOf(plugin.getRewardMapSize())));
     }
 
     private void loadTitles() {

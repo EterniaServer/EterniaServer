@@ -39,7 +39,6 @@ public class Managers {
         loadCompletions();
         loadGenericManager();
         loadBedManager();
-        loadBlockRewardsManager();
         loadCashManager();
         loadCommandsManager();
         loadChatManager();
@@ -50,7 +49,6 @@ public class Managers {
         loadEterniaTick();
         loadClearManager();
         loadKitManager();
-        loadRewardsManager();
         loadTeleportsManager();
         loadScheduleTasks();
         loadChestShopComp();
@@ -133,10 +131,6 @@ public class Managers {
         }
     }
 
-    private void loadBlockRewardsManager() {
-        sendModuleStatus(plugin.getBoolean(Booleans.MODULE_BLOCK), "Block-Reward");
-    }
-
     private void loadCommandsManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_COMMANDS), "Commands")) {
             plugin.getCustomCommandMap().forEach((commandName, commandObject) -> new CustomCommand(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
@@ -205,12 +199,6 @@ public class Managers {
     private void loadClearManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_ENTITY), "Mob Control")) {
             new PluginClearSchedule(plugin).runTaskTimerAsynchronously(plugin, 20L, (long) plugin.getInteger(Integers.CLEAR_TIMER) * 20);
-        }
-    }
-
-    private void loadRewardsManager() {
-        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_REWARDS), "Rewards")) {
-            CommandManager.registerCommand(new Reward(plugin));
         }
     }
 

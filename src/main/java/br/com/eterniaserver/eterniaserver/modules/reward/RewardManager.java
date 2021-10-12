@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.reward;
 
+import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.Module;
 
@@ -39,7 +40,7 @@ public class RewardManager implements Module {
 
     @Override
     public void loadCommands() {
-
+        CommandManager.registerCommand(new Commands.Rewards(plugin));
     }
 
     @Override
