@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.reward;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 
+import br.com.eterniaserver.eterniaserver.events.BreakRewardEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -64,7 +65,12 @@ final class Handlers implements Listener {
 
         if (reward == null) return;
 
-        for (String command : reward) {
+        final BreakRewardEvent event = new BreakRewardEvent(player, reward);
+        plugin.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) return;
+
+        for (String command : event.getRewards()) {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.setPlaceholders(player, command));
         }
     }

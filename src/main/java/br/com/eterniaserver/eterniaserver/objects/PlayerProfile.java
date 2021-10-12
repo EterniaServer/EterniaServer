@@ -12,15 +12,16 @@ public class PlayerProfile {
     private String playerDisplayName;
     private String activeTitle;
 
-    private Set<String> homes;
+    public Set<String> homes = new HashSet<>();
     private Set<String> titles;
 
     private final long firstLogin;
     private long lastLogin;
     private long hours;
 
-    private int cash = 0;
-    private int xp = 0;
+    public int cash = 0;
+    public int xp = 0;
+    public double money = 0D;
 
     private long onPvP;
 
@@ -62,9 +63,6 @@ public class PlayerProfile {
     }
 
     public Set<String> getHomes() {
-        if (homes == null) {
-            homes = new HashSet<>();
-        }
         return homes;
     }
 

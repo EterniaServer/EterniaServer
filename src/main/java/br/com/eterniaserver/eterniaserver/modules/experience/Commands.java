@@ -18,7 +18,7 @@ import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.objects.User;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 final class Commands {
@@ -35,9 +36,11 @@ final class Commands {
     static class Experience extends BaseCommand {
 
         private final EterniaServer plugin;
+        private final Services.Experience experienceService;
 
         public Experience(final EterniaServer plugin) {
             this.plugin = plugin;
+            this.experienceService = new Services.Experience(plugin);
         }
 
         @Default
@@ -97,18 +100,18 @@ final class Commands {
         @Description("%EXPERIENCE_CHECK_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_CHECK_PERM")
         public void onCheckLevel(Player player) {
-            final User user = new User(player);
-            final int lvl = user.getLevel();
-            final float xp = user.getGameExp();
+            final PlayerProfile playerProfile = EterniaServer.profileManager().get(player.getUniqueId());
+            final int lvl = player.getLevel();
+            final float xp = player.getExp();
 
-            user.setLevel(0);
-            user.setGameExp(0);
-            user.giveGameExp(user.getExp());
+            player.setLevel(0);
+            player.setExp(0);
+            player.giveExp(playerProfile.xp);
 
-            plugin.sendMiniMessages(player, Messages.EXP_BALANCE, String.valueOf(user.getLevel()));
+            plugin.sendMiniMessages(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
 
-            user.setLevel(lvl);
-            user.setGameExp(xp);
+            player.setLevel(lvl);
+            player.setExp(xp);
         }
 
         @CommandCompletion("10")
@@ -117,9 +120,7 @@ final class Commands {
         @Description("%EXPERIENCE_BOTTLE_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_BOTTLE_PERM")
         public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpWant) {
-            final User user = new User(player);
-
-            final int xpReal = plugin.getXPForLevel(user.getLevel());
+            final int xpReal = plugin.getXPForLevel(player.getLevel());
 
             if (xpWant <= 0 || xpReal <= xpWant) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
@@ -137,9 +138,9 @@ final class Commands {
 
             player.getInventory().addItem(item);
             plugin.sendMiniMessages(player, Messages.EXP_BOTTLED);
-            user.setLevel(0);
-            user.setGameExp(0);
-            user.giveGameExp(xpReal - xpWant);
+            player.setLevel(0);
+            player.setExp(0);
+            player.giveExp(xpReal - xpWant);
         }
 
         @CommandCompletion("10")
@@ -148,16 +149,19 @@ final class Commands {
         @Description("%EXPERIENCE_WITHDRAW_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_WITHDRAW_PERM")
         public void onWithdrawLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer level) {
-            final User user = new User(player);
-
+            final UUID uuid = player.getUniqueId();
+            final PlayerProfile playerProfile = EterniaServer.profileManager().get(uuid);
             final int xpla = plugin.getXPForLevel(level);
-            if (user.getExp() < xpla) {
+
+            if (playerProfile.xp < xpla) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
             }
 
-            user.removeExp(xpla);
-            user.giveGameExp(xpla);
+            playerProfile.xp -= xpla;
+            player.giveExp(xpla);
+            experienceService.setDatabaseExp(uuid, playerProfile.xp);
+
             plugin.sendMiniMessages(player, Messages.EXP_WITHDRAW, String.valueOf(level));
         }
 
@@ -167,9 +171,10 @@ final class Commands {
         @Description("%EXPERIENCE_DEPOSIT_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_DEPOSIT_PERM")
         public void onDepositLevel(Player player, @Conditions("limits:min=1,max=9999999")  Integer xpla) {
-            final User user = new User(player);
+            final UUID uuid = player.getUniqueId();
+            final PlayerProfile playerProfile = EterniaServer.profileManager().get(uuid);
+            final int xpAtual = player.getLevel();
 
-            final int xpAtual = user.getLevel();
             if (xpAtual < xpla) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
@@ -177,10 +182,13 @@ final class Commands {
 
             final int xp = plugin.getXPForLevel(xpla);
             final int xpto = plugin.getXPForLevel(xpAtual);
-            user.addExp(xp);
-            user.setLevel(0);
-            user.setGameExp(0);
-            user.giveGameExp(xpto - xp);
+
+            playerProfile.xp += xp;
+            player.setLevel(0);
+            player.setExp(0);
+            player.giveExp(xpto - xp);
+            experienceService.setDatabaseExp(uuid, playerProfile.xp);
+
             plugin.sendMiniMessages(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
         }
 

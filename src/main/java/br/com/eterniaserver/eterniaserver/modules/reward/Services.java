@@ -1,6 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.reward;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.SQL;
+import br.com.eterniaserver.eternialib.core.queries.CreateTable;
 import br.com.eterniaserver.eternialib.core.queries.Delete;
 import br.com.eterniaserver.eternialib.core.queries.Insert;
 import br.com.eterniaserver.eternialib.core.queries.Select;
@@ -32,6 +34,15 @@ final class Services {
         protected Rewards(final EterniaServer plugin) {
             this.plugin = plugin;
             this.chanceMap = plugin.chanceMaps();
+
+            final CreateTable createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
+            if (EterniaLib.getMySQL()) {
+                createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "key_code VARCHAR(16)", "group_name VARCHAR(16)");
+            }
+            else {
+                createTable.columns.set("key_code VARCHAR(16)", "group_name VARCHAR(16)");
+            }
+            SQL.execute(createTable);
 
             try (Connection connection = SQL.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_REWARD)).queryString());

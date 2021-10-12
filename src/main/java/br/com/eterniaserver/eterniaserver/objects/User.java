@@ -402,18 +402,6 @@ public class User {
         player.setAllowFlight(false);
     }
 
-    public void setExp(int amount) {
-        EterniaServer.getUserAPI().setExp(playerProfile, amount, uuid);
-    }
-
-    public void addExp(int amount) {
-        setExp(getExp() + amount);
-    }
-
-    public void removeExp(int amount) {
-        setExp(getExp() - amount);
-    }
-
     public String getName() {
         return playerName;
     }

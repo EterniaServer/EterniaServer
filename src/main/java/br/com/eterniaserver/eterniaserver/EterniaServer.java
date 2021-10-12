@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eterniaserver.api.ProfileManager;
 import br.com.eterniaserver.eterniaserver.configurations.configs.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
@@ -48,10 +49,12 @@ public class EterniaServer extends CraftEterniaServer {
     private final NamespacedKey[] namespaceKeys = new NamespacedKey[ItemsKeys.values().length];
 
     // APIs
+    private static CraftProfileManager profileManager;
     private static CraftCash cashAPI;
     private static CraftEconomy economyAPI;
     private static CraftUser userAPI;
 
+    public static ProfileManager profileManager() { return profileManager; }
     public static CraftCash getCashAPI() { return cashAPI; }
     public static CraftEconomy getEconomyAPI() { return economyAPI; }
     public static CraftUser getUserAPI() { return userAPI; }
@@ -91,6 +94,9 @@ public class EterniaServer extends CraftEterniaServer {
         new Placeholders(this).register();
         new Metrics(this, 10160);
         new Managers(this);
+
+        profileManager = new CraftProfileManager(this);
+
         new Manager(this);
 
         this.getServer().getPluginManager().registerEvents(new EntityHandler(this), this);
