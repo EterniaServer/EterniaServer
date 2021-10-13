@@ -38,21 +38,21 @@ final class Configurations {
             commandsLocalesArray[Enums.Commands.EXPERIENCE_SET.ordinal()] = new CommandI18n(
                     Enums.Commands.EXPERIENCE_SET.name(),
                     "set|definir",
-                    " <jogador> <quantia>",
+                    " <jogador> <quantia> <xp|level>",
                     " Define o nível de experiência de um jogador",
                     "eternia.xp.admin"
             );
             commandsLocalesArray[Enums.Commands.EXPERIENCE_TAKE.ordinal()] = new CommandI18n(
                     Enums.Commands.EXPERIENCE_TAKE.name(),
                     "take|retirar",
-                    " <jogador> <quantia>",
+                    " <jogador> <quantia> <xp|level>",
                     " Retira uma quantidade de níveis de experiência de um jogador",
                     "eternia.xp.admin"
             );
             commandsLocalesArray[Enums.Commands.EXPERIENCE_GIVE.ordinal()] = new CommandI18n(
                     Enums.Commands.EXPERIENCE_GIVE.name(),
                     "give|dar",
-                    " <jogador> <quantia>",
+                    " <jogador> <quantia> <xp|level>",
                     " Dá uma quantidade de níveis de experiência para um jogador",
                     "eternia.xp.admin"
             );

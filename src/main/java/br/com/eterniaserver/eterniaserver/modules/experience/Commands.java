@@ -164,6 +164,8 @@ final class Commands {
 
             plugin.sendMiniMessages(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
 
+            player.setLevel(0);
+            player.setExp(0);
             player.giveExp(xp);
         }
 
