@@ -3,36 +3,53 @@ package br.com.eterniaserver.eterniaserver.objects;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerProfile {
 
+    private int cash = 0;
+    private int xp = 0;
+    private double money = 0D;
+
+    private Set<String> homes = new HashSet<>();
+
     private String playerName;
     private String playerDisplayName;
     private String activeTitle;
 
-    public Set<String> homes = new HashSet<>();
     private Set<String> titles;
 
     private final long firstLogin;
     private long lastLogin;
     private long hours;
 
-    public int cash = 0;
-    public int xp = 0;
-    public double money = 0D;
-
     private long onPvP;
 
     private int chatChannel = 0;
     private long muted = System.currentTimeMillis();
 
-    public PlayerProfile(String playerName, long firstLogin, long lastLogin, long hours) {
+    public PlayerProfile(String playerName, String playerDisplayName, long firstLogin, long lastLogin, long hours) {
         this.playerName = playerName;
+        this.playerDisplayName = playerDisplayName == null ? playerName : playerDisplayName;
         this.firstLogin = firstLogin;
         this.lastLogin = lastLogin;
         this.hours = hours;
+    }
+
+    public int getExp() { return this.xp; }
+    public double getMoney() { return this.money; }
+    public int getCash() { return cash;}
+
+    public void setCash(int value) { this.cash = value; }
+    public void setExp(int value) { this.xp = value; }
+    public void setMoney(double value) { this.money = value; }
+
+    public void setHomes(String homes) {
+        if (homes != null) {
+            this.homes.addAll(List.of(homes.split(":")));
+        }
     }
 
     public long updateTimePlayed() {
@@ -83,16 +100,8 @@ public class PlayerProfile {
         this.playerName = playerName;
     }
 
-    public int getCash() {
-        return cash;
-    }
-
     public int getChatChannel() {
         return chatChannel;
-    }
-
-    public int getXp() {
-        return xp;
     }
 
     public long getFirstLogin() {
@@ -101,10 +110,6 @@ public class PlayerProfile {
 
     public long getMuted() {
         return muted;
-    }
-
-    public void setCash(int cash) {
-        this.cash = cash;
     }
 
     public void setChatChannel(int chatChannel) {
@@ -121,10 +126,6 @@ public class PlayerProfile {
 
     public void setPlayerDisplayName(String playerDisplayName) {
         this.playerDisplayName = playerDisplayName;
-    }
-
-    public void setXp(int xp) {
-        this.xp = xp;
     }
 
 }

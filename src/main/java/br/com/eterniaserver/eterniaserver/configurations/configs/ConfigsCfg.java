@@ -177,6 +177,7 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
                 final String playerName = resultSet.getString("player_name");
                 PlayerProfile playerProfile = new PlayerProfile(
                         playerName,
+                        resultSet.getString("player_display"),
                         resultSet.getLong("time"),
                         resultSet.getLong("last"),
                         resultSet.getLong("hours")
@@ -282,9 +283,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         if (plugin.getBoolean(Booleans.MODULE_CASH)) {
             playerProfile.setCash(resultSet.getInt("cash"));
         }
-        if (plugin.getBoolean(Booleans.MODULE_EXPERIENCE)) {
-            playerProfile.setXp(resultSet.getInt("xp"));
-        }
         if (plugin.getBoolean(Booleans.MODULE_HOMES)) {
             String result = resultSet.getString("homes");
             if (result != null) {
@@ -295,7 +293,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         }
         if (plugin.getBoolean(Booleans.MODULE_CHAT)) {
             playerProfile.setMuted(resultSet.getLong("muted"));
-            playerProfile.setPlayerDisplayName(resultSet.getString("player_display"));
         }
     }
 

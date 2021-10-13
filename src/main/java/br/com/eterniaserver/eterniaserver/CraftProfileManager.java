@@ -14,8 +14,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -24,20 +26,23 @@ final class CraftProfileManager implements ProfileManager {
 
     private final EterniaServer plugin;
 
+    private final Set<String> playerNameList = new HashSet<>();
     private final Map<UUID, PlayerProfile> playerProfileMap = new HashMap<>();
 
     CraftProfileManager(final EterniaServer plugin) {
+        final String[] MYSQL_FIELDS = {
+                "id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "player_name VARCHAR(16)",
+                "player_display VARCHAR(512)", "time BIGINT(20)", "last BIGINT(20)", "hours BIGINT(20)",
+                "balance DOUBLE(20,4)", "cash BIGINT(20)", "xp BIGINT(20)", "muted BIGINT(20)", "homes VARCHAR(1024)"
+        };
+        final String[] SQLITE_FIELDS = {
+                "uuid VARCHAR(36)", "player_name VARCHAR(16)", "player_display VARCHAR(512)",
+                "time INTEGER", "last INTEGER", "hours INTEGER", "balance DOUBLE(22)",
+                "cash INTEGER", "xp INTEGER", "muted INTEGER", "homes VARCHAR(1024)"
+        };
+
         final CreateTable createTable = new CreateTable(plugin.getString(Strings.TABLE_PLAYER));
-        if (EterniaLib.getMySQL()) {
-            createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "player_name VARCHAR(16)",
-                    "player_display VARCHAR(512)", "time BIGINT(20)", "last BIGINT(20)", "hodurs BIGINT(20)", "balance DOUBLE(20,4)",
-                    "cash BIGINT(20)", "xp BIGINT(20)", "muted BIGINT(20)", "homes VARCHAR(1024)");
-        }
-        else {
-            createTable.columns.set("uuid VARCHAR(36)", "player_name VARCHAR(16)",
-                    "player_display VARCHAR(512)", "time INTEGER", "last INTEGER", "hours INTEGER", "balance DOUBLE(22)",
-                    "cash INTEGER", "xp INTEGER", "muted INTEGER", "homes VARCHAR(1024)");
-        }
+        createTable.columns.set(EterniaLib.getMySQL() ? MYSQL_FIELDS : SQLITE_FIELDS);
         SQL.execute(createTable);
 
         try (Connection connection = SQL.getConnection();
@@ -47,23 +52,24 @@ final class CraftProfileManager implements ProfileManager {
                 final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
                 final PlayerProfile playerProfile = new PlayerProfile(
                         resultSet.getString("player_name"),
+                        resultSet.getString("player_display"),
                         resultSet.getLong("time"),
                         resultSet.getLong("last"),
                         resultSet.getLong("hours")
                 );
-                playerProfile.setPlayerDisplayName(resultSet.getString("player_display"));
+
                 // Money Module
-                playerProfile.money = resultSet.getDouble("balance");
+                playerProfile.setMoney(resultSet.getDouble("balance"));
                 // Cash Module
-                playerProfile.cash = resultSet.getInt("cash");
+                playerProfile.setCash(resultSet.getInt("cash"));
                 // Experience Module
-                playerProfile.xp = resultSet.getInt("xp");
+                playerProfile.setExp(resultSet.getInt("xp"));
                 // Home Module
-                String homes = resultSet.getString("homes");
-                if (homes != null) playerProfile.homes.addAll(List.of(homes.split(":")));
+                playerProfile.setHomes(resultSet.getString("homes"));
                 // Chat Module
                 playerProfile.setMuted(resultSet.getLong("muted"));
 
+                playerNameList.add(playerProfile.getPlayerName());
                 playerProfileMap.put(uuid, playerProfile);
             }
         } catch (SQLException ignored) {
@@ -77,7 +83,7 @@ final class CraftProfileManager implements ProfileManager {
     public PlayerProfile create(UUID uuid, String playerName) {
         final long time = System.currentTimeMillis();
 
-        final PlayerProfile playerProfile = new PlayerProfile(playerName, time, time, 0);
+        final PlayerProfile playerProfile = new PlayerProfile(playerName, playerName, time, time, 0);
         final Insert insert = new Insert(plugin.getString(Strings.TABLE_PLAYER));
 
         insert.columns.set("uuid", "player_name", "time", "last");
@@ -92,6 +98,11 @@ final class CraftProfileManager implements ProfileManager {
     @Override
     public PlayerProfile get(UUID uuid) {
         return playerProfileMap.get(uuid);
+    }
+
+    @Override
+    public Set<String> getPlayersNames() {
+        return playerNameList;
     }
 
 }

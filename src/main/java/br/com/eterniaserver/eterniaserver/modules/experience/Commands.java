@@ -160,7 +160,7 @@ final class Commands {
 
             player.setLevel(0);
             player.setExp(0);
-            player.giveExp(playerProfile.xp);
+            player.giveExp(playerProfile.getExp());
 
             plugin.sendMiniMessages(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
 
@@ -208,14 +208,14 @@ final class Commands {
             final PlayerProfile playerProfile = EterniaServer.profileManager().get(uuid);
             final int wantedXp = experienceService.getXPForLevel(level);
 
-            if (playerProfile.xp < wantedXp) {
+            if (playerProfile.getExp() < wantedXp) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
             }
 
-            playerProfile.xp -= wantedXp;
+            playerProfile.setExp(playerProfile.getExp() - wantedXp);
             player.giveExp(wantedXp);
-            experienceService.setDatabaseExp(uuid, playerProfile.xp);
+            experienceService.setDatabaseExp(uuid, playerProfile.getExp());
 
             plugin.sendMiniMessages(player, Messages.EXP_WITHDRAW, String.valueOf(level));
         }
@@ -238,11 +238,11 @@ final class Commands {
             final int amountToDeposit = experienceService.getXPForLevel(xpla);
             final int playerActualXp = playerActualXp(player);
 
-            playerProfile.xp += amountToDeposit;
+            playerProfile.setExp(playerProfile.getExp() + amountToDeposit);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(playerActualXp - amountToDeposit);
-            experienceService.setDatabaseExp(uuid, playerProfile.xp);
+            experienceService.setDatabaseExp(uuid, playerProfile.getExp());
 
             plugin.sendMiniMessages(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
         }

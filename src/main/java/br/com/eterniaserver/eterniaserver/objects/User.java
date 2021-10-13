@@ -393,10 +393,6 @@ public class User {
         EterniaServer.getUserAPI().updateBedCooldown(uuid);
     }
 
-    public int getExp() {
-        return playerProfile.getXp();
-    }
-
     public void disableFly() {
         player.setFlying(false);
         player.setAllowFlight(false);

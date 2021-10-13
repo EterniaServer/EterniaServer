@@ -35,13 +35,11 @@ final class Services {
             this.plugin = plugin;
             this.chanceMap = plugin.chanceMaps();
 
+            final String[] MYSQL_FIELDS = { "id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "key_code VARCHAR(16)", "group_name VARCHAR(16)" };
+            final String[] SQLITE_FIELDS = { "key_code VARCHAR(16)", "group_name VARCHAR(16)" };
+
             final CreateTable createTable = new CreateTable(plugin.getString(Strings.TABLE_REWARD));
-            if (EterniaLib.getMySQL()) {
-                createTable.columns.set("id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "key_code VARCHAR(16)", "group_name VARCHAR(16)");
-            }
-            else {
-                createTable.columns.set("key_code VARCHAR(16)", "group_name VARCHAR(16)");
-            }
+            createTable.columns.set(EterniaLib.getMySQL() ? MYSQL_FIELDS : SQLITE_FIELDS);
             SQL.execute(createTable);
 
             try (Connection connection = SQL.getConnection();

@@ -509,7 +509,7 @@ public class CraftUser {
         insert.values.set(uuid.toString(), playerName, time, time, 0, plugin.getDouble(Doubles.START_MONEY), time);
         SQL.executeAsync(insert);
 
-        PlayerProfile playerProfile = new PlayerProfile(playerName, time, time, 0);
+        PlayerProfile playerProfile = new PlayerProfile(playerName, playerName, time, time, 0);
         EterniaServer.getEconomyAPI().putInMoney(uuid, plugin.getDouble(Doubles.START_MONEY));
         playerProfile.setMuted(time);
         playerProfiles.put(uuid, playerProfile);
@@ -529,7 +529,7 @@ public class CraftUser {
         insert.values.set(uuid.toString(), playerName, time, time, 0, plugin.getDouble(Doubles.START_MONEY), time);
         SQL.executeAsync(insert);
 
-        PlayerProfile playerProfile = new PlayerProfile(playerName, time, time, 0);
+        PlayerProfile playerProfile = new PlayerProfile(playerName, playerName, time, time, 0);
         EterniaServer.getEconomyAPI().putInMoney(uuid, plugin.getDouble(Doubles.START_MONEY));
         playerProfile.setMuted(time);
         playerProfiles.put(uuid, playerProfile);
@@ -629,15 +629,6 @@ public class CraftUser {
             return new SimpleDateFormat(plugin.getString(Strings.DATA_FORMAT)).format(new Date(playerProfile.getFirstLogin()));
         }
         return plugin.getString(Strings.NO_REGISTER);
-    }
-
-    public void setExp(final PlayerProfile playerProfile, final int amount, final UUID uuid) {
-        playerProfile.setXp(amount);
-
-        Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
-        update.set.set("xp", amount);
-        update.where.set("uuid", uuid.toString());
-        SQL.executeAsync(update);
     }
 
     public void teleportToSpawn(final Player player) {
