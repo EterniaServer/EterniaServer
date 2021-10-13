@@ -56,6 +56,7 @@ public enum Messages {
     GLOW_ENABLED,
     GLOW_DISABLED,
     GLOW_COLOR_CHANGED,
+    EXP_INVALID_CHOICE,
     EXP_SET_FROM,
     EXP_SETED,
     EXP_REMOVE_FROM,

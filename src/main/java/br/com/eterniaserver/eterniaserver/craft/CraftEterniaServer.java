@@ -297,18 +297,6 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     }
 
     /**
-     * Convert level to exp
-     * @param lvl amount
-     * @return the exp amount
-     */
-    public int getXPForLevel(int lvl) {
-        if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
-        else if (lvl > 15 && lvl < 31) return (int) ((2.5 * (lvl * lvl)) - (40.5 * lvl) + 360);
-        else if (lvl >= 31) return (int) ((4.5 * (lvl * lvl)) - (162.5 * lvl) + 2220);
-        else return 0;
-    }
-
-    /**
      * Get the list of warps
      * @return the array object
      */

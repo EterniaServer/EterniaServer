@@ -134,12 +134,16 @@ final class Configurations {
 
             // Strings
             strings[Strings.MINI_MESSAGES_BOTTLE_EXP_NAME.ordinal()] = inFile.getString("mini-messages.bottle-name", "<color:#aaaaaa>Garrafa com <color:#00aaaa>Experiência");
+            strings[Strings.EXP_XP_LABEL.ordinal()] = inFile.getString("label.xp", "xp");
+            strings[Strings.EXP_LEVEL_LABEL.ordinal()] = inFile.getString("label.level", "níveis");
             // Lists
             final List<String> list = inFile.getStringList("mini-messages.bottle-lore");
             stringLists.set(Lists.MINI_MESSAGES_BOTTLE_EXP_LORE.ordinal(), list.isEmpty() ? List.of("<color:#aaaaaa>Quantia<color:#555555>: <color:#00aaaa>%amount%") : list);
 
             // Strings
             outFile.set("mini-messages.bottle-name", strings[Strings.MINI_MESSAGES_BOTTLE_EXP_NAME.ordinal()]);
+            outFile.set("label.xp", strings[Strings.EXP_XP_LABEL.ordinal()]);
+            outFile.set("label.level", strings[Strings.EXP_LEVEL_LABEL.ordinal()]);
             // Lists
             outFile.set("mini-messages.bottle-lore", plugin.stringLists.get(Lists.MINI_MESSAGES_BOTTLE_EXP_LORE.ordinal()));
 
@@ -186,32 +190,36 @@ final class Configurations {
 
             this.messages = plugin.messages();
 
+            addMessage(Messages.EXP_INVALID_CHOICE,
+                    "Argumento inválido<color:#555555>, <color:#aaaaaa>o tipo deve ser <color:#00aaaa>xp <color:#aaaaaa>ou <color:#00aaaa>level<color:#555555>.",
+                    ""
+            );
             addMessage(Messages.EXP_SET_FROM,
-                    "Você definiu para <color:#00aaaa>{0}<color:#aaaaaa> o saldo de experiência guardada de <color:#00aaaa>{2}<color:#555555>.",
-                    "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador"
+                    "Você definiu para <color:#00aaaa>{0}<color:#aaaaaa> a quantia de <color:#00aaaa>{3}<color:#aaaaaa> de <color:#00aaaa>{2}<color:#555555>.",
+                    "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador; 3: exp ou nível"
             );
             addMessage(Messages.EXP_SETED,
-                    "Seu saldo de experiência foi definido para <color:#00aaaa>{0}<color:#aaaaaa> por <color:#00aaaa>{2}<color:#555555>.",
-                    "0: quantia de exp; 1: nome de quem alterou; 2: apelido de quem alterou"
+                    "A sua quantia de <color:#00aaaa>{3}<color:#aaaaaa> foi definida para <color:#00aaaa>{0}<color:#aaaaaa> por <color:#00aaaa>{2}<color:#555555>.",
+                    "0: quantia de exp; 1: nome de quem alterou; 2: apelido de quem alterou; 3: exp ou nível"
             );
             addMessage(Messages.EXP_REMOVE_FROM,
-                    "Você removeu <color:#00aaaa>{0}<color:#aaaaaa> do saldo de experiência de <color:#00aaaa>{2}<color:#555555>.",
-                    "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador"
+                    "Você removeu <color:#00aaaa>{0} {3}<color:#aaaaaa> de <color:#00aaaa>{2}<color:#555555>.",
+                    "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador; 3: exp ou nível"
             );
             addMessage(Messages.EXP_REMOVED,
-                    "Foi retirado <color:#00aaaa>{0}<color:#aaaaaa> do saldo de experiência por <color:#00aaaa>{2}<color:#555555>.",
-                    "0: quantia de exp; 1: nome de quem removeu; 2: apelido de quem alterou"
+                    "Foi retirado <color:#00aaaa>{0}<color:#aaaaaa> de sua quantia de <color:#00aaaa>{3}<color:#aaaaaa> por <color:#00aaaa>{2}<color:#555555>.",
+                    "0: quantia de exp; 1: nome de quem removeu; 2: apelido de quem alterou; 3: exp ou nível"
             );
             addMessage(Messages.EXP_GIVE_FROM,
-                    "Você deu <color:#00aaaa>{0}<color:#aaaaaa> de saldo de experiência para <color:#00aaaa>{2}<color:#555555>.",
-                    "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador"
+                    "Você deu <color:#00aaaa>{0}<color:#aaaaaa> de <color:#00aaaa>{3}<color:#aaaaaa> para <color:#00aaaa>{2}<color:#555555>.",
+                    "0: quantia de exp; 1: nome do jogador; 2: apelido do jogador; 3: exp ou nível"
             );
             addMessage(Messages.EXP_GIVED,
-                    "Foi recebeu <color:#00aaaa>{0}<color:#aaaaaa> de saldo de experiência por <color:#00aaaa>{2}<color:#555555>.",
-                    "0: quantia de exp; 1: nome de quem removeu; 2: apelido de quem alterou"
+                    "Foi recebeu <color:#00aaaa>{0} {3}<color:#aaaaaa> por <color:#00aaaa>{2}<color:#555555>.",
+                    "0: quantia de exp; 1: nome de quem removeu; 2: apelido de quem alterou; 3: exp ou nível"
             );
             addMessage(Messages.EXP_BALANCE,
-                    "Você possui <color:#00aaaa>{0}<color:#aaaaaa> níveis de experiência<color:#555555>.",
+                    "Você possui <color:#00aaaa>{0}<color:#aaaaaa> níveis de experiência guardados<color:#555555>.",
                     "0: quantia de exp"
             );
             addMessage(Messages.EXP_BOTTLED,

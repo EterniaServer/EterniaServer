@@ -20,6 +20,8 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
+import com.google.common.collect.ImmutableList;
+
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,6 +40,7 @@ final class Commands {
 
         private final EterniaServer plugin;
         private final Services.Experience experienceService;
+        private final List<String> DEFAULT_TYPES = ImmutableList.of("xp", "level");
 
         public Experience(final EterniaServer plugin) {
             this.plugin = plugin;
@@ -53,47 +57,98 @@ final class Commands {
             help.showHelp();
         }
 
-        @CommandCompletion("@players 100")
+        @CommandCompletion("@players 100 level")
         @Subcommand("%EXPERIENCE_SET")
         @Syntax("%EXPERIENCE_SET_SYNTAX")
         @Description("%EXPERIENCE_SET_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_SET_PERM")
-        public void onSet(CommandSender sender, OnlinePlayer onlineTarget, @Conditions("limits:min=1,max=9999999") Integer amount) {
+        public void onSet(CommandSender sender, OnlinePlayer onlineTarget, @Conditions("limits:min=1,max=9999999") Integer amount, @Default("level") String type) {
+            if (!DEFAULT_TYPES.contains(type)) {
+                plugin.sendMiniMessages(sender, Messages.EXP_INVALID_CHOICE);
+                return;
+            }
+
+            final String typeLabel;
             final Player target = onlineTarget.getPlayer();
-            final String senderDisplay = sender instanceof Player player ? player.getDisplayName() : sender.getName();
+            final String senderDisplay = senderDisplay(sender);
 
-            target.setLevel(amount);
+            if (type.equals(DEFAULT_TYPES.get(0))) {
+                target.setExp(0);
+                target.setLevel(0);
+                target.giveExp(amount);
+                typeLabel = plugin.getString(Strings.EXP_XP_LABEL);
+            }
+            else {
+                target.setLevel(amount);
+                typeLabel = plugin.getString(Strings.EXP_LEVEL_LABEL);
+            }
 
-            plugin.sendMiniMessages(sender, Messages.EXP_SET_FROM, String.valueOf(amount), target.getName(), target.getDisplayName());
-            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_SETED, String.valueOf(amount), sender.getName(), senderDisplay);
+            plugin.sendMiniMessages(sender, Messages.EXP_SET_FROM, String.valueOf(amount), target.getName(), target.getDisplayName(), typeLabel);
+            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_SETED, String.valueOf(amount), sender.getName(), senderDisplay, typeLabel);
         }
 
-        @CommandCompletion("@players 100")
+        @CommandCompletion("@players 100 level")
         @Subcommand("%EXPERIENCE_TAKE")
         @Syntax("%EXPERIENCE_TAKE_SYNTAX")
         @Description("%EXPERIENCE_TAKE_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_TAKE_PERM")
-        public void onTake(CommandSender sender, OnlinePlayer onlineTarget, @Conditions("limits:min=1,max=9999999") Integer amount) {
-            final Player target = onlineTarget.getPlayer();
-            final String senderDisplay = sender instanceof Player player ? player.getDisplayName() : sender.getName();
+        public void onTake(CommandSender sender, OnlinePlayer onlineTarget, @Conditions("limits:min=1,max=9999999") Integer amount, @Default("level") String type) {
+            if (!DEFAULT_TYPES.contains(type)) {
+                plugin.sendMiniMessages(sender, Messages.EXP_INVALID_CHOICE);
+                return;
+            }
 
-            target.setLevel(target.getLevel() - amount);
-            plugin.sendMiniMessages(sender, Messages.EXP_REMOVE_FROM, String.valueOf(amount), target.getName(), target.getDisplayName());
-            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_REMOVED, String.valueOf(amount), sender.getName(), senderDisplay);
+            final Player target = onlineTarget.getPlayer();
+            final String senderDisplay = senderDisplay(sender);
+            final String typeLabel;
+
+            if (type.equals(DEFAULT_TYPES.get(0))) {
+                final int xp = playerActualXp(target);
+
+                target.setExp(0);
+                target.setLevel(0);
+                target.giveExp(xp - amount);
+                typeLabel = plugin.getString(Strings.EXP_XP_LABEL);
+            }
+            else {
+                target.setLevel(target.getLevel() - amount);
+                typeLabel = plugin.getString(Strings.EXP_LEVEL_LABEL);
+            }
+
+            plugin.sendMiniMessages(sender, Messages.EXP_REMOVE_FROM, String.valueOf(amount), target.getName(), target.getDisplayName(), typeLabel);
+            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_REMOVED, String.valueOf(amount), sender.getName(), senderDisplay, typeLabel);
         }
 
-        @CommandCompletion("@players 100")
+        @CommandCompletion("@players 100 level")
         @Subcommand("%EXPERIENCE_GIVE")
         @Syntax("%EXPERIENCE_GIVE_SYNTAX")
         @Description("%EXPERIENCE_GIVE_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_GIVE_PERM")
-        public void onGive(CommandSender sender, OnlinePlayer onlineTarget, @Conditions("limits:min=1,max=9999999") Integer amount) {
-            final Player target = onlineTarget.getPlayer();
-            final String senderDisplay = sender instanceof Player player ? player.getDisplayName() : sender.getName();
+        public void onGive(CommandSender sender, OnlinePlayer onlineTarget, @Conditions("limits:min=1,max=9999999") Integer amount, @Default("level") String type) {
+            if (!DEFAULT_TYPES.contains(type)) {
+                plugin.sendMiniMessages(sender, Messages.EXP_INVALID_CHOICE);
+                return;
+            }
 
-            target.setLevel(target.getLevel() + amount);
-            plugin.sendMiniMessages(sender, Messages.EXP_GIVE_FROM, String.valueOf(amount), target.getName(), target.getDisplayName());
-            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_GIVED, String.valueOf(amount), sender.getName(), senderDisplay);
+            final Player target = onlineTarget.getPlayer();
+            final String senderDisplay = senderDisplay(sender);
+            final String typeLabel;
+
+            if (type.equals(DEFAULT_TYPES.get(0))) {
+                final int xp = playerActualXp(target);
+
+                target.setExp(0);
+                target.setLevel(0);
+                target.giveExp(xp + amount);
+                typeLabel = plugin.getString(Strings.EXP_XP_LABEL);
+            }
+            else {
+                target.setLevel(target.getLevel() + amount);
+                typeLabel = plugin.getString(Strings.EXP_LEVEL_LABEL);
+            }
+
+            plugin.sendMiniMessages(sender, Messages.EXP_GIVE_FROM, String.valueOf(amount), target.getName(), target.getDisplayName(), typeLabel);
+            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_GIVED, String.valueOf(amount), sender.getName(), senderDisplay, typeLabel);
         }
 
         @Subcommand("%EXPERIENCE_CHECK")
@@ -101,8 +156,7 @@ final class Commands {
         @CommandPermission("%EXPERIENCE_CHECK_PERM")
         public void onCheckLevel(Player player) {
             final PlayerProfile playerProfile = EterniaServer.profileManager().get(player.getUniqueId());
-            final int lvl = player.getLevel();
-            final float xp = player.getExp();
+            final int xp = playerActualXp(player);
 
             player.setLevel(0);
             player.setExp(0);
@@ -110,8 +164,7 @@ final class Commands {
 
             plugin.sendMiniMessages(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
 
-            player.setLevel(lvl);
-            player.setExp(xp);
+            player.giveExp(xp);
         }
 
         @CommandCompletion("10")
@@ -120,9 +173,9 @@ final class Commands {
         @Description("%EXPERIENCE_BOTTLE_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_BOTTLE_PERM")
         public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpWant) {
-            final int xpReal = plugin.getXPForLevel(player.getLevel());
+            final int xp = playerActualXp(player);
 
-            if (xpWant <= 0 || xpReal <= xpWant) {
+            if (xpWant <= 0 || xp <= xpWant) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
             }
@@ -140,7 +193,7 @@ final class Commands {
             plugin.sendMiniMessages(player, Messages.EXP_BOTTLED);
             player.setLevel(0);
             player.setExp(0);
-            player.giveExp(xpReal - xpWant);
+            player.giveExp(xp - xpWant);
         }
 
         @CommandCompletion("10")
@@ -151,15 +204,15 @@ final class Commands {
         public void onWithdrawLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer level) {
             final UUID uuid = player.getUniqueId();
             final PlayerProfile playerProfile = EterniaServer.profileManager().get(uuid);
-            final int xpla = plugin.getXPForLevel(level);
+            final int wantedXp = experienceService.getXPForLevel(level);
 
-            if (playerProfile.xp < xpla) {
+            if (playerProfile.xp < wantedXp) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
             }
 
-            playerProfile.xp -= xpla;
-            player.giveExp(xpla);
+            playerProfile.xp -= wantedXp;
+            player.giveExp(wantedXp);
             experienceService.setDatabaseExp(uuid, playerProfile.xp);
 
             plugin.sendMiniMessages(player, Messages.EXP_WITHDRAW, String.valueOf(level));
@@ -170,29 +223,36 @@ final class Commands {
         @Syntax("%EXPERIENCE_DEPOSIT_SYNTAX")
         @Description("%EXPERIENCE_DEPOSIT_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_DEPOSIT_PERM")
-        public void onDepositLevel(Player player, @Conditions("limits:min=1,max=9999999")  Integer xpla) {
+        public void onDepositLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpla) {
             final UUID uuid = player.getUniqueId();
             final PlayerProfile playerProfile = EterniaServer.profileManager().get(uuid);
-            final int xpAtual = player.getLevel();
+            final int actualLevel = player.getLevel();
 
-            if (xpAtual < xpla) {
+            if (actualLevel < xpla) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
             }
 
-            final int xp = plugin.getXPForLevel(xpla);
-            final int xpto = plugin.getXPForLevel(xpAtual);
+            final int amountToDeposit = experienceService.getXPForLevel(xpla);
+            final int playerActualXp = playerActualXp(player);
 
-            playerProfile.xp += xp;
+            playerProfile.xp += amountToDeposit;
             player.setLevel(0);
             player.setExp(0);
-            player.giveExp(xpto - xp);
+            player.giveExp(playerActualXp - amountToDeposit);
             experienceService.setDatabaseExp(uuid, playerProfile.xp);
 
             plugin.sendMiniMessages(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
         }
 
-    }
+        private String senderDisplay(CommandSender sender) {
+            return sender instanceof Player player ? player.getDisplayName() : sender.getName();
+        }
 
+        private int playerActualXp(Player player) {
+            return experienceService.getXPForLevel(player.getLevel()) + (int) (player.getExpToLevel() * player.getExp());
+        }
+
+    }
 
 }
