@@ -12,11 +12,10 @@ public class SpawnerManager implements Module {
 
     private final EterniaServer plugin;
 
-    private final Services.Spawner spawnerService;
+    private Services.Spawner spawnerService;
 
     public SpawnerManager(final EterniaServer plugin) {
         this.plugin = plugin;
-        this.spawnerService = new Services.Spawner(plugin);
     }
 
     @Override
@@ -25,6 +24,8 @@ public class SpawnerManager implements Module {
         new Configurations.Locales(plugin);
 
         loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
+
+        this.spawnerService = new Services.Spawner(plugin);
     }
 
     @Override

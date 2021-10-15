@@ -66,7 +66,7 @@ final class Commands {
                 if (glowStatusEvent.isCancelled()) return;
 
                 servicesGlow.getTeam(color).addEntry(player.getName());
-                plugin.sendMessage(player, Messages.GLOW_COLOR_CHANGED, servicesGlow.getColor(color));
+                plugin.sendMiniMessages(player, Messages.GLOW_COLOR_CHANGED, servicesGlow.getColor(color));
             }
             catch (IllegalArgumentException ignored) {
                 plugin.sendMiniMessages(player, Messages.GLOW_INVALID_COLOR);

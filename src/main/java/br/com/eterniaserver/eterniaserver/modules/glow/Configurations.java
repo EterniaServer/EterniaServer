@@ -62,12 +62,12 @@ final class Configurations {
 
         @Override
         public String getFolderPath() {
-            return Constants.SPAWNER_MODULE_FOLDER_PATH;
+            return Constants.GLOW_MODULE_FOLDER_PATH;
         }
 
         @Override
         public String getFilePath() {
-            return Constants.SPAWNER_COMMAND_FILE_PATH;
+            return Constants.GLOW_COMMAND_FILE_PATH;
         }
 
         @Override
@@ -136,12 +136,12 @@ final class Configurations {
 
         @Override
         public String getFolderPath() {
-            return Constants.SPAWNER_MODULE_FOLDER_PATH;
+            return Constants.GLOW_MODULE_FOLDER_PATH;
         }
 
         @Override
         public String getFilePath() {
-            return Constants.SPAWNER_CONFIG_FILE_PATH;
+            return Constants.GLOW_CONFIG_FILE_PATH;
         }
 
         @Override
@@ -196,12 +196,12 @@ final class Configurations {
 
         @Override
         public String getFolderPath() {
-            return Constants.SPAWNER_MODULE_FOLDER_PATH;
+            return Constants.GLOW_MODULE_FOLDER_PATH;
         }
 
         @Override
         public String getFilePath() {
-            return Constants.SPAWNER_MESSAGE_FILE_PATH;
+            return Constants.GLOW_MESSAGE_FILE_PATH;
         }
 
         @Override
