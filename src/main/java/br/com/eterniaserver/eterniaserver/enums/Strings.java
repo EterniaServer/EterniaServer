@@ -2,6 +2,8 @@ package br.com.eterniaserver.eterniaserver.enums;
 
 public enum Strings {
 
+    TABLE_PLAYER_PROFILES,
+    TABLE_SERVER_LOCATIONS,
     TABLE_KITS,
     TABLE_PLAYER,
     TABLE_REWARD,
@@ -87,6 +89,7 @@ public enum Strings {
     DEFAULT_CHANNEL,
     DISCORD_SRV,
     MINI_MESSAGES_ENTITIES_DIVIDER,
-    MINI_MESSAGES_BOTTLE_EXP_NAME
+    MINI_MESSAGES_SPAWNERS_FORMAT,
+    MINI_MESSAGES_BOTTLE_EXP_NAME,
 
 }

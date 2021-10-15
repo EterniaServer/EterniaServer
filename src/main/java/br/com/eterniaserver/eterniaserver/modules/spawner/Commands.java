@@ -33,9 +33,11 @@ final class Commands {
 
         private final EterniaServer plugin;
         private final static List<String> entities = Stream.of(Entities.values()).map(Enum::name).collect(Collectors.toList());
+        private final Services.Spawner spawnerService;
 
-        public Give(final EterniaServer plugin) {
+        public Give(final EterniaServer plugin, Services.Spawner spawnerService) {
             this.plugin = plugin;
+            this.spawnerService = spawnerService;
         }
 
         @Default
@@ -73,7 +75,7 @@ final class Commands {
             ItemMeta meta = item.getItemMeta();
 
             item.setAmount(value);
-            meta.displayName(plugin.getSpawnerName(entityType));
+            meta.displayName(spawnerService.getSpawnerName(entityType));
             item.setItemMeta(meta);
             return item;
         }

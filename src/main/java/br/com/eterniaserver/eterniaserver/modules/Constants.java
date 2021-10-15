@@ -5,6 +5,7 @@ import java.io.File;
 public class Constants {
 
     public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
+    public static final String MAIN_CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "config";
     public static final String DATA_MODULE_FOLDER_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "modules";
 
     public static final String CORE_CONFIG_FILE_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "core.yml";

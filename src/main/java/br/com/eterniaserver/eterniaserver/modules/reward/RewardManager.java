@@ -11,8 +11,11 @@ public class RewardManager implements Module {
 
     private final EterniaServer plugin;
 
+    private final Services.Rewards rewardsService;
+
     public RewardManager(final EterniaServer plugin) {
         this.plugin = plugin;
+        this.rewardsService = new Services.Rewards(plugin);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class RewardManager implements Module {
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.Rewards(plugin));
+        CommandManager.registerCommand(new Commands.Rewards(plugin, rewardsService));
     }
 
     @Override

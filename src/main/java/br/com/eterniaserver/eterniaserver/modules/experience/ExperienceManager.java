@@ -10,8 +10,11 @@ public class ExperienceManager implements Module {
 
     private final EterniaServer plugin;
 
+    private final Services.Experience experienceService;
+
     public ExperienceManager(final EterniaServer plugin) {
         this.plugin = plugin;
+        this.experienceService = new Services.Experience(plugin);
     }
 
     @Override
@@ -39,7 +42,7 @@ public class ExperienceManager implements Module {
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.Experience(plugin));
+        CommandManager.registerCommand(new Commands.Experience(plugin, experienceService));
     }
 
     @Override

@@ -12,8 +12,11 @@ public class SpawnerManager implements Module {
 
     private final EterniaServer plugin;
 
+    private final Services.Spawner spawnerService;
+
     public SpawnerManager(final EterniaServer plugin) {
         this.plugin = plugin;
+        this.spawnerService = new Services.Spawner(plugin);
     }
 
     @Override
@@ -34,7 +37,7 @@ public class SpawnerManager implements Module {
 
     @Override
     public void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, spawnerService), plugin);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class SpawnerManager implements Module {
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.Give(plugin));
+        CommandManager.registerCommand(new Commands.Give(plugin, spawnerService));
     }
 
     @Override

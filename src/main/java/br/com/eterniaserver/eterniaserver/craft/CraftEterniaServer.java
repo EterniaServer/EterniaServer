@@ -69,8 +69,6 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     public final Map<Integer, ChannelObject> channelsMap = new HashMap<>();
     public final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
 
-    private final Component[] entityComponents = new Component[EntityType.values().length];
-
     public List<Material> elevatorMaterials() {
         return elevatorMaterials;
     }
@@ -97,17 +95,6 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         for (int i = 0; i < ChanceMaps.values().length; i++) {
             chanceMaps.add(new HashMap<>());
         }
-    }
-
-    public void loadMetaData(final EterniaServer plugin) {
-        for (EntityType type : EntityType.values()) {
-            final String spawnerName = plugin.getString(Strings.SPAWNERS_FORMAT).replace("%spawner_name%", type.name());
-            this.entityComponents[type.ordinal()] = LegacyComponentSerializer.legacySection().deserialize(spawnerName);
-        }
-    }
-
-    public Component getSpawnerName(final EntityType entityType) {
-        return this.entityComponents[entityType.ordinal()];
     }
 
     public void setFilter(Pattern pattern) {

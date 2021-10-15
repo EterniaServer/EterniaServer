@@ -12,13 +12,11 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.sql.SQLException;import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 
@@ -27,7 +25,7 @@ final class CraftProfileManager implements ProfileManager {
     private final EterniaServer plugin;
 
     private final Set<String> playerNameList = new HashSet<>();
-    private final Map<UUID, PlayerProfile> playerProfileMap = new HashMap<>();
+    private final Map<UUID, PlayerProfile> playerProfileMap = new ConcurrentHashMap<>();
 
     CraftProfileManager(final EterniaServer plugin) {
         final String[] MYSQL_FIELDS = {
@@ -41,12 +39,12 @@ final class CraftProfileManager implements ProfileManager {
                 "cash INTEGER", "xp INTEGER", "muted INTEGER", "homes VARCHAR(1024)"
         };
 
-        final CreateTable createTable = new CreateTable(plugin.getString(Strings.TABLE_PLAYER));
+        final CreateTable createTable = new CreateTable(plugin.getString(Strings.TABLE_PLAYER_PROFILES));
         createTable.columns.set(EterniaLib.getMySQL() ? MYSQL_FIELDS : SQLITE_FIELDS);
         SQL.execute(createTable);
 
         try (Connection connection = SQL.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_PLAYER)).queryString());
+             PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_PLAYER_PROFILES)).queryString());
              ResultSet resultSet = preparedStatement.executeQuery()){
             while (resultSet.next()) {
                 final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
@@ -84,7 +82,7 @@ final class CraftProfileManager implements ProfileManager {
         final long time = System.currentTimeMillis();
 
         final PlayerProfile playerProfile = new PlayerProfile(playerName, playerName, time, time, 0);
-        final Insert insert = new Insert(plugin.getString(Strings.TABLE_PLAYER));
+        final Insert insert = new Insert(plugin.getString(Strings.TABLE_PLAYER_PROFILES));
 
         insert.columns.set("uuid", "player_name", "time", "last");
         insert.values.set(uuid.toString(), playerName, time, time);

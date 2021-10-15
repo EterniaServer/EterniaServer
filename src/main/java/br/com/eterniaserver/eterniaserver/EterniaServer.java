@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eterniaserver.api.LocationManager;
 import br.com.eterniaserver.eterniaserver.api.ProfileManager;
 import br.com.eterniaserver.eterniaserver.configurations.configs.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
@@ -19,6 +20,7 @@ import br.com.eterniaserver.eterniaserver.handlers.EntityHandler;
 import br.com.eterniaserver.eterniaserver.handlers.PlayerHandler;
 import br.com.eterniaserver.eterniaserver.handlers.ServerHandler;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.modules.MainConfigurations;
 import br.com.eterniaserver.eterniaserver.modules.Manager;
 import br.com.eterniaserver.eterniaserver.objects.EntityControl;
 
@@ -49,12 +51,14 @@ public class EterniaServer extends CraftEterniaServer {
     private final NamespacedKey[] namespaceKeys = new NamespacedKey[ItemsKeys.values().length];
 
     // APIs
-    private static CraftProfileManager profileManager;
+    private ProfileManager profileManager;
+    private LocationManager locationManager;
     private static CraftCash cashAPI;
     private static CraftEconomy economyAPI;
     private static CraftUser userAPI;
 
-    public static ProfileManager profileManager() { return profileManager; }
+    public ProfileManager profileManager() { return profileManager; }
+    public LocationManager locationManager() { return locationManager; }
     public static CraftCash getCashAPI() { return cashAPI; }
     public static CraftEconomy getEconomyAPI() { return economyAPI; }
     public static CraftUser getUserAPI() { return userAPI; }
@@ -94,16 +98,16 @@ public class EterniaServer extends CraftEterniaServer {
         new Placeholders(this).register();
         new Metrics(this, 10160);
         new Managers(this);
+        new MainConfigurations(this);
 
         profileManager = new CraftProfileManager(this);
+        locationManager = new CraftLocationManager(this);
 
         new Manager(this);
 
         this.getServer().getPluginManager().registerEvents(new EntityHandler(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerHandler(this), this);
         this.getServer().getPluginManager().registerEvents(new ServerHandler(this), this);
-
-        this.loadMetaData(this);
     }
 
     private void loadConfiguration() {

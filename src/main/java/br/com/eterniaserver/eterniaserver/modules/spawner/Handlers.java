@@ -28,9 +28,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 final class Handlers implements Listener {
 
     private final EterniaServer plugin;
+    private final Services.Spawner spawnerService;
 
-    public Handlers(final EterniaServer plugin) {
+    public Handlers(final EterniaServer plugin, Services.Spawner spawnerService) {
         this.plugin = plugin;
+        this.spawnerService = spawnerService;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -119,7 +121,7 @@ final class Handlers implements Listener {
         CreatureSpawner spawner = (CreatureSpawner) block.getState();
         ItemStack item = new ItemStack(block.getType());
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(plugin.getSpawnerName(spawner.getSpawnedType()));
+        meta.displayName(spawnerService.getSpawnerName(spawner.getSpawnedType()));
         item.setItemMeta(meta);
         return item;
     }

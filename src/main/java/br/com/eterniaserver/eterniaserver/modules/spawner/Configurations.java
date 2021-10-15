@@ -95,6 +95,7 @@ final class Configurations {
             doubles[Doubles.DROP_CHANCE.ordinal()] = inFile.getDouble("configs.drop-chance", 1.0);
             // Strings
             strings[Strings.MINI_MESSAGES_ENTITIES_DIVIDER.ordinal()] = inFile.getString("mini-messages.entities-divider", "<color:#555555>, <color:#00aaaa>");
+            strings[Strings.MINI_MESSAGES_SPAWNERS_FORMAT.ordinal()] = inFile.getString("mini-messages.spawners-format", "<color:#555555>[<color:#926CEB>%spawner_name% <color:#aaaaaa>Spawner<color:#555555>]");
             strings[Strings.PERM_SPAWNERS_BREAK.ordinal()] = inFile.getString("perm.spawner-break.silk", "eternia.spawners.break");
             strings[Strings.PERM_SPAWNERS_NO_SILK.ordinal()] = inFile.getString("perm.spawner-break.no-silk", "eternia.spawners.nosilk");
             strings[Strings.PERM_SPAWNERS_CHANGE.ordinal()] = inFile.getString("perm.spawner-change", "eternia.change-spawner");
@@ -113,6 +114,7 @@ final class Configurations {
             outFile.set("perm.spawner-break.silk", strings[Strings.PERM_SPAWNERS_BREAK.ordinal()]);
             outFile.set("perm.spawner-break.no-silk", strings[Strings.PERM_SPAWNERS_NO_SILK.ordinal()]);
             outFile.set("perm.spawner-change", strings[Strings.PERM_SPAWNERS_CHANGE.ordinal()]);
+            outFile.set("mini-messages.spawners-format", strings[Strings.MINI_MESSAGES_SPAWNERS_FORMAT.ordinal()]);
             // Lists
             outFile.set("configs.blacklisted-worlds", plugin.stringLists.get(Lists.BLACKLISTED_WORLDS_SPAWNERS.ordinal()));
 

@@ -27,9 +27,9 @@ final class Commands {
         private final byte[] bytes = new byte[20];
 
 
-        public Rewards(final EterniaServer plugin) {
+        public Rewards(final EterniaServer plugin, Services.Rewards rewardsService) {
             this.plugin = plugin;
-            this.rewardsService = new Services.Rewards(plugin);
+            this.rewardsService = rewardsService;
         }
 
         @CommandAlias("%USE_KEY")
