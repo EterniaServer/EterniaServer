@@ -43,7 +43,6 @@ public class CraftUser {
     private final Map<UUID, Integer> playersInPortal = new HashMap<>();
     private final Map<UUID, Boolean> spy = new HashMap<>();
     private final Map<UUID, Location> back = new HashMap<>();
-    private final Map<UUID, String> glowingColor = new HashMap<>();
     private final Map<UUID, String> tell = new HashMap<>();
     private final Map<UUID, UUID> chatLocked = new HashMap<>();
 
@@ -266,24 +265,6 @@ public class CraftUser {
      */
     public void removeTelling(UUID uuid) {
         chatLocked.remove(uuid);
-    }
-
-    /**
-     * Set a glow color to user
-     * @param uuid of user
-     * @param nameColor
-     */
-    public void putGlowing(UUID uuid, String nameColor) {
-        glowingColor.put(uuid, nameColor);
-    }
-
-    /**
-     * Get the glow color of user
-     * @param uuid of user
-     * @return the color
-     */
-    public String getGlowColor(UUID uuid) {
-        return glowingColor.getOrDefault(uuid, "");
     }
 
     /**

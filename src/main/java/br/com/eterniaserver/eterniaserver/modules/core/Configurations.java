@@ -115,6 +115,7 @@ final class Configurations {
             booleans[Booleans.MODULE_EXPERIENCE.ordinal()] = inFile.getBoolean("modules.experience", true);
             booleans[Booleans.MODULE_ELEVATOR.ordinal()] = inFile.getBoolean("modules.elevator", true);
             booleans[Booleans.MODULE_REWARDS.ordinal()] = inFile.getBoolean("modules.rewards", true);
+            booleans[Booleans.MODULE_GLOW.ordinal()] = inFile.getBoolean("modules.glow", true);
             // Strings
             strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "             <color:#69CEDB>⛏ <gradient:#111111:#112222>❱───❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱───❰</gradient> <color:#69CEDB>⛏\n                      <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
 
@@ -123,6 +124,7 @@ final class Configurations {
             outFile.set("modules.experience", booleans[Booleans.MODULE_EXPERIENCE.ordinal()]);
             outFile.set("modules.elevator", booleans[Booleans.MODULE_ELEVATOR.ordinal()]);
             outFile.set("modules.rewards", booleans[Booleans.MODULE_REWARDS.ordinal()]);
+            outFile.set("modules.glow", booleans[Booleans.MODULE_GLOW.ordinal()]);
             // Strings
             outFile.set("mini-messages.motd", strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()]);
 

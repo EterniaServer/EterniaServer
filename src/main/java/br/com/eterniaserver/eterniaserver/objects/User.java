@@ -219,14 +219,6 @@ public class User {
         return playerProfile.getHomes();
     }
 
-    public void putGlowing(String nameColor) {
-        EterniaServer.getUserAPI().putGlowing(uuid, nameColor);
-    }
-
-    public String getGlowColor() {
-        return EterniaServer.getUserAPI().getGlowColor(uuid);
-    }
-
     public void putMutedTime(long time) {
         playerProfile.setMuted(time);
     }

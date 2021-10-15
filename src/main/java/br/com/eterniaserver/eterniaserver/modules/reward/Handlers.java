@@ -3,7 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.reward;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 
-import br.com.eterniaserver.eterniaserver.events.BreakRewardEvent;
+import br.com.eterniaserver.eterniaserver.api.events.BreakRewardEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

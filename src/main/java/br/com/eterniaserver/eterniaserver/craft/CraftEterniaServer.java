@@ -1,10 +1,7 @@
 package br.com.eterniaserver.eterniaserver.craft;
 
-import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
-import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
-import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CommandData;
@@ -13,14 +10,11 @@ import br.com.eterniaserver.eterniaserver.objects.CustomPlaceholder;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -243,20 +237,6 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         message = message.replace("%player_name%", player.getName());
         message = message.replace("%player_displayname%", player.getDisplayName());
         return PlaceholderAPI.setPlaceholders(player, message);
-    }
-
-    /**
-     * Get a enum Colors from string
-     * @param colorName
-     * @return enum Colors
-     */
-    public Colors colorFromString(String colorName) {
-        for (Colors b : Colors.values()) {
-            if (b.name().equalsIgnoreCase(colorName)) {
-                return b;
-            }
-        }
-        return Colors.WHITE;
     }
 
     /**

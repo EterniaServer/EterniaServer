@@ -90,7 +90,7 @@ public class Placeholders {
                 case 3:
                     return String.valueOf(EterniaServer.getCashAPI().getCash(user.getUUID()));
                 case 4:
-                    return user.getGlowColor();
+                    return "";
                 case 5:
                     return user.getGodeModePlaceholder();
                 default:

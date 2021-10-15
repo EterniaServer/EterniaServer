@@ -78,9 +78,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.AFK_AUTO_ENTER, "$3{1}$7 ficou ausente agora está AFK$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(Messages.AFK_LEAVE, "$3{1} $7saiu do modo AFK$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(Messages.AFK_ENTER, "$3{1} $7entrou no modo AFK$8.", null);
-        this.addDefault(Messages.GLOW_ENABLED, "Glow ativado$8.", null);
-        this.addDefault(Messages.GLOW_DISABLED, "Glow desativado$8.", null);
-        this.addDefault(Messages.GLOW_COLOR_CHANGED, "Cor do glow alterada para $3{0}$8.", "0: cor do glow");
         this.addDefault(Messages.WARP_TELEPORTED, "Você foi teleportado até o $3{0}$8.", "0: nome da warp");
         this.addDefault(Messages.WARP_CREATED, "A warp $3{0}$7 foi criada com sucesso$8.", "0: nome da warp");
         this.addDefault(Messages.WARP_DELETED, "A warp $3{0}$7 foi deletada$8.", "0: nome da warp");

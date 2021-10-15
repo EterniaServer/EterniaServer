@@ -10,10 +10,8 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Entities;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.handlers.ChestShopHandler;
-import br.com.eterniaserver.eterniaserver.modules.Manager;
 import br.com.eterniaserver.eterniaserver.objects.ChannelCommand;
 import br.com.eterniaserver.eterniaserver.objects.CustomCommand;
-import br.com.eterniaserver.eterniaserver.enums.Colors;
 import br.com.eterniaserver.eterniaserver.enums.Commands;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -119,7 +117,6 @@ public class Managers {
     }
 
     private void loadCompletions() {
-        CommandManager.getCommandCompletions().registerStaticCompletion("colors", Stream.of(Colors.values()).map(Enum::name).collect(Collectors.toList()));
         CommandManager.getCommandCompletions().registerStaticCompletion("entidades", Stream.of(Entities.values()).map(Enum::name).collect(Collectors.toList()));
         CommandManager.getCommandCompletions().registerStaticCompletion("channels", plugin.getChannels());
         CommandManager.getCommandCompletions().registerCompletion("list_of_shops", shop -> plugin.getShopList());
@@ -174,7 +171,6 @@ public class Managers {
     private void loadGenericManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_GENERIC), "Generic")) {
             CommandManager.registerCommand(new Inventory(plugin));
-            CommandManager.registerCommand(new Glow(plugin));
             CommandManager.registerCommand(new Item(plugin));
         }
         CommandManager.registerCommand(new Generic(plugin));
