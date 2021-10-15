@@ -18,14 +18,14 @@ final class Services {
             this.plugin = plugin;
         }
 
-        public void setDatabaseExp(final UUID uuid, final int amount) {
+        protected void setDatabaseExp(final UUID uuid, final int amount) {
             final Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
             update.set.set("xp", amount);
             update.where.set("uuid", uuid.toString());
             SQL.executeAsync(update);
         }
 
-        public int getXPForLevel(int lvl) {
+        protected int getXPForLevel(int lvl) {
             if (lvl > 0 && lvl < 16) return (lvl * lvl) + 6 * lvl;
             else if (lvl > 15 && lvl < 31) return (int) ((2.5 * (lvl * lvl)) - (40.5 * lvl) + 360);
             else if (lvl >= 31) return (int) ((4.5 * (lvl * lvl)) - (162.5 * lvl) + 2220);

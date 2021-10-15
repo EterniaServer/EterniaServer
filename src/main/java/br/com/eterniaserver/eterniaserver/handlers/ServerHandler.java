@@ -88,11 +88,6 @@ public class ServerHandler implements Listener {
         entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(entityControl.getAttackDamage());
     }
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void onServerListPing(ServerListPingEvent event) {
-        event.setMotd(messageMOTD + "\n" + message2);
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncChat(AsyncChatEvent event) {
         if (!plugin.getBoolean(Booleans.MODULE_CHAT) || event.isCancelled()) {

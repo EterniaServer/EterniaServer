@@ -21,7 +21,7 @@ final class Services {
             }
         }
 
-        public Component getSpawnerName(final EntityType entityType) {
+        protected Component getSpawnerName(final EntityType entityType) {
             return this.entityComponents[entityType.ordinal()];
         }
     }

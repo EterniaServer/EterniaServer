@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.api.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.api.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.objects.CommandI18n;
 
@@ -107,18 +108,23 @@ final class Configurations {
             this.outFile = new YamlConfiguration();
 
             final boolean[] booleans = plugin.booleans();
+            final String[] strings = plugin.strings();
 
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
             booleans[Booleans.MODULE_EXPERIENCE.ordinal()] = inFile.getBoolean("modules.experience", true);
             booleans[Booleans.MODULE_ELEVATOR.ordinal()] = inFile.getBoolean("modules.elevator", true);
             booleans[Booleans.MODULE_REWARDS.ordinal()] = inFile.getBoolean("modules.rewards", true);
+            // Strings
+            strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "             <color:#69CEDB>⛏ <gradient:#111111:#112222>❱───❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱───❰</gradient> <color:#69CEDB>⛏\n                      <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
 
             // Booleans
             outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
             outFile.set("modules.experience", booleans[Booleans.MODULE_EXPERIENCE.ordinal()]);
             outFile.set("modules.elevator", booleans[Booleans.MODULE_ELEVATOR.ordinal()]);
             outFile.set("modules.rewards", booleans[Booleans.MODULE_REWARDS.ordinal()]);
+            // Strings
+            outFile.set("mini-messages.motd", strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()]);
 
             saveConfiguration(true);
         }
