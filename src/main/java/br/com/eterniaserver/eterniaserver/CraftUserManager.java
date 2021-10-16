@@ -5,7 +5,7 @@ import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.core.queries.CreateTable;
 import br.com.eterniaserver.eternialib.core.queries.Insert;
 import br.com.eterniaserver.eternialib.core.queries.Select;
-import br.com.eterniaserver.eterniaserver.api.ProfileManager;
+import br.com.eterniaserver.eterniaserver.api.UserManager;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
@@ -20,14 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 
-final class CraftProfileManager implements ProfileManager {
+final class CraftUserManager implements UserManager {
 
     private final EterniaServer plugin;
 
     private final Set<String> playerNameList = new HashSet<>();
     private final Map<UUID, PlayerProfile> playerProfileMap = new ConcurrentHashMap<>();
 
-    CraftProfileManager(final EterniaServer plugin) {
+    CraftUserManager(final EterniaServer plugin) {
         final String[] MYSQL_FIELDS = {
                 "id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "player_name VARCHAR(16)",
                 "player_display VARCHAR(512)", "time BIGINT(20)", "last BIGINT(20)", "hours BIGINT(20)",

@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.api.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -108,6 +109,7 @@ final class Configurations {
             this.outFile = new YamlConfiguration();
 
             final boolean[] booleans = plugin.booleans();
+            final int[] integers = plugin.integers();
             final String[] strings = plugin.strings();
 
             // Booleans
@@ -116,8 +118,13 @@ final class Configurations {
             booleans[Booleans.MODULE_ELEVATOR.ordinal()] = inFile.getBoolean("modules.elevator", true);
             booleans[Booleans.MODULE_REWARDS.ordinal()] = inFile.getBoolean("modules.rewards", true);
             booleans[Booleans.MODULE_GLOW.ordinal()] = inFile.getBoolean("modules.glow", true);
+            booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
+            // Integers
+            integers[Integers.PLUGIN_TICKS.ordinal()] = inFile.getInt("critical-configs.plugin-ticks", 20);
+            integers[Integers.AFK_TIMER.ordinal()] = inFile.getInt("afk.limit-time", 900);
             // Strings
             strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
+            strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
 
             // Booleans
             outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
@@ -125,8 +132,13 @@ final class Configurations {
             outFile.set("modules.elevator", booleans[Booleans.MODULE_ELEVATOR.ordinal()]);
             outFile.set("modules.rewards", booleans[Booleans.MODULE_REWARDS.ordinal()]);
             outFile.set("modules.glow", booleans[Booleans.MODULE_GLOW.ordinal()]);
+            outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
+            // Integers
+            outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);
+            outFile.set("afk.limit-time", integers[Integers.AFK_TIMER.ordinal()]);
             // Strings
             outFile.set("mini-messages.motd", strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()]);
+            outFile.set("afk.perm-to-stay-afk", strings[Strings.PERM_AFK.ordinal()]);
 
             saveConfiguration(true);
         }
@@ -181,6 +193,18 @@ final class Configurations {
             );
             addMessage(Messages.GAMEMODE_NOT_BY_CONSOLE,
                     "Você precisa informar o nome de um jogador online<color:#555555>.",
+                    ""
+            );
+            addMessage(Messages.AFK_AUTO_ENTER,
+                    "<color:#00aaaa>{1} <color:#aaaaaa> ficou ausente e agora está AFK<color:#555555>.",
+                    "0: nome do jogador; 1: apelido do jogador"
+            );
+            addMessage(Messages.AFK_BROADCAST_KICK,
+                    "<color:#00aaaa>{1} <color:#aaaaaa> ficou ausente e foi kickado<color:#555555>.",
+                    "0: nome do jogador; 1: apelido do jogador"
+            );
+            addMessage(Messages.AFK_KICKED,
+                    "<color:#aaaaaa>Você foi kickado por estar ausente<color:#555555>.",
                     ""
             );
 

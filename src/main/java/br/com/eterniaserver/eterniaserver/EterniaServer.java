@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.api.LocationManager;
-import br.com.eterniaserver.eterniaserver.api.ProfileManager;
+import br.com.eterniaserver.eterniaserver.api.UserManager;
 import br.com.eterniaserver.eterniaserver.configurations.configs.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
@@ -51,13 +51,13 @@ public class EterniaServer extends CraftEterniaServer {
     private final NamespacedKey[] namespaceKeys = new NamespacedKey[ItemsKeys.values().length];
 
     // APIs
-    private ProfileManager profileManager;
+    private UserManager userManager;
     private LocationManager locationManager;
     private static CraftCash cashAPI;
     private static CraftEconomy economyAPI;
     private static CraftUser userAPI;
 
-    public ProfileManager profileManager() { return profileManager; }
+    public UserManager userManager() { return userManager; }
     public LocationManager locationManager() { return locationManager; }
     public static CraftCash getCashAPI() { return cashAPI; }
     public static CraftEconomy getEconomyAPI() { return economyAPI; }
@@ -100,7 +100,7 @@ public class EterniaServer extends CraftEterniaServer {
         new Managers(this);
         new MainConfigurations(this);
 
-        profileManager = new CraftProfileManager(this);
+        userManager = new CraftUserManager(this);
         locationManager = new CraftLocationManager(this);
 
         new Manager(this);
@@ -201,6 +201,10 @@ public class EterniaServer extends CraftEterniaServer {
 
     public void sendMessage(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
         sender.sendMessage(getMessage(messagesId, prefix, args));
+    }
+
+    public Component getMiniMessage(Messages messagesId, boolean prefix, String... args) {
+        return miniMessage.parse(getMessage(messagesId, prefix, args));
     }
 
     public String getMessage(Messages messagesId, boolean prefix, String... args) {

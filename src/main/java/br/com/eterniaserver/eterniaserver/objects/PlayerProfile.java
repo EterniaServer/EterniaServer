@@ -13,6 +13,9 @@ public class PlayerProfile {
     private int xp = 0;
     private double money = 0D;
 
+    private long lastMove = 0L;
+    private boolean onAfk = false;
+
     private Set<String> homes = new HashSet<>();
 
     private String playerName;
@@ -40,11 +43,14 @@ public class PlayerProfile {
 
     public int getExp() { return this.xp; }
     public double getMoney() { return this.money; }
-    public int getCash() { return cash;}
+    public int getCash() { return cash; }
+    public boolean getAfk() { return onAfk; }
+    public long getLastMove() { return lastMove; }
 
     public void setCash(int value) { this.cash = value; }
     public void setExp(int value) { this.xp = value; }
     public void setMoney(double value) { this.money = value; }
+    public void setOnAfk(boolean value) { this.onAfk = value; }
 
     public void setHomes(String homes) {
         if (homes != null) {

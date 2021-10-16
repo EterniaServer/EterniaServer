@@ -73,9 +73,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.CASH_CHOOSE, "Use $6/cash accept $7ou $6/cash deny$7 para aceitar ou negar a compra$8.", null);
         this.addDefault(Messages.CASH_NO_HAS, "Você não possui $3{0}$7 de cash$8.", "0: quantia de cash");
         this.addDefault(Messages.CASH_ALREADY_BUYING, "Você já possui uma compra em andamento$8.", null);
-        this.addDefault(Messages.AFK_BROADCAST_KICK, "$3{1} $7estava AFK e foi kickado$8.", "0: nome do jogador; 1: apelido do jogador");
-        this.addDefault(Messages.AFK_KICKED, "Você foi kickado por estar AFK$8.", null);
-        this.addDefault(Messages.AFK_AUTO_ENTER, "$3{1}$7 ficou ausente agora está AFK$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(Messages.AFK_LEAVE, "$3{1} $7saiu do modo AFK$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(Messages.AFK_ENTER, "$3{1} $7entrou no modo AFK$8.", null);
         this.addDefault(Messages.WARP_TELEPORTED, "Você foi teleportado até o $3{0}$8.", "0: nome da warp");

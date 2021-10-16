@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 
-public interface ProfileManager {
+public interface UserManager {
 
     PlayerProfile create(final UUID uuid, final String playerName);
 

@@ -155,7 +155,7 @@ final class Commands {
         @Description("%EXPERIENCE_CHECK_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_CHECK_PERM")
         public void onCheckLevel(Player player) {
-            final PlayerProfile playerProfile = plugin.profileManager().get(player.getUniqueId());
+            final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
             final int xp = playerActualXp(player);
 
             player.setLevel(0);
@@ -205,7 +205,7 @@ final class Commands {
         @CommandPermission("%EXPERIENCE_WITHDRAW_PERM")
         public void onWithdrawLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer level) {
             final UUID uuid = player.getUniqueId();
-            final PlayerProfile playerProfile = plugin.profileManager().get(uuid);
+            final PlayerProfile playerProfile = plugin.userManager().get(uuid);
             final int wantedXp = experienceService.getXPForLevel(level);
 
             if (playerProfile.getExp() < wantedXp) {
@@ -227,7 +227,7 @@ final class Commands {
         @CommandPermission("%EXPERIENCE_DEPOSIT_PERM")
         public void onDepositLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpla) {
             final UUID uuid = player.getUniqueId();
-            final PlayerProfile playerProfile = plugin.profileManager().get(uuid);
+            final PlayerProfile playerProfile = plugin.userManager().get(uuid);
             final int actualLevel = player.getLevel();
 
             if (actualLevel < xpla) {

@@ -74,7 +74,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         setBoolean(Booleans.MODULE_REWARDS, file, outFile, "module.rewards", true);
         setBoolean(Booleans.MODULE_SCHEDULE, file, outFile, "module.schedule", true);
         setBoolean(Booleans.ASYNC_CHECK, file, outFile, "server.async-check", true);
-        setBoolean(Booleans.AFK_KICK, file, outFile, "server.afk-kick", true);
         setBoolean(Booleans.ITEMS_FUNCTIONS, file, outFile, "server.item-function", true);
 
         setString(Strings.TABLE_KITS, file, outFile, "sql.table-kits", "es_kits");

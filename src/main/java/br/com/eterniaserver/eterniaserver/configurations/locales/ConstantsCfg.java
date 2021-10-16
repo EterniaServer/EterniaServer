@@ -51,7 +51,6 @@ public class ConstantsCfg extends GenericCfg implements ReloadableConfiguration 
         setString(Strings.PERM_BASE_COMMAND, file, outFile, "perm.base-command", "eternia.");
         setString(Strings.PERM_CHAT_COLOR_NICK, file, outFile, "perm.chat-color-nick", "eternia.chat.color.nick");
         setString(Strings.PERM_SPY, file, outFile, "perm.spy", "eternia.spy");
-        setString(Strings.PERM_AFK, file, outFile, "perm.afk", "eternia.afk");
         setString(Strings.PERM_NO_KICK_BY_AFK, file, outFile, "perm.no-kick-by-afk", "eternia.nokickbyafksorrymates");
         setString(Strings.PERM_TIMING_BYPASS, file, outFile, "perm.timing-bypass", "eternia.timing.bypass");
         setString(Strings.PERM_SIGN_COLOR, file, outFile, "perm.sign-color", "eternia.sign.color");

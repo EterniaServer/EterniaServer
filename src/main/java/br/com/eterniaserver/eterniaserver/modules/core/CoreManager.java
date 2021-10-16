@@ -3,6 +3,8 @@ package br.com.eterniaserver.eterniaserver.modules.core;
 import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.Module;
+import br.com.eterniaserver.eterniaserver.core.EterniaTick;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 
 import java.util.logging.Level;
 
@@ -10,6 +12,7 @@ import java.util.logging.Level;
 public class CoreManager implements Module {
 
     private final EterniaServer plugin;
+    private Services.Afk afkServices;
 
     public CoreManager(final EterniaServer plugin) {
         this.plugin = plugin;
@@ -21,6 +24,8 @@ public class CoreManager implements Module {
         new Configurations.Locales(plugin);
 
         loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
+
+        this.afkServices = new Services.Afk(plugin);
     }
 
     @Override
@@ -35,7 +40,7 @@ public class CoreManager implements Module {
 
     @Override
     public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "Core module: no schedules");
+        new Schedules.MainTick(plugin, afkServices).runTaskTimer(plugin, 20L, (long) plugin.getInteger(Integers.PLUGIN_TICKS));
     }
 
     @Override
