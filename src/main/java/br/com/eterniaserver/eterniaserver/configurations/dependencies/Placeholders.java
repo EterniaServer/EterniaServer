@@ -86,11 +86,11 @@ public class Placeholders {
                 case 1:
                     return getBalanceTopPlaceholder(user);
                 case 2:
-                    return user.getAfkPlaceholder();
+                    return "AFK";
                 case 3:
                     return String.valueOf(EterniaServer.getCashAPI().getCash(user.getUUID()));
                 case 4:
-                    return "";
+                    return "GLOW";
                 case 5:
                     return user.getGodeModePlaceholder();
                 default:

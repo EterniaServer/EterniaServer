@@ -275,22 +275,6 @@ public class User {
         player.giveExp(amount);
     }
 
-    public void updateAfkTime() {
-        EterniaServer.getUserAPI().updateAFKTime(uuid);
-    }
-
-    public long getAfkTime() {
-        return EterniaServer.getUserAPI().getAFKTime(uuid);
-    }
-
-    public void changeAfkState() {
-        EterniaServer.getUserAPI().changeAFKState(uuid);
-    }
-
-    public boolean isAfk() {
-        return EterniaServer.getUserAPI().areAFK(uuid);
-    }
-
     public void changeGodModeState() {
         EterniaServer.getUserAPI().changeGodModeState(uuid);
     }
@@ -305,10 +289,6 @@ public class User {
 
     public Location getLocation() {
         return player.getLocation();
-    }
-
-    public String getAfkPlaceholder() {
-        return EterniaServer.getUserAPI().getAfkPlaceholder(uuid);
     }
 
     public String getGodeModePlaceholder() {

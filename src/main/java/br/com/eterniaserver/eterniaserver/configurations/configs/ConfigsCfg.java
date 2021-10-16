@@ -11,7 +11,6 @@ import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.configurations.GenericCfg;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
-import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -92,7 +91,6 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
 
         setList(Lists.BLACKLISTED_WORLDS_FLY, file, outFile, "server.blacklisted-fly-worlds", "world_evento");
         setList(Lists.BLACKLISTED_WORLDS_SLEEP, file, outFile, "bed.blacklisted-worlds", "world_evento");
-        setList(Lists.BLACKLISTED_COMMANDS, file, outFile, "blocked-commands", "/op", "/deop", "/stop");
         setList(Lists.BLACKLISTED_WORLDS_BACK, file, outFile, "back.blacklisted-worlds", "world_evento", "world_pvp");
         setList(Lists.PROFILE_CUSTOM_MESSAGES, file, outFile, "profile.custom-messages");
         setList(Lists.TITLE_LIST, file, outFile, "titles", "Maníaco", "Farmer");

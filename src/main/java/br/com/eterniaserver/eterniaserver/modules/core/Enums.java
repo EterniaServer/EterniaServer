@@ -8,6 +8,7 @@ final class Enums {
         GAMEMODE_CREATIVE,
         GAMEMODE_ADVENTURE,
         GAMEMODE_SPECTATOR,
+        AFK,
     }
 
 }

@@ -12,11 +12,12 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;import java.util.HashSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 
@@ -25,7 +26,7 @@ final class CraftUserManager implements UserManager {
     private final EterniaServer plugin;
 
     private final Set<String> playerNameList = new HashSet<>();
-    private final Map<UUID, PlayerProfile> playerProfileMap = new ConcurrentHashMap<>();
+    private final Map<UUID, PlayerProfile> playerProfileMap = new HashMap<>();
 
     CraftUserManager(final EterniaServer plugin) {
         final String[] MYSQL_FIELDS = {

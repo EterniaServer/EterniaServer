@@ -34,13 +34,9 @@ public class CraftUser {
 
     private final Map<UUID, PlayerTeleport> teleports = new HashMap<>();
     private final Map<UUID, PlayerProfile> playerProfiles = new HashMap<>();
-    private final Map<UUID, Boolean> onAfk = new HashMap<>();
-    private final Map<UUID, Long> afkTime = new HashMap<>();
     private final Map<UUID, UUID> tpaRequests = new HashMap<>();
     private final Map<UUID, Long> tpaTime = new HashMap<>();
     private final Map<UUID, Boolean> godMode = new HashMap<>();
-    private final Map<UUID, Location> playerLocationMap = new HashMap<>();
-    private final Map<UUID, Integer> playersInPortal = new HashMap<>();
     private final Map<UUID, Boolean> spy = new HashMap<>();
     private final Map<UUID, Location> back = new HashMap<>();
     private final Map<UUID, String> tell = new HashMap<>();
@@ -50,32 +46,6 @@ public class CraftUser {
     private final Map<String, UUID> playersName = new HashMap<>();
 
     private final Map<Player, Boolean> vanished = new HashMap<>();
-
-    public void putLocationOfUser(UUID uuid, Location location) {
-        playerLocationMap.put(uuid, location);
-    }
-
-    public Location getLocationOfUser(UUID uuid, Location location) {
-        return playerLocationMap.getOrDefault(uuid, location);
-    }
-
-    /**
-     * Get the time of a user that are in portal
-     * @param uuid of user
-     * @return the time
-     */
-    public int getInPortal(UUID uuid) {
-        return playersInPortal.getOrDefault(uuid, -1);
-    }
-
-    /**
-     * Put a time from a user that are in portal
-     * @param uuid of user
-     * @param time
-     */
-    public void putInPortal(UUID uuid, int time) {
-        playersInPortal.put(uuid, time);
-    }
 
     /**
      * Checks if a user is online to mention
@@ -268,15 +238,6 @@ public class CraftUser {
     }
 
     /**
-     * Get the time of last TPA
-     * @param uuid of user
-     * @return the time
-     */
-    public long getTPATime(UUID uuid) {
-        return tpaTime.getOrDefault(uuid, 0L);
-    }
-
-    /**
      * Get the target user that request a tpa. Can return null
      * @param uuid of user
      * @return the uuid of target user
@@ -390,45 +351,9 @@ public class CraftUser {
      * @param uuid'
      */
     public void playerLogout(UUID uuid) {
-        afkTime.remove(uuid);
-        onAfk.remove(uuid);
         godMode.remove(uuid);
         spy.remove(uuid);
         vanished.remove(Bukkit.getPlayer(uuid));
-    }
-
-    /**
-     * Update the time of last action of user
-     * @param uuid of user
-     */
-    public void updateAFKTime(UUID uuid) {
-        afkTime.put(uuid, System.currentTimeMillis());
-    }
-
-    /**
-     * Get the last time the user made an action searching from uuid
-     * @param uuid of user
-     * @return the time
-    */
-    public long getAFKTime(UUID uuid) {
-        return afkTime.getOrDefault(uuid, System.currentTimeMillis());
-    }
-
-    /**
-     * Checks if the user are AFK
-     * @param uuid of user
-     * @return if the user are AFK
-     */
-    public boolean areAFK(UUID uuid) {
-        return onAfk.getOrDefault(uuid, false);
-    }
-
-    /**
-     * Change the boolean state of a user
-     * @param uuid of user
-     */
-    public void changeAFKState(UUID uuid) {
-        onAfk.put(uuid, !areAFK(uuid));
     }
 
     /**
@@ -497,27 +422,6 @@ public class CraftUser {
     }
 
     /**
-     * Create a new PlayerProfile to a user uuid
-     * @param uuid of user
-     * @param playerName of user
-     * @return PlayerProfile
-     */
-    public PlayerProfile createPlayerProfile(UUID uuid, String playerName) {
-        long time = System.currentTimeMillis();
-
-        Insert insert = new Insert(plugin.getString(Strings.TABLE_PLAYER));
-        insert.columns.set("uuid", "player_name", "time", "last", "hours", "balance", "muted");
-        insert.values.set(uuid.toString(), playerName, time, time, 0, plugin.getDouble(Doubles.START_MONEY), time);
-        SQL.executeAsync(insert);
-
-        PlayerProfile playerProfile = new PlayerProfile(playerName, playerName, time, time, 0);
-        EterniaServer.getEconomyAPI().putInMoney(uuid, plugin.getDouble(Doubles.START_MONEY));
-        playerProfile.setMuted(time);
-        playerProfiles.put(uuid, playerProfile);
-        return playerProfile;
-    }
-
-    /**
      * @return the amount of saved PlayerProfile's
      */
     public int getProfileMapSize() {
@@ -551,10 +455,6 @@ public class CraftUser {
                 }
             }
         }
-    }
-
-    public String getAfkPlaceholder(final UUID uuid) {
-        return areAFK(uuid) ? plugin.getString(Strings.AFK_PLACEHOLDER) : "";
     }
 
     public String getGodeModePlaceholder(final UUID uuid) {
@@ -622,43 +522,6 @@ public class CraftUser {
 
     public void updateBedCooldown(final UUID uuid) {
         plugin.updateBedCooldown(uuid);
-    }
-
-    public String getColorString(final int id) {
-        switch (id) {
-            case 0:
-                return plugin.getString(Strings.CONS_BLACK);
-            case 1:
-                return plugin.getString(Strings.CONS_DARK_BLUE);
-            case 2:
-                return plugin.getString(Strings.CONS_DARK_GREEN);
-            case 3:
-                return plugin.getString(Strings.CONS_DARK_AQUA);
-            case 4:
-                return plugin.getString(Strings.CONS_DARK_RED);
-            case 5:
-                return plugin.getString(Strings.CONS_DARK_PURPLE);
-            case 6:
-                return plugin.getString(Strings.CONS_GOLD);
-            case 7:
-                return plugin.getString(Strings.CONS_GRAY);
-            case 8:
-                return plugin.getString(Strings.CONS_DARK_GRAY);
-            case 9:
-                return plugin.getString(Strings.CONS_BLUE);
-            case 10:
-                return plugin.getString(Strings.CONS_GREEN);
-            case 11:
-                return plugin.getString(Strings.CONS_AQUA);
-            case 12:
-                return plugin.getString(Strings.CONS_RED);
-            case 13:
-                return plugin.getString(Strings.CONS_LIGHT_PURPLE);
-            case 14:
-                return plugin.getString(Strings.CONS_YELLOW);
-            default:
-                return plugin.getString(Strings.CONS_WHITE);
-        }
     }
 
 }

@@ -15,13 +15,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 final class CraftLocationManager implements LocationManager {
 
-    private final Map<String, Location> locationsMap = new ConcurrentHashMap<>();
+    private final Map<String, Location> locationsMap = new HashMap<>();
 
     CraftLocationManager(final EterniaServer plugin) {
         final String[] MYSQL_FIELDS = {

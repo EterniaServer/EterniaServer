@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.api;
 
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 

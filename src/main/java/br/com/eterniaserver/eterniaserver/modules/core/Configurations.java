@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.api.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.api.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -14,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.List;
 
 final class Configurations {
 
@@ -63,6 +65,13 @@ final class Configurations {
                     " Define o modo de jogo seu, ou de outro jogador, para Espectador",
                     "eternia.gamemode"
             );
+            commandsLocalesArray[Enums.Commands.AFK.ordinal()] = new CommandI18n(
+                    Enums.Commands.AFK.name(),
+                    "afk",
+                    "",
+                    " Fique ausente",
+                    "eternia.afk"
+            );
 
             syncToFile();
             saveConfiguration(true);
@@ -111,6 +120,7 @@ final class Configurations {
             final boolean[] booleans = plugin.booleans();
             final int[] integers = plugin.integers();
             final String[] strings = plugin.strings();
+            final List<List<String>> stringLists = plugin.stringLists();
 
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
@@ -125,6 +135,9 @@ final class Configurations {
             // Strings
             strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
             strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
+            // Lists
+            final List<String> list = inFile.getStringList("critical-configs.blocked-commands");
+            stringLists.set(Lists.BLACKLISTED_COMMANDS.ordinal(), list.isEmpty() ? List.of("/op", "/deop", "/stop") : list);
 
             // Booleans
             outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
@@ -139,6 +152,8 @@ final class Configurations {
             // Strings
             outFile.set("mini-messages.motd", strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()]);
             outFile.set("afk.perm-to-stay-afk", strings[Strings.PERM_AFK.ordinal()]);
+            // Lists
+            outFile.set("critical-configs.blocked-commands", plugin.stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
 
             saveConfiguration(true);
         }
@@ -197,6 +212,14 @@ final class Configurations {
             );
             addMessage(Messages.AFK_AUTO_ENTER,
                     "<color:#00aaaa>{1} <color:#aaaaaa> ficou ausente e agora está AFK<color:#555555>.",
+                    "0: nome do jogador; 1: apelido do jogador"
+            );
+            addMessage(Messages.AFK_ENTER,
+                    "<color:#00aaaa>{1} <color:#aaaaaa> está AFK<color:#555555>.",
+                    "0: nome do jogador; 1: apelido do jogador"
+            );
+            addMessage(Messages.AFK_LEAVE,
+                    "<color:#00aaaa>{1} <color:#aaaaaa> não está mais AFK<color:#555555>.",
                     "0: nome do jogador; 1: apelido do jogador"
             );
             addMessage(Messages.AFK_BROADCAST_KICK,

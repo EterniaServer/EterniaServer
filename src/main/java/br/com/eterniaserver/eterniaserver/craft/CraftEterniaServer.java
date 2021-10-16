@@ -36,7 +36,6 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     private Pattern filter;
     private Location error;
 
-    private int version = 0;
     private boolean chatMuted = false;
     private long nightMessageTime = System.currentTimeMillis();
 

@@ -253,20 +253,6 @@ public class Generic extends BaseCommand {
         Bukkit.broadcastMessage(plugin.getMessage(Messages.SUICIDE_BROADCAST, true, player.getName(), player.getDisplayName(), message));
     }
 
-    @CommandAlias("%afk")
-    @CommandPermission("%afk_perm")
-    @Description("%afk_description")
-    public void onAFK(Player player) {
-        User user = new User(player);
-        user.changeAfkState();
-
-        if (user.isAfk()) {
-            Bukkit.broadcastMessage(plugin.getMessage(Messages.AFK_ENTER, true, user.getName(), user.getDisplayName()));
-            return;
-        }
-        Bukkit.broadcastMessage(plugin.getMessage(Messages.AFK_LEAVE, true, user.getName(), user.getDisplayName()));
-    }
-
     private int checkItems(ItemStack item1, ItemStack item2) {
         if (item1.isSimilar(item2) && item1.getItemMeta().getDisplayName().equals(item2.getItemMeta().getDisplayName())) return item1.getAmount();
         else return 0;

@@ -16,12 +16,42 @@ import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 final class Commands {
+
+    @CommandAlias("%AFK")
+    static class Afk extends BaseCommand {
+        private final EterniaServer plugin;
+
+        public Afk(final EterniaServer plugin) {
+            this.plugin = plugin;
+        }
+
+        @Default
+        @CatchUnknown
+        @HelpCommand
+        @Syntax("%AFK_SYNTAX")
+        @Description("%AFK_DESCRIPTION")
+        @CommandPermission("%AFK_PERM")
+        public void onDefault(Player player) {
+            final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+
+            if (playerProfile.getAfk()) {
+                Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_LEAVE, true, playerProfile.getPlayerName(), playerProfile.getPlayerDisplayName()));
+                playerProfile.setAfk(false);
+                return;
+            }
+
+            Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_ENTER, true, playerProfile.getPlayerName(), playerProfile.getPlayerDisplayName()));
+            playerProfile.setAfk(true);
+        }
+    }
 
     @CommandAlias("%GAMEMODE")
     static class EGameMode extends BaseCommand {

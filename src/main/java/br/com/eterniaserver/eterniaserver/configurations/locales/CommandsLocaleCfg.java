@@ -67,7 +67,6 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.CONDENSER, "blocks|condenser", "eternia.blocks", null, " Comprima seus minérios em blocos para liberar espaço", null);
         this.addDefault(Commands.THOR, "thor", "eternia.thor", " <jogador>", " Solte um raio ou puna um jogador", null);
         this.addDefault(Commands.SUICIDE, "suicide", "eternia.suicide", " <mensagem>", " Se mate e envie uma mensagem após isso", null);
-        this.addDefault(Commands.AFK, "afk", "eternia.afk", null, " Fique ausente", null);
         this.addDefault(Commands.GLOW, "glow", "eternia.glow", null, " Brilhe como você merece", null);
         this.addDefault(Commands.GLOW_COLOR, "color", "eternia.glow", " <cor>", " Escolha a cor que você deseja brilhar", null);
         this.addDefault(Commands.HOME, "home", "eternia.home", " <home> <jogador>", " Vá até sua home ou a de outro jogador", null);

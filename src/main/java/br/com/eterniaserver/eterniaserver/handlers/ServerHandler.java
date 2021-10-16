@@ -25,7 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.server.ServerListPingEvent;
+
 
 public class ServerHandler implements Listener {
 
@@ -34,14 +34,9 @@ public class ServerHandler implements Listener {
     private final Formatter chatFormatter;
     private static final int tellHashCode = "tell".hashCode();
 
-    private final String messageMOTD;
-    private final String message2;
-
     public ServerHandler(final EterniaServer plugin) {
         this.plugin = plugin;
         this.chatFormatter= new Formatter(plugin);
-        this.messageMOTD = plugin.translateHex(plugin.getMessage(Messages.SERVER_MOTD_1, false));
-        this.message2 = plugin.translateHex(plugin.getMessage(Messages.SERVER_MOTD_2, false));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

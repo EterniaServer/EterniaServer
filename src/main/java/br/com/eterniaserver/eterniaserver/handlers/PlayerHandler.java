@@ -6,22 +6,15 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
-import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
-import br.com.eterniaserver.paperlib.PaperLib;
-
-import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Note;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
@@ -38,7 +31,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -46,6 +38,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 
 public class PlayerHandler implements Listener {
 
@@ -308,7 +301,6 @@ public class PlayerHandler implements Listener {
             user.setChannel(plugin.getString(Strings.DEFAULT_CHANNEL).hashCode());
         }
 
-        user.updateAfkTime();
         user.createKits();
         user.disableFly();
 

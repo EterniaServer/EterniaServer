@@ -2,6 +2,8 @@ package br.com.eterniaserver.eterniaserver.objects;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import org.bukkit.Location;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +17,8 @@ public class PlayerProfile {
 
     private long lastMove = 0L;
     private boolean onAfk = false;
+
+    private Location location;
 
     private Set<String> homes = new HashSet<>();
 
@@ -46,11 +50,14 @@ public class PlayerProfile {
     public int getCash() { return cash; }
     public boolean getAfk() { return onAfk; }
     public long getLastMove() { return lastMove; }
+    public Location getLocation() { return location; }
 
     public void setCash(int value) { this.cash = value; }
     public void setExp(int value) { this.xp = value; }
     public void setMoney(double value) { this.money = value; }
-    public void setOnAfk(boolean value) { this.onAfk = value; }
+    public void setAfk(boolean value) { this.onAfk = value; }
+    public void setLastMove(long value) { this.lastMove = value; }
+    public void setLocation(Location location) { this.location = location; }
 
     public void setHomes(String homes) {
         if (homes != null) {

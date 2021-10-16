@@ -3,7 +3,6 @@ package br.com.eterniaserver.eterniaserver.modules.core;
 import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.Module;
-import br.com.eterniaserver.eterniaserver.core.EterniaTick;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 
 import java.util.logging.Level;
@@ -35,17 +34,18 @@ public class CoreManager implements Module {
 
     @Override
     public void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, afkServices), plugin);
     }
 
     @Override
     public void loadSchedules() {
-        new Schedules.MainTick(plugin, afkServices).runTaskTimer(plugin, 20L, (long) plugin.getInteger(Integers.PLUGIN_TICKS));
+        new Schedules.MainTick(plugin, afkServices).runTaskTimer(plugin, 20L, plugin.getInteger(Integers.PLUGIN_TICKS));
     }
 
     @Override
     public void loadCommands() {
         CommandManager.registerCommand(new Commands.EGameMode(plugin));
+        CommandManager.registerCommand(new Commands.Afk(plugin));
     }
 
     @Override
