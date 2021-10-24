@@ -20,6 +20,7 @@ public enum Booleans {
     MODULE_REWARDS,
     MODULE_SCHEDULE,
     MODULE_GENERIC,
+    MODULE_PAPI,
     CHEST_SHOP_SUPPORT,
     ASYNC_CHECK,
     AFK_KICK,

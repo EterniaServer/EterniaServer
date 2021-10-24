@@ -11,6 +11,7 @@ import br.com.eterniaserver.eternialib.CmdConfirmationManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -57,7 +58,7 @@ public class Teleport extends BaseCommand {
 
         User target = new User(targets);
 
-        target.putInTeleport(new PlayerTeleport(plugin, targets, player.getLocation(), plugin.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
+        plugin.locationManager().putTeleport(target.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), player.getLocation(), plugin.getMessage(Messages.TELEPORT_GOING_TO_PLAYER, true, user.getName(), user.getDisplayName())));
         plugin.sendMessage(target.getPlayer(), Messages.TELEPORT_TARGET_ACCEPT, user.getName(), user.getDisplayName());
         plugin.sendMessage(player, Messages.TELEPORT_ACCEPT, target.getName(), target.getDisplayName());
         EterniaServer.getUserAPI().removeTpaRequest(user.getUUID());
@@ -94,7 +95,7 @@ public class Teleport extends BaseCommand {
     public void onTeleportToPlayer(Player player, OnlinePlayer targets) {
         User user = new User(player);
 
-        if (user.isTeleporting()) {
+        if (plugin.locationManager().getTeleport(player.getUniqueId()) != null) {
             plugin.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             return;
         }
@@ -127,7 +128,7 @@ public class Teleport extends BaseCommand {
             return;
         }
 
-        if (user.isTeleporting()) {
+        if (plugin.locationManager().getTeleport(player.getUniqueId()) != null) {
             plugin.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             return;
         }
@@ -138,7 +139,7 @@ public class Teleport extends BaseCommand {
         }
 
         if (user.hasPermission(plugin.getString(Strings.PERM_BACK_FREE)) || !plugin.getBoolean(Booleans.MODULE_ECONOMY)) {
-            user.putInTeleport(new PlayerTeleport(plugin, player, user.getBackLocation(), plugin.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
+            plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), user.getBackLocation(), plugin.getMessage(Messages.TELEPORT_BACK_WITHOUT_COST, true)));
             return;
         }
 
@@ -146,7 +147,7 @@ public class Teleport extends BaseCommand {
             plugin.sendMessage(player, Messages.COMMAND_COST, String.valueOf(plugin.getDouble(Doubles.BACK_COST)));
             final RunCommand runCommand = new RunCommand(() -> {
                 EterniaServer.getEconomyAPI().removeMoney(user.getUUID(), plugin.getDouble(Doubles.BACK_COST));
-                user.putInTeleport(new PlayerTeleport(plugin, player, user.getBackLocation(), plugin.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(plugin.getDouble(Doubles.BACK_COST)))));
+                plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), user.getBackLocation(), plugin.getMessage(Messages.TELEPORT_BACK_WITH_COST, true, String.valueOf(plugin.getDouble(Doubles.BACK_COST)))));
             });
             CmdConfirmationManager.scheduleCommand(player, runCommand);
             return;

@@ -2,12 +2,12 @@ package br.com.eterniaserver.eterniaserver.modules.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
-import br.com.eterniaserver.eterniaserver.api.events.OptimizedPlayerMoveEvent;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+
 import net.kyori.adventure.text.Component;
 
 import org.bukkit.entity.Player;
@@ -17,8 +17,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
+
 
 final class Handlers implements Listener {
 
@@ -40,11 +42,6 @@ final class Handlers implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
-        final Player player = event.getPlayer();
-        final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
-
-        afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.COMMAND);
-
         final String message = event.getMessage().toLowerCase();
         for (String line : plugin.getStringList(Lists.BLACKLISTED_COMMANDS)) {
             if (message.startsWith(line)) {
@@ -54,7 +51,7 @@ final class Handlers implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAsyncChatEvent(AsyncChatEvent event) {
         final Player player = event.getPlayer();
         final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
@@ -71,8 +68,8 @@ final class Handlers implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onOptimizedPlayerMoveEvent(OptimizedPlayerMoveEvent event) {
-        if (!event.hasChangedBlock()) return;
+    public void onPlayerMoveEvent(PlayerMoveEvent event) {
+        if (!event.hasExplicitlyChangedBlock()) return;
 
         final Player player = event.getPlayer();
         final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
@@ -94,6 +91,7 @@ final class Handlers implements Listener {
         final Player player = event.getPlayer();
         final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
 
+        plugin.locationManager().removeTeleport(player.getUniqueId());
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.QUIT);
     }
 

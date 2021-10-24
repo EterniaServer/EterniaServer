@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.elevator;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.FileCfg;
+import br.com.eterniaserver.eterniaserver.api.interfaces.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;

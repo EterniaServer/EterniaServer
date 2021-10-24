@@ -100,7 +100,7 @@ public class User {
         if (!EterniaServer.getUserAPI().hasProfile(this.uuid)) {
             EterniaServer.getUserAPI().createProfile(uuid, playerName);
             this.playerProfile = EterniaServer.getUserAPI().getProfile(this.uuid);
-            this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
+            this.playerDisplayName = this.playerProfile.getDisplayName();
             EterniaServer.getUserAPI().firstLoginMessage(playerName, playerDisplayName);
             if (this.player != null) {
                 this.firstLogin = true;
@@ -108,7 +108,7 @@ public class User {
             return;
         }
         this.playerProfile = EterniaServer.getUserAPI().getProfile(this.uuid);
-        this.playerDisplayName = this.playerProfile.getPlayerDisplayName();
+        this.playerDisplayName = this.playerProfile.getDisplayName();
     }
 
     // API
@@ -124,7 +124,7 @@ public class User {
     }
 
     public void updateProfile() {
-        if (playerProfile.getPlayerName() == null) {
+        if (playerProfile.getName() == null) {
             EterniaServer.getUserAPI().createProfile(uuid, playerName);
             this.playerProfile = EterniaServer.getUserAPI().getProfile(uuid);
         }
@@ -192,7 +192,6 @@ public class User {
 
     public void clear() {
         EterniaServer.getUserAPI().playerLogout(uuid);
-        removeFromTeleporting();
     }
 
     public void hidePlayer(EterniaServer plugin, Player target) {
@@ -201,18 +200,6 @@ public class User {
 
     public void createKits() {
         EterniaServer.getUserAPI().generatePlayerKits(playerName);
-    }
-
-    public boolean isTeleporting() {
-        return EterniaServer.getUserAPI().areTeleporting(uuid);
-    }
-
-    public void removeFromTeleporting() {
-        EterniaServer.getUserAPI().removeFromTeleport(uuid);
-    }
-
-    public void putInTeleport(PlayerTeleport playerTeleport) {
-        EterniaServer.getUserAPI().putInTeleport(uuid, playerTeleport);
     }
 
     public Set<String> getHomes() {
@@ -291,7 +278,7 @@ public class User {
         return player.getLocation();
     }
 
-    public String getGodeModePlaceholder() {
+    public String getGodeModegetGodeModePlaceholderder() {
         return EterniaServer.getUserAPI().getGodeModePlaceholder(uuid);
     }
 

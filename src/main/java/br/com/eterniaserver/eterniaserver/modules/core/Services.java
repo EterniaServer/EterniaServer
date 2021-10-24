@@ -39,7 +39,7 @@ final class Services {
             if (!event.isCancelled()) {
                 playerProfile.setAfk(false);
                 playerProfile.setLastMove(System.currentTimeMillis());
-                Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_LEAVE, true, playerProfile.getPlayerName(), playerProfile.getPlayerDisplayName()));
+                Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_LEAVE, true, playerProfile.getName(), playerProfile.getDisplayName()));
             }
         }
     }

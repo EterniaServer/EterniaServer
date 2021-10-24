@@ -65,6 +65,7 @@ final class Commands {
 
                 if (glowStatusEvent.isCancelled()) return;
 
+                plugin.userManager().get(player.getUniqueId()).setColor(color.getColor());
                 servicesGlow.getTeam(color).addEntry(player.getName());
                 plugin.sendMiniMessages(player, Messages.GLOW_COLOR_CHANGED, servicesGlow.getColor(color));
             }

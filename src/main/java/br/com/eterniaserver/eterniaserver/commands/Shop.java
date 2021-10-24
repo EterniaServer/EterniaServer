@@ -12,6 +12,7 @@ import br.com.eterniaserver.eternialib.core.queries.Delete;
 import br.com.eterniaserver.eternialib.core.queries.Insert;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.LocationQuery;
@@ -37,7 +38,7 @@ public class Shop extends BaseCommand {
     public void onShop(Player player, @Optional String targets) {
         User user = new User(player);
 
-        if (user.isTeleporting()) {
+        if (plugin.locationManager().getTeleport(user.getUUID()) != null) {
             plugin.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             return;
         }
@@ -45,7 +46,7 @@ public class Shop extends BaseCommand {
         if (targets != null) {
             Location location = plugin.getLocation(targets.toLowerCase());
             if (shopExists(location, player, targets)) {
-                user.putInTeleport(new PlayerTeleport(plugin, player, location, plugin.getMessage(Messages.WARP_SHOP_PLAYER_TELEPORTED, true, targets)));
+                plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), location, plugin.getMessage(Messages.WARP_SHOP_PLAYER_TELEPORTED, true, targets)));
             }
             return;
         }
@@ -58,7 +59,7 @@ public class Shop extends BaseCommand {
         }
 
         if (shopExists(location, player)) {
-            user.putInTeleport(new PlayerTeleport(plugin, player, location, plugin.getMessage(Messages.WARP_SHOP_TELEPORTED, true)));
+            plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), location, plugin.getMessage(Messages.WARP_SHOP_TELEPORTED, true)));
         }
     }
 

@@ -16,12 +16,15 @@ public class PlayerProfile {
     private double money = 0D;
 
     private long lastMove = 0L;
-    private boolean onAfk = false;
+    private boolean afk = false;
+    private boolean isBalanceTop = false;
+    private boolean god = false;
 
     private Location location;
 
     private Set<String> homes = new HashSet<>();
 
+    private String color;
     private String playerName;
     private String playerDisplayName;
     private String activeTitle;
@@ -48,16 +51,23 @@ public class PlayerProfile {
     public int getExp() { return this.xp; }
     public double getMoney() { return this.money; }
     public int getCash() { return cash; }
-    public boolean getAfk() { return onAfk; }
+    public boolean getAfk() { return afk; }
     public long getLastMove() { return lastMove; }
     public Location getLocation() { return location; }
+    public String getDisplayName() { return playerDisplayName; }
+    public String getName() { return playerName; }
+    public boolean isBalanceTop() { return isBalanceTop; }
+    public String getColor() { return color; }
+    public boolean getGod() { return god; }
 
     public void setCash(int value) { this.cash = value; }
     public void setExp(int value) { this.xp = value; }
     public void setMoney(double value) { this.money = value; }
-    public void setAfk(boolean value) { this.onAfk = value; }
+    public void setAfk(boolean value) { this.afk = value; }
     public void setLastMove(long value) { this.lastMove = value; }
     public void setLocation(Location location) { this.location = location; }
+    public void setColor(String value) { this.color = color; }
+    public void setGod(boolean value) { this.god = god; }
 
     public void setHomes(String homes) {
         if (homes != null) {
@@ -99,14 +109,6 @@ public class PlayerProfile {
     public int getOnPvP() {
         if (onPvP == 0) return 0;
         return (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - onPvP);
-    }
-
-    public String getPlayerDisplayName() {
-        return playerDisplayName != null ? playerDisplayName : playerName;
-    }
-
-    public String getPlayerName() {
-        return playerName;
     }
 
     public void setPlayerName(String playerName) {

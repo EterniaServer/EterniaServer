@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.spawner;
 
 import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.Module;
+import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 
 import java.util.logging.Level;
 import java.util.stream.Collectors;

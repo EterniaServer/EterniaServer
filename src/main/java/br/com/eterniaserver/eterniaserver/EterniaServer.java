@@ -1,12 +1,11 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eterniaserver.api.LocationManager;
-import br.com.eterniaserver.eterniaserver.api.UserManager;
+import br.com.eterniaserver.eterniaserver.api.interfaces.LocationManager;
+import br.com.eterniaserver.eterniaserver.api.interfaces.UserManager;
 import br.com.eterniaserver.eterniaserver.configurations.configs.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
-import br.com.eterniaserver.eterniaserver.configurations.dependencies.Placeholders;
 import br.com.eterniaserver.eterniaserver.craft.CraftCash;
 import br.com.eterniaserver.eterniaserver.craft.CraftEterniaServer;
 import br.com.eterniaserver.eterniaserver.craft.CraftEconomy;
@@ -95,7 +94,6 @@ public class EterniaServer extends CraftEterniaServer {
 
         loadConfiguration();
 
-        new Placeholders(this).register();
         new Metrics(this, 10160);
         new Managers(this);
         new MainConfigurations(this);

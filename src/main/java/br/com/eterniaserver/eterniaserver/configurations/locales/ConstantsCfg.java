@@ -36,13 +36,11 @@ public class ConstantsCfg extends GenericCfg implements ReloadableConfiguration 
         final FileConfiguration outFile = new YamlConfiguration();
 
         setString(Strings.SERVER_PREFIX, file, outFile, "server.prefix", "$8[$aE$9S$8]$7 ");
-        setString(Strings.BALANCE_TOP_TAG, file, outFile, "server.baltop", "$8[$2Magnata$8]");
         setString(Strings.BOTTLE_EXP_NAME, file, outFile, "server.bottle-exp", "$8[$eGarrafa de EXP$8]");
         setString(Strings.SPAWNERS_FORMAT, file, outFile, "server.spawner-format", "$8[$e%spawner_name% $7Spawner$8]");
         setString(Strings.NOT_SUPPORTED, file, outFile, "server.no-supported", "$7Sem suporte");
         setString(Strings.CLEAR_STRING, file, outFile, "server.clear-str", "clear");
         setString(Strings.NO_REGISTER, file, outFile, "server.no-registered", "Sem registro");
-        setString(Strings.DATA_FORMAT, file, outFile, "server.data-format", "dd/MM/yyyy HH:mm");
         setString(Strings.MONEY_LANGUAGE, file, outFile, "server.money.language", "pt");
         setString(Strings.MONEY_COUNTRY, file, outFile, "server.money.country", "BR");
         setString(Strings.PERM_CHAT_COLOR, file, outFile, "perm.chat-color", "eternia.chat.color");
@@ -70,8 +68,6 @@ public class ConstantsCfg extends GenericCfg implements ReloadableConfiguration 
         setString(Strings.PERM_MONEY_OTHER, file, outFile, "perm.money-other", "eternia.money.admin");
         setString(Strings.PERM_CHAT_BYPASS_PROTECTION, file, outFile, "perm.chat-bypass-protection", "eternia.chat.bypass");
         setString(Strings.PERM_HOME_COMPASS, file, outFile, "perm.sethome-compass", "eternia.sethome.compass");
-        setString(Strings.AFK_PLACEHOLDER, file, outFile, "placeholders.afk", "$9 AFK");
-        setString(Strings.GOD_PLACEHOLDER, file, outFile, "placeholders.godmode", "$9 GOD");
         setString(Strings.SHOW_ITEM_PLACEHOLDER, file, outFile, "placeholders.show-item", "[item]");
         setString(Strings.CONS_ADVENTURE, file, outFile, "generics.gm.adventure", "aventura");
         setString(Strings.CONS_CREATIVE, file, outFile, "generics.gm.creative", "criativo");

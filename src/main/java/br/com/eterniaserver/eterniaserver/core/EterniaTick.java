@@ -26,7 +26,6 @@ public class EterniaTick extends BukkitRunnable {
             if (player != null) {
                 User user = new User(player);
 
-                getPlayersInTp(user);
                 refreshPlayers(user);
             }
         }
@@ -35,38 +34,6 @@ public class EterniaTick extends BukkitRunnable {
     private void refreshPlayers(User user) {
         EterniaServer.getUserAPI().setNameOnline(user.getName(), user.getUUID());
         EterniaServer.getUserAPI().setNameOnline(user.getDisplayName(), user.getUUID());
-    }
-
-    private void getPlayersInTp(User user) {
-
-        if (!user.isTeleporting()) {
-            return;
-        }
-
-        final PlayerTeleport playerTeleport = EterniaServer.getUserAPI().getPlayerTeleport(user.getUUID());
-
-        if (user.hasPermission(plugin.getString(Strings.PERM_TIMING_BYPASS))) {
-            PaperLib.teleportAsync(user.getPlayer(), playerTeleport.getWantLocation());
-            user.getPlayer().sendMessage(playerTeleport.getMessage());
-            user.removeFromTeleporting();
-            return;
-        }
-
-        if (playerTeleport.getCountdown() <= 0) {
-            PaperLib.teleportAsync(user.getPlayer(), playerTeleport.getWantLocation());
-            user.getPlayer().sendMessage(playerTeleport.getMessage());
-            user.removeFromTeleporting();
-            return;
-        }
-
-        if (playerTeleport.hasMoved()) {
-            plugin.sendMessage(user.getPlayer(), Messages.TELEPORT_MOVED);
-            user.removeFromTeleporting();
-            return;
-        }
-
-        plugin.sendMessage(user.getPlayer(), Messages.TELEPORT_TIMING, String.valueOf(playerTeleport.getCountdown()));
-        playerTeleport.decreaseCountdown();
     }
 
 }

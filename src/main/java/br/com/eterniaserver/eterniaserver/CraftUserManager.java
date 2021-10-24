@@ -5,7 +5,7 @@ import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.core.queries.CreateTable;
 import br.com.eterniaserver.eternialib.core.queries.Insert;
 import br.com.eterniaserver.eternialib.core.queries.Select;
-import br.com.eterniaserver.eterniaserver.api.UserManager;
+import br.com.eterniaserver.eterniaserver.api.interfaces.UserManager;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
@@ -68,7 +68,7 @@ final class CraftUserManager implements UserManager {
                 // Chat Module
                 playerProfile.setMuted(resultSet.getLong("muted"));
 
-                playerNameList.add(playerProfile.getPlayerName());
+                playerNameList.add(playerProfile.getName());
                 playerProfileMap.put(uuid, playerProfile);
             }
         } catch (SQLException ignored) {

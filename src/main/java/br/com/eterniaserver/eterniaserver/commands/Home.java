@@ -13,6 +13,7 @@ import br.com.eterniaserver.eternialib.core.queries.Insert;
 import br.com.eterniaserver.eternialib.core.queries.Update;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.objects.LocationQuery;
 import br.com.eterniaserver.eterniaserver.objects.User;
@@ -59,14 +60,14 @@ public class Home extends BaseCommand {
     public void onHome(Player player, String nome, @Optional OnlinePlayer targets) {
         User user = new User(player);
 
-        if (user.isTeleporting()) {
+        if (plugin.locationManager().getTeleport(user.getUUID()) != null) {
             plugin.sendMessage(player, Messages.SERVER_IN_TELEPORT);
         }
 
         if (targets == null) {
             Location location = plugin.getLocation(nome.toLowerCase() + "." + user.getName());
             if (locationExists(location, player, nome)) {
-                user.putInTeleport(new PlayerTeleport(plugin, player, location, plugin.getMessage(Messages.HOME_GOING, true, nome)));
+                plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), location, plugin.getMessage(Messages.HOME_GOING, true, nome)));
             }
             return;
         }
@@ -74,7 +75,7 @@ public class Home extends BaseCommand {
         if (user.hasPermission(plugin.getString(Strings.PERM_HOME_OTHER))) {
             Location location = plugin.getLocation(nome.toLowerCase() + "." + targets.getPlayer().getName());
             if (locationExists(location, player, nome)) {
-                user.putInTeleport(new PlayerTeleport(plugin, player, location, plugin.getMessage(Messages.HOME_GOING, true, nome)));
+                plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), location, plugin.getMessage(Messages.HOME_GOING, true, nome)));
             }
             return;
         }

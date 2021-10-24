@@ -32,7 +32,6 @@ public class CraftUser {
         this.plugin = plugin;
     }
 
-    private final Map<UUID, PlayerTeleport> teleports = new HashMap<>();
     private final Map<UUID, PlayerProfile> playerProfiles = new HashMap<>();
     private final Map<UUID, UUID> tpaRequests = new HashMap<>();
     private final Map<UUID, Long> tpaTime = new HashMap<>();
@@ -312,41 +311,6 @@ public class CraftUser {
     }
 
     /**
-     * Get a PlayerTeleport searching from uuid. Can return null
-     * @param uuid of user
-     * @return PlayerTeleport of user
-     */
-    public PlayerTeleport getPlayerTeleport(UUID uuid) {
-        return teleports.get(uuid);
-    }
-
-    /**
-     * Checks if the user are teleporting
-     * @param uuid of user
-     * @return if the user are teleporting
-     */
-    public boolean areTeleporting(UUID uuid) {
-        return teleports.containsKey(uuid);
-    }
-
-    /**
-     * Remove the PlayerTeleport of user
-     * @param uuid of user
-     */
-    public void removeFromTeleport(UUID uuid) {
-        teleports.remove(uuid);
-    }
-
-    /**
-     * Set a PlayerTeleport to a user
-     * @param uuid of user
-     * @param playerTeleport of user teleport
-     */
-    public void putInTeleport(UUID uuid, PlayerTeleport playerTeleport) {
-        teleports.put(uuid, playerTeleport);
-    }
-
-    /**
      * Remove the user from memory
      * @param uuid'
      */
@@ -468,7 +432,7 @@ public class CraftUser {
             player.setDisplayName(playerName);
 
             Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
-            update.set.set("player_display", playerProfile.getPlayerDisplayName());
+            update.set.set("player_display", playerProfile.getDisplayName());
             update.where.set("uuid", uuid.toString());
             SQL.executeAsync(update);
             return;
@@ -483,14 +447,14 @@ public class CraftUser {
         plugin.sendMessage(player, Messages.CHAT_NICK_CHANGE, nick);
 
         Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));
-        update.set.set("player_display", playerProfile.getPlayerDisplayName());
+        update.set.set("player_display", playerProfile.getDisplayName());
         update.where.set("uuid", uuid.toString());
         SQL.executeAsync(update);
     }
 
     public void updateProfile(final PlayerProfile playerProfile, final UUID uuid, final String playerName) {
         playerProfile.setLastLogin(System.currentTimeMillis());
-        if (!playerProfile.getPlayerName().equals(playerName)) {
+        if (!playerProfile.getName().equals(playerName)) {
             playerProfile.setPlayerName(playerName);
 
             Update update = new Update(plugin.getString(Strings.TABLE_PLAYER));

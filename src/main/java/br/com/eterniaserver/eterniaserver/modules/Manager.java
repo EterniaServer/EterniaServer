@@ -1,12 +1,13 @@
 package br.com.eterniaserver.eterniaserver.modules;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.Module;
+import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.core.CoreManager;
 import br.com.eterniaserver.eterniaserver.modules.elevator.ElevatorManager;
 import br.com.eterniaserver.eterniaserver.modules.experience.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.modules.glow.GlowManager;
+import br.com.eterniaserver.eterniaserver.modules.placeholderapi.PlaceHolderAPIManager;
 import br.com.eterniaserver.eterniaserver.modules.reward.RewardManager;
 import br.com.eterniaserver.eterniaserver.modules.spawner.SpawnerManager;
 
@@ -25,6 +26,7 @@ public class Manager {
         if (plugin.getBoolean(Booleans.MODULE_ELEVATOR)) modules.add(new ElevatorManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_REWARDS)) modules.add(new RewardManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_GLOW)) modules.add(new GlowManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_PAPI)) modules.add(new PlaceHolderAPIManager(plugin));
 
         loadModules();
     }

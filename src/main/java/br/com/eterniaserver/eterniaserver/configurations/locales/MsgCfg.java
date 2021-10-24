@@ -103,7 +103,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.TELEPORT_SENT, "Você enviou um pedido de tpa para $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(Messages.TELEPORT_RECEIVED, "Você recebeu um pedido de tpa de $3{1}$8.", "0: nome do jogador; 1: apelido do jogador");
         this.addDefault(Messages.TELEPORT_MOVED, "Você se moveu e por isso o teleporte foi cancelado$8.", null);
-        this.addDefault(Messages.TELEPORT_TIMING, "Você irá ser teleportado em $3{0}$7 segundos$8.", "0: tempo para ser teleportado");
         this.addDefault(Messages.TELEPORT_BACK_NOT_TP, "Você ainda não se teleportou para usar esse comando$8.", null);
         this.addDefault(Messages.TELEPORT_BACK_WITH_COST, "Você foi teleportado até o seu local anterior por $3{0}$8.", "0: custo do back");
         this.addDefault(Messages.TELEPORT_BACK_WITHOUT_COST, "Você foi teleportado até o seu local anterior de graça$8.", null);

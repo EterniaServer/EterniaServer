@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.handlers;
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.core.queries.Update;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
@@ -178,12 +179,12 @@ public class PlayerHandler implements Listener {
             return false;
         }
 
-        if (user.isTeleporting()) {
+        if (plugin.locationManager().getTeleport(user.getUUID()) != null) {
             plugin.sendMessage(user.getPlayer(), Messages.SERVER_IN_TELEPORT);
             return false;
         }
 
-        user.putInTeleport(new PlayerTeleport(plugin, user.getPlayer(), new Location(
+        plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), new Location(
                 Bukkit.getWorld(container.get(plugin.getKey(ItemsKeys.TAG_WORLD), PersistentDataType.STRING)),
                 container.get(plugin.getKey(ItemsKeys.TAG_COORD_X), PersistentDataType.DOUBLE),
                 container.get(plugin.getKey(ItemsKeys.TAG_COORD_Y), PersistentDataType.DOUBLE),

@@ -14,6 +14,7 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
@@ -41,14 +42,19 @@ final class Commands {
         @CommandPermission("%AFK_PERM")
         public void onDefault(Player player) {
             final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+            final AfkStatusEvent event = new AfkStatusEvent(player, !playerProfile.getAfk(), AfkStatusEvent.Cause.COMMAND);
+            plugin.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled()) return;
 
             if (playerProfile.getAfk()) {
-                Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_LEAVE, true, playerProfile.getPlayerName(), playerProfile.getPlayerDisplayName()));
+                Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_LEAVE, true, playerProfile.getName(), playerProfile.getDisplayName()));
                 playerProfile.setAfk(false);
                 return;
             }
 
-            Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_ENTER, true, playerProfile.getPlayerName(), playerProfile.getPlayerDisplayName()));
+            Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_ENTER, true, playerProfile.getName(), playerProfile.getDisplayName()));
+            playerProfile.setLocation(player.getLocation());
             playerProfile.setAfk(true);
         }
     }

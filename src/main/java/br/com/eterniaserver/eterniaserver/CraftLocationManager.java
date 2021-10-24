@@ -4,8 +4,9 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.SQL;
 import br.com.eterniaserver.eternialib.core.queries.CreateTable;
 import br.com.eterniaserver.eternialib.core.queries.Select;
-import br.com.eterniaserver.eterniaserver.api.LocationManager;
+import br.com.eterniaserver.eterniaserver.api.interfaces.LocationManager;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,10 +18,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 final class CraftLocationManager implements LocationManager {
 
+    private final Map<UUID, PlayerTeleport> teleportsMap = new HashMap<>();
     private final Map<String, Location> locationsMap = new HashMap<>();
 
     CraftLocationManager(final EterniaServer plugin) {
@@ -77,5 +80,20 @@ final class CraftLocationManager implements LocationManager {
     @Override
     public void removeLocation(String name) {
         locationsMap.remove(name);
+    }
+
+    @Override
+    public PlayerTeleport getTeleport(UUID uuid) {
+        return teleportsMap.get(uuid);
+    }
+
+    @Override
+    public void putTeleport(UUID uuid, PlayerTeleport playerTeleport) {
+        teleportsMap.put(uuid, playerTeleport);
+    }
+
+    @Override
+    public void removeTeleport(UUID uuid) {
+        teleportsMap.remove(uuid);
     }
 }

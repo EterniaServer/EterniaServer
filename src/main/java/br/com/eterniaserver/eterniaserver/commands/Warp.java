@@ -13,6 +13,7 @@ import br.com.eterniaserver.eternialib.core.queries.Delete;
 import br.com.eterniaserver.eternialib.core.queries.Insert;
 import br.com.eterniaserver.eterniaserver.Constants;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.objects.LocationQuery;
 import br.com.eterniaserver.eterniaserver.objects.User;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -39,7 +40,7 @@ public class Warp extends BaseCommand {
     public void onSpawn(Player player, @Optional OnlinePlayer targets) {
         User user = new User(player);
 
-        if (user.isTeleporting()) {
+        if (plugin.locationManager().getTeleport(player.getUniqueId()) != null) {
             plugin.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             return;
         }
@@ -48,7 +49,7 @@ public class Warp extends BaseCommand {
 
         if (targets == null) {
             if (spawnExists(location, player)) {
-                user.putInTeleport(new PlayerTeleport(plugin, player, location, plugin.getMessage(Messages.WARP_SPAWN_TELEPORTED, true)));
+                plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), location, plugin.getMessage(Messages.WARP_SPAWN_TELEPORTED, true)));
             }
             return;
         }
@@ -82,7 +83,7 @@ public class Warp extends BaseCommand {
     public void onWarp(Player player, String nome) {
         User user = new User(player);
 
-        if (user.isTeleporting()) {
+        if (plugin.locationManager().getTeleport(player.getUniqueId()) != null) {
             plugin.sendMessage(player, Messages.SERVER_IN_TELEPORT);
             return;
         }
@@ -95,7 +96,7 @@ public class Warp extends BaseCommand {
         Location location = plugin.getLocation("warp." + nome.toLowerCase());
 
         if (warpExists(location, player, nome)) {
-            user.putInTeleport(new PlayerTeleport(plugin, player, location, plugin.getMessage(Messages.WARP_TELEPORTED, true, nome)));
+            plugin.locationManager().putTeleport(user.getUUID(), new PlayerTeleport(plugin.getInteger(Integers.COOLDOWN), location, plugin.getMessage(Messages.WARP_TELEPORTED, true, nome)));
         }
     }
 

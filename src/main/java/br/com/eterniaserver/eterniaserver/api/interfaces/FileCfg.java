@@ -1,4 +1,4 @@
-package br.com.eterniaserver.eterniaserver.api;
+package br.com.eterniaserver.eterniaserver.api.interfaces;
 
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 

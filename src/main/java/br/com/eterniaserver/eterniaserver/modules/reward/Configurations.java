@@ -1,8 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.reward;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.CommandsCfg;
-import br.com.eterniaserver.eterniaserver.api.FileCfg;
+import br.com.eterniaserver.eterniaserver.api.interfaces.CommandsCfg;
+import br.com.eterniaserver.eterniaserver.api.interfaces.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
