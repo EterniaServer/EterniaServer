@@ -36,7 +36,7 @@ import java.util.List;
 
 public class EterniaServer extends CraftEterniaServer {
 
-    private final MiniMessage miniMessage = MiniMessage.builder().build();
+    private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     private final int[] integers = new int[Integers.values().length];
     private final int[] chestShopBuyRoof = new int[Material.values().length];

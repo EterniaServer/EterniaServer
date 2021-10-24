@@ -23,8 +23,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Generic extends BaseCommand {
@@ -39,13 +37,11 @@ public class Generic extends BaseCommand {
     private final ItemStack diamondi = new ItemStack(Material.DIAMOND);
     private final ItemStack esmeraldai = new ItemStack(Material.EMERALD);
 
-    private final SimpleDateFormat sdf;
     private final Runtime getRuntime;
 
     public Generic(final EterniaServer plugin) {
         this.plugin = plugin;
         this.getRuntime = new Runtime();
-        this.sdf = new SimpleDateFormat(plugin.getString(Strings.DATA_FORMAT));
     }
 
     @CommandAlias("%sendmessage")
@@ -263,8 +259,8 @@ public class Generic extends BaseCommand {
         for (String object : plugin.getStringList(Lists.PROFILE_CUSTOM_MESSAGES)) {
             player.sendMessage(plugin.getColor(plugin.setPlaceholders(targets, object)));
         }
-        player.sendMessage(plugin.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(target.getFirstLogin()))));
-        player.sendMessage(plugin.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(target.getLastLogin()))));
+        // player.sendMessage(plugin.getMessage(Messages.PROFILE_REGISTER_DATA, false, sdf.format(new Date(target.getFirstLogin()))));
+        // player.sendMessage(plugin.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(target.getLastLogin()))));
         player.sendMessage(plugin.getMessage(Messages.PROFILE_ACCOUNT_HOURS, false, hms));
         player.sendMessage(plugin.getMessage(Messages.PROFILE_TITLE, false));
     }

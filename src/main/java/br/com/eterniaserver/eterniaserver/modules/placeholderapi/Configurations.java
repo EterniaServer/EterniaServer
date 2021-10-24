@@ -51,12 +51,12 @@ final class Configurations {
 
         @Override
         public String getFolderPath() {
-            return Constants.SPAWNER_MODULE_FOLDER_PATH;
+            return Constants.PAPI_MODULE_FOLDER_PATH;
         }
 
         @Override
         public String getFilePath() {
-            return Constants.SPAWNER_CONFIG_FILE_PATH;
+            return Constants.PAPI_CONFIG_FILE_PATH;
         }
 
         @Override

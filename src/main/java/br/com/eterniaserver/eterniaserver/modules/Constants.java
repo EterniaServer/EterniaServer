@@ -34,4 +34,7 @@ public class Constants {
     public static final String GLOW_COMMAND_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "glow-cmd.yml";
     public static final String GLOW_MESSAGE_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "glow-msg.yml";
 
+    public static final String PAPI_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "papi";
+    public static final String PAPI_CONFIG_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "papi.yml";
+
 }
