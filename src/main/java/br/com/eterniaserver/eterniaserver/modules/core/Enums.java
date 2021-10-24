@@ -9,6 +9,7 @@ final class Enums {
         GAMEMODE_ADVENTURE,
         GAMEMODE_SPECTATOR,
         AFK,
+        GODMODE,
     }
 
 }

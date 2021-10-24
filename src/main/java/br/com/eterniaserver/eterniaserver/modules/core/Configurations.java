@@ -72,6 +72,13 @@ final class Configurations {
                     " Fique ausente",
                     "eternia.afk"
             );
+            commandsLocalesArray[Enums.Commands.GODMODE.ordinal()] = new CommandI18n(
+                    Enums.Commands.GODMODE.name(),
+                    "god",
+                    " (opcional) <jogador>",
+                    " Ative ou desative seu God Mode, ou o de outro jogador",
+                    "eternia.god"
+            );
 
             syncToFile();
             saveConfiguration(true);
@@ -239,6 +246,30 @@ final class Configurations {
             addMessage(Messages.TELEPORT_TIMING,
                     "Você irá ser teleportado em <color:#00aaaa>{1} segundos<color:#555555>.",
                     "0: tempo restante até ser teleportado (em segundos)"
+            );
+            addMessage(Messages.GODMODE_ENABLED,
+                    "Você ativou o God Mode<color:#555555>.",
+                    ""
+            );
+            addMessage(Messages.GODMODE_DISABLED,
+                    "Vocẽ desativou o God Mode<color:#555555>.",
+                    ""
+            );
+            addMessage(Messages.GODMODE_DISABLED_TO,
+                    "Você desativou o God Mode de <color:#00aaaa>{1}<color:#555555>.",
+                    "0: nome do jogador; 1: apelido do jogador"
+            );
+            addMessage(Messages.GODMODE_DISABLED_BY,
+                    "God Mode desativado por <color:#00aaaa>{1}<color:#555555>.",
+                    "0: nome do jogador; 1: apelido do jogador"
+            );
+            addMessage(Messages.GODMODE_ENABLED_TO,
+                    "Você ativou o God Mode de <color:#00aaaa>{1}<color:#555555>.",
+                    "0: nome do jogador; 1: apelido do jogador"
+            );
+            addMessage(Messages.GODMODE_ENABLED_BY,
+                    "God Mode ativado por <color:#00aaaa>{1}<color:#555555>.",
+                    "0: nome do jogador; 1: apelido do jogador"
             );
 
             saveConfiguration(true);

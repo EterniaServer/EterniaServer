@@ -17,7 +17,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
-import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -419,10 +418,6 @@ public class CraftUser {
                 }
             }
         }
-    }
-
-    public String getGodeModePlaceholder(final UUID uuid) {
-        return getGodMode(uuid) ? plugin.getString(Strings.GOD_PLACEHOLDER) : "";
     }
 
     public void changeNick(String nick, final Player player, final String playerName, final UUID uuid, final PlayerProfile playerProfile) {

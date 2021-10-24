@@ -46,6 +46,7 @@ public class CoreManager implements Module {
     public void loadCommands() {
         CommandManager.registerCommand(new Commands.EGameMode(plugin));
         CommandManager.registerCommand(new Commands.Afk(plugin));
+        CommandManager.registerCommand(new Commands.GodMode(plugin));
     }
 
     @Override

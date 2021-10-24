@@ -44,7 +44,6 @@ public class Managers {
         loadElevatorManager();
         loadShopManager();
         loadHomesManager();
-        loadEterniaTick();
         loadClearManager();
         loadKitManager();
         loadTeleportsManager();
@@ -186,10 +185,6 @@ public class Managers {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_KITS), "Kits")) {
             CommandManager.registerCommand(new Kit(plugin));
         }
-    }
-
-    private void loadEterniaTick() {
-        new EterniaTick(plugin).runTaskTimer(plugin, 20L, (long) plugin.getInteger(Integers.PLUGIN_TICKS) * 20L);
     }
 
     private void loadClearManager() {

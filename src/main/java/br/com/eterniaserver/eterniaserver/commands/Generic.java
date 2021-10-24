@@ -72,19 +72,6 @@ public class Generic extends BaseCommand {
         plugin.sendMessage(player, Messages.SPEED_SET, String.valueOf((float) (speed / 10.0D)));
     }
 
-    @CommandAlias("%god")
-    @Syntax("%god_syntax")
-    @Description("%god_description")
-    @CommandPermission("%god_perm")
-    public void onGod(Player player, @Optional OnlinePlayer targets) {
-        if (targets == null) {
-            changeGameMode(new User(player));
-            return;
-        }
-
-        changeGameMode(new User(targets.getPlayer()));
-    }
-
     @CommandAlias("%profile")
     @CommandPermission("%profile_perm")
     @Syntax("%profile_syntax")
@@ -280,15 +267,6 @@ public class Generic extends BaseCommand {
         player.sendMessage(plugin.getMessage(Messages.PROFILE_LAST_LOGIN, false, sdf.format(new Date(target.getLastLogin()))));
         player.sendMessage(plugin.getMessage(Messages.PROFILE_ACCOUNT_HOURS, false, hms));
         player.sendMessage(plugin.getMessage(Messages.PROFILE_TITLE, false));
-    }
-
-    public void changeGameMode(User user) {
-        user.changeGodModeState();
-        if (user.getGodMode()) {
-            plugin.sendMessage(user.getPlayer(), Messages.GODMODE_ENABLED);
-            return;
-        }
-        plugin.sendMessage(user.getPlayer(), Messages.GODMODE_DISABLED);
     }
 
 }

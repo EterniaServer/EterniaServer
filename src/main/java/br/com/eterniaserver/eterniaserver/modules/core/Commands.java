@@ -142,6 +142,49 @@ final class Commands {
                 default -> plugin.getString(Strings.CONS_SPECTATOR);
             };
         }
+    }
+
+    @CommandAlias("%GODMODE")
+    static class GodMode extends BaseCommand {
+
+        private final EterniaServer plugin;
+
+        public GodMode(final EterniaServer plugin) {
+            this.plugin = plugin;
+        }
+
+        @Default
+        @CatchUnknown
+        @Syntax("%GODMODE_SYNTAX")
+        @Description("%GODMODE_DESCRIPTION")
+        @CommandPermission("%GODMODE_PERM")
+        public void onGodMode(Player player, @Optional OnlinePlayer onlineTarget) {
+            PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+
+            if (onlineTarget != null) {
+                final Player target = onlineTarget.getPlayer();
+                PlayerProfile targetProfile = plugin.userManager().get(target.getUniqueId());
+
+                targetProfile.setGod(!targetProfile.getGod());
+                if (targetProfile.getGod()) {
+                    plugin.sendMiniMessages(player, Messages.GODMODE_ENABLED_TO, targetProfile.getName(), targetProfile.getDisplayName());
+                    plugin.sendMiniMessages(target, Messages.GODMODE_ENABLED_BY, playerProfile.getName(), playerProfile.getDisplayName());
+                    return;
+                }
+
+                plugin.sendMiniMessages(player, Messages.GODMODE_DISABLED_TO, targetProfile.getName(), targetProfile.getDisplayName());
+                plugin.sendMiniMessages(target, Messages.GODMODE_DISABLED_BY, playerProfile.getName(), playerProfile.getDisplayName());
+                return;
+            }
+
+            playerProfile.setGod(!playerProfile.getGod());
+            if (playerProfile.getGod()) {
+                plugin.sendMiniMessages(player, Messages.GODMODE_ENABLED);
+                return;
+            }
+
+            plugin.sendMiniMessages(player, Messages.GODMODE_DISABLED);
+        }
 
     }
 

@@ -278,14 +278,6 @@ public class User {
         return player.getLocation();
     }
 
-    public String getGodeModegetGodeModePlaceholderder() {
-        return EterniaServer.getUserAPI().getGodeModePlaceholder(uuid);
-    }
-
-    public String getFirstLoginPlaceholder() {
-        return EterniaServer.getUserAPI().getFirstLoginPlaceholder(playerProfile);
-    }
-
     public long getAndUpdateTimePlayed() {
         return playerProfile.updateTimePlayed();
     }

@@ -158,8 +158,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.PROFILE_REGISTER_DATA, "$7Registro$8: $3{0}", "0: data de registro");
         this.addDefault(Messages.PROFILE_LAST_LOGIN, "$7Ultimo login$8: $3{0}", "0: ultimo login");
         this.addDefault(Messages.PROFILE_ACCOUNT_HOURS, "$7Horas de jogo$8: $3{0}", "0: horas registradas");
-        this.addDefault(Messages.GODMODE_ENABLED, "Você ativou o god mode$8.", null);
-        this.addDefault(Messages.GODMODE_DISABLED, "Você desativou o god mode$8.", null);
         this.addDefault(Messages.SUICIDE_BROADCAST, "$3{1} disse$8: $3{2}$7 e logo após se matou$8.", "0: nome do jogador; 1: apelido do jogador; 2: mensagem");
         this.addDefault(Messages.LIGHTNING_CURSOR, "THOR$8! (pausa dramática) $7FILHO DE ODIM$8!", null);
         this.addDefault(Messages.LIGHTNING_TARGET, "Você castigou $3{1}$7 com as forças divinas$8.", "0: nome do jogador; 1: apelido do jogador");
