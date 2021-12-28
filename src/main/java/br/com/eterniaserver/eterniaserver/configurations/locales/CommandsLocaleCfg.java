@@ -65,10 +65,6 @@ public class CommandsLocaleCfg {
         this.addDefault(Commands.DELHOME, "delhome", "eternia.delhome", " <home>", " Delete uma home sua", null);
         this.addDefault(Commands.HOMES, "homes", "eternia.homes", " <jogador>", " Veja a sua lista de homes ou a de outro jogador", null);
         this.addDefault(Commands.SETHOME, "sethome", "eternia.sethome", " <home>", " Defina uma nova home ou uma bússula de teleporte", null);
-        this.addDefault(Commands.HAT, "hat", "eternia.hat", null, " Coloque seu caçapete", null);
-        this.addDefault(Commands.WORKBENCH, "workbench", "eternia.workbench", null, " Abra uma bancada de trabalho virtual", null);
-        this.addDefault(Commands.OPENINV, "openinv", "eternia.openinv", " <jogador>", " Abra o inventário de um jogador", null);
-        this.addDefault(Commands.ENDERCHEST, "enderchest", "eternia.enderchest", " <jogador>", " Abra o seu enderchest ou o de um jogador", null);
         this.addDefault(Commands.ITEM, "item", "eternia.item", " <página>", " Ajuda para o sistema de Items", null);
         this.addDefault(Commands.ITEM_NBT, "nbt", "eternia.item.nbt", " <página>", " Ajuda para o sistema de NBT de Items", null);
         this.addDefault(Commands.ITEM_NBT_ADDSTRING, "addstring", "eternia.item.nbt", " <chave> <valor>", " Adiciona uma chave e um valor NBT ao item", null);

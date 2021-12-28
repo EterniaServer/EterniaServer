@@ -150,7 +150,6 @@ public class Managers {
 
     private void loadGenericManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_GENERIC), "Generic")) {
-            CommandManager.registerCommand(new Inventory(plugin));
             CommandManager.registerCommand(new Item(plugin));
         }
         CommandManager.registerCommand(new Generic(plugin));

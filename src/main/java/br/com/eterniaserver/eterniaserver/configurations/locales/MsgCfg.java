@@ -123,7 +123,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.HOME_LIST, "Suas homes$8: $3{0}$8.", "0: lista de homes");
         this.addDefault(Messages.HOME_ITEM_NAME, "$8[$e{0}$8]", "0: nome da home");
         this.addDefault(Messages.HOME_NO_PERM_TO_COMPASS, "Você excedeu o limite de homes e não tem permissão para salvar em bussulas$8.", null);
-        this.addDefault(Messages.ITEM_NOT_FOUND, "Nenhum item foi encontrado em sua mão$8.", null);
         this.addDefault(Messages.ITEM_NBT_ADDKEY, "Foi adicionado a chave $3{0}$7 com valor $3{1}$7 ao item$8.", "0: chave; 1: valor");
         this.addDefault(Messages.ITEM_NBT_DEFINE_COMMAND, "Você definiu o comando para o item executar$8, $7lembre de definir se deve ser executado pelo console ou não$8.", null);
         this.addDefault(Messages.ITEM_NBT_RUN_IN_CONSOLE, "Você se o comando deve ser executado no console como$8: $3{0}$8.", "0: valor");
@@ -137,7 +136,6 @@ public class MsgCfg implements ReloadableConfiguration {
         this.addDefault(Messages.ITEM_ADD_LORE, "Foi adicionada a linha $3{0}$7 a lore$8.", "0: nova linha de lore");
         this.addDefault(Messages.ITEM_SET_LORE, "A lore foi limpa e definida como$3 {0}$8.", "0: lore");
         this.addDefault(Messages.ITEM_SET_NAME, "O nome do item foi definido como $3{0}$8.", "0: nome do item");
-        this.addDefault(Messages.ITEM_HELMET, "Você equipou seu caçapete$8.", null);
         this.addDefault(Messages.ITEM_SET_CUSTOM, "Você atribuiu a CustomModelData $3{0} $7ao item$8.", "0: id da custom model data");
         this.addDefault(Messages.SPEED_SET, "Sua velocidade foi definida para $3{0}$8.", "0: nova velocidade");
         this.addDefault(Messages.SPEED_LIMIT, "Você precisa escolher um valor entre $31 $7e $310$8.", null);

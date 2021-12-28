@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
 import br.com.eterniaserver.eternialib.CommandManager;
+import br.com.eterniaserver.eternialib.core.commands.CommandConfirm;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
@@ -48,6 +49,7 @@ public class CoreManager implements Module {
         CommandManager.registerCommand(new Commands.EGameMode(plugin));
         CommandManager.registerCommand(new Commands.Afk(plugin));
         CommandManager.registerCommand(new Commands.GodMode(plugin));
+        CommandManager.registerCommand(new Commands.Inventory(plugin));
     }
 
     @Override

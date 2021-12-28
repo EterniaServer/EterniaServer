@@ -4,6 +4,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.api.interfaces.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Commands;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
@@ -82,6 +83,34 @@ final class Configurations {
                     " Ative ou desative seu God Mode, ou o de outro jogador",
                     "eternia.god"
             );
+            commandsLocalesArray[Enums.Commands.HAT.ordinal()] = new CommandI18n(
+                    Enums.Commands.HAT.name(),
+                    "hat|capacete",
+                    "",
+                    " Coloque seu caçapete",
+                    "eternia.hat"
+            );
+            commandsLocalesArray[Enums.Commands.WORKBENCH.ordinal()] = new CommandI18n(
+                    Enums.Commands.WORKBENCH.name(),
+                    "workbench|wk",
+                    "",
+                    " Abra uma bancada de trabalho virtual",
+                    "eternia.workbench"
+            );
+            commandsLocalesArray[Enums.Commands.OPENINV.ordinal()] = new CommandI18n(
+                    Enums.Commands.OPENINV.name(),
+                    "openinv",
+                    " <jogador>",
+                    " Abra o inventário de um jogador",
+                    "eternia.openinv"
+            );
+            commandsLocalesArray[Enums.Commands.ENDERCHEST.ordinal()] = new CommandI18n(
+                    Enums.Commands.ENDERCHEST.name(),
+                    "enderchest",
+                    " <jogador>",
+                    " Abra o seu enderchest ou o de um jogador",
+                    "eternia.enderchest"
+            );
 
             syncToFile();
             saveConfiguration(true);
@@ -158,6 +187,7 @@ final class Configurations {
             strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
             strings[Strings.PERM_TIMING_BYPASS.ordinal()] = inFile.getString("teleport.timing-bypass", "eternia.timing.bypass");
             strings[Strings.GUI_SECRET.ordinal()] = inFile.getString("secret.value", String.format("#%06x", random.nextInt(0xffffff + 1)));
+            strings[Strings.PERM_EC_OTHER.ordinal()] = inFile.getString("permissions.ec-other", "eternia.enderchest.other");
             // Lists
             final List<String> list = inFile.getStringList("critical-configs.blocked-commands");
             stringLists.set(Lists.BLACKLISTED_COMMANDS.ordinal(), list.isEmpty() ? List.of("/op", "/deop", "/stop") : list);
@@ -183,6 +213,7 @@ final class Configurations {
             outFile.set("secret.value", strings[Strings.GUI_SECRET.ordinal()]);
             outFile.set("secret.info-pt", "Não exponha esse código hex");
             outFile.set("secret.info-en", "Don't expose this hex code");
+            outFile.set("permissions.ec-other", strings[Strings.PERM_EC_OTHER.ordinal()]);
             // Lists
             outFile.set("critical-configs.blocked-commands", plugin.stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
 
@@ -194,6 +225,7 @@ final class Configurations {
 
             namespacedKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(plugin, "eternia_function");
             namespacedKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(plugin, "eternia_int_value");
+
             namespacedKeys[ItemsKeys.CASH_GUI_NAME.ordinal()] = new NamespacedKey(plugin, "cash_gui_name");
             namespacedKeys[ItemsKeys.CASH_ITEM_COST.ordinal()] = new NamespacedKey(plugin, "cash_item_cost");
             namespacedKeys[ItemsKeys.CASH_ITEM_MESSAGE.ordinal()] = new NamespacedKey(plugin, "cash_item_message");
@@ -305,6 +337,18 @@ final class Configurations {
             addMessage(Messages.GODMODE_ENABLED_BY,
                     "God Mode ativado por <color:#00aaaa>{1}<color:#555555>.",
                     "0: nome do jogador; 1: apelido do jogador"
+            );
+            addMessage(Messages.SERVER_NO_PERM,
+                    "Você não possui permissão para isso<color:#555555>.",
+                    ""
+            );
+            addMessage(Messages.ITEM_NOT_FOUND,
+                    "Nenhum item foi encontrado em sua mão<color:#555555>.",
+                    ""
+            );
+            addMessage(Messages.ITEM_HELMET,
+                    "Você equipou seu caçapete<color:#555555>.",
+                    ""
             );
 
             saveConfiguration(true);

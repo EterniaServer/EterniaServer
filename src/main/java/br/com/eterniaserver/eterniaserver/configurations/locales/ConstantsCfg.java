@@ -60,7 +60,6 @@ public class ConstantsCfg extends GenericCfg implements ReloadableConfiguration 
         setString(Strings.PERM_SPAWN_OTHER, file, outFile, "perm.spawn-other", "eternia.spawn.other");
         setString(Strings.PERM_NICK_OTHER, file, outFile, "perm.nickname-other", "eternia.nickname.others");
         setString(Strings.PERM_KIT_PREFIX, file, outFile, "perm.kit-prefix", "eternia.kit.");
-        setString(Strings.PERM_EC_OTHER, file, outFile, "perm.ec-other", "eternia.enderchest.other");
         setString(Strings.PERM_HOME_OTHER, file, outFile, "perm.home-other", "eternia.home.other");
         setString(Strings.PERM_SETHOME_LIMIT_PREFIX, file, outFile, "perm.sethome-limit-prefix", "eternia.sethome.");
         setString(Strings.PERM_FEED_OTHER, file, outFile, "perm.feed-other", "eternia.feed.other");

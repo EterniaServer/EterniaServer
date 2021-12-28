@@ -10,6 +10,10 @@ final class Enums {
         GAMEMODE_SPECTATOR,
         AFK,
         GODMODE,
+        HAT,
+        WORKBENCH,
+        ENDERCHEST,
+        OPENINV,
     }
 
 }

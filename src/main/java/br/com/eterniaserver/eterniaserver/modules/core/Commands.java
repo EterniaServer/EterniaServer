@@ -21,10 +21,76 @@ import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 final class Commands {
+
+    static class Inventory extends BaseCommand {
+
+        private final EterniaServer plugin;
+
+        public Inventory(EterniaServer plugin) {
+            this.plugin = plugin;
+        }
+
+        @CommandAlias("%WORKBENCH")
+        @Description("%WORKBENCH_DESCRIPTION")
+        @CommandPermission("%WORKBENCH_PERM")
+        public void onWorkbench(Player player) {
+            player.openWorkbench(null, true);
+        }
+
+        @CommandAlias("%OPENINV")
+        @CommandCompletion("@players")
+        @Syntax("%OPENINV_SYNTAX")
+        @Description("%OPENINV_DESCRIPTION")
+        @CommandPermission("%OPENINV_PERM")
+        public void onOpenInventory(Player player, OnlinePlayer target) {
+            player.openInventory(target.getPlayer().getInventory());
+        }
+
+        @CommandAlias("%ENDERCHEST")
+        @CommandCompletion("@players")
+        @Syntax("%ENDERCHEST_SYNTAX")
+        @Description("%ENDERCHEST_DESCRIPTION")
+        @CommandPermission("%ENDERCHEST_PERM")
+        public void onEnderChest(Player player, @Optional OnlinePlayer target) {
+            if (target == null) {
+                player.openInventory(player.getEnderChest());
+                return;
+            }
+
+            if (player.hasPermission(plugin.getString(Strings.PERM_EC_OTHER))) {
+                player.openInventory(target.getPlayer().getEnderChest());
+                return;
+            }
+
+            plugin.sendMiniMessages(player, Messages.SERVER_NO_PERM);
+        }
+
+        @CommandAlias("%HAT")
+        @Description("%HAT_DESCRIPTION")
+        @CommandPermission("%HAT_PERM")
+        public void onHat(Player player) {
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            if (itemStack.getType() == Material.AIR) {
+                plugin.sendMiniMessages(player, Messages.ITEM_NOT_FOUND);
+                return;
+            }
+
+            ItemStack cacapete = player.getInventory().getHelmet();
+            if (cacapete != null) {
+                player.getWorld().dropItem(player.getLocation().add(0, 1, 0), cacapete);
+            }
+            player.getInventory().setHelmet(player.getInventory().getItemInMainHand());
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            plugin.sendMiniMessages(player, Messages.ITEM_HELMET);
+        }
+
+    }
 
     @CommandAlias("%AFK")
     static class Afk extends BaseCommand {
