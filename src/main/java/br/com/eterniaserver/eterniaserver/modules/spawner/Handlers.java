@@ -17,10 +17,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -32,6 +34,17 @@ final class Handlers implements Listener {
     public Handlers(final EterniaServer plugin, Services.Spawner spawnerService) {
         this.plugin = plugin;
         this.spawnerService = spawnerService;
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getClickedBlock() != null
+                && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                && event.getItem() != null
+                && event.getClickedBlock().getType() == Material.SPAWNER
+                && !event.getPlayer().hasPermission(plugin.getString(Strings.PERM_SPAWNERS_CHANGE))) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

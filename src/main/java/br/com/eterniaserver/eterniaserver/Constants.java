@@ -21,8 +21,6 @@ public class Constants {
     public static final String COMMANDS_LOCALE_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "commands.yml";
     public static final String CONSTANTS_FILE_PATH = DATA_LOCALE_FOLDER_PATH + File.separator + "constants.yml";
 
-    public static final String TAG_FUNCTION = "eternia_function";
-    public static final String TAG_INT_VALUE = "eternia_int_value";
     public static final String TAG_WORLD = "eternia_wn";
     public static final String TAG_LOC_NAME = "eternia_lc";
     public static final String TAG_COORD_X = "eternia_x";

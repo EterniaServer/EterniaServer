@@ -72,13 +72,6 @@ public class PlayerHandler implements Listener {
 
             event.setCancelled(blockFunction(event.getClickedBlock(), itemStack, user.hasPermission(plugin.getString(Strings.PERM_SPAWNERS_CHANGE))));
         }
-
-        if (plugin.getBoolean(Booleans.MODULE_SPAWNERS) && event.getClickedBlock() != null
-                && action.equals(Action.RIGHT_CLICK_BLOCK) && event.getItem() != null
-                && event.getClickedBlock().getType() == Material.SPAWNER
-                && !user.hasPermission(plugin.getString(Strings.PERM_SPAWNERS_CHANGE))) {
-            event.setCancelled(true);
-        }
     }
 
     private boolean blockFunction(final Block block, final ItemStack itemStack, boolean hasBreakPerm) {
@@ -111,7 +104,6 @@ public class PlayerHandler implements Listener {
 
         final int function = container.get(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.INTEGER);
         return switch (function) {
-            case 0 -> expFunction(user, itemStack);
             case 1 -> homesFunction(user, container);
             case 2 -> customFunction(user, itemStack);
             default -> false;
@@ -158,20 +150,6 @@ public class PlayerHandler implements Listener {
 
     private boolean compareItems(final User user, final ItemStack itemStack) {
         return user.getItemInMainHand() == itemStack;
-    }
-
-    private boolean expFunction(final User user, final ItemStack itemStack) {
-        if (!plugin.getBoolean(Booleans.MODULE_EXPERIENCE)) {
-            return false;
-        }
-
-        if (user.getItemInMainHand() == itemStack) {
-            user.setItemInMainHand(new ItemStack(Material.AIR));
-        } else {
-            user.setItemInOffHand(new ItemStack(Material.AIR));
-        }
-        user.giveExp(itemStack.getItemMeta().getPersistentDataContainer().get(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER));
-        return true;
     }
 
     private boolean homesFunction(final User user, final PersistentDataContainer container) {

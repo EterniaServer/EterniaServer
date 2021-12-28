@@ -32,7 +32,7 @@ public class ExperienceManager implements Module {
 
     @Override
     public void loadListeners() {
-        plugin.getLogger().log(Level.INFO, "Experience module: no listeners");
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin), plugin);
     }
 
     @Override

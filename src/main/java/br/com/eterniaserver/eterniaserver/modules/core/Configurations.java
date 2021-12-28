@@ -192,10 +192,13 @@ final class Configurations {
         private void loadNamespacedKeys() {
             final NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
 
+            namespacedKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(plugin, "eternia_function");
+            namespacedKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(plugin, "eternia_int_value");
             namespacedKeys[ItemsKeys.CASH_GUI_NAME.ordinal()] = new NamespacedKey(plugin, "cash_gui_name");
             namespacedKeys[ItemsKeys.CASH_ITEM_COST.ordinal()] = new NamespacedKey(plugin, "cash_item_cost");
             namespacedKeys[ItemsKeys.CASH_ITEM_MESSAGE.ordinal()] = new NamespacedKey(plugin, "cash_item_message");
             namespacedKeys[ItemsKeys.CASH_ITEM_COMMANDS.ordinal()] = new NamespacedKey(plugin, "cash_item_commands");
+            namespacedKeys[ItemsKeys.CASH_ITEM_LORE.ordinal()] = new NamespacedKey(plugin, "cash_item_lore");
             namespacedKeys[ItemsKeys.CASH_ITEM_LORE.ordinal()] = new NamespacedKey(plugin, "cash_item_lore");
         }
 

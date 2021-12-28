@@ -106,11 +106,9 @@ public class ConstantsCfg extends GenericCfg implements ReloadableConfiguration 
 
         saveFile(outFile, Constants.CONSTANTS_FILE_PATH);
 
-        namespaceKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(plugin, Constants.TAG_FUNCTION);
         namespaceKeys[ItemsKeys.TAG_RUN_COMMAND.ordinal()] = new NamespacedKey(plugin, Constants.TAG_RUN_COMMAND);
         namespaceKeys[ItemsKeys.TAG_RUN_IN_CONSOLE.ordinal()] = new NamespacedKey(plugin, Constants.TAG_RUN_IN_CONSOLE);
         namespaceKeys[ItemsKeys.TAG_USAGES.ordinal()] = new NamespacedKey(plugin, Constants.TAG_USAGES);
-        namespaceKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(plugin, Constants.TAG_INT_VALUE);
         namespaceKeys[ItemsKeys.TAG_WORLD.ordinal()] = new NamespacedKey(plugin, Constants.TAG_WORLD);
         namespaceKeys[ItemsKeys.TAG_COORD_X.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_X);
         namespaceKeys[ItemsKeys.TAG_COORD_Y.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_Y);
