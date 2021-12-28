@@ -48,6 +48,7 @@ public enum Messages {
     CASH_CHOOSE,
     CASH_NO_HAS,
     CASH_ALREADY_BUYING,
+    CASH_NO_CASH,
     AFK_BROADCAST_KICK,
     AFK_ENTER,
     AFK_LEAVE,

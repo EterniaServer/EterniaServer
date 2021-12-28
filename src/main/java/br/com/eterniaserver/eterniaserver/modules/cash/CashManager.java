@@ -1,20 +1,21 @@
-package br.com.eterniaserver.eterniaserver.modules.core;
+package br.com.eterniaserver.eterniaserver.modules.cash;
 
 import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
-import br.com.eterniaserver.eterniaserver.enums.Integers;
 
 import java.util.logging.Level;
 
 
-public class CoreManager implements Module {
+public class CashManager implements Module {
 
     private final EterniaServer plugin;
-    private Services.Afk afkServices;
+    private final Services.Cash cashService;
 
-    public CoreManager(final EterniaServer plugin) {
+    public CashManager(final EterniaServer plugin) {
         this.plugin = plugin;
+        this.plugin.setCashAPI(new Services.CraftCash(plugin));
+        this.cashService = new Services.Cash(plugin);
     }
 
     @Override
@@ -23,31 +24,26 @@ public class CoreManager implements Module {
         new Configurations.Locales(plugin);
 
         loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
-
-        this.afkServices = new Services.Afk(plugin);
-        this.plugin.setGuiAPI(new Services.GUI(plugin));
     }
 
     @Override
     public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "Core module: no commands completions");
+        plugin.getLogger().log(Level.INFO, "Cash module: no commands completions");
     }
 
     @Override
     public void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, afkServices), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(cashService), plugin);
     }
 
     @Override
     public void loadSchedules() {
-        new Schedules.MainTick(plugin, afkServices).runTaskTimer(plugin, 20L, plugin.getInteger(Integers.PLUGIN_TICKS));
+        plugin.getLogger().log(Level.INFO, "Cash module: no schedules");
     }
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.EGameMode(plugin));
-        CommandManager.registerCommand(new Commands.Afk(plugin));
-        CommandManager.registerCommand(new Commands.GodMode(plugin));
+        CommandManager.registerCommand(new Commands.Cash(plugin, cashService));
     }
 
     @Override

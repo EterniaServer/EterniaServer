@@ -31,14 +31,6 @@ public class CommandsLocaleCfg {
         this.aliases = new String[Commands.values().length];
 
         this.addDefault(Commands.SENDMESSAGE, "sendmessage", "eternia.sendmessage", " <jogador> <mensagem>", " Envia uma mensagem a um joagdor", null);
-        this.addDefault(Commands.CASH, "cash", "eternia.cash", null, "  Abre a GUI da loja de Cash", null);
-        this.addDefault(Commands.CASH_PAY, "pay", "eternia.cash", " <jogador> <quantia>", " Paga uma quantia de cash a um jogador", null);
-        this.addDefault(Commands.CASH_ACCEPT, "accept", "eternia.cash", null, " Aceita uma compra da loja de cash", null);
-        this.addDefault(Commands.CASH_DENY, "deny", "eternia.cash", null, " Recusa uma compra da loja de cash", null);
-        this.addDefault(Commands.CASH_BALANCE, "balance", "eternia.cash", " <jogador>", " Mostra o saldo atual de cash de um jogador", null);
-        this.addDefault(Commands.CASH_GIVE, "give", "eternia.cash.admin", " <jogador> <quantia>", " Dá uma quantia de cash a um jogador", null);
-        this.addDefault(Commands.CASH_REMOVE, "remove", "eternia.cash.admin", " <jogador> <quantia>", " Remove uma quantia de cash de um jogador", null);
-        this.addDefault(Commands.CASH_HELP, "help", "eternia.cash.admin", " <página>", " Ajuda para o sistema de Cash", null);
         this.addDefault(Commands.CHANNEL, "ch|channel", "eternia.chat.channel", " <página>", " Ajuda para o sistema de Canais", null);
         this.addDefault(Commands.CHAT, "chat", "eternia.chat.help", " <página>", " Ajuda para o sistema de Chat", null);
         this.addDefault(Commands.CHAT_CLEAR, "clear", "eternia.chat.clear", null, " Limpa todo o chat", "clearchat|limparchat");

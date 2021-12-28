@@ -37,4 +37,9 @@ public class Constants {
     public static final String PAPI_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "papi";
     public static final String PAPI_CONFIG_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "papi.yml";
 
+    public static final String CASH_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "cash";
+    public static final String CASH_CONFIG_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash.yml";
+    public static final String CASH_COMMAND_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash-cmd.yml";
+    public static final String CASH_MESSAGE_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash-msg.yml";
+
 }

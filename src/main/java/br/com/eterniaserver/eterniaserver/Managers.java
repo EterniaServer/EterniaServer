@@ -37,7 +37,6 @@ public class Managers {
         loadCompletions();
         loadGenericManager();
         loadBedManager();
-        loadCashManager();
         loadCommandsManager();
         loadChatManager();
         loadEconomyManager();
@@ -49,19 +48,7 @@ public class Managers {
         loadTeleportsManager();
         loadScheduleTasks();
         loadChestShopComp();
-
-        //loadUserSender();
     }
-
-    /*private void loadUserSender() {
-        CommandManager.getCommandContexts().registerIssuerAwareContext(User.class, c -> {
-            if ("false".equalsIgnoreCase(c.getFlagValue("other", "false"))) {
-                return UserManager.get(c.getSender().getName()).orElseThrow(() -> new UserException("Unknown user " + c.getSender().getName()));
-            } else {
-                return UserManager.get(c.getFirstArg()).orElseThrow(() -> new UserException("Unknown user " + c.getFirstArg()));
-            }
-        });
-    }*/
 
     private void loadChestShopComp() {
         if (plugin.getBoolean(Booleans.CHEST_SHOP_SUPPORT)) {
@@ -130,12 +117,6 @@ public class Managers {
     private void loadCommandsManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_COMMANDS), "Commands")) {
             plugin.getCustomCommandMap().forEach((commandName, commandObject) -> new CustomCommand(plugin, commandName, commandObject.getDescription(), commandObject.getAliases(), commandObject.getText(), commandObject.getCommands(), commandObject.getConsole()));
-        }
-    }
-
-    private void loadCashManager() {
-        if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_CASH), "Cash")) {
-            CommandManager.registerCommand(new Cash(plugin));
         }
     }
 

@@ -7,8 +7,6 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -17,7 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 
 
 public class EntityHandler implements Listener {
@@ -66,26 +63,4 @@ public class EntityHandler implements Listener {
             }
         }
     }
-
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onEntityInventoryClick(InventoryClickEvent e) {
-        if ((!plugin.getBoolean(Booleans.MODULE_CASH) && !plugin.getBoolean(Booleans.MODULE_SPAWNERS)) || e.isCancelled()) {
-            return;
-        }
-
-        final Player player = (Player) e.getWhoClicked();
-
-        if (plugin.getBoolean(Booleans.MODULE_CASH)) {
-            String title = LegacyComponentSerializer.legacySection().serialize(e.getView().title());
-            if ("Cash".equals(title)) {
-                EterniaServer.getCashAPI().menuGui(player, e.getSlot());
-                e.setCancelled(true);
-            } else if (plugin.getGuisInvert().containsKey(title)) {
-                EterniaServer.getCashAPI().permGui(player, title, e.getSlot());
-                e.setCancelled(true);
-            }
-        }
-
-    }
-
 }

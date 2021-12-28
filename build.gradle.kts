@@ -13,7 +13,7 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
-    maven("https://raw.github.com/yurinogueira/EterniaLib/repository")
+    maven("https://raw.github.com/EterniaServer/EterniaLib/repository")
     maven("https://jitpack.io")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
@@ -26,7 +26,7 @@ dependencies {
     implementation("net.kyori", "adventure-text-minimessage", "4.2.0-SNAPSHOT") {
         exclude("net.kyori", "adventure-api")
     }
-    compileOnly("io.papermc.paper", "paper-api", "1.17.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper", "paper-api", "1.18.1-R0.1-SNAPSHOT")
     compileOnly("br.com.eterniaserver", "EterniaLib", "3.0.0-STABLE")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     compileOnly("me.clip", "placeholderapi", "2.10.10")
@@ -38,7 +38,9 @@ tasks {
         listOf(
                 "org.bstats",
                 "net.kyori.adventure.text.minimessage",
-        ).forEach { relocate(it, "${rootProject.group}.lib.$it") }
+        ).forEach {
+            relocate(it, "${rootProject.group}.lib.$it")
+        }
     }
 
     build {
@@ -47,7 +49,7 @@ tasks {
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release.set(16)
+        options.release.set(17)
     }
 
     javadoc {

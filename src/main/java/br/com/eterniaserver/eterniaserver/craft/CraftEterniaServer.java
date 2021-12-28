@@ -2,7 +2,6 @@ package br.com.eterniaserver.eterniaserver.craft;
 
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
-import br.com.eterniaserver.eterniaserver.objects.CashItem;
 import br.com.eterniaserver.eterniaserver.objects.ChannelObject;
 import br.com.eterniaserver.eterniaserver.objects.CommandData;
 import br.com.eterniaserver.eterniaserver.objects.CustomKit;
@@ -58,9 +57,7 @@ public abstract class CraftEterniaServer extends JavaPlugin {
     public final Map<String, CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
     public final Map<String, Map<Integer, List<String>>> scheduleMap = new HashMap<>();
 
-    public final Map<Integer, String> guis = new HashMap<>();
     public final Map<Integer, ChannelObject> channelsMap = new HashMap<>();
-    public final Map<Integer, List<CashItem>> othersGui = new HashMap<>();
 
     public List<Material> elevatorMaterials() {
         return elevatorMaterials;
@@ -122,16 +119,8 @@ public abstract class CraftEterniaServer extends JavaPlugin {
         return kitList;
     }
 
-    public Map<Integer, String> getGuis() {
-        return guis;
-    }
-
     public Map<String, Integer> getGuisInvert() {
         return guisInvert;
-    }
-
-    public Map<Integer, List<CashItem>> getOthersGui() {
-        return othersGui;
     }
 
     public Map<String, Map<Integer, List<String>>> getScheduleMap() {

@@ -1,12 +1,13 @@
 package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eterniaserver.api.interfaces.CashAPI;
+import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.LocationManager;
 import br.com.eterniaserver.eterniaserver.api.interfaces.UserManager;
 import br.com.eterniaserver.eterniaserver.configurations.configs.*;
 import br.com.eterniaserver.eterniaserver.configurations.locales.ConstantsCfg;
 import br.com.eterniaserver.eterniaserver.configurations.locales.MsgCfg;
-import br.com.eterniaserver.eterniaserver.craft.CraftCash;
 import br.com.eterniaserver.eterniaserver.craft.CraftEterniaServer;
 import br.com.eterniaserver.eterniaserver.craft.CraftEconomy;
 import br.com.eterniaserver.eterniaserver.craft.CraftUser;
@@ -34,6 +35,7 @@ import org.bukkit.entity.EntityType;
 
 import java.util.List;
 
+
 public class EterniaServer extends CraftEterniaServer {
 
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
@@ -52,15 +54,20 @@ public class EterniaServer extends CraftEterniaServer {
     // APIs
     private UserManager userManager;
     private LocationManager locationManager;
-    private static CraftCash cashAPI;
     private static CraftEconomy economyAPI;
     private static CraftUser userAPI;
+    private static GUIAPI guiAPI;
+    private static CashAPI cashAPI;
 
     public UserManager userManager() { return userManager; }
     public LocationManager locationManager() { return locationManager; }
-    public static CraftCash getCashAPI() { return cashAPI; }
     public static CraftEconomy getEconomyAPI() { return economyAPI; }
     public static CraftUser getUserAPI() { return userAPI; }
+    public static GUIAPI getGuiAPI() { return guiAPI; }
+    public static CashAPI getCashAPI() { return cashAPI; }
+
+    public void setGuiAPI(GUIAPI implementation) { guiAPI = implementation; }
+    public void setCashAPI(CashAPI implementation) { cashAPI = implementation; }
 
     public int[] integers() {
         return integers;
@@ -86,10 +93,11 @@ public class EterniaServer extends CraftEterniaServer {
         return stringLists;
     }
 
+    public NamespacedKey[] namespacedKeys() { return namespaceKeys; }
+
     @Override
     public void onEnable() {
         userAPI = new CraftUser(this);
-        cashAPI = new CraftCash(this);
         economyAPI = new CraftEconomy(this);
 
         loadConfiguration();
@@ -114,7 +122,6 @@ public class EterniaServer extends CraftEterniaServer {
         final ConfigsCfg configsCfg = new ConfigsCfg(this, strings, booleans, integers, doubles);
         final CommandsCfg commandsCfg = new CommandsCfg(this);
         final ChatCfg chatCfg = new ChatCfg(this, strings, integers);
-        final CashCfg cashCfg = new CashCfg(this);
         final EntityCfg entityCfg = new EntityCfg(booleans, integers, entities);
         final KitsCfg kitsCfg = new KitsCfg(this);
         final ScheduleCfg scheduleCfg = new ScheduleCfg(this, integers);
@@ -124,7 +131,6 @@ public class EterniaServer extends CraftEterniaServer {
         EterniaLib.addReloadableConfiguration("eterniaserver", "messages", msgCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "configs", configsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "chat", chatCfg);
-        EterniaLib.addReloadableConfiguration("eterniaserver", "cash", cashCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "entities", entityCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "kits", kitsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "schedule", scheduleCfg);
@@ -135,7 +141,6 @@ public class EterniaServer extends CraftEterniaServer {
         configsCfg.executeConfig();
         commandsCfg.executeConfig();
         chatCfg.executeConfig();
-        cashCfg.executeConfig();
         entityCfg.executeConfig();
         kitsCfg.executeConfig();
         scheduleCfg.executeConfig();

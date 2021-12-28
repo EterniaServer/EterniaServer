@@ -5,17 +5,20 @@ import br.com.eterniaserver.eterniaserver.api.interfaces.CommandsCfg;
 import br.com.eterniaserver.eterniaserver.api.interfaces.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.objects.CommandI18n;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 final class Configurations {
 
@@ -117,12 +120,19 @@ final class Configurations {
 
     static class Configs implements FileCfg {
 
+        private final EterniaServer plugin;
+
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
         protected Configs(final EterniaServer plugin) {
+            this.plugin = plugin;
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
+
+            this.loadNamespacedKeys();
+
+            final Random random = new Random();
 
             final boolean[] booleans = plugin.booleans();
             final int[] integers = plugin.integers();
@@ -136,15 +146,18 @@ final class Configurations {
             booleans[Booleans.MODULE_REWARDS.ordinal()] = inFile.getBoolean("modules.rewards", true);
             booleans[Booleans.MODULE_GLOW.ordinal()] = inFile.getBoolean("modules.glow", true);
             booleans[Booleans.MODULE_PAPI.ordinal()] = inFile.getBoolean("modules.papi", true);
+            booleans[Booleans.MODULE_CASH.ordinal()] = inFile.getBoolean("modules.cash", true);
             booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
             // Integers
             integers[Integers.PLUGIN_TICKS.ordinal()] = inFile.getInt("critical-configs.plugin-ticks", 20);
             integers[Integers.AFK_TIMER.ordinal()] = inFile.getInt("afk.limit-time", 900);
             integers[Integers.COOLDOWN.ordinal()] = inFile.getInt("critical-configs.teleport-ticks", 80);
             // Strings
+            strings[Strings.DATA_FORMAT.ordinal()] = inFile.getString("format.data-time", "dd/MM/yyyy HH:mm");
             strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
             strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
             strings[Strings.PERM_TIMING_BYPASS.ordinal()] = inFile.getString("teleport.timing-bypass", "eternia.timing.bypass");
+            strings[Strings.GUI_SECRET.ordinal()] = inFile.getString("secret.value", String.format("#%06x", random.nextInt(0xffffff + 1)));
             // Lists
             final List<String> list = inFile.getStringList("critical-configs.blocked-commands");
             stringLists.set(Lists.BLACKLISTED_COMMANDS.ordinal(), list.isEmpty() ? List.of("/op", "/deop", "/stop") : list);
@@ -156,19 +169,34 @@ final class Configurations {
             outFile.set("modules.rewards", booleans[Booleans.MODULE_REWARDS.ordinal()]);
             outFile.set("modules.glow", booleans[Booleans.MODULE_GLOW.ordinal()]);
             outFile.set("modules.papi", booleans[Booleans.MODULE_PAPI.ordinal()]);
+            outFile.set("modules.cash", booleans[Booleans.MODULE_CASH.ordinal()]);
             outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
             // Integers
             outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);
             outFile.set("afk.limit-time", integers[Integers.AFK_TIMER.ordinal()]);
             outFile.set("critical-configs.teleport-ticks", integers[Integers.COOLDOWN.ordinal()]);
             // Strings
+            outFile.set("format.data-time", strings[Strings.DATA_FORMAT.ordinal()]);
             outFile.set("mini-messages.motd", strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()]);
             outFile.set("afk.perm-to-stay-afk", strings[Strings.PERM_AFK.ordinal()]);
             outFile.set("teleport.timing-bypass", strings[Strings.PERM_TIMING_BYPASS.ordinal()]);
+            outFile.set("secret.value", strings[Strings.GUI_SECRET.ordinal()]);
+            outFile.set("secret.info-pt", "Não exponha esse código hex");
+            outFile.set("secret.info-en", "Don't expose this hex code");
             // Lists
             outFile.set("critical-configs.blocked-commands", plugin.stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
 
             saveConfiguration(true);
+        }
+
+        private void loadNamespacedKeys() {
+            final NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
+
+            namespacedKeys[ItemsKeys.CASH_GUI_NAME.ordinal()] = new NamespacedKey(plugin, "cash_gui_name");
+            namespacedKeys[ItemsKeys.CASH_ITEM_COST.ordinal()] = new NamespacedKey(plugin, "cash_item_cost");
+            namespacedKeys[ItemsKeys.CASH_ITEM_MESSAGE.ordinal()] = new NamespacedKey(plugin, "cash_item_message");
+            namespacedKeys[ItemsKeys.CASH_ITEM_COMMANDS.ordinal()] = new NamespacedKey(plugin, "cash_item_commands");
+            namespacedKeys[ItemsKeys.CASH_ITEM_LORE.ordinal()] = new NamespacedKey(plugin, "cash_item_lore");
         }
 
         @Override
@@ -211,6 +239,10 @@ final class Configurations {
 
             this.messages = plugin.messages();
 
+            addMessage(Messages.SERVER_NO_PLAYER,
+                    "Somente jogadores podem utilizar esse comando<color:#555555>.",
+                    ""
+            );
             addMessage(Messages.GAMEMODE_SETED,
                     "Seu modo de jogo foi definido para <color:#00aaaa>{0}<color:#555555>.",
                     "0: modo de jogo"
