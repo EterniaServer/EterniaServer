@@ -14,8 +14,8 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
@@ -97,7 +97,7 @@ public class Formatter {
 
 		for (final String string : message.split(" ")) {
 
-			final TextComponent textComponent = getComponent(PlainComponentSerializer.plain().serialize(LegacyComponentSerializer.legacySection().deserialize(string)), player);
+			final TextComponent textComponent = getComponent(PlainTextComponentSerializer.plainText().serialize(LegacyComponentSerializer.legacySection().deserialize(string)), player);
 
 			if (textComponent != null) {
 				textComponentList.add(getText(stringBuilder.toString(), player));
@@ -128,7 +128,6 @@ public class Formatter {
 	}
 
 	private TextComponent getComponent(final String string, final Player player) {
-
 		if (player.hasPermission(plugin.getString(Strings.PERM_CHAT_MENTION)) && EterniaServer.getUserAPI().hasNameOnline(string)) {
 			final Player target = Bukkit.getPlayer(EterniaServer.getUserAPI().getUUIDFromMention(string));
 

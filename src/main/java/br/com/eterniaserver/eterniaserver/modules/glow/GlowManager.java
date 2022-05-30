@@ -37,6 +37,10 @@ public class GlowManager implements Module {
     }
 
     @Override
+    public void loadConditions() {
+    }
+
+    @Override
     public void loadListeners() {
         plugin.getLogger().log(Level.INFO, "Glow module: no listeners");
     }

@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerProfile {
@@ -19,6 +20,7 @@ public class PlayerProfile {
     private boolean afk = false;
     private boolean isBalanceTop = false;
     private boolean god = false;
+    private boolean spy = true;
 
     private Location location;
 
@@ -32,6 +34,7 @@ public class PlayerProfile {
     private Set<String> titles;
 
     private final long firstLogin;
+    private final UUID uuid;
     private long lastLogin;
     private long hours;
 
@@ -40,7 +43,8 @@ public class PlayerProfile {
     private int chatChannel = 0;
     private long muted = System.currentTimeMillis();
 
-    public PlayerProfile(String playerName, String playerDisplayName, long firstLogin, long lastLogin, long hours) {
+    public PlayerProfile(UUID uuid, String playerName, String playerDisplayName, long firstLogin, long lastLogin, long hours) {
+        this.uuid = uuid;
         this.playerName = playerName;
         this.playerDisplayName = playerDisplayName == null ? playerName : playerDisplayName;
         this.firstLogin = firstLogin;
@@ -59,6 +63,8 @@ public class PlayerProfile {
     public boolean isBalanceTop() { return isBalanceTop; }
     public String getColor() { return color; }
     public boolean getGod() { return god; }
+    public UUID getUuid() { return uuid; }
+    public boolean getSpy() {return spy;}
 
     public void setCash(int value) { this.cash = value; }
     public void setExp(int value) { this.xp = value; }
@@ -66,8 +72,13 @@ public class PlayerProfile {
     public void setAfk(boolean value) { this.afk = value; }
     public void setLastMove(long value) { this.lastMove = value; }
     public void setLocation(Location location) { this.location = location; }
-    public void setColor(String value) { this.color = color; }
-    public void setGod(boolean value) { this.god = god; }
+    public void setColor(String value) { this.color = value; }
+    public void setGod(boolean value) { this.god = value; }
+    public void setSpy(boolean value) {
+        this.spy = value;
+        if (value) EterniaServer.getChatAPI().getSpySet().add(uuid);
+        else EterniaServer.getChatAPI().getSpySet().remove(uuid);
+    }
 
     public void setHomes(String homes) {
         if (homes != null) {

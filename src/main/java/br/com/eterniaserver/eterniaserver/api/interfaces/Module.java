@@ -8,6 +8,8 @@ public interface Module {
 
     void loadCommandsCompletions();
 
+    void loadConditions();
+
     void loadListeners();
 
     void loadSchedules();

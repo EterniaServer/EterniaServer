@@ -93,13 +93,6 @@ public class Managers {
                 throw new ConditionFailedException("O valor máximo precisa ser &3" + c.getConfigValue("max", 1));
             }
         });
-
-        CommandManager.getCommandConditions().addCondition(String.class, "channel", (c, exec, value) -> {
-            if (value == null || !plugin.getChannels().contains(value)) {
-                throw new ConditionFailedException("Você precisa informar um canal válido");
-            }
-        });
-
     }
 
     private void loadCompletions() {
@@ -129,7 +122,6 @@ public class Managers {
     private void loadChatManager() {
         if (sendModuleStatus(plugin.getBoolean(Booleans.MODULE_CHAT), "Chat")) {
             CommandManager.registerCommand(new Mute(plugin));
-            CommandManager.registerCommand(new Chat(plugin));
             plugin.getChannelsMap().forEach((ignored, commandObject) -> new ChannelCommand(plugin, commandObject.getName(), "chat", commandObject.getPerm(), channelCommand));
         }
     }

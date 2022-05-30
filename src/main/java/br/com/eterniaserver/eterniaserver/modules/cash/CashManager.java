@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.cash;
 
+import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.CommandManager;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
@@ -29,6 +30,10 @@ public class CashManager implements Module {
     @Override
     public void loadCommandsCompletions() {
         plugin.getLogger().log(Level.INFO, "Cash module: no commands completions");
+    }
+
+    @Override
+    public void loadConditions() {
     }
 
     @Override

@@ -4,6 +4,8 @@ import java.io.File;
 
 public class Constants {
 
+    public static final String TELL_CHANNEL_STRING = "tell";
+
     public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
     public static final String MAIN_CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "config";
     public static final String DATA_MODULE_FOLDER_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "modules";
@@ -41,5 +43,10 @@ public class Constants {
     public static final String CASH_CONFIG_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash.yml";
     public static final String CASH_COMMAND_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash-cmd.yml";
     public static final String CASH_MESSAGE_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash-msg.yml";
+
+    public static final String CHAT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "chat";
+    public static final String CHAT_CONFIG_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat.yml";
+    public static final String CHAT_COMMAND_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat-cmd.yml";
+    public static final String CHAT_MESSAGE_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat-msg.yml";
 
 }

@@ -27,6 +27,10 @@ public class PlaceHolderAPIManager implements Module {
     }
 
     @Override
+    public void loadConditions() {
+    }
+
+    @Override
     public void loadListeners() {
         plugin.getLogger().log(Level.INFO, "PlaceHolderAPI module: no listeners");
     }

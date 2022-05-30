@@ -1,7 +1,5 @@
 package br.com.eterniaserver.eterniaserver.craft;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -42,8 +40,18 @@ public class CraftUser {
 
     private final Map<String, Long> kitsCooldown = new HashMap<>();
     private final Map<String, UUID> playersName = new HashMap<>();
+    private final Map<Integer, PlayerProfile> playersHashCode = new HashMap<>();
 
     private final Map<Player, Boolean> vanished = new HashMap<>();
+
+    public PlayerProfile getPlayerProfileFromHashCode(int hashCode) {
+        return playersHashCode.get(hashCode);
+    }
+
+    public void putPlayerProfileInHashCode(PlayerProfile playerProfile) {
+        playersHashCode.put(playerProfile.getName().hashCode(), playerProfile);
+        playersHashCode.put(playerProfile.getDisplayName().hashCode(), playerProfile);
+    }
 
     /**
      * Checks if a user is online to mention
@@ -378,7 +386,7 @@ public class CraftUser {
         insert.values.set(uuid.toString(), playerName, time, time, 0, plugin.getDouble(Doubles.START_MONEY), time);
         SQL.executeAsync(insert);
 
-        PlayerProfile playerProfile = new PlayerProfile(playerName, playerName, time, time, 0);
+        PlayerProfile playerProfile = new PlayerProfile(uuid, playerName, playerName, time, time, 0);
         EterniaServer.getEconomyAPI().putInMoney(uuid, plugin.getDouble(Doubles.START_MONEY));
         playerProfile.setMuted(time);
         playerProfiles.put(uuid, playerProfile);
@@ -462,13 +470,6 @@ public class CraftUser {
         update.set.set("last", System.currentTimeMillis());
         update.where.set("uuid", uuid.toString());
         SQL.executeAsync(update);
-    }
-
-    public String getFirstLoginPlaceholder(final PlayerProfile playerProfile) {
-        if (playerProfile != null) {
-            return new SimpleDateFormat(plugin.getString(Strings.DATA_FORMAT)).format(new Date(playerProfile.getFirstLogin()));
-        }
-        return plugin.getString(Strings.NO_REGISTER);
     }
 
     public void teleportToSpawn(final Player player) {

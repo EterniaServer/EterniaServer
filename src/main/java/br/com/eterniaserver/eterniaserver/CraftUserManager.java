@@ -35,9 +35,9 @@ final class CraftUserManager implements UserManager {
                 "balance DOUBLE(20,4)", "cash BIGINT(20)", "xp BIGINT(20)", "muted BIGINT(20)", "homes VARCHAR(1024)"
         };
         final String[] SQLITE_FIELDS = {
-                "uuid VARCHAR(36)", "player_name VARCHAR(16)", "player_display VARCHAR(512)",
-                "time INTEGER", "last INTEGER", "hours INTEGER", "balance DOUBLE(22)",
-                "cash INTEGER", "xp INTEGER", "muted INTEGER", "homes VARCHAR(1024)"
+                "id INT AUTO_INCREMENT NOT NULL PRIMARY KEY", "uuid VARCHAR(36)", "player_name VARCHAR(16)",
+                "player_display VARCHAR(512)", "time INTEGER", "last INTEGER", "hours INTEGER",
+                "balance DOUBLE(22)", "cash INTEGER", "xp INTEGER", "muted INTEGER", "homes VARCHAR(1024)"
         };
 
         final CreateTable createTable = new CreateTable(plugin.getString(Strings.TABLE_PLAYER_PROFILES));
@@ -50,6 +50,7 @@ final class CraftUserManager implements UserManager {
             while (resultSet.next()) {
                 final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
                 final PlayerProfile playerProfile = new PlayerProfile(
+                        uuid,
                         resultSet.getString("player_name"),
                         resultSet.getString("player_display"),
                         resultSet.getLong("time"),
@@ -82,7 +83,7 @@ final class CraftUserManager implements UserManager {
     public PlayerProfile create(UUID uuid, String playerName) {
         final long time = System.currentTimeMillis();
 
-        final PlayerProfile playerProfile = new PlayerProfile(playerName, playerName, time, time, 0);
+        final PlayerProfile playerProfile = new PlayerProfile(uuid, playerName, playerName, time, time, 0);
         final Insert insert = new Insert(plugin.getString(Strings.TABLE_PLAYER_PROFILES));
 
         insert.columns.set("uuid", "player_name", "time", "last");

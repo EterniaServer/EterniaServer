@@ -6,8 +6,8 @@ description = "Blablabla"
 
 plugins {
     `java-library`
-    id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.1"
 }
 
 repositories {
@@ -22,14 +22,11 @@ repositories {
 }
 
 dependencies {
-    implementation("org.bstats", "bstats-bukkit", "2.2.1")
-    implementation("net.kyori", "adventure-text-minimessage", "4.2.0-SNAPSHOT") {
-        exclude("net.kyori", "adventure-api")
-    }
-    compileOnly("io.papermc.paper", "paper-api", "1.18.1-R0.1-SNAPSHOT")
+    implementation("org.bstats", "bstats-bukkit", "3.0.0")
+    compileOnly("io.papermc.paper", "paper-api", "1.18.2-R0.1-SNAPSHOT")
     compileOnly("br.com.eterniaserver", "EterniaLib", "3.0.0-STABLE")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
-    compileOnly("me.clip", "placeholderapi", "2.10.10")
+    compileOnly("me.clip", "placeholderapi", "2.11.1")
     compileOnly("com.acrobot.chestshop", "chestshop", "3.10")
 }
 
@@ -37,7 +34,6 @@ tasks {
     shadowJar {
         listOf(
                 "org.bstats",
-                "net.kyori.adventure.text.minimessage",
         ).forEach {
             relocate(it, "${rootProject.group}.lib.$it")
         }
@@ -64,7 +60,7 @@ tasks {
 bukkit {
     load = BukkitPluginDescription.PluginLoadOrder.STARTUP
     main = "br.com.eterniaserver.eterniaserver.EterniaServer"
-    apiVersion = "1.17"
+    apiVersion = "1.18"
     website = "www.eterniaserver.com.br"
     depend = listOf("EterniaLib", "PlaceholderAPI")
     softDepend = listOf("Vault", "ChestShop")

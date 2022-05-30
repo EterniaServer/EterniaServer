@@ -172,14 +172,15 @@ public class ConfigsCfg extends GenericCfg implements ReloadableConfiguration {
         try (Connection connection = SQL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(new Select(plugin.getString(Strings.TABLE_PLAYER)).queryString()); ResultSet resultSet = preparedStatement.executeQuery()){
             while (resultSet.next()) {
                 final String playerName = resultSet.getString("player_name");
+                final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
                 PlayerProfile playerProfile = new PlayerProfile(
+                        uuid,
                         playerName,
                         resultSet.getString("player_display"),
                         resultSet.getLong("time"),
                         resultSet.getLong("last"),
                         resultSet.getLong("hours")
                 );
-                final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
                 if (plugin.getBoolean(Booleans.MODULE_ECONOMY)) {
                     EterniaServer.getEconomyAPI().putInMoney(uuid, resultSet.getDouble("balance"));
                 }

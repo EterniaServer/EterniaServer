@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.api.interfaces.CashAPI;
+import br.com.eterniaserver.eterniaserver.api.interfaces.ChatAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.LocationManager;
 import br.com.eterniaserver.eterniaserver.api.interfaces.UserManager;
@@ -58,6 +59,7 @@ public class EterniaServer extends CraftEterniaServer {
     private static CraftUser userAPI;
     private static GUIAPI guiAPI;
     private static CashAPI cashAPI;
+    private static ChatAPI chatAPI;
 
     public UserManager userManager() { return userManager; }
     public LocationManager locationManager() { return locationManager; }
@@ -65,9 +67,11 @@ public class EterniaServer extends CraftEterniaServer {
     public static CraftUser getUserAPI() { return userAPI; }
     public static GUIAPI getGuiAPI() { return guiAPI; }
     public static CashAPI getCashAPI() { return cashAPI; }
+    public static ChatAPI getChatAPI() { return chatAPI; }
 
     public void setGuiAPI(GUIAPI implementation) { guiAPI = implementation; }
     public void setCashAPI(CashAPI implementation) { cashAPI = implementation; }
+    public void setChatAPI(ChatAPI implementation) { chatAPI = implementation; }
 
     public int[] integers() {
         return integers;
@@ -121,7 +125,6 @@ public class EterniaServer extends CraftEterniaServer {
         final MsgCfg msgCfg = new MsgCfg(this, messages);
         final ConfigsCfg configsCfg = new ConfigsCfg(this, strings, booleans, integers, doubles);
         final CommandsCfg commandsCfg = new CommandsCfg(this);
-        final ChatCfg chatCfg = new ChatCfg(this, strings, integers);
         final EntityCfg entityCfg = new EntityCfg(booleans, integers, entities);
         final KitsCfg kitsCfg = new KitsCfg(this);
         final ScheduleCfg scheduleCfg = new ScheduleCfg(this, integers);
@@ -130,7 +133,6 @@ public class EterniaServer extends CraftEterniaServer {
         EterniaLib.addReloadableConfiguration("eterniaserver", "constants", constantsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "messages", msgCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "configs", configsCfg);
-        EterniaLib.addReloadableConfiguration("eterniaserver", "chat", chatCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "entities", entityCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "kits", kitsCfg);
         EterniaLib.addReloadableConfiguration("eterniaserver", "schedule", scheduleCfg);
@@ -140,7 +142,6 @@ public class EterniaServer extends CraftEterniaServer {
         msgCfg.executeConfig();
         configsCfg.executeConfig();
         commandsCfg.executeConfig();
-        chatCfg.executeConfig();
         entityCfg.executeConfig();
         kitsCfg.executeConfig();
         scheduleCfg.executeConfig();
@@ -191,11 +192,11 @@ public class EterniaServer extends CraftEterniaServer {
     }
 
     public void sendMiniMessages(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
-        sender.sendMessage(miniMessage.parse(getMessage(messagesId, prefix, args)));
+        sender.sendMessage(miniMessage.deserialize(getMessage(messagesId, prefix, args)));
     }
 
     public Component parseColor(String string) {
-        return miniMessage.parse(string);
+        return miniMessage.deserialize(string);
     }
 
     public void sendMessage(CommandSender sender, Messages messagesId, String... args) {
@@ -207,7 +208,7 @@ public class EterniaServer extends CraftEterniaServer {
     }
 
     public Component getMiniMessage(Messages messagesId, boolean prefix, String... args) {
-        return miniMessage.parse(getMessage(messagesId, prefix, args));
+        return miniMessage.deserialize(getMessage(messagesId, prefix, args));
     }
 
     public String getMessage(Messages messagesId, boolean prefix, String... args) {

@@ -40,6 +40,7 @@ public class Manager {
     private void loadModule(Module module) {
         module.loadConfigurations();
         module.loadCommandsCompletions();
+        module.loadConditions();
         module.loadListeners();
         module.loadSchedules();
         module.loadCommands();

@@ -24,6 +24,10 @@ public class ElevatorManager implements Module {
     }
 
     @Override
+    public void loadConditions() {
+    }
+
+    @Override
     public void loadListeners() {
         plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin), plugin);
     }
