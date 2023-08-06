@@ -13,13 +13,15 @@ import br.com.eterniaserver.acf.annotation.Optional;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -27,6 +29,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 final class Commands {
+
+    private Commands() {
+        throw new IllegalStateException("Utility class");
+    }
 
     static class Inventory extends BaseCommand {
 
@@ -81,9 +87,9 @@ final class Commands {
                 return;
             }
 
-            ItemStack cacapete = player.getInventory().getHelmet();
-            if (cacapete != null) {
-                player.getWorld().dropItem(player.getLocation().add(0, 1, 0), cacapete);
+            ItemStack hat = player.getInventory().getHelmet();
+            if (hat != null) {
+                player.getWorld().dropItem(player.getLocation().add(0, 1, 0), hat);
             }
             player.getInventory().setHelmet(player.getInventory().getItemInMainHand());
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
@@ -94,9 +100,12 @@ final class Commands {
 
     @CommandAlias("%AFK")
     static class Afk extends BaseCommand {
+
         private final EterniaServer plugin;
+        private final DatabaseInterface databaseInterface;
 
         public Afk(final EterniaServer plugin) {
+            this.databaseInterface = EterniaLib.getDatabase();
             this.plugin = plugin;
         }
 
@@ -107,20 +116,33 @@ final class Commands {
         @Description("%AFK_DESCRIPTION")
         @CommandPermission("%AFK_PERM")
         public void onDefault(Player player) {
-            final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
-            final AfkStatusEvent event = new AfkStatusEvent(player, !playerProfile.getAfk(), AfkStatusEvent.Cause.COMMAND);
+            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            AfkStatusEvent event = new AfkStatusEvent(player, !playerProfile.isAfk(), AfkStatusEvent.Cause.COMMAND);
             plugin.getServer().getPluginManager().callEvent(event);
 
-            if (event.isCancelled()) return;
+            if (event.isCancelled()) {
+                return;
+            }
 
-            if (playerProfile.getAfk()) {
-                Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_LEAVE, true, playerProfile.getName(), playerProfile.getDisplayName()));
+            if (playerProfile.isAfk()) {
+                Component afkLeaveMessage = plugin.getMiniMessage(
+                        Messages.AFK_LEAVE,
+                        true,
+                        playerProfile.getPlayerName(),
+                        playerProfile.getPlayerDisplay()
+                );
+                plugin.getServer().broadcast(afkLeaveMessage);
                 playerProfile.setAfk(false);
                 return;
             }
 
-            Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_ENTER, true, playerProfile.getName(), playerProfile.getDisplayName()));
-            playerProfile.setLocation(player.getLocation());
+            Component afkEnterMessage = plugin.getMiniMessage(
+                    Messages.AFK_ENTER,
+                    true,
+                    playerProfile.getPlayerName(),
+                    playerProfile.getPlayerDisplay()
+            );
+            plugin.getServer().broadcast(afkEnterMessage);
             playerProfile.setAfk(true);
         }
     }
@@ -129,9 +151,11 @@ final class Commands {
     static class EGameMode extends BaseCommand {
 
         private final EterniaServer plugin;
+        private final DatabaseInterface databaseInterface;
 
         public EGameMode(final EterniaServer plugin) {
             this.plugin = plugin;
+            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Default
@@ -182,12 +206,19 @@ final class Commands {
 
         private void setGameMode(CommandSender sender, OnlinePlayer onlineTarget, GameMode gameMode, int type) {
             if (onlineTarget != null) {
-                final Player target = onlineTarget.getPlayer();
-                final String typeName = getType(type);
+                Player target = onlineTarget.getPlayer();
+                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                String typeName = getType(type);
 
                 target.setGameMode(gameMode);
                 plugin.sendMiniMessages(target, Messages.GAMEMODE_SETED, typeName);
-                plugin.sendMiniMessages(sender, Messages.GAMEMODE_SET_FROM, typeName, target.getName(), target.getDisplayName());
+                plugin.sendMiniMessages(
+                        sender,
+                        Messages.GAMEMODE_SET_FROM,
+                        typeName,
+                        playerProfile.getPlayerName(),
+                        playerProfile.getPlayerDisplay()
+                );
                 return;
             }
 
@@ -214,9 +245,11 @@ final class Commands {
     static class GodMode extends BaseCommand {
 
         private final EterniaServer plugin;
+        private final DatabaseInterface databaseInterface;
 
         public GodMode(final EterniaServer plugin) {
             this.plugin = plugin;
+            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Default
@@ -225,26 +258,46 @@ final class Commands {
         @Description("%GODMODE_DESCRIPTION")
         @CommandPermission("%GODMODE_PERM")
         public void onGodMode(Player player, @Optional OnlinePlayer onlineTarget) {
-            PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
 
             if (onlineTarget != null) {
-                final Player target = onlineTarget.getPlayer();
-                PlayerProfile targetProfile = plugin.userManager().get(target.getUniqueId());
+                Player target = onlineTarget.getPlayer();
+                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
 
-                targetProfile.setGod(!targetProfile.getGod());
-                if (targetProfile.getGod()) {
-                    plugin.sendMiniMessages(player, Messages.GODMODE_ENABLED_TO, targetProfile.getName(), targetProfile.getDisplayName());
-                    plugin.sendMiniMessages(target, Messages.GODMODE_ENABLED_BY, playerProfile.getName(), playerProfile.getDisplayName());
+                targetProfile.setGod(!targetProfile.isGod());
+                if (targetProfile.isGod()) {
+                    plugin.sendMiniMessages(
+                            player,
+                            Messages.GODMODE_ENABLED_TO,
+                            targetProfile.getPlayerName(),
+                            targetProfile.getPlayerDisplay()
+                    );
+                    plugin.sendMiniMessages(
+                            target,
+                            Messages.GODMODE_ENABLED_BY,
+                            playerProfile.getPlayerName(),
+                            playerProfile.getPlayerDisplay()
+                    );
                     return;
                 }
 
-                plugin.sendMiniMessages(player, Messages.GODMODE_DISABLED_TO, targetProfile.getName(), targetProfile.getDisplayName());
-                plugin.sendMiniMessages(target, Messages.GODMODE_DISABLED_BY, playerProfile.getName(), playerProfile.getDisplayName());
+                plugin.sendMiniMessages(
+                        player,
+                        Messages.GODMODE_DISABLED_TO,
+                        targetProfile.getPlayerName(),
+                        targetProfile.getPlayerDisplay()
+                );
+                plugin.sendMiniMessages(
+                        target,
+                        Messages.GODMODE_DISABLED_BY,
+                        playerProfile.getPlayerName(),
+                        playerProfile.getPlayerDisplay()
+                );
                 return;
             }
 
-            playerProfile.setGod(!playerProfile.getGod());
-            if (playerProfile.getGod()) {
+            playerProfile.setGod(!playerProfile.isGod());
+            if (playerProfile.isGod()) {
                 plugin.sendMiniMessages(player, Messages.GODMODE_ENABLED);
                 return;
             }

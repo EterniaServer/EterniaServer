@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.api.interfaces;
 
-import br.com.eterniaserver.eternialib.CommandManager;
+import br.com.eterniaserver.eternialib.EterniaLib;
 
 public interface Module {
 
@@ -16,11 +16,9 @@ public interface Module {
 
     void loadCommands();
 
-    void reloadConfigurations();
-
     default <T extends Enum<T>> void loadCommandsLocales(CommandsCfg commandsLocales, Class<T> enumCommands) {
         for (final T command : enumCommands.getEnumConstants()) {
-            CommandManager.getCommandReplacements().addReplacements(
+            EterniaLib.getCmdManager().getCommandReplacements().addReplacements(
                     command.name(), commandsLocales.getName(command.ordinal()),
                     command.name() + "_DESCRIPTION", commandsLocales.getDescription(command.ordinal()),
                     command.name() + "_SYNTAX", commandsLocales.getSyntax(command.ordinal()),

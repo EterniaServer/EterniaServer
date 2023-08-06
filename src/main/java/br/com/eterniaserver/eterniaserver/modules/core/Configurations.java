@@ -1,18 +1,11 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
+import br.com.eterniaserver.eternialib.configuration.CommandLocale;
+import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.interfaces.CommandsCfg;
-import br.com.eterniaserver.eterniaserver.api.interfaces.FileCfg;
-import br.com.eterniaserver.eterniaserver.enums.Booleans;
-import br.com.eterniaserver.eterniaserver.enums.Commands;
-import br.com.eterniaserver.eterniaserver.enums.Integers;
-import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
-import br.com.eterniaserver.eterniaserver.enums.Lists;
-import br.com.eterniaserver.eterniaserver.enums.Messages;
-import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.enums.*;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
-import br.com.eterniaserver.eterniaserver.objects.CommandI18n;
-
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,205 +16,32 @@ import java.util.Random;
 
 final class Configurations {
 
-    static class CommandsLocales implements CommandsCfg {
-
-        private final FileConfiguration inFileConfiguration;
-        private final FileConfiguration outFileConfiguration;
-
-        private final CommandI18n[] commandsLocalesArray = new CommandI18n[Enums.Commands.values().length];
-
-        protected CommandsLocales() {
-            this.inFileConfiguration = YamlConfiguration.loadConfiguration(new File(getFilePath()));
-            this.outFileConfiguration = new YamlConfiguration();
-
-            commandsLocalesArray[Enums.Commands.GAMEMODE.ordinal()] = new CommandI18n(
-                    Enums.Commands.GAMEMODE.name(),
-                    "gamemode|gm",
-                    " <página>",
-                    " Ajuda para o sistema de Gamemode",
-                    "eternia.gamemode"
-            );
-            commandsLocalesArray[Enums.Commands.GAMEMODE_SURVIVAL.ordinal()] = new CommandI18n(
-                    Enums.Commands.GAMEMODE_SURVIVAL.name(),
-                    "survival|s|0",
-                    " (opcional) <jogador>",
-                    " Define o modo de jogo seu, ou de outro jogador, para Sobrevivência",
-                    "eternia.gamemode"
-            );
-            commandsLocalesArray[Enums.Commands.GAMEMODE_CREATIVE.ordinal()] = new CommandI18n(
-                    Enums.Commands.GAMEMODE_CREATIVE.name(),
-                    "creative|c|1",
-                    " (opcional) <jogador>",
-                    " Define o modo de jogo seu, ou de outro jogador, para Criativo",
-                    "eternia.gamemode"
-            );
-            commandsLocalesArray[Enums.Commands.GAMEMODE_ADVENTURE.ordinal()] = new CommandI18n(
-                    Enums.Commands.GAMEMODE_ADVENTURE.name(),
-                    "adventure|a|2",
-                    " (opcional) <jogador>",
-                    " Define o modo de jogo seu, ou de outro jogador, para Aventura",
-                    "eternia.gamemode"
-            );
-            commandsLocalesArray[Enums.Commands.GAMEMODE_SPECTATOR.ordinal()] = new CommandI18n(
-                    Enums.Commands.GAMEMODE_SPECTATOR.name(),
-                    "spectator|spec|3",
-                    " (opcional) <jogador>",
-                    " Define o modo de jogo seu, ou de outro jogador, para Espectador",
-                    "eternia.gamemode"
-            );
-            commandsLocalesArray[Enums.Commands.AFK.ordinal()] = new CommandI18n(
-                    Enums.Commands.AFK.name(),
-                    "afk",
-                    "",
-                    " Fique ausente",
-                    "eternia.afk"
-            );
-            commandsLocalesArray[Enums.Commands.GODMODE.ordinal()] = new CommandI18n(
-                    Enums.Commands.GODMODE.name(),
-                    "god",
-                    " (opcional) <jogador>",
-                    " Ative ou desative seu God Mode, ou o de outro jogador",
-                    "eternia.god"
-            );
-            commandsLocalesArray[Enums.Commands.HAT.ordinal()] = new CommandI18n(
-                    Enums.Commands.HAT.name(),
-                    "hat|capacete",
-                    "",
-                    " Coloque seu caçapete",
-                    "eternia.hat"
-            );
-            commandsLocalesArray[Enums.Commands.WORKBENCH.ordinal()] = new CommandI18n(
-                    Enums.Commands.WORKBENCH.name(),
-                    "workbench|wk",
-                    "",
-                    " Abra uma bancada de trabalho virtual",
-                    "eternia.workbench"
-            );
-            commandsLocalesArray[Enums.Commands.OPENINV.ordinal()] = new CommandI18n(
-                    Enums.Commands.OPENINV.name(),
-                    "openinv",
-                    " <jogador>",
-                    " Abra o inventário de um jogador",
-                    "eternia.openinv"
-            );
-            commandsLocalesArray[Enums.Commands.ENDERCHEST.ordinal()] = new CommandI18n(
-                    Enums.Commands.ENDERCHEST.name(),
-                    "enderchest",
-                    " <jogador>",
-                    " Abra o seu enderchest ou o de um jogador",
-                    "eternia.enderchest"
-            );
-
-            syncToFile();
-            saveConfiguration(true);
-        }
-
-        @Override
-        public CommandI18n[] getCommandsLocalesArray() {
-            return commandsLocalesArray;
-        }
-
-        @Override
-        public FileConfiguration inFileConfiguration() {
-            return inFileConfiguration;
-        }
-
-        @Override
-        public FileConfiguration outFileConfiguration() {
-            return outFileConfiguration;
-        }
-
-        @Override
-        public String getFolderPath() {
-            return Constants.DATA_MODULE_FOLDER_PATH;
-        }
-
-        @Override
-        public String getFilePath() {
-            return Constants.CORE_COMMAND_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return null;
-        }
-    }
-
-    static class Configs implements FileCfg {
-
-        private final EterniaServer plugin;
+    static class MainConfiguration implements ReloadableConfiguration {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        protected Configs(final EterniaServer plugin) {
-            this.plugin = plugin;
+        private final CommandLocale[] commandsLocalesArray;
+
+        private final boolean[] booleans;
+        private final int[] integers;
+        private final String[] strings;
+        private final String[] messages;
+
+        private final List<List<String>> stringLists;
+
+        protected MainConfiguration(EterniaServer plugin) {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
 
-            this.loadNamespacedKeys();
+            this.booleans = plugin.booleans();
+            this.integers = plugin.integers();
+            this.strings = plugin.strings();
+            this.messages = plugin.messages();
+            this.stringLists = plugin.stringLists();
 
-            final Random random = new Random();
-
-            final boolean[] booleans = plugin.booleans();
-            final int[] integers = plugin.integers();
-            final String[] strings = plugin.strings();
-            final List<List<String>> stringLists = plugin.stringLists();
-
-            // Booleans
-            booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
-            booleans[Booleans.MODULE_EXPERIENCE.ordinal()] = inFile.getBoolean("modules.experience", true);
-            booleans[Booleans.MODULE_ELEVATOR.ordinal()] = inFile.getBoolean("modules.elevator", true);
-            booleans[Booleans.MODULE_REWARDS.ordinal()] = inFile.getBoolean("modules.rewards", true);
-            booleans[Booleans.MODULE_GLOW.ordinal()] = inFile.getBoolean("modules.glow", true);
-            booleans[Booleans.MODULE_PAPI.ordinal()] = inFile.getBoolean("modules.papi", true);
-            booleans[Booleans.MODULE_CASH.ordinal()] = inFile.getBoolean("modules.cash", true);
-            booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
-            // Integers
-            integers[Integers.PLUGIN_TICKS.ordinal()] = inFile.getInt("critical-configs.plugin-ticks", 20);
-            integers[Integers.AFK_TIMER.ordinal()] = inFile.getInt("afk.limit-time", 900);
-            integers[Integers.COOLDOWN.ordinal()] = inFile.getInt("critical-configs.teleport-ticks", 80);
-            // Strings
-            strings[Strings.DATA_FORMAT.ordinal()] = inFile.getString("format.data-time", "dd/MM/yyyy HH:mm");
-            strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
-            strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
-            strings[Strings.PERM_TIMING_BYPASS.ordinal()] = inFile.getString("teleport.timing-bypass", "eternia.timing.bypass");
-            strings[Strings.GUI_SECRET.ordinal()] = inFile.getString("secret.value", String.format("#%06x", random.nextInt(0xffffff + 1)));
-            strings[Strings.PERM_EC_OTHER.ordinal()] = inFile.getString("permissions.ec-other", "eternia.enderchest.other");
-            // Lists
-            final List<String> list = inFile.getStringList("critical-configs.blocked-commands");
-            stringLists.set(Lists.BLACKLISTED_COMMANDS.ordinal(), list.isEmpty() ? List.of("/op", "/deop", "/stop") : list);
-
-            // Booleans
-            outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
-            outFile.set("modules.experience", booleans[Booleans.MODULE_EXPERIENCE.ordinal()]);
-            outFile.set("modules.elevator", booleans[Booleans.MODULE_ELEVATOR.ordinal()]);
-            outFile.set("modules.rewards", booleans[Booleans.MODULE_REWARDS.ordinal()]);
-            outFile.set("modules.glow", booleans[Booleans.MODULE_GLOW.ordinal()]);
-            outFile.set("modules.papi", booleans[Booleans.MODULE_PAPI.ordinal()]);
-            outFile.set("modules.cash", booleans[Booleans.MODULE_CASH.ordinal()]);
-            outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
-            // Integers
-            outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);
-            outFile.set("afk.limit-time", integers[Integers.AFK_TIMER.ordinal()]);
-            outFile.set("critical-configs.teleport-ticks", integers[Integers.COOLDOWN.ordinal()]);
-            // Strings
-            outFile.set("format.data-time", strings[Strings.DATA_FORMAT.ordinal()]);
-            outFile.set("mini-messages.motd", strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()]);
-            outFile.set("afk.perm-to-stay-afk", strings[Strings.PERM_AFK.ordinal()]);
-            outFile.set("teleport.timing-bypass", strings[Strings.PERM_TIMING_BYPASS.ordinal()]);
-            outFile.set("secret.value", strings[Strings.GUI_SECRET.ordinal()]);
-            outFile.set("secret.info-pt", "Não exponha esse código hex");
-            outFile.set("secret.info-en", "Don't expose this hex code");
-            outFile.set("permissions.ec-other", strings[Strings.PERM_EC_OTHER.ordinal()]);
-            // Lists
-            outFile.set("critical-configs.blocked-commands", plugin.stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
-
-            saveConfiguration(true);
-        }
-
-        private void loadNamespacedKeys() {
-            final NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
+            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
 
             namespacedKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(plugin, "eternia_function");
             namespacedKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(plugin, "eternia_int_value");
@@ -256,24 +76,21 @@ final class Configurations {
 
         @Override
         public String[] messages() {
-            return null;
+            return messages;
         }
 
-    }
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
 
-    static class Locales implements FileCfg {
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.BLOCKED;
+        }
 
-        private final FileConfiguration inFile;
-        private final FileConfiguration outFile;
-
-        private final String[] messages;
-
-        protected Locales(final EterniaServer plugin) {
-            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
-            this.outFile = new YamlConfiguration();
-
-            this.messages = plugin.messages();
-
+        @Override
+        public void executeConfig() {
             addMessage(Messages.SERVER_NO_PLAYER,
                     "Somente jogadores podem utilizar esse comando<color:#555555>.",
                     ""
@@ -351,34 +168,141 @@ final class Configurations {
                     ""
             );
 
-            saveConfiguration(true);
+            // Booleans
+            booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
+            booleans[Booleans.MODULE_EXPERIENCE.ordinal()] = inFile.getBoolean("modules.experience", true);
+            booleans[Booleans.MODULE_ELEVATOR.ordinal()] = inFile.getBoolean("modules.elevator", true);
+            booleans[Booleans.MODULE_REWARDS.ordinal()] = inFile.getBoolean("modules.rewards", true);
+            booleans[Booleans.MODULE_GLOW.ordinal()] = inFile.getBoolean("modules.glow", true);
+            booleans[Booleans.MODULE_PAPI.ordinal()] = inFile.getBoolean("modules.papi", true);
+            booleans[Booleans.MODULE_CASH.ordinal()] = inFile.getBoolean("modules.cash", true);
+            booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
+            // Integers
+            integers[Integers.PLUGIN_TICKS.ordinal()] = inFile.getInt("critical-configs.plugin-ticks", 20);
+            integers[Integers.AFK_TIMER.ordinal()] = inFile.getInt("afk.limit-time", 900);
+            integers[Integers.COOLDOWN.ordinal()] = inFile.getInt("critical-configs.teleport-ticks", 80);
+            // Strings
+            strings[Strings.DATA_FORMAT.ordinal()] = inFile.getString("format.data-time", "dd/MM/yyyy HH:mm");
+            strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
+            strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
+            strings[Strings.PERM_TIMING_BYPASS.ordinal()] = inFile.getString("teleport.timing-bypass", "eternia.timing.bypass");
+            strings[Strings.GUI_SECRET.ordinal()] = inFile.getString("secret.value", String.format("#%06x", new Random().nextInt(0xffffff + 1)));
+            strings[Strings.PERM_EC_OTHER.ordinal()] = inFile.getString("permissions.ec-other", "eternia.enderchest.other");
+            strings[Strings.REVISION_TABLE_NAME.ordinal()] = inFile.getString("table-name.revision", "e_revision");
+            strings[Strings.PROFILE_TABLE_NAME.ordinal()] = inFile.getString("table-name.player-profile", "e_player_profile");
+
+            // Lists
+            List<String> list = inFile.getStringList("critical-configs.blocked-commands");
+            stringLists.set(Lists.BLACKLISTED_COMMANDS.ordinal(), list.isEmpty() ? List.of("/op", "/deop", "/stop") : list);
+
+            // Booleans
+            outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
+            outFile.set("modules.experience", booleans[Booleans.MODULE_EXPERIENCE.ordinal()]);
+            outFile.set("modules.elevator", booleans[Booleans.MODULE_ELEVATOR.ordinal()]);
+            outFile.set("modules.rewards", booleans[Booleans.MODULE_REWARDS.ordinal()]);
+            outFile.set("modules.glow", booleans[Booleans.MODULE_GLOW.ordinal()]);
+            outFile.set("modules.papi", booleans[Booleans.MODULE_PAPI.ordinal()]);
+            outFile.set("modules.cash", booleans[Booleans.MODULE_CASH.ordinal()]);
+            outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
+            // Integers
+            outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);
+            outFile.set("afk.limit-time", integers[Integers.AFK_TIMER.ordinal()]);
+            outFile.set("critical-configs.teleport-ticks", integers[Integers.COOLDOWN.ordinal()]);
+            // Strings
+            outFile.set("format.data-time", strings[Strings.DATA_FORMAT.ordinal()]);
+            outFile.set("mini-messages.motd", strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()]);
+            outFile.set("afk.perm-to-stay-afk", strings[Strings.PERM_AFK.ordinal()]);
+            outFile.set("teleport.timing-bypass", strings[Strings.PERM_TIMING_BYPASS.ordinal()]);
+            outFile.set("secret.value", strings[Strings.GUI_SECRET.ordinal()]);
+            outFile.set("secret.info-pt", "Não exponha esse código hex");
+            outFile.set("secret.info-en", "Don't expose this hex code");
+            outFile.set("permissions.ec-other", strings[Strings.PERM_EC_OTHER.ordinal()]);
+            outFile.set("table-name.revision", strings[Strings.REVISION_TABLE_NAME.ordinal()]);
+            outFile.set("table-name.player-profile", strings[Strings.PROFILE_TABLE_NAME.ordinal()]);
+            // Lists
+            outFile.set("critical-configs.blocked-commands", stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
         }
 
         @Override
-        public FileConfiguration inFileConfiguration() {
-            return inFile;
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.GAMEMODE, new CommandLocale(
+                    "gamemode|gm",
+                    " <página>",
+                    " Ajuda para o sistema de Gamemode",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE_SURVIVAL, new CommandLocale(
+                    "survival|s|0",
+                    " <página>",
+                    " Define o modo de jogo seu, ou de outro jogador para Sobrevivência",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE_CREATIVE, new CommandLocale(
+                    "creative|c|1",
+                    " <página>",
+                    " Define o modo de jogo seu, ou de outro jogador para Criativo",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE_ADVENTURE, new CommandLocale(
+                    "adventure|a|2",
+                    " <página>",
+                    " Define o modo de jogo seu, ou de outro jogador para Aventura",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE_SPECTATOR, new CommandLocale(
+                    "spectator|sp|3",
+                    " <página>",
+                    " Define o modo de jogo seu, ou de outro jogador para Espectador",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.AFK, new CommandLocale(
+                    "afk",
+                    null,
+                    " Entra no modo AFK",
+                    "eternia.afk",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GODMODE, new CommandLocale(
+                    "god",
+                    null,
+                    " Entra em GodMode",
+                    "eternia.god",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.HAT, new CommandLocale(
+                    "hat|capacete",
+                    null,
+                    " Coloca o item na sua mão na sua cabeça",
+                    "eternia.hat",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.WORKBENCH, new CommandLocale(
+                    "workbench|craftingtable|crafting",
+                    null,
+                    " Abre uma mesa de trabalho",
+                    "eternia.workbench",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ENDERCHEST, new CommandLocale(
+                    "enderchest|ender|chest",
+                    null,
+                    " Abre um baú de ender",
+                    "eternia.enderchest",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.OPENINV, new CommandLocale(
+                    "openinv|inv",
+                    " <jogador>",
+                    " Abre o inventário de outro jogador",
+                    "eternia.openinv",
+                    null
+            ));
         }
-
-        @Override
-        public FileConfiguration outFileConfiguration() {
-            return outFile;
-        }
-
-        @Override
-        public String getFolderPath() {
-            return Constants.SPAWNER_MODULE_FOLDER_PATH;
-        }
-
-        @Override
-        public String getFilePath() {
-            return Constants.SPAWNER_MESSAGE_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return messages;
-        }
-
     }
 
 }

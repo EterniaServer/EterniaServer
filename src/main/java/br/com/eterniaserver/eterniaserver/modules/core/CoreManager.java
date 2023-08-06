@@ -1,10 +1,15 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
-import br.com.eterniaserver.eternialib.CommandManager;
-import br.com.eterniaserver.eternialib.core.commands.CommandConfirm;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.database.Entity;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.Afk;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.EGameMode;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.GodMode;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.Inventory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 
 import java.util.logging.Level;
 
@@ -20,10 +25,28 @@ public class CoreManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        new Configurations.Configs(plugin);
-        new Configurations.Locales(plugin);
+        Configurations.MainConfiguration configuration = new Configurations.MainConfiguration(plugin);
 
-        loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
+        EterniaLib.registerConfiguration("eterniaserver", "core", configuration);
+
+        configuration.executeConfig();
+        configuration.executeCritical();
+        configuration.saveConfiguration(true);
+
+        try {
+            Entity<Entities.Revision> revisionEntity = new Entity<>(Entities.Revision.class);
+            Entity<Entities.PlayerProfile> profileEntity = new Entity<>(Entities.PlayerProfile.class);
+
+            EterniaLib.addTableName("%eternia_server_revision%", plugin.getString(Strings.REVISION_TABLE_NAME));
+            EterniaLib.addTableName("%eternia_server_profile%", plugin.getString(Strings.PROFILE_TABLE_NAME));
+
+            EterniaLib.getDatabase().register(Entities.Revision.class, revisionEntity);
+            EterniaLib.getDatabase().register(Entities.PlayerProfile.class, profileEntity);
+        }
+        catch (Exception exception) {
+            EterniaLib.registerLog("EE-103-Revision");
+            return;
+        }
 
         this.afkServices = new Services.Afk(plugin);
         this.plugin.setGuiAPI(new Services.GUI(plugin));
@@ -50,16 +73,10 @@ public class CoreManager implements Module {
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.EGameMode(plugin));
-        CommandManager.registerCommand(new Commands.Afk(plugin));
-        CommandManager.registerCommand(new Commands.GodMode(plugin));
-        CommandManager.registerCommand(new Commands.Inventory(plugin));
-    }
-
-    @Override
-    public void reloadConfigurations() {
-        new Configurations.Configs(plugin);
-        new Configurations.Locales(plugin);
+        EterniaLib.getCmdManager().registerCommand(new EGameMode(plugin));
+        EterniaLib.getCmdManager().registerCommand(new Afk(plugin));
+        EterniaLib.getCmdManager().registerCommand(new GodMode(plugin));
+        EterniaLib.getCmdManager().registerCommand(new Inventory(plugin));
     }
 
 }

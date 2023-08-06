@@ -2,6 +2,10 @@ package br.com.eterniaserver.eterniaserver.modules.core;
 
 final class Enums {
 
+    private Enums() {
+        throw new IllegalStateException("Utility class");
+    }
+
     enum Commands {
         GAMEMODE,
         GAMEMODE_SURVIVAL,

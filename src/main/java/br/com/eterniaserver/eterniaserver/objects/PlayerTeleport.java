@@ -1,15 +1,16 @@
 package br.com.eterniaserver.eterniaserver.objects;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 
 
 public class PlayerTeleport {
 
     private final Location wantLocation;
-    private final String message;
+    private final Component message;
     private int cooldown;
 
-    public PlayerTeleport(final int cooldown, final Location wantLocation, final String message) {
+    public PlayerTeleport(int cooldown, Location wantLocation, Component message) {
         this.wantLocation = wantLocation;
         this.message = message;
         this.cooldown = cooldown;
@@ -28,7 +29,7 @@ public class PlayerTeleport {
         return wantLocation;
     }
 
-    public String getMessage() {
+    public Component getMessage() {
         return message;
     }
 

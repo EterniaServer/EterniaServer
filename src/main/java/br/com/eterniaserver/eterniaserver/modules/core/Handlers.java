@@ -1,10 +1,13 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.modules.core.Services.Afk;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 
@@ -28,11 +31,13 @@ final class Handlers implements Listener {
     private final EterniaServer plugin;
     private final Component serverMOTD;
 
-    private final Services.Afk afkServices;
+    private final Afk afkServices;
+    private final DatabaseInterface databaseInterface;
 
-    public Handlers(final EterniaServer plugin, final Services.Afk afkServices) {
+    public Handlers(final EterniaServer plugin, Afk afkServices) {
         this.plugin = plugin;
         this.afkServices = afkServices;
+        this.databaseInterface = EterniaLib.getDatabase();
         this.serverMOTD = plugin.parseColor(plugin.getString(Strings.MINI_MESSAGES_SERVER_SERVER_LIST));
     }
 
@@ -50,7 +55,7 @@ final class Handlers implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
-        final String message = event.getMessage().toLowerCase();
+        String message = event.getMessage().toLowerCase();
         for (String line : plugin.getStringList(Lists.BLACKLISTED_COMMANDS)) {
             if (message.startsWith(line)) {
                 event.setCancelled(true);
@@ -61,34 +66,39 @@ final class Handlers implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAsyncChatEvent(AsyncChatEvent event) {
-        final Player player = event.getPlayer();
-        final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+        Player player = event.getPlayer();
+        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.CHAT);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        final Player player = event.getPlayer();
-        final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+        Player player = event.getPlayer();
+        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.INTERACT);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
-        if (!event.hasExplicitlyChangedBlock()) return;
+        if (!event.hasExplicitlyChangedBlock()) {
+            return;
+        }
 
-        final Player player = event.getPlayer();
-        final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+        Player player = event.getPlayer();
+        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.MOVE);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-        final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+        Player player = event.getPlayer();
+
+        Entities.PlayerProfile playerProfile = EterniaLib.getDatabase().get(
+                Entities.PlayerProfile.class, player.getUniqueId()
+        );
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.JOIN);
     }
@@ -96,8 +106,8 @@ final class Handlers implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
-        final Player player = event.getPlayer();
-        final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
+        Player player = event.getPlayer();
+        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
 
         plugin.locationManager().removeTeleport(player.getUniqueId());
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.QUIT);
