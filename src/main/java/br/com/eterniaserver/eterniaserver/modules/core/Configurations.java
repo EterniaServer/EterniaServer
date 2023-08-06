@@ -96,80 +96,82 @@ final class Configurations {
         @Override
         public void executeConfig() {
             addMessage(Messages.SERVER_NO_PLAYER,
-                    "Somente jogadores podem utilizar esse comando<color:#555555>.",
-                    ""
+                    "Somente jogadores podem utilizar esse comando<color:#555555>."
             );
             addMessage(Messages.GAMEMODE_SETED,
                     "Seu modo de jogo foi definido para <color:#00aaaa>{0}<color:#555555>.",
-                    "0: modo de jogo"
+                    "modo de jogo"
             );
             addMessage(Messages.GAMEMODE_SET_FROM,
                     "O modo de jogo de <color:#00aaaa>{2}<color:#aaaaaa> foi definido para <color:#00aaaa>{0}<color:#555555>.",
-                    "0: modo de jogo; 1: nome do jogador; 2: apelido do jogador"
+                    "modo de jogo",
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.GAMEMODE_NOT_BY_CONSOLE,
-                    "Você precisa informar o nome de um jogador online<color:#555555>.",
-                    ""
+                    "Você precisa informar o nome de um jogador online<color:#555555>."
             );
             addMessage(Messages.AFK_AUTO_ENTER,
                     "<color:#00aaaa>{1} <color:#aaaaaa>ficou ausente e agora está AFK<color:#555555>.",
-                    "0: nome do jogador; 1: apelido do jogador"
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.AFK_ENTER,
                     "<color:#00aaaa>{1} <color:#aaaaaa>está AFK<color:#555555>.",
-                    "0: nome do jogador; 1: apelido do jogador"
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.AFK_LEAVE,
                     "<color:#00aaaa>{1} <color:#aaaaaa>não está mais AFK<color:#555555>.",
-                    "0: nome do jogador; 1: apelido do jogador"
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.AFK_BROADCAST_KICK,
                     "<color:#00aaaa>{1} <color:#aaaaaa>ficou ausente e foi kickado<color:#555555>.",
-                    "0: nome do jogador; 1: apelido do jogador"
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.AFK_KICKED,
-                    "<color:#aaaaaa>Você foi kickado por estar ausente<color:#555555>.",
-                    ""
+                    "<color:#aaaaaa>Você foi kickado por estar ausente<color:#555555>."
             );
             addMessage(Messages.TELEPORT_TIMING,
                     "Você irá ser teleportado em <color:#00aaaa>{1} segundos<color:#555555>.",
-                    "0: tempo restante até ser teleportado (em segundos)"
+                    "tempo restante até ser teleportado (em segundos)"
             );
             addMessage(Messages.GODMODE_ENABLED,
-                    "Você ativou o God Mode<color:#555555>.",
-                    ""
+                    "Você ativou o God Mode<color:#555555>."
             );
             addMessage(Messages.GODMODE_DISABLED,
-                    "Vocẽ desativou o God Mode<color:#555555>.",
-                    ""
+                    "Vocẽ desativou o God Mode<color:#555555>."
             );
             addMessage(Messages.GODMODE_DISABLED_TO,
                     "Você desativou o God Mode de <color:#00aaaa>{1}<color:#555555>.",
-                    "0: nome do jogador; 1: apelido do jogador"
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.GODMODE_DISABLED_BY,
                     "God Mode desativado por <color:#00aaaa>{1}<color:#555555>.",
-                    "0: nome do jogador; 1: apelido do jogador"
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.GODMODE_ENABLED_TO,
                     "Você ativou o God Mode de <color:#00aaaa>{1}<color:#555555>.",
-                    "0: nome do jogador; 1: apelido do jogador"
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.GODMODE_ENABLED_BY,
                     "God Mode ativado por <color:#00aaaa>{1}<color:#555555>.",
-                    "0: nome do jogador; 1: apelido do jogador"
+                    "nome do jogador",
+                    "apelido do jogador"
             );
             addMessage(Messages.SERVER_NO_PERM,
-                    "Você não possui permissão para isso<color:#555555>.",
-                    ""
+                    "Você não possui permissão para isso<color:#555555>."
             );
             addMessage(Messages.ITEM_NOT_FOUND,
-                    "Nenhum item foi encontrado em sua mão<color:#555555>.",
-                    ""
+                    "Nenhum item foi encontrado em sua mão<color:#555555>."
             );
             addMessage(Messages.ITEM_HELMET,
-                    "Você equipou seu caçapete<color:#555555>.",
-                    ""
+                    "Você equipou seu caçapete<color:#555555>."
             );
 
             // Booleans

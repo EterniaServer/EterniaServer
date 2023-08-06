@@ -59,6 +59,7 @@ public class CoreManager implements Module {
 
     @Override
     public void loadConditions() {
+        plugin.getLogger().log(Level.INFO, "Core module: no commands conditions");
     }
 
     @Override

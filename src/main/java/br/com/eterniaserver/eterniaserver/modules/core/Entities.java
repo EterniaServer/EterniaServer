@@ -14,7 +14,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-final class Entities {
+public class Entities {
 
     private Entities() {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
@@ -25,7 +25,7 @@ final class Entities {
     @Getter
     @Setter
     @Table(tableName = "%eternia_server_revision%")
-    static class Revision {
+    public static class Revision {
 
         public Revision(String version, String status, Date date) {
             this.version = version;
