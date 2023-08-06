@@ -1,6 +1,9 @@
 package br.com.eterniaserver.eterniaserver.api.interfaces;
 
+import br.com.eterniaserver.eterniaserver.modules.cash.Entities;
+
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface CashAPI {
 
@@ -11,7 +14,15 @@ public interface CashAPI {
      * @param uuid of player to check
      * @return if the player has a cash account
      */
-    boolean hasAccount(UUID uuid);
+    CompletableFuture<Boolean> hasAccount(UUID uuid);
+
+    /**
+     * Creates a cash account for a player.
+     * @param uuid of player to create
+     * @param balance the amount of cash to start
+     * @return the cash account
+     */
+    CompletableFuture<Entities.CashBalance> createAccount(UUID uuid, Integer balance);
 
     /**
      * Gets the cash balance of a player.
