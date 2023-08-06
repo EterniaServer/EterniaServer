@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.modules.core.Services.Afk;
 import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
@@ -20,7 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 final class Schedules {
 
     private Schedules() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
     static class MainTick extends BukkitRunnable {

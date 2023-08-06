@@ -1,9 +1,11 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
+import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 final class Enums {
 
     private Enums() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
     enum Commands {

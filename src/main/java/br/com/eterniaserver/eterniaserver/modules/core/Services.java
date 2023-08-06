@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
+import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 final class Services {
 
     private Services() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
     static class Afk {

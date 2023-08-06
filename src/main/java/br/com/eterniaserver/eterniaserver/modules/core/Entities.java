@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.database.annotations.DataField;
 import br.com.eterniaserver.eternialib.database.annotations.PrimaryKeyField;
 import br.com.eterniaserver.eternialib.database.annotations.Table;
 import br.com.eterniaserver.eternialib.database.enums.FieldType;
+import br.com.eterniaserver.eterniaserver.modules.Constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.UUID;
 final class Entities {
 
     private Entities() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
     @NoArgsConstructor

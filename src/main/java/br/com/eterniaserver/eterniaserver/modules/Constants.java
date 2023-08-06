@@ -49,4 +49,6 @@ public class Constants {
     public static final String CHAT_COMMAND_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat-cmd.yml";
     public static final String CHAT_MESSAGE_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat-msg.yml";
 
+    public static final String UTILITY_CLASS = "Utility class";
+
 }

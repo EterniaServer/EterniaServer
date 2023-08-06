@@ -16,6 +16,10 @@ import java.util.Random;
 
 final class Configurations {
 
+    private Configurations() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
+
     static class MainConfiguration implements ReloadableConfiguration {
 
         private final FileConfiguration inFile;

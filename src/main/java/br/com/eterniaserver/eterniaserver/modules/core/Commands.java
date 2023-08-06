@@ -19,6 +19,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 
 import net.kyori.adventure.text.Component;
@@ -31,7 +32,7 @@ import org.bukkit.inventory.ItemStack;
 final class Commands {
 
     private Commands() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
     static class Inventory extends BaseCommand {
