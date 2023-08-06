@@ -5,7 +5,9 @@ import br.com.eterniaserver.eternialib.database.Entity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
 
+import java.util.List;
 import java.util.logging.Level;
 
 
@@ -29,16 +31,19 @@ public class CashManager implements Module {
         configuration.saveConfiguration(true);
 
         try {
-            Entity<Entities.CashBalance> cashEntity = new Entity<>(Entities.CashBalance.class);
+            Entity<CashBalance> cashEntity = new Entity<>(CashBalance.class);
 
             EterniaLib.addTableName("%eternia_server_cash%", plugin.getString(Strings.CASH_TABLE_NAME));
             EterniaLib.addTableName("%eternia_server_profile%", plugin.getString(Strings.PROFILE_TABLE_NAME));
 
-            EterniaLib.getDatabase().register(Entities.CashBalance.class, cashEntity);
+            EterniaLib.getDatabase().register(CashBalance.class, cashEntity);
         }
         catch (Exception exception) {
             EterniaLib.registerLog("EE-104-Cash");
         }
+
+        List<CashBalance> cashBalances = EterniaLib.getDatabase().listAll(CashBalance.class);
+        this.plugin.getLogger().log(Level.INFO, "cash module: {0} cash balances loaded", cashBalances.size());
 
         this.plugin.setCashAPI(new Services.CraftCash());
         this.cashService = new Services.Cash(plugin);

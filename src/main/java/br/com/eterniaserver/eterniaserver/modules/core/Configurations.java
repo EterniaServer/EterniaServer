@@ -47,15 +47,51 @@ final class Configurations {
 
             NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
 
-            namespacedKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(plugin, "eternia_function");
-            namespacedKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(plugin, "eternia_int_value");
-
-            namespacedKeys[ItemsKeys.CASH_GUI_NAME.ordinal()] = new NamespacedKey(plugin, "cash_gui_name");
-            namespacedKeys[ItemsKeys.CASH_ITEM_COST.ordinal()] = new NamespacedKey(plugin, "cash_item_cost");
-            namespacedKeys[ItemsKeys.CASH_ITEM_MESSAGE.ordinal()] = new NamespacedKey(plugin, "cash_item_message");
-            namespacedKeys[ItemsKeys.CASH_ITEM_COMMANDS.ordinal()] = new NamespacedKey(plugin, "cash_item_commands");
-            namespacedKeys[ItemsKeys.CASH_ITEM_LORE.ordinal()] = new NamespacedKey(plugin, "cash_item_lore");
-            namespacedKeys[ItemsKeys.CASH_ITEM_LORE.ordinal()] = new NamespacedKey(plugin, "cash_item_lore");
+            namespacedKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_FUNCTION
+            );
+            namespacedKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_INT_VALUE
+            );
+            namespacedKeys[ItemsKeys.TAG_RUN_COMMAND.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_RUN_COMMAND
+            );
+            namespacedKeys[ItemsKeys.TAG_RUN_IN_CONSOLE.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_RUN_IN_CONSOLE
+            );
+            namespacedKeys[ItemsKeys.TAG_USAGES.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_USAGES
+            );
+            namespacedKeys[ItemsKeys.TAG_WORLD.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_WORLD
+            );
+            namespacedKeys[ItemsKeys.TAG_COORD_X.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_COORD_X
+            );
+            namespacedKeys[ItemsKeys.TAG_COORD_Y.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_COORD_Y
+            );
+            namespacedKeys[ItemsKeys.TAG_COORD_Z.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_COORD_Z
+            );
+            namespacedKeys[ItemsKeys.TAG_COORD_YAW.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_COORD_YAW
+            );
+            namespacedKeys[ItemsKeys.TAG_COORD_PITCH.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_COORD_PITCH
+            );
+            namespacedKeys[ItemsKeys.TAG_LOC_NAME.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_LOC_NAME
+            );
+            namespacedKeys[ItemsKeys.CHEST_BUY_AMOUNT.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CHEST_BUY
+            );
+            namespacedKeys[ItemsKeys.CHEST_SELL_AMOUNT.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CHEST_SHELL
+            );
+            namespacedKeys[ItemsKeys.CHEST_NAME.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CHEST_NAME
+            );
         }
 
         @Override

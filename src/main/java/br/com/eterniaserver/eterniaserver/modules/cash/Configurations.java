@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -44,6 +45,23 @@ final class Configurations {
             this.outFile = new YamlConfiguration();
             this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
             this.plugin = plugin;
+
+            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
+            namespacedKeys[ItemsKeys.CASH_GUI_NAME.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_GUI_NAME
+            );
+            namespacedKeys[ItemsKeys.CASH_ITEM_COST.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_ITEM_COST
+            );
+            namespacedKeys[ItemsKeys.CASH_ITEM_MESSAGE.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_ITEM_MESSAGE
+            );
+            namespacedKeys[ItemsKeys.CASH_ITEM_COMMANDS.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_ITEM_COMMANDS
+            );
+            namespacedKeys[ItemsKeys.CASH_ITEM_LORE.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_ITEM_LORE
+            );
         }
 
         @Override

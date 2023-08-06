@@ -15,16 +15,17 @@ public class ElevatorManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        new Configurations.Configs(plugin);
+        new Configurations.ElevatorConfiguration(plugin);
     }
 
     @Override
     public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "Elevator module: no command completions");
+        plugin.getLogger().log(Level.INFO, "elevator module: no command completions");
     }
 
     @Override
     public void loadConditions() {
+        plugin.getLogger().log(Level.INFO, "elevator module: no conditions");
     }
 
     @Override
@@ -34,18 +35,12 @@ public class ElevatorManager implements Module {
 
     @Override
     public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "Elevator module: no schedules");
+        plugin.getLogger().log(Level.INFO, "elevator module: no schedules");
     }
 
     @Override
     public void loadCommands() {
-        plugin.getLogger().log(Level.INFO, "Elevator module: no commands");
+        plugin.getLogger().log(Level.INFO, "elevator module: no commands");
     }
-
-    @Override
-    public void reloadConfigurations() {
-        new Configurations.Configs(plugin);
-    }
-
 
 }

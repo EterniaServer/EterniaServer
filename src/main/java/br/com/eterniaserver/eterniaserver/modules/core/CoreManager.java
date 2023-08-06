@@ -10,7 +10,10 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities.Revision;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 
+import java.util.List;
 import java.util.logging.Level;
 
 
@@ -34,19 +37,25 @@ public class CoreManager implements Module {
         configuration.saveConfiguration(true);
 
         try {
-            Entity<Entities.Revision> revisionEntity = new Entity<>(Entities.Revision.class);
-            Entity<Entities.PlayerProfile> profileEntity = new Entity<>(Entities.PlayerProfile.class);
+            Entity<Revision> revisionEntity = new Entity<>(Revision.class);
+            Entity<PlayerProfile> profileEntity = new Entity<>(PlayerProfile.class);
 
             EterniaLib.addTableName("%eternia_server_revision%", plugin.getString(Strings.REVISION_TABLE_NAME));
             EterniaLib.addTableName("%eternia_server_profile%", plugin.getString(Strings.PROFILE_TABLE_NAME));
 
-            EterniaLib.getDatabase().register(Entities.Revision.class, revisionEntity);
-            EterniaLib.getDatabase().register(Entities.PlayerProfile.class, profileEntity);
+            EterniaLib.getDatabase().register(Revision.class, revisionEntity);
+            EterniaLib.getDatabase().register(PlayerProfile.class, profileEntity);
         }
         catch (Exception exception) {
             EterniaLib.registerLog("EE-103-Revision");
             return;
         }
+
+        List<Revision> revisions = EterniaLib.getDatabase().listAll(Revision.class);
+        this.plugin.getLogger().log(Level.INFO, "Core module: {0} revisions loaded", revisions.size());
+
+        List<PlayerProfile> playerProfiles = EterniaLib.getDatabase().listAll(PlayerProfile.class);
+        this.plugin.getLogger().log(Level.INFO, "Core module: {0} player profiles loaded", playerProfiles.size());
 
         this.afkServices = new Services.Afk(plugin);
         this.plugin.setGuiAPI(new Services.GUI(plugin));
