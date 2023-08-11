@@ -14,7 +14,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-public class Entities {
+public final class Entities {
 
     private Entities() {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
@@ -54,7 +54,7 @@ public class Entities {
     @Table(tableName = "%eternia_server_profile%")
     public static class PlayerProfile {
 
-        @PrimaryKeyField(columnName = "uuid", type = FieldType.UUID, autoIncrement = true)
+        @PrimaryKeyField(columnName = "uuid", type = FieldType.UUID, autoIncrement = false)
         private UUID uuid;
 
         @DataField(columnName = "playerName", type = FieldType.STRING, notNull = true)

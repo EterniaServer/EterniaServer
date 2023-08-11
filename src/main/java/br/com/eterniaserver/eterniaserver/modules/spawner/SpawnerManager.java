@@ -14,7 +14,7 @@ public class SpawnerManager implements Module {
 
     private Services.Spawner spawnerService;
 
-    public SpawnerManager(final EterniaServer plugin) {
+    public SpawnerManager(EterniaServer plugin) {
         this.plugin = plugin;
     }
 

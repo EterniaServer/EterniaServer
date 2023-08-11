@@ -100,5 +100,6 @@ public enum Strings {
     REVISION_TABLE_NAME,
     PROFILE_TABLE_NAME,
     CASH_TABLE_NAME,
+    REWARD_TABLE_NAME,
 
 }

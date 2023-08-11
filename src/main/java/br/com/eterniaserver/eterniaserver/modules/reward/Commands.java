@@ -8,6 +8,7 @@ import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
+import br.com.eterniaserver.eterniaserver.modules.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,6 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 final class Commands {
+
+    private Commands() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
 
     static class Rewards extends BaseCommand {
 
@@ -37,7 +42,7 @@ final class Commands {
         @Description("%USE_KEY_DESCRIPTION")
         @CommandPermission("%USE_KEY_PERM")
         public void onUseKey(Player player, String key) {
-            final String reward = rewardsService.getReward(key);
+            String reward = rewardsService.getReward(key);
             if (reward == null) {
                 plugin.sendMiniMessages(player, Messages.REWARD_INVALID_KEY, key);
                 return;
@@ -52,7 +57,7 @@ final class Commands {
         @CommandPermission("%GEN_KEY_PERM")
         public void onGenKey(CommandSender sender, String reward) {
             random.nextBytes(bytes);
-            final String key = Long.toHexString(random.nextLong());
+            String key = Long.toHexString(random.nextLong());
 
             if (!rewardsService.addReward(key, reward)) {
                 plugin.sendMiniMessages(sender, Messages.REWARD_NOT_FOUND);
@@ -66,10 +71,15 @@ final class Commands {
             for (Map.Entry<Double, List<String>> entry : rewardsService.getRewards(rewardsService.getReward(key)).entrySet()) {
                 random.nextBytes(bytes);
 
-                if (random.nextDouble() > entry.getKey()) continue;
+                if (random.nextDouble() > entry.getKey()) {
+                    continue;
+                }
 
                 for (String command : entry.getValue()) {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.setPlaceholders(player, command));
+                    plugin.getServer().dispatchCommand(
+                            Bukkit.getServer().getConsoleSender(),
+                            plugin.setPlaceholders(player, command)
+                    );
                 }
             }
 

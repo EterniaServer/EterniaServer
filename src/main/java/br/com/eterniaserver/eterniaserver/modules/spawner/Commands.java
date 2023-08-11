@@ -36,7 +36,7 @@ final class Commands {
 
         private static final List<String> entities = Stream.of(Entities.values()).map(Enum::name).collect(Collectors.toList());
 
-        public Give(final EterniaServer plugin, Services.Spawner spawnerService) {
+        public Give(EterniaServer plugin, Services.Spawner spawnerService) {
             this.plugin = plugin;
             this.spawnerService = spawnerService;
             this.databaseInterface = EterniaLib.getDatabase();
