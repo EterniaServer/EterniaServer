@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.api.interfaces;
 
-import br.com.eterniaserver.eterniaserver.modules.cash.Entities;
+import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -22,7 +22,7 @@ public interface CashAPI {
      * @param balance the amount of cash to start
      * @return the cash account
      */
-    CompletableFuture<Entities.CashBalance> createAccount(UUID uuid, Integer balance);
+    CompletableFuture<CashBalance> createAccount(UUID uuid, Integer balance);
 
     /**
      * Gets the cash balance of a player.

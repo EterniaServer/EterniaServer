@@ -213,13 +213,25 @@ final class Services {
             CashBalance cash = getCash(uuid);
             cash.setBalance(amount);
 
-            hasAccount(uuid).whenCompleteAsync((has, throwable) -> {
+            hasAccount(uuid).whenCompleteAsync((has, throwableVerify) -> {
+                if (throwableVerify != null) {
+                    EterniaLib.registerLog("EE-201-Cash-Verify");
+                    return;
+                }
+
                 if (Boolean.TRUE.equals(has)) {
                     databaseInterface.update(CashBalance.class, cash);
+                    return;
                 }
-                else {
-                    createAccount(uuid, amount);
-                }
+
+                createAccount(uuid, amount).whenCompleteAsync((cashBalance, throwableCreate) -> {
+                    if (throwableCreate != null) {
+                        EterniaLib.registerLog("EE-201-Cash-Create");
+                        return;
+                    }
+
+                    // todo WAITING FOR EterniaLib Logs
+                });
             });
         }
     }
