@@ -30,6 +30,8 @@ public class CashManager implements Module {
         configuration.executeCritical();
         configuration.saveConfiguration(true);
 
+        loadCommandsLocale(configuration, Enums.Commands.class);
+
         try {
             Entity<CashBalance> cashEntity = new Entity<>(CashBalance.class);
 

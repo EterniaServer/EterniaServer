@@ -2,16 +2,16 @@ package br.com.eterniaserver.eterniaserver.modules.core;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.Entity;
-import br.com.eterniaserver.eterniaserver.modules.core.Commands.Afk;
-import br.com.eterniaserver.eterniaserver.modules.core.Commands.EGameMode;
-import br.com.eterniaserver.eterniaserver.modules.core.Commands.GodMode;
-import br.com.eterniaserver.eterniaserver.modules.core.Commands.Inventory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.modules.core.Entities.Revision;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.Afk;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.EGameMode;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.GodMode;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.Inventory;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities.Revision;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -35,6 +35,8 @@ public class CoreManager implements Module {
         configuration.executeConfig();
         configuration.executeCritical();
         configuration.saveConfiguration(true);
+
+        loadCommandsLocale(configuration, Enums.Commands.class);
 
         try {
             Entity<Revision> revisionEntity = new Entity<>(Revision.class);

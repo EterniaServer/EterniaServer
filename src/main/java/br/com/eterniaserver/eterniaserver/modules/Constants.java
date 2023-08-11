@@ -16,12 +16,9 @@ public class Constants {
     public static final String DATA_MODULE_FOLDER_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "modules";
 
     public static final String CORE_CONFIG_FILE_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "core.yml";
-    public static final String CORE_COMMAND_FILE_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "core-cmd.yml";
 
     public static final String SPAWNER_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "spawner";
     public static final String SPAWNER_CONFIG_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "spawner.yml";
-    public static final String SPAWNER_COMMAND_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "spawner-cmd.yml";
-    public static final String SPAWNER_MESSAGE_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "spawner-msg.yml";
 
     public static final String EXPERIENCE_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "experience";
     public static final String EXPERIENCE_CONFIG_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience.yml";
@@ -70,6 +67,7 @@ public class Constants {
     public static final String TAG_CASH_ITEM_MESSAGE = "cash_item_message";
     public static final String TAG_CASH_ITEM_COMMANDS = "cash_item_commands";
     public static final String TAG_CASH_ITEM_LORE = "cash_item_lore";
+    public static final String TAG_SPAWNER = "eternia_spawner";
 
     public static final String TAG_CHEST_BUY = "ChestBuy_A";
     public static final String TAG_CHEST_SHELL = "ChestSell_A";
