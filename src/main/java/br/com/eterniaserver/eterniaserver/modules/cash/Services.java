@@ -10,6 +10,7 @@ import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
 import br.com.eterniaserver.eterniaserver.objects.BuyingItem;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 
 
 final class Services {
@@ -224,13 +226,16 @@ final class Services {
                     return;
                 }
 
-                createAccount(uuid, amount).whenCompleteAsync((cashBalance, throwableCreate) -> {
+                createAccount(uuid, amount).whenCompleteAsync((createCash, throwableCreate) -> {
                     if (throwableCreate != null) {
                         EterniaLib.registerLog("EE-201-Cash-Create");
                         return;
                     }
 
-                    // todo WAITING FOR EterniaLib Logs
+                    Bukkit.getLogger().log(Level.INFO, "Created cash account for %s with %d balance.".formatted(
+                            createCash.getUuid().toString(),
+                            createCash.getBalance()
+                    ));
                 });
             });
         }

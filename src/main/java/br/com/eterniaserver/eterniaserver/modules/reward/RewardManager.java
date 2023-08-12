@@ -31,7 +31,6 @@ public class RewardManager implements Module {
 
         loadCommandsLocale(configuration, Enums.Commands.class);
 
-
         try {
             Entity<Entities.RewardGroup> rewardGroupEntity = new Entity<>(Entities.RewardGroup.class);
 

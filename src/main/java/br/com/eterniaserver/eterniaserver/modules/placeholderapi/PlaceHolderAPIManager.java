@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.placeholderapi;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 
@@ -10,13 +11,19 @@ public class PlaceHolderAPIManager implements Module {
 
     private final EterniaServer plugin;
 
-    public PlaceHolderAPIManager(final EterniaServer plugin) {
+    public PlaceHolderAPIManager(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void loadConfigurations() {
-        new Configurations.Configs(plugin);
+        Configurations.PlaceHolderConfiguration papiConfig = new Configurations.PlaceHolderConfiguration(plugin);
+
+        EterniaLib.registerConfiguration("eterniaserver", "papi", papiConfig);
+
+        papiConfig.executeConfig();
+        papiConfig.executeCritical();
+        papiConfig.saveConfiguration(true);
 
         new Services.Placeholders(plugin).register();
     }
@@ -28,6 +35,7 @@ public class PlaceHolderAPIManager implements Module {
 
     @Override
     public void loadConditions() {
+        plugin.getLogger().log(Level.INFO, "PlaceHolderAPI module: no conditions");
     }
 
     @Override
@@ -45,9 +53,5 @@ public class PlaceHolderAPIManager implements Module {
         plugin.getLogger().log(Level.INFO, "PlaceHolderAPI module: no commands");
     }
 
-    @Override
-    public void reloadConfigurations() {
-        new Configurations.Configs(plugin);
-    }
 
 }
