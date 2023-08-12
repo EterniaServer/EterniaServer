@@ -20,7 +20,7 @@ public class Manager {
 
     private final List<Module> modules = new ArrayList<>();
 
-    public Manager(final EterniaServer plugin) {
+    public Manager(EterniaServer plugin) {
         loadModule(new CoreManager(plugin));
 
         if (plugin.getBoolean(Booleans.MODULE_SPAWNERS)) modules.add(new SpawnerManager(plugin));

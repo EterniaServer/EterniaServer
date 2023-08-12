@@ -1,12 +1,11 @@
 package br.com.eterniaserver.eterniaserver.modules.glow;
 
+import br.com.eterniaserver.eternialib.configuration.CommandLocale;
+import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.interfaces.CommandsCfg;
-import br.com.eterniaserver.eterniaserver.api.interfaces.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
-import br.com.eterniaserver.eterniaserver.objects.CommandI18n;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -15,49 +14,36 @@ import java.io.File;
 
 final class Configurations {
 
-    static class CommandsLocales implements CommandsCfg {
+    private Configurations() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
 
-        private final FileConfiguration inFileConfiguration;
-        private final FileConfiguration outFileConfiguration;
+    static class GlowConfiguration implements ReloadableConfiguration {
 
-        private final CommandI18n[] commandsLocalesArray = new CommandI18n[Enums.Commands.values().length];
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
 
-        protected CommandsLocales() {
-            this.inFileConfiguration = YamlConfiguration.loadConfiguration(new File(getFilePath()));
-            this.outFileConfiguration = new YamlConfiguration();
+        private final CommandLocale[] commandsLocalesArray;
 
-            commandsLocalesArray[Enums.Commands.GLOW.ordinal()] = new CommandI18n(
-                    Enums.Commands.GLOW.name(),
-                    "glow|brilho",
-                    "",
-                    " Brilhe como uma brabuleta",
-                    "eternia.glow"
-            );
-            commandsLocalesArray[Enums.Commands.GLOW_COLOR.ordinal()] = new CommandI18n(
-                    Enums.Commands.GLOW_COLOR.name(),
-                    "color|cor",
-                    " <cor>",
-                    " Escolha a cor da sua brabuleta",
-                    "eternia.glow"
-            );
+        private final String[] messages;
+        private final Services.Glow servicesGlow;
 
-            syncToFile();
-            saveConfiguration(true);
-        }
-
-        @Override
-        public CommandI18n[] getCommandsLocalesArray() {
-            return commandsLocalesArray;
+        protected GlowConfiguration(EterniaServer plugin, Services.Glow servicesGlow) {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+            this.messages = plugin.messages();
+            this.servicesGlow = servicesGlow;
         }
 
         @Override
         public FileConfiguration inFileConfiguration() {
-            return inFileConfiguration;
+            return inFile;
         }
 
         @Override
         public FileConfiguration outFileConfiguration() {
-            return outFileConfiguration;
+            return outFile;
         }
 
         @Override
@@ -67,23 +53,40 @@ final class Configurations {
 
         @Override
         public String getFilePath() {
-            return Constants.GLOW_COMMAND_FILE_PATH;
+            return Constants.GLOW_CONFIG_FILE_PATH;
         }
 
         @Override
         public String[] messages() {
-            return null;
+            return messages;
         }
-    }
 
-    static class Configs implements FileCfg {
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
 
-        private final FileConfiguration inFile;
-        private final FileConfiguration outFile;
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
 
-        protected Configs(final Services.Glow servicesGlow) {
-            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
-            this.outFile = new YamlConfiguration();
+        @Override
+        public void executeConfig() {
+            // Locale
+            addMessage(Messages.GLOW_ENABLED,
+                    "Brilho de brabuleta ativado<color:#555555>!"
+            );
+            addMessage(Messages.GLOW_DISABLED,
+                    "Brilho de brabuleta desativado<color:#555555>."
+            );
+            addMessage(Messages.GLOW_COLOR_CHANGED,
+                    "Cor do brilhinho alterada para <color:#00aaaa>{0}<color:#555555>.",
+                    "nome da cor"
+            );
+            addMessage(Messages.GLOW_INVALID_COLOR,
+                    "Cor inválida<color:#555555>."
+            );
 
             // Color constants
             servicesGlow.setColor(Enums.Color.AQUA, inFile.getString("constant.aqua", "Celeste"));
@@ -120,93 +123,24 @@ final class Configurations {
             outFile.set("constant.red", servicesGlow.getColor(Enums.Color.RED));
             outFile.set("constant.white", servicesGlow.getColor(Enums.Color.WHITE));
             outFile.set("constant.yellow", servicesGlow.getColor(Enums.Color.YELLOW));
-
-            saveConfiguration(true);
         }
 
         @Override
-        public FileConfiguration inFileConfiguration() {
-            return inFile;
-        }
-
-        @Override
-        public FileConfiguration outFileConfiguration() {
-            return outFile;
-        }
-
-        @Override
-        public String getFolderPath() {
-            return Constants.GLOW_MODULE_FOLDER_PATH;
-        }
-
-        @Override
-        public String getFilePath() {
-            return Constants.GLOW_CONFIG_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return null;
-        }
-
-    }
-
-    static class Locales implements FileCfg {
-
-        private final FileConfiguration inFile;
-        private final FileConfiguration outFile;
-
-        private final String[] messages;
-
-        protected Locales(final EterniaServer plugin) {
-            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
-            this.outFile = new YamlConfiguration();
-
-            this.messages = plugin.messages();
-
-            addMessage(Messages.GLOW_ENABLED,
-                    "Brilho de brabuleta ativado<color:#555555>!",
-                    ""
-            );
-            addMessage(Messages.GLOW_DISABLED,
-                    "Brilho de brabuleta desativado<color:#555555>.",
-                    ""
-            );
-            addMessage(Messages.GLOW_COLOR_CHANGED,
-                    "Cor do brilhinho alterada para <color:#00aaaa>{0}<color:#555555>.",
-                    "0: nome da cor"
-            );
-            addMessage(Messages.GLOW_INVALID_COLOR,
-                    "Cor inválida<color:#555555>.",
-                    ""
-            );
-
-            saveConfiguration(true);
-        }
-
-        @Override
-        public FileConfiguration inFileConfiguration() {
-            return inFile;
-        }
-
-        @Override
-        public FileConfiguration outFileConfiguration() {
-            return outFile;
-        }
-
-        @Override
-        public String getFolderPath() {
-            return Constants.GLOW_MODULE_FOLDER_PATH;
-        }
-
-        @Override
-        public String getFilePath() {
-            return Constants.GLOW_MESSAGE_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return messages;
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.GLOW, new CommandLocale(
+                    "glow|brilho",
+                    "",
+                    " Brilhe como uma brabuleta",
+                    "eternia.glow",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GLOW_COLOR, new CommandLocale(
+                    "color|cor",
+                    " <cor>",
+                    " Escolha a cor da sua brabuleta",
+                    "eternia.glow",
+                    null
+            ));
         }
     }
 

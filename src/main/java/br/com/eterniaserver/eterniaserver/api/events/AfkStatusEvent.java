@@ -23,10 +23,6 @@ public class AfkStatusEvent extends Event implements Cancellable {
         this.isCancelled = false;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
     public Player getPlayer() {
         return player;
     }

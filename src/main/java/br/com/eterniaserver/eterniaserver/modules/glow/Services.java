@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.glow;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 
+import br.com.eterniaserver.eterniaserver.modules.Constants;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
@@ -11,6 +12,10 @@ import org.bukkit.scoreboard.Team;
 
 final class Services {
 
+    private Services() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
+
     static class Glow {
 
         private final String[] colors = new String[Enums.Color.values().length];
@@ -18,7 +23,7 @@ final class Services {
 
         protected Glow(final EterniaServer plugin) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
-                final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+                Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
                 registerTeam(scoreboard, Enums.Color.AQUA, NamedTextColor.AQUA);
                 registerTeam(scoreboard, Enums.Color.BLACK, NamedTextColor.BLACK);
@@ -53,7 +58,9 @@ final class Services {
 
         private void registerTeam(final Scoreboard scoreboard, Enums.Color entry, NamedTextColor color) {
             Team team = scoreboard.getTeam(entry.name());
-            if (team == null) team = scoreboard.registerNewTeam(entry.name());
+            if (team == null) {
+                team = scoreboard.registerNewTeam(entry.name());
+            }
 
             team.color(color);
             team.setAllowFriendlyFire(true);

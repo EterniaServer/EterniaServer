@@ -12,16 +12,20 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.GlowStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
+import br.com.eterniaserver.eterniaserver.modules.Constants;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
 final class Commands {
 
+    private Commands() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
+
     @CommandAlias("%GLOW")
     static class Glow extends BaseCommand {
 
         final EterniaServer plugin;
-
         final Services.Glow servicesGlow;
 
         protected Glow(final EterniaServer plugin, final Services.Glow servicesGlow) {
@@ -35,10 +39,12 @@ final class Commands {
         @Description("%GLOW_GIVE_DESCRIPTION")
         @CommandPermission("%GLOW_GIVE_PERM")
         public void onGlow(Player player) {
-            final GlowStatusEvent glowStatusEvent = new GlowStatusEvent(player, "UNKNOWN", !player.isGlowing());
+            GlowStatusEvent glowStatusEvent = new GlowStatusEvent(player, "UNKNOWN", !player.isGlowing());
 
             if (!player.isGlowing()) {
-                if (glowStatusEvent.isCancelled() || !glowStatusEvent.getGlowingStatus()) return;
+                if (glowStatusEvent.isCancelled() || !glowStatusEvent.getGlowingStatus()) {
+                    return;
+                }
 
                 plugin.sendMiniMessages(player, Messages.GLOW_ENABLED);
                 player.addPotionEffect(PotionEffectType.GLOWING.createEffect(Integer.MAX_VALUE, 1));
@@ -46,7 +52,9 @@ final class Commands {
                 return;
             }
 
-            if (glowStatusEvent.isCancelled() || glowStatusEvent.getGlowingStatus()) return;
+            if (glowStatusEvent.isCancelled() || glowStatusEvent.getGlowingStatus()) {
+                return;
+            }
 
             plugin.sendMiniMessages(player, Messages.GLOW_DISABLED);
             player.removePotionEffect(PotionEffectType.GLOWING);
@@ -60,10 +68,12 @@ final class Commands {
         @CommandPermission("%GLOW_COLOR_PERM")
         public void onGlowColor(Player player, String colorName) {
             try {
-                final Enums.Color color = Enums.Color.valueOf(colorName);
+                Enums.Color color = Enums.Color.valueOf(colorName);
                 GlowStatusEvent glowStatusEvent = new GlowStatusEvent(player, servicesGlow.getColor(color), player.isGlowing());
 
-                if (glowStatusEvent.isCancelled()) return;
+                if (glowStatusEvent.isCancelled()) {
+                    return;
+                }
 
                 plugin.userManager().get(player.getUniqueId()).setColor(color.getColor());
                 servicesGlow.getTeam(color).addEntry(player.getName());
