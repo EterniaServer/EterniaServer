@@ -13,38 +13,47 @@ import br.com.eterniaserver.acf.annotation.HelpCommand;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
-
-import com.google.common.collect.ImmutableList;
+import br.com.eterniaserver.eterniaserver.modules.Constants;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.modules.core.Utils;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 final class Commands {
+
+    private Commands() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
 
     @CommandAlias("%EXPERIENCE")
     static class Experience extends BaseCommand {
 
+        private static final List<String> DEFAULT_TYPES = List.of("xp", "level");
+
         private final EterniaServer plugin;
-        private final Services.Experience experienceService;
-        private final List<String> DEFAULT_TYPES = ImmutableList.of("xp", "level");
+        private final Services.Experience expService;
+        private final DatabaseInterface database;
 
         public Experience(final EterniaServer plugin, Services.Experience experienceService) {
             this.plugin = plugin;
-            this.experienceService = experienceService;
+            this.expService = experienceService;
+            this.database = EterniaLib.getDatabase();
         }
 
         @Default
@@ -68,23 +77,20 @@ final class Commands {
                 return;
             }
 
-            final String typeLabel;
-            final Player target = onlineTarget.getPlayer();
-            final String senderDisplay = senderDisplay(sender);
-
+            Player target = onlineTarget.getPlayer();
+            String label;
             if (type.equals(DEFAULT_TYPES.get(0))) {
                 target.setExp(0);
                 target.setLevel(0);
                 target.giveExp(amount);
-                typeLabel = plugin.getString(Strings.EXP_XP_LABEL);
+                label = plugin.getString(Strings.EXP_XP_LABEL);
             }
             else {
                 target.setLevel(amount);
-                typeLabel = plugin.getString(Strings.EXP_LEVEL_LABEL);
+                label = plugin.getString(Strings.EXP_LEVEL_LABEL);
             }
 
-            plugin.sendMiniMessages(sender, Messages.EXP_SET_FROM, String.valueOf(amount), target.getName(), target.getDisplayName(), typeLabel);
-            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_SETED, String.valueOf(amount), sender.getName(), senderDisplay, typeLabel);
+            sendMessage(sender, target, Messages.EXP_SET_FROM, Messages.EXP_SETED, String.valueOf(amount), label);
         }
 
         @CommandCompletion("@players 100 level")
@@ -98,25 +104,22 @@ final class Commands {
                 return;
             }
 
-            final Player target = onlineTarget.getPlayer();
-            final String senderDisplay = senderDisplay(sender);
-            final String typeLabel;
-
+            Player target = onlineTarget.getPlayer();
+            String label;
             if (type.equals(DEFAULT_TYPES.get(0))) {
-                final int xp = playerActualXp(target);
+                int xp = playerActualXp(target);
 
                 target.setExp(0);
                 target.setLevel(0);
                 target.giveExp(xp - amount);
-                typeLabel = plugin.getString(Strings.EXP_XP_LABEL);
+                label = plugin.getString(Strings.EXP_XP_LABEL);
             }
             else {
                 target.setLevel(target.getLevel() - amount);
-                typeLabel = plugin.getString(Strings.EXP_LEVEL_LABEL);
+                label = plugin.getString(Strings.EXP_LEVEL_LABEL);
             }
 
-            plugin.sendMiniMessages(sender, Messages.EXP_REMOVE_FROM, String.valueOf(amount), target.getName(), target.getDisplayName(), typeLabel);
-            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_REMOVED, String.valueOf(amount), sender.getName(), senderDisplay, typeLabel);
+            sendMessage(sender, target, Messages.EXP_REMOVE_FROM, Messages.EXP_REMOVED, String.valueOf(amount), label);
         }
 
         @CommandCompletion("@players 100 level")
@@ -130,43 +133,68 @@ final class Commands {
                 return;
             }
 
-            final Player target = onlineTarget.getPlayer();
-            final String senderDisplay = senderDisplay(sender);
-            final String typeLabel;
-
+            Player target = onlineTarget.getPlayer();
+            String label;
             if (type.equals(DEFAULT_TYPES.get(0))) {
-                final int xp = playerActualXp(target);
-
+                int xp = playerActualXp(target);
                 target.setExp(0);
                 target.setLevel(0);
                 target.giveExp(xp + amount);
-                typeLabel = plugin.getString(Strings.EXP_XP_LABEL);
+                label = plugin.getString(Strings.EXP_XP_LABEL);
             }
             else {
                 target.setLevel(target.getLevel() + amount);
-                typeLabel = plugin.getString(Strings.EXP_LEVEL_LABEL);
+                label = plugin.getString(Strings.EXP_LEVEL_LABEL);
             }
 
-            plugin.sendMiniMessages(sender, Messages.EXP_GIVE_FROM, String.valueOf(amount), target.getName(), target.getDisplayName(), typeLabel);
-            plugin.sendMiniMessages(target.getPlayer(), Messages.EXP_GIVED, String.valueOf(amount), sender.getName(), senderDisplay, typeLabel);
+            sendMessage(sender, target, Messages.EXP_GIVE_FROM, Messages.EXP_GIVED, String.valueOf(amount), label);
+        }
+
+        private void sendMessage(CommandSender sender,
+                                 Player target,
+                                 Messages from,
+                                 Messages to,
+                                 String amount,
+                                 String typeLabel) {
+
+            PlayerProfile targetProfile = database.get(PlayerProfile.class, target.getUniqueId());
+            String targetName = targetProfile.getPlayerName();
+            String targetDisplay = targetProfile.getPlayerDisplay();
+
+            String[] senderNameDisplay = Utils.getNameAndDisplay(sender);
+            String senderName = senderNameDisplay[0];
+            String senderDisplay = senderNameDisplay[1];
+
+            plugin.sendMiniMessages(sender, from, amount, targetName, targetDisplay, typeLabel);
+            plugin.sendMiniMessages(target.getPlayer(), to, amount, senderName, senderDisplay, typeLabel);
+
         }
 
         @Subcommand("%EXPERIENCE_CHECK")
         @Description("%EXPERIENCE_CHECK_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_CHECK_PERM")
         public void onCheckLevel(Player player) {
-            final PlayerProfile playerProfile = plugin.userManager().get(player.getUniqueId());
-            final int xp = playerActualXp(player);
+            UUID uuid = player.getUniqueId();
+            expService.getBalance(uuid).whenCompleteAsync(((expBalance, throwable) -> {
+                if (throwable != null) {
+                    EterniaLib.registerLog("EE-303-ExpCheck Error");
+                    return;
+                }
 
-            player.setLevel(0);
-            player.setExp(0);
-            player.giveExp(playerProfile.getExp());
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                    int xp = playerActualXp(player);
 
-            plugin.sendMiniMessages(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
+                    player.setLevel(0);
+                    player.setExp(0);
+                    player.giveExp(expBalance.getBalance());
 
-            player.setLevel(0);
-            player.setExp(0);
-            player.giveExp(xp);
+                    plugin.sendMiniMessages(player, Messages.EXP_BALANCE, String.valueOf(player.getLevel()));
+
+                    player.setLevel(0);
+                    player.setExp(0);
+                    player.giveExp(xp);
+                });
+            }));
         }
 
         @CommandCompletion("10")
@@ -175,27 +203,31 @@ final class Commands {
         @Description("%EXPERIENCE_BOTTLE_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_BOTTLE_PERM")
         public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpWant) {
-            final int xp = playerActualXp(player);
+            int xp = playerActualXp(player);
 
             if (xpWant <= 0 || xp <= xpWant) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
             }
 
-            final ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
-            final ItemMeta meta = item.getItemMeta();
+            ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
+            ItemMeta meta = item.getItemMeta();
 
-            meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.INTEGER, 0);
-            meta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER, xpWant);
+            PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+            dataContainer.set(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.INTEGER, 0);
+            dataContainer.set(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER, xpWant);
+
             meta.displayName(plugin.parseColor(plugin.getString(Strings.MINI_MESSAGES_BOTTLE_EXP_NAME)));
-            meta.lore(plugin.getStringList(Lists.MINI_MESSAGES_BOTTLE_EXP_LORE).stream().map(plugin::parseColor).collect(Collectors.toList()));
+            meta.lore(plugin.getStringList(Lists.MINI_MESSAGES_BOTTLE_EXP_LORE).stream().map(plugin::parseColor).toList());
+
             item.setItemMeta(meta);
 
             player.getInventory().addItem(item);
-            plugin.sendMiniMessages(player, Messages.EXP_BOTTLED);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(xp - xpWant);
+
+            plugin.sendMiniMessages(player, Messages.EXP_BOTTLED);
         }
 
         @CommandCompletion("10")
@@ -204,20 +236,26 @@ final class Commands {
         @Description("%EXPERIENCE_WITHDRAW_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_WITHDRAW_PERM")
         public void onWithdrawLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer level) {
-            final UUID uuid = player.getUniqueId();
-            final PlayerProfile playerProfile = plugin.userManager().get(uuid);
-            final int wantedXp = experienceService.getXPForLevel(level);
+            UUID uuid = player.getUniqueId();
+            int wantedXp = expService.getXPForLevel(level);
 
-            if (playerProfile.getExp() < wantedXp) {
-                plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
-                return;
-            }
+            expService.getBalance(uuid).whenCompleteAsync((balance, throwable) -> {
+                if (throwable != null) {
+                    EterniaLib.registerLog("EE-302-ExpWithdraw Error");
+                    return;
+                }
 
-            playerProfile.setExp(playerProfile.getExp() - wantedXp);
-            player.giveExp(wantedXp);
-            experienceService.setDatabaseExp(uuid, playerProfile.getExp());
+                if (balance.getBalance() < wantedXp) {
+                    plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
+                    return;
+                }
 
-            plugin.sendMiniMessages(player, Messages.EXP_WITHDRAW, String.valueOf(level));
+                balance.setBalance(balance.getBalance() - wantedXp);
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                    player.giveExp(wantedXp);
+                    plugin.sendMiniMessages(player, Messages.EXP_WITHDRAW, String.valueOf(level));
+                });
+            });
         }
 
         @CommandCompletion("10")
@@ -226,33 +264,35 @@ final class Commands {
         @Description("%EXPERIENCE_DEPOSIT_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_DEPOSIT_PERM")
         public void onDepositLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpla) {
-            final UUID uuid = player.getUniqueId();
-            final PlayerProfile playerProfile = plugin.userManager().get(uuid);
-            final int actualLevel = player.getLevel();
+            UUID uuid = player.getUniqueId();
+            int actualLevel = player.getLevel();
 
             if (actualLevel < xpla) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
             }
 
-            final int amountToDeposit = experienceService.getXPForLevel(xpla);
-            final int playerActualXp = playerActualXp(player);
+            int amountToDeposit = expService.getXPForLevel(xpla);
+            int playerActualXp = playerActualXp(player);
 
-            playerProfile.setExp(playerProfile.getExp() + amountToDeposit);
             player.setLevel(0);
             player.setExp(0);
             player.giveExp(playerActualXp - amountToDeposit);
-            experienceService.setDatabaseExp(uuid, playerProfile.getExp());
 
-            plugin.sendMiniMessages(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
-        }
+            expService.getBalance(uuid).whenCompleteAsync((balance, throwable) -> {
+                if (throwable != null) {
+                    EterniaLib.registerLog("EE-301-ExpDeposit Error");
+                    return;
+                }
 
-        private String senderDisplay(CommandSender sender) {
-            return sender instanceof Player player ? player.getDisplayName() : sender.getName();
+                balance.setBalance(balance.getBalance() + amountToDeposit);
+                expService.updateBalance(balance);
+                plugin.sendMiniMessages(player, Messages.EXP_DEPOSIT, String.valueOf(xpla));
+            });
         }
 
         private int playerActualXp(Player player) {
-            return experienceService.getXPForLevel(player.getLevel()) + (int) (player.getExpToLevel() * player.getExp());
+            return expService.getXPForLevel(player.getLevel()) + (int) (player.getExpToLevel() * player.getExp());
         }
 
     }

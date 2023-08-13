@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.experience;
 
-import br.com.eterniaserver.eternialib.CommandManager;
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 
@@ -19,10 +19,15 @@ public class ExperienceManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        new Configurations.Configs(plugin);
-        new Configurations.Locales(plugin);
+        Configurations.ExperienceConfiguration configuration = new Configurations.ExperienceConfiguration(plugin);
 
-        loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
+        EterniaLib.registerConfiguration("eterniaserver", "experience", configuration);
+
+        configuration.executeConfig();
+        configuration.executeCritical();
+        configuration.saveConfiguration(true);
+
+        loadCommandsLocale(configuration, Enums.Commands.class);
     }
 
     @Override
@@ -32,6 +37,7 @@ public class ExperienceManager implements Module {
 
     @Override
     public void loadConditions() {
+        plugin.getLogger().log(Level.INFO, "Experience module: no conditions");
     }
 
     @Override
@@ -46,13 +52,7 @@ public class ExperienceManager implements Module {
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.Experience(plugin, experienceService));
-    }
-
-    @Override
-    public void reloadConfigurations() {
-        new Configurations.Configs(plugin);
-        new Configurations.Locales(plugin);
+        EterniaLib.getCmdManager().registerCommand(new Commands.Experience(plugin, experienceService));
     }
 
 }

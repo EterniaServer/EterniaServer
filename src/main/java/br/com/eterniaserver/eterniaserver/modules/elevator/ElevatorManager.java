@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.elevator;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 
@@ -15,7 +16,13 @@ public class ElevatorManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        new Configurations.ElevatorConfiguration(plugin);
+        Configurations.ElevatorConfiguration configuration = new Configurations.ElevatorConfiguration(plugin);
+
+        EterniaLib.registerConfiguration("eterniaserver", "elevator", configuration);
+
+        configuration.executeConfig();
+        configuration.executeCritical();
+        configuration.saveConfiguration(true);
     }
 
     @Override

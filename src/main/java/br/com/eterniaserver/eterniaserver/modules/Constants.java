@@ -22,8 +22,6 @@ public class Constants {
 
     public static final String EXPERIENCE_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "experience";
     public static final String EXPERIENCE_CONFIG_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience.yml";
-    public static final String EXPERIENCE_COMMAND_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience-cmd.yml";
-    public static final String EXPERIENCE_MESSAGE_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience-msg.yml";
 
     public static final String ELEVATOR_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "elevator";
     public static final String ELEVATOR_CONFIG_FILE_PATH = ELEVATOR_MODULE_FOLDER_PATH + File.separator + "elevator.yml";
@@ -33,8 +31,6 @@ public class Constants {
 
     public static final String GLOW_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "glow";
     public static final String GLOW_CONFIG_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "glow.yml";
-    public static final String GLOW_COMMAND_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "glow-cmd.yml";
-    public static final String GLOW_MESSAGE_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "glow-msg.yml";
 
     public static final String PAPI_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "papi";
     public static final String PAPI_CONFIG_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "papi.yml";

@@ -213,6 +213,7 @@ final class Services {
         @Override
         public void setBalance(UUID uuid, int amount) {
             CashBalance cash = getCash(uuid);
+            cash.setUuid(uuid);
             cash.setBalance(amount);
 
             hasAccount(uuid).whenCompleteAsync((has, throwableVerify) -> {

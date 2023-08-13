@@ -11,6 +11,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.modules.core.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -67,21 +68,13 @@ final class Commands {
             String spawnerName = spawner.toUpperCase(Locale.ROOT);
             inventory.addItem(spawnerService.createSpawner(EntityType.valueOf(spawnerName), value));
 
+            String[] senderNameDisplay = Utils.getNameAndDisplay(sender);
+            String senderName = senderNameDisplay[0];
+            String senderDisplay = senderNameDisplay[1];
+
             PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
             String targetName = targetProfile.getPlayerName();
             String targetDisplay = targetProfile.getPlayerDisplay();
-
-            String senderName;
-            String senderDisplay;
-            if (sender instanceof Player player) {
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
-                senderName = playerProfile.getPlayerName();
-                senderDisplay = playerProfile.getPlayerDisplay();
-            }
-            else {
-                senderName = sender.getName();
-                senderDisplay = sender.getName();
-            }
 
             plugin.sendMiniMessages(target, Messages.SPAWNER_RECEIVED, spawnerName, senderName, senderDisplay, String.valueOf(value));
             plugin.sendMiniMessages(sender, Messages.SPAWNER_SENT, spawnerName, targetName, targetDisplay, String.valueOf(value));
