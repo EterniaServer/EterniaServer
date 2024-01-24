@@ -208,6 +208,7 @@ final class Configurations {
             booleans[Booleans.MODULE_GLOW.ordinal()] = inFile.getBoolean("modules.glow", true);
             booleans[Booleans.MODULE_PAPI.ordinal()] = inFile.getBoolean("modules.papi", true);
             booleans[Booleans.MODULE_CASH.ordinal()] = inFile.getBoolean("modules.cash", true);
+            booleans[Booleans.MODULE_ENTITY.ordinal()] = inFile.getBoolean("modules.entity", true);
             booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
             // Integers
             integers[Integers.PLUGIN_TICKS.ordinal()] = inFile.getInt("critical-configs.plugin-ticks", 20);
@@ -243,6 +244,7 @@ final class Configurations {
             outFile.set("modules.glow", booleans[Booleans.MODULE_GLOW.ordinal()]);
             outFile.set("modules.papi", booleans[Booleans.MODULE_PAPI.ordinal()]);
             outFile.set("modules.cash", booleans[Booleans.MODULE_CASH.ordinal()]);
+            outFile.set("modules.entity", booleans[Booleans.MODULE_ENTITY.ordinal()]);
             outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
             // Integers
             outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);

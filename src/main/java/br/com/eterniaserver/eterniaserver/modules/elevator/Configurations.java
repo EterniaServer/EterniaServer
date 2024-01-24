@@ -29,8 +29,8 @@ final class Configurations {
         private final FileConfiguration outFile;
 
         public ElevatorConfiguration(EterniaServer plugin) {
-            this.inFile = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "elevator.yml"));
-            this.outFile = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "elevator.yml"));
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
             this.plugin = plugin;
         }
 

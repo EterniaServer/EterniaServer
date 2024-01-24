@@ -6,6 +6,8 @@ public enum Integers {
     AFK_TIMER,
     COOLDOWN,
     ELEVATOR_MAX,
-    ELEVATOR_MIN
+    ELEVATOR_MIN,
+    CLEAR_RANGE,
+    CLEAR_TIMER,
 
 }

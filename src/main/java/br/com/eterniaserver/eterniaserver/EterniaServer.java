@@ -6,6 +6,8 @@ import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
 import br.com.eterniaserver.eterniaserver.enums.*;
 import br.com.eterniaserver.eterniaserver.modules.Manager;
 
+import br.com.eterniaserver.eterniaserver.modules.entity.Utils.EntityControl;
+
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -19,6 +21,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,6 +40,7 @@ public class EterniaServer extends JavaPlugin {
     private final boolean[] booleans = new boolean[Booleans.values().length];
 
     private final String[] messages = new String[Messages.values().length];
+    private final EntityControl[] entities = new EntityControl[EntityType.values().length];
     private final String[] strings = new String[Strings.values().length];
     private final NamespacedKey[] namespaceKeys = new NamespacedKey[ItemsKeys.values().length];
 
@@ -73,6 +77,10 @@ public class EterniaServer extends JavaPlugin {
 
     public String[] messages() {
         return messages;
+    }
+
+    public EntityControl[] entities() {
+        return entities;
     }
 
     public List<List<String>> stringLists() {
@@ -120,6 +128,10 @@ public class EterniaServer extends JavaPlugin {
 
     public double getDouble(Doubles configName) {
         return doubles[configName.ordinal()];
+    }
+
+    public EntityControl getControl(EntityType entityType) {
+        return entities[entityType.ordinal()];
     }
 
     public List<String> getStringList(Lists configName) {
