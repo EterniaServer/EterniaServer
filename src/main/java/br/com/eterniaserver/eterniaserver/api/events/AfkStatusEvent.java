@@ -13,21 +13,18 @@ public class AfkStatusEvent extends Event implements Cancellable {
 
     @Getter
     private final Player player;
-
-    private final boolean afkStatus;
+    @Getter
+    private final Boolean status;
     @Getter
     private final Cause cause;
+
     private boolean isCancelled;
 
     public AfkStatusEvent(Player player, boolean afkStatus, Cause cause) {
         this.player = player;
-        this.afkStatus = afkStatus;
+        this.status = afkStatus;
         this.cause = cause;
         this.isCancelled = false;
-    }
-
-    public boolean getStatus() {
-        return afkStatus;
     }
 
     @Override

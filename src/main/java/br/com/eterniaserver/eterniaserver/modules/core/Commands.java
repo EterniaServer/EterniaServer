@@ -35,6 +35,44 @@ final class Commands {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
+    static class Generic extends BaseCommand {
+
+        private final EterniaServer plugin;
+        private final Utils.RuntimeInfo runtimeInfo;
+
+        public Generic(EterniaServer plugin) {
+            this.plugin = plugin;
+            this.runtimeInfo = new Utils.RuntimeInfo();
+        }
+
+        @CommandAlias("%BROADCAST")
+        @Syntax("%BROADCAST_SYNTAX")
+        @Description("%BROADCAST_DESCRIPTION")
+        @CommandPermission("%BROADCAST_PERM")
+        public void onBroadcast(String message, @Default("true") Boolean prefix) {
+            plugin.getServer().broadcast(plugin.parseColor(message, prefix));
+        }
+
+        @CommandAlias("%MEM")
+        @CommandPermission("%MEM_PERM")
+        @Description("%MEM_DESCRIPTION")
+        public void onMem(CommandSender sender) {
+            runtimeInfo.recalculateRuntime();
+            plugin.sendMiniMessages(sender, Messages.STATS_MEM, String.valueOf(runtimeInfo.getFreemem()), String.valueOf(runtimeInfo.getTotalmem()));
+            plugin.sendMiniMessages(sender, Messages.STATS_HOURS, String.valueOf(runtimeInfo.getDays()), String.valueOf(runtimeInfo.getHours()), String.valueOf(runtimeInfo.getMinutes()), String.valueOf(runtimeInfo.getSeconds()));
+        }
+
+        @CommandAlias("%MEM_ALL")
+        @CommandPermission("%MEM_ALL_PERM")
+        @Description("%MEM_ALL_DESCRIPTION")
+        public void onMemAll(CommandSender sender) {
+            runtimeInfo.recalculateRuntime();
+            plugin.getServer().broadcast(plugin.getMiniMessage(Messages.STATS_MEM, true, String.valueOf(runtimeInfo.getFreemem()), String.valueOf(runtimeInfo.getTotalmem())));
+            plugin.getServer().broadcast(plugin.getMiniMessage(Messages.STATS_HOURS, true, String.valueOf(runtimeInfo.getDays()), String.valueOf(runtimeInfo.getHours()), String.valueOf(runtimeInfo.getMinutes()), String.valueOf(runtimeInfo.getSeconds())));
+        }
+
+    }
+
     static class Inventory extends BaseCommand {
 
         private final EterniaServer plugin;

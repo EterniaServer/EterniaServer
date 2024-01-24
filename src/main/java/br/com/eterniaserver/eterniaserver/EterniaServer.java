@@ -148,6 +148,14 @@ public class EterniaServer extends JavaPlugin {
     }
 
     public Component parseColor(String string) {
+        return parseColor(string, false);
+    }
+
+    public Component parseColor(String string, boolean prefix) {
+        if (prefix) {
+            string = strings[Strings.SERVER_PREFIX.ordinal()] + string;
+        }
+
         return miniMessage.deserialize(string);
     }
 

@@ -9,6 +9,7 @@ import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.core.Commands.Afk;
 import br.com.eterniaserver.eterniaserver.modules.core.Commands.EGameMode;
+import br.com.eterniaserver.eterniaserver.modules.core.Commands.Generic;
 import br.com.eterniaserver.eterniaserver.modules.core.Commands.GodMode;
 import br.com.eterniaserver.eterniaserver.modules.core.Commands.Inventory;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
@@ -102,6 +103,7 @@ public class CoreManager implements Module {
 
     @Override
     public void loadCommands() {
+        EterniaLib.getCmdManager().registerCommand(new Generic(plugin));
         EterniaLib.getCmdManager().registerCommand(new EGameMode(plugin));
         EterniaLib.getCmdManager().registerCommand(new Afk(plugin));
         EterniaLib.getCmdManager().registerCommand(new GodMode(plugin));

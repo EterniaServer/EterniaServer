@@ -29,12 +29,9 @@ final class Schedules {
         private final DatabaseInterface database;
         private final Afk afkServices;
 
-        private final int ticks;
-
         public MainTick(final EterniaServer plugin, final Services.Afk afkServices) {
             this.plugin = plugin;
             this.afkServices = afkServices;
-            this.ticks = plugin.getInteger(Integers.PLUGIN_TICKS);
             this.database = EterniaLib.getDatabase();
         }
 

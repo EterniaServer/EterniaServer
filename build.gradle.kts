@@ -37,6 +37,9 @@ tasks {
         ).forEach {
             relocate(it, "${rootProject.group}.lib.$it")
         }
+        archiveBaseName.set(project.name)
+        archiveClassifier.set("")
+        archiveVersion.set("${project.version}")
     }
 
     build {

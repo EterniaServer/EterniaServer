@@ -166,6 +166,18 @@ final class Configurations {
             addMessage(Messages.ITEM_HELMET,
                     "Você equipou seu caçapete<color:#555555>."
             );
+            addMessage(Messages.STATS_MEM,
+                    "Memória<color:#555555>: <color:#00aaaa>{0}MB<color:#555555>/<color:#00aaaa>{1}MB<color:#555555>.",
+                    "memória usada",
+                    "memória total"
+            );
+            addMessage(Messages.STATS_HOURS,
+                    "Tempo online<color:#555555>: <color:#aaaaaa>Dias<color:#555555>: <color:#00aaaa>{0} <color:#aaaaaa>horas<color:#555555>: <color:#00aaaa>{1} <color:#aaaaaa>minutos<color:#555555>: <color:#00aaaa>{2} <color:#aaaaaa>segundos<color:#555555>: <color:#00aaaa>{3}<color:#555555>.",
+                    "dias",
+                    "horas",
+                    "minutos",
+                    "segundos"
+            );
 
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
@@ -230,6 +242,13 @@ final class Configurations {
 
         @Override
         public void executeCritical() {
+            addCommandLocale(Enums.Commands.BROADCAST, new CommandLocale(
+                    "broadcast",
+                    " <mensagem> <prefix>",
+                    " Envia uma mensagem global ao servidor",
+                    "eternia.broadcast",
+                    null
+            ));
             addCommandLocale(Enums.Commands.GAMEMODE, new CommandLocale(
                     "gamemode|gm",
                     " <página>",
@@ -305,6 +324,20 @@ final class Configurations {
                     " <jogador>",
                     " Abre o inventário de outro jogador",
                     "eternia.openinv",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.MEM, new CommandLocale(
+                    "mem",
+                    null,
+                    " Veja informações sobre o servidor",
+                    "eternia.mem",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.MEM_ALL, new CommandLocale(
+                    "memall",
+                    null,
+                    " Mostre globalmente as informações sobre o servidor",
+                    "eternia.mem.all",
                     null
             ));
         }

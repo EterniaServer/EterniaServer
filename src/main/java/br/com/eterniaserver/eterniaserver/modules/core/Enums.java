@@ -20,6 +20,9 @@ final class Enums {
         WORKBENCH,
         ENDERCHEST,
         OPENINV,
+        BROADCAST,
+        MEM,
+        MEM_ALL,
     }
 
 }

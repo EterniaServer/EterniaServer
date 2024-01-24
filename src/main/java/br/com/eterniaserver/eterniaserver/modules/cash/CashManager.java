@@ -47,7 +47,7 @@ public class CashManager implements Module {
         List<CashBalance> cashBalances = EterniaLib.getDatabase().listAll(CashBalance.class);
         this.plugin.getLogger().log(Level.INFO, "cash module: {0} cash balances loaded", cashBalances.size());
 
-        this.plugin.setCashAPI(new Services.CraftCash());
+        EterniaServer.setCashAPI(new Services.CraftCash());
         this.cashService = new Services.Cash(plugin);
     }
 

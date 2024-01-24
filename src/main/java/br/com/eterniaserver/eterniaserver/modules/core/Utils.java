@@ -8,6 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.management.ManagementFactory;
+import java.util.concurrent.TimeUnit;
+
 public class Utils {
 
     private Utils() {
@@ -30,6 +33,30 @@ public class Utils {
         }
 
         return new String[] {senderName, senderDisplay};
+    }
+
+    @Getter
+    public static class RuntimeInfo {
+
+        private long freemem;
+        private long totalmem;
+        private int days;
+        private int seconds;
+        private int minutes;
+        private int hours;
+
+        public void recalculateRuntime() {
+            Runtime runtime = Runtime.getRuntime();
+            long milliseconds = ManagementFactory.getRuntimeMXBean().getUptime();
+
+            days = (int) TimeUnit.MILLISECONDS.toDays(milliseconds);
+            totalmem = runtime.totalMemory() / 1048576;
+            freemem = totalmem - (runtime.freeMemory() / 1048576);
+            seconds = (int) (milliseconds / 1000) % 60;
+            minutes = (int) ((milliseconds / (1000*60)) % 60);
+            hours = (int) ((milliseconds / (1000*60*60)) % 24);
+        }
+
     }
 
     public static class GUIData {

@@ -472,7 +472,7 @@ final class Configurations {
                             ";",
                             List.of(
                                     "lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all true 30d",
-                                    "broadcast <color:#aaaaaa>O jogador <color:#00aaaa>%player_name% <color:aaaaaa>comprou um boost de XP<color:555555>."
+                                    "broadcast <color:#aaaaaa>O jogador <color:#00aaaa>%player_name% <color:#aaaaaa>comprou um boost de XP<color:#555555>."
                             )
                     )
             );
@@ -482,8 +482,7 @@ final class Configurations {
                     String.join(
                             ";",
                             List.of(
-                                    "lp user %player_name% permission settemp mcmmo.perks.xp.customboost.all true 30d",
-                                    "broadcast <color:#aaaaaa>O jogador <color:#00aaaa>%player_name% <color:aaaaaa>comprou um boost de XP<color:555555>."
+                                    "<color:#aaaaaa>Parabéns pela sua compra<color:#555555>!"
                             )
                     )
             );

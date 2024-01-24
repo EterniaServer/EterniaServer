@@ -62,5 +62,7 @@ public enum Messages {
     GODMODE_ENABLED_BY,
     GODMODE_DISABLED_TO,
     GODMODE_DISABLED_BY,
+    STATS_MEM,
+    STATS_HOURS,
 
 }
