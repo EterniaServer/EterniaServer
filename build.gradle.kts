@@ -20,8 +20,8 @@ repositories {
     maven("https://repo.minebench.de/")
     maven("https://maven.pkg.github.com/eterniaserver/eternialib") {
         credentials {
-            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            username = System.getenv("USERNAME")
+            password = System.getenv("TOKEN")
         }
     }
     mavenLocal()
