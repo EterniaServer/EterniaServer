@@ -23,6 +23,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 
 import java.sql.Timestamp;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 final class Handlers implements Listener {
@@ -64,6 +65,26 @@ final class Handlers implements Listener {
 
             databaseInterface.insert(PlayerProfile.class, playerProfile);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+
+        playerProfile.setEnterMillis(System.currentTimeMillis());
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerLogout(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+
+        int minutesPlayed = (int) TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - playerProfile.getEnterMillis());
+
+        playerProfile.setPlayedMinutes(playerProfile.getPlayedMinutes() + minutesPlayed);
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> databaseInterface.update(PlayerProfile.class, playerProfile));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)

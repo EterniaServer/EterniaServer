@@ -17,6 +17,7 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -30,7 +31,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 final class Commands {
 
@@ -42,10 +46,12 @@ final class Commands {
 
         private final EterniaServer plugin;
         private final Utils.RuntimeInfo runtimeInfo;
+        private final DatabaseInterface databaseInterface;
 
         public Generic(EterniaServer plugin) {
             this.plugin = plugin;
             this.runtimeInfo = new Utils.RuntimeInfo();
+            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @CommandAlias("%BROADCAST")
@@ -72,6 +78,67 @@ final class Commands {
             runtimeInfo.recalculateRuntime();
             plugin.getServer().broadcast(plugin.getMiniMessage(Messages.STATS_MEM, true, String.valueOf(runtimeInfo.getFreemem()), String.valueOf(runtimeInfo.getTotalmem())));
             plugin.getServer().broadcast(plugin.getMiniMessage(Messages.STATS_HOURS, true, String.valueOf(runtimeInfo.getDays()), String.valueOf(runtimeInfo.getHours()), String.valueOf(runtimeInfo.getMinutes()), String.valueOf(runtimeInfo.getSeconds())));
+        }
+
+        @CommandAlias("%SUICIDE")
+        @CommandPermission("%SUICIDE_PERM")
+        @Syntax("%SUICIDE_SYNTAX")
+        @Description("%SUICIDE_DESCRIPTION")
+        public void onSuicide(Player player, String message) {
+            player.setHealth(0);
+
+            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+
+            plugin.getServer().broadcast(plugin.getMiniMessage(Messages.SUICIDE_BROADCAST, true, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay(), message));
+        }
+
+        @CommandAlias("%PROFILE")
+        @CommandPermission("%PROFILE_PERM")
+        @Syntax("%PROFILE_SYNTAX")
+        @Description("%PROFILE_DESCRIPTION")
+        @CommandCompletion("@players")
+        public void onProfile(Player player, @Optional OnlinePlayer onlinePlayer) {
+            if (onlinePlayer == null) {
+                sendProfile(player, player);
+                return;
+            }
+
+            sendProfile(player, onlinePlayer.getPlayer());
+        }
+
+        private void sendProfile(Player player, Player target) {
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+
+                int minutesPlayed = (int) TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - targetProfile.getEnterMillis());
+
+                targetProfile.setEnterMillis(System.currentTimeMillis());
+                targetProfile.setPlayedMinutes(targetProfile.getPlayedMinutes() + minutesPlayed);
+
+                int playedMinutes = targetProfile.getPlayedMinutes();
+
+                Component dhm = plugin.parseColor(
+                        String.format(
+                                plugin.getString(Strings.PROFILE_PLAYED_TIME),
+                                TimeUnit.MINUTES.toDays(playedMinutes),
+                                TimeUnit.MINUTES.toHours(playedMinutes) - TimeUnit.DAYS.toHours(TimeUnit.MINUTES.toDays(playedMinutes)),
+                                playedMinutes - TimeUnit.HOURS.toMinutes(TimeUnit.MINUTES.toHours(playedMinutes))
+                        )
+                );
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+                plugin.sendMiniMessages(player, Messages.PROFILE_TITLE, false);
+                for (String msg : plugin.getStringList(Lists.PROFILE_CUSTOM_MESSAGES)) {
+                    player.sendMessage(plugin.parseColor(plugin.setPlaceholders(target, msg)));
+                }
+                player.sendMessage(plugin.getMiniMessage(Messages.PROFILE_ACCOUNT_PLAYED_TIME, false).append(dhm));
+                plugin.sendMiniMessages(player, Messages.PROFILE_REGISTER_DATA, false, simpleDateFormat.format(new Date(targetProfile.getFirstJoin().getTime())));
+                plugin.sendMiniMessages(player, Messages.PROFILE_LAST_LOGIN, false, simpleDateFormat.format(new Date(targetProfile.getLastJoin().getTime())));
+                plugin.sendMiniMessages(player, Messages.PROFILE_TITLE, false);
+
+                databaseInterface.update(PlayerProfile.class, targetProfile);
+            });
         }
 
         @CommandAlias("%CONDENSER")

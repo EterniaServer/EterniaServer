@@ -8,8 +8,6 @@ public class Constants {
         throw new IllegalStateException(UTILITY_CLASS);
     }
 
-    public static final String CASH_TITLE = "<color:#aaaaaa>Loja de <color:#00aaaa>C.A.S.H.<color:#555555>!";
-
     public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
     public static final String CORE_CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "core.yml";
     public static final String DATA_MODULE_FOLDER_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "modules";
@@ -34,6 +32,7 @@ public class Constants {
 
     public static final String CASH_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "cash";
     public static final String CASH_CONFIG_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash.yml";
+
 
     public static final String UTILITY_CLASS = "Utility class";
 

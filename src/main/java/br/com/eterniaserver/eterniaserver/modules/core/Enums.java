@@ -24,6 +24,8 @@ final class Enums {
         MEM,
         MEM_ALL,
         CONDENSER,
+        PROFILE,
+        SUICIDE,
     }
 
 }

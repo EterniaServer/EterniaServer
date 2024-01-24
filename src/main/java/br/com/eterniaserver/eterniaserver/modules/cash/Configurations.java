@@ -163,6 +163,7 @@ final class Configurations {
 
 
             strings[Strings.CASH_MENU_TITLE.ordinal()] = inFile.getString("menu.name.value", "<color:#aaaaaa>Cash<color:%s>");
+            strings[Strings.CASH_TITLE.ordinal()] = inFile.getString("menu.glass.name", "<color:#aaaaaa>Loja de <color:#00aaaa>C.A.S.H.<color:#555555>!");
             strings[Strings.CASH_TABLE_NAME.ordinal()] = inFile.getString("table-name.cash", "e_cash");
 
             PreGUI menu = loadMenuFromFile();
@@ -171,6 +172,7 @@ final class Configurations {
             guis = guis.length == 0 ? loadDefaultGUIs() : guis;
 
             outFile.set("menu.name.value", strings[Strings.CASH_MENU_TITLE.ordinal()]);
+            outFile.set("menu.glass.name", strings[Strings.CASH_TITLE.ordinal()]);
             outFile.set("table-name.cash", strings[Strings.CASH_TABLE_NAME.ordinal()]);
             outFile.set("menu.name.info-pt", "Não altere o final (<color:%s>)");
             outFile.set("menu.name.info-en", "Don't change the end (<color:%s>)");
@@ -504,7 +506,7 @@ final class Configurations {
                     PersistentDataType.STRING,
                     "a"
             );
-            itemMeta.displayName(plugin.parseColor(Constants.CASH_TITLE));
+            itemMeta.displayName(plugin.parseColor(plugin.getString(Strings.CASH_TITLE)));
             itemStack.setItemMeta(itemMeta);
 
             return itemStack;

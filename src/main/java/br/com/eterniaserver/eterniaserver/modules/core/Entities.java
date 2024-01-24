@@ -77,6 +77,7 @@ public final class Entities {
         private boolean isBalanceTop = false;
 
         private String color;
+        private Long enterMillis;
 
         private long lastMove = System.currentTimeMillis();
 

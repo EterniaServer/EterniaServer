@@ -33,6 +33,8 @@ public enum Strings {
     REVISION_TABLE_NAME,
     PROFILE_TABLE_NAME,
     CASH_TABLE_NAME,
+    CASH_TITLE,
     EXP_TABLE_NAME,
+    PROFILE_PLAYED_TIME,
 
 }

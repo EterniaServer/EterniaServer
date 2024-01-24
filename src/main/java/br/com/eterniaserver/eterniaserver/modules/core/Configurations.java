@@ -181,6 +181,24 @@ final class Configurations {
             addMessage(Messages.ITEM_CONDENSER,
                     "Compactando blocos."
             );
+            addMessage(Messages.PROFILE_TITLE,
+                    "<color:#555555>[]====[<color:#aaaaaa>Perfil<color:#555555>]====[]"
+            );
+            addMessage(Messages.PROFILE_REGISTER_DATA,
+                    "<color:#aaaaaa>Registro<color:#555555>: <color:#00aaaa>{0}<color:#555555>."
+            );
+            addMessage(Messages.PROFILE_LAST_LOGIN,
+                    "<color:#aaaaaa>Ultimo login<color:#555555>: <color:#00aaaa>{0}<color:#555555>."
+            );
+            addMessage(Messages.PROFILE_ACCOUNT_PLAYED_TIME,
+                    "<color:#aaaaaa>Tempo jogado<color:#555555>: "
+            );
+            addMessage(Messages.SUICIDE_BROADCAST,
+                    "<color:#00aaaa>{1} <color:#aaaaaa>disse<color:#555555>: <color:#00aaaa>{2} <color:#aaaaaa>e logo após se matou<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "mensagem"
+            );
 
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
@@ -199,7 +217,7 @@ final class Configurations {
             strings[Strings.DATA_FORMAT.ordinal()] = inFile.getString("format.data-time", "dd/MM/yyyy HH:mm");
             strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
             strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
-            strings[Strings.SERVER_PREFIX.ordinal()] = inFile.getString("prefix", "<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#555555><color:#AAAAAA> ");
+            strings[Strings.SERVER_PREFIX.ordinal()] = inFile.getString("mini-messages.prefix", "<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#555555><color:#AAAAAA> ");
             strings[Strings.PERM_TIMING_BYPASS.ordinal()] = inFile.getString("teleport.timing-bypass", "eternia.timing.bypass");
             strings[Strings.GUI_SECRET.ordinal()] = inFile.getString("secret.value", String.format("#%06x", new Random().nextInt(0xffffff + 1)));
             strings[Strings.PERM_EC_OTHER.ordinal()] = inFile.getString("permissions.ec-other", "eternia.enderchest.other");
@@ -209,10 +227,13 @@ final class Configurations {
             strings[Strings.CONS_CREATIVE.ordinal()] = inFile.getString("const.gm.creative", "criativo");
             strings[Strings.CONS_SPECTATOR.ordinal()] = inFile.getString("const.gm.spectator", "espectador");
             strings[Strings.CONS_SURVIVAL.ordinal()] = inFile.getString("const.gm.survival", "sobrevivência");
+            strings[Strings.PROFILE_PLAYED_TIME.ordinal()] = inFile.getString("mini-messages.profile.played-time", "<color:#aaaaaa>Dias<color:#555555>: <color:#00aaaa>%02d <color:#aaaaaa>Horas<color:#555555>: <color:#00aaaa>%02d <color:#aaaaaa>Minutos<color:#555555>: <color:#00aaaa>%02d<color:#555555>.");
 
             // Lists
-            List<String> list = inFile.getStringList("critical-configs.blocked-commands");
-            stringLists.set(Lists.BLACKLISTED_COMMANDS.ordinal(), list.isEmpty() ? List.of("/op", "/deop", "/stop") : list);
+            List<String> blackedCommands = inFile.getStringList("critical-configs.blocked-commands");
+            stringLists.set(Lists.BLACKLISTED_COMMANDS.ordinal(), blackedCommands.isEmpty() ? List.of("/op", "/deop", "/stop") : blackedCommands);
+            List<String> profileMessages = inFile.getStringList("mini-messages.profile.custom-messages");
+            stringLists.set(Lists.PROFILE_CUSTOM_MESSAGES.ordinal(), profileMessages.isEmpty() ? List.of("<color:#aaaaaa>Saldo em C.A.S.H.<color:#555555>: <color:#00aaaa>%eterniaserver_cash%<color:#555555>.") : profileMessages);
 
             // Booleans
             outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
@@ -238,9 +259,11 @@ final class Configurations {
             outFile.set("permissions.ec-other", strings[Strings.PERM_EC_OTHER.ordinal()]);
             outFile.set("table-name.revision", strings[Strings.REVISION_TABLE_NAME.ordinal()]);
             outFile.set("table-name.player-profile", strings[Strings.PROFILE_TABLE_NAME.ordinal()]);
-            outFile.set("prefix", strings[Strings.SERVER_PREFIX.ordinal()]);
+            outFile.set("mini-messages.prefix", strings[Strings.SERVER_PREFIX.ordinal()]);
+            outFile.set("mini-messages.profile.played-time", strings[Strings.PROFILE_PLAYED_TIME.ordinal()]);
             // Lists
             outFile.set("critical-configs.blocked-commands", stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
+            outFile.set("mini-messages.profile.custom-messages", stringLists.get(Lists.PROFILE_CUSTOM_MESSAGES.ordinal()));
         }
 
         @Override
@@ -348,6 +371,20 @@ final class Configurations {
                     null,
                     " Comprima seus minérios em blocos para liberar espaço",
                     "eternia.blocks",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.PROFILE, new CommandLocale(
+                    "profile",
+                    " <jogador>",
+                    " Veja o seu perfil ou o de outro jogador",
+                    "eternia.profile",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.SUICIDE, new CommandLocale(
+                    "suicide|suicidio",
+                    " <mensagem>",
+                    " Envie uma mensagem e se mate",
+                    "eternia.suicide",
                     null
             ));
         }
