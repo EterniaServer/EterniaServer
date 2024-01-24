@@ -11,9 +11,8 @@ public class Constants {
     public static final String CASH_TITLE = "<color:#aaaaaa>Loja de <color:#00aaaa>C.A.S.H.<color:#555555>!";
 
     public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
+    public static final String CORE_CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "core.yml";
     public static final String DATA_MODULE_FOLDER_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "modules";
-
-    public static final String CORE_CONFIG_FILE_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "core.yml";
 
     public static final String SPAWNER_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "spawner";
     public static final String SPAWNER_CONFIG_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "spawner.yml";
@@ -31,7 +30,7 @@ public class Constants {
     public static final String GLOW_CONFIG_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "glow.yml";
 
     public static final String PAPI_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "papi";
-    public static final String PAPI_CONFIG_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "papi.yml";
+    public static final String PAPI_CONFIG_FILE_PATH = PAPI_MODULE_FOLDER_PATH + File.separator + "papi.yml";
 
     public static final String CASH_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "cash";
     public static final String CASH_CONFIG_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash.yml";

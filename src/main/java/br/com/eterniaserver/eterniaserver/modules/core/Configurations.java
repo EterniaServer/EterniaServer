@@ -178,6 +178,9 @@ final class Configurations {
                     "minutos",
                     "segundos"
             );
+            addMessage(Messages.ITEM_CONDENSER,
+                    "Compactando blocos."
+            );
 
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
@@ -338,6 +341,13 @@ final class Configurations {
                     null,
                     " Mostre globalmente as informações sobre o servidor",
                     "eternia.mem.all",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CONDENSER, new CommandLocale(
+                    "blocks|condenser|compactar",
+                    null,
+                    " Comprima seus minérios em blocos para liberar espaço",
+                    "eternia.blocks",
                     null
             ));
         }

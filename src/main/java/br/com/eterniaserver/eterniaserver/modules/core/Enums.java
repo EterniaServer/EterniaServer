@@ -23,6 +23,7 @@ final class Enums {
         BROADCAST,
         MEM,
         MEM_ALL,
+        CONDENSER,
     }
 
 }

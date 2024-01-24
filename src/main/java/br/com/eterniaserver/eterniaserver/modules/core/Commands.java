@@ -23,11 +23,14 @@ import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 
 import net.kyori.adventure.text.Component;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Objects;
 
 final class Commands {
 
@@ -71,6 +74,68 @@ final class Commands {
             plugin.getServer().broadcast(plugin.getMiniMessage(Messages.STATS_HOURS, true, String.valueOf(runtimeInfo.getDays()), String.valueOf(runtimeInfo.getHours()), String.valueOf(runtimeInfo.getMinutes()), String.valueOf(runtimeInfo.getSeconds())));
         }
 
+        @CommandAlias("%CONDENSER")
+        @CommandPermission("%CONDENSER_PERM")
+        @Description("%CONDENSER_DESCRIPTION")
+        public void onCondenser(Player player) {
+            int[] amounts = new int[CondenserEnum.values().length];
+
+            for (ItemStack itemStack : player.getInventory().getContents()) {
+                if (itemStack != null && itemStack.getType() != Material.AIR) {
+                    for (CondenserEnum condenser : CondenserEnum.values()) {
+                        amounts[condenser.ordinal()] += condenser.checkSimilar(itemStack);
+                    }
+                }
+            }
+
+            for (CondenserEnum condenser : CondenserEnum.values()) {
+                condenser.condenseItem(amounts[condenser.ordinal()], player);
+            }
+
+            plugin.sendMiniMessages(player, Messages.ITEM_CONDENSER);
+        }
+
+        private enum CondenserEnum {
+
+            COAL(Material.COAL, Material.COAL_BLOCK),
+            LAPIS(Material.LAPIS_LAZULI, Material.LAPIS_BLOCK),
+            COPPER(Material.COPPER_INGOT, Material.COPPER_BLOCK),
+            REDSTONE(Material.REDSTONE, Material.REDSTONE_BLOCK),
+            IRON(Material.IRON_INGOT, Material.IRON_BLOCK),
+            GOLD(Material.GOLD_INGOT, Material.GOLD_BLOCK),
+            EMERALD(Material.EMERALD, Material.EMERALD_BLOCK),
+            DIAMOND(Material.DIAMOND, Material.DIAMOND_BLOCK),
+            NETHERITE(Material.NETHERITE_INGOT, Material.NETHERITE_BLOCK);
+
+            private final Material ingot;
+            private final ItemStack ingotBase;
+            private final Material block;
+
+            CondenserEnum(Material ingot, Material block) {
+                this.ingot = ingot;
+                this.ingotBase = new ItemStack(ingot);
+                this.block = block;
+            }
+
+            public int checkSimilar(ItemStack item) {
+                if (!item.isSimilar(ingotBase)) {
+                    return 0;
+                }
+                if (!Objects.equals(ingotBase.getItemMeta().displayName(), item.getItemMeta().displayName())) {
+                    return 0;
+                }
+
+                return item.getAmount();
+            }
+
+            public void condenseItem(int amount, Player player) {
+                int result = amount / 9;
+                if (result != 0) {
+                    player.getInventory().removeItem(new ItemStack(ingot, result * 9));
+                    player.getInventory().addItem(new ItemStack(block, result));
+                }
+            }
+        }
     }
 
     static class Inventory extends BaseCommand {
