@@ -8,11 +8,14 @@ import br.com.eterniaserver.acf.annotation.Default;
 import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.GlowStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
@@ -27,10 +30,12 @@ final class Commands {
 
         final EterniaServer plugin;
         final Services.Glow servicesGlow;
+        final DatabaseInterface databaseInterface;
 
         protected Glow(final EterniaServer plugin, final Services.Glow servicesGlow) {
             this.plugin = plugin;
             this.servicesGlow = servicesGlow;
+            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Default
@@ -75,7 +80,8 @@ final class Commands {
                     return;
                 }
 
-                plugin.userManager().get(player.getUniqueId()).setColor(color.getColor());
+                Entities.PlayerProfile playerProfile = databaseInterface.get(Entities.PlayerProfile.class, player.getUniqueId());
+                playerProfile.setColor(color.getColor());
                 servicesGlow.getTeam(color).addEntry(player.getName());
                 plugin.sendMiniMessages(player, Messages.GLOW_COLOR_CHANGED, servicesGlow.getColor(color));
             }

@@ -20,7 +20,6 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
-import br.com.eterniaserver.eterniaserver.objects.BuyingItem;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
 
@@ -113,7 +112,7 @@ final class Commands {
         @CommandPermission("%CASH_ACCEPT_PERM")
         public void onCashAccept(Player player) {
             UUID uuid = player.getUniqueId();
-            BuyingItem buyingItem = cashService.getCashBuy(uuid);
+            Utils.BuyingItem buyingItem = cashService.getCashBuy(uuid);
             if (buyingItem == null) {
                 plugin.sendMiniMessages(player, Messages.CASH_NOTHING_TO_BUY);
                 return;
@@ -139,7 +138,7 @@ final class Commands {
         @CommandPermission("%CASH_DENY_PERM")
         public void onCashDeny(Player player) {
             UUID uuid = player.getUniqueId();
-            BuyingItem buyingItem = cashService.getCashBuy(uuid);
+            Utils.BuyingItem buyingItem = cashService.getCashBuy(uuid);
             if (buyingItem == null) {
                 plugin.sendMiniMessages(player, Messages.CASH_NOTHING_TO_BUY);
                 return;

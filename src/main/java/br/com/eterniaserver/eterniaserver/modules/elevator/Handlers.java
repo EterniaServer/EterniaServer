@@ -34,7 +34,7 @@ final class Handlers implements Listener {
 
         Block baseBlock = event.getTo().getBlock().getRelative(BlockFace.DOWN);
         Material baseMaterial = baseBlock.getType();
-        if (!plugin.getElevatorMaterials().contains(baseMaterial)) {
+        if (!plugin.elevatorMaterials().contains(baseMaterial)) {
             return;
         }
 
@@ -62,7 +62,7 @@ final class Handlers implements Listener {
 
         Block baseBlock = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
         Material baseMaterial = baseBlock.getType();
-        if (!plugin.getElevatorMaterials().contains(baseMaterial)) {
+        if (!plugin.elevatorMaterials().contains(baseMaterial)) {
             return;
         }
 

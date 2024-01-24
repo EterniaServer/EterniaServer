@@ -63,7 +63,7 @@ public class CashManager implements Module {
 
     @Override
     public void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new Handlers(cashService), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, cashService), plugin);
     }
 
     @Override

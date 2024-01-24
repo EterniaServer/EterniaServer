@@ -18,12 +18,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
+
+import java.sql.Timestamp;
+import java.util.UUID;
 
 
 final class Handlers implements Listener {
@@ -44,7 +43,26 @@ final class Handlers implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
-            event.setCancelled(plugin.userManager().get(player.getUniqueId()).getGod());
+            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            event.setCancelled(playerProfile.isGod());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+        String playerName = event.getName();
+        UUID uuid = event.getUniqueId();
+        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, uuid);
+
+        if (playerProfile.getUuid() == null) {
+            playerProfile.setPlayerName(playerName);
+            playerProfile.setPlayerDisplay(playerName);
+            playerProfile.setUuid(uuid);
+            playerProfile.setPlayedMinutes(0);
+            playerProfile.setFirstJoin(new Timestamp(System.currentTimeMillis()));
+            playerProfile.setLastJoin(new Timestamp(System.currentTimeMillis()));
+
+            databaseInterface.insert(PlayerProfile.class, playerProfile);
         }
     }
 
@@ -109,7 +127,6 @@ final class Handlers implements Listener {
         Player player = event.getPlayer();
         PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
 
-        plugin.locationManager().removeTeleport(player.getUniqueId());
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.QUIT);
     }
 

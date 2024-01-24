@@ -147,6 +147,7 @@ final class Configurations {
             strings[Strings.MINI_MESSAGES_BOTTLE_EXP_NAME.ordinal()] = inFile.getString("mini-messages.bottle-name", "<color:#aaaaaa>Garrafa com <color:#00aaaa>Experiência");
             strings[Strings.EXP_XP_LABEL.ordinal()] = inFile.getString("label.xp", "xp");
             strings[Strings.EXP_LEVEL_LABEL.ordinal()] = inFile.getString("label.level", "níveis");
+            strings[Strings.EXP_TABLE_NAME.ordinal()] = inFile.getString("table-name.xp", "e_xp");
             // Lists
             List<String> list = inFile.getStringList("mini-messages.bottle-lore");
             stringLists.set(Lists.MINI_MESSAGES_BOTTLE_EXP_LORE.ordinal(), list.isEmpty() ? List.of("<color:#aaaaaa>Quantia<color:#555555>: <color:#00aaaa>%amount%") : list);
@@ -155,6 +156,7 @@ final class Configurations {
             outFile.set("mini-messages.bottle-name", strings[Strings.MINI_MESSAGES_BOTTLE_EXP_NAME.ordinal()]);
             outFile.set("label.xp", strings[Strings.EXP_XP_LABEL.ordinal()]);
             outFile.set("label.level", strings[Strings.EXP_LEVEL_LABEL.ordinal()]);
+            outFile.set("table-name.xp", strings[Strings.EXP_TABLE_NAME.ordinal()]);
             // Lists
             outFile.set("mini-messages.bottle-lore", stringLists.get(Lists.MINI_MESSAGES_BOTTLE_EXP_LORE.ordinal()));
 

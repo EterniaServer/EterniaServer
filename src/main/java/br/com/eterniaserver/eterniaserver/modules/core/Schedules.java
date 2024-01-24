@@ -11,7 +11,6 @@ import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.modules.core.Services.Afk;
-import br.com.eterniaserver.eterniaserver.objects.PlayerTeleport;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -44,7 +43,6 @@ final class Schedules {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 PlayerProfile playerProfile = database.get(PlayerProfile.class, player.getUniqueId());
 
-                checkTeleports(player);
                 checkAFK(player, playerProfile);
             }
         }
@@ -88,26 +86,6 @@ final class Schedules {
             );
             plugin.getServer().broadcast(afkKickMessage);
             player.kick(plugin.getMiniMessage(Messages.AFK_KICKED, false));
-        }
-
-        private void checkTeleports(Player player) {
-            PlayerTeleport playerTeleport = plugin.locationManager().getTeleport(player.getUniqueId());
-
-            if (playerTeleport == null) {
-                return;
-            }
-
-            if (player.hasPermission(plugin.getString(Strings.PERM_TIMING_BYPASS)) || playerTeleport.getCountdown() <= 0) {
-                Component message = playerTeleport.getMessage();
-
-                player.teleportAsync(playerTeleport.getWantLocation());
-                player.sendMessage(message);
-                plugin.locationManager().removeTeleport(player.getUniqueId());
-                return;
-            }
-
-            plugin.sendMiniMessages(player, Messages.TELEPORT_TIMING, String.format("%.1f", (playerTeleport.getCountdown() / 20F)));
-            playerTeleport.decreaseCountdown(ticks);
         }
     }
 

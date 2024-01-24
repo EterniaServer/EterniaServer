@@ -9,7 +9,6 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
-import br.com.eterniaserver.eterniaserver.objects.BuyingItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -35,7 +34,7 @@ final class Services {
 
         private final EterniaServer plugin;
 
-        private final Map<UUID, BuyingItem> cashItem = new HashMap<>();
+        private final Map<UUID, Utils.BuyingItem> cashItem = new HashMap<>();
 
         protected Cash(final EterniaServer plugin) {
             this.plugin = plugin;
@@ -46,7 +45,7 @@ final class Services {
          * @param uuid of player
          * @return the BuyingItem object
          */
-        public BuyingItem getCashBuy(UUID uuid) {
+        public Utils.BuyingItem getCashBuy(UUID uuid) {
             return cashItem.get(uuid);
         }
 
@@ -133,7 +132,7 @@ final class Services {
                     return 3;
                 }
 
-                BuyingItem buyingItem = new BuyingItem(messages, commands, cost);
+                Utils.BuyingItem buyingItem = new Utils.BuyingItem(messages, commands, cost);
                 if (!EterniaServer.getCashAPI().has(uuid, buyingItem.getCost())) {
                     plugin.sendMiniMessages(player, Messages.CASH_NO_HAS, String.valueOf(buyingItem.getCost()));
                     return 2;
@@ -213,7 +212,6 @@ final class Services {
         @Override
         public void setBalance(UUID uuid, int amount) {
             CashBalance cash = getCash(uuid);
-            cash.setUuid(uuid);
             cash.setBalance(amount);
 
             hasAccount(uuid).whenCompleteAsync((has, throwableVerify) -> {

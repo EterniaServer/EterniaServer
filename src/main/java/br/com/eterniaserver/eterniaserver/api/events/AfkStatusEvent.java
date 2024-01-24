@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.api.events;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -10,9 +11,11 @@ public class AfkStatusEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
+    @Getter
     private final Player player;
 
     private final boolean afkStatus;
+    @Getter
     private final Cause cause;
     private boolean isCancelled;
 
@@ -21,14 +24,6 @@ public class AfkStatusEvent extends Event implements Cancellable {
         this.afkStatus = afkStatus;
         this.cause = cause;
         this.isCancelled = false;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public Cause getCause() {
-        return cause;
     }
 
     public boolean getStatus() {

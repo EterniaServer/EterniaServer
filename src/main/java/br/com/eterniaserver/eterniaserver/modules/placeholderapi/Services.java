@@ -38,7 +38,7 @@ final class Services {
         public Placeholders(EterniaServer plugin) {
             this.plugin = plugin;
             this.database = EterniaLib.getDatabase();
-            this.version = plugin.getClass().getPackage().getImplementationVersion();
+            this.version = "1.0.0";
             this.dateFormat = new SimpleDateFormat(plugin.getString(Strings.DATA_FORMAT));
         }
 

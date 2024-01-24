@@ -8,11 +8,9 @@ public class Constants {
         throw new IllegalStateException(UTILITY_CLASS);
     }
 
-    public static final String TELL_CHANNEL_STRING = "tell";
     public static final String CASH_TITLE = "<color:#aaaaaa>Loja de <color:#00aaaa>C.A.S.H.<color:#555555>!";
 
     public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
-    public static final String MAIN_CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "config";
     public static final String DATA_MODULE_FOLDER_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "modules";
 
     public static final String CORE_CONFIG_FILE_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "core.yml";
@@ -38,21 +36,7 @@ public class Constants {
     public static final String CASH_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "cash";
     public static final String CASH_CONFIG_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash.yml";
 
-    public static final String CHAT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "chat";
-    public static final String CHAT_CONFIG_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat.yml";
-
     public static final String UTILITY_CLASS = "Utility class";
-
-    public static final String TAG_WORLD = "eternia_wn";
-    public static final String TAG_LOC_NAME = "eternia_lc";
-    public static final String TAG_COORD_X = "eternia_x";
-    public static final String TAG_COORD_Y = "eternia_y";
-    public static final String TAG_COORD_Z = "eternia_z";
-    public static final String TAG_COORD_YAW = "eternia_yaw";
-    public static final String TAG_COORD_PITCH = "eternia_pitch";
-    public static final String TAG_RUN_COMMAND = "eternia_cmd";
-    public static final String TAG_RUN_IN_CONSOLE = "eternia_rcmd";
-    public static final String TAG_USAGES = "eternia_usages";
 
     public static final String TAG_FUNCTION = "eternia_function";
     public static final String TAG_INT_VALUE = "eternia_int_value";
@@ -62,9 +46,5 @@ public class Constants {
     public static final String TAG_CASH_ITEM_COMMANDS = "cash_item_commands";
     public static final String TAG_CASH_ITEM_LORE = "cash_item_lore";
     public static final String TAG_SPAWNER = "eternia_spawner";
-
-    public static final String TAG_CHEST_BUY = "ChestBuy_A";
-    public static final String TAG_CHEST_SHELL = "ChestSell_A";
-    public static final String TAG_CHEST_NAME = "ChestShop_Name";
 
 }

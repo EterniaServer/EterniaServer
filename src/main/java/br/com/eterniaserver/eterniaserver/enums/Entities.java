@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
-public enum  Entities {
+public enum Entities {
 
     BEE,
     BLAZE,

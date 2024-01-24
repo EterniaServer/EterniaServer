@@ -8,7 +8,6 @@ import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.objects.GUIData;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -70,7 +69,7 @@ final class Services {
 
         private final EterniaServer plugin;
 
-        private final Map<String, GUIData> guisMap = new HashMap<>();
+        private final Map<String, Utils.GUIData> guisMap = new HashMap<>();
 
         protected GUI(final EterniaServer plugin) {
             this.plugin = plugin;
@@ -79,12 +78,12 @@ final class Services {
         @Override
         public void createGUI(String guiName, ItemStack[] items) {
             Component title = plugin.parseColor(String.format(guiName, plugin.getString(Strings.GUI_SECRET))).compact();
-            guisMap.put(guiName, new GUIData(title, items));
+            guisMap.put(guiName, new Utils.GUIData(title, items));
         }
 
         @Override
         public Inventory getGUI(String title, Player player) {
-            GUIData guiData = guisMap.get(title);
+            Utils.GUIData guiData = guisMap.get(title);
             if (guiData == null) {
                 return null;
             }

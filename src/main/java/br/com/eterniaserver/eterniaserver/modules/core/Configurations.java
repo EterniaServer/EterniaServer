@@ -53,45 +53,6 @@ final class Configurations {
             namespacedKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(
                     plugin, Constants.TAG_INT_VALUE
             );
-            namespacedKeys[ItemsKeys.TAG_RUN_COMMAND.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_RUN_COMMAND
-            );
-            namespacedKeys[ItemsKeys.TAG_RUN_IN_CONSOLE.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_RUN_IN_CONSOLE
-            );
-            namespacedKeys[ItemsKeys.TAG_USAGES.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_USAGES
-            );
-            namespacedKeys[ItemsKeys.TAG_WORLD.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_WORLD
-            );
-            namespacedKeys[ItemsKeys.TAG_COORD_X.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_COORD_X
-            );
-            namespacedKeys[ItemsKeys.TAG_COORD_Y.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_COORD_Y
-            );
-            namespacedKeys[ItemsKeys.TAG_COORD_Z.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_COORD_Z
-            );
-            namespacedKeys[ItemsKeys.TAG_COORD_YAW.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_COORD_YAW
-            );
-            namespacedKeys[ItemsKeys.TAG_COORD_PITCH.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_COORD_PITCH
-            );
-            namespacedKeys[ItemsKeys.TAG_LOC_NAME.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_LOC_NAME
-            );
-            namespacedKeys[ItemsKeys.CHEST_BUY_AMOUNT.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_CHEST_BUY
-            );
-            namespacedKeys[ItemsKeys.CHEST_SELL_AMOUNT.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_CHEST_SHELL
-            );
-            namespacedKeys[ItemsKeys.CHEST_NAME.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_CHEST_NAME
-            );
         }
 
         @Override
@@ -170,10 +131,6 @@ final class Configurations {
             addMessage(Messages.AFK_KICKED,
                     "<color:#aaaaaa>Você foi kickado por estar ausente<color:#555555>."
             );
-            addMessage(Messages.TELEPORT_TIMING,
-                    "Você irá ser teleportado em <color:#00aaaa>{1} segundos<color:#555555>.",
-                    "tempo restante até ser teleportado (em segundos)"
-            );
             addMessage(Messages.GODMODE_ENABLED,
                     "Você ativou o God Mode<color:#555555>."
             );
@@ -227,11 +184,16 @@ final class Configurations {
             strings[Strings.DATA_FORMAT.ordinal()] = inFile.getString("format.data-time", "dd/MM/yyyy HH:mm");
             strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
             strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
+            strings[Strings.SERVER_PREFIX.ordinal()] = inFile.getString("prefix", "<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#555555><color:#AAAAAA> ");
             strings[Strings.PERM_TIMING_BYPASS.ordinal()] = inFile.getString("teleport.timing-bypass", "eternia.timing.bypass");
             strings[Strings.GUI_SECRET.ordinal()] = inFile.getString("secret.value", String.format("#%06x", new Random().nextInt(0xffffff + 1)));
             strings[Strings.PERM_EC_OTHER.ordinal()] = inFile.getString("permissions.ec-other", "eternia.enderchest.other");
             strings[Strings.REVISION_TABLE_NAME.ordinal()] = inFile.getString("table-name.revision", "e_revision");
             strings[Strings.PROFILE_TABLE_NAME.ordinal()] = inFile.getString("table-name.player-profile", "e_player_profile");
+            strings[Strings.CONS_ADVENTURE.ordinal()] = inFile.getString("const.gm.adventure", "aventura");
+            strings[Strings.CONS_CREATIVE.ordinal()] = inFile.getString("const.gm.creative", "criativo");
+            strings[Strings.CONS_SPECTATOR.ordinal()] = inFile.getString("const.gm.spectator", "espectador");
+            strings[Strings.CONS_SURVIVAL.ordinal()] = inFile.getString("const.gm.survival", "sobrevivência");
 
             // Lists
             List<String> list = inFile.getStringList("critical-configs.blocked-commands");
@@ -261,6 +223,7 @@ final class Configurations {
             outFile.set("permissions.ec-other", strings[Strings.PERM_EC_OTHER.ordinal()]);
             outFile.set("table-name.revision", strings[Strings.REVISION_TABLE_NAME.ordinal()]);
             outFile.set("table-name.player-profile", strings[Strings.PROFILE_TABLE_NAME.ordinal()]);
+            outFile.set("prefix", strings[Strings.SERVER_PREFIX.ordinal()]);
             // Lists
             outFile.set("critical-configs.blocked-commands", stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
         }

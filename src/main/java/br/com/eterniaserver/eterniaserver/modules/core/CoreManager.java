@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
+import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.Entity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
@@ -60,7 +61,7 @@ public class CoreManager implements Module {
         this.plugin.getLogger().log(Level.INFO, "Core module: {0} player profiles loaded", playerProfiles.size());
 
         this.afkServices = new Services.Afk(plugin);
-        this.plugin.setGuiAPI(new Services.GUI(plugin));
+        EterniaServer.setGuiAPI(new Services.GUI(plugin));
     }
 
     @Override
@@ -70,7 +71,23 @@ public class CoreManager implements Module {
 
     @Override
     public void loadConditions() {
-        plugin.getLogger().log(Level.INFO, "Core module: no commands conditions");
+        EterniaLib.getCmdManager().getCommandConditions().addCondition(Integer.class, "limits", (c, exec, value) -> {
+            if (value == null || c.getConfigValue("min", 0) > value) {
+                throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
+            }
+            if (c.getConfigValue("max", 3) < value) {
+                throw new ConditionFailedException("O valor máximo precisa ser &3 " + c.getConfigValue("max", 2147483647));
+            }
+        });
+
+        EterniaLib.getCmdManager().getCommandConditions().addCondition(Double.class, "limits", (c, exec, value) -> {
+            if (value == null || c.getConfigValue("min", 0) > value) {
+                throw new ConditionFailedException("O valor mínimo precisa ser &3" + c.getConfigValue("min", 0));
+            }
+            if (c.getConfigValue("max", 3) < value) {
+                throw new ConditionFailedException("O valor máximo precisa ser &3" + c.getConfigValue("max", 1));
+            }
+        });
     }
 
     @Override

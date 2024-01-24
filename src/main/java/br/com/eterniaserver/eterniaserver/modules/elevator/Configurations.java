@@ -74,7 +74,7 @@ final class Configurations {
             int[] integers = plugin.integers();
             String[] strings = plugin.strings();
 
-            List<Material> elevatorMaterials = plugin.getElevatorMaterials();
+            List<Material> elevatorMaterials = plugin.elevatorMaterials();
 
             strings[Strings.PERM_ELEVATOR.ordinal()] = inFile.getString("permission", "eternia.elevator");
             integers[Integers.ELEVATOR_MAX.ordinal()] = inFile.getInt("space-between.max", 50);
