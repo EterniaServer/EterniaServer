@@ -18,6 +18,12 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://repo.minebench.de/")
+    maven("https://maven.pkg.github.com/eterniaserver/eternialib") {
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+        }
+    }
     mavenLocal()
 }
 
@@ -63,7 +69,7 @@ tasks {
 bukkit {
     load = BukkitPluginDescription.PluginLoadOrder.STARTUP
     main = "br.com.eterniaserver.eterniaserver.EterniaServer"
-    apiVersion = "1.16"
+    apiVersion = "1.18"
     website = "www.eterniaserver.com.br"
     depend = listOf("EterniaLib", "PlaceholderAPI")
     softDepend = listOf("Vault", "ChestShop")
