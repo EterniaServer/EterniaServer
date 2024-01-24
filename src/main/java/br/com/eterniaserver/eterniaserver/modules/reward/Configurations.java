@@ -98,7 +98,7 @@ final class Configurations {
             );
 
             // Strings
-            strings[Strings.REVISION_TABLE_NAME.ordinal()] = inFile.getString("table-name.revision", "e_revision");
+            strings[Strings.REWARD_TABLE_NAME.ordinal()] = inFile.getString("table-name.reward", "e_revision");
 
             // Maps
             chanceMap.set(ChanceMaps.REWARDS.ordinal(), getChanceMap("rewards", "vip"));
@@ -106,7 +106,7 @@ final class Configurations {
             chanceMap.set(ChanceMaps.BLOCK_DROPS.ordinal(), getChanceMap("blocks", "STONE"));
 
             // Strings
-            outFile.set("table-name.revision", strings[Strings.REVISION_TABLE_NAME.ordinal()]);
+            outFile.set("table-name.reward", strings[Strings.REWARD_TABLE_NAME.ordinal()]);
 
             // Maps
             chanceMap.get(ChanceMaps.REWARDS.ordinal()).forEach((k, v) -> v.forEach((l, b) -> outFile.set("rewards." + k + "." + String.format("%.10f", l).replace('.', ','), b)));

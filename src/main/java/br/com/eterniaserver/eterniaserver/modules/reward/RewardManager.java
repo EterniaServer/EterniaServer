@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 
+import java.util.List;
 import java.util.logging.Level;
 
 
@@ -34,7 +35,7 @@ public class RewardManager implements Module {
         try {
             Entity<Entities.RewardGroup> rewardGroupEntity = new Entity<>(Entities.RewardGroup.class);
 
-            EterniaLib.addTableName("%eternia_server_reward%", plugin.getString(Strings.REVISION_TABLE_NAME));
+            EterniaLib.addTableName("%eternia_server_reward%", plugin.getString(Strings.REWARD_TABLE_NAME));
 
             EterniaLib.getDatabase().register(Entities.RewardGroup.class, rewardGroupEntity);
         }
@@ -44,6 +45,9 @@ public class RewardManager implements Module {
         }
 
         this.rewardsService = new Services.Rewards(plugin);
+
+        List<Entities.RewardGroup> rewardGroups = EterniaLib.getDatabase().listAll(Entities.RewardGroup.class);
+        this.plugin.getLogger().log(Level.INFO, "Reward module: {0} rewards loaded", rewardGroups.size());
     }
 
     @Override
