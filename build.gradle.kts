@@ -72,13 +72,13 @@ dependencies {
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     compileOnly("me.clip", "placeholderapi", "2.11.1")
     implementation("org.bstats", "bstats-bukkit", "3.0.0")
-    compileOnly("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
+    testImplementation("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testImplementation("org.mockito:mockito-inline:5.2.0")
 }
 
 tasks.shadowJar {
-    listOf("org.bstats", ).forEach {
+    listOf("org.bstats").forEach {
         relocate(it, "${rootProject.group}.lib.$it")
     }
     archiveBaseName.set(project.name)
