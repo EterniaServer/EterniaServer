@@ -68,7 +68,7 @@ java {
 
 dependencies {
     compileOnly("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
-    compileOnly("br.com.eterniaserver", "eternialib", "4.0.2-BETA")
+    compileOnly("br.com.eterniaserver", "eternialib", "4.0.5")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     compileOnly("me.clip", "placeholderapi", "2.11.1")
     implementation("org.bstats", "bstats-bukkit", "3.0.0")

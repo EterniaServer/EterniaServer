@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.enums;
 
 public enum Doubles {
 
-    DROP_CHANCE
+    DROP_CHANCE,
+    ECO_START_MONEY,
 
 }

@@ -9,5 +9,6 @@ public enum Integers {
     ELEVATOR_MIN,
     CLEAR_RANGE,
     CLEAR_TIMER,
+    ECONOMY_COIN_DIGITS,
 
 }

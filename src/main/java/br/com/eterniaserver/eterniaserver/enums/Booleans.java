@@ -10,6 +10,8 @@ public enum Booleans {
     MODULE_REWARDS,
     MODULE_PAPI,
     MODULE_ENTITY,
+    MODULE_ECONOMY,
+    HAS_ECONOMY_PLUGIN,
     AFK_KICK,
     INV_DROP,
     BLOCK_BREAK_SPAWNERS,
@@ -18,6 +20,7 @@ public enum Booleans {
     ENTITY_LIMITER,
     BREEDING_LIMITER,
     ENTITY_EDITOR,
+    ECONOMY_HAS_BANK,
 
 
 }

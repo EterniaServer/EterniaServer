@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.cash.CashManager;
 import br.com.eterniaserver.eterniaserver.modules.core.CoreManager;
+import br.com.eterniaserver.eterniaserver.modules.economy.EconomyManager;
 import br.com.eterniaserver.eterniaserver.modules.elevator.ElevatorManager;
 import br.com.eterniaserver.eterniaserver.modules.entity.EntityManager;
 import br.com.eterniaserver.eterniaserver.modules.experience.ExperienceManager;
@@ -31,6 +32,7 @@ public class Manager {
         if (plugin.getBoolean(Booleans.MODULE_PAPI)) modules.add(new PlaceHolderAPIManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_CASH)) modules.add(new CashManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_ENTITY)) modules.add(new EntityManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_ECONOMY)) modules.add(new EconomyManager(plugin));
 
         loadModules();
     }

@@ -16,6 +16,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
+import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 
 import org.bukkit.Material;
@@ -23,6 +24,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -58,6 +60,9 @@ public class EterniaServer extends JavaPlugin {
     @Getter
     @Setter
     private static ChatAPI chatAPI;
+    @Getter
+    @Setter
+    private static Economy economyAPI;
 
     public int[] integers() {
         return integers;
@@ -108,6 +113,14 @@ public class EterniaServer extends JavaPlugin {
 
         new Metrics(this, 10160);
         new Manager(this);
+
+        if (getBoolean(Booleans.HAS_ECONOMY_PLUGIN)) {
+            RegisteredServiceProvider<Economy> rspEconomy = getServer().getServicesManager().getRegistration(Economy.class);
+
+            if (rspEconomy != null) {
+                EterniaServer.setEconomyAPI(rspEconomy.getProvider());
+            }
+        }
     }
 
     public NamespacedKey getKey(final ItemsKeys entry) {

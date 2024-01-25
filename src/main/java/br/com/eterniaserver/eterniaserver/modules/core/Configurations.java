@@ -209,7 +209,9 @@ final class Configurations {
             booleans[Booleans.MODULE_PAPI.ordinal()] = inFile.getBoolean("modules.papi", true);
             booleans[Booleans.MODULE_CASH.ordinal()] = inFile.getBoolean("modules.cash", true);
             booleans[Booleans.MODULE_ENTITY.ordinal()] = inFile.getBoolean("modules.entity", true);
+            booleans[Booleans.MODULE_ECONOMY.ordinal()] = inFile.getBoolean("modules.economy", true);
             booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
+            booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()] = inFile.getBoolean("critical-configs.has-economy-plugin", true);
             // Integers
             integers[Integers.PLUGIN_TICKS.ordinal()] = inFile.getInt("critical-configs.plugin-ticks", 20);
             integers[Integers.AFK_TIMER.ordinal()] = inFile.getInt("afk.limit-time", 900);
