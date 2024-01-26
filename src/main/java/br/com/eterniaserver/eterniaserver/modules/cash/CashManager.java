@@ -52,14 +52,10 @@ public class CashManager implements Module {
     }
 
     @Override
-    public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "Cash module: no commands completions");
-    }
+    public void loadCommandsCompletions() {}
 
     @Override
-    public void loadConditions() {
-        plugin.getLogger().log(Level.INFO, "Cash module: no commands conditions");
-    }
+    public void loadConditions() {}
 
     @Override
     public void loadListeners() {
@@ -67,9 +63,7 @@ public class CashManager implements Module {
     }
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "Cash module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
     public void loadCommands() {

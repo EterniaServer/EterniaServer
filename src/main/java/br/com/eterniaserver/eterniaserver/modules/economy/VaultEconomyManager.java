@@ -248,7 +248,7 @@ public class VaultEconomyManager implements Economy {
     }
 
     public EconomyResponse depositPlayer(UUID uuid, double amount) {
-        if (uuid == null || hasAccount(uuid)) {
+        if (uuid == null || !hasAccount(uuid)) {
             return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, null);
         }
 
@@ -295,6 +295,7 @@ public class VaultEconomyManager implements Economy {
 
         bankBalance.setName(bankName);
         bankBalance.setBalance(0D);
+        bankBalance.setTax(0D);
 
         databaseInterface.insert(Entities.BankBalance.class, bankBalance);
 

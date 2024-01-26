@@ -127,7 +127,7 @@ final class Services {
 
                 return switch (var4) {
                     case 0 -> getFirstLoginPlaceholder(playerProfile.getFirstJoin().getTime());
-                    case 1 -> getBalanceTopPlaceholder(playerProfile.isBalanceTop());
+                    case 1 -> getBalanceTopPlaceholder(EterniaServer.getExtraEconomyAPI().isBalanceTop(uuid));
                     case 2 -> getAFKPlaceholder(playerProfile.isAfk());
                     case 4 -> playerProfile.getColor();
                     case 5 -> getGodModePlaceholder(playerProfile.isGod());

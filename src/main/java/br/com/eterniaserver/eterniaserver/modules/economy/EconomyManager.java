@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.Entity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.ServicePriority;
@@ -62,6 +63,8 @@ public class EconomyManager implements Module {
                 ServicePriority.Highest
         );
 
+        EterniaServer.setExtraEconomyAPI(new Services.ExtraEconomy(plugin));
+        EterniaServer.getExtraEconomyAPI().refreshBalanceTop(balances);
     }
 
     @Override
@@ -76,16 +79,26 @@ public class EconomyManager implements Module {
 
     @Override
     public void loadListeners() {
-
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin), plugin);
     }
 
     @Override
     public void loadSchedules() {
-
+        new Schedules.BalanceTopSchedule().runTaskTimerAsynchronously(
+                plugin,
+                plugin.getInteger(Integers.ECONOMY_BALANCE_TOP_REFRESH_TIME) * 20L,
+                plugin.getInteger(Integers.ECONOMY_BALANCE_TOP_REFRESH_TIME) * 20L
+        );
+        new Schedules.BankTaxSchedule(plugin).runTaskTimerAsynchronously(
+                plugin,
+                plugin.getInteger(Integers.ECONOMY_BANK_TAX_REFRESH_TIME) * 20L,
+                plugin.getInteger(Integers.ECONOMY_BANK_TAX_REFRESH_TIME) * 20L
+        );
     }
 
     @Override
     public void loadCommands() {
-
+        EterniaLib.getCmdManager().registerCommand(new Commands.EconomyGeneric(plugin));
+        EterniaLib.getCmdManager().registerCommand(new Commands.EconomyBank(plugin));
     }
 }

@@ -4,8 +4,6 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 
-import java.util.logging.Level;
-
 
 public class PlaceHolderAPIManager implements Module {
 
@@ -29,29 +27,19 @@ public class PlaceHolderAPIManager implements Module {
     }
 
     @Override
-    public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "PlaceHolderAPI module: no commands completions");
-    }
+    public void loadCommandsCompletions() {}
 
     @Override
-    public void loadConditions() {
-        plugin.getLogger().log(Level.INFO, "PlaceHolderAPI module: no conditions");
-    }
+    public void loadConditions() {}
 
     @Override
-    public void loadListeners() {
-        plugin.getLogger().log(Level.INFO, "PlaceHolderAPI module: no listeners");
-    }
+    public void loadListeners() {}
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "PlaceHolderAPI module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
-    public void loadCommands() {
-        plugin.getLogger().log(Level.INFO, "PlaceHolderAPI module: no commands");
-    }
+    public void loadCommands() {}
 
 
 }

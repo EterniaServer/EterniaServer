@@ -41,19 +41,13 @@ public class GlowManager implements Module {
     }
 
     @Override
-    public void loadConditions() {
-        plugin.getLogger().log(Level.INFO, "Glow module: no conditions");
-    }
+    public void loadConditions() {}
 
     @Override
-    public void loadListeners() {
-        plugin.getLogger().log(Level.INFO, "Glow module: no listeners");
-    }
+    public void loadListeners() {}
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "Glow module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
     public void loadCommands() {

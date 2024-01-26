@@ -27,14 +27,10 @@ public class EntityManager implements Module {
     }
 
     @Override
-    public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "Entity module: no command completions");
-    }
+    public void loadCommandsCompletions() {}
 
     @Override
-    public void loadConditions() {
-        plugin.getLogger().log(Level.INFO, "Entity module: no conditions");
-    }
+    public void loadConditions() {}
 
     @Override
     public void loadListeners() {
@@ -47,7 +43,5 @@ public class EntityManager implements Module {
     }
 
     @Override
-    public void loadCommands() {
-        plugin.getLogger().log(Level.INFO, "Entity module: no commands");
-    }
+    public void loadCommands() {}
 }

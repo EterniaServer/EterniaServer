@@ -74,7 +74,6 @@ public final class Entities {
 
         private boolean afk = false;
         private boolean god = false;
-        private boolean isBalanceTop = false;
 
         private String color;
         private Long enterMillis;

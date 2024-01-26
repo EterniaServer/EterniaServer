@@ -14,7 +14,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-final class Entities {
+public final class Entities {
 
     private Entities() {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
@@ -32,6 +32,9 @@ final class Entities {
 
         @DataField(columnName = "balance", type = FieldType.DOUBLE, notNull = true)
         private Double balance;
+
+        @DataField(columnName = "tax", type = FieldType.DOUBLE, notNull = true)
+        private Double tax;
 
     }
 

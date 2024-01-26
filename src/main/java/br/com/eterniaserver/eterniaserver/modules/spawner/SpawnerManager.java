@@ -42,9 +42,7 @@ public class SpawnerManager implements Module {
     }
 
     @Override
-    public void loadConditions() {
-        plugin.getLogger().log(Level.INFO, "spawner module: no conditions");
-    }
+    public void loadConditions() {}
 
     @Override
     public void loadListeners() {
@@ -52,9 +50,7 @@ public class SpawnerManager implements Module {
     }
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "spawner module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
     public void loadCommands() {

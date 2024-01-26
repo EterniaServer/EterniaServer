@@ -26,14 +26,10 @@ public class ElevatorManager implements Module {
     }
 
     @Override
-    public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "elevator module: no command completions");
-    }
+    public void loadCommandsCompletions() {}
 
     @Override
-    public void loadConditions() {
-        plugin.getLogger().log(Level.INFO, "elevator module: no conditions");
-    }
+    public void loadConditions() {}
 
     @Override
     public void loadListeners() {
@@ -41,13 +37,9 @@ public class ElevatorManager implements Module {
     }
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "elevator module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
-    public void loadCommands() {
-        plugin.getLogger().log(Level.INFO, "elevator module: no commands");
-    }
+    public void loadCommands() {}
 
 }

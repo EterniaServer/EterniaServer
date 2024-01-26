@@ -66,9 +66,7 @@ public class CoreManager implements Module {
     }
 
     @Override
-    public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "Core module: no commands completions");
-    }
+    public void loadCommandsCompletions() {}
 
     @Override
     public void loadConditions() {

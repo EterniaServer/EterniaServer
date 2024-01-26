@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver;
 
 import br.com.eterniaserver.eterniaserver.api.interfaces.CashAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.ChatAPI;
+import br.com.eterniaserver.eterniaserver.api.interfaces.ExtraEconomyAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
 import br.com.eterniaserver.eterniaserver.enums.*;
 import br.com.eterniaserver.eterniaserver.modules.Manager;
@@ -63,6 +64,9 @@ public class EterniaServer extends JavaPlugin {
     @Getter
     @Setter
     private static Economy economyAPI;
+    @Getter
+    @Setter
+    private static ExtraEconomyAPI extraEconomyAPI;
 
     public int[] integers() {
         return integers;
