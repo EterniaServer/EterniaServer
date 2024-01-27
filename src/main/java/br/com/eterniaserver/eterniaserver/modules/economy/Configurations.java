@@ -175,6 +175,130 @@ final class Configurations {
                     "apelido do jogador",
                     "nome do banco"
             );
+            addMessage(Messages.ECO_BANK_NOT_EXIST,
+                    "O banco <color:#00aaaa>{0}<color:#aaaaaa> não existe<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_NOT_MEMBER,
+                    "Você não é membro do banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_NOT_OWNER,
+                    "Você não é dono do banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_DELETED,
+                    "Você deletou o banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_DELETED_BROADCAST,
+                    "<color:#00aaaa>{1}<color:#aaaaaa> deletou o banco <color:#00aaaa>{2}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_ALREADY_HAS_BANK,
+                    "Você já possui um banco<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_NO_BANKS,
+                    "Você não possui bancos<color:#555555>."
+            );
+            addMessage(Messages.ECO_BANK_MY_BANKS_TITLE,
+                    "Meus Bancos<color:#555555><color:#555555>."
+            );
+            addMessage(Messages.ECO_BANK_MY_BANKS_LIST,
+                    "<color:#00aaaa>{0} <color:#555555>- <color:#aaaaaa>Cargo<color:#555555>: <color:#00aaaa>{1}",
+                    "nome do banco",
+                    "cargo do banco"
+            );
+            addMessage(Messages.ECO_BANK_DEPOSITED,
+                    "Você depositou <color:#00aaaa>{1}<color:#aaaaaa> no banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco",
+                    "saldo do banco"
+            );
+            addMessage(Messages.ECO_BANK_NO_WITHDRAW_PERMISSION,
+                    "Você não possui permissão para sacar do banco <color:#00aaaa>{1}<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_WITHDRAWN,
+                    "Você sacou <color:#00aaaa>{1}<color:#aaaaaa> do banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco",
+                    "saldo do banco"
+            );
+            addMessage(Messages.ECO_BANK_TARGET_NOT_MEMBER,
+                    "O jogador <color:#00aaaa>{2}<color:#aaaaaa> não é membro do banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco",
+                    "nome do jogador",
+                    "apeliido do jogador"
+            );
+            addMessage(Messages.ECO_BANK_INVALID_ROLE,
+                    "O cargo <color:#00aaaa>{1}<color:#aaaaaa> não existe no banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco",
+                    "nome do cargo"
+            );
+            addMessage(Messages.ECO_BANK_CHANGE_ROLE_TO,
+                    "Você mudou o cargo de <color:#00aaaa>{1}<color:#aaaaaa> para <color:#00aaaa>{2}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome do cargo",
+                    "banco"
+            );
+            addMessage(Messages.ECO_BANK_CHANGE_ROLE,
+                    "{1} mudou o seu cargo para <color:#00aaaa>{2}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome do cargo",
+                    "banco"
+            );
+            addMessage(Messages.ECO_BANK_ALREADY_MEMBER,
+                    "Você já é membro do banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_TARGET_NOT_OWNER,
+                    "O jogador <color:#00aaaa>{2}<color:#aaaaaa> não é dono do banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.ECO_BANK_AFILIATE_SUCCESS,
+                    "Você afiliou-se ao banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_AFFILIATE_REQUEST,
+                    "Você enviou um pedido de afiliação para o banco <color:#00aaaa>{2}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_AFFILIATE_REQUESTED,
+                    "O jogador <color:#00aaaa>{1}<color:#aaaaaa> enviou um pedido de afiliação para o banco <color:#00aaaa>{2}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_REQUEST_COMMAND_MESSAGE,
+                    "<color:#00aaaa>{1} <color:#aaaaaa>quer afiliar-se ao seu banco <color:#00aaaa>{2}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_INFO_TITLE,
+                    "Informações do Banco <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do banco"
+            );
+            addMessage(Messages.ECO_BANK_INFO_BALANCE,
+                    "<color:#aaaaaa>Saldo: <color:#00aaaa>{0}<color:#555555>.",
+                    "saldo do banco"
+            );
+            addMessage(Messages.ECO_BANK_INFO_TAX,
+                    "<color:#aaaaaa>Taxa: <color:#00aaaa>{0}<color:#555555>.",
+                    "taxa do banco"
+            );
+            addMessage(Messages.ECO_BANK_INFO_MEMBERS,
+                    "<color:#aaaaaa>Membro<color:#555555>: <color:#00aaaa>{1} <color:#aaaaaa>Cargo<color:#555555>: <color:#00aaaa>{2}<color:#555555>.",
+                    "membros do banco"
+            );
 
             integers[Integers.ECONOMY_COIN_DIGITS.ordinal()] = inFile.getInt("eco.digits", 2);
             integers[Integers.ECONOMY_BALANCE_TOP_SIZE.ordinal()] = inFile.getInt("eco.balance-top.size", 30);
@@ -227,126 +351,112 @@ final class Configurations {
         public void executeCritical() {
             addCommandLocale(Enums.Commands.ECONOMY, new CommandLocale(
                     "money",
-                    "<página>",
+                    " <página>",
                     " Ajuda para o sistema monetário",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BALTOP, new CommandLocale(
                     "baltop|balancetop",
-                    "<página>",
+                    " <página>",
                     " Mostre a lista de jogadores mais ricos do servidor",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BALANCE, new CommandLocale(
                     "saldo|balance|bal",
-                    "<jogador>",
+                    " <jogador>",
                     " Verifique o seu saldo ou o saldo de outro jogador",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_PAY, new CommandLocale(
                     "pagar|pay",
-                    "<jogador> <quantia>",
+                    " <jogador> <quantia>",
                     " Pague um jogador",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_TAKE, new CommandLocale(
                     "take|retirar",
-                    "<jogador> <quantia>",
+                    " <jogador> <quantia>",
                     " Retire uma quantia do saldo de um jogador",
                     "eternia.economy.admin",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_GIVE, new CommandLocale(
                     "give|dar",
-                    "<jogador> <quantia>",
+                    " <jogador> <quantia>",
                     " Dê uma quantia para um jogador",
                     "eternia.economy.admin",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK, new CommandLocale(
                     "banco|bank",
-                    "<página>",
+                    " <página>",
                     " Ajuda para o sistema bancário",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_LIST, new CommandLocale(
                     "list|listar",
-                    "<página>",
+                    " <página>",
                     " Lista os bancos do servidor",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_INFO, new CommandLocale(
                     "info",
-                    "<banco>",
+                    " <banco>",
                     " Verifique as informações de um banco",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_CREATE, new CommandLocale(
                     "criar|create",
-                    "<banco>",
+                    " <banco>",
                     " Crie um banco",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_DELETE, new CommandLocale(
                     "deletar|delete",
-                    "<banco>",
+                    " <banco>",
                     " Deleta um banco que você é dono",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_MY_BANKS, new CommandLocale(
                     "meus|my",
-                    "<página>",
+                    " <página>",
                     " Lista os bancos que você é membro",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_DEPOSIT, new CommandLocale(
                     "depositar|deposit",
-                    "<quantia>",
+                    " <quantia>",
                     " Deposite uma quantia no banco",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_WITHDRAW, new CommandLocale(
                     "sacar|withdraw",
-                    "<quantia>",
+                    " <quantia>",
                     " Saque uma quantia do banco",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_CHANGE_ROLE, new CommandLocale(
                     "cargo|role",
-                    "<jogador> <cargo>",
+                    " <jogador> <cargo>",
                     " Mude o cargo de um membro do banco",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_NEGATE, new CommandLocale(
-                    "negar|deny",
-                    "<jogador>",
-                    " Negue um pedido de afiliação",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_ACCEPT, new CommandLocale(
-                    "aceitar|accept",
-                    "<jogador>",
-                    " Aceite um pedido de afiliação",
                     "eternia.economy.user",
                     null
             ));
             addCommandLocale(Enums.Commands.ECONOMY_BANK_AFFILIATE, new CommandLocale(
                     "afiliar|affiliate",
-                    "<banco>",
+                    " <banco> <jogador>",
                     " Afiliar-se a um banco",
                     "eternia.economy.user",
                     null

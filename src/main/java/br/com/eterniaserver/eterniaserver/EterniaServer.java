@@ -47,6 +47,7 @@ public class EterniaServer extends JavaPlugin {
     private final String[] strings = new String[Strings.values().length];
     private final NamespacedKey[] namespaceKeys = new NamespacedKey[ItemsKeys.values().length];
 
+    private final List<String> bankListName = new ArrayList<>();
     private final List<List<String>> stringLists = new ArrayList<>();
     private final List<Material> elevatorMaterials = new ArrayList<>();
     private final List<Map<String, Map<Double, List<String>>>> chanceMaps = new ArrayList<>();
@@ -94,6 +95,10 @@ public class EterniaServer extends JavaPlugin {
 
     public List<List<String>> stringLists() {
         return stringLists;
+    }
+
+    public List<String> bankListName() {
+        return bankListName;
     }
 
     public List<Material> elevatorMaterials() {

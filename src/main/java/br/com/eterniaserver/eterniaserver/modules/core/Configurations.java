@@ -247,6 +247,7 @@ final class Configurations {
             outFile.set("modules.papi", booleans[Booleans.MODULE_PAPI.ordinal()]);
             outFile.set("modules.cash", booleans[Booleans.MODULE_CASH.ordinal()]);
             outFile.set("modules.entity", booleans[Booleans.MODULE_ENTITY.ordinal()]);
+            outFile.set("modules.economy", booleans[Booleans.MODULE_ECONOMY.ordinal()]);
             outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
             // Integers
             outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);

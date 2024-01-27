@@ -43,7 +43,16 @@ final class Services {
 
         @Override
         public List<Entities.BankBalance> getBankList() {
-            return databaseInterface.listAll(Entities.BankBalance.class);
+            List<Entities.BankBalance> balances = databaseInterface.listAll(Entities.BankBalance.class);
+            List<String> bankListName = plugin.bankListName();
+
+            bankListName.clear();
+
+            for (Entities.BankBalance balance : balances) {
+                bankListName.add(balance.getName());
+            }
+
+            return balances;
         }
 
         @Override

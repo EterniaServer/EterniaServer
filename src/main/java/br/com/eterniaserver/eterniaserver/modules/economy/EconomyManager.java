@@ -50,12 +50,6 @@ public class EconomyManager implements Module {
             return;
         }
 
-        List<Entities.EcoBalance> balances = EterniaLib.getDatabase().listAll(Entities.EcoBalance.class);
-        plugin.getLogger().log(Level.INFO, "Economy module: {0} player balance loaded", balances.size());
-
-        List<Entities.BankBalance> bankBalances = EterniaLib.getDatabase().listAll(Entities.BankBalance.class);
-        plugin.getLogger().log(Level.INFO, "Economy module: {0} bank balance loaded", bankBalances.size());
-
         plugin.getServer().getServicesManager().register(
                 Economy.class,
                 new VaultEconomyManager(plugin),
@@ -64,12 +58,19 @@ public class EconomyManager implements Module {
         );
 
         EterniaServer.setExtraEconomyAPI(new Services.ExtraEconomy(plugin));
+
+        List<Entities.EcoBalance> balances = EterniaLib.getDatabase().listAll(Entities.EcoBalance.class);
+        plugin.getLogger().log(Level.INFO, "Economy module: {0} player balance loaded", balances.size());
+
+        List<Entities.BankBalance> bankBalances = EterniaServer.getExtraEconomyAPI().getBankList();
+        plugin.getLogger().log(Level.INFO, "Economy module: {0} bank balance loaded", bankBalances.size());
+
         EterniaServer.getExtraEconomyAPI().refreshBalanceTop(balances);
     }
 
     @Override
     public void loadCommandsCompletions() {
-
+        EterniaLib.getCmdManager().getCommandCompletions().registerCompletion("banks", banks -> plugin.bankListName());
     }
 
     @Override

@@ -24,8 +24,6 @@ final class Enums {
         ECONOMY_BANK_DEPOSIT,
         ECONOMY_BANK_WITHDRAW,
         ECONOMY_BANK_CHANGE_ROLE,
-        ECONOMY_BANK_NEGATE,
-        ECONOMY_BANK_ACCEPT,
         ECONOMY_BANK_AFFILIATE,
     }
 

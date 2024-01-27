@@ -307,6 +307,8 @@ public class VaultEconomyManager implements Economy {
 
         databaseInterface.insert(Entities.BankMember.class, bankMember);
 
+        plugin.bankListName().add(bankName);
+
         return new EconomyResponse(0, 0, EconomyResponse.ResponseType.SUCCESS, null);
     }
 
@@ -319,6 +321,8 @@ public class VaultEconomyManager implements Economy {
         }
 
         databaseInterface.delete(Entities.BankBalance.class, bankName);
+
+        plugin.bankListName().remove(bankName);
 
         return new EconomyResponse(0, bankBalance.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
     }
