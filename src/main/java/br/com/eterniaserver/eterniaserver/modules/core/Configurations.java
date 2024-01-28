@@ -298,6 +298,7 @@ final class Configurations {
             booleans[Booleans.MODULE_BED.ordinal()] = inFile.getBoolean("modules.bed", true);
             booleans[Booleans.MODULE_ITEM.ordinal()] = inFile.getBoolean("modules.item", true);
             booleans[Booleans.MODULE_KIT.ordinal()] = inFile.getBoolean("modules.kit", true);
+            booleans[Booleans.MODULE_TELEPORT.ordinal()] = inFile.getBoolean("modules.teleport", true);
             booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
             booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()] = inFile.getBoolean("critical-configs.has-economy-plugin", true);
             // Integers
@@ -322,6 +323,7 @@ final class Configurations {
             strings[Strings.PROFILE_PLAYED_TIME.ordinal()] = inFile.getString("mini-messages.profile.played-time", "<color:#aaaaaa>Dias<color:#555555>: <color:#00aaaa>%02d <color:#aaaaaa>Horas<color:#555555>: <color:#00aaaa>%02d <color:#aaaaaa>Minutos<color:#555555>: <color:#00aaaa>%02d<color:#555555>.");
             strings[Strings.PERM_FLY_OTHER.ordinal()] = inFile.getString("permissions.fly.other", "eternia.fly.other");
             strings[Strings.PERM_FLY_BYPASS.ordinal()] = inFile.getString("permissions.fly.bypass", "eternia.fly.bypass");
+            strings[Strings.JOIN_NAMES.ordinal()] = inFile.getString("messages.join-names-display", "<color:#00aaaa>{0}<color:#AAAAAA>, ");
 
             // Lists
             List<String> blackedCommands = inFile.getStringList("critical-configs.blocked-commands");
@@ -344,6 +346,7 @@ final class Configurations {
             outFile.set("modules.bed", booleans[Booleans.MODULE_BED.ordinal()]);
             outFile.set("modules.item", booleans[Booleans.MODULE_ITEM.ordinal()]);
             outFile.set("modules.kit", booleans[Booleans.MODULE_KIT.ordinal()]);
+            outFile.set("modules.teleport", booleans[Booleans.MODULE_TELEPORT.ordinal()]);
             outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
             outFile.set("critical-configs.has-economy-plugin", booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()]);
             // Integers
@@ -366,6 +369,7 @@ final class Configurations {
             outFile.set("mini-messages.profile.played-time", strings[Strings.PROFILE_PLAYED_TIME.ordinal()]);
             outFile.set("permissions.fly.other", strings[Strings.PERM_FLY_OTHER.ordinal()]);
             outFile.set("permissions.fly.bypass", strings[Strings.PERM_FLY_BYPASS.ordinal()]);
+            outFile.set("messages.join-names-display", strings[Strings.JOIN_NAMES.ordinal()]);
             // Lists
             outFile.set("critical-configs.blocked-commands", stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
             outFile.set("mini-messages.profile.custom-messages", stringLists.get(Lists.PROFILE_CUSTOM_MESSAGES.ordinal()));

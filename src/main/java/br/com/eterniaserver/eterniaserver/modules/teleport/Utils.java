@@ -1,13 +1,14 @@
-package br.com.eterniaserver.eterniaserver.modules.economy;
+package br.com.eterniaserver.eterniaserver.modules.teleport;
 
-import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.commands.AdvancedCommand;
 import br.com.eterniaserver.eternialib.commands.enums.AdvancedCategory;
 import br.com.eterniaserver.eternialib.commands.enums.AdvancedRules;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -17,22 +18,27 @@ public final class Utils {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    public static class AffiliateCommand extends AdvancedCommand {
+    public static class TeleportCommand extends AdvancedCommand {
 
         private final EterniaServer plugin;
 
-        private final String bankName;
+        private final String message;
         private final Player sender;
-        private final Player target;
+        private final Location location;
 
         private boolean aborted = false;
         private int commandTicks = 0;
 
-        public AffiliateCommand(EterniaServer plugin, String bankName, Player sender, Player target) {
+        public TeleportCommand(EterniaServer plugin, String locationName, Player sender, Location location) {
             this.plugin = plugin;
-            this.bankName = bankName;
             this.sender = sender;
-            this.target = target;
+            this.location = location;
+
+            this.message = plugin.getMessage(
+                    Messages.TELEPORT_ON_GOING,
+                    false,
+                    locationName
+            );
         }
 
         @Override
@@ -42,17 +48,18 @@ public final class Utils {
 
         @Override
         public void execute() {
+            sender.teleportAsync(location);
         }
 
         @Override
         public String getTimeMessage() {
-            return "";
+            return message;
         }
 
         @Override
         public void abort(Component component) {
             this.aborted = true;
-            target.sendMessage(component);
+            sender.sendMessage(component);
         }
 
         @Override
@@ -62,27 +69,17 @@ public final class Utils {
 
         @Override
         public BukkitTask executeAsynchronously() {
-            return plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                Entities.BankMember bankMember = new Entities.BankMember();
-
-                bankMember.setBankName(bankName);
-                bankMember.setRole(Enums.BankRole.MEMBER.name());
-                bankMember.setUuid(target.getUniqueId());
-
-                EterniaLib.getDatabase().insert(Entities.BankMember.class, bankMember);
-
-                plugin.sendMiniMessages(target, Messages.ECO_BANK_AFILIATE_SUCCESS, bankName);
-            });
+            return null;
         }
 
         @Override
         public AdvancedCategory getCategory() {
-            return AdvancedCategory.CONFIRMATION;
+            return AdvancedCategory.TIMED;
         }
 
         @Override
         public int neededTimeInSeconds() {
-            return 15;
+            return plugin.getInteger(Integers.TELEPORT_TIMER);
         }
 
         @Override
@@ -97,7 +94,12 @@ public final class Utils {
 
         @Override
         public AdvancedRules[] getAdvancedRules() {
-            return new AdvancedRules[0];
+            return new AdvancedRules[] {
+                    AdvancedRules.NOT_ATTACK,
+                    AdvancedRules.NOT_MOVE,
+                    AdvancedRules.NOT_JUMP,
+                    AdvancedRules.NOT_BREAK_BLOCK
+            };
         }
     }
 

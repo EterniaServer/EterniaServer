@@ -16,6 +16,7 @@ import br.com.eterniaserver.eterniaserver.modules.kit.KitManager;
 import br.com.eterniaserver.eterniaserver.modules.placeholderapi.PlaceHolderAPIManager;
 import br.com.eterniaserver.eterniaserver.modules.reward.RewardManager;
 import br.com.eterniaserver.eterniaserver.modules.spawner.SpawnerManager;
+import br.com.eterniaserver.eterniaserver.modules.teleport.TeleportManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class Manager {
         if (plugin.getBoolean(Booleans.MODULE_BED)) modules.add(new BedManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_ITEM)) modules.add(new ItemManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_KIT)) modules.add(new KitManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_TELEPORT)) modules.add(new TeleportManager(plugin));
 
         loadModules();
     }

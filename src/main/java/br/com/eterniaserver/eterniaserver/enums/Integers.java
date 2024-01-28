@@ -17,5 +17,6 @@ public enum Integers {
     PVP_TIME,
     BED_CHECK_TIME,
     NIGHT_SPEED,
+    TELEPORT_TIMER,
 
 }

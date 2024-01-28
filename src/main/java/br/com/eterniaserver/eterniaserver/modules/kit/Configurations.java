@@ -22,7 +22,7 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class ItemConfiguration implements ReloadableConfiguration {
+    static class KitConfiguration implements ReloadableConfiguration {
 
         private static final String KIT_PREFIX = "kits.";
 
@@ -33,7 +33,7 @@ final class Configurations {
         private final FileConfiguration outFile;
         private final CommandLocale[] commandsLocalesArray;
 
-        public ItemConfiguration(EterniaServer plugin, Services.KitService kitService) {
+        public KitConfiguration(EterniaServer plugin, Services.KitService kitService) {
             this.plugin = plugin;
             this.kitService = kitService;
 
@@ -122,11 +122,9 @@ final class Configurations {
             }
 
             strings[Strings.PERM_KIT_PREFIX.ordinal()] = inFile.getString("permissions.kit-prefix", "eternia.kit.");
-            strings[Strings.KIT_NAME_DISPLAY.ordinal()] = inFile.getString("messages.kit-name-display", "<color:#00aaaa>{0}<color:#AAAAAA>, ");
             strings[Strings.KIT_TABLE_NAME_TIME.ordinal()] = inFile.getString("database.table-name.time", "e_kit_time");
 
             outFile.set("permissions.kit-prefix", strings[Strings.PERM_KIT_PREFIX.ordinal()]);
-            outFile.set("messages.kit-name-display", strings[Strings.KIT_NAME_DISPLAY.ordinal()]);
             outFile.set("database.table-name.time", strings[Strings.KIT_TABLE_NAME_TIME.ordinal()]);
 
             if (tempKitList.isEmpty()) {

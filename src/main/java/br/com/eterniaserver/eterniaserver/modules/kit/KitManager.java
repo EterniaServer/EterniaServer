@@ -22,7 +22,7 @@ public class KitManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.ItemConfiguration configuration = new Configurations.ItemConfiguration(plugin, kitService);
+        Configurations.KitConfiguration configuration = new Configurations.KitConfiguration(plugin, kitService);
 
         EterniaLib.registerConfiguration("eterniaserver", "kit", configuration);
 

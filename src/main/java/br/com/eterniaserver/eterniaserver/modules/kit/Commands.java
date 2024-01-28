@@ -39,7 +39,7 @@ final class Commands {
             StringBuilder str = new StringBuilder();
             for (String kitNames : kitService.kitNames()) {
                 if (player.hasPermission(plugin.getString(Strings.PERM_KIT_PREFIX) + kitNames)) {
-                    str.append(plugin.getString(Strings.KIT_NAME_DISPLAY).replace("{0}", kitNames));
+                    str.append(plugin.getString(Strings.JOIN_NAMES).replace("{0}", kitNames));
                 }
             }
             str.setLength(str.length() - 2);

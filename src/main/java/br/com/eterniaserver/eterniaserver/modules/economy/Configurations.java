@@ -277,12 +277,7 @@ final class Configurations {
                     "apelido do jogador",
                     "nome do banco"
             );
-            addMessage(Messages.ECO_BANK_REQUEST_COMMAND_MESSAGE,
-                    "<color:#00aaaa>{1} <color:#aaaaaa>quer afiliar-se ao seu banco <color:#00aaaa>{2}<color:#555555>.",
-                    "nome do jogador",
-                    "apelido do jogador",
-                    "nome do banco"
-            );
+
             addMessage(Messages.ECO_BANK_INFO_TITLE,
                     "Informações do Banco <color:#00aaaa>{0}<color:#555555>.",
                     "nome do banco"
