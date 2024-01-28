@@ -5,12 +5,14 @@ import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.List;
 
 final class Configurations {
 
@@ -78,14 +80,25 @@ final class Configurations {
                     "A noite está passando em <color:#00aaaa>{0}<color:#555555>.",
                     "mundo"
             );
+            addMessage(Messages.NIGHT_PLAYER_SLEEPING,
+                    "<color:#00aaaa>{0}<color:#aaaaaa> está dormindo<color:#555555>, <color:#aaaaaa>durma também para passar a noite mais rápido<color:#555555>.",
+                    "jogador",
+                    "mundo"
+            );
 
             int[] integers = plugin.integers();
+            List<List<String>> stringLists = plugin.stringLists();
 
             integers[Integers.BED_CHECK_TIME.ordinal()] = inFile.getInt("bed-check-time", 40);
             integers[Integers.NIGHT_SPEED.ordinal() ] = inFile.getInt("night-speed", 300);
 
+            List<String> blackListedWorldsSleeping = inFile.getStringList("blacklisted-worlds-sleeping");
+            stringLists.set(Lists.BLACKLISTED_WORLDS_SLEEP.ordinal(), blackListedWorldsSleeping.isEmpty() ? List.of("world_nether", "world_the_end") : blackListedWorldsSleeping);
+
             outFile.set("bed-check-time", integers[Integers.BED_CHECK_TIME.ordinal()]);
             outFile.set("night-speed", integers[Integers.NIGHT_SPEED.ordinal()]);
+
+            outFile.set("blacklisted-worlds-sleeping", blackListedWorldsSleeping);
         }
 
         @Override

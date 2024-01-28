@@ -169,7 +169,7 @@ final class Commands {
         @Syntax("%BROADCAST_SYNTAX")
         @Description("%BROADCAST_DESCRIPTION")
         @CommandPermission("%BROADCAST_PERM")
-        public void onBroadcast(String message, @Default("true") Boolean prefix) {
+        public void onBroadcast(@Default("true") Boolean prefix, String message) {
             plugin.getServer().broadcast(plugin.parseColor(message, prefix));
         }
 

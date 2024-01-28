@@ -103,6 +103,13 @@ final class Handlers implements Listener {
         playerProfile.setPlayedMinutes(playerProfile.getPlayedMinutes() + minutesPlayed);
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> databaseInterface.update(PlayerProfile.class, playerProfile));
+
+        event.quitMessage(plugin.getMiniMessage(
+                Messages.SERVER_LOGOUT,
+                true,
+                playerProfile.getPlayerName(),
+                playerProfile.getPlayerDisplay()
+        ));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -113,6 +120,11 @@ final class Handlers implements Listener {
     @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
         String message = event.getMessage().toLowerCase();
+        if (message.equalsIgnoreCase("/tps")) {
+            plugin.sendMiniMessages(event.getPlayer(), Messages.SERVER_TPS, String.format("%.2f", plugin.getServer().getTPS()[0]));
+            event.setCancelled(true);
+            return;
+        }
         for (String line : plugin.getStringList(Lists.BLACKLISTED_COMMANDS)) {
             if (message.startsWith(line)) {
                 event.setCancelled(true);
@@ -156,6 +168,22 @@ final class Handlers implements Listener {
         Entities.PlayerProfile playerProfile = EterniaLib.getDatabase().get(
                 Entities.PlayerProfile.class, player.getUniqueId()
         );
+
+        if (!player.getName().equals(playerProfile.getPlayerName())) {
+            playerProfile.setPlayerName(player.getName());
+            playerProfile.setPlayerDisplay(player.getName());
+            plugin.getServer().getScheduler().runTaskAsynchronously(
+                    plugin,
+                    () -> EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile)
+            );
+        }
+
+        event.joinMessage(plugin.getMiniMessage(
+                Messages.SERVER_LOGIN,
+                true,
+                playerProfile.getPlayerName(),
+                playerProfile.getPlayerDisplay()
+        ));
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.JOIN);
     }

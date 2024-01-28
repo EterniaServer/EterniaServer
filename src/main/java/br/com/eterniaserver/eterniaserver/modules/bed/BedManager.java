@@ -35,6 +35,7 @@ public class BedManager implements Module {
 
     @Override
     public void loadListeners() {
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, sleepingService), plugin);
     }
 
     @Override

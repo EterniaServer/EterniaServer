@@ -270,6 +270,20 @@ final class Configurations {
             addMessage(Messages.FLY_ENABLED,
                     "Você ativou o vôo<color:#555555>."
             );
+            addMessage(Messages.SERVER_TPS,
+                    "TPS<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
+                    "valor do TPS"
+            );
+            addMessage(Messages.SERVER_LOGIN,
+                    "<color:#00aaaa>{1} <color:#555555>[<color:#55FF55>+<color:#555555>]",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.SERVER_LOGOUT,
+                    "<color:#00aaaa>{1} <color:#555555>[<color:#FF5555>-<color:#555555>]",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
 
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
@@ -282,6 +296,7 @@ final class Configurations {
             booleans[Booleans.MODULE_ENTITY.ordinal()] = inFile.getBoolean("modules.entity", true);
             booleans[Booleans.MODULE_ECONOMY.ordinal()] = inFile.getBoolean("modules.economy", true);
             booleans[Booleans.MODULE_BED.ordinal()] = inFile.getBoolean("modules.bed", true);
+            booleans[Booleans.MODULE_ITEM.ordinal()] = inFile.getBoolean("modules.item", true);
             booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
             booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()] = inFile.getBoolean("critical-configs.has-economy-plugin", true);
             // Integers
@@ -326,6 +341,7 @@ final class Configurations {
             outFile.set("modules.entity", booleans[Booleans.MODULE_ENTITY.ordinal()]);
             outFile.set("modules.economy", booleans[Booleans.MODULE_ECONOMY.ordinal()]);
             outFile.set("modules.bed", booleans[Booleans.MODULE_BED.ordinal()]);
+            outFile.set("modules.item", booleans[Booleans.MODULE_ITEM.ordinal()]);
             outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
             outFile.set("critical-configs.has-economy-plugin", booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()]);
             // Integers
@@ -358,7 +374,7 @@ final class Configurations {
         public void executeCritical() {
             addCommandLocale(Enums.Commands.BROADCAST, new CommandLocale(
                     "broadcast",
-                    " <mensagem> <prefix>",
+                    " <prefix> <mensagem>",
                     " Envia uma mensagem global ao servidor",
                     "eternia.broadcast",
                     null

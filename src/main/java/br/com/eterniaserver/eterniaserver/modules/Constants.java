@@ -42,11 +42,17 @@ public class Constants {
     public static final String BED_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "bed";
     public static final String BED_CONFIG_FILE_PATH = BED_MODULE_FOLDER_PATH + File.separator + "bed.yml";
 
+    public static final String ITEM_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "item";
+    public static final String ITEM_CONFIG_FILE_PATH = ITEM_MODULE_FOLDER_PATH + File.separator + "item.yml";
+
 
     public static final String UTILITY_CLASS = "Utility class";
 
     public static final String TAG_FUNCTION = "eternia_function";
     public static final String TAG_INT_VALUE = "eternia_int_value";
+    public static final String TAG_RUN_IN_CONSOLE = "eternia_run_in_console";
+    public static final String TAG_USAGES = "eternia_usages";
+    public static final String TAG_RUN_COMMAND = "eternia_run_command";
     public static final String TAG_CASH_GUI_NAME = "cash_gui_name";
     public static final String TAG_CASH_ITEM_COST = "cash_item_cost";
     public static final String TAG_CASH_ITEM_MESSAGE = "cash_item_message";

@@ -7,8 +7,7 @@ import lombok.Getter;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 final class Services {
 
@@ -19,6 +18,7 @@ final class Services {
     static class SleepingService {
 
         private final List<World> skippingWorlds = new ArrayList<>();
+        private final Map<UUID, Long> bedCooldown = new HashMap<>();
 
         @Getter
         private long nightMessageTime;
@@ -48,6 +48,14 @@ final class Services {
 
         public boolean isSkipping(World world) {
             return skippingWorlds.contains(world);
+        }
+
+        public long getBedCooldown(UUID uuid) {
+            return bedCooldown.getOrDefault(uuid, 0L);
+        }
+
+        public void updateBedCooldown(UUID uuid) {
+            bedCooldown.put(uuid, System.currentTimeMillis());
         }
 
     }
