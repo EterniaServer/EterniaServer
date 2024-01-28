@@ -15,5 +15,7 @@ public enum Integers {
     ECONOMY_BANK_TAX_REFRESH_TIME,
     ECONOMY_BANK_NAME_SIZE_LIMIT,
     PVP_TIME,
+    BED_CHECK_TIME,
+    NIGHT_SPEED,
 
 }

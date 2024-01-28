@@ -39,6 +39,9 @@ public class Constants {
     public static final String ECONOMY_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "economy";
     public static final String ECONOMY_CONFIG_FILE_PATH = ECONOMY_MODULE_FOLDER_PATH + File.separator + "economy.yml";
 
+    public static final String BED_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "bed";
+    public static final String BED_CONFIG_FILE_PATH = BED_MODULE_FOLDER_PATH + File.separator + "bed.yml";
+
 
     public static final String UTILITY_CLASS = "Utility class";
 

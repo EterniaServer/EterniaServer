@@ -137,4 +137,6 @@ public enum Messages {
     FLY_WORLD_BLOCKED,
     FLY_DISABLED,
     FLY_ENABLED,
+    NIGHT_SKIPPING,
+    NIGHT_SKIPPED,
 }

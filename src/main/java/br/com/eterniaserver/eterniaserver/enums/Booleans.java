@@ -11,6 +11,7 @@ public enum Booleans {
     MODULE_PAPI,
     MODULE_ENTITY,
     MODULE_ECONOMY,
+    MODULE_BED,
     HAS_ECONOMY_PLUGIN,
     AFK_KICK,
     INV_DROP,

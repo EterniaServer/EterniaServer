@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.modules.bed.BedManager;
 import br.com.eterniaserver.eterniaserver.modules.cash.CashManager;
 import br.com.eterniaserver.eterniaserver.modules.core.CoreManager;
 import br.com.eterniaserver.eterniaserver.modules.economy.EconomyManager;
@@ -33,6 +34,7 @@ public class Manager {
         if (plugin.getBoolean(Booleans.MODULE_CASH)) modules.add(new CashManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_ENTITY)) modules.add(new EntityManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_ECONOMY)) modules.add(new EconomyManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_BED)) modules.add(new BedManager(plugin));
 
         loadModules();
     }

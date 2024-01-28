@@ -281,6 +281,7 @@ final class Configurations {
             booleans[Booleans.MODULE_CASH.ordinal()] = inFile.getBoolean("modules.cash", true);
             booleans[Booleans.MODULE_ENTITY.ordinal()] = inFile.getBoolean("modules.entity", true);
             booleans[Booleans.MODULE_ECONOMY.ordinal()] = inFile.getBoolean("modules.economy", true);
+            booleans[Booleans.MODULE_BED.ordinal()] = inFile.getBoolean("modules.bed", true);
             booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
             booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()] = inFile.getBoolean("critical-configs.has-economy-plugin", true);
             // Integers
@@ -324,7 +325,9 @@ final class Configurations {
             outFile.set("modules.cash", booleans[Booleans.MODULE_CASH.ordinal()]);
             outFile.set("modules.entity", booleans[Booleans.MODULE_ENTITY.ordinal()]);
             outFile.set("modules.economy", booleans[Booleans.MODULE_ECONOMY.ordinal()]);
+            outFile.set("modules.bed", booleans[Booleans.MODULE_BED.ordinal()]);
             outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
+            outFile.set("critical-configs.has-economy-plugin", booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()]);
             // Integers
             outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);
             outFile.set("afk.limit-time", integers[Integers.AFK_TIMER.ordinal()]);
