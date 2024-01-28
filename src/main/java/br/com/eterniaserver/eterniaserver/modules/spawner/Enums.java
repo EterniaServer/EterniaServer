@@ -1,6 +1,12 @@
 package br.com.eterniaserver.eterniaserver.modules.spawner;
 
+import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 final class Enums {
+
+    private Enums() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
 
     enum Commands {
         SPAWNER_GIVE

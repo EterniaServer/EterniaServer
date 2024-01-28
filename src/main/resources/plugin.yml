@@ -1,0 +1,9 @@
+name: EterniaServer
+version: '${version}'
+main: br.com.eterniaserver.eterniaserver.EterniaServer
+api-version: 1.19
+loadbefore: [EterniaLib]
+depend: [Vault, PlaceholderAPI]
+author: Yuri Nogueira
+description: Um plugin eterno
+website: www.eterniaserver.com.br

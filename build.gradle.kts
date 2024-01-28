@@ -1,68 +1,120 @@
-import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+plugins {
+    id("java")
+    id("jacoco")
+    id("org.sonarqube") version "3.3"
+    id("io.freefair.lombok") version "6.6.1"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+}
+
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+sonarqube  {
+    properties {
+        property("sonar.projectName", project.name)
+        property("sonar.projectKey", "EterniaServer_EterniaServer")
+        property("sonar.organization", "eterniaserver")
+        property("sonar.projectVersion", "${project.version}")
+        property("sonar.sources", "src/main/java")
+        property("sonar.tests", "src/test/java")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.java.binaries", "build/classes")
+        property("sonar.java.libraries", "build/libs")
+        property("sonar.java.coveragePlugin", "jacoco")
+        property("sonar.verbose", "true")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+        property("sonar.junit.reportsPath", "build/test-results/test")
+    }
+}
 
 group = "br.com.eterniaserver"
-version = "3.0.0"
-description = "Blablabla"
-
-plugins {
-    `java-library`
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.1"
-}
+version = "4.0.4"
 
 repositories {
     mavenCentral()
-    maven("https://papermc.io/repo/repository/maven-public/")
-    maven("https://raw.github.com/EterniaServer/EterniaLib/repository")
-    maven("https://jitpack.io")
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
-    maven("https://repo.minebench.de/")
+    maven {
+        name = "jitpack"
+        url = uri("https://jitpack.io")
+    }
+    maven {
+        name = "papermc-repo"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+    maven {
+        name = "papi-repo"
+        url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    }
+    maven {
+        name = "sonatype"
+        url = uri("https://oss.sonatype.org/content/groups/public/")
+    }
+    maven {
+        name = "eternialib-repo"
+        url = uri("https://maven.pkg.github.com/eterniaserver/eternialib")
+        credentials {
+            username = System.getenv("USERNAME")
+            password = System.getenv("TOKEN")
+        }
+    }
     mavenLocal()
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 dependencies {
-    implementation("org.bstats", "bstats-bukkit", "3.0.0")
-    compileOnly("io.papermc.paper", "paper-api", "1.18.2-R0.1-SNAPSHOT")
-    compileOnly("br.com.eterniaserver", "EterniaLib", "3.0.0-STABLE")
+    compileOnly("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
+    compileOnly("br.com.eterniaserver", "eternialib", "4.0.6")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     compileOnly("me.clip", "placeholderapi", "2.11.1")
-    compileOnly("com.acrobot.chestshop", "chestshop", "3.10")
+    implementation("org.bstats", "bstats-bukkit", "3.0.0")
+    testImplementation("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
+    testImplementation("org.junit.jupiter", "junit-jupiter", "5.9.2")
+    testImplementation("org.mockito", "mockito-inline", "5.2.0")
 }
 
-tasks {
-    shadowJar {
-        listOf(
-                "org.bstats",
-        ).forEach {
-            relocate(it, "${rootProject.group}.lib.$it")
-        }
+tasks.shadowJar {
+    listOf("org.bstats").forEach {
+        relocate(it, "${rootProject.group}.lib.$it")
+    }
+    archiveBaseName.set(project.name)
+    archiveClassifier.set("")
+    archiveVersion.set("${project.version}")
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    dependsOn("cleanTest")
+
+    testLogging {
+        events("passed", "skipped", "failed")
     }
 
-    build {
-        dependsOn(shadowJar)
-    }
+    finalizedBy("jacocoTestReport")
+}
 
-    compileJava {
-        options.encoding = Charsets.UTF_8.name()
-        options.release.set(17)
-    }
-
-    javadoc {
-        options.encoding = Charsets.UTF_8.name()
-    }
-
-    processResources {
-        filteringCharset = Charsets.UTF_8.name()
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
     }
 }
 
-bukkit {
-    load = BukkitPluginDescription.PluginLoadOrder.STARTUP
-    main = "br.com.eterniaserver.eterniaserver.EterniaServer"
-    apiVersion = "1.18"
-    website = "www.eterniaserver.com.br"
-    depend = listOf("EterniaLib", "PlaceholderAPI")
-    softDepend = listOf("Vault", "ChestShop")
-    authors = listOf("Yuri Nogueira")
+tasks.named("sonarqube").configure {
+    dependsOn("test")
+}
+
+tasks.named("build").configure {
+    dependsOn("shadowJar")
+}
+
+tasks.processResources {
+    filesMatching("plugin.yml") {
+        expand(mapOf("version" to version))
+        filteringCharset = "UTF-8"
+    }
 }

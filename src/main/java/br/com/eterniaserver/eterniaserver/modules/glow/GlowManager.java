@@ -1,10 +1,9 @@
 package br.com.eterniaserver.eterniaserver.modules.glow;
 
-import br.com.eterniaserver.eternialib.CommandManager;
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,7 +11,6 @@ import java.util.stream.Stream;
 public class GlowManager implements Module {
 
     private final EterniaServer plugin;
-
     private final Services.Glow servicesGlow;
 
     public GlowManager(final EterniaServer plugin) {
@@ -22,43 +20,37 @@ public class GlowManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        new Configurations.Configs(servicesGlow);
-        new Configurations.Locales(plugin);
+        Configurations.GlowConfiguration glowConfig = new Configurations.GlowConfiguration(plugin, servicesGlow);
 
-        loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
+        EterniaLib.registerConfiguration("eterniaserver", "glow", glowConfig);
+
+        glowConfig.executeConfig();
+        glowConfig.executeCritical();
+        glowConfig.saveConfiguration(true);
+
+        loadCommandsLocale(glowConfig, Enums.Commands.class);
     }
 
     @Override
     public void loadCommandsCompletions() {
-        CommandManager.getCommandCompletions().registerStaticCompletion(
+        EterniaLib.getCmdManager().getCommandCompletions().registerStaticCompletion(
                 "es_colors",
                 Stream.of(Enums.Color.values()).map(Enum::name).collect(Collectors.toList())
         );
     }
 
     @Override
-    public void loadConditions() {
-    }
+    public void loadConditions() {}
 
     @Override
-    public void loadListeners() {
-        plugin.getLogger().log(Level.INFO, "Glow module: no listeners");
-    }
+    public void loadListeners() {}
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "Glow module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.Glow(plugin, servicesGlow));
-    }
-
-    @Override
-    public void reloadConfigurations() {
-        new Configurations.Configs(servicesGlow);
-        new Configurations.Locales(plugin);
+        EterniaLib.getCmdManager().registerCommand(new Commands.Glow(plugin, servicesGlow));
     }
 
 }

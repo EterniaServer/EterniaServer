@@ -3,25 +3,39 @@ on: [ push, pull_request ]
 
 jobs:
   build:
+    name: Build and analyze
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ 17 ]
-      fail-fast: true
+
     steps:
-      - uses: actions/checkout@v2
-      - name: JDK ${{ matrix.java }}
-        uses: actions/setup-java@v2
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          java-version: ${{ matrix.java }}
-          distribution: "adopt"
-      - uses: actions/cache@v2
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Build
-        run: ./gradlew build --stacktrace
+          distribution: "zulu"
+          java-version: 17
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Build Test and Validate
+        env:
+          USERNAME: "yurinogueira"
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.ETERNIASERVER_SONAR_TOKEN }}
+        run: ./gradlew clean build test jacocoTestReport sonarqube --info --stacktrace

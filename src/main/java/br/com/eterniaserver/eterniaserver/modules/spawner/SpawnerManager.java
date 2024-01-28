@@ -1,6 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.spawner;
 
-import br.com.eterniaserver.eternialib.CommandManager;
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 
@@ -14,31 +14,35 @@ public class SpawnerManager implements Module {
 
     private Services.Spawner spawnerService;
 
-    public SpawnerManager(final EterniaServer plugin) {
+    public SpawnerManager(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void loadConfigurations() {
-        new Configurations.Configs(plugin);
-        new Configurations.Locales(plugin);
+        Configurations.SpawnerConfiguration configuration = new Configurations.SpawnerConfiguration(plugin);
 
-        loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
+        EterniaLib.registerConfiguration("eterniaserver", "spawner", configuration);
+
+        configuration.executeConfig();
+        configuration.executeCritical();
+        configuration.saveConfiguration(true);
+
+        loadCommandsLocale(configuration, Enums.Commands.class);
 
         this.spawnerService = new Services.Spawner(plugin);
     }
 
     @Override
     public void loadCommandsCompletions() {
-        CommandManager.getCommandCompletions().registerStaticCompletion(
+        EterniaLib.getCmdManager().getCommandCompletions().registerStaticCompletion(
                 "valid_entities",
                 Stream.of(Enums.Entities.values()).map(Enum::name).collect(Collectors.toList())
         );
     }
 
     @Override
-    public void loadConditions() {
-    }
+    public void loadConditions() {}
 
     @Override
     public void loadListeners() {
@@ -46,19 +50,11 @@ public class SpawnerManager implements Module {
     }
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "Spawner module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.Give(plugin, spawnerService));
-    }
-
-    @Override
-    public void reloadConfigurations() {
-        new Configurations.Configs(plugin);
-        new Configurations.Locales(plugin);
+        EterniaLib.getCmdManager().registerCommand(new Commands.Give(plugin, spawnerService));
     }
 
 }

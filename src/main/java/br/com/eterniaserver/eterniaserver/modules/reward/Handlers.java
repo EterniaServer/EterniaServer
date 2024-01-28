@@ -29,24 +29,24 @@ final class Handlers implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerBlockBreak(BlockBreakEvent event) {
-        final Block block = event.getBlock();
-        final Material material = block.getType();
-        final String materialName = material.name();
+        Block block = event.getBlock();
+        Material material = block.getType();
+        String materialName = material.name();
 
-        final Map<Double, List<String>> blockChanceMap = plugin.getChanceMap(ChanceMaps.BLOCK_DROPS).get(materialName);
+        Map<Double, List<String>> blockChanceMap = plugin.getChanceMap(ChanceMaps.BLOCK_DROPS).get(materialName);
         if (blockChanceMap != null) {
             randomizeAndReward(event.getPlayer(), blockChanceMap);
             return;
         }
 
-        final Map<Double, List<String>> farmChanceMap = plugin.getChanceMap(ChanceMaps.FARM_DROPS).get(materialName);
+        Map<Double, List<String>> farmChanceMap = plugin.getChanceMap(ChanceMaps.FARM_DROPS).get(materialName);
         if (farmChanceMap != null && isCropReady(block)) {
             randomizeAndReward(event.getPlayer(), farmChanceMap);
         }
     }
 
     private boolean isCropReady(Block block) {
-        final BlockData blockData = block.getBlockData();
+        BlockData blockData = block.getBlockData();
         if (blockData instanceof Ageable ageable) {
             return ageable.getAge() == ageable.getMaximumAge();
         }
@@ -55,7 +55,7 @@ final class Handlers implements Listener {
     }
 
     private void randomizeAndReward(Player player, Map<Double, List<String>> map) {
-        final double randomNumber = Math.random();
+        double randomNumber = Math.random();
         List<String> reward = null;
         for (Map.Entry<Double, List<String>> entry : map.entrySet()) {
             if (entry.getKey() > randomNumber) {
@@ -63,15 +63,22 @@ final class Handlers implements Listener {
             }
         }
 
-        if (reward == null) return;
+        if (reward == null) {
+            return;
+        }
 
-        final BreakRewardEvent event = new BreakRewardEvent(player, reward);
+        BreakRewardEvent event = new BreakRewardEvent(player, reward);
         plugin.getServer().getPluginManager().callEvent(event);
 
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) {
+            return;
+        }
 
         for (String command : event.getRewards()) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), plugin.setPlaceholders(player, command));
+            plugin.getServer().dispatchCommand(
+                    Bukkit.getServer().getConsoleSender(),
+                    plugin.setPlaceholders(player, command)
+            );
         }
     }
 

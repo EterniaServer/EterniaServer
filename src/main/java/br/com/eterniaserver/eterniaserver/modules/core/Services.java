@@ -2,16 +2,13 @@ package br.com.eterniaserver.eterniaserver.modules.core;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
+import br.com.eterniaserver.eterniaserver.modules.Constants;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
-import br.com.eterniaserver.eterniaserver.objects.GUIData;
-import br.com.eterniaserver.eterniaserver.objects.PlayerProfile;
-
 import net.kyori.adventure.text.Component;
-
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +20,10 @@ import java.util.concurrent.TimeUnit;
 
 final class Services {
 
+    private Services() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
+
     static class Afk {
 
         private final EterniaServer plugin;
@@ -32,26 +33,35 @@ final class Services {
         }
 
         protected boolean areAfk(PlayerProfile playerProfile) {
-            final int secondsAfk = (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - playerProfile.getLastMove());
-            final int limitTime = plugin.getInteger(Integers.AFK_TIMER);
+            int secondsAfk = (int) TimeUnit.MILLISECONDS.toSeconds(
+                    System.currentTimeMillis() - playerProfile.getLastMove()
+            );
+            int limitTime = plugin.getInteger(Integers.AFK_TIMER);
 
             return secondsAfk > limitTime;
         }
 
         protected void exitFromAfk(Player player, PlayerProfile playerProfile, AfkStatusEvent.Cause cause) {
-            if (!playerProfile.getAfk()) {
+            if (!playerProfile.isAfk()) {
                 playerProfile.setLastMove(System.currentTimeMillis());
                 return;
             }
 
-            final AfkStatusEvent event = new AfkStatusEvent(player, false, cause);
+            AfkStatusEvent event = new AfkStatusEvent(player, false, cause);
             plugin.getServer().getPluginManager().callEvent(event);
-
-            if (!event.isCancelled()) {
-                playerProfile.setAfk(false);
-                playerProfile.setLastMove(System.currentTimeMillis());
-                Bukkit.broadcast(plugin.getMiniMessage(Messages.AFK_LEAVE, true, playerProfile.getName(), playerProfile.getDisplayName()));
+            
+            if (event.isCancelled()) {
+                return;
             }
+            
+            playerProfile.setAfk(false);
+            playerProfile.setLastMove(System.currentTimeMillis());
+            Component globalMessage = plugin.getMiniMessage(
+                    Messages.AFK_LEAVE,
+                    true,
+                    playerProfile.getPlayerName(), playerProfile.getPlayerDisplay()
+            );
+            plugin.getServer().broadcast(globalMessage);
         }
     }
 
@@ -59,7 +69,7 @@ final class Services {
 
         private final EterniaServer plugin;
 
-        private final Map<String, GUIData> guisMap = new HashMap<>();
+        private final Map<String, Utils.GUIData> guisMap = new HashMap<>();
 
         protected GUI(final EterniaServer plugin) {
             this.plugin = plugin;
@@ -68,17 +78,12 @@ final class Services {
         @Override
         public void createGUI(String guiName, ItemStack[] items) {
             Component title = plugin.parseColor(String.format(guiName, plugin.getString(Strings.GUI_SECRET))).compact();
-            guisMap.put(guiName, new GUIData(title, items));
-        }
-
-        @Override
-        public boolean contains(Component title) {
-            return guisMap.containsKey(title);
+            guisMap.put(guiName, new Utils.GUIData(title, items));
         }
 
         @Override
         public Inventory getGUI(String title, Player player) {
-            GUIData guiData = guisMap.get(title);
+            Utils.GUIData guiData = guisMap.get(title);
             if (guiData == null) {
                 return null;
             }

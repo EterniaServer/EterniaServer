@@ -6,8 +6,8 @@ import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -25,6 +25,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 final class Handlers implements Listener {
 
@@ -49,17 +51,24 @@ final class Handlers implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerBlockPlace(BlockPlaceEvent event) {
-        final Block block = event.getBlockPlaced();
+        Block block = event.getBlockPlaced();
         if (block.getType() != Material.SPAWNER) {
             return;
         }
 
-        final ItemMeta meta = event.getItemInHand().getItemMeta();
-        if (meta == null) return;
+        ItemMeta meta = event.getItemInHand().getItemMeta();
+        if (meta == null) {
+            return;
+        }
 
-        final String entityName = ChatColor.stripColor(meta.getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
-        final EntityType entity = EntityType.valueOf(entityName);
-        final CreatureSpawner spawner = (CreatureSpawner) block.getState();
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+        if (!dataContainer.has(plugin.getKey(ItemsKeys.TAG_SPAWNER), PersistentDataType.STRING)) {
+            return;
+        }
+
+        String entityName = dataContainer.get(plugin.getKey(ItemsKeys.TAG_SPAWNER), PersistentDataType.STRING);
+        EntityType entity = EntityType.valueOf(entityName);
+        CreatureSpawner spawner = (CreatureSpawner) block.getState();
 
         spawner.setSpawnedType(entity);
         spawner.update();
@@ -67,24 +76,28 @@ final class Handlers implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     private void onBlockBreakEvent(BlockBreakEvent event) {
-        final Block block = event.getBlock();
-        final Material material = block.getType();
+        Block block = event.getBlock();
+        Material material = block.getType();
 
-        if (material != Material.SPAWNER) return;
+        if (material != Material.SPAWNER) {
+            return;
+        }
 
-        final String worldName = block.getWorld().getName();
+        String worldName = block.getWorld().getName();
 
-        if (isBlackListWorld(worldName)) return;
+        if (isBlackListWorld(worldName)) {
+            return;
+        }
 
-        final Player player = event.getPlayer();
-        final String spawnerBreakPerm = plugin.getString(Strings.PERM_SPAWNERS_BREAK);
+        Player player = event.getPlayer();
+        String spawnerBreakPerm = plugin.getString(Strings.PERM_SPAWNERS_BREAK);
 
         if (!player.hasPermission(spawnerBreakPerm) && plugin.getBoolean(Booleans.BLOCK_BREAK_SPAWNERS)) {
             plugin.sendMiniMessages(player, Messages.SPAWNER_WITHOUT_PERM);
             event.setCancelled(true);
         }
         else if (player.hasPermission(spawnerBreakPerm)) {
-            final ItemStack itemInHand = player.getInventory().getItemInMainHand();
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission(plugin.getString(Strings.PERM_SPAWNERS_NO_SILK))) {
                 giveSpawner(player, block);
                 event.setExpToDrop(0);
@@ -98,8 +111,10 @@ final class Handlers implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST)
     public void onEntityInventoryClick(InventoryClickEvent event) {
-        final ItemStack itemStack = event.getCurrentItem();
-        if (itemStack == null || plugin.getBoolean(Booleans.PREVENT_ANVIL)) return;
+        ItemStack itemStack = event.getCurrentItem();
+        if (itemStack == null || plugin.getBoolean(Booleans.PREVENT_ANVIL)) {
+            return;
+        }
 
         if (event.getInventory().getType() == InventoryType.ANVIL && itemStack.getType() == Material.SPAWNER) {
             plugin.sendMiniMessages(event.getWhoClicked(), Messages.SPAWNER_CANT_CHANGE_NAME);
@@ -115,27 +130,18 @@ final class Handlers implements Listener {
         }
 
         if (!plugin.getBoolean(Booleans.INV_DROP)) {
-            block.getWorld().dropItemNaturally(block.getLocation(), getSpawner(block));
+            block.getWorld().dropItemNaturally(block.getLocation(), spawnerService.getSpawner(block));
             return;
         }
 
         if (player.getInventory().firstEmpty() == -1) {
-            block.getWorld().dropItemNaturally(block.getLocation(), getSpawner(block));
+            block.getWorld().dropItemNaturally(block.getLocation(), spawnerService.getSpawner(block));
             plugin.sendMiniMessages(player, Messages.SPAWNER_INV_FULL);
             return;
         }
 
-        player.getInventory().addItem(getSpawner(block));
+        player.getInventory().addItem(spawnerService.getSpawner(block));
         block.getDrops().clear();
-    }
-
-    private ItemStack getSpawner(Block block) {
-        CreatureSpawner spawner = (CreatureSpawner) block.getState();
-        ItemStack item = new ItemStack(block.getType());
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(spawnerService.getSpawnerName(spawner.getSpawnedType()));
-        item.setItemMeta(meta);
-        return item;
     }
 
     private boolean isBlackListWorld(final String worldName) {

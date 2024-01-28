@@ -1,13 +1,13 @@
 package br.com.eterniaserver.eterniaserver.modules.reward;
 
+import br.com.eterniaserver.eternialib.configuration.CommandLocale;
+import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.interfaces.CommandsCfg;
-import br.com.eterniaserver.eterniaserver.api.interfaces.FileCfg;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
-import br.com.eterniaserver.eterniaserver.objects.CommandI18n;
-
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,49 +19,41 @@ import java.util.Map;
 
 final class Configurations {
 
-    static class CommandsLocales implements CommandsCfg {
 
-        private final FileConfiguration inFileConfiguration;
-        private final FileConfiguration outFileConfiguration;
+    private Configurations() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
 
-        private final CommandI18n[] commandsLocalesArray = new CommandI18n[Enums.Commands.values().length];
+    static class RewardConfiguration implements ReloadableConfiguration {
 
-        protected CommandsLocales() {
-            this.inFileConfiguration = YamlConfiguration.loadConfiguration(new File(getFilePath()));
-            this.outFileConfiguration = new YamlConfiguration();
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
 
-            commandsLocalesArray[Enums.Commands.USE_KEY.ordinal()] = new CommandI18n(
-                    Enums.Commands.USE_KEY.name(),
-                    "usekey|usarchave",
-                    " <chave>",
-                    " Utilize uma chave de Reward",
-                    "eternia.usekey"
-            );
-            commandsLocalesArray[Enums.Commands.GEN_KEY.ordinal()] = new CommandI18n(
-                    Enums.Commands.GEN_KEY.name(),
-                    "genkey|gerarchave",
-                    " <reward>",
-                    " Gere uma chave para um Reward",
-                    "eternia.genkey"
-            );
+        private final CommandLocale[] commandsLocalesArray;
 
-            syncToFile();
-            saveConfiguration(true);
-        }
+        private final String[] messages;
 
-        @Override
-        public CommandI18n[] getCommandsLocalesArray() {
-            return commandsLocalesArray;
+        private final String[] strings;
+        private final List<Map<String, Map<Double, List<String>>>> chanceMap;
+
+
+        protected RewardConfiguration(EterniaServer plugin) {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+            this.messages = plugin.messages();
+            this.strings = plugin.strings();
+            this.chanceMap = plugin.chanceMaps();
         }
 
         @Override
         public FileConfiguration inFileConfiguration() {
-            return inFileConfiguration;
+            return inFile;
         }
 
         @Override
         public FileConfiguration outFileConfiguration() {
-            return outFileConfiguration;
+            return outFile;
         }
 
         @Override
@@ -71,37 +63,55 @@ final class Configurations {
 
         @Override
         public String getFilePath() {
-            return Constants.REWARDS_COMMAND_FILE_PATH;
+            return Constants.REWARDS_CONFIG_FILE_PATH;
         }
 
         @Override
         public String[] messages() {
-            return null;
+            return messages;
         }
-    }
 
-    static class Configs implements FileCfg {
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
 
-        private final FileConfiguration inFile;
-        private final FileConfiguration outFile;
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
 
-        protected Configs(final EterniaServer plugin) {
-            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
-            this.outFile = new YamlConfiguration();
+        @Override
+        public void executeConfig() {
+            // Locales
+            addMessage(Messages.REWARD_INVALID_KEY,
+                    "A chave <color:#00aaaa>{0}<color:#aaaaaa> é inválida<color:#555555>.",
+                    "chave"
+            );
+            addMessage(Messages.REWARD_CREATED,
+                    "Reward criado com sucesso<color:#555555>, <color:#aaaaaa>chave<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
+                    "chave"
+            );
+            addMessage(Messages.REWARD_INVALID_KEY,
+                    "Não foi encontrado nenhum reward com o nome de <color:#00aaaa>{0}<color:#555555>.",
+                    "reward"
+            );
 
-            final List<Map<String, Map<Double, List<String>>>> chanceMap = plugin.chanceMaps();
+            // Strings
+            strings[Strings.REWARD_TABLE_NAME.ordinal()] = inFile.getString("table-name.reward", "e_revision");
 
             // Maps
             chanceMap.set(ChanceMaps.REWARDS.ordinal(), getChanceMap("rewards", "vip"));
             chanceMap.set(ChanceMaps.FARM_DROPS.ordinal(), getChanceMap("farms", "CARROTS"));
             chanceMap.set(ChanceMaps.BLOCK_DROPS.ordinal(), getChanceMap("blocks", "STONE"));
 
+            // Strings
+            outFile.set("table-name.reward", strings[Strings.REWARD_TABLE_NAME.ordinal()]);
+
             // Maps
             chanceMap.get(ChanceMaps.REWARDS.ordinal()).forEach((k, v) -> v.forEach((l, b) -> outFile.set("rewards." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
             chanceMap.get(ChanceMaps.FARM_DROPS.ordinal()).forEach((k, v) -> v.forEach((l, b) -> outFile.set("farm." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
             chanceMap.get(ChanceMaps.BLOCK_DROPS.ordinal()).forEach((k, v) -> v.forEach((l, b) -> outFile.set("blocks." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
-
-            saveConfiguration(true);
         }
 
         private Map<String, Map<Double, List<String>>> getChanceMap(String path, String defaultEntry) {
@@ -129,84 +139,21 @@ final class Configurations {
         }
 
         @Override
-        public FileConfiguration inFileConfiguration() {
-            return inFile;
-        }
-
-        @Override
-        public FileConfiguration outFileConfiguration() {
-            return outFile;
-        }
-
-        @Override
-        public String getFolderPath() {
-            return Constants.REWARDS_MODULE_FOLDER_PATH;
-        }
-
-        @Override
-        public String getFilePath() {
-            return Constants.REWARDS_CONFIG_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return null;
-        }
-
-    }
-
-    static class Locales implements FileCfg {
-
-        private final FileConfiguration inFile;
-        private final FileConfiguration outFile;
-
-        private final String[] messages;
-
-        protected Locales(final EterniaServer plugin) {
-            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
-            this.outFile = new YamlConfiguration();
-
-            this.messages = plugin.messages();
-
-            addMessage(Messages.REWARD_INVALID_KEY,
-                    "A chave <color:#00aaaa>{0}<color:#aaaaaa> é inválida<color:#555555>.",
-                    "0: chave"
-            );
-            addMessage(Messages.REWARD_CREATED,
-                    "Reward criado com sucesso<color:#555555>, <color:#aaaaaa>chave<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
-                    "0: chave"
-            );
-            addMessage(Messages.REWARD_INVALID_KEY,
-                    "Não foi encontrado nenhum reward com o nome de <color:#00aaaa>{0}<color:#555555>.",
-                    "0: reward"
-            );
-
-            saveConfiguration(true);
-        }
-
-        @Override
-        public FileConfiguration inFileConfiguration() {
-            return inFile;
-        }
-
-        @Override
-        public FileConfiguration outFileConfiguration() {
-            return outFile;
-        }
-
-        @Override
-        public String getFolderPath() {
-            return Constants.REWARDS_MODULE_FOLDER_PATH;
-        }
-
-        @Override
-        public String getFilePath() {
-            return Constants.REWARDS_MESSAGE_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return messages;
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.USE_KEY, new CommandLocale(
+                    "usekey|usarchave",
+                    " <chave>",
+                    " Utilize uma chave de Reward",
+                    "eternia.usekey",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GEN_KEY, new CommandLocale(
+                    "genkey|gerarchave",
+                    " <reward>",
+                    " Gere uma chave para um Reward",
+                    "eternia.genkey",
+                    null
+            ));
         }
     }
 

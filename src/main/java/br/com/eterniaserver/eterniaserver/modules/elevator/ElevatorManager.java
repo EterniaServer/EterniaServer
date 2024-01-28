@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.elevator;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 
@@ -15,17 +16,20 @@ public class ElevatorManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        new Configurations.Configs(plugin);
+        Configurations.ElevatorConfiguration configuration = new Configurations.ElevatorConfiguration(plugin);
+
+        EterniaLib.registerConfiguration("eterniaserver", "elevator", configuration);
+
+        configuration.executeConfig();
+        configuration.executeCritical();
+        configuration.saveConfiguration(true);
     }
 
     @Override
-    public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "Elevator module: no command completions");
-    }
+    public void loadCommandsCompletions() {}
 
     @Override
-    public void loadConditions() {
-    }
+    public void loadConditions() {}
 
     @Override
     public void loadListeners() {
@@ -33,19 +37,9 @@ public class ElevatorManager implements Module {
     }
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "Elevator module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
-    public void loadCommands() {
-        plugin.getLogger().log(Level.INFO, "Elevator module: no commands");
-    }
-
-    @Override
-    public void reloadConfigurations() {
-        new Configurations.Configs(plugin);
-    }
-
+    public void loadCommands() {}
 
 }

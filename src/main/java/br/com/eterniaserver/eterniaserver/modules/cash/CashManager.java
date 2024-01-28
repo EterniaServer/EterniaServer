@@ -1,60 +1,73 @@
 package br.com.eterniaserver.eterniaserver.modules.cash;
 
-import br.com.eterniaserver.acf.ConditionFailedException;
-import br.com.eterniaserver.eternialib.CommandManager;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.database.Entity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
 
+import java.util.List;
 import java.util.logging.Level;
 
 
 public class CashManager implements Module {
 
     private final EterniaServer plugin;
-    private final Services.Cash cashService;
+    private Services.Cash cashService;
 
     public CashManager(final EterniaServer plugin) {
         this.plugin = plugin;
-        this.plugin.setCashAPI(new Services.CraftCash(plugin));
-        this.cashService = new Services.Cash(plugin);
     }
 
     @Override
     public void loadConfigurations() {
-        new Configurations.Configs(plugin);
-        new Configurations.Locales(plugin);
+        Configurations.Cash configuration = new Configurations.Cash(plugin);
 
-        loadCommandsLocales(new Configurations.CommandsLocales(), Enums.Commands.class);
+        EterniaLib.registerConfiguration("eterniaserver", "cash", configuration);
+
+        configuration.executeConfig();
+        configuration.executeCritical();
+        configuration.saveConfiguration(true);
+
+        loadCommandsLocale(configuration, Enums.Commands.class);
+
+        try {
+            Entity<CashBalance> cashEntity = new Entity<>(CashBalance.class);
+
+            EterniaLib.addTableName("%eternia_server_cash%", plugin.getString(Strings.CASH_TABLE_NAME));
+            EterniaLib.addTableName("%eternia_server_profile%", plugin.getString(Strings.PROFILE_TABLE_NAME));
+
+            EterniaLib.getDatabase().register(CashBalance.class, cashEntity);
+        }
+        catch (Exception exception) {
+            EterniaLib.registerLog("EE-104-Cash");
+        }
+
+        List<CashBalance> cashBalances = EterniaLib.getDatabase().listAll(CashBalance.class);
+        this.plugin.getLogger().log(Level.INFO, "cash module: {0} cash balances loaded", cashBalances.size());
+
+        EterniaServer.setCashAPI(new Services.CraftCash());
+        this.cashService = new Services.Cash(plugin);
     }
 
     @Override
-    public void loadCommandsCompletions() {
-        plugin.getLogger().log(Level.INFO, "Cash module: no commands completions");
-    }
+    public void loadCommandsCompletions() {}
 
     @Override
-    public void loadConditions() {
-    }
+    public void loadConditions() {}
 
     @Override
     public void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new Handlers(cashService), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, cashService), plugin);
     }
 
     @Override
-    public void loadSchedules() {
-        plugin.getLogger().log(Level.INFO, "Cash module: no schedules");
-    }
+    public void loadSchedules() {}
 
     @Override
     public void loadCommands() {
-        CommandManager.registerCommand(new Commands.Cash(plugin, cashService));
-    }
-
-    @Override
-    public void reloadConfigurations() {
-        new Configurations.Configs(plugin);
-        new Configurations.Locales(plugin);
+        EterniaLib.getCmdManager().registerCommand(new Commands.Cash(plugin, cashService));
     }
 
 }

@@ -1,6 +1,12 @@
 package br.com.eterniaserver.eterniaserver.modules.cash;
 
+import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 final class Enums {
+
+    private Enums() {
+        throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
 
     enum Commands {
         CASH,

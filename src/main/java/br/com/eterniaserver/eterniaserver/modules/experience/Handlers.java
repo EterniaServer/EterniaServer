@@ -24,21 +24,22 @@ final class Handlers implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        final Action action = event.getAction();
+        Action action = event.getAction();
         if (!(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK))) {
             return;
         }
 
-        final ItemStack itemStack = event.getItem();
+        ItemStack itemStack = event.getItem();
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }
 
-        final Player player = event.getPlayer();
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-        final PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();
-        final boolean hasFunction = dataContainer.has(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.INTEGER);
-        final boolean hasIntValue = dataContainer.has(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER);
+        Player player = event.getPlayer();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();
+
+        boolean hasFunction = dataContainer.has(plugin.getKey(ItemsKeys.TAG_FUNCTION), PersistentDataType.INTEGER);
+        boolean hasIntValue = dataContainer.has(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER);
         if (!hasIntValue || !hasFunction) {
             return;
         }
@@ -49,8 +50,9 @@ final class Handlers implements Listener {
         else {
             player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
         }
-        player.giveExp(dataContainer.get(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER));
-    }
 
+        Integer expValue = dataContainer.get(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER);
+        player.giveExp(expValue != null ? expValue : 0);
+    }
 
 }

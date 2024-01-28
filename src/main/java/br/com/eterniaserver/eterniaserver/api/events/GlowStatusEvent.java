@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.api.events;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -12,7 +13,9 @@ public class GlowStatusEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
+    @Getter
     private final Player player;
+    @Getter
     private final String color;
 
     private boolean glowing;
@@ -23,18 +26,6 @@ public class GlowStatusEvent extends Event implements Cancellable {
         this.color = color;
         this.glowing = glowing;
         this.isCancelled = false;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public String getColor() {
-        return color;
     }
 
     public void setGlowingStatus(boolean glowing) {
