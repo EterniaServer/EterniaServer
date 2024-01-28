@@ -26,7 +26,16 @@ public final class Entities {
     @Table(tableName = "%eternia_kit_time%")
     public static class KitTime {
 
-        @PrimaryKeyField(columnName = "uuid", type = FieldType.UUID, autoIncrement = false)
+        public KitTime(UUID uuid, String kitName, Timestamp lastUseTime) {
+            this.uuid = uuid;
+            this.kitName = kitName;
+            this.lastUseTime = lastUseTime;
+        }
+
+        @PrimaryKeyField(columnName = "id", type = FieldType.INTEGER, autoIncrement = true)
+        private Integer id;
+
+        @DataField(columnName = "uuid", type = FieldType.UUID, notNull = true)
         private UUID uuid;
 
         @DataField(columnName = "kitName", type = FieldType.STRING, notNull = true)
