@@ -26,6 +26,10 @@ final class Enums {
         CONDENSER,
         PROFILE,
         SUICIDE,
+        SPEED,
+        FEED,
+        THOR,
+        FLY,
     }
 
 }

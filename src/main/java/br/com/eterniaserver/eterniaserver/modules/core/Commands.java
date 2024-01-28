@@ -54,6 +54,117 @@ final class Commands {
             this.databaseInterface = EterniaLib.getDatabase();
         }
 
+        @CommandAlias("%FLY")
+        @CommandPermission("%FLY_PERM")
+        @Syntax("%FLY_SYNTAX")
+        @Description("%FLY_DESCRIPTION")
+        public void onFly(Player player, @Optional OnlinePlayer target) {
+            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+
+            if (target != null) {
+                Player targetPlayer = target.getPlayer();
+                if (!player.hasPermission(plugin.getString(Strings.PERM_FLY_OTHER))) {
+                    plugin.sendMiniMessages(player, Messages.SERVER_NO_PERM);
+                    return;
+                }
+
+                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, targetPlayer.getUniqueId());
+
+                if (targetPlayer.getAllowFlight()) {
+                    targetPlayer.setAllowFlight(false);
+                    targetPlayer.setFlying(false);
+                    plugin.sendMiniMessages(player, Messages.FLY_DISABLED_TO, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+                    plugin.sendMiniMessages(targetPlayer, Messages.FLY_DISABLED_BY, playerProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+                    return;
+                }
+
+                targetPlayer.setAllowFlight(true);
+                targetPlayer.setFlying(true);
+                plugin.sendMiniMessages(player, Messages.FLY_ENABLED_TO, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+                plugin.sendMiniMessages(targetPlayer, Messages.FLY_ENABLED_BY, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay());
+                return;
+            }
+
+            if (playerProfile.isOnPvP() && !player.hasPermission(plugin.getString(Strings.PERM_FLY_BYPASS))) {
+                plugin.sendMiniMessages(player, Messages.FLY_PVP_BLOCKED);
+                return;
+            }
+
+            String worldName = player.getWorld().getName();
+            if (plugin.getStringList(Lists.BLACKLISTED_WORLDS_FLY).contains(worldName) && !player.hasPermission(plugin.getString(Strings.PERM_FLY_BYPASS))) {
+                plugin.sendMiniMessages(player, Messages.FLY_WORLD_BLOCKED);
+                return;
+            }
+
+            if (player.getAllowFlight()) {
+                player.setAllowFlight(false);
+                player.setFlying(false);
+                plugin.sendMiniMessages(player, Messages.FLY_DISABLED);
+                return;
+            }
+
+            player.setAllowFlight(true);
+            player.setFlying(true);
+            plugin.sendMiniMessages(player, Messages.FLY_ENABLED);
+        }
+
+        @CommandAlias("%SPEED")
+        @CommandPermission("%SPEED_PERM")
+        @Syntax("%SPEED_SYNTAX")
+        @Description("%SPEED_DESCRIPTION")
+        public void onSpeed(Player player, @Default("1") Integer speed) {
+            if (speed < 1 || speed > 10) {
+                plugin.sendMiniMessages(player, Messages.SPEED_INVALID);
+                return;
+            }
+
+            player.setFlySpeed(speed / 10F);
+            player.setWalkSpeed(speed / 10F);
+            plugin.sendMiniMessages(player, Messages.SPEED_SETED, String.valueOf(speed));
+        }
+
+        @CommandCompletion("@players")
+        @CommandAlias("%FEED")
+        @CommandPermission("%FEED_PERM")
+        @Syntax("%FEED_SYNTAX")
+        @Description("%FEED_DESCRIPTION")
+        public void onFeed(Player player, @Optional OnlinePlayer onlineTarget) {
+            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+
+            if (onlineTarget != null) {
+                Player target = onlineTarget.getPlayer();
+                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+
+                target.setFoodLevel(20);
+                plugin.sendMiniMessages(player, Messages.FEED_SETED_TO, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+                plugin.sendMiniMessages(target, Messages.FEED_SETED_BY, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay());
+                return;
+            }
+
+            player.setFoodLevel(20);
+            plugin.sendMiniMessages(player, Messages.FEED_SETED);
+        }
+
+        @CommandAlias("%THOR")
+        @CommandPermission("%THOR_PERM")
+        @Syntax("%THOR_SYNTAX")
+        @Description("%THOR_DESCRIPTION")
+        public void onThor(Player player, @Optional OnlinePlayer onlineTarget) {
+            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+
+            if (onlineTarget != null) {
+                Player target = onlineTarget.getPlayer();
+                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+
+                target.getWorld().strikeLightning(target.getLocation());
+                plugin.sendMiniMessages(player, Messages.THOR_SETED_TO, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+                plugin.sendMiniMessages(target, Messages.THOR_SETED_BY, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay());
+                return;
+            }
+
+            player.getWorld().strikeLightning(player.getTargetBlock(null, 100).getLocation());
+        }
+
         @CommandAlias("%BROADCAST")
         @Syntax("%BROADCAST_SYNTAX")
         @Description("%BROADCAST_DESCRIPTION")

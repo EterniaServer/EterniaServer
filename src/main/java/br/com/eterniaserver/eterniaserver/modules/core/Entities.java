@@ -74,11 +74,13 @@ public final class Entities {
 
         private boolean afk = false;
         private boolean god = false;
+        private boolean onPvP = false;
 
         private String color;
         private Long enterMillis;
 
         private long lastMove = System.currentTimeMillis();
+        private long pvpLastJoin = 0L;
 
     }
 

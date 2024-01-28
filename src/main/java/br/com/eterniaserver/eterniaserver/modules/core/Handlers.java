@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.core;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.modules.core.Services.Afk;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -46,6 +48,22 @@ final class Handlers implements Listener {
         if (event.getEntity() instanceof Player player) {
             PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
             event.setCancelled(playerProfile.isGod());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player damager && event.getEntity() instanceof Player) {
+            PlayerProfile damagerProfile = databaseInterface.get(PlayerProfile.class, damager.getUniqueId());
+            damagerProfile.setPvpLastJoin(System.currentTimeMillis());
+            damagerProfile.setOnPvP(true);
+            plugin.sendMiniMessages(damager, Messages.ENTERED_PVP);
+
+            if (damager.isFlying() && !damager.hasPermission(plugin.getString(Strings.PERM_FLY_BYPASS))) {
+                damager.setFlying(false);
+                damager.setAllowFlight(false);
+                plugin.sendMiniMessages(damager, Messages.FLY_DISABLED_ENTERED_PVP);
+            }
         }
     }
 

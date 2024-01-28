@@ -199,6 +199,77 @@ final class Configurations {
                     "apelido do jogador",
                     "mensagem"
             );
+            addMessage(Messages.SPEED_INVALID,
+                    "Você deve informar um valor entre 1 e 10<color:#555555>."
+            );
+            addMessage(Messages.SPEED_SETED,
+                    "Você alterou a velocidade de movimento para <color:#00aaaa>{0}<color:#555555>.",
+                    "velocidade de movimento"
+            );
+            addMessage(Messages.FEED_SETED_TO,
+                    "Você alimentou <color:#00aaaa>{1}<color:#aaaaaa>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.FEED_SETED_BY,
+                    "Você foi alimentado por <color:#00aaaa>{1}<color:#aaaaaa>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.FEED_SETED,
+                    "Você alimentou-se<color:#555555>."
+            );
+            addMessage(Messages.THOR_SETED_TO,
+                    "Você chamou o Thor para punir <color:#00aaaa>{1}<color:#aaaaaa>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.THOR_SETED_BY,
+                    "Você foi punido por <color:#00aaaa>{1}<color:#aaaaaa>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.LEFT_PVP,
+                    "Você saiu do PvP<color:#555555>."
+            );
+            addMessage(Messages.ENTERED_PVP,
+                    "Você entrou em PvP<color:#555555>."
+            );
+            addMessage(Messages.FLY_DISABLED_ENTERED_PVP,
+                    "Vôo desativado por estar em PvP<color:#555555>."
+            );
+            addMessage(Messages.FLY_DISABLED_TO,
+                    "Você desativou o vôo de <color:#00aaaa>{1}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.FLY_DISABLED_BY,
+                    "Vôo desativado por <color:#00aaaa>{1}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.FLY_ENABLED_TO,
+                    "Você ativou o vôo de <color:#00aaaa>{1}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.FLY_ENABLED_BY,
+                    "Vôo ativado por <color:#00aaaa>{1}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.FLY_PVP_BLOCKED,
+                    "Você não pode ativar o vôo em PvP<color:#555555>."
+            );
+            addMessage(Messages.FLY_WORLD_BLOCKED,
+                    "Você não pode ativar o vôo nesse mundo<color:#555555>."
+            );
+            addMessage(Messages.FLY_DISABLED,
+                    "Você desativou o vôo<color:#555555>."
+            );
+            addMessage(Messages.FLY_ENABLED,
+                    "Você ativou o vôo<color:#555555>."
+            );
 
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
@@ -216,6 +287,7 @@ final class Configurations {
             integers[Integers.PLUGIN_TICKS.ordinal()] = inFile.getInt("critical-configs.plugin-ticks", 20);
             integers[Integers.AFK_TIMER.ordinal()] = inFile.getInt("afk.limit-time", 900);
             integers[Integers.COOLDOWN.ordinal()] = inFile.getInt("critical-configs.teleport-ticks", 80);
+            integers[Integers.PVP_TIME.ordinal()] = inFile.getInt("critical-configs.pvp-time", 10);
             // Strings
             strings[Strings.DATA_FORMAT.ordinal()] = inFile.getString("format.data-time", "dd/MM/yyyy HH:mm");
             strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
@@ -231,12 +303,16 @@ final class Configurations {
             strings[Strings.CONS_SPECTATOR.ordinal()] = inFile.getString("const.gm.spectator", "espectador");
             strings[Strings.CONS_SURVIVAL.ordinal()] = inFile.getString("const.gm.survival", "sobrevivência");
             strings[Strings.PROFILE_PLAYED_TIME.ordinal()] = inFile.getString("mini-messages.profile.played-time", "<color:#aaaaaa>Dias<color:#555555>: <color:#00aaaa>%02d <color:#aaaaaa>Horas<color:#555555>: <color:#00aaaa>%02d <color:#aaaaaa>Minutos<color:#555555>: <color:#00aaaa>%02d<color:#555555>.");
+            strings[Strings.PERM_FLY_OTHER.ordinal()] = inFile.getString("permissions.fly.other", "eternia.fly.other");
+            strings[Strings.PERM_FLY_BYPASS.ordinal()] = inFile.getString("permissions.fly.bypass", "eternia.fly.bypass");
 
             // Lists
             List<String> blackedCommands = inFile.getStringList("critical-configs.blocked-commands");
             stringLists.set(Lists.BLACKLISTED_COMMANDS.ordinal(), blackedCommands.isEmpty() ? List.of("/op", "/deop", "/stop") : blackedCommands);
             List<String> profileMessages = inFile.getStringList("mini-messages.profile.custom-messages");
             stringLists.set(Lists.PROFILE_CUSTOM_MESSAGES.ordinal(), profileMessages.isEmpty() ? List.of("<color:#aaaaaa>Saldo em C.A.S.H.<color:#555555>: <color:#00aaaa>%eterniaserver_cash%<color:#555555>.") : profileMessages);
+            List<String> flyBlockedWorlds = inFile.getStringList("critical-configs.blocked-worlds-fly");
+            stringLists.set(Lists.BLACKLISTED_WORLDS_FLY.ordinal(), flyBlockedWorlds.isEmpty() ? List.of("world_nether", "world_the_end") : flyBlockedWorlds);
 
             // Booleans
             outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
@@ -253,6 +329,7 @@ final class Configurations {
             outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);
             outFile.set("afk.limit-time", integers[Integers.AFK_TIMER.ordinal()]);
             outFile.set("critical-configs.teleport-ticks", integers[Integers.COOLDOWN.ordinal()]);
+            outFile.set("critical-configs.pvp-time", integers[Integers.PVP_TIME.ordinal()]);
             // Strings
             outFile.set("format.data-time", strings[Strings.DATA_FORMAT.ordinal()]);
             outFile.set("mini-messages.motd", strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()]);
@@ -266,9 +343,12 @@ final class Configurations {
             outFile.set("table-name.player-profile", strings[Strings.PROFILE_TABLE_NAME.ordinal()]);
             outFile.set("mini-messages.prefix", strings[Strings.SERVER_PREFIX.ordinal()]);
             outFile.set("mini-messages.profile.played-time", strings[Strings.PROFILE_PLAYED_TIME.ordinal()]);
+            outFile.set("permissions.fly.other", strings[Strings.PERM_FLY_OTHER.ordinal()]);
+            outFile.set("permissions.fly.bypass", strings[Strings.PERM_FLY_BYPASS.ordinal()]);
             // Lists
             outFile.set("critical-configs.blocked-commands", stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
             outFile.set("mini-messages.profile.custom-messages", stringLists.get(Lists.PROFILE_CUSTOM_MESSAGES.ordinal()));
+            outFile.set("critical-configs.blocked-worlds-fly", stringLists.get(Lists.BLACKLISTED_WORLDS_FLY.ordinal()));
         }
 
         @Override
@@ -390,6 +470,34 @@ final class Configurations {
                     " <mensagem>",
                     " Envie uma mensagem e se mate",
                     "eternia.suicide",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.SPEED, new CommandLocale(
+                    "speed",
+                    " <velocidade>",
+                    " Altere a sua velocidade",
+                    "eternia.speed",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.FEED, new CommandLocale(
+                    "feed",
+                    " <jogador>",
+                    " Sacie-se ou sacie outra pessoa",
+                    "eternia.feed",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.THOR, new CommandLocale(
+                    "thor",
+                    " <jogador>",
+                    " Chame o Thor para punir um jogador",
+                    "eternia.thor",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.FLY, new CommandLocale(
+                    "fly|voar",
+                    " <jogador>",
+                    " VOA BRABULETA!!!",
+                    "eternia.fly",
                     null
             ));
         }

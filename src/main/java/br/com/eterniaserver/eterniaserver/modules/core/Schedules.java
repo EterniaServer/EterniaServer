@@ -16,6 +16,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.concurrent.TimeUnit;
+
 
 final class Schedules {
 
@@ -41,6 +43,7 @@ final class Schedules {
                 PlayerProfile playerProfile = database.get(PlayerProfile.class, player.getUniqueId());
 
                 checkAFK(player, playerProfile);
+                checkPvP(player, playerProfile);
             }
         }
 
@@ -83,6 +86,21 @@ final class Schedules {
             );
             plugin.getServer().broadcast(afkKickMessage);
             player.kick(plugin.getMiniMessage(Messages.AFK_KICKED, false));
+        }
+
+        private void checkPvP(Player player, PlayerProfile playerProfile) {
+            if (!playerProfile.isOnPvP()) {
+                return;
+            }
+
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(
+                    System.currentTimeMillis() - playerProfile.getPvpLastJoin()
+            );
+
+            if (seconds > plugin.getInteger(Integers.PVP_TIME)) {
+                playerProfile.setOnPvP(false);
+                plugin.sendMiniMessages(player, Messages.LEFT_PVP);
+            }
         }
     }
 
