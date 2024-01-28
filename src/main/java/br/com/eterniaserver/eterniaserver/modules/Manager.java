@@ -12,6 +12,7 @@ import br.com.eterniaserver.eterniaserver.modules.entity.EntityManager;
 import br.com.eterniaserver.eterniaserver.modules.experience.ExperienceManager;
 import br.com.eterniaserver.eterniaserver.modules.glow.GlowManager;
 import br.com.eterniaserver.eterniaserver.modules.item.ItemManager;
+import br.com.eterniaserver.eterniaserver.modules.kit.KitManager;
 import br.com.eterniaserver.eterniaserver.modules.placeholderapi.PlaceHolderAPIManager;
 import br.com.eterniaserver.eterniaserver.modules.reward.RewardManager;
 import br.com.eterniaserver.eterniaserver.modules.spawner.SpawnerManager;
@@ -37,6 +38,7 @@ public class Manager {
         if (plugin.getBoolean(Booleans.MODULE_ECONOMY)) modules.add(new EconomyManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_BED)) modules.add(new BedManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_ITEM)) modules.add(new ItemManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_KIT)) modules.add(new KitManager(plugin));
 
         loadModules();
     }

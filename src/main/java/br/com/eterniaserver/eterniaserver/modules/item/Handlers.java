@@ -58,6 +58,15 @@ final class Handlers implements Listener {
             return false;
         }
 
+        executeCommands(player, itemStack, itemMeta);
+        checkItemUsages(player, itemStack, itemMeta);
+
+        itemStack.setItemMeta(itemMeta);
+
+        return true;
+    }
+
+    private void executeCommands(Player player, ItemStack itemStack, ItemMeta itemMeta) {
         String cmds = itemMeta.getPersistentDataContainer().getOrDefault(plugin.getKey(ItemsKeys.TAG_RUN_COMMAND), PersistentDataType.STRING, "");
         boolean runInConsole = itemMeta.getPersistentDataContainer().getOrDefault(plugin.getKey(ItemsKeys.TAG_RUN_IN_CONSOLE), PersistentDataType.INTEGER, 0) == 1;
 
@@ -68,24 +77,19 @@ final class Handlers implements Listener {
                 player.performCommand(plugin.setPlaceholders(player, cmd));
             }
         }
+    }
 
+    private void checkItemUsages(Player player, ItemStack itemStack, ItemMeta itemMeta) {
         int itemUsages = itemMeta.getPersistentDataContainer().getOrDefault(plugin.getKey(ItemsKeys.TAG_USAGES), PersistentDataType.INTEGER,1);
         if (itemUsages == 1) {
-            if (compareItems(player, itemStack)) {
+            if (player.getInventory().getItemInMainHand().isSimilar(itemStack)) {
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             } else {
                 player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
             }
         } else if (itemUsages > 1) {
             itemMeta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.TAG_USAGES), PersistentDataType.INTEGER, (itemUsages - 1));
-            itemStack.setItemMeta(itemMeta);
         }
-
-        return true;
-    }
-
-    private boolean compareItems(Player player, final ItemStack itemStack) {
-        return player.getInventory().getItemInMainHand().isSimilar(itemStack);
     }
 
 }

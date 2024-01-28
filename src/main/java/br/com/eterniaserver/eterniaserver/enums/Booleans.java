@@ -13,6 +13,7 @@ public enum Booleans {
     MODULE_ECONOMY,
     MODULE_BED,
     MODULE_ITEM,
+    MODULE_KIT,
     HAS_ECONOMY_PLUGIN,
     AFK_KICK,
     INV_DROP,

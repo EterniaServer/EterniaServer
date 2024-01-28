@@ -152,4 +152,7 @@ public enum Messages {
     ITEM_ADD_LORE,
     ITEM_SET_LORE,
     ITEM_SET_NAME,
+    KIT_LIST,
+    KIT_NOT_FOUND,
+    KIT_IN_RECHARGE,
 }

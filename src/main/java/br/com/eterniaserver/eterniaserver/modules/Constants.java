@@ -45,6 +45,9 @@ public class Constants {
     public static final String ITEM_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "item";
     public static final String ITEM_CONFIG_FILE_PATH = ITEM_MODULE_FOLDER_PATH + File.separator + "item.yml";
 
+    public static final String KIT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "kit";
+    public static final String KIT_CONFIG_FILE_PATH = KIT_MODULE_FOLDER_PATH + File.separator + "kit.yml";
+
 
     public static final String UTILITY_CLASS = "Utility class";
 
