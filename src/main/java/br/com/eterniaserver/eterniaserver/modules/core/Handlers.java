@@ -104,6 +104,8 @@ final class Handlers implements Listener {
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> databaseInterface.update(PlayerProfile.class, playerProfile));
 
+        afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.QUIT);
+
         event.quitMessage(plugin.getMiniMessage(
                 Messages.SERVER_LOGOUT,
                 true,
@@ -120,8 +122,12 @@ final class Handlers implements Listener {
     @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
         String message = event.getMessage().toLowerCase();
-        if (message.equalsIgnoreCase("/tps")) {
-            plugin.sendMiniMessages(event.getPlayer(), Messages.SERVER_TPS, String.format("%.2f", plugin.getServer().getTPS()[0]));
+        if (message.equalsIgnoreCase("/tps") || message.equalsIgnoreCase("/mspt")) {
+            plugin.sendMiniMessages(
+                    event.getPlayer(),
+                    Messages.SERVER_TPS,
+                    String.format("%.2f", plugin.getServer().getTPS()[0])
+            );
             event.setCancelled(true);
             return;
         }
@@ -186,15 +192,6 @@ final class Handlers implements Listener {
         ));
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.JOIN);
-    }
-
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerQuitEvent(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
-
-        afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.QUIT);
     }
 
 }
