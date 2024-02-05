@@ -790,7 +790,10 @@ final class Commands {
                 );
 
                 AffiliateCommand affiliateCommand = new AffiliateCommand(plugin, bankName, target, player);
-                EterniaLib.getAdvancedCmdManager().addConfirmationCommand(affiliateCommand);
+                boolean result = EterniaLib.getAdvancedCmdManager().addConfirmationCommand(affiliateCommand);
+                if (!result) {
+                    plugin.sendMiniMessages(player, Messages.ALREADY_IN_CONFIRMATION);
+                }
             });
         }
     }

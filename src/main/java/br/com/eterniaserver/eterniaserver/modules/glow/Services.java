@@ -6,6 +6,7 @@ import br.com.eterniaserver.eterniaserver.modules.Constants;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -18,11 +19,15 @@ final class Services {
 
     static class Glow {
 
+        private final EterniaServer plugin;
+
         private final String[] colors = new String[Enums.Color.values().length];
         private final Team[] teams = new Team[Enums.Color.values().length];
 
         protected Glow(final EterniaServer plugin) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+            this.plugin = plugin;
+
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
                 Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
                 registerTeam(scoreboard, Enums.Color.AQUA, NamedTextColor.AQUA);
@@ -54,6 +59,15 @@ final class Services {
 
         protected Team getTeam(Enums.Color color) {
             return this.teams[color.ordinal()];
+        }
+
+        protected void clearPlayerTeams(Player player) {
+            Scoreboard scoreboard = plugin.getServer().getScoreboardManager().getMainScoreboard();
+            Team team = scoreboard.getPlayerTeam(player);
+
+            if (team != null) {
+                team.removeEntry(player.getName());
+            }
         }
 
         private void registerTeam(final Scoreboard scoreboard, Enums.Color entry, NamedTextColor color) {

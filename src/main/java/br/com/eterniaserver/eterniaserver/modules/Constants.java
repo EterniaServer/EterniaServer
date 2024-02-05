@@ -51,6 +51,9 @@ public class Constants {
     public static final String TELEPORT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "teleport";
     public static final String TELEPORT_CONFIG_FILE_PATH = TELEPORT_MODULE_FOLDER_PATH + File.separator + "teleport.yml";
 
+    public static final String CHAT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "chat";
+    public static final String CHAT_CONFIG_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat.yml";
+
 
     public static final String UTILITY_CLASS = "Utility class";
 

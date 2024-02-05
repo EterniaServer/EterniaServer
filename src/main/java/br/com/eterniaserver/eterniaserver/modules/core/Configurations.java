@@ -284,6 +284,12 @@ final class Configurations {
                     "nome do jogador",
                     "apelido do jogador"
             );
+            addMessage(Messages.ALREADY_IN_TIMING,
+                    "Você já está em um processo de teleporte<color:#555555>."
+            );
+            addMessage(Messages.ALREADY_IN_CONFIRMATION,
+                    "Você já está em um processo de confirmação<color:#555555>."
+            );
 
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);

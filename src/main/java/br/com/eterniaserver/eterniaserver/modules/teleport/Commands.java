@@ -10,6 +10,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.teleport.Entities.HomeLocation;
+import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -25,12 +26,94 @@ final class Commands {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
+    static class Tpa extends BaseCommand {
+
+        private final EterniaServer plugin;
+
+        public Tpa(EterniaServer plugin) {
+            this.plugin = plugin;
+        }
+
+        @CommandAlias("%TPA")
+        @Syntax("%TPA_SYNTAX")
+        @Description("%TPA_DESCRIPTION")
+        @CommandPermission("%TPA_PERM")
+        @CommandCompletion("@players")
+        public void onTpa(Player player, OnlinePlayer onlineTarget) {
+            Player target = onlineTarget.getPlayer();
+
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
+
+            plugin.sendMiniMessages(target, Messages.TPA_REQUESTED_FROM, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay());
+            plugin.sendMiniMessages(player, Messages.TPA_REQUESTED_TO, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+
+            Utils.TpaCommand tpaCommand = new Utils.TpaCommand(
+                    target,
+                    player,
+                    () -> Utils.TeleportCommand.addTeleport(
+                            plugin,
+                            player,
+                            target.getLocation(),
+                            targetProfile.getPlayerDisplay()
+                    )
+            );
+
+            boolean result = EterniaLib.getAdvancedCmdManager().addConfirmationCommand(tpaCommand);
+            if (!result) {
+                plugin.sendMiniMessages(player, Messages.ALREADY_IN_CONFIRMATION);
+            }
+        }
+
+        @CommandAlias("%TPAHERE")
+        @Syntax("%TPAHERE_SYNTAX")
+        @Description("%TPAHERE_DESCRIPTION")
+        @CommandPermission("%TPAHERE_PERM")
+        @CommandCompletion("@players")
+        public void onTpaHere(Player player, OnlinePlayer onlineTarget) {
+            Player target = onlineTarget.getPlayer();
+
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
+
+            plugin.sendMiniMessages(target, Messages.TPA_HERE_REQUESTED_FROM, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay());
+            plugin.sendMiniMessages(player, Messages.TPA_HERE_REQUESTED_TO, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+
+            Utils.TpaCommand tpaCommand = new Utils.TpaCommand(
+                    target,
+                    player,
+                    () -> Utils.TeleportCommand.addTeleport(
+                            plugin,
+                            target,
+                            player.getLocation(),
+                            playerProfile.getPlayerDisplay()
+                    )
+            );
+
+            boolean result = EterniaLib.getAdvancedCmdManager().addConfirmationCommand(tpaCommand);
+            if (!result) {
+                plugin.sendMiniMessages(player, Messages.ALREADY_IN_CONFIRMATION);
+            }
+        }
+
+        @CommandAlias("%TPALL")
+        @Description("%TPALL_DESCRIPTION")
+        @CommandPermission("%TPALL_PERM")
+        public void onTpAll(Player player) {
+            for (Player target : plugin.getServer().getOnlinePlayers()) {
+                if (target != player) {
+                    target.teleport(player);
+                }
+            }
+        }
+    }
+
     static class Home extends BaseCommand {
 
         private final EterniaServer plugin;
         private final Services.HomeService homeService;
 
-        public Home(final EterniaServer plugin, Services.HomeService homeService) {
+        public Home(EterniaServer plugin, Services.HomeService homeService) {
             this.plugin = plugin;
             this.homeService = homeService;
         }
@@ -87,20 +170,12 @@ final class Commands {
         private boolean teleportToHome(List<HomeLocation> homes, String nome, Player player, EterniaServer plugin) {
             for (HomeLocation home : homes) {
                 if (home.getName().equalsIgnoreCase(nome)) {
-                    if (player.hasPermission(plugin.getString(Strings.PERM_TELEPORT_TIME_BYPASS))) {
-                        player.teleportAsync(home.getLocation(plugin));
-                    } else {
-                        Utils.TeleportCommand teleportCommand = new Utils.TeleportCommand(
-                                plugin,
-                                nome,
-                                player,
-                                home.getLocation(plugin)
-                        );
-                        boolean result = EterniaLib.getAdvancedCmdManager().addTimedCommand(teleportCommand);
-                        if (!result) {
-                            plugin.sendMiniMessages(player, Messages.ALREADY_IN_TIMING, nome);
-                        }
-                    }
+                    Utils.TeleportCommand.addTeleport(
+                            plugin,
+                            player,
+                            home.getLocation(plugin),
+                            nome
+                    );
                     return true;
                 }
             }

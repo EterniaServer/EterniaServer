@@ -43,7 +43,9 @@ public class GlowManager implements Module {
     public void loadConditions() {}
 
     @Override
-    public void loadListeners() {}
+    public void loadListeners() {
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(servicesGlow), plugin);
+    }
 
     @Override
     public void loadSchedules() {}

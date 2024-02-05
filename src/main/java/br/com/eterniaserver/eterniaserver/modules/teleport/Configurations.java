@@ -118,8 +118,25 @@ final class Configurations {
             addMessage(Messages.HOME_LIMIT_REACHED,
                     "Você atingiu o limite de homes<color:#555555>."
             );
-            addMessage(Messages.ALREADY_IN_TIMING,
-                    "Você já está em um processo de teleporte<color:#555555>."
+            addMessage(Messages.TPA_REQUESTED_TO,
+                    "Solicitação de teleporte para <color:#00aaaa>{1}<color:#aaaaaa> enviada<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.TPA_REQUESTED_FROM,
+                    "Solicitação de teleporte de <color:#00aaaa>{1}<color:#aaaaaa> recebida<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.TPA_HERE_REQUESTED_TO,
+                    "Solicitação de teleporte de <color:#00aaaa>{1}<color:#aaaaaa> até você enviada<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.TPA_HERE_REQUESTED_FROM,
+                    "Solicitação de teleporte para <color:#00aaaa>{1}<color:#aaaaaa> recebida<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
             );
 
             String[] strings = plugin.strings();
@@ -170,6 +187,27 @@ final class Configurations {
                     " <nome>",
                     " Deleta uma home",
                     "eternia.delhome.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.TPA, new CommandLocale(
+                    "tpa",
+                    " <jogador>",
+                    " Solicita um teleporte até um jogador",
+                    "eternia.tpa",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.TPAHERE, new CommandLocale(
+                    "tpahere",
+                    " <jogador>",
+                    " Solicita que um jogador se teleporte até você",
+                    "eternia.tpahere",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.TPALL, new CommandLocale(
+                    "tpall",
+                    null,
+                    " Teleporta todos os jogadores para você",
+                    "eternia.tpall",
                     null
             ));
         }

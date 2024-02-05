@@ -13,7 +13,9 @@ final class Enums {
         HOMES,
         SETHOME,
         DELHOME,
-
+        TPA,
+        TPAHERE,
+        TPALL,
     }
 
 }
