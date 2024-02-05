@@ -29,7 +29,7 @@ final class Services {
 
         public boolean teleportTo(Player player, String warpName) {
             Entities.WarpLocation warpLocation = EterniaLib.getDatabase().get(Entities.WarpLocation.class, warpName);
-            if (warpLocation == null) {
+            if (warpLocation == null || warpLocation.getName() == null) {
                 return false;
             }
 
@@ -44,7 +44,7 @@ final class Services {
 
         public boolean deleteWarp(String warpName) {
             Entities.WarpLocation warpLocation = EterniaLib.getDatabase().get(Entities.WarpLocation.class, warpName);
-            if (warpLocation == null) {
+            if (warpLocation == null || warpLocation.getName() == null) {
                 return false;
             }
 
