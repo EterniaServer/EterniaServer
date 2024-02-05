@@ -110,29 +110,29 @@ final class Configurations {
 
             // Maps
             chanceMap.get(ChanceMaps.REWARDS.ordinal()).forEach((k, v) -> v.forEach((l, b) -> outFile.set("rewards." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
-            chanceMap.get(ChanceMaps.FARM_DROPS.ordinal()).forEach((k, v) -> v.forEach((l, b) -> outFile.set("farm." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
+            chanceMap.get(ChanceMaps.FARM_DROPS.ordinal()).forEach((k, v) -> v.forEach((l, b) -> outFile.set("farms." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
             chanceMap.get(ChanceMaps.BLOCK_DROPS.ordinal()).forEach((k, v) -> v.forEach((l, b) -> outFile.set("blocks." + k + "." + String.format("%.10f", l).replace('.', ','), b)));
         }
 
         private Map<String, Map<Double, List<String>>> getChanceMap(String path, String defaultEntry) {
-            final Map<String, Map<Double, List<String>>> rewardsMap = new HashMap<>();
-            final ConfigurationSection rewards = inFile.getConfigurationSection(path);
+            Map<String, Map<Double, List<String>>> rewardsMap = new HashMap<>();
+            ConfigurationSection rewards = inFile.getConfigurationSection(path);
 
             if (rewards != null) {
-                for (final String key : rewards.getKeys(false)) {
-                    final Map<Double, List<String>> keyChanceMap = new HashMap<>();
-                    final ConfigurationSection section = rewards.getConfigurationSection(path + "." + key);
+                for (String key : rewards.getKeys(false)) {
+                    Map<Double, List<String>> keyChanceMap = new HashMap<>();
+                    ConfigurationSection section = inFile.getConfigurationSection(path + "." + key);
 
                     if (section == null) continue;
 
                     for (String chance : section.getKeys(false)) {
-                        keyChanceMap.put(Double.parseDouble(chance.replace(',', '.')), rewards.getStringList(path + "." + key + "." + chance));
+                        keyChanceMap.put(Double.parseDouble(chance.replace(',', '.')), inFile.getStringList(path + "." + key + "." + chance));
                     }
                     rewardsMap.put(key, keyChanceMap);
                 }
             }
             if (rewardsMap.isEmpty()) {
-                rewardsMap.put(defaultEntry, Map.of(1.0, List.of("give yurinogueira stone 1")));
+                rewardsMap.put(defaultEntry, Map.of(1.0, List.of("give %player_name% stone 1")));
             }
 
             return rewardsMap;

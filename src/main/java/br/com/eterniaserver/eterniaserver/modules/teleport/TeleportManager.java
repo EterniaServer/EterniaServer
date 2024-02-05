@@ -66,6 +66,7 @@ public class TeleportManager implements Module {
 
     @Override
     public void loadCommands() {
+        EterniaLib.getCmdManager().registerCommand(new Commands.Tpa(plugin));
         EterniaLib.getCmdManager().registerCommand(new Commands.Home(plugin, homeService));
     }
 }
