@@ -11,11 +11,13 @@ import org.bukkit.entity.Player;
 public class TeleportManager implements Module {
 
     private final Services.HomeService homeService;
+    private final Services.WarpService warpService;
     private final EterniaServer plugin;
 
     public TeleportManager(EterniaServer plugin) {
         this.plugin = plugin;
         this.homeService = new Services.HomeService(plugin);
+        this.warpService = new Services.WarpService(plugin);
     }
 
     @Override
@@ -32,10 +34,13 @@ public class TeleportManager implements Module {
 
         try {
             Entity<Entities.HomeLocation> homeLocationEntity = new Entity<>(Entities.HomeLocation.class);
+            Entity<Entities.WarpLocation> warpLocationEntity = new Entity<>(Entities.WarpLocation.class);
 
             EterniaLib.addTableName("%eternia_home%", plugin.getString(Strings.TELEPORT_TABLE_NAME_HOME));
+            EterniaLib.addTableName("%eternia_warp%", plugin.getString(Strings.TELEPORT_TABLE_NAME_WARP));
 
             EterniaLib.getDatabase().register(Entities.HomeLocation.class, homeLocationEntity);
+            EterniaLib.getDatabase().register(Entities.WarpLocation.class, warpLocationEntity);
         }
         catch (Exception exception) {
             EterniaLib.registerLog("EE-123-Teleport");
@@ -50,6 +55,10 @@ public class TeleportManager implements Module {
             Player player = homes.getPlayer();
             return homeService.getHomeNames(player.getUniqueId());
         });
+        EterniaLib.getCmdManager().getCommandCompletions().registerCompletion(
+                "warps",
+                warps -> warpService.getWarpNames()
+        );
     }
 
     @Override

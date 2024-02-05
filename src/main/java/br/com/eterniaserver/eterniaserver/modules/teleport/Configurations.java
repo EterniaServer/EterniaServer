@@ -138,6 +138,36 @@ final class Configurations {
                     "nome do jogador",
                     "apelido do jogador"
             );
+            addMessage(Messages.WARP_UPDATED,
+                    "Warp <color:#00aaaa>{0}<color:#aaaaaa> atualizada com sucesso<color:#555555>.",
+                    "warp"
+            );
+            addMessage(Messages.WARP_CREATED,
+                    "Warp <color:#00aaaa>{0}<color:#aaaaaa> criada com sucesso<color:#555555>.",
+                    "warp"
+            );
+            addMessage(Messages.WARP_NOT_FOUND,
+                    "Warp <color:#00aaaa>{0}<color:#aaaaaa> não encontrada<color:#555555>.",
+                    "warp"
+            );
+            addMessage(Messages.WARP_TELEPORTING,
+                    "Teleportando para <color:#00aaaa>{0}<color:#aaaaaa>.",
+                    "warp"
+            );
+            addMessage(Messages.WARP_DELETED,
+                    "Warp <color:#00aaaa>{0}<color:#aaaaaa> deletada com sucesso<color:#555555>.",
+                    "warp"
+            );
+            addMessage(Messages.WARP_LIST,
+                    "Lista de warps<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
+                    "lista de warps"
+            );
+            addMessage(Messages.SPAWN_NOT_DEFINED,
+                    "O spawn não foi definido<color:#555555>."
+            );
+            addMessage(Messages.SPAWN_TELEPORTING,
+                    "Teleportando para o spawn<color:#555555>."
+            );
 
             String[] strings = plugin.strings();
             int[] integers = plugin.integers();
@@ -147,6 +177,7 @@ final class Configurations {
             strings[Strings.PERM_HOME_OTHER.ordinal()] = inFile.getString("permissions.home_others", "eternia.home.others");
             strings[Strings.PERM_HOME_COMPASS.ordinal()] = inFile.getString("permissions.home_compass", "eternia.home.compass");
             strings[Strings.PERM_SETHOME_LIMIT_PREFIX.ordinal()] = inFile.getString("permissions.sethome_limit_prefix", "eternia.sethome.limit.");
+            strings[Strings.TELEPORT_TABLE_NAME_WARP.ordinal()] = inFile.getString("database.table_name_warp", "e_warp_location");
 
             integers[Integers.TELEPORT_TIMER.ordinal()] = inFile.getInt("teleport_timer", 5);
 
@@ -155,6 +186,7 @@ final class Configurations {
             outFile.set("permissions.home_others", strings[Strings.PERM_HOME_OTHER.ordinal()]);
             outFile.set("permissions.home_compass", strings[Strings.PERM_HOME_COMPASS.ordinal()]);
             outFile.set("permissions.sethome_limit_prefix", strings[Strings.PERM_SETHOME_LIMIT_PREFIX.ordinal()]);
+            outFile.set("database.table_name_warp", strings[Strings.TELEPORT_TABLE_NAME_WARP.ordinal()]);
 
             outFile.set("teleport_timer", integers[Integers.TELEPORT_TIMER.ordinal()]);
         }
@@ -208,6 +240,48 @@ final class Configurations {
                     null,
                     " Teleporta todos os jogadores para você",
                     "eternia.tpall",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.WARPS, new CommandLocale(
+                    "warps",
+                    null,
+                    " Veja a lista de warps",
+                    "eternia.warp.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.WARP, new CommandLocale(
+                    "warp",
+                    " <nome>",
+                    " Teleporta para um warp",
+                    "eternia.warp.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.SETWARP, new CommandLocale(
+                    "setwarp",
+                    " <nome>",
+                    " Define um warp",
+                    "eternia.setwarp",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.DELWARP, new CommandLocale(
+                    "delwarp",
+                    " <nome>",
+                    " Deleta um warp",
+                    "eternia.delwarp",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.SPAWN, new CommandLocale(
+                    "spawn",
+                    null,
+                    " Teleporta para o spawn",
+                    "eternia.spawn.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.SETSPAWN, new CommandLocale(
+                    "setspawn",
+                    null,
+                    " Define o spawn",
+                    "eternia.setspawn",
                     null
             ));
         }

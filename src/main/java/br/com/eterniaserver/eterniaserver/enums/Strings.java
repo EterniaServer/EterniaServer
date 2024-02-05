@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.enums;
 
 public enum Strings {
-
     TABLE_PLAYER_PROFILES,
     TABLE_SERVER_LOCATIONS,
     CASH_MENU_TITLE,
@@ -52,9 +51,9 @@ public enum Strings {
     JOIN_NAMES,
     KIT_TABLE_NAME_TIME,
     TELEPORT_TABLE_NAME_HOME,
+    TELEPORT_TABLE_NAME_WARP,
     PERM_TELEPORT_TIME_BYPASS,
     PERM_HOME_OTHER,
     PERM_HOME_COMPASS,
     PERM_SETHOME_LIMIT_PREFIX,
-
 }

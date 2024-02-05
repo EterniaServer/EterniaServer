@@ -4,6 +4,9 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+import lombok.Getter;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -11,6 +14,72 @@ final class Services {
 
     private Services() {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
+
+    @Getter
+    static class WarpService {
+
+        private final EterniaServer plugin;
+
+        private final List<String> warpNames = new ArrayList<>();
+
+        public WarpService(EterniaServer plugin) {
+            this.plugin = plugin;
+        }
+
+        public boolean teleportTo(Player player, String warpName) {
+            Entities.WarpLocation warpLocation = EterniaLib.getDatabase().get(Entities.WarpLocation.class, warpName);
+            if (warpLocation == null) {
+                return false;
+            }
+
+            Utils.TeleportCommand.addTeleport(
+                    plugin,
+                    player,
+                    warpLocation.getLocation(plugin),
+                    warpName
+            );
+            return true;
+        }
+
+        public boolean deleteWarp(String warpName) {
+            Entities.WarpLocation warpLocation = EterniaLib.getDatabase().get(Entities.WarpLocation.class, warpName);
+            if (warpLocation == null) {
+                return false;
+            }
+
+            warpNames.remove(warpName);
+            EterniaLib.getDatabase().delete(Entities.WarpLocation.class, warpLocation.getName());
+            return true;
+        }
+
+        public boolean createWarp(String warpName, Location location) {
+            Entities.WarpLocation warpLocation = EterniaLib.getDatabase().get(Entities.WarpLocation.class, warpName);
+            if (warpLocation == null) {
+                warpLocation = new Entities.WarpLocation();
+            }
+
+            if (warpLocation.getName() != null) {
+                updateWarp(warpLocation, location, warpName);
+                EterniaLib.getDatabase().update(Entities.WarpLocation.class, warpLocation);
+                return false;
+            }
+
+            warpNames.add(warpName);
+            updateWarp(warpLocation, location, warpName);
+            EterniaLib.getDatabase().insert(Entities.WarpLocation.class, warpLocation);
+            return true;
+        }
+
+        private void updateWarp(Entities.WarpLocation warpLocation, org.bukkit.Location location, String warpName) {
+            warpLocation.setName(warpName);
+            warpLocation.setCoordX(location.getX());
+            warpLocation.setCoordY(location.getY());
+            warpLocation.setCoordZ(location.getZ());
+            warpLocation.setWorldName(location.getWorld().getName());
+            warpLocation.setCoordYaw((double) location.getYaw());
+            warpLocation.setCoordPitch((double) location.getPitch());
+        }
     }
 
     static class HomeService {

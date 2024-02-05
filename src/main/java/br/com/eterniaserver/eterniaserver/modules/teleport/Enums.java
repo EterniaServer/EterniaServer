@@ -16,6 +16,12 @@ final class Enums {
         TPA,
         TPAHERE,
         TPALL,
+        WARP,
+        WARPS,
+        SETWARP,
+        DELWARP,
+        SPAWN,
+        SETSPAWN,
     }
 
 }

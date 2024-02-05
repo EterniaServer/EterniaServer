@@ -26,6 +26,106 @@ final class Commands {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
+    static class Warp extends BaseCommand {
+
+        private final EterniaServer plugin;
+        private final Services.WarpService warpService;
+
+        public Warp(EterniaServer plugin, Services.WarpService warpService) {
+            this.plugin = plugin;
+            this.warpService =  warpService;
+        }
+
+        @CommandAlias("%SETSPAWN")
+        @Description("%SETSPAWN_DESCRIPTION")
+        @CommandPermission("%SETSPAWN_PERM")
+        public void onSetSpawn(Player player) {
+            onSetWarp(player, "spawn");
+        }
+
+        @CommandAlias("%SPAWN")
+        @Description("%SPAWN_DESCRIPTION")
+        @CommandPermission("%SPAWN_PERM")
+        public void onSpawn(Player player) {
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                if (warpService.teleportTo(player, "spawn")) {
+                    plugin.sendMiniMessages(player, Messages.SPAWN_NOT_DEFINED);
+                    return;
+                }
+
+                plugin.sendMiniMessages(player, Messages.SPAWN_TELEPORTING);
+            });
+        }
+
+        @CommandAlias("%WARPS")
+        @Description("%WARPS_DESCRIPTION")
+        @CommandPermission("%WARPS_PERM")
+        public void onWarps(Player player) {
+            StringBuilder str = new StringBuilder();
+
+            for (String actualWarpName : warpService.getWarpNames()) {
+                str.append(plugin.getString(Strings.JOIN_NAMES).replace("{0}", actualWarpName));
+            }
+            if (!str.isEmpty()) {
+                str.setLength(str.length() - 2);
+            }
+
+            plugin.sendMiniMessages(player, Messages.WARP_LIST, str.toString());
+        }
+
+        @CommandAlias("%WARP")
+        @Syntax("%WARP_SYNTAX")
+        @Description("%WARP_DESCRIPTION")
+        @CommandPermission("%WARP_PERM")
+        @CommandCompletion("@warps")
+        public void onWarp(Player player, String nome) {
+            String warpName = nome.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                if (warpService.teleportTo(player, warpName)) {
+                    plugin.sendMiniMessages(player, Messages.WARP_NOT_FOUND, warpName);
+                    return;
+                }
+
+                plugin.sendMiniMessages(player, Messages.WARP_TELEPORTING, warpName);
+            });
+        }
+
+        @CommandAlias("%SETWARP")
+        @Syntax("%SETWARP_SYNTAX")
+        @Description("%SETWARP_DESCRIPTION")
+        @CommandPermission("%SETWARP_PERM")
+        @CommandCompletion("@warps")
+        public void onSetWarp(Player player, String nome) {
+            String warpName = nome.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                if (warpService.createWarp(warpName, player.getLocation())) {
+                    plugin.sendMiniMessages(player, Messages.WARP_CREATED, warpName);
+                    return;
+                }
+                plugin.sendMiniMessages(player, Messages.WARP_UPDATED, warpName);
+            });
+        }
+
+        @CommandAlias("%DELWARP")
+        @Syntax("%DELWARP_SYNTAX")
+        @Description("%DELWARP_DESCRIPTION")
+        @CommandPermission("%DELWARP_PERM")
+        @CommandCompletion("@warps")
+        public void onDelWarp(Player player, String nome) {
+            String warpName = nome.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                if (warpService.deleteWarp(warpName)) {
+                    plugin.sendMiniMessages(player, Messages.WARP_NOT_FOUND, warpName);
+                    return;
+                }
+                plugin.sendMiniMessages(player, Messages.WARP_DELETED, warpName);
+            });
+        }
+    }
+
     static class Tpa extends BaseCommand {
 
         private final EterniaServer plugin;

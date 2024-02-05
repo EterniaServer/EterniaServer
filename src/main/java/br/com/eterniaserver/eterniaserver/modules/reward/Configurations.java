@@ -123,7 +123,9 @@ final class Configurations {
                     Map<Double, List<String>> keyChanceMap = new HashMap<>();
                     ConfigurationSection section = inFile.getConfigurationSection(path + "." + key);
 
-                    if (section == null) continue;
+                    if (section == null) {
+                        continue;
+                    }
 
                     for (String chance : section.getKeys(false)) {
                         keyChanceMap.put(Double.parseDouble(chance.replace(',', '.')), inFile.getStringList(path + "." + key + "." + chance));

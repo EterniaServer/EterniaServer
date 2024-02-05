@@ -26,6 +26,46 @@ public final class Entities {
     @AllArgsConstructor
     @Getter
     @Setter
+    @Table(tableName = "%eternia_warp%")
+    public static class WarpLocation {
+
+        @PrimaryKeyField(columnName = "name", type = FieldType.STRING, autoIncrement = false)
+        private String name;
+
+        @DataField(columnName = "worldName", type = FieldType.STRING, notNull = true)
+        private String worldName;
+
+        @DataField(columnName = "coordX", type = FieldType.DOUBLE, notNull = true)
+        private Double coordX;
+
+        @DataField(columnName = "coordY", type = FieldType.DOUBLE, notNull = true)
+        private Double coordY;
+
+        @DataField(columnName = "coordZ", type = FieldType.DOUBLE, notNull = true)
+        private Double coordZ;
+
+        @DataField(columnName = "coordYaw", type = FieldType.DOUBLE, notNull = true)
+        private Double coordYaw;
+
+        @DataField(columnName = "coordPitch", type = FieldType.DOUBLE, notNull = true)
+        private Double coordPitch;
+
+        public Location getLocation(EterniaServer plugin) {
+            return new Location(
+                    plugin.getServer().getWorld(worldName),
+                    coordX,
+                    coordY,
+                    coordZ,
+                    coordYaw.floatValue(),
+                    coordPitch.floatValue()
+            );
+        }
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
     @Table(tableName = "%eternia_home%")
     public static class HomeLocation {
 
