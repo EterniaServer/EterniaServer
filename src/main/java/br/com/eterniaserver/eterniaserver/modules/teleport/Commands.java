@@ -49,11 +49,10 @@ final class Commands {
         public void onSpawn(Player player) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 if (warpService.teleportTo(player, "spawn")) {
-                    plugin.sendMiniMessages(player, Messages.SPAWN_NOT_DEFINED);
+                    plugin.sendMiniMessages(player, Messages.SPAWN_TELEPORTING);
                     return;
                 }
-
-                plugin.sendMiniMessages(player, Messages.SPAWN_TELEPORTING);
+                plugin.sendMiniMessages(player, Messages.SPAWN_NOT_DEFINED);
             });
         }
 
@@ -83,11 +82,10 @@ final class Commands {
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 if (warpService.teleportTo(player, warpName)) {
-                    plugin.sendMiniMessages(player, Messages.WARP_NOT_FOUND, warpName);
+                    plugin.sendMiniMessages(player, Messages.WARP_TELEPORTING, warpName);
                     return;
                 }
-
-                plugin.sendMiniMessages(player, Messages.WARP_TELEPORTING, warpName);
+                plugin.sendMiniMessages(player, Messages.WARP_NOT_FOUND, warpName);
             });
         }
 
@@ -118,10 +116,10 @@ final class Commands {
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 if (warpService.deleteWarp(warpName)) {
-                    plugin.sendMiniMessages(player, Messages.WARP_NOT_FOUND, warpName);
+                    plugin.sendMiniMessages(player, Messages.WARP_DELETED, warpName);
                     return;
                 }
-                plugin.sendMiniMessages(player, Messages.WARP_DELETED, warpName);
+                plugin.sendMiniMessages(player, Messages.WARP_NOT_FOUND, warpName);
             });
         }
     }
