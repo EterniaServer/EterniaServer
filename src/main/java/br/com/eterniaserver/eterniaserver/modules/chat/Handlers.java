@@ -1,26 +1,34 @@
 package br.com.eterniaserver.eterniaserver.modules.chat;
 
-import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
-import br.com.eterniaserver.eterniaserver.EterniaServer;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 final class Handlers implements Listener {
 
-    private final EterniaServer plugin;
-    private final DatabaseInterface databaseInterface;
+    private final Services.Chat chat;
 
-    public Handlers(EterniaServer plugin) {
-        this.plugin = plugin;
-        this.databaseInterface = EterniaLib.getDatabase();
+    public Handlers(Services.Chat chat) {
+        this.chat = chat;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerLogin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        chat.addHashToUUID(player.getUniqueId(), player.getName());
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerQuitEvent(PlayerQuitEvent event) {
+        chat.removeHashToUUID(event.getPlayer().getName());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncChat(AsyncChatEvent event) {
-
-
-        event.setCancelled(true);
+        event.setCancelled(chat.handleChannel(event));
     }
 }

@@ -25,6 +25,6 @@ public enum Booleans {
     BREEDING_LIMITER,
     ENTITY_EDITOR,
     ECONOMY_HAS_BANK,
-
+    MODULE_CHAT,
 
 }

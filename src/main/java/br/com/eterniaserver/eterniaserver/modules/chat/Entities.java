@@ -35,6 +35,8 @@ public final class Entities {
         @DataField(columnName = "mutedUntil", type = FieldType.TIMESTAMP)
         private Timestamp mutedUntil;
 
+        private Integer defaultChannel;
+
     }
 
 }

@@ -207,12 +207,12 @@ final class Configurations {
                     "velocidade de movimento"
             );
             addMessage(Messages.FEED_SETED_TO,
-                    "Você alimentou <color:#00aaaa>{1}<color:#aaaaaa>.",
+                    "Você alimentou <color:#00aaaa>{1}<color:#555555>.",
                     "nome do jogador",
                     "apelido do jogador"
             );
             addMessage(Messages.FEED_SETED_BY,
-                    "Você foi alimentado por <color:#00aaaa>{1}<color:#aaaaaa>.",
+                    "Você foi alimentado por <color:#00aaaa>{1}<color:#555555>.",
                     "nome do jogador",
                     "apelido do jogador"
             );
@@ -220,12 +220,12 @@ final class Configurations {
                     "Você alimentou-se<color:#555555>."
             );
             addMessage(Messages.THOR_SETED_TO,
-                    "Você chamou o Thor para punir <color:#00aaaa>{1}<color:#aaaaaa>.",
+                    "Você chamou o Thor para punir <color:#00aaaa>{1}<color:#555555>.",
                     "nome do jogador",
                     "apelido do jogador"
             );
             addMessage(Messages.THOR_SETED_BY,
-                    "Você foi punido por <color:#00aaaa>{1}<color:#aaaaaa>.",
+                    "Você foi punido por <color:#00aaaa>{1}<color:#555555>.",
                     "nome do jogador",
                     "apelido do jogador"
             );
@@ -305,6 +305,7 @@ final class Configurations {
             booleans[Booleans.MODULE_ITEM.ordinal()] = inFile.getBoolean("modules.item", true);
             booleans[Booleans.MODULE_KIT.ordinal()] = inFile.getBoolean("modules.kit", true);
             booleans[Booleans.MODULE_TELEPORT.ordinal()] = inFile.getBoolean("modules.teleport", true);
+            booleans[Booleans.MODULE_CHAT.ordinal()] = inFile.getBoolean("modules.chat", true);
             booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
             booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()] = inFile.getBoolean("critical-configs.has-economy-plugin", true);
             // Integers
@@ -353,6 +354,7 @@ final class Configurations {
             outFile.set("modules.item", booleans[Booleans.MODULE_ITEM.ordinal()]);
             outFile.set("modules.kit", booleans[Booleans.MODULE_KIT.ordinal()]);
             outFile.set("modules.teleport", booleans[Booleans.MODULE_TELEPORT.ordinal()]);
+            outFile.set("modules.chat", booleans[Booleans.MODULE_CHAT.ordinal()]);
             outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
             outFile.set("critical-configs.has-economy-plugin", booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()]);
             // Integers

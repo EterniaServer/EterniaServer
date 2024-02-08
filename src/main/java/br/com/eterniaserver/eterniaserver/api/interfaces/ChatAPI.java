@@ -32,4 +32,10 @@ public interface ChatAPI {
 
     void mute(UUID uuid, long time);
 
+    boolean isSpying(UUID uuid);
+
+    void setSpying(UUID uuid);
+
+    void removeSpying(UUID uuid);
+
 }

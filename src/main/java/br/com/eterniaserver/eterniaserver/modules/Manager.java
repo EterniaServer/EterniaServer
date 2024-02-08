@@ -5,6 +5,7 @@ import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.bed.BedManager;
 import br.com.eterniaserver.eterniaserver.modules.cash.CashManager;
+import br.com.eterniaserver.eterniaserver.modules.chat.ChatManager;
 import br.com.eterniaserver.eterniaserver.modules.core.CoreManager;
 import br.com.eterniaserver.eterniaserver.modules.economy.EconomyManager;
 import br.com.eterniaserver.eterniaserver.modules.elevator.ElevatorManager;
@@ -41,6 +42,7 @@ public class Manager {
         if (plugin.getBoolean(Booleans.MODULE_ITEM)) modules.add(new ItemManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_KIT)) modules.add(new KitManager(plugin));
         if (plugin.getBoolean(Booleans.MODULE_TELEPORT)) modules.add(new TeleportManager(plugin));
+        if (plugin.getBoolean(Booleans.MODULE_CHAT)) modules.add(new ChatManager(plugin));
 
         loadModules();
     }
