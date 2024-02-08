@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.glow;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
+import br.com.eterniaserver.eterniaserver.modules.Module;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

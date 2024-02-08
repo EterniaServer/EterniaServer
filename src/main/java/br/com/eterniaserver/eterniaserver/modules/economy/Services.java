@@ -3,6 +3,9 @@ package br.com.eterniaserver.eterniaserver.modules.economy;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.dtos.BalanceDTO;
+import br.com.eterniaserver.eterniaserver.api.dtos.BankDTO;
+import br.com.eterniaserver.eterniaserver.api.dtos.BankMemberDTO;
 import br.com.eterniaserver.eterniaserver.api.interfaces.ExtraEconomyAPI;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -20,7 +23,7 @@ final class Services {
         private final EterniaServer plugin;
         private final DatabaseInterface databaseInterface;
 
-        private final List<Entities.EcoBalance> topBalances = new ArrayList<>();
+        private final List<BalanceDTO> topBalances = new ArrayList<>();
 
         public ExtraEconomy(EterniaServer plugin) {
             this.plugin = plugin;
@@ -33,16 +36,16 @@ final class Services {
                 return false;
             }
 
-            return uuid.equals(topBalances.get(0).getUuid());
+            return uuid.equals(topBalances.get(0).playerUUID());
         }
 
         @Override
-        public List<Entities.EcoBalance> getBalanceTop() {
+        public List<BalanceDTO> getBalanceTop() {
             return topBalances;
         }
 
         @Override
-        public List<Entities.BankBalance> getBankList() {
+        public List<BankDTO> getBankList() {
             List<Entities.BankBalance> balances = databaseInterface.listAll(Entities.BankBalance.class);
             List<String> bankListName = plugin.bankListName();
 
@@ -52,17 +55,18 @@ final class Services {
                 bankListName.add(balance.getName());
             }
 
-            return balances;
+            return balances.stream().map(b -> new BankDTO(b.getName(), b.getBalance(), b.getTax())).toList();
         }
 
         @Override
-        public List<Entities.BankMember> getBankMembers(String bankName) {
-            return databaseInterface.findAllBy(Entities.BankMember.class, "bankName", bankName);
+        public List<BankMemberDTO> getBankMembers(String bankName) {
+            List<Entities.BankMember> members = databaseInterface.findAllBy(Entities.BankMember.class, "bankName", bankName);
+            return members.stream().map(m -> new BankMemberDTO(m.getBankName(), m.getUuid(), m.getRole())).toList();
         }
 
         @Override
-        public void refreshBalanceTop(List<Entities.EcoBalance> balances) {
-            balances.sort((b1, b2) -> Objects.compare(b1.getBalance(), b2.getBalance(), Comparator.reverseOrder()));
+        public void refreshBalanceTop(List<BalanceDTO> balances) {
+            balances.sort((b1, b2) -> Objects.compare(b1.balance(), b2.balance(), Comparator.reverseOrder()));
 
             topBalances.clear();
             for (int i = 0; i < plugin.getInteger(Integers.ECONOMY_BALANCE_TOP_SIZE) && i < balances.size(); i++) {

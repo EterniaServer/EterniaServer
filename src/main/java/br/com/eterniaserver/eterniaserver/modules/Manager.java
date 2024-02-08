@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.bed.BedManager;
 import br.com.eterniaserver.eterniaserver.modules.cash.CashManager;

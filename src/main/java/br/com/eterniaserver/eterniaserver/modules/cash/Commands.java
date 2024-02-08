@@ -157,30 +157,30 @@ final class Commands {
             UUID uuid = player.getUniqueId();
             Player target = onlineTarget.getPlayer();
 
-            if (!EterniaServer.getCashAPI().has(uuid, value)) {
-                plugin.sendMiniMessages(player, Messages.CASH_NO_CASH);
+            if (EterniaServer.getCashAPI().has(uuid, value)) {
+                EterniaServer.getCashAPI().withdrawBalance(uuid, value);
+                EterniaServer.getCashAPI().depositBalance(target.getUniqueId(), value);
+                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, uuid);
+                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+
+                plugin.sendMiniMessages(
+                        target,
+                        Messages.CASH_RECEVEID,
+                        String.valueOf(value),
+                        playerProfile.getPlayerName(),
+                        playerProfile.getPlayerDisplay()
+                );
+                plugin.sendMiniMessages(
+                        player,
+                        Messages.CASH_SENT,
+                        String.valueOf(value),
+                        targetProfile.getPlayerName(),
+                        targetProfile.getPlayerDisplay()
+                );
                 return;
             }
 
-            EterniaServer.getCashAPI().withdrawBalance(uuid, value);
-            EterniaServer.getCashAPI().depositBalance(target.getUniqueId(), value);
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, uuid);
-            PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
-
-            plugin.sendMiniMessages(
-                    target,
-                    Messages.CASH_RECEVEID,
-                    String.valueOf(value),
-                    playerProfile.getPlayerName(),
-                    playerProfile.getPlayerDisplay()
-            );
-            plugin.sendMiniMessages(
-                    player,
-                    Messages.CASH_SENT,
-                    String.valueOf(value),
-                    targetProfile.getPlayerName(),
-                    targetProfile.getPlayerDisplay()
-            );
+            plugin.sendMiniMessages(player, Messages.CASH_NO_CASH);
         }
 
         @Subcommand("%CASH_GIVE")

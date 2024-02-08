@@ -8,6 +8,9 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eternialib.database.dtos.SearchField;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.dtos.BalanceDTO;
+import br.com.eterniaserver.eterniaserver.api.dtos.BankDTO;
+import br.com.eterniaserver.eterniaserver.api.dtos.BankMemberDTO;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -57,7 +60,7 @@ final class Commands {
         @Description("%ECONOMY_BALTOP_DESCRIPTION")
         @CommandPermission("%ECONOMY_BALTOP_PERM")
         public void onBalanceTop(CommandSender commandSender, @Optional Integer page) {
-            List<Entities.EcoBalance> balances = EterniaServer.getExtraEconomyAPI().getBalanceTop();
+            List<BalanceDTO> balances = EterniaServer.getExtraEconomyAPI().getBalanceTop();
 
             int pageSize = 10;
             int maxPage = balances.size() / pageSize;
@@ -81,9 +84,9 @@ final class Commands {
             System.out.println(startIndex);
             System.out.println(pageSize);
             for (int i = startIndex; i < balances.size() && i < (startIndex + pageSize); i++) {
-                Entities.EcoBalance ecoBalance = balances.get(i);
-                UUID uuid = ecoBalance.getUuid();
-                double balance = ecoBalance.getBalance();
+                BalanceDTO ecoBalance = balances.get(i);
+                UUID uuid = ecoBalance.playerUUID();
+                double balance = ecoBalance.balance();
 
                 PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, uuid);
 
@@ -298,7 +301,7 @@ final class Commands {
             final int startPage = page;
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                List<Entities.BankBalance> bankBalances = EterniaServer.getExtraEconomyAPI().getBankList();
+                List<BankDTO> bankBalances = EterniaServer.getExtraEconomyAPI().getBankList();
 
                 int pageSize = 10;
                 int maxPage = bankBalances.size() / pageSize;
@@ -317,14 +320,14 @@ final class Commands {
                 plugin.sendMiniMessages(commandSender, Messages.ECO_BANK_LIST_TITLE, String.valueOf(startPage));
 
                 for (int i = startIndex; i < bankBalances.size() && i < (startIndex + pageSize); i++) {
-                    Entities.BankBalance bankBalance = bankBalances.get(i);
+                    BankDTO bankBalance = bankBalances.get(i);
 
                     plugin.sendMiniMessages(
                             commandSender,
                             Messages.ECO_BANK_LIST,
                             false,
-                            bankBalance.getName(),
-                            EterniaServer.getEconomyAPI().format(bankBalance.getBalance())
+                            bankBalance.bankName(),
+                            EterniaServer.getEconomyAPI().format(bankBalance.balance())
                     );
                 }
 
@@ -515,14 +518,10 @@ final class Commands {
                 plugin.sendMiniMessages(player, Messages.ECO_BANK_INFO_BALANCE, false, EterniaServer.getEconomyAPI().format(bankBalance.getBalance()));
                 plugin.sendMiniMessages(player, Messages.ECO_BANK_INFO_TAX, false,(bankBalance.getTax() + plugin.getDouble(Doubles.ECO_BANK_TAX_VALUE)) + "%");
 
-                List<Entities.BankMember> bankMembers = databaseInterface.findAllBy(
-                        Entities.BankMember.class,
-                        "bankName",
-                        bankName
-                );
+                List<BankMemberDTO> bankMembers = EterniaServer.getExtraEconomyAPI().getBankMembers(bankName);
 
-                for (Entities.BankMember member : bankMembers) {
-                    PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, member.getUuid());
+                for (BankMemberDTO member : bankMembers) {
+                    PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, member.playerUUID());
 
                     plugin.sendMiniMessages(
                             player,
@@ -530,7 +529,7 @@ final class Commands {
                             false,
                             playerProfile.getPlayerName(),
                             playerProfile.getPlayerDisplay(),
-                            member.getRole()
+                            member.playerRole()
                     );
                 }
             });

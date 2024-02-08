@@ -3,7 +3,8 @@ package br.com.eterniaserver.eterniaserver.modules.economy;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.Entity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
+import br.com.eterniaserver.eterniaserver.api.dtos.BalanceDTO;
+import br.com.eterniaserver.eterniaserver.modules.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import net.milkbowl.vault.economy.Economy;
@@ -62,10 +63,11 @@ public class EconomyManager implements Module {
         List<Entities.EcoBalance> balances = EterniaLib.getDatabase().listAll(Entities.EcoBalance.class);
         plugin.getLogger().log(Level.INFO, "Economy module: {0} player balance loaded", balances.size());
 
-        List<Entities.BankBalance> bankBalances = EterniaServer.getExtraEconomyAPI().getBankList();
+        List<Entities.BankBalance> bankBalances = EterniaLib.getDatabase().listAll(Entities.BankBalance.class);
         plugin.getLogger().log(Level.INFO, "Economy module: {0} bank balance loaded", bankBalances.size());
 
-        EterniaServer.getExtraEconomyAPI().refreshBalanceTop(balances);
+        List<BalanceDTO> balanceDTOS = balances.stream().map(b -> new BalanceDTO(b.getUuid(), b.getBalance())).toList();
+        EterniaServer.getExtraEconomyAPI().refreshBalanceTop(balanceDTOS);
     }
 
     @Override

@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.bed;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
+import br.com.eterniaserver.eterniaserver.modules.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 
 public class BedManager implements Module {

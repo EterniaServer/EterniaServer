@@ -2,7 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.item;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.api.interfaces.Module;
+import br.com.eterniaserver.eterniaserver.modules.Module;
 
 public class ItemManager implements Module {
 

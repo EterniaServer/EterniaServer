@@ -3,6 +3,7 @@ package br.com.eterniaserver.eterniaserver.modules.economy;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.api.dtos.BalanceDTO;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,7 +22,8 @@ final class Schedules {
         public void run() {
             List<Entities.EcoBalance> balances = EterniaLib.getDatabase().listAll(Entities.EcoBalance.class);
 
-            EterniaServer.getExtraEconomyAPI().refreshBalanceTop(balances);
+            List<BalanceDTO> balanceDTOS = balances.stream().map(b -> new BalanceDTO(b.getUuid(), b.getBalance())).toList();
+            EterniaServer.getExtraEconomyAPI().refreshBalanceTop(balanceDTOS);
         }
     }
 
@@ -37,7 +39,7 @@ final class Schedules {
 
         @Override
         public void run() {
-            List<Entities.BankBalance> bankBalances = EterniaServer.getExtraEconomyAPI().getBankList();
+            List<Entities.BankBalance> bankBalances = EterniaLib.getDatabase().listAll(Entities.BankBalance.class);
 
             for (Entities.BankBalance bankBalance : bankBalances) {
                 double taxValue = bankBalance.getTax() + plugin.getDouble(Doubles.ECO_BANK_TAX_VALUE);
