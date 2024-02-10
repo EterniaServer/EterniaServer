@@ -22,6 +22,31 @@ final class Commands {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
+    static class Generic extends BaseCommand {
+        private final EterniaServer plugin;
+        private final Services.Chat chatService;
+
+        public Generic(EterniaServer plugin, Services.Chat chatService) {
+            this.plugin = plugin;
+            this.chatService = chatService;
+        }
+
+        @CommandAlias("%NICKNAME")
+        @Syntax("%NICKNAME_SYNTAX")
+        @CommandPermission("%NICKNAME_PERM")
+        @Description("%NICKNAME_DESCRIPTION")
+        public void onNickname(Player player, @Optional String nickname) {
+            if (nickname == null) {
+                chatService.clearPlayerName(player);
+                plugin.sendMiniMessages(player, Messages.NICKNAME_REMOVED);
+                return;
+            }
+
+            String nickNameColor = chatService.setPlayerDisplay(player, nickname);
+            plugin.sendMiniMessages(player, Messages.NICKNAME_UPDATED, nickNameColor);
+        }
+    }
+
     @CommandAlias("%CHAT")
     static class Chat extends BaseCommand {
 

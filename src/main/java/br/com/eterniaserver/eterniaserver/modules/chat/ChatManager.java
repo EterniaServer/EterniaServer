@@ -66,7 +66,7 @@ public class ChatManager implements Module {
 
     @Override
     public void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new Handlers(chatService), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, chatService), plugin);
     }
 
     @Override
@@ -76,6 +76,7 @@ public class ChatManager implements Module {
 
     @Override
     public void loadCommands() {
+        EterniaLib.getCmdManager().registerCommand(new Commands.Generic(plugin, chatService));
         EterniaLib.getCmdManager().registerCommand(new Commands.Chat(plugin, chatService));
     }
 

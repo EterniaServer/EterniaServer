@@ -63,6 +63,9 @@ public final class Entities {
         @DataField(columnName = "playerDisplay", type = FieldType.STRING)
         private String playerDisplay;
 
+        @DataField(columnName = "playerDisplayColor", type = FieldType.STRING)
+        private String playerDisplayColor;
+
         @DataField(columnName = "firstJoin", type = FieldType.TIMESTAMP)
         private Timestamp firstJoin;
 

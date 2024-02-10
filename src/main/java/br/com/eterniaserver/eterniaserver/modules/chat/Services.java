@@ -41,6 +41,9 @@ final class Services {
 
         protected static final String TELL_CHANNEL_STRING = "tellchannel";
 
+        private final static String NICKNAME_COLOR_REGEX = "[^\\w#]";
+        private final static String NICKNAME_CLEAR_REGEX = "#[a-f\\\\d]{6}";
+
         private final Map<UUID, UUID> tellMap = new HashMap<>();
         private final Map<Integer, UUID> playerHashToUUID = new HashMap<>();
         private final Map<String, Component> staticComponents = new HashMap<>();
@@ -64,7 +67,7 @@ final class Services {
             this.tellChannelHashCode = TELL_CHANNEL_STRING.hashCode();
         }
 
-        public void updateTextColor() {
+        protected void updateTextColor() {
             String tagHex = plugin.getString(Strings.CHAT_DEFAULT_TAG_COLOR);
             String playerHex = plugin.getString(Strings.CHAT_DEFAULT_PLAYER_COLOR);
 
@@ -72,7 +75,7 @@ final class Services {
             this.playerColor = TextColor.fromHexString(playerHex);
         }
 
-        public TextColor getPlayerDefaultColor(Entities.ChatInfo chatInfo) {
+        protected TextColor getPlayerDefaultColor(Entities.ChatInfo chatInfo) {
             TextColor color = chatInfo.getColor();
             if (color == null) {
                 return playerColor;
@@ -167,7 +170,7 @@ final class Services {
             return true;
         }
 
-        public void sendPrivateMessage(AsyncChatEvent event,
+        protected void sendPrivateMessage(AsyncChatEvent event,
                                        Component component,
                                        PlayerProfile playerProfile,
                                        Player target) {
@@ -355,6 +358,35 @@ final class Services {
             }
 
             return component.compact();
+        }
+
+        protected void clearPlayerName(Player player) {
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
+
+            playerProfile.setPlayerDisplay(player.getName());
+            playerProfile.setPlayerDisplayColor(null);
+
+            player.displayName(Component.text(player.getName()));
+
+            EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile);
+        }
+
+        protected String setPlayerDisplay(Player player, String nickname) {
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
+
+            String nicknameWithColor = nickname.replaceAll(NICKNAME_COLOR_REGEX, "");
+            String nicknameClear = nicknameWithColor.replaceAll(NICKNAME_CLEAR_REGEX, "");
+
+            Component nicknameComponent = plugin.parseColor(nicknameWithColor);
+
+            playerProfile.setPlayerDisplay(nicknameClear);
+            playerProfile.setPlayerDisplayColor(nicknameWithColor);
+
+            player.displayName(nicknameComponent);
+
+            EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile);
+
+            return nicknameWithColor;
         }
 
         @Override
