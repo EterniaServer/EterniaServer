@@ -10,6 +10,7 @@ import br.com.eterniaserver.eterniaserver.enums.Strings;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.ServicePriority;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -66,7 +67,7 @@ public class EconomyManager implements Module {
         List<Entities.BankBalance> bankBalances = EterniaLib.getDatabase().listAll(Entities.BankBalance.class);
         plugin.getLogger().log(Level.INFO, "Economy module: {0} bank balance loaded", bankBalances.size());
 
-        List<BalanceDTO> balanceDTOS = balances.stream().map(b -> new BalanceDTO(b.getUuid(), b.getBalance())).toList();
+        List<BalanceDTO> balanceDTOS = new ArrayList<>(balances.stream().map(b -> new BalanceDTO(b.getUuid(), b.getBalance())).toList());
         EterniaServer.getExtraEconomyAPI().refreshBalanceTop(balanceDTOS);
     }
 

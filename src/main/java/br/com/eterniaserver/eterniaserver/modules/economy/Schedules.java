@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 final class Schedules {
@@ -22,7 +23,7 @@ final class Schedules {
         public void run() {
             List<Entities.EcoBalance> balances = EterniaLib.getDatabase().listAll(Entities.EcoBalance.class);
 
-            List<BalanceDTO> balanceDTOS = balances.stream().map(b -> new BalanceDTO(b.getUuid(), b.getBalance())).toList();
+            List<BalanceDTO> balanceDTOS = new ArrayList<>(balances.stream().map(b -> new BalanceDTO(b.getUuid(), b.getBalance())).toList());
             EterniaServer.getExtraEconomyAPI().refreshBalanceTop(balanceDTOS);
         }
     }

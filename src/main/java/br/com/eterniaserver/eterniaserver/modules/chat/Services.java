@@ -7,8 +7,9 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+
 import io.papermc.paper.event.player.AsyncChatEvent;
-import net.kyori.adventure.chat.ChatType;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -17,6 +18,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
+
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -54,10 +56,29 @@ final class Services {
         private TextReplacementConfig replaceText;
         private boolean muteAllChannels = false;
         private int muteChannelTaskId = 0;
+        private TextColor tagColor;
+        private TextColor playerColor;
 
         public Chat(EterniaServer plugin) {
             this.plugin = plugin;
             this.tellChannelHashCode = TELL_CHANNEL_STRING.hashCode();
+        }
+
+        public void updateTextColor() {
+            String tagHex = plugin.getString(Strings.CHAT_DEFAULT_TAG_COLOR);
+            String playerHex = plugin.getString(Strings.CHAT_DEFAULT_PLAYER_COLOR);
+
+            this.tagColor = TextColor.fromHexString(tagHex);
+            this.playerColor = TextColor.fromHexString(playerHex);
+        }
+
+        public TextColor getPlayerDefaultColor(Entities.ChatInfo chatInfo) {
+            TextColor color = chatInfo.getColor();
+            if (color == null) {
+                return playerColor;
+            }
+
+            return color;
         }
 
         protected void addHashToUUID(UUID uuid, String name) {
@@ -215,7 +236,7 @@ final class Services {
 
             Component spaced = Component.text(" ");
             for (String section : message.split(" ")) {
-                messageComponent = messageComponent.append(spaced).append(getComponent(section, player, playerProfile));
+                messageComponent = messageComponent.append(spaced).append(getComponent(section, player, playerProfile, chatInfo));
             }
 
             if (!channelObject.hasRange()) {
@@ -245,7 +266,7 @@ final class Services {
             }
         }
 
-        private Component getComponent(String section, Player player, PlayerProfile playerProfile) {
+        private Component getComponent(String section, Player player, PlayerProfile playerProfile, Entities.ChatInfo chatInfo) {
             int sectionHashCode = section.toLowerCase().hashCode();
             UUID mentionPlayerUUID = getUUIDFromHash(sectionHashCode);
 
@@ -265,8 +286,7 @@ final class Services {
                     ));
                 }
 
-                // TODO GET FROM DEFAULT
-                return Component.text(section).color(TextColor.color(2, 2, 2));
+                return Component.text(section).color(tagColor);
             }
 
             if (player.hasPermission(plugin.getString(Strings.PERM_CHAT_ITEM)) && sectionHashCode == getShowItemHashCode()) {
@@ -276,8 +296,7 @@ final class Services {
                 }
             }
 
-            // TODO GET FROM USER
-            return Component.text(section).color(TextColor.color(40, 200, 200));
+            return Component.text(section).color(getPlayerDefaultColor(chatInfo));
         }
 
         private	Component getItemComponent(String string, ItemStack itemStack) {
@@ -294,8 +313,7 @@ final class Services {
                             itemStack,
                             UnaryOperator.identity()
                     )
-            ).color(TextColor.color(3));
-            // TODO SET COLOR
+            ).color(tagColor);
         }
 
         private Component getChatComponentFormat(Player player, String format) {

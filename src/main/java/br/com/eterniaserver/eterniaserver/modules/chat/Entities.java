@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import net.kyori.adventure.text.format.TextColor;
+
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -36,6 +38,8 @@ public final class Entities {
         private Timestamp mutedUntil;
 
         private Integer defaultChannel;
+
+        private TextColor color;
 
     }
 

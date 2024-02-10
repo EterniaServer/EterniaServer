@@ -149,6 +149,10 @@ final class Configurations {
             strings[Strings.PERM_CHAT_ITEM.ordinal()] = inFile.getString("general.item", "eternia.chat.item");
             strings[Strings.CONS_SHOW_ITEM.ordinal()] = inFile.getString("general.show-item", "<color:#00aaaa>x{0} {1}<color:#ffffff>");
             strings[Strings.CHAT_TABLE_NAME.ordinal()] = inFile.getString("general.table-name.chat", "eternia_server_chat");
+            strings[Strings.CHAT_DEFAULT_TAG_COLOR.ordinal()] = inFile.getString("general.default-tag-color", "#1594AB");
+            strings[Strings.CHAT_DEFAULT_PLAYER_COLOR.ordinal()] = inFile.getString("general.default-player-color", "#FFFFFF");
+
+            chatService.updateTextColor();
 
             chatService.channelObjectsMap.clear();
             chatService.customPlaceholdersObjectsMap.clear();
@@ -256,6 +260,8 @@ final class Configurations {
             outFile.set("general.item", strings[Strings.PERM_CHAT_ITEM.ordinal()]);
             outFile.set("general.show-item", strings[Strings.CONS_SHOW_ITEM.ordinal()]);
             outFile.set("general.table-name.chat", strings[Strings.CHAT_TABLE_NAME.ordinal()]);
+            outFile.set("general.default-tag-color", strings[Strings.CHAT_DEFAULT_TAG_COLOR.ordinal()]);
+            outFile.set("general.default-player-color", strings[Strings.CHAT_DEFAULT_PLAYER_COLOR.ordinal()]);
         }
 
         @Override
