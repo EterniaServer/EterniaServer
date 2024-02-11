@@ -116,7 +116,7 @@ final class Configurations {
                     "Você ativou o modo espião<color:#555555>."
             );
             addMessage(Messages.CHAT_ARE_MUTED,
-                    "Você está silenciado por <color:#00aaaa>{0}<color:#555555> segundos<color:#555555>.",
+                    "Você está silenciado por <color:#00aaaa>{0}<color:#aaaaaa> segundos<color:#555555>.",
                     "segundos silenciado"
             );
             addMessage(Messages.CHAT_NO_ONE_TO_RESP,
@@ -134,6 +134,74 @@ final class Configurations {
             );
             addMessage(Messages.CHAT_TELL_YOURSELF,
                     "Você não pode conversar com você mesmo<color:#555555>."
+            );
+            addMessage(Messages.NICKNAME_REMOVED,
+                    "Você removeu o seu apelido<color:#555555>."
+            );
+            addMessage(Messages.NICKNAME_UPDATED,
+                    "Você definiu o seu apelido para <color:#00aaaa>{0}<color:#555555>.",
+                    "novo apelido"
+            );
+            addMessage(Messages.NICKNAME_REMOVED_BY,
+                    "O jogador <color:#00aaaa>{1}<color:#aaaaaa> removeu o seu apelido<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.NICKNAME_REMOVED_FOR,
+                    "Você removeu o apelido de <color:#00aaaa>{1}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.NICKNAME_UPDATED_BY,
+                    "O jogador <color:#00aaaa>{2}<color:#aaaaaa> definiu o seu apelido para <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do jogador",
+                    "novo apelido"
+            );
+            addMessage(Messages.NICKNAME_UPDATED_FOR,
+                    "Você definiu o apelido de <color:#00aaaa>{2}<color:#aaaaaa> para <color:#00aaaa>{0}<color:#555555>.",
+                    "nome do jogador",
+                    "novo apelido"
+            );
+            addMessage(Messages.CHAT_CHANNELS_MUTED,
+                    "Todos os canais de chat estão silenciados<color:#555555>."
+            );
+            addMessage(Messages.CHAT_CHANNELS_DISABLED,
+                    "Todos os canais foram mutados por <color:#00aaaa>{1}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.CHAT_CHANNELS_MUTED_TEMP,
+                    "Todos os canais foram mutados por <color:#00aaaa>{0} minuto(s)<color:#aaaaaa> pelo <color:#00aaaa>{2}<color:#555555>.",
+                    "tempo em segundos",
+                    "nome do jogador",
+                    "apelido do jogador"
+            );
+            addMessage(Messages.CHAT_CHANNELS_ENABLED,
+                    "Todos os canais foram desmutados<color:#555555>."
+            );
+            addMessage(Messages.CHAT_BROADCAST_MUTE,
+                    "O jogador <color:#00aaaa>{1}<color:#aaaaaa> foi mutado permanentemente por <color:#00aaaa>{3}<color:#555555>, <color:#aaaaaa>mensagem<color:#555555>: <color:#00aaaa>{4}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome da pessoa que mutou",
+                    "apelido da pessoa que mutou",
+                    "mensagem"
+            );
+            addMessage(Messages.CHAT_BROADCAST_UNMUTE,
+                    "O jogador <color:#00aaaa>{1}<color:#aaaaaa> foi desmutado<color:#aaaaaa> por <color:#00aaaa>{3}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome da pessoa que desmutou",
+                    "apelido da pessoa que desmutou"
+            );
+            addMessage(Messages.CHAT_BROADCAST_TEMP_MUTE,
+                    "O jogador <color:#00aaaa>{1}<color:#aaaaaa> foi mutado por <color:#00aaaa>{4} minutos<color:#aaaaaa> por <color:#00aaaa>{3}<color:#555555>, <color:#aaaaaa>mensagem<color:#555555>: <color:#00aaaa>{5}<color:#555555>.",
+                    "nome do jogador",
+                    "apelido do jogador",
+                    "nome da pessoa que mutou",
+                    "apelido da pessoa que mutou",
+                    "tempo em segundos",
+                    "mensagem"
             );
 
             String[] strings = plugin.strings();
@@ -307,6 +375,48 @@ final class Configurations {
                     " Envia uma mensagem privada para um jogador",
                     "eternia.chat.tell",
                     "tell|msg"
+            ));
+            addCommandLocale(Enums.Commands.NICKNAME, new CommandLocale(
+                    "nickname|nick",
+                    "<jogador> <apelido>",
+                    " Define um apelido para um jogador",
+                    "eternia.chat.nickname",
+                    "nickname|nick"
+            ));
+            addCommandLocale(Enums.Commands.MUTE, new CommandLocale(
+                    "mute",
+                    null,
+                    " Abre a ajuda sobre o mute",
+                    "eternia.chat.mute",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.MUTE_CHANNELS, new CommandLocale(
+                    "channels",
+                    " <minutos>",
+                    " Mute todos os canais permanentemente ou por algum segundos tempo",
+                    "eternia.chat.mutechannels",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.MUTE_PERMA, new CommandLocale(
+                    "perma",
+                    " <jogador> <mensagem>",
+                    " Mute um jogador permanentemente",
+                    "eternia.chat.muteperma",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.MUTE_UNDO, new CommandLocale(
+                    "undo",
+                    " <jogador>",
+                    " Desmuta um jogador",
+                    "eternia.chat.muteundo",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.MUTE_TEMP, new CommandLocale(
+                    "temp",
+                    " <jogador> <minutos> <mensagens>",
+                    " Mute um jogador por algum tempo",
+                    "eternia.chat.mutetemp",
+                    null
             ));
         }
     }

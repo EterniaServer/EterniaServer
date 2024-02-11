@@ -15,5 +15,11 @@ final class Enums {
         CHAT_SPY,
         CHAT_REPLY,
         CHAT_TELL,
+        NICKNAME,
+        MUTE,
+        MUTE_CHANNELS,
+        MUTE_PERMA,
+        MUTE_UNDO,
+        MUTE_TEMP,
     }
 }

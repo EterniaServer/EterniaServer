@@ -82,6 +82,9 @@ final class Handlers implements Listener {
             playerProfile.setLastJoin(new Timestamp(System.currentTimeMillis()));
 
             databaseInterface.insert(PlayerProfile.class, playerProfile);
+        } else {
+            playerProfile.setLastJoin(new Timestamp(System.currentTimeMillis()));
+            databaseInterface.update(PlayerProfile.class, playerProfile);
         }
     }
 
@@ -178,6 +181,7 @@ final class Handlers implements Listener {
         if (!player.getName().equals(playerProfile.getPlayerName())) {
             playerProfile.setPlayerName(player.getName());
             playerProfile.setPlayerDisplay(player.getName());
+            playerProfile.setPlayerDisplayColor(null);
             plugin.getServer().getScheduler().runTaskAsynchronously(
                     plugin,
                     () -> EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile)

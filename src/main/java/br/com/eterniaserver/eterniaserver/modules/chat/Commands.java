@@ -13,6 +13,8 @@ import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -20,6 +22,149 @@ final class Commands {
 
     private Commands() {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
+    }
+
+    @CommandAlias("%MUTE")
+    static class Mute extends BaseCommand {
+
+        private final Services.Chat chatService;
+        private final EterniaServer plugin;
+
+        public Mute(EterniaServer plugin, Services.Chat chatService) {
+            this.plugin = plugin;
+            this.chatService = chatService;
+        }
+
+        @Default
+        @CatchUnknown
+        @HelpCommand
+        @Syntax("%MUTE_SYNTAX")
+        @CommandPermission("%MUTE_PERM")
+        @Description("%MUTE_DESCRIPTION")
+        public void onDefault(CommandHelp help) {
+            help.showHelp();
+        }
+
+        @Subcommand("%MUTE_CHANNELS")
+        @Syntax("%MUTE_CHANNELS_SYNTAX")
+        @CommandPermission("%MUTE_CHANNELS_PERM")
+        @Description("%MUTE_CHANNELS_DESCRIPTION")
+        public void muteChannels(Player sender, @Optional Integer temp) {
+            if (chatService.isChannelsMute()) {
+                plugin.getServer().broadcast(plugin.getMiniMessage(
+                        Messages.CHAT_CHANNELS_ENABLED,
+                        true
+                ));
+                chatService.unMuteAllChannels();
+                return;
+            }
+
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, sender.getUniqueId());
+            if (temp == null) {
+                plugin.getServer().broadcast(plugin.getMiniMessage(
+                        Messages.CHAT_CHANNELS_DISABLED,
+                        true,
+                        playerProfile.getPlayerName(),
+                        playerProfile.getPlayerDisplay()
+                ));
+                chatService.muteAllChannels();
+                return;
+            }
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.MINUTE, temp);
+
+            chatService.tempMuteAllChannels(cal.getTimeInMillis());
+
+            plugin.getServer().broadcast(plugin.getMiniMessage(
+                    Messages.CHAT_CHANNELS_MUTED_TEMP,
+                    true,
+                    String.valueOf(temp),
+                    playerProfile.getPlayerName(),
+                    playerProfile.getPlayerDisplay()
+            ));
+        }
+
+        @CommandCompletion("@players Mensagem")
+        @Syntax("%MUTE_PERMA_SYNTAX")
+        @Subcommand("%MUTE_PERMA")
+        @CommandPermission("%MUTE_PERMA_PERM")
+        @Description("%MUTE_PERMA_DESCRIPTION")
+        public void onMute(Player player, OnlinePlayer onlinePlayer, String message) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.YEAR, 100);
+
+            Player target = onlinePlayer.getPlayer();
+
+            chatService.mute(target.getUniqueId(), cal.getTimeInMillis());
+
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
+
+            plugin.getServer().broadcast(plugin.getMiniMessage(
+                    Messages.CHAT_BROADCAST_MUTE,
+                    true,
+                    targetProfile.getPlayerName(),
+                    targetProfile.getPlayerDisplay(),
+                    playerProfile.getPlayerName(),
+                    playerProfile.getPlayerDisplay(),
+                    message
+            ));
+        }
+
+        @CommandCompletion("@players")
+        @Syntax("%MUTE_UNDO_SYNTAX")
+        @Subcommand("%MUTE_UNDO")
+        @CommandPermission("%MUTE_UNDO_PERM")
+        @Description("%MUTE_UNDO_DESCRIPTION")
+        public void onUnMute(Player player, OnlinePlayer onlinePlayer) {
+            Player target = onlinePlayer.getPlayer();
+
+            chatService.mute(target.getUniqueId(), System.currentTimeMillis());
+
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
+
+            plugin.getServer().broadcast(plugin.getMiniMessage(
+                    Messages.CHAT_BROADCAST_UNMUTE,
+                    true,
+                    targetProfile.getPlayerName(),
+                    targetProfile.getPlayerDisplay(),
+                    playerProfile.getPlayerName(),
+                    playerProfile.getPlayerDisplay()
+            ));
+        }
+
+        @CommandCompletion("@players 15 Mensagem")
+        @Syntax("%MUTE_TEMP_SYNTAX")
+        @Subcommand("%MUTE_TEMP")
+        @CommandPermission("%MUTE_TEMP_PERM")
+        @Description("%MUTE_TEMP_DESCRIPTION")
+        public void onTempMute(Player player, OnlinePlayer onlinePlayer, Integer time, String message) {
+            Player target = onlinePlayer.getPlayer();
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.MINUTE, time);
+
+            chatService.mute(target.getUniqueId(), cal.getTimeInMillis());
+
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
+
+            plugin.getServer().broadcast(plugin.getMiniMessage(
+                    Messages.CHAT_BROADCAST_TEMP_MUTE,
+                    true,
+                    targetProfile.getPlayerName(),
+                    targetProfile.getPlayerDisplay(),
+                    playerProfile.getPlayerName(),
+                    playerProfile.getPlayerDisplay(),
+                    String.valueOf(time),
+                    message
+            ));
+        }
     }
 
     static class Generic extends BaseCommand {
@@ -35,15 +180,57 @@ final class Commands {
         @Syntax("%NICKNAME_SYNTAX")
         @CommandPermission("%NICKNAME_PERM")
         @Description("%NICKNAME_DESCRIPTION")
-        public void onNickname(Player player, @Optional String nickname) {
-            if (nickname == null) {
-                chatService.clearPlayerName(player);
-                plugin.sendMiniMessages(player, Messages.NICKNAME_REMOVED);
+        @CommandCompletion("@players")
+        public void onNickname(Player player, @Optional OnlinePlayer onlinePlayer, @Optional String nickname) {
+            if (onlinePlayer == null) {
+                if (nickname == null) {
+                    chatService.clearPlayerName(player);
+                    plugin.sendMiniMessages(player, Messages.NICKNAME_REMOVED);
+                    return;
+                }
+
+                String nickNameWithColor = chatService.setPlayerDisplay(player, nickname);
+                plugin.sendMiniMessages(player, Messages.NICKNAME_UPDATED, nickNameWithColor);
                 return;
             }
 
-            String nickNameColor = chatService.setPlayerDisplay(player, nickname);
-            plugin.sendMiniMessages(player, Messages.NICKNAME_UPDATED, nickNameColor);
+            Player target = onlinePlayer.getPlayer();
+
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
+
+            if (nickname == null) {
+                chatService.clearPlayerName(target);
+                plugin.sendMiniMessages(
+                        target,
+                        Messages.NICKNAME_REMOVED_BY,
+                        playerProfile.getPlayerName(),
+                        playerProfile.getPlayerDisplay()
+                );
+                plugin.sendMiniMessages(
+                        player,
+                        Messages.NICKNAME_REMOVED_FOR,
+                        targetProfile.getPlayerName(),
+                        targetProfile.getPlayerDisplay()
+                );
+                return;
+            }
+
+            String nickNameWithColor = chatService.setPlayerDisplay(target, nickname);
+            plugin.sendMiniMessages(
+                    target,
+                    Messages.NICKNAME_UPDATED_BY,
+                    nickNameWithColor,
+                    playerProfile.getPlayerName(),
+                    playerProfile.getPlayerDisplay()
+            );
+            plugin.sendMiniMessages(
+                    player,
+                    Messages.NICKNAME_UPDATED_FOR,
+                    nickNameWithColor,
+                    targetProfile.getPlayerName(),
+                    targetProfile.getPlayerDisplay()
+            );
         }
     }
 

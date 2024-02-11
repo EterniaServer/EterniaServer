@@ -88,7 +88,7 @@ final class Services {
                 UUID playerUuid = offlinePlayer.getUniqueId();
 
                 return switch (identifierId) {
-                    case 0,1,2,4,5 -> getFromPlayerProfile(identifierId, playerUuid);
+                    case 0,1,2,4,5,6 -> getFromPlayerProfile(identifierId, playerUuid);
                     case 3 -> getFromCashBalance(identifierId, playerUuid);
                     default -> plugin.getString(Strings.INVALID_PLACEHOLDER);
                 };
@@ -102,6 +102,7 @@ final class Services {
                     case 3046195 -> 3; // cash
                     case 3175821 -> 4; // glow
                     case 197143583 -> 5; // godmode
+                    case 308210020 -> 6; // player_display
                     default -> 12;
                 };
             }
@@ -131,6 +132,7 @@ final class Services {
                     case 2 -> getAFKPlaceholder(playerProfile.isAfk());
                     case 4 -> playerProfile.getColor();
                     case 5 -> getGodModePlaceholder(playerProfile.isGod());
+                    case 6 -> playerProfile.getPlayerDisplayColor();
                     default -> plugin.getString(Strings.INVALID_PLACEHOLDER);
                 };
             }

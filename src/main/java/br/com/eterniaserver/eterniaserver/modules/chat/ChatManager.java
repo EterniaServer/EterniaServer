@@ -76,6 +76,7 @@ public class ChatManager implements Module {
 
     @Override
     public void loadCommands() {
+        EterniaLib.getCmdManager().registerCommand(new Commands.Mute(plugin, chatService));
         EterniaLib.getCmdManager().registerCommand(new Commands.Generic(plugin, chatService));
         EterniaLib.getCmdManager().registerCommand(new Commands.Chat(plugin, chatService));
     }

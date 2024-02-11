@@ -19,12 +19,26 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 
-import org.bukkit.*;
+import org.bukkit.Instrument;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Note;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.Timestamp;
+
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -41,8 +55,8 @@ final class Services {
 
         protected static final String TELL_CHANNEL_STRING = "tellchannel";
 
-        private final static String NICKNAME_COLOR_REGEX = "[^\\w#]";
-        private final static String NICKNAME_CLEAR_REGEX = "#[a-f\\\\d]{6}";
+        private final static String NICKNAME_COLOR_REGEX = "[^\\w#<>]";
+        private final static String NICKNAME_CLEAR_REGEX = "<#[a-f\\\\d]{6}>";
 
         private final Map<UUID, UUID> tellMap = new HashMap<>();
         private final Map<Integer, UUID> playerHashToUUID = new HashMap<>();
@@ -138,16 +152,30 @@ final class Services {
                 channel = defaultChannel();
             }
 
+            boolean isTellChannel = channel == tellChannel();
+            boolean isDiscordSRVChannel = channel == discordSRVChannel();
+
+            if (muteAllChannels && !isTellChannel) {
+                plugin.sendMiniMessages(player, Messages.CHAT_CHANNELS_MUTED);
+                return true;
+            }
+
             UUID uuid = player.getUniqueId();
+
+            if (isMuted(chatInfo)) {
+                plugin.sendMiniMessages(player, Messages.CHAT_ARE_MUTED, String.valueOf(secondsMutedLeft(uuid)));
+                return true;
+            }
+
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
 
-            if (channel == discordSRVChannel()) {
+            if (isDiscordSRVChannel) {
                 filter(event, playerProfile, chatInfo, component);
                 event.viewers().clear();
                 return false;
             }
 
-            if (channel == tellChannel()) {
+            if (isTellChannel) {
                 UUID targetUUID = getTellLink(uuid);
                 if (targetUUID == null) {
                     removeTellLink(uuid);
@@ -243,7 +271,7 @@ final class Services {
             }
 
             if (!channelObject.hasRange()) {
-                for (Player other : Bukkit.getOnlinePlayers()) {
+                for (Player other : plugin.getServer().getOnlinePlayers()) {
                     if (other.hasPermission(channelObject.perm())) {
                         other.sendMessage(messageComponent);
                     }
@@ -254,7 +282,7 @@ final class Services {
             boolean sendToSomeOne = false;
             World world = player.getWorld();
             Location location = player.getLocation();
-            for (Player other : Bukkit.getOnlinePlayers()) {
+            for (Player other : plugin.getServer().getOnlinePlayers()) {
                 if (channelObject.range() <= 0 || (world.equals(other.getWorld()) && other.getLocation().distanceSquared(location) <= Math.pow(channelObject.range(), 2))) {
                     sendToSomeOne = true;
                     other.sendMessage(messageComponent);
@@ -274,7 +302,7 @@ final class Services {
             UUID mentionPlayerUUID = getUUIDFromHash(sectionHashCode);
 
             if (mentionPlayerUUID != null && player.hasPermission(plugin.getString(Strings.PERM_CHAT_MENTION))) {
-                Player mentionPlayer = Bukkit.getPlayer(mentionPlayerUUID);
+                Player mentionPlayer = plugin.getServer().getPlayer(mentionPlayerUUID);
                 if (mentionPlayer != null) {
                     mentionPlayer.playNote(mentionPlayer.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.F));
                     mentionPlayer.showTitle(Title.title(
@@ -312,7 +340,7 @@ final class Services {
                     )
             );
             return component.hoverEvent(
-                    Bukkit.getItemFactory().asHoverEvent(
+                    plugin.getServer().getItemFactory().asHoverEvent(
                             itemStack,
                             UnaryOperator.identity()
                     )
@@ -349,7 +377,10 @@ final class Services {
         }
 
         private Component loadComponent(Player player, Utils.CustomPlaceholder object) {
-            Component component = plugin.parseColor(plugin.setPlaceholders(player, object.value()));
+            Component component = object.value().equals("%player_displayname%") ?
+                    player.displayName() :
+                    plugin.parseColor(plugin.setPlaceholders(player, object.value()));
+
             if (!object.hoverText().isEmpty()) {
                 component = component.hoverEvent(HoverEvent.showText(plugin.parseColor(plugin.setPlaceholders(player, object.hoverText()))));
             }
@@ -443,17 +474,41 @@ final class Services {
 
         @Override
         public boolean isMuted(UUID uuid) {
-            return false;
+            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+            return isMuted(chatInfo);
+        }
+
+        private boolean isMuted(Entities.ChatInfo chatInfo) {
+            Timestamp mutedUntil = chatInfo.getMutedUntil();
+            if (mutedUntil == null) {
+                return false;
+            }
+
+            return mutedUntil.after(new Timestamp(System.currentTimeMillis()));
         }
 
         @Override
         public int secondsMutedLeft(UUID uuid) {
-            return 0;
+            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+            return secondsMutedLeft(chatInfo);
+        }
+
+        private int secondsMutedLeft(Entities.ChatInfo chatInfo) {
+            Timestamp mutedUntil = chatInfo.getMutedUntil();
+            if (mutedUntil == null) {
+                return 0;
+            }
+
+            return (int) TimeUnit.MILLISECONDS.toSeconds(mutedUntil.getTime() - System.currentTimeMillis());
         }
 
         @Override
         public void mute(UUID uuid, long time) {
+            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
 
+            chatInfo.setMutedUntil(new Timestamp(time));
+
+            EterniaLib.getDatabase().update(Entities.ChatInfo.class, chatInfo);
         }
 
         @Override
