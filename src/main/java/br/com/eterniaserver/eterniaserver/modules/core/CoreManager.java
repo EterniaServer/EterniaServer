@@ -4,6 +4,7 @@ import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.Entity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -15,13 +16,18 @@ import br.com.eterniaserver.eterniaserver.modules.core.Commands.Inventory;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.Revision;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 
 public class CoreManager implements Module {
 
+    private final Map<String, Utils.CommandData> customCommandMap = new HashMap<>();
+
     private final EterniaServer plugin;
+
     private Services.Afk afkServices;
 
     public CoreManager(final EterniaServer plugin) {
@@ -30,7 +36,7 @@ public class CoreManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.MainConfiguration configuration = new Configurations.MainConfiguration(plugin);
+        Configurations.MainConfiguration configuration = new Configurations.MainConfiguration(plugin, customCommandMap);
 
         EterniaLib.registerConfiguration("eterniaserver", "core", configuration);
 
@@ -63,6 +69,18 @@ public class CoreManager implements Module {
 
         this.afkServices = new Services.Afk(plugin);
         EterniaServer.setGuiAPI(new Services.GUI(plugin));
+
+        if (plugin.getBoolean(Booleans.CUSTOM_COMMANDS)) {
+            customCommandMap.forEach((commandName, commandObject) -> new Utils.CustomCommand(
+                    plugin,
+                    commandName,
+                    commandObject.description(),
+                    commandObject.aliases(),
+                    commandObject.text(),
+                    commandObject.commands(),
+                    commandObject.console()
+            ));
+        }
     }
 
     @Override

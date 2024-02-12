@@ -15,6 +15,7 @@ public enum Booleans {
     MODULE_ITEM,
     MODULE_KIT,
     MODULE_TELEPORT,
+    MODULE_CHAT,
     HAS_ECONOMY_PLUGIN,
     AFK_KICK,
     INV_DROP,
@@ -25,6 +26,6 @@ public enum Booleans {
     BREEDING_LIMITER,
     ENTITY_EDITOR,
     ECONOMY_HAS_BANK,
-    MODULE_CHAT,
+    CUSTOM_COMMANDS,
 
 }

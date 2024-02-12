@@ -7,11 +7,15 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.*;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 final class Configurations {
@@ -33,8 +37,9 @@ final class Configurations {
         private final String[] messages;
 
         private final List<List<String>> stringLists;
+        private final Map<String, Utils.CommandData> commandDataMap;
 
-        protected MainConfiguration(EterniaServer plugin) {
+        protected MainConfiguration(EterniaServer plugin, Map<String, Utils.CommandData> commandDataMap) {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
             this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
@@ -44,6 +49,7 @@ final class Configurations {
             this.strings = plugin.strings();
             this.messages = plugin.messages();
             this.stringLists = plugin.stringLists();
+            this.commandDataMap = commandDataMap;
 
             NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
 
@@ -308,6 +314,7 @@ final class Configurations {
             booleans[Booleans.MODULE_CHAT.ordinal()] = inFile.getBoolean("modules.chat", true);
             booleans[Booleans.AFK_KICK.ordinal()] = inFile.getBoolean("afk.kick-if-no-perm", true);
             booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()] = inFile.getBoolean("critical-configs.has-economy-plugin", true);
+            booleans[Booleans.CUSTOM_COMMANDS.ordinal()] = inFile.getBoolean("server.custom-commands", true);
             // Integers
             integers[Integers.PLUGIN_TICKS.ordinal()] = inFile.getInt("critical-configs.plugin-ticks", 20);
             integers[Integers.AFK_TIMER.ordinal()] = inFile.getInt("afk.limit-time", 900);
@@ -331,6 +338,7 @@ final class Configurations {
             strings[Strings.PERM_FLY_OTHER.ordinal()] = inFile.getString("permissions.fly.other", "eternia.fly.other");
             strings[Strings.PERM_FLY_BYPASS.ordinal()] = inFile.getString("permissions.fly.bypass", "eternia.fly.bypass");
             strings[Strings.JOIN_NAMES.ordinal()] = inFile.getString("messages.join-names-display", "<color:#00aaaa>{0}<color:#AAAAAA>, ");
+            strings[Strings.PERM_BASE_COMMAND.ordinal()] = inFile.getString("permissions.base-command", "eternia.");
 
             // Lists
             List<String> blackedCommands = inFile.getStringList("critical-configs.blocked-commands");
@@ -339,6 +347,59 @@ final class Configurations {
             stringLists.set(Lists.PROFILE_CUSTOM_MESSAGES.ordinal(), profileMessages.isEmpty() ? List.of("<color:#aaaaaa>Saldo em C.A.S.H.<color:#555555>: <color:#00aaaa>%eterniaserver_cash%<color:#555555>.") : profileMessages);
             List<String> flyBlockedWorlds = inFile.getStringList("critical-configs.blocked-worlds-fly");
             stringLists.set(Lists.BLACKLISTED_WORLDS_FLY.ordinal(), flyBlockedWorlds.isEmpty() ? List.of("world_nether", "world_the_end") : flyBlockedWorlds);
+
+            commandDataMap.put(
+                    "discord",
+                    new Utils.CommandData(
+                            "Informa o link do discord",
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            List.of("<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#AAAAAA> Entre em nosso discord<color:#555555>: <color:#00aaaa>https://discord.gg/Qs3RxMq<color:#555555>."),
+                            false
+                    )
+            );
+            commandDataMap.put(
+                    "facebook",
+                    new Utils.CommandData(
+                            "Informa o link do facebook",
+                            new ArrayList<>(),
+                            new ArrayList<>(),
+                            List.of("<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#AAAAAA> Curta nossa página no facebook<color:#555555>: <color:#00aaaa>https://www.facebook.com/EterniaServer<color:#555555>."),
+                            false
+                    )
+            );
+
+            Map<String, Utils.CommandData> tempCustomCommandMap = new HashMap<>();
+            ConfigurationSection commandsConfig = inFile.getConfigurationSection("custom-commands");
+            if (commandsConfig != null) {
+                for (String key : commandsConfig.getKeys(false)) {
+                    tempCustomCommandMap.put(
+                            key,
+                            new Utils.CommandData(
+                                    inFile.getString("custom-commands." + key + ".description"),
+                                    inFile.getStringList("custom-commands." + key + ".aliases"),
+                                    inFile.getStringList("custom-commands." + key + ".command"),
+                                    inFile.getStringList("custom-commands." + key + ".text"),
+                                    inFile.getBoolean("custom-commands." + key + ".console")
+                            )
+                    );
+                }
+            }
+
+            if (tempCustomCommandMap.isEmpty()) {
+                tempCustomCommandMap = new HashMap<>(commandDataMap);
+            }
+
+            commandDataMap.clear();
+            commandDataMap.putAll(tempCustomCommandMap);
+
+            tempCustomCommandMap.forEach((k, v) -> {
+                outFile.set("custom-commands." + k + ".description", v.description());
+                outFile.set("custom-commands." + k + ".aliases", v.aliases());
+                outFile.set("custom-commands." + k + ".command", v.commands());
+                outFile.set("custom-commands." + k + ".text", v.text());
+                outFile.set("custom-commands." + k + ".console", v.console());
+            });
 
             // Booleans
             outFile.set("modules.spawners", booleans[Booleans.MODULE_SPAWNERS.ordinal()]);
@@ -357,6 +418,7 @@ final class Configurations {
             outFile.set("modules.chat", booleans[Booleans.MODULE_CHAT.ordinal()]);
             outFile.set("afk.kick-if-no-perm", booleans[Booleans.AFK_KICK.ordinal()]);
             outFile.set("critical-configs.has-economy-plugin", booleans[Booleans.HAS_ECONOMY_PLUGIN.ordinal()]);
+            outFile.set("server.custom-commands", booleans[Booleans.CUSTOM_COMMANDS.ordinal()]);
             // Integers
             outFile.set("critical-configs.plugin-ticks", integers[Integers.PLUGIN_TICKS.ordinal()]);
             outFile.set("afk.limit-time", integers[Integers.AFK_TIMER.ordinal()]);
@@ -378,6 +440,7 @@ final class Configurations {
             outFile.set("permissions.fly.other", strings[Strings.PERM_FLY_OTHER.ordinal()]);
             outFile.set("permissions.fly.bypass", strings[Strings.PERM_FLY_BYPASS.ordinal()]);
             outFile.set("messages.join-names-display", strings[Strings.JOIN_NAMES.ordinal()]);
+            outFile.set("permissions.base-command", strings[Strings.PERM_BASE_COMMAND.ordinal()]);
             // Lists
             outFile.set("critical-configs.blocked-commands", stringLists.get(Lists.BLACKLISTED_COMMANDS.ordinal()));
             outFile.set("mini-messages.profile.custom-messages", stringLists.get(Lists.PROFILE_CUSTOM_MESSAGES.ordinal()));
