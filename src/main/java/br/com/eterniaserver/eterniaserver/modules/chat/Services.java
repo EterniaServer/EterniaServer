@@ -74,7 +74,6 @@ final class Services {
         private boolean muteAllChannels = false;
         private int muteChannelTaskId = 0;
         private TextColor tagColor;
-        private TextColor playerColor;
 
         public Chat(EterniaServer plugin) {
             this.plugin = plugin;
@@ -83,16 +82,14 @@ final class Services {
 
         protected void updateTextColor() {
             String tagHex = plugin.getString(Strings.CHAT_DEFAULT_TAG_COLOR);
-            String playerHex = plugin.getString(Strings.CHAT_DEFAULT_PLAYER_COLOR);
 
             this.tagColor = TextColor.fromHexString(tagHex);
-            this.playerColor = TextColor.fromHexString(playerHex);
         }
 
-        protected TextColor getPlayerDefaultColor(Entities.ChatInfo chatInfo) {
+        protected TextColor getPlayerDefaultColor(Entities.ChatInfo chatInfo, Utils.ChannelObject channelObject) {
             TextColor color = chatInfo.getColor();
             if (color == null) {
-                return playerColor;
+                return TextColor.fromHexString(channelObject.channelColor());
             }
 
             return color;
@@ -267,7 +264,9 @@ final class Services {
 
             Component spaced = Component.text(" ");
             for (String section : message.split(" ")) {
-                messageComponent = messageComponent.append(spaced).append(getComponent(section, player, playerProfile, chatInfo));
+                messageComponent = messageComponent.append(spaced).append(getComponent(
+                        section, player, playerProfile, chatInfo, channelObject
+                ));
             }
 
             if (!channelObject.hasRange()) {
@@ -297,7 +296,11 @@ final class Services {
             }
         }
 
-        private Component getComponent(String section, Player player, PlayerProfile playerProfile, Entities.ChatInfo chatInfo) {
+        private Component getComponent(String section,
+                                       Player player,
+                                       PlayerProfile playerProfile,
+                                       Entities.ChatInfo chatInfo,
+                                       Utils.ChannelObject channelObject) {
             int sectionHashCode = section.toLowerCase().hashCode();
             UUID mentionPlayerUUID = getUUIDFromHash(sectionHashCode);
 
@@ -327,7 +330,7 @@ final class Services {
                 }
             }
 
-            return Component.text(section).color(getPlayerDefaultColor(chatInfo));
+            return Component.text(section).color(getPlayerDefaultColor(chatInfo, channelObject));
         }
 
         private	Component getItemComponent(String string, ItemStack itemStack) {
