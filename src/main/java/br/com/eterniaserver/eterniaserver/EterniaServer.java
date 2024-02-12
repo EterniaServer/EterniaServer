@@ -4,20 +4,35 @@ import br.com.eterniaserver.eterniaserver.api.interfaces.CashAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.ChatAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.ExtraEconomyAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
-import br.com.eterniaserver.eterniaserver.enums.*;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
+import br.com.eterniaserver.eterniaserver.enums.Doubles;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Manager;
-
 import br.com.eterniaserver.eterniaserver.modules.entity.Utils.EntityControl;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import net.milkbowl.vault.economy.Economy;
+
 import org.bstats.bukkit.Metrics;
 
 import org.bukkit.Material;
@@ -36,7 +51,19 @@ import java.util.Map;
 
 public class EterniaServer extends JavaPlugin {
 
-    private final MiniMessage miniMessage = MiniMessage.miniMessage();
+    private final MiniMessage miniMessage =  MiniMessage.builder().tags(
+            TagResolver.builder()
+                    .resolver(StandardTags.defaults())
+                    .resolver(TagResolver.resolver("a", (args, context) -> {
+                        String link = args.popOr("Invalid").value();
+                        return Tag.styling(
+                                ClickEvent.openUrl(link),
+                                HoverEvent.showText(Component.text(link).color(NamedTextColor.BLUE))
+                        );
+                    }))
+                    .build()
+            )
+            .build();
 
     private final int[] integers = new int[Integers.values().length];
     private final double[] doubles = new double[Doubles.values().length];

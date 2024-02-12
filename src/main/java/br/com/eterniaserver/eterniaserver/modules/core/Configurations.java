@@ -354,7 +354,7 @@ final class Configurations {
                             "Informa o link do discord",
                             new ArrayList<>(),
                             new ArrayList<>(),
-                            List.of("<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#AAAAAA> Entre em nosso discord<color:#555555>: <color:#00aaaa>https://discord.gg/Qs3RxMq<color:#555555>."),
+                            List.of("<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#AAAAAA> Entre em nosso discord<color:#555555>: <color:#00aaaa><a:https://discord.gg/Qs3RxMq>EterniaServer</a><color:#555555>."),
                             false
                     )
             );
@@ -364,7 +364,7 @@ final class Configurations {
                             "Informa o link do facebook",
                             new ArrayList<>(),
                             new ArrayList<>(),
-                            List.of("<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#AAAAAA> Curta nossa página no facebook<color:#555555>: <color:#00aaaa>https://www.facebook.com/EterniaServer<color:#555555>."),
+                            List.of("<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#AAAAAA> Curta nossa página no facebook<color:#555555>: <color:#00aaaa><a:https://www.facebook.com/EterniaServer>EterniaServer</a><color:#555555>."),
                             false
                     )
             );
