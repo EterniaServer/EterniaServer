@@ -70,7 +70,9 @@ public class ChatManager implements Module {
     }
 
     @Override
-    public void loadCommandsCompletions() { }
+    public void loadCommandsCompletions() {
+        EterniaLib.getCmdManager().getCommandCompletions().registerCompletion("channels", c -> craftChatService.channels);
+    }
 
     @Override
     public void loadConditions() {
