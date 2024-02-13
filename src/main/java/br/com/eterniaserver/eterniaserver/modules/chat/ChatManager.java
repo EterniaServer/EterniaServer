@@ -51,7 +51,7 @@ public class ChatManager implements Module {
         commands.saveConfiguration(true);
         configuration.saveConfiguration(true);
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        loadCommandsLocale(commands, Enums.Commands.class);
 
         try {
             Entity<ChatInfo> chatInfoEntity = new Entity<>(ChatInfo.class);

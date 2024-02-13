@@ -461,11 +461,11 @@ final class Configurations {
             craftChatService.setFilter(Pattern.compile(filter));
 
             this.craftChatService.customPlaceholdersObjectsMap.put("prefix", new Utils.CustomPlaceholder("eternia.chat.default", "%vault_prefix%", "", "", 3, false));
-            this.craftChatService.customPlaceholdersObjectsMap.put("player", new Utils.CustomPlaceholder("eternia.chat.default", "%player_displayname% ", "<color:#AAAAAA>Nome real<color:#555555>: <color:#00AAAA>%player_name%<color:#555555>.", "/profile %player_name%", 4, false));
-            this.craftChatService.customPlaceholdersObjectsMap.put("separator", new Utils.CustomPlaceholder("eternia.chat.default", " <color:#555555>➤ ", "", "", 6, true));
+            this.craftChatService.customPlaceholdersObjectsMap.put("player", new Utils.CustomPlaceholder("eternia.chat.default", "%player_displayname%", "<color:#AAAAAA>Nome real<color:#555555>: <color:#00AAAA>%player_name%<color:#555555>.", "/profile %player_name%", 4, false));
+            this.craftChatService.customPlaceholdersObjectsMap.put("separator", new Utils.CustomPlaceholder("eternia.chat.default", " <color:#555555>➤", "", "", 6, true));
             this.craftChatService.customPlaceholdersObjectsMap.put("suffix", new Utils.CustomPlaceholder("eternia.chat.default", "%vault_suffix% ", "<color:#AAAAAA>Clique para enviar uma mensagem<color:#555555>.", "/msg %player_name% ", 2, false));
             this.craftChatService.customPlaceholdersObjectsMap.put("clan", new Utils.CustomPlaceholder("eternia.chat.default", "%simpleclans_tag_label%", "<color:#555555>Clan<color:#555555>: <color:#00AAAA>%simpleclans_clan_name%<color:#555555>.", "", 1, false));
-            this.craftChatService.customPlaceholdersObjectsMap.put("global", new Utils.CustomPlaceholder("eternia.chat.global", "<color:#555555>[<color:#ffffff>G<color:#555555>] ", "<color:#AAAAAA>Clique para entrar no <color:#555555>Global<color:#555555>.", "/global ", 0, true));
+            this.craftChatService.customPlaceholdersObjectsMap.put("global", new Utils.CustomPlaceholder("eternia.chat.global", "<color:#555555>[<color:#ffffff>G<color:#555555>]", "<color:#AAAAAA>Clique para entrar no <color:#ffffff>Global<color:#555555>.", "/global ", 0, true));
             this.craftChatService.customPlaceholdersObjectsMap.put("marry", new Utils.CustomPlaceholder("eternia.chat.default", "%eterniamarriage_statusheart%", "<color:#AAAAAA>Casado(a) com<color:#555555>: <color:#00AAAA>%eterniamarriage_partner%<color:#555555>.", "", 5, false));
 
             Map<String, Utils.CustomPlaceholder> tempCustomPlaceholdersMap = new HashMap<>();
