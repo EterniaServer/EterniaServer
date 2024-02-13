@@ -15,6 +15,11 @@ import br.com.eterniaserver.eterniaserver.modules.core.Commands.GodMode;
 import br.com.eterniaserver.eterniaserver.modules.core.Commands.Inventory;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.Revision;
+import br.com.eterniaserver.eterniaserver.modules.core.Configurations.MessagesConfiguration;
+import br.com.eterniaserver.eterniaserver.modules.core.Configurations.CommandsConfiguration;
+import br.com.eterniaserver.eterniaserver.modules.core.Configurations.MainConfiguration;
+import br.com.eterniaserver.eterniaserver.modules.core.Utils.CommandData;
+import br.com.eterniaserver.eterniaserver.modules.core.Utils.CustomCommand;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +29,11 @@ import java.util.logging.Level;
 
 public class CoreManager implements Module {
 
-    private final Map<String, Utils.CommandData> customCommandMap = new HashMap<>();
+    private final Map<String, CommandData> customCommandMap = new HashMap<>();
 
     private final EterniaServer plugin;
 
-    private Services.Afk afkServices;
+    private Services.AfkService afkServices;
 
     public CoreManager(final EterniaServer plugin) {
         this.plugin = plugin;
@@ -36,15 +41,25 @@ public class CoreManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.MainConfiguration configuration = new Configurations.MainConfiguration(plugin, customCommandMap);
+        MessagesConfiguration messages = new MessagesConfiguration(plugin);
+        CommandsConfiguration commands = new CommandsConfiguration();
+        MainConfiguration configuration = new MainConfiguration(plugin, customCommandMap);
 
         EterniaLib.registerConfiguration("eterniaserver", "core", configuration);
+        EterniaLib.registerConfiguration("eterniaserver", "core_messages", messages);
+        EterniaLib.registerConfiguration("eterniaserver", "core_commands", commands);
 
+        messages.executeConfig();
         configuration.executeConfig();
+
+        commands.executeCritical();
         configuration.executeCritical();
+
+        messages.saveConfiguration(true);
+        commands.saveConfiguration(true);
         configuration.saveConfiguration(true);
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        loadCommandsLocale(commands, Enums.Commands.class);
 
         try {
             Entity<Revision> revisionEntity = new Entity<>(Revision.class);
@@ -67,11 +82,11 @@ public class CoreManager implements Module {
         List<PlayerProfile> playerProfiles = EterniaLib.getDatabase().listAll(PlayerProfile.class);
         this.plugin.getLogger().log(Level.INFO, "Core module: {0} player profiles loaded", playerProfiles.size());
 
-        this.afkServices = new Services.Afk(plugin);
+        this.afkServices = new Services.AfkService(plugin);
         EterniaServer.setGuiAPI(new Services.GUI(plugin));
 
         if (plugin.getBoolean(Booleans.CUSTOM_COMMANDS)) {
-            customCommandMap.forEach((commandName, commandObject) -> new Utils.CustomCommand(
+            customCommandMap.forEach((commandName, commandObject) -> new CustomCommand(
                     plugin,
                     commandName,
                     commandObject.description(),

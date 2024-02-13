@@ -23,7 +23,7 @@ final class Handlers implements Listener {
 
     private final EterniaServer plugin;
 
-    public Handlers(final EterniaServer plugin) {
+    public Handlers(EterniaServer plugin) {
         this.plugin = plugin;
     }
 

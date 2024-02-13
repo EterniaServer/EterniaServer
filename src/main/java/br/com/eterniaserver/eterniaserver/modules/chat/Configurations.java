@@ -8,6 +8,8 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.chat.Services.CraftChat;
+import br.com.eterniaserver.eterniaserver.modules.chat.Utils.ChannelObject;
+import br.com.eterniaserver.eterniaserver.modules.chat.Utils.CustomPlaceholder;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -408,12 +410,20 @@ final class Configurations {
             craftChatService.customPlaceholdersObjectsMap.clear();
             craftChatService.channels.clear();
 
-            Map<Integer, Utils.ChannelObject> tempChannelMap = new HashMap<>();
-            tempChannelMap.put("global".hashCode(), new Utils.ChannelObject(
+            Map<Integer, ChannelObject> tempChannelMap = new HashMap<>();
+            tempChannelMap.put("global".hashCode(), new ChannelObject(
                     "{global}{clan}{suffix}{prefix}{player}{marry}{separator}",
                     "global",
                     "eternia.chat.global",
                     "<color:#ffffff>",
+                    false,
+                    0
+            ));
+            tempChannelMap.put("local".hashCode(), new ChannelObject(
+                    "{local}{prefix}{player}{separator}",
+                    "local",
+                    "eternia.chat.local",
+                    "<color:#ffff55>",
                     false,
                     0
             ));
@@ -423,7 +433,7 @@ final class Configurations {
             if (configurationSection != null) {
                 lista = configurationSection.getKeys(false);
                 for (String channel : lista) {
-                    Utils.ChannelObject channelObject = new Utils.ChannelObject(
+                    ChannelObject channelObject = new ChannelObject(
                             inFile.getString("channels." + channel + ".format", "{player}"),
                             channel,
                             inFile.getString("channels." + channel + ".perm", "eternia.chat.default"),
@@ -440,7 +450,7 @@ final class Configurations {
             }
 
             if (lista == null || lista.isEmpty()) {
-                lista = Set.of("global");
+                lista = Set.of("global", "local");
             }
 
             this.craftChatService.channels.addAll(lista);
@@ -460,15 +470,16 @@ final class Configurations {
 
             craftChatService.setFilter(Pattern.compile(filter));
 
-            this.craftChatService.customPlaceholdersObjectsMap.put("prefix", new Utils.CustomPlaceholder("eternia.chat.default", "%vault_prefix%", "", "", 3, false));
-            this.craftChatService.customPlaceholdersObjectsMap.put("player", new Utils.CustomPlaceholder("eternia.chat.default", "%player_displayname%", "<color:#AAAAAA>Nome real<color:#555555>: <color:#00AAAA>%player_name%<color:#555555>.", "/profile %player_name%", 4, false));
-            this.craftChatService.customPlaceholdersObjectsMap.put("separator", new Utils.CustomPlaceholder("eternia.chat.default", " <color:#555555>➤", "", "", 6, true));
-            this.craftChatService.customPlaceholdersObjectsMap.put("suffix", new Utils.CustomPlaceholder("eternia.chat.default", "%vault_suffix% ", "<color:#AAAAAA>Clique para enviar uma mensagem<color:#555555>.", "/msg %player_name% ", 2, false));
-            this.craftChatService.customPlaceholdersObjectsMap.put("clan", new Utils.CustomPlaceholder("eternia.chat.default", "%simpleclans_tag_label%", "<color:#555555>Clan<color:#555555>: <color:#00AAAA>%simpleclans_clan_name%<color:#555555>.", "", 1, false));
-            this.craftChatService.customPlaceholdersObjectsMap.put("global", new Utils.CustomPlaceholder("eternia.chat.global", "<color:#555555>[<color:#ffffff>G<color:#555555>]", "<color:#AAAAAA>Clique para entrar no <color:#ffffff>Global<color:#555555>.", "/global ", 0, true));
-            this.craftChatService.customPlaceholdersObjectsMap.put("marry", new Utils.CustomPlaceholder("eternia.chat.default", "%eterniamarriage_statusheart%", "<color:#AAAAAA>Casado(a) com<color:#555555>: <color:#00AAAA>%eterniamarriage_partner%<color:#555555>.", "", 5, false));
+            this.craftChatService.customPlaceholdersObjectsMap.put("prefix", new CustomPlaceholder("eternia.chat.default", "%vault_prefix%", "", "", 3, false));
+            this.craftChatService.customPlaceholdersObjectsMap.put("player", new CustomPlaceholder("eternia.chat.default", "%player_displayname%", "<color:#AAAAAA>Nome real<color:#555555>: <color:#00AAAA>%player_name%<color:#555555>.", "/profile %player_name%", 4, false));
+            this.craftChatService.customPlaceholdersObjectsMap.put("separator", new CustomPlaceholder("eternia.chat.default", " <color:#555555>➤", "", "", 6, true));
+            this.craftChatService.customPlaceholdersObjectsMap.put("suffix", new CustomPlaceholder("eternia.chat.default", "%vault_suffix% ", "<color:#AAAAAA>Clique para enviar uma mensagem<color:#555555>.", "/msg %player_name% ", 2, false));
+            this.craftChatService.customPlaceholdersObjectsMap.put("clan", new CustomPlaceholder("eternia.chat.default", "%simpleclans_tag_label%", "<color:#555555>Clan<color:#555555>: <color:#00AAAA>%simpleclans_clan_name%<color:#555555>.", "", 1, false));
+            this.craftChatService.customPlaceholdersObjectsMap.put("global", new CustomPlaceholder("eternia.chat.global", "<color:#555555>[<color:#ffffff>G<color:#555555>]", "<color:#AAAAAA>Clique para entrar no <color:#ffffff>Global<color:#555555>.", "/global", 0, true));
+            this.craftChatService.customPlaceholdersObjectsMap.put("local", new CustomPlaceholder("eternia.chat.local", "<color:#555555>[<color:#ffff55>L<color:#555555>]", "<color:#AAAAAA>Clique para entrar no <color:#ffff55>Local<color:#555555>.", "/local", 0, true));
+            this.craftChatService.customPlaceholdersObjectsMap.put("marry", new CustomPlaceholder("eternia.chat.default", "%eterniamarriage_statusheart%", "<color:#AAAAAA>Casado(a) com<color:#555555>: <color:#00AAAA>%eterniamarriage_partner%<color:#555555>.", "", 5, false));
 
-            Map<String, Utils.CustomPlaceholder> tempCustomPlaceholdersMap = new HashMap<>();
+            Map<String, CustomPlaceholder> tempCustomPlaceholdersMap = new HashMap<>();
             configurationSection = inFile.getConfigurationSection("placeholders");
             if (configurationSection != null) {
                 for (String key : configurationSection.getKeys(false)) {

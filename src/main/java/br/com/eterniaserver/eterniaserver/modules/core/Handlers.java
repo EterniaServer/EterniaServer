@@ -1,11 +1,10 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
-import br.com.eterniaserver.eterniaserver.modules.core.Services.Afk;
+import br.com.eterniaserver.eterniaserver.modules.core.Services.AfkService;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -33,20 +32,18 @@ final class Handlers implements Listener {
     private final EterniaServer plugin;
     private final Component serverMOTD;
 
-    private final Afk afkServices;
-    private final DatabaseInterface databaseInterface;
+    private final AfkService afkServices;
 
-    public Handlers(final EterniaServer plugin, Afk afkServices) {
+    public Handlers(EterniaServer plugin, AfkService afkServices) {
         this.plugin = plugin;
         this.afkServices = afkServices;
-        this.databaseInterface = EterniaLib.getDatabase();
         this.serverMOTD = plugin.parseColor(plugin.getString(Strings.MINI_MESSAGES_SERVER_SERVER_LIST));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
             event.setCancelled(playerProfile.isGod());
         }
     }
@@ -54,7 +51,7 @@ final class Handlers implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player damager && event.getEntity() instanceof Player) {
-            PlayerProfile damagerProfile = databaseInterface.get(PlayerProfile.class, damager.getUniqueId());
+            PlayerProfile damagerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, damager.getUniqueId());
             damagerProfile.setPvpLastJoin(System.currentTimeMillis());
             damagerProfile.setOnPvP(true);
             plugin.sendMiniMessages(damager, Messages.ENTERED_PVP);
@@ -71,7 +68,7 @@ final class Handlers implements Listener {
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
         String playerName = event.getName();
         UUID uuid = event.getUniqueId();
-        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, uuid);
+        PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
 
         if (playerProfile.getUuid() == null) {
             playerProfile.setPlayerName(playerName);
@@ -81,17 +78,17 @@ final class Handlers implements Listener {
             playerProfile.setFirstJoin(new Timestamp(System.currentTimeMillis()));
             playerProfile.setLastJoin(new Timestamp(System.currentTimeMillis()));
 
-            databaseInterface.insert(PlayerProfile.class, playerProfile);
+            EterniaLib.getDatabase().insert(PlayerProfile.class, playerProfile);
         } else {
             playerProfile.setLastJoin(new Timestamp(System.currentTimeMillis()));
-            databaseInterface.update(PlayerProfile.class, playerProfile);
+            EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+        PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
         playerProfile.setEnterMillis(System.currentTimeMillis());
     }
@@ -99,13 +96,13 @@ final class Handlers implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogout(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+        PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
         int minutesPlayed = (int) TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - playerProfile.getEnterMillis());
 
         playerProfile.setPlayedMinutes(playerProfile.getPlayedMinutes() + minutesPlayed);
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> databaseInterface.update(PlayerProfile.class, playerProfile));
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile));
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.QUIT);
 
@@ -145,7 +142,7 @@ final class Handlers implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onAsyncChatEvent(AsyncChatEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+        PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.CHAT);
     }
@@ -153,7 +150,7 @@ final class Handlers implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+        PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.INTERACT);
     }
@@ -165,7 +162,7 @@ final class Handlers implements Listener {
         }
 
         Player player = event.getPlayer();
-        PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+        PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
         afkServices.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.MOVE);
     }
@@ -174,9 +171,7 @@ final class Handlers implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        Entities.PlayerProfile playerProfile = EterniaLib.getDatabase().get(
-                Entities.PlayerProfile.class, player.getUniqueId()
-        );
+        PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
         if (!player.getName().equals(playerProfile.getPlayerName())) {
             playerProfile.setPlayerName(player.getName());

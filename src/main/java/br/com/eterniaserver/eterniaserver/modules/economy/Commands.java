@@ -5,7 +5,6 @@ import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eternialib.database.dtos.SearchField;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.dtos.BalanceDTO;
@@ -19,8 +18,12 @@ import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.modules.core.Utils;
 import br.com.eterniaserver.eterniaserver.modules.economy.Utils.AffiliateCommand;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankMember;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankBalance;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,11 +40,9 @@ final class Commands {
     static class EconomyGeneric extends BaseCommand {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
         public EconomyGeneric(EterniaServer plugin) {
             this.plugin = plugin;
-            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Default
@@ -88,7 +89,7 @@ final class Commands {
                 UUID uuid = ecoBalance.playerUUID();
                 double balance = ecoBalance.balance();
 
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, uuid);
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
 
                 plugin.sendMiniMessages(
                         commandSender,
@@ -133,7 +134,7 @@ final class Commands {
                 target = onlineTarget.getPlayer();
             }
 
-            PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
             double value = EterniaServer.getEconomyAPI().getBalance(target);
 
             plugin.sendMiniMessages(
@@ -163,8 +164,8 @@ final class Commands {
                 return;
             }
 
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
-            PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
             if (!EterniaServer.getEconomyAPI().has(player, value)) {
                 plugin.sendMiniMessages(player, Messages.ECO_INSUFFICIENT_BALANCE);
@@ -204,7 +205,7 @@ final class Commands {
                 return;
             }
 
-            PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
             EterniaServer.getEconomyAPI().depositPlayer(target, value);
 
@@ -240,7 +241,7 @@ final class Commands {
                 return;
             }
 
-            PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
             if (!EterniaServer.getEconomyAPI().has(target, value)) {
                 plugin.sendMiniMessages(commandSender, Messages.ECO_INSUFFICIENT_BALANCE);
@@ -273,11 +274,9 @@ final class Commands {
     static class EconomyBank extends BaseCommand {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
         public EconomyBank(EterniaServer plugin) {
             this.plugin = plugin;
-            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Default
@@ -370,19 +369,19 @@ final class Commands {
             }
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                List<Entities.BankMember> bankMembers = databaseInterface.findAllBy(
-                        Entities.BankMember.class,
+                List<BankMember> bankMembers = EterniaLib.getDatabase().findAllBy(
+                        BankMember.class,
                         "uuid",
                         player.getUniqueId()
                 );
-                for (Entities.BankMember bankMember : bankMembers) {
+                for (BankMember bankMember : bankMembers) {
                     if (Enums.BankRole.OWNER.name().equals(bankMember.getRole())) {
                         plugin.sendMiniMessages(player, Messages.ECO_BANK_ALREADY_HAS_BANK, bankName);
                         return;
                     }
                 }
 
-                Entities.BankBalance checkBank = databaseInterface.get(Entities.BankBalance.class, bankName);
+                BankBalance checkBank = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
                 if (checkBank != null && checkBank.getName() != null) {
                     plugin.sendMiniMessages(player, Messages.ECO_BANK_ALREADY_EXISTS, bankName);
@@ -392,7 +391,7 @@ final class Commands {
                 EterniaServer.getEconomyAPI().withdrawPlayer(player, creationCost);
                 EterniaServer.getEconomyAPI().createBank(bankName, player);
 
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
                 plugin.sendMiniMessages(player, Messages.ECO_BANK_CREATED, bankName);
 
@@ -414,7 +413,7 @@ final class Commands {
         @CommandPermission("%ECONOMY_BANK_DELETE_PERM")
         public void onBankDelete(Player player, String bankName) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+                BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
                 if (bankBalance == null || bankBalance.getName() == null) {
                     plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
@@ -423,8 +422,8 @@ final class Commands {
 
                 SearchField bankNameSearch = new SearchField("bankName", bankName);
                 SearchField uuidSearch = new SearchField("uuid", player.getUniqueId());
-                Entities.BankMember bankMember = databaseInterface.findBy(
-                        Entities.BankMember.class,
+                BankMember bankMember = EterniaLib.getDatabase().findBy(
+                        BankMember.class,
                         bankNameSearch,
                         uuidSearch
                 );
@@ -442,7 +441,7 @@ final class Commands {
                 EterniaServer.getEconomyAPI().depositPlayer(player, bankBalance.getBalance());
                 EterniaServer.getEconomyAPI().deleteBank(bankName);
 
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
                 plugin.sendMiniMessages(player, Messages.ECO_BANK_DELETED, bankName);
 
@@ -462,8 +461,8 @@ final class Commands {
         @CommandPermission("%ECONOMY_BANK_MY_BANKS_PERM")
         public void onBankMyBanks(Player player) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                List<Entities.BankMember> bankMembers = databaseInterface.findAllBy(
-                        Entities.BankMember.class,
+                List<BankMember> bankMembers = EterniaLib.getDatabase().findAllBy(
+                        BankMember.class,
                         "uuid",
                         player.getUniqueId()
                 );
@@ -475,7 +474,7 @@ final class Commands {
 
                 plugin.sendMiniMessages(player, Messages.ECO_BANK_MY_BANKS_TITLE);
 
-                for (Entities.BankMember bankMember : bankMembers) {
+                for (BankMember bankMember : bankMembers) {
                     plugin.sendMiniMessages(
                             player,
                             Messages.ECO_BANK_MY_BANKS_LIST,
@@ -494,7 +493,7 @@ final class Commands {
         @CommandPermission("%ECONOMY_BANK_INFO_PERM")
         public void onBankInfo(Player player, String bankName) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+                BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
                 if (bankBalance == null || bankBalance.getName() == null) {
                     plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
@@ -503,8 +502,8 @@ final class Commands {
 
                 SearchField bankNameSearch = new SearchField("bankName", bankName);
                 SearchField uuidSearch = new SearchField("uuid", player.getUniqueId());
-                Entities.BankMember bankMember = databaseInterface.findBy(
-                        Entities.BankMember.class,
+                BankMember bankMember = EterniaLib.getDatabase().findBy(
+                        BankMember.class,
                         bankNameSearch,
                         uuidSearch
                 );
@@ -521,7 +520,7 @@ final class Commands {
                 List<BankMemberDTO> bankMembers = EterniaServer.getExtraEconomyAPI().getBankMembers(bankName);
 
                 for (BankMemberDTO member : bankMembers) {
-                    PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, member.playerUUID());
+                    PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, member.playerUUID());
 
                     plugin.sendMiniMessages(
                             player,
@@ -552,7 +551,7 @@ final class Commands {
             }
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+                BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
                 if (bankBalance == null || bankBalance.getName() == null) {
                     plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
                     return;
@@ -560,8 +559,8 @@ final class Commands {
 
                 SearchField bankNameSearch = new SearchField("bankName", bankName);
                 SearchField uuidSearch = new SearchField("uuid", player.getUniqueId());
-                Entities.BankMember bankMember = databaseInterface.findBy(
-                        Entities.BankMember.class,
+                BankMember bankMember = EterniaLib.getDatabase().findBy(
+                        BankMember.class,
                         bankNameSearch,
                         uuidSearch
                 );
@@ -595,7 +594,7 @@ final class Commands {
             }
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+                BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
                 if (bankBalance == null || bankBalance.getName() == null) {
                     plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
                     return;
@@ -603,8 +602,8 @@ final class Commands {
 
                 SearchField bankNameSearch = new SearchField("bankName", bankName);
                 SearchField uuidSearch = new SearchField("uuid", player.getUniqueId());
-                Entities.BankMember bankMember = databaseInterface.findBy(
-                        Entities.BankMember.class,
+                BankMember bankMember = EterniaLib.getDatabase().findBy(
+                        BankMember.class,
                         bankNameSearch,
                         uuidSearch
                 );
@@ -645,7 +644,7 @@ final class Commands {
             Player target = onlineTarget.getPlayer();
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+                BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
                 if (bankBalance == null || bankBalance.getName() == null) {
                     plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
                     return;
@@ -653,8 +652,8 @@ final class Commands {
 
                 SearchField bankNameSearch = new SearchField("bankName", bankName);
                 SearchField uuidSearch = new SearchField("uuid", player.getUniqueId());
-                Entities.BankMember bankMember = databaseInterface.findBy(
-                        Entities.BankMember.class,
+                BankMember bankMember = EterniaLib.getDatabase().findBy(
+                        BankMember.class,
                         bankNameSearch,
                         uuidSearch
                 );
@@ -670,13 +669,13 @@ final class Commands {
                 }
 
                 SearchField targetUuidSearch = new SearchField("uuid", target.getUniqueId());
-                Entities.BankMember targetBankMember = databaseInterface.findBy(
-                        Entities.BankMember.class,
+                BankMember targetBankMember = EterniaLib.getDatabase().findBy(
+                        BankMember.class,
                         bankNameSearch,
                         targetUuidSearch
                 );
 
-                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 if (targetBankMember == null || targetBankMember.getBankName() == null) {
                     plugin.sendMiniMessages(
@@ -700,9 +699,9 @@ final class Commands {
                 }
 
                 targetBankMember.setRole(role);
-                databaseInterface.update(Entities.BankMember.class, targetBankMember);
+                EterniaLib.getDatabase().update(BankMember.class, targetBankMember);
 
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
                 plugin.sendMiniMessages(
                         player,
@@ -733,7 +732,7 @@ final class Commands {
             Player target = onlineTarget.getPlayer();
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+                BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
                 if (bankBalance == null || bankBalance.getName() == null) {
                     plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
                     return;
@@ -741,8 +740,8 @@ final class Commands {
 
                 SearchField bankNameSearch = new SearchField("bankName", bankName);
                 SearchField uuidSearch = new SearchField("uuid", player.getUniqueId());
-                Entities.BankMember bankMember = databaseInterface.findBy(
-                        Entities.BankMember.class,
+                BankMember bankMember = EterniaLib.getDatabase().findBy(
+                        BankMember.class,
                         bankNameSearch,
                         uuidSearch
                 );
@@ -753,13 +752,13 @@ final class Commands {
                 }
 
                 SearchField targetUuidSearch = new SearchField("uuid", target.getUniqueId());
-                Entities.BankMember targetBankMember = databaseInterface.findBy(
-                        Entities.BankMember.class,
+                BankMember targetBankMember = EterniaLib.getDatabase().findBy(
+                        BankMember.class,
                         bankNameSearch,
                         targetUuidSearch
                 );
 
-                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 if (targetBankMember == null || targetBankMember.getBankName() == null) {
                     plugin.sendMiniMessages(
@@ -772,7 +771,7 @@ final class Commands {
                     return;
                 }
 
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
                 plugin.sendMiniMessages(
                         player,
                         Messages.ECO_BANK_AFFILIATE_REQUEST,

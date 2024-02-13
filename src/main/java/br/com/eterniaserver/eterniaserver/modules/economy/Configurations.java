@@ -16,18 +16,183 @@ final class Configurations {
     private Configurations() {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
-
-    static class EconomyConfiguration implements ReloadableConfiguration {
-
-        private final EterniaServer plugin;
-
-        private final CommandLocale[] commandsLocalesArray;
+    static class CommandsConfiguration implements ReloadableConfiguration {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        public EconomyConfiguration(EterniaServer plugin) {
+        private final CommandLocale[] commandsLocalesArray;
+
+        public CommandsConfiguration() {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
             this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.ECONOMY_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.ECONOMY_COMMANDS_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.BLOCKED;
+        }
+
+        @Override
+        public void executeConfig() { }
+
+        @Override
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.ECONOMY, new CommandLocale(
+                    "money",
+                    " <página>",
+                    " Ajuda para o sistema monetário",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BALTOP, new CommandLocale(
+                    "baltop|balancetop",
+                    " <página>",
+                    " Mostre a lista de jogadores mais ricos do servidor",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BALANCE, new CommandLocale(
+                    "saldo|balance|bal",
+                    " <jogador>",
+                    " Verifique o seu saldo ou o saldo de outro jogador",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_PAY, new CommandLocale(
+                    "pagar|pay",
+                    " <jogador> <quantia>",
+                    " Pague um jogador",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_TAKE, new CommandLocale(
+                    "take|retirar",
+                    " <jogador> <quantia>",
+                    " Retire uma quantia do saldo de um jogador",
+                    "eternia.economy.admin",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_GIVE, new CommandLocale(
+                    "give|dar",
+                    " <jogador> <quantia>",
+                    " Dê uma quantia para um jogador",
+                    "eternia.economy.admin",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK, new CommandLocale(
+                    "banco|bank",
+                    " <página>",
+                    " Ajuda para o sistema bancário",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_LIST, new CommandLocale(
+                    "list|listar",
+                    " <página>",
+                    " Lista os bancos do servidor",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_INFO, new CommandLocale(
+                    "info",
+                    " <banco>",
+                    " Verifique as informações de um banco",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_CREATE, new CommandLocale(
+                    "criar|create",
+                    " <banco>",
+                    " Crie um banco",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_DELETE, new CommandLocale(
+                    "deletar|delete",
+                    " <banco>",
+                    " Deleta um banco que você é dono",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_MY_BANKS, new CommandLocale(
+                    "meus|my",
+                    " <página>",
+                    " Lista os bancos que você é membro",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_DEPOSIT, new CommandLocale(
+                    "depositar|deposit",
+                    " <quantia>",
+                    " Deposite uma quantia no banco",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_WITHDRAW, new CommandLocale(
+                    "sacar|withdraw",
+                    " <quantia>",
+                    " Saque uma quantia do banco",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_CHANGE_ROLE, new CommandLocale(
+                    "cargo|role",
+                    " <jogador> <cargo>",
+                    " Mude o cargo de um membro do banco",
+                    "eternia.economy.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ECONOMY_BANK_AFFILIATE, new CommandLocale(
+                    "afiliar|affiliate",
+                    " <banco> <jogador>",
+                    " Afiliar-se a um banco",
+                    "eternia.economy.user",
+                    null
+            ));
+        }
+
+    }
+
+    static class MessagesConfiguration implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        public MessagesConfiguration(EterniaServer plugin) {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
             this.plugin = plugin;
@@ -50,7 +215,7 @@ final class Configurations {
 
         @Override
         public String getFilePath() {
-            return Constants.ECONOMY_CONFIG_FILE_PATH;
+            return Constants.ECONOMY_MESSAGES_FILE_PATH;
         }
 
         @Override
@@ -60,7 +225,7 @@ final class Configurations {
 
         @Override
         public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
+            return new CommandLocale[0];
         }
 
         @Override
@@ -70,11 +235,6 @@ final class Configurations {
 
         @Override
         public void executeConfig() {
-            String[] strings = plugin.strings();
-            int[] integers = plugin.integers();
-            boolean[] booleans = plugin.booleans();
-            double[] doubles = plugin.doubles();
-
             addMessage(Messages.ECO_PAGE_LIMIT,
                     "Escolha uma página entre 1 e <color:#00aaaa>{0}<color:#555555>.",
                     "quantidade de páginas"
@@ -277,7 +437,6 @@ final class Configurations {
                     "apelido do jogador",
                     "nome do banco"
             );
-
             addMessage(Messages.ECO_BANK_INFO_TITLE,
                     "Informações do Banco <color:#00aaaa>{0}<color:#555555>.",
                     "nome do banco"
@@ -294,6 +453,70 @@ final class Configurations {
                     "<color:#aaaaaa>Membro<color:#555555>: <color:#00aaaa>{1} <color:#aaaaaa>Cargo<color:#555555>: <color:#00aaaa>{2}<color:#555555>.",
                     "membros do banco"
             );
+        }
+
+        @Override
+        public void executeCritical() { }
+
+    }
+
+    static class EconomyConfiguration implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
+
+        private final CommandLocale[] commandsLocalesArray;
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        public EconomyConfiguration(EterniaServer plugin) {
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.plugin = plugin;
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.ECONOMY_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.ECONOMY_CONFIG_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return plugin.messages();
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
+            String[] strings = plugin.strings();
+            int[] integers = plugin.integers();
+            boolean[] booleans = plugin.booleans();
+            double[] doubles = plugin.doubles();
 
             integers[Integers.ECONOMY_COIN_DIGITS.ordinal()] = inFile.getInt("eco.digits", 2);
             integers[Integers.ECONOMY_BALANCE_TOP_SIZE.ordinal()] = inFile.getInt("eco.balance-top.size", 30);
@@ -343,120 +566,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            addCommandLocale(Enums.Commands.ECONOMY, new CommandLocale(
-                    "money",
-                    " <página>",
-                    " Ajuda para o sistema monetário",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BALTOP, new CommandLocale(
-                    "baltop|balancetop",
-                    " <página>",
-                    " Mostre a lista de jogadores mais ricos do servidor",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BALANCE, new CommandLocale(
-                    "saldo|balance|bal",
-                    " <jogador>",
-                    " Verifique o seu saldo ou o saldo de outro jogador",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_PAY, new CommandLocale(
-                    "pagar|pay",
-                    " <jogador> <quantia>",
-                    " Pague um jogador",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_TAKE, new CommandLocale(
-                    "take|retirar",
-                    " <jogador> <quantia>",
-                    " Retire uma quantia do saldo de um jogador",
-                    "eternia.economy.admin",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_GIVE, new CommandLocale(
-                    "give|dar",
-                    " <jogador> <quantia>",
-                    " Dê uma quantia para um jogador",
-                    "eternia.economy.admin",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK, new CommandLocale(
-                    "banco|bank",
-                    " <página>",
-                    " Ajuda para o sistema bancário",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_LIST, new CommandLocale(
-                    "list|listar",
-                    " <página>",
-                    " Lista os bancos do servidor",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_INFO, new CommandLocale(
-                    "info",
-                    " <banco>",
-                    " Verifique as informações de um banco",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_CREATE, new CommandLocale(
-                    "criar|create",
-                    " <banco>",
-                    " Crie um banco",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_DELETE, new CommandLocale(
-                    "deletar|delete",
-                    " <banco>",
-                    " Deleta um banco que você é dono",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_MY_BANKS, new CommandLocale(
-                    "meus|my",
-                    " <página>",
-                    " Lista os bancos que você é membro",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_DEPOSIT, new CommandLocale(
-                    "depositar|deposit",
-                    " <quantia>",
-                    " Deposite uma quantia no banco",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_WITHDRAW, new CommandLocale(
-                    "sacar|withdraw",
-                    " <quantia>",
-                    " Saque uma quantia do banco",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_CHANGE_ROLE, new CommandLocale(
-                    "cargo|role",
-                    " <jogador> <cargo>",
-                    " Mude o cargo de um membro do banco",
-                    "eternia.economy.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ECONOMY_BANK_AFFILIATE, new CommandLocale(
-                    "afiliar|affiliate",
-                    " <banco> <jogador>",
-                    " Afiliar-se a um banco",
-                    "eternia.economy.user",
-                    null
-            ));
-        }
+        public void executeCritical() { }
     }
 
 }

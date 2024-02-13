@@ -10,7 +10,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
-import br.com.eterniaserver.eterniaserver.modules.core.Services.Afk;
+import br.com.eterniaserver.eterniaserver.modules.core.Services.AfkService;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,9 +29,9 @@ final class Schedules {
 
         private final EterniaServer plugin;
         private final DatabaseInterface database;
-        private final Afk afkServices;
+        private final AfkService afkServices;
 
-        public MainTick(final EterniaServer plugin, final Services.Afk afkServices) {
+        public MainTick(final EterniaServer plugin, final AfkService afkServices) {
             this.plugin = plugin;
             this.afkServices = afkServices;
             this.database = EterniaLib.getDatabase();
