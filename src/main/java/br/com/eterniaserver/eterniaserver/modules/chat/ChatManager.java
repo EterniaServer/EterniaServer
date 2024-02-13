@@ -6,6 +6,11 @@ import br.com.eterniaserver.eternialib.database.Entity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.Module;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.modules.chat.Configurations.ChatConfiguration;
+import br.com.eterniaserver.eterniaserver.modules.chat.Configurations.ChatCommand;
+import br.com.eterniaserver.eterniaserver.modules.chat.Configurations.ChatMessages;
+import br.com.eterniaserver.eterniaserver.modules.chat.Configurations.ChatChannels;
+import br.com.eterniaserver.eterniaserver.modules.chat.Entities.ChatInfo;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -13,52 +18,64 @@ import java.util.logging.Level;
 public class ChatManager implements Module {
 
     private final EterniaServer plugin;
-    private final Services.Chat chatService;
+    private final Services.CraftChat craftChatService;
 
     public ChatManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.chatService = new Services.Chat(plugin);
+        this.craftChatService = new Services.CraftChat(plugin);
 
-        EterniaServer.setChatAPI(chatService);
+        EterniaServer.setChatAPI(craftChatService);
     }
 
     @Override
     public void loadConfigurations() {
-        Configurations.ChatConfiguration configuration = new Configurations.ChatConfiguration(plugin, chatService);
+        ChatMessages messages = new ChatMessages(plugin);
+        ChatCommand commands = new ChatCommand();
+        ChatChannels channels = new ChatChannels(plugin, craftChatService);
+        ChatConfiguration configuration = new ChatConfiguration(plugin, craftChatService);
 
+        EterniaLib.registerConfiguration("eterniaserver", "chat_messages", messages);
+        EterniaLib.registerConfiguration("eterniaserver", "chat_commands", commands);
+        EterniaLib.registerConfiguration("eterniaserver", "chat_channels", channels);
         EterniaLib.registerConfiguration("eterniaserver", "chat", configuration);
 
+        messages.executeConfig();
+        channels.executeConfig();
         configuration.executeConfig();
+
+        commands.executeCritical();
         configuration.executeCritical();
+
+        messages.saveConfiguration(true);
+        channels.saveConfiguration(true);
+        commands.saveConfiguration(true);
         configuration.saveConfiguration(true);
 
         loadCommandsLocale(configuration, Enums.Commands.class);
 
         try {
-            Entity<Entities.ChatInfo> chatInfoEntity = new Entity<>(Entities.ChatInfo.class);
+            Entity<ChatInfo> chatInfoEntity = new Entity<>(ChatInfo.class);
 
             EterniaLib.addTableName("%eternia_server_chat%", plugin.getString(Strings.CHAT_TABLE_NAME));
 
-            EterniaLib.getDatabase().register(Entities.ChatInfo.class, chatInfoEntity);
+            EterniaLib.getDatabase().register(ChatInfo.class, chatInfoEntity);
         }
         catch (Exception exception) {
             EterniaLib.registerLog("EE-103-Revision");
             return;
         }
 
-        List<Entities.ChatInfo> chatInfos = EterniaLib.getDatabase().listAll(Entities.ChatInfo.class);
+        List<ChatInfo> chatInfos = EterniaLib.getDatabase().listAll(ChatInfo.class);
         this.plugin.getLogger().log(Level.INFO, "Core module: {0} revisions loaded", chatInfos.size());
     }
 
     @Override
-    public void loadCommandsCompletions() {
-
-    }
+    public void loadCommandsCompletions() { }
 
     @Override
     public void loadConditions() {
         EterniaLib.getCmdManager().getCommandConditions().addCondition(String.class, "channel", (c, exec, value) -> {
-            if (value == null || !chatService.channels.contains(value)) {
+            if (value == null || !craftChatService.channels.contains(value)) {
                 throw new ConditionFailedException("Você precisa informar um canal válido");
             }
         });
@@ -66,19 +83,17 @@ public class ChatManager implements Module {
 
     @Override
     public void loadListeners() {
-        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, chatService), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, craftChatService), plugin);
     }
 
     @Override
-    public void loadSchedules() {
-
-    }
+    public void loadSchedules() { }
 
     @Override
     public void loadCommands() {
-        EterniaLib.getCmdManager().registerCommand(new Commands.Mute(plugin, chatService));
-        EterniaLib.getCmdManager().registerCommand(new Commands.Generic(plugin, chatService));
-        EterniaLib.getCmdManager().registerCommand(new Commands.Chat(plugin, chatService));
+        EterniaLib.getCmdManager().registerCommand(new Commands.Mute(plugin, craftChatService));
+        EterniaLib.getCmdManager().registerCommand(new Commands.Generic(plugin, craftChatService));
+        EterniaLib.getCmdManager().registerCommand(new Commands.Chat(plugin, craftChatService));
     }
 
 }

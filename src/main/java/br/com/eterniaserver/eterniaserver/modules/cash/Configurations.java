@@ -8,9 +8,11 @@ import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,36 +35,17 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class Cash implements ReloadableConfiguration {
+    static class CashMessages implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
-        private final EterniaServer plugin;
-
-        protected Cash(EterniaServer plugin) {
+        protected CashMessages(EterniaServer plugin) {
+            this.plugin = plugin;
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
-            this.plugin = plugin;
-
-            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
-            namespacedKeys[ItemsKeys.CASH_GUI_NAME.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_CASH_GUI_NAME
-            );
-            namespacedKeys[ItemsKeys.CASH_ITEM_COST.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_CASH_ITEM_COST
-            );
-            namespacedKeys[ItemsKeys.CASH_ITEM_MESSAGE.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_CASH_ITEM_MESSAGE
-            );
-            namespacedKeys[ItemsKeys.CASH_ITEM_COMMANDS.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_CASH_ITEM_COMMANDS
-            );
-            namespacedKeys[ItemsKeys.CASH_ITEM_LORE.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_CASH_ITEM_LORE
-            );
         }
 
         @Override
@@ -81,7 +65,7 @@ final class Configurations {
 
         @Override
         public String getFilePath() {
-            return Constants.CASH_CONFIG_FILE_PATH;
+            return Constants.CASH_MESSAGES_FILE_PATH;
         }
 
         @Override
@@ -91,7 +75,7 @@ final class Configurations {
 
         @Override
         public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
+            return new CommandLocale[0];
         }
 
         @Override
@@ -101,8 +85,6 @@ final class Configurations {
 
         @Override
         public void executeConfig() {
-            final String[] strings = plugin.strings();
-
             addMessage(Messages.CASH_BALANCE,
                     "Você possui <color:#00aaaa>{0} C$<color:#555555>.",
                     "quantia de cash"
@@ -160,7 +142,196 @@ final class Configurations {
             addMessage(Messages.CASH_ALREADY_BUYING,
                     "Você já possui uma compra em andamento<color:#555555>."
             );
+        }
 
+        @Override
+        public void executeCritical() { }
+
+    }
+
+    static class CashCommands implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final CommandLocale[] commandsLocalesArray;
+
+        protected CashCommands() {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.CASH_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.CASH_COMMANDS_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.BLOCKED;
+        }
+
+        @Override
+        public void executeConfig() { }
+
+        @Override
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.CASH, new CommandLocale(
+                    "cash",
+                    "",
+                    " Abre a loja de CASH",
+                    "eternia.cash",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CASH_HELP, new CommandLocale(
+                    "help|ajuda",
+                    " <página>",
+                    " Ajuda para o CASH",
+                    "eternia.cash",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CASH_PAY, new CommandLocale(
+                    "pay|pagar",
+                    " <jogador> <quantia>",
+                    " Paga uma quantia de CASH a um jogador",
+                    "eternia.cash",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CASH_ACCEPT, new CommandLocale(
+                    "accept|aceitar",
+                    "",
+                    " Confirma uma compra de CASH",
+                    "eternia.cash",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CASH_DENY, new CommandLocale(
+                    "deny|negar",
+                    "",
+                    " Nega uma compra de CASH",
+                    "eternia.cash",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CASH_BALANCE, new CommandLocale(
+                    "balance|saldo",
+                    " <jogador>",
+                    " Mostra o saldo atual de CASH de um jogador",
+                    "eternia.cash",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CASH_GIVE, new CommandLocale(
+                    "give|dar",
+                    " <jogador> <quantia>",
+                    " Dá uma quantia de CASH a um jogador",
+                    "eternia.cash.admin",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CASH_REMOVE, new CommandLocale(
+                    "remove|retirar",
+                    " <jogador> <quantia>",
+                    " Remove uma quantia de CASH de um jogador",
+                    "eternia.cash.admin",
+                    null
+            ));
+        }
+
+    }
+
+    static class CashConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final CommandLocale[] commandsLocalesArray;
+        private final EterniaServer plugin;
+
+        protected CashConfiguration(EterniaServer plugin) {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+            this.plugin = plugin;
+
+            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
+            namespacedKeys[ItemsKeys.CASH_GUI_NAME.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_GUI_NAME
+            );
+            namespacedKeys[ItemsKeys.CASH_ITEM_COST.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_ITEM_COST
+            );
+            namespacedKeys[ItemsKeys.CASH_ITEM_MESSAGE.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_ITEM_MESSAGE
+            );
+            namespacedKeys[ItemsKeys.CASH_ITEM_COMMANDS.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_ITEM_COMMANDS
+            );
+            namespacedKeys[ItemsKeys.CASH_ITEM_LORE.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_CASH_ITEM_LORE
+            );
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.CASH_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.CASH_CONFIG_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
+            final String[] strings = plugin.strings();
 
             strings[Strings.CASH_MENU_TITLE.ordinal()] = inFile.getString("menu.name.value", "<color:#aaaaaa>Cash<color:%s>");
             strings[Strings.CASH_TITLE.ordinal()] = inFile.getString("menu.glass.name", "<color:#aaaaaa>Loja de <color:#00aaaa>C.A.S.H.<color:#555555>!");
@@ -249,64 +420,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            addCommandLocale(Enums.Commands.CASH, new CommandLocale(
-                    "cash",
-                    "",
-                    " Abre a loja de CASH",
-                    "eternia.cash",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.CASH_HELP, new CommandLocale(
-                    "help|ajuda",
-                    " <página>",
-                    " Ajuda para o CASH",
-                    "eternia.cash",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.CASH_PAY, new CommandLocale(
-                    "pay|pagar",
-                    " <jogador> <quantia>",
-                    " Paga uma quantia de CASH a um jogador",
-                    "eternia.cash",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.CASH_ACCEPT, new CommandLocale(
-                    "accept|aceitar",
-                    "",
-                    " Confirma uma compra de CASH",
-                    "eternia.cash",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.CASH_DENY, new CommandLocale(
-                    "deny|negar",
-                    "",
-                    " Nega uma compra de CASH",
-                    "eternia.cash",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.CASH_BALANCE, new CommandLocale(
-                    "balance|saldo",
-                    " <jogador>",
-                    " Mostra o saldo atual de CASH de um jogador",
-                    "eternia.cash",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.CASH_GIVE, new CommandLocale(
-                    "give|dar",
-                    " <jogador> <quantia>",
-                    " Dá uma quantia de CASH a um jogador",
-                    "eternia.cash.admin",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.CASH_REMOVE, new CommandLocale(
-                    "remove|retirar",
-                    " <jogador> <quantia>",
-                    " Remove uma quantia de CASH de um jogador",
-                    "eternia.cash.admin",
-                    null
-            ));
-        }
+        public void executeCritical() { }
 
         private PreGUI loadMenuFromFile() {
             int menuSize = inFile.getInt("menu.size", 0);

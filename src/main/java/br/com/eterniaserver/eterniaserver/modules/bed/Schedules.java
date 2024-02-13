@@ -5,6 +5,8 @@ import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+import br.com.eterniaserver.eterniaserver.modules.bed.Services.SleepingService;
+
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,9 +23,9 @@ final class Schedules {
 
         private final World world;
         private final EterniaServer plugin;
-        private final Services.SleepingService sleepingService;
+        private final SleepingService sleepingService;
 
-        public PassNight(final World world, EterniaServer plugin, Services.SleepingService sleepingService) {
+        public PassNight(World world, EterniaServer plugin, SleepingService sleepingService) {
             this.world = world;
             this.plugin = plugin;
             this.sleepingService = sleepingService;
@@ -63,9 +65,9 @@ final class Schedules {
     static class CheckWorld extends BukkitRunnable {
 
         private final EterniaServer plugin;
-        private final Services.SleepingService sleepingService;
+        private final SleepingService sleepingService;
 
-        public CheckWorld(EterniaServer plugin, Services.SleepingService sleepingService) {
+        public CheckWorld(EterniaServer plugin, SleepingService sleepingService) {
             this.plugin = plugin;
             this.sleepingService = sleepingService;
         }

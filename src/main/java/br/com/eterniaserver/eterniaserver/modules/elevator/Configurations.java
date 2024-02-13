@@ -7,13 +7,13 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.List;
-import java.util.logging.Level;
 
 final class Configurations {
 
@@ -93,9 +93,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            plugin.getLogger().log(Level.INFO, "elevator module: no critical configuration");
-        }
+        public void executeCritical() { }
     }
 
 }

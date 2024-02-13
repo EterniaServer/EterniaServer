@@ -6,6 +6,9 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.Module;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
+import br.com.eterniaserver.eterniaserver.modules.cash.Configurations.CashConfiguration;
+import br.com.eterniaserver.eterniaserver.modules.cash.Configurations.CashCommands;
+import br.com.eterniaserver.eterniaserver.modules.cash.Configurations.CashMessages;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -14,7 +17,7 @@ import java.util.logging.Level;
 public class CashManager implements Module {
 
     private final EterniaServer plugin;
-    private Services.Cash cashService;
+    private Services.CashService cashService;
 
     public CashManager(final EterniaServer plugin) {
         this.plugin = plugin;
@@ -22,15 +25,25 @@ public class CashManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.Cash configuration = new Configurations.Cash(plugin);
+        CashMessages messages = new CashMessages(plugin);
+        CashCommands commands = new CashCommands();
+        CashConfiguration configuration = new CashConfiguration(plugin);
 
+        EterniaLib.registerConfiguration("eterniaserver", "cash_messages", messages);
+        EterniaLib.registerConfiguration("eterniaserver", "cash_commands", commands);
         EterniaLib.registerConfiguration("eterniaserver", "cash", configuration);
 
+        messages.executeConfig();
         configuration.executeConfig();
+
+        commands.executeCritical();
         configuration.executeCritical();
+
+        messages.saveConfiguration(true);
+        commands.saveConfiguration(true);
         configuration.saveConfiguration(true);
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        loadCommandsLocale(commands, Enums.Commands.class);
 
         try {
             Entity<CashBalance> cashEntity = new Entity<>(CashBalance.class);
@@ -48,14 +61,14 @@ public class CashManager implements Module {
         this.plugin.getLogger().log(Level.INFO, "cash module: {0} cash balances loaded", cashBalances.size());
 
         EterniaServer.setCashAPI(new Services.CraftCash());
-        this.cashService = new Services.Cash(plugin);
+        this.cashService = new Services.CashService(plugin);
     }
 
     @Override
-    public void loadCommandsCompletions() {}
+    public void loadCommandsCompletions() { }
 
     @Override
-    public void loadConditions() {}
+    public void loadConditions() { }
 
     @Override
     public void loadListeners() {
@@ -63,7 +76,7 @@ public class CashManager implements Module {
     }
 
     @Override
-    public void loadSchedules() {}
+    public void loadSchedules() { }
 
     @Override
     public void loadCommands() {

@@ -17,11 +17,11 @@ import java.util.UUID;
 final class Handlers implements Listener {
 
     private final EterniaServer plugin;
-    private final Services.Chat chat;
+    private final Services.CraftChat craftChat;
 
-    public Handlers(EterniaServer plugin, Services.Chat chat) {
+    public Handlers(EterniaServer plugin, Services.CraftChat craftChat) {
         this.plugin = plugin;
-        this.chat = chat;
+        this.craftChat = craftChat;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -35,16 +35,16 @@ final class Handlers implements Listener {
             player.displayName(nicknameComponent);
         }
 
-        chat.addHashToUUID(player.getUniqueId(), player.getName());
+        craftChat.addHashToUUID(player.getUniqueId(), player.getName());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
-        chat.removeHashToUUID(event.getPlayer().getName());
+        craftChat.removeHashToUUID(event.getPlayer().getName());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncChat(AsyncChatEvent event) {
-        event.setCancelled(chat.handleChannel(event));
+        event.setCancelled(craftChat.handleChannel(event));
     }
 }

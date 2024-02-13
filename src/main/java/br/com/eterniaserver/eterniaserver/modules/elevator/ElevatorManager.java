@@ -24,10 +24,10 @@ public class ElevatorManager implements Module {
     }
 
     @Override
-    public void loadCommandsCompletions() {}
+    public void loadCommandsCompletions() { }
 
     @Override
-    public void loadConditions() {}
+    public void loadConditions() { }
 
     @Override
     public void loadListeners() {
@@ -35,9 +35,9 @@ public class ElevatorManager implements Module {
     }
 
     @Override
-    public void loadSchedules() {}
+    public void loadSchedules() { }
 
     @Override
-    public void loadCommands() {}
+    public void loadCommands() { }
 
 }

@@ -7,6 +7,9 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.modules.chat.Entities.ChatInfo;
+import br.com.eterniaserver.eterniaserver.modules.chat.Utils.ChannelObject;
+import br.com.eterniaserver.eterniaserver.modules.chat.Utils.CustomPlaceholder;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 
@@ -48,9 +51,9 @@ final class Services {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class Chat implements ChatAPI {
-        protected final Map<String, Utils.CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
-        protected final Map<Integer, Utils.ChannelObject> channelObjectsMap = new HashMap<>();
+    static class CraftChat implements ChatAPI {
+        protected final Map<String, CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
+        protected final Map<Integer, ChannelObject> channelObjectsMap = new HashMap<>();
         protected final List<String> channels = new ArrayList<>();
 
         protected static final String TELL_CHANNEL_STRING = "tellchannel";
@@ -75,7 +78,7 @@ final class Services {
         private int muteChannelTaskId = 0;
         private TextColor tagColor;
 
-        public Chat(EterniaServer plugin) {
+        public CraftChat(EterniaServer plugin) {
             this.plugin = plugin;
             this.tellChannelHashCode = TELL_CHANNEL_STRING.hashCode();
         }
@@ -86,7 +89,7 @@ final class Services {
             this.tagColor = TextColor.fromHexString(tagHex);
         }
 
-        protected TextColor getPlayerDefaultColor(Entities.ChatInfo chatInfo, Utils.ChannelObject channelObject) {
+        protected TextColor getPlayerDefaultColor(ChatInfo chatInfo, ChannelObject channelObject) {
             TextColor color = chatInfo.getColor();
             if (color == null) {
                 return TextColor.fromHexString(channelObject.channelColor());
@@ -143,7 +146,7 @@ final class Services {
                 component = component.replaceText(getFilter());
             }
 
-            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, player.getUniqueId());
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, player.getUniqueId());
             Integer channel = chatInfo.getDefaultChannel();
             if (channel == null) {
                 channel = defaultChannel();
@@ -246,10 +249,10 @@ final class Services {
             }
         }
 
-        private void filter(AsyncChatEvent event, PlayerProfile playerProfile, Entities.ChatInfo chatInfo, Component component) {
+        private void filter(AsyncChatEvent event, PlayerProfile playerProfile, ChatInfo chatInfo, Component component) {
             Player player = event.getPlayer();
 
-            Utils.ChannelObject channelObject = channelObjectsMap.get(chatInfo.getDefaultChannel());
+            ChannelObject channelObject = channelObjectsMap.get(chatInfo.getDefaultChannel());
             if (channelObject == null) {
                 channelObject = channelObjectsMap.get(defaultChannel());
             }
@@ -299,8 +302,8 @@ final class Services {
         private Component getComponent(String section,
                                        Player player,
                                        PlayerProfile playerProfile,
-                                       Entities.ChatInfo chatInfo,
-                                       Utils.ChannelObject channelObject) {
+                                       ChatInfo chatInfo,
+                                       ChannelObject channelObject) {
             int sectionHashCode = section.toLowerCase().hashCode();
             UUID mentionPlayerUUID = getUUIDFromHash(sectionHashCode);
 
@@ -352,7 +355,7 @@ final class Services {
 
         private Component getChatComponentFormat(Player player, String format) {
             Map<Integer, Component> componentMap = new TreeMap<>();
-            for (Map.Entry<String, Utils.CustomPlaceholder> entry : customPlaceholdersObjectsMap.entrySet()) {
+            for (Map.Entry<String, CustomPlaceholder> entry : customPlaceholdersObjectsMap.entrySet()) {
                 if (format.contains("{" + entry.getKey() + "}") && player.hasPermission(entry.getValue().permission())) {
                     componentMap.put(entry.getValue().priority(), getJsonTagText(player, entry.getValue()));
                 }
@@ -366,7 +369,7 @@ final class Services {
             return chatComponentFormat;
         }
 
-        private Component getJsonTagText(Player player, Utils.CustomPlaceholder object) {
+        private Component getJsonTagText(Player player, CustomPlaceholder object) {
             if (!object.isStatic()) {
                 return loadComponent(player, object);
             }
@@ -379,7 +382,7 @@ final class Services {
             return staticComponents.get(value);
         }
 
-        private Component loadComponent(Player player, Utils.CustomPlaceholder object) {
+        private Component loadComponent(Player player, CustomPlaceholder object) {
             Component component = object.value().equals("%player_displayname%") ?
                     player.displayName() :
                     plugin.parseColor(plugin.setPlaceholders(player, object.value()));
@@ -477,11 +480,11 @@ final class Services {
 
         @Override
         public boolean isMuted(UUID uuid) {
-            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, uuid);
             return isMuted(chatInfo);
         }
 
-        private boolean isMuted(Entities.ChatInfo chatInfo) {
+        private boolean isMuted(ChatInfo chatInfo) {
             Timestamp mutedUntil = chatInfo.getMutedUntil();
             if (mutedUntil == null) {
                 return false;
@@ -492,11 +495,11 @@ final class Services {
 
         @Override
         public int secondsMutedLeft(UUID uuid) {
-            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, uuid);
             return secondsMutedLeft(chatInfo);
         }
 
-        private int secondsMutedLeft(Entities.ChatInfo chatInfo) {
+        private int secondsMutedLeft(ChatInfo chatInfo) {
             Timestamp mutedUntil = chatInfo.getMutedUntil();
             if (mutedUntil == null) {
                 return 0;
@@ -507,11 +510,11 @@ final class Services {
 
         @Override
         public void mute(UUID uuid, long time) {
-            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, uuid);
 
             chatInfo.setMutedUntil(new Timestamp(time));
 
-            EterniaLib.getDatabase().update(Entities.ChatInfo.class, chatInfo);
+            EterniaLib.getDatabase().update(ChatInfo.class, chatInfo);
         }
 
         @Override
