@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.configuration.CommandLocale;
 import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -294,11 +295,11 @@ final class Configurations {
                     "spy"
             ));
             addCommandLocale(Enums.Commands.CHAT_REPLY, new CommandLocale(
-                    "reply/r",
+                    "reply",
                     "<mensagem>",
                     " Responde a última mensagem recebida",
                     "eternia.chat.reply",
-                    "reply"
+                    "reply|r"
             ));
             addCommandLocale(Enums.Commands.CHAT_TELL, new CommandLocale(
                     "tell|msg",
@@ -424,8 +425,8 @@ final class Configurations {
                     "local",
                     "eternia.chat.local",
                     "<color:#ffff55>",
-                    false,
-                    0
+                    true,
+                    100
             ));
 
             Set<String> lista = null;
@@ -568,7 +569,10 @@ final class Configurations {
 
         @Override
         public void executeConfig() {
+            boolean[] booleans = plugin.booleans();
             String[] strings = plugin.strings();
+
+            booleans[Booleans.DISCORD_SRV.ordinal()] = inFile.getBoolean("general.discord-srv", true);
 
             strings[Strings.SHOW_ITEM_PLACEHOLDER.ordinal()] = inFile.getString("placeholder.show-item", "[item]");
             strings[Strings.DEFAULT_CHANNEL.ordinal()] = inFile.getString("general.default-channel", "global");
@@ -584,6 +588,8 @@ final class Configurations {
             strings[Strings.CHAT_DEFAULT_TAG_COLOR.ordinal()] = inFile.getString("general.default-tag-color", "#1594AB");
 
             craftChatService.updateTextColor();
+
+            outFile.set("general.discord-srv", booleans[Booleans.DISCORD_SRV.ordinal()]);
 
             outFile.set("placeholder.show-item", strings[Strings.SHOW_ITEM_PLACEHOLDER.ordinal()]);
             outFile.set("general.default-channel", strings[Strings.DEFAULT_CHANNEL.ordinal()]);

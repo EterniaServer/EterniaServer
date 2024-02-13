@@ -3,6 +3,7 @@ version: '${version}'
 main: br.com.eterniaserver.eterniaserver.EterniaServer
 api-version: 1.19
 loadbefore: [EterniaLib]
+softdepend: [DiscordSRV]
 depend: [Vault, PlaceholderAPI]
 author: Yuri Nogueira
 description: Um plugin eterno

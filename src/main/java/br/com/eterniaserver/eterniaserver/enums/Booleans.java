@@ -27,5 +27,6 @@ public enum Booleans {
     ENTITY_EDITOR,
     ECONOMY_HAS_BANK,
     CUSTOM_COMMANDS,
+    DISCORD_SRV,
 
 }

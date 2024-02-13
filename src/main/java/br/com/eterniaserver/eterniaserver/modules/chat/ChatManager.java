@@ -4,6 +4,7 @@ import br.com.eterniaserver.acf.ConditionFailedException;
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.database.Entity;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.modules.Module;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.chat.Configurations.ChatConfiguration;
@@ -11,8 +12,11 @@ import br.com.eterniaserver.eterniaserver.modules.chat.Configurations.ChatComman
 import br.com.eterniaserver.eterniaserver.modules.chat.Configurations.ChatMessages;
 import br.com.eterniaserver.eterniaserver.modules.chat.Configurations.ChatChannels;
 import br.com.eterniaserver.eterniaserver.modules.chat.Entities.ChatInfo;
+import github.scarsz.discordsrv.DiscordSRV;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 public class ChatManager implements Module {
@@ -85,6 +89,13 @@ public class ChatManager implements Module {
 
     @Override
     public void loadListeners() {
+        Plugin discordSrv = plugin.getServer().getPluginManager().getPlugin("DiscordSRV");
+        Optional<Plugin> discordSrvOptional = Optional.ofNullable(discordSrv);
+
+        if (discordSrvOptional.isPresent() && plugin.getBoolean(Booleans.DISCORD_SRV)) {
+            DiscordSRV.api.subscribe(new Handlers.DiscordSRVHandler());
+        }
+
         plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, craftChatService), plugin);
     }
 

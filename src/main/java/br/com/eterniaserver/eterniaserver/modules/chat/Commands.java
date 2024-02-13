@@ -373,11 +373,12 @@ final class Commands {
                 return;
             }
 
+            UUID targetUUID = target.getUniqueId();
             if (msg != null && !msg.isEmpty()) {
                 int defaultChannel = getDefaultChannel(chatInfo);
 
                 chatInfo.setDefaultChannel(Services.CraftChat.TELL_CHANNEL_STRING.hashCode());
-                craftChatService.setTellLink(playerUUID, target.getUniqueId());
+                craftChatService.setTellLink(targetUUID, playerUUID);
                 player.chat(msg);
 
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
@@ -387,7 +388,6 @@ final class Commands {
                 return;
             }
 
-            UUID targetUUID = target.getUniqueId();
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
             if (craftChatService.getTellLink(playerUUID) == targetUUID) {
                 chatInfo.setDefaultChannel(plugin.getString(Strings.DEFAULT_CHANNEL).toLowerCase().hashCode());

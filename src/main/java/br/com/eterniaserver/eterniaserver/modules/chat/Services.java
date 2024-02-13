@@ -13,6 +13,8 @@ import br.com.eterniaserver.eterniaserver.modules.chat.Utils.CustomPlaceholder;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -38,9 +40,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -52,6 +56,9 @@ final class Services {
     }
 
     static class CraftChat implements ChatAPI {
+
+        protected static final HoverEvent<Component> DISCORD_SRV_HOVER_EVENT = HoverEvent.showText(Component.text("discordsrv"));
+
         protected final Map<String, CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
         protected final Map<Integer, ChannelObject> channelObjectsMap = new HashMap<>();
         protected final List<String> channels = new ArrayList<>();
@@ -61,7 +68,7 @@ final class Services {
         private final static String NICKNAME_COLOR_REGEX = "[^\\w#<>]";
         private final static String NICKNAME_CLEAR_REGEX = "<#[a-f\\\\d]{6}>";
 
-        private final Map<UUID, UUID> tellMap = new HashMap<>();
+        private final Map<UUID, UUID> tellMap = new ConcurrentHashMap<>();
         private final Map<Integer, UUID> playerHashToUUID = new HashMap<>();
         private final Map<String, Component> staticComponents = new HashMap<>();
         private final Times mentionTimes = Times.times(Duration.ofMillis(100), Duration.ofSeconds(1), Duration.ofMillis(100));
@@ -170,12 +177,12 @@ final class Services {
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
 
             if (isDiscordSRVChannel) {
-                filter(event, playerProfile, chatInfo, component);
-                event.viewers().clear();
-                return false;
+                event.message(component.hoverEvent(DISCORD_SRV_HOVER_EVENT));
             }
 
             if (isTellChannel) {
+                System.out.println("Tell channel");
+                System.out.println("Target: " + getTellLink(uuid));
                 UUID targetUUID = getTellLink(uuid);
                 if (targetUUID == null) {
                     removeTellLink(uuid);
@@ -191,11 +198,11 @@ final class Services {
                 }
 
                 sendPrivateMessage(event, component, playerProfile, target);
-                return true;
+                return false;
             }
 
             filter(event, playerProfile, chatInfo, component);
-            return true;
+            return false;
         }
 
         protected void sendPrivateMessage(AsyncChatEvent event,
@@ -204,6 +211,7 @@ final class Services {
                                        Player target) {
 
             Player player = event.getPlayer();
+            Set<Audience> viewers = event.viewers();
 
             UUID playerUUID = player.getUniqueId();
             UUID targetUUID = target.getUniqueId();
@@ -212,21 +220,11 @@ final class Services {
 
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
 
+            viewers.clear();
+            viewers.add(player);
+            viewers.add(target);
+
             String msg = PlainTextComponentSerializer.plainText().serialize(component);
-            Component msgComponent = plugin.getMiniMessage(
-                    Messages.CHAT_TELL,
-                    false,
-                    msg,
-                    playerProfile.getPlayerName(),
-                    playerProfile.getPlayerDisplay(),
-                    targetProfile.getPlayerName(),
-                    targetProfile.getPlayerDisplay()
-            );
-
-            event.message(msgComponent);
-
-            target.sendMessage(msgComponent);
-            player.sendMessage(msgComponent);
 
             Component spyMsgComponent = plugin.getMiniMessage(
                     Messages.CHAT_SPY_TELL,
@@ -238,15 +236,32 @@ final class Services {
                     targetProfile.getPlayerDisplay()
             );
 
+            String spyPerm = plugin.getString(Strings.PERM_SPY);
             for (Player other : plugin.getServer().getOnlinePlayers()) {
-                if (other.hasPermission(plugin.getString(Strings.PERM_SPY)) || isSpying(other.getUniqueId())) {
-                    if (other.getUniqueId().equals(playerUUID) || other.getUniqueId().equals(targetUUID)) {
-                        continue;
-                    }
-
+                boolean inTell = other.getUniqueId().equals(playerUUID) || other.getUniqueId().equals(targetUUID);
+                if (!inTell && (other.hasPermission(spyPerm) || isSpying(other.getUniqueId()))) {
                     other.sendMessage(spyMsgComponent);
                 }
             }
+
+            Component msgComponent = plugin.getMiniMessage(
+                    Messages.CHAT_TELL,
+                    false,
+                    msg,
+                    playerProfile.getPlayerName(),
+                    playerProfile.getPlayerDisplay(),
+                    targetProfile.getPlayerName(),
+                    targetProfile.getPlayerDisplay()
+            );
+
+            event.renderer((source, sourceDisplayName, message, viewer) -> {
+                Optional<UUID> viewerUUID = viewer.get(Identity.UUID);
+                if (viewerUUID.isEmpty()) {
+                    return message;
+                }
+
+                return msgComponent;
+            });
         }
 
         private void filter(AsyncChatEvent event, PlayerProfile playerProfile, ChatInfo chatInfo, Component component) {
@@ -263,38 +278,60 @@ final class Services {
             }
 
             Component messageComponent = getChatComponentFormat(player, channelObject.format());
-            String message = PlainTextComponentSerializer.plainText().serialize(component);
+            String messageStr = PlainTextComponentSerializer.plainText().serialize(component);
 
-            Component spaced = Component.text(" ");
-            for (String section : message.split(" ")) {
-                messageComponent = messageComponent.append(spaced).append(getComponent(
+            for (String section : messageStr.split(" ")) {
+                messageComponent = messageComponent.appendSpace().append(getComponent(
                         section, player, playerProfile, chatInfo, channelObject
                 ));
             }
 
-            if (!channelObject.hasRange()) {
-                for (Player other : plugin.getServer().getOnlinePlayers()) {
-                    if (other.hasPermission(channelObject.perm())) {
-                        other.sendMessage(messageComponent);
-                    }
-                }
-                return;
-            }
+            Set<Audience> viewers = event.viewers();
 
-            boolean sendToSomeOne = false;
             World world = player.getWorld();
             Location location = player.getLocation();
-            for (Player other : plugin.getServer().getOnlinePlayers()) {
-                if (channelObject.range() <= 0 || (world.equals(other.getWorld()) && other.getLocation().distanceSquared(location) <= Math.pow(channelObject.range(), 2))) {
-                    sendToSomeOne = true;
-                    other.sendMessage(messageComponent);
+            String spyPerm = plugin.getString(Strings.PERM_SPY);
+
+            for (Player receiver : plugin.getServer().getOnlinePlayers()) {
+                boolean hasPermission = receiver.hasPermission(channelObject.perm());
+                if (!channelObject.hasRange() && !hasPermission) {
+                    viewers.remove(receiver);
                 }
-                else if (other.hasPermission(plugin.getString(Strings.PERM_SPY)) && isSpying(other.getUniqueId())) {
-                    plugin.sendMiniMessages(other, Messages.CHAT_SPY_LOCAL, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay());
+                else if (hasPermission) {
+                    int range = channelObject.range();
+                    boolean isInRange = range <= 0 || (
+                            world.equals(receiver.getWorld())
+                                    &&
+                            receiver.getLocation().distanceSquared(location) <= Math.pow(range, 2)
+                    );
+
+                    if (!isInRange) {
+                        viewers.remove(receiver);
+                    }
+                    if (!isInRange && receiver.hasPermission(spyPerm) && isSpying(receiver.getUniqueId())) {
+                        plugin.sendMiniMessages(
+                                receiver,
+                                Messages.CHAT_SPY_LOCAL,
+                                messageStr,
+                                playerProfile.getPlayerName(),
+                                playerProfile.getPlayerDisplay()
+                        );
+                    }
                 }
             }
 
-            if (!sendToSomeOne) {
+            Component sourceMessage = messageComponent.compact();
+
+            event.renderer((source, sourceDisplayName, message, viewer) -> {
+                Optional<UUID> viewerUUID = viewer.get(Identity.UUID);
+                if (viewerUUID.isEmpty()) {
+                    return message;
+                }
+
+                return sourceMessage;
+            });
+
+            if (viewers.isEmpty()) {
                 plugin.sendMiniMessages(player, Messages.CHAT_NO_ONE_NEAR);
             }
         }
