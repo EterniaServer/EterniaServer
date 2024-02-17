@@ -281,7 +281,7 @@ final class Commands {
             Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
             int channelCode = channel.toLowerCase().hashCode();
 
-            if (message == null) {
+            if (message == null || message.isBlank()) {
                 chatInfo.setDefaultChannel(channelCode);
                 plugin.sendMiniMessages(player, Messages.CHAT_CHANNEL_CHANGED, channel);
                 return;

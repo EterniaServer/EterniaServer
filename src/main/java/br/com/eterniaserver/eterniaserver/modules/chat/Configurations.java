@@ -416,7 +416,7 @@ final class Configurations {
                     "{global}{clan}{suffix}{prefix}{player}{marry}{separator}",
                     "global",
                     "eternia.chat.global",
-                    "<color:#ffffff>",
+                    "#ffffff",
                     false,
                     0
             ));
@@ -424,7 +424,7 @@ final class Configurations {
                     "{local}{prefix}{player}{separator}",
                     "local",
                     "eternia.chat.local",
-                    "<color:#ffff55>",
+                    "#ffff55",
                     true,
                     100
             ));
@@ -438,7 +438,7 @@ final class Configurations {
                             inFile.getString("channels." + channel + ".format", "{player}"),
                             channel,
                             inFile.getString("channels." + channel + ".perm", "eternia.chat.default"),
-                            inFile.getString("channels." + channel + ".color", "<color:#ffffff>"),
+                            inFile.getString("channels." + channel + ".color", "#ffffff"),
                             inFile.getBoolean("channels." + channel + ".range", false),
                             inFile.getInt("channels." + channel + ".range-value", 0)
                     );

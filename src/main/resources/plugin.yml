@@ -1,7 +1,7 @@
 name: EterniaServer
 version: '${version}'
 main: br.com.eterniaserver.eterniaserver.EterniaServer
-api-version: 1.19
+api-version: 1.20
 loadbefore: [EterniaLib]
 softdepend: [DiscordSRV]
 depend: [Vault, PlaceholderAPI]

@@ -181,8 +181,6 @@ final class Services {
             }
 
             if (isTellChannel) {
-                System.out.println("Tell channel");
-                System.out.println("Target: " + getTellLink(uuid));
                 UUID targetUUID = getTellLink(uuid);
                 if (targetUUID == null) {
                     removeTellLink(uuid);

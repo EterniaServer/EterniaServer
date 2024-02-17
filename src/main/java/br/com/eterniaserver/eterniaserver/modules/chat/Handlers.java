@@ -40,7 +40,7 @@ final class Handlers implements Listener {
         UUID uuid = player.getUniqueId();
 
         Entities.PlayerProfile playerProfile = EterniaLib.getDatabase().get(Entities.PlayerProfile.class, uuid);
-        if (playerProfile.getPlayerDisplay() != null) {
+        if (playerProfile.getPlayerDisplayColor() != null) {
             Component nicknameComponent = plugin.parseColor(playerProfile.getPlayerDisplayColor());
             player.displayName(nicknameComponent);
         }
