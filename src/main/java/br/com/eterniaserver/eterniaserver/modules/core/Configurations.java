@@ -4,14 +4,22 @@ import br.com.eterniaserver.eternialib.configuration.CommandLocale;
 import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
-import br.com.eterniaserver.eterniaserver.enums.*;
+import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
+import br.com.eterniaserver.eterniaserver.enums.Lists;
+import br.com.eterniaserver.eterniaserver.enums.Messages;
+import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+import br.com.eterniaserver.eterniaserver.modules.core.Utils.CommandData;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,41 +32,17 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class MainConfiguration implements ReloadableConfiguration {
+    static class CommandsConfiguration implements ReloadableConfiguration {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
         private final CommandLocale[] commandsLocalesArray;
 
-        private final boolean[] booleans;
-        private final int[] integers;
-        private final String[] strings;
-        private final String[] messages;
-
-        private final List<List<String>> stringLists;
-        private final Map<String, Utils.CommandData> commandDataMap;
-
-        protected MainConfiguration(EterniaServer plugin, Map<String, Utils.CommandData> commandDataMap) {
+        CommandsConfiguration() {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
             this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
-
-            this.booleans = plugin.booleans();
-            this.integers = plugin.integers();
-            this.strings = plugin.strings();
-            this.messages = plugin.messages();
-            this.stringLists = plugin.stringLists();
-            this.commandDataMap = commandDataMap;
-
-            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
-
-            namespacedKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_FUNCTION
-            );
-            namespacedKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_INT_VALUE
-            );
         }
 
         @Override
@@ -73,17 +57,17 @@ final class Configurations {
 
         @Override
         public String getFolderPath() {
-            return Constants.DATA_MODULE_FOLDER_PATH;
+            return Constants.DATA_LAYER_FOLDER_PATH;
         }
 
         @Override
         public String getFilePath() {
-            return Constants.CORE_CONFIG_FILE_PATH;
+            return Constants.CORE_COMMANDS_FILE_PATH;
         }
 
         @Override
         public String[] messages() {
-            return messages;
+            return new String[0];
         }
 
         @Override
@@ -94,6 +78,210 @@ final class Configurations {
         @Override
         public ConfigurationCategory category() {
             return ConfigurationCategory.BLOCKED;
+        }
+
+        @Override
+        public void executeConfig() { }
+
+        @Override
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.BROADCAST, new CommandLocale(
+                    "broadcast",
+                    " <prefix> <mensagem>",
+                    " Envia uma mensagem global ao servidor",
+                    "eternia.broadcast",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE, new CommandLocale(
+                    "gamemode|gm",
+                    " <página>",
+                    " Ajuda para o sistema de Gamemode",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE_SURVIVAL, new CommandLocale(
+                    "survival|s|0",
+                    " <página>",
+                    " Define o modo de jogo seu, ou de outro jogador para Sobrevivência",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE_CREATIVE, new CommandLocale(
+                    "creative|c|1",
+                    " <página>",
+                    " Define o modo de jogo seu, ou de outro jogador para Criativo",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE_ADVENTURE, new CommandLocale(
+                    "adventure|a|2",
+                    " <página>",
+                    " Define o modo de jogo seu, ou de outro jogador para Aventura",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GAMEMODE_SPECTATOR, new CommandLocale(
+                    "spectator|sp|3",
+                    " <página>",
+                    " Define o modo de jogo seu, ou de outro jogador para Espectador",
+                    "eternia.gamemode",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.AFK, new CommandLocale(
+                    "afk",
+                    null,
+                    " Entra no modo AFK",
+                    "eternia.afk",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GODMODE, new CommandLocale(
+                    "god",
+                    null,
+                    " Entra em GodMode",
+                    "eternia.god",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.HAT, new CommandLocale(
+                    "hat|capacete",
+                    null,
+                    " Coloca o item na sua mão na sua cabeça",
+                    "eternia.hat",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.WORKBENCH, new CommandLocale(
+                    "workbench|craftingtable|crafting",
+                    null,
+                    " Abre uma mesa de trabalho",
+                    "eternia.workbench",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.ENDERCHEST, new CommandLocale(
+                    "enderchest|ender|chest",
+                    null,
+                    " Abre um baú de ender",
+                    "eternia.enderchest",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.OPENINV, new CommandLocale(
+                    "openinv|inv",
+                    " <jogador>",
+                    " Abre o inventário de outro jogador",
+                    "eternia.openinv",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.MEM, new CommandLocale(
+                    "mem",
+                    null,
+                    " Veja informações sobre o servidor",
+                    "eternia.mem",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.MEM_ALL, new CommandLocale(
+                    "memall",
+                    null,
+                    " Mostre globalmente as informações sobre o servidor",
+                    "eternia.mem.all",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.CONDENSER, new CommandLocale(
+                    "blocks|condenser|compactar",
+                    null,
+                    " Comprima seus minérios em blocos para liberar espaço",
+                    "eternia.blocks",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.PROFILE, new CommandLocale(
+                    "profile",
+                    " <jogador>",
+                    " Veja o seu perfil ou o de outro jogador",
+                    "eternia.profile",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.SUICIDE, new CommandLocale(
+                    "suicide|suicidio",
+                    " <mensagem>",
+                    " Envie uma mensagem e se mate",
+                    "eternia.suicide",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.SPEED, new CommandLocale(
+                    "speed",
+                    " <velocidade>",
+                    " Altere a sua velocidade",
+                    "eternia.speed",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.FEED, new CommandLocale(
+                    "feed",
+                    " <jogador>",
+                    " Sacie-se ou sacie outra pessoa",
+                    "eternia.feed",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.THOR, new CommandLocale(
+                    "thor",
+                    " <jogador>",
+                    " Chame o Thor para punir um jogador",
+                    "eternia.thor",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.FLY, new CommandLocale(
+                    "fly|voar",
+                    " <jogador>",
+                    " VOA BRABULETA!!!",
+                    "eternia.fly",
+                    null
+            ));
+        }
+
+    }
+
+    static class MessagesConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final String[] messages;
+
+        MessagesConfiguration(EterniaServer plugin) {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.messages = plugin.messages();
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.DATA_LAYER_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.CORE_MESSAGES_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return messages;
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return new CommandLocale[0];
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
         }
 
         @Override
@@ -296,7 +484,85 @@ final class Configurations {
             addMessage(Messages.ALREADY_IN_CONFIRMATION,
                     "Você já está em um processo de confirmação<color:#555555>."
             );
+        }
 
+        @Override
+        public void executeCritical() { }
+
+    }
+
+    static class MainConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final CommandLocale[] commandsLocalesArray;
+
+        private final boolean[] booleans;
+        private final int[] integers;
+        private final String[] strings;
+
+        private final List<List<String>> stringLists;
+        private final Map<String, CommandData> commandDataMap;
+
+        protected MainConfiguration(EterniaServer plugin, Map<String, CommandData> commandDataMap) {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+
+            this.booleans = plugin.booleans();
+            this.integers = plugin.integers();
+            this.strings = plugin.strings();
+            this.stringLists = plugin.stringLists();
+            this.commandDataMap = commandDataMap;
+
+            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
+
+            namespacedKeys[ItemsKeys.TAG_FUNCTION.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_FUNCTION
+            );
+            namespacedKeys[ItemsKeys.TAG_INT_VALUE.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_INT_VALUE
+            );
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.DATA_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.CORE_CONFIG_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.BLOCKED;
+        }
+
+        @Override
+        public void executeConfig() {
             // Booleans
             booleans[Booleans.MODULE_SPAWNERS.ordinal()] = inFile.getBoolean("modules.spawners", true);
             booleans[Booleans.MODULE_EXPERIENCE.ordinal()] = inFile.getBoolean("modules.experience", true);
@@ -322,7 +588,7 @@ final class Configurations {
             integers[Integers.PVP_TIME.ordinal()] = inFile.getInt("critical-configs.pvp-time", 10);
             // Strings
             strings[Strings.DATA_FORMAT.ordinal()] = inFile.getString("format.data-time", "dd/MM/yyyy HH:mm");
-            strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>MOUNTAIN UPDATE</gradient>");
+            strings[Strings.MINI_MESSAGES_SERVER_SERVER_LIST.ordinal()] = inFile.getString("mini-messages.motd", "            <color:#69CEDB>⛏ <gradient:#111111:#112222>❱---❰</gradient> <gradient:#6FE657:#6892F2>EterniaServer</gradient> <gradient:#112222:#111111>❱---❰</gradient> <color:#69CEDB>⛏\n                     <gradient:#926CEB:#6892F2>COMEBACK UPDATE</gradient>");
             strings[Strings.PERM_AFK.ordinal()] = inFile.getString("afk.perm-to-stay-afk", "eternia.afk");
             strings[Strings.SERVER_PREFIX.ordinal()] = inFile.getString("mini-messages.prefix", "<color:#555555>[<color:#34eb40>E<color:#3471eb>S<color:#555555>]<color:#AAAAAA> ");
             strings[Strings.PERM_TIMING_BYPASS.ordinal()] = inFile.getString("teleport.timing-bypass", "eternia.timing.bypass");
@@ -350,7 +616,7 @@ final class Configurations {
 
             commandDataMap.put(
                     "discord",
-                    new Utils.CommandData(
+                    new CommandData(
                             "Informa o link do discord",
                             new ArrayList<>(),
                             new ArrayList<>(),
@@ -360,7 +626,7 @@ final class Configurations {
             );
             commandDataMap.put(
                     "facebook",
-                    new Utils.CommandData(
+                    new CommandData(
                             "Informa o link do facebook",
                             new ArrayList<>(),
                             new ArrayList<>(),
@@ -368,14 +634,34 @@ final class Configurations {
                             false
                     )
             );
+            commandDataMap.put(
+                    "global",
+                    new CommandData(
+                            "Envia uma mensagem global",
+                            List.of("g"),
+                            List.of("channel global"),
+                            new ArrayList<>(),
+                            false
+                    )
+            );
+            commandDataMap.put(
+                    "local",
+                    new CommandData(
+                            "Envia uma mensagem local",
+                            List.of("l"),
+                            List.of("channel local"),
+                            new ArrayList<>(),
+                            false
+                    )
+            );
 
-            Map<String, Utils.CommandData> tempCustomCommandMap = new HashMap<>();
+            Map<String, CommandData> tempCustomCommandMap = new HashMap<>();
             ConfigurationSection commandsConfig = inFile.getConfigurationSection("custom-commands");
             if (commandsConfig != null) {
                 for (String key : commandsConfig.getKeys(false)) {
                     tempCustomCommandMap.put(
                             key,
-                            new Utils.CommandData(
+                            new CommandData(
                                     inFile.getString("custom-commands." + key + ".description"),
                                     inFile.getStringList("custom-commands." + key + ".aliases"),
                                     inFile.getStringList("custom-commands." + key + ".command"),
@@ -448,155 +734,8 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            addCommandLocale(Enums.Commands.BROADCAST, new CommandLocale(
-                    "broadcast",
-                    " <prefix> <mensagem>",
-                    " Envia uma mensagem global ao servidor",
-                    "eternia.broadcast",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.GAMEMODE, new CommandLocale(
-                    "gamemode|gm",
-                    " <página>",
-                    " Ajuda para o sistema de Gamemode",
-                    "eternia.gamemode",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.GAMEMODE_SURVIVAL, new CommandLocale(
-                    "survival|s|0",
-                    " <página>",
-                    " Define o modo de jogo seu, ou de outro jogador para Sobrevivência",
-                    "eternia.gamemode",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.GAMEMODE_CREATIVE, new CommandLocale(
-                    "creative|c|1",
-                    " <página>",
-                    " Define o modo de jogo seu, ou de outro jogador para Criativo",
-                    "eternia.gamemode",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.GAMEMODE_ADVENTURE, new CommandLocale(
-                    "adventure|a|2",
-                    " <página>",
-                    " Define o modo de jogo seu, ou de outro jogador para Aventura",
-                    "eternia.gamemode",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.GAMEMODE_SPECTATOR, new CommandLocale(
-                    "spectator|sp|3",
-                    " <página>",
-                    " Define o modo de jogo seu, ou de outro jogador para Espectador",
-                    "eternia.gamemode",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.AFK, new CommandLocale(
-                    "afk",
-                    null,
-                    " Entra no modo AFK",
-                    "eternia.afk",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.GODMODE, new CommandLocale(
-                    "god",
-                    null,
-                    " Entra em GodMode",
-                    "eternia.god",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.HAT, new CommandLocale(
-                    "hat|capacete",
-                    null,
-                    " Coloca o item na sua mão na sua cabeça",
-                    "eternia.hat",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.WORKBENCH, new CommandLocale(
-                    "workbench|craftingtable|crafting",
-                    null,
-                    " Abre uma mesa de trabalho",
-                    "eternia.workbench",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.ENDERCHEST, new CommandLocale(
-                    "enderchest|ender|chest",
-                    null,
-                    " Abre um baú de ender",
-                    "eternia.enderchest",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.OPENINV, new CommandLocale(
-                    "openinv|inv",
-                    " <jogador>",
-                    " Abre o inventário de outro jogador",
-                    "eternia.openinv",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.MEM, new CommandLocale(
-                    "mem",
-                    null,
-                    " Veja informações sobre o servidor",
-                    "eternia.mem",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.MEM_ALL, new CommandLocale(
-                    "memall",
-                    null,
-                    " Mostre globalmente as informações sobre o servidor",
-                    "eternia.mem.all",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.CONDENSER, new CommandLocale(
-                    "blocks|condenser|compactar",
-                    null,
-                    " Comprima seus minérios em blocos para liberar espaço",
-                    "eternia.blocks",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.PROFILE, new CommandLocale(
-                    "profile",
-                    " <jogador>",
-                    " Veja o seu perfil ou o de outro jogador",
-                    "eternia.profile",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.SUICIDE, new CommandLocale(
-                    "suicide|suicidio",
-                    " <mensagem>",
-                    " Envie uma mensagem e se mate",
-                    "eternia.suicide",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.SPEED, new CommandLocale(
-                    "speed",
-                    " <velocidade>",
-                    " Altere a sua velocidade",
-                    "eternia.speed",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.FEED, new CommandLocale(
-                    "feed",
-                    " <jogador>",
-                    " Sacie-se ou sacie outra pessoa",
-                    "eternia.feed",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.THOR, new CommandLocale(
-                    "thor",
-                    " <jogador>",
-                    " Chame o Thor para punir um jogador",
-                    "eternia.thor",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.FLY, new CommandLocale(
-                    "fly|voar",
-                    " <jogador>",
-                    " VOA BRABULETA!!!",
-                    "eternia.fly",
-                    null
-            ));
-        }
+        public void executeCritical() { }
+
     }
 
 }

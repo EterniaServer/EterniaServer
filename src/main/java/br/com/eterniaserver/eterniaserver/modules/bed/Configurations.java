@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -20,10 +21,80 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class BedConfiguration implements ReloadableConfiguration {
+    static class BedMessages implements ReloadableConfiguration {
 
         private final EterniaServer plugin;
 
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        BedMessages(EterniaServer plugin) {
+            this.plugin = plugin;
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.BED_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.BED_MESSAGES_FILE_PATH;
+        }
+
+
+        @Override
+        public String[] messages() {
+            return plugin.messages();
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return new CommandLocale[0];
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
+            addMessage(Messages.NIGHT_SKIPPED,
+                    "A noite passou em <color:#00aaaa>{0}<color:#555555>.",
+                    "mundo"
+            );
+            addMessage(Messages.NIGHT_SKIPPING,
+                    "A noite está passando em <color:#00aaaa>{0}<color:#555555>.",
+                    "mundo"
+            );
+            addMessage(Messages.NIGHT_PLAYER_SLEEPING,
+                    "<color:#00aaaa>{0}<color:#aaaaaa> está dormindo<color:#555555>, <color:#aaaaaa>durma também para passar a noite mais rápido<color:#555555>.",
+                    "jogador",
+                    "mundo"
+            );
+        }
+
+        @Override
+        public void executeCritical() { }
+
+    }
+
+    static class BedConfiguration implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
@@ -33,7 +104,6 @@ final class Configurations {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
         }
-
 
         @Override
         public FileConfiguration inFileConfiguration() {
@@ -57,7 +127,7 @@ final class Configurations {
 
         @Override
         public String[] messages() {
-            return plugin.messages();
+            return new String[0];
         }
 
         @Override
@@ -72,20 +142,6 @@ final class Configurations {
 
         @Override
         public void executeConfig() {
-            addMessage(Messages.NIGHT_SKIPPED,
-                    "A noite passou em <color:#00aaaa>{0}<color:#555555>.",
-                    "mundo"
-            );
-            addMessage(Messages.NIGHT_SKIPPING,
-                    "A noite está passando em <color:#00aaaa>{0}<color:#555555>.",
-                    "mundo"
-            );
-            addMessage(Messages.NIGHT_PLAYER_SLEEPING,
-                    "<color:#00aaaa>{0}<color:#aaaaaa> está dormindo<color:#555555>, <color:#aaaaaa>durma também para passar a noite mais rápido<color:#555555>.",
-                    "jogador",
-                    "mundo"
-            );
-
             int[] integers = plugin.integers();
             List<List<String>> stringLists = plugin.stringLists();
 
@@ -102,9 +158,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-
-        }
+        public void executeCritical() { }
     }
 
 }

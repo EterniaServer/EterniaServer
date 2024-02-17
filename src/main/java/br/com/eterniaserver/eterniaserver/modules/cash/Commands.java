@@ -15,13 +15,14 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
+import br.com.eterniaserver.eterniaserver.modules.cash.Services.CashService;
+import br.com.eterniaserver.eterniaserver.modules.cash.Utils.BuyingItem;
 
 import net.kyori.adventure.text.Component;
 
@@ -41,13 +42,11 @@ final class Commands {
     static class Cash extends BaseCommand {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
-        private final Services.Cash cashService;
+        private final CashService cashService;
 
-        public Cash(final EterniaServer plugin, final Services.Cash cashService) {
+        public Cash(EterniaServer plugin, CashService cashService) {
             this.plugin = plugin;
-            this.databaseInterface = EterniaLib.getDatabase();
             this.cashService = cashService;
         }
 
@@ -79,9 +78,9 @@ final class Commands {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     if (targetName != null) {
                         UUID uuid = EterniaLib.getUUIDOf(targetName);
-                        PlayerProfile target = databaseInterface.get(PlayerProfile.class, uuid);
+                        PlayerProfile target = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
                         if (target.getUuid() != null) {
-                            CashBalance cashBalance = databaseInterface.get(CashBalance.class, uuid);
+                            CashBalance cashBalance = EterniaLib.getDatabase().get(CashBalance.class, uuid);
                             plugin.sendMiniMessages(
                                     sender,
                                     Messages.CASH_BALANCE_OTHER,
@@ -98,7 +97,7 @@ final class Commands {
                     }
 
                     Player playerObject = (Player) sender;
-                    CashBalance cash = databaseInterface.get(CashBalance.class, playerObject.getUniqueId());
+                    CashBalance cash = EterniaLib.getDatabase().get(CashBalance.class, playerObject.getUniqueId());
                     plugin.sendMiniMessages(sender, Messages.CASH_BALANCE, String.valueOf(cash.getBalance()));
                 });
                 return;
@@ -112,7 +111,7 @@ final class Commands {
         @CommandPermission("%CASH_ACCEPT_PERM")
         public void onCashAccept(Player player) {
             UUID uuid = player.getUniqueId();
-            Utils.BuyingItem buyingItem = cashService.getCashBuy(uuid);
+            BuyingItem buyingItem = cashService.getCashBuy(uuid);
             if (buyingItem == null) {
                 plugin.sendMiniMessages(player, Messages.CASH_NOTHING_TO_BUY);
                 return;
@@ -138,7 +137,7 @@ final class Commands {
         @CommandPermission("%CASH_DENY_PERM")
         public void onCashDeny(Player player) {
             UUID uuid = player.getUniqueId();
-            Utils.BuyingItem buyingItem = cashService.getCashBuy(uuid);
+            BuyingItem buyingItem = cashService.getCashBuy(uuid);
             if (buyingItem == null) {
                 plugin.sendMiniMessages(player, Messages.CASH_NOTHING_TO_BUY);
                 return;
@@ -160,8 +159,8 @@ final class Commands {
             if (EterniaServer.getCashAPI().has(uuid, value)) {
                 EterniaServer.getCashAPI().withdrawBalance(uuid, value);
                 EterniaServer.getCashAPI().depositBalance(target.getUniqueId(), value);
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, uuid);
-                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
+                PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 plugin.sendMiniMessages(
                         target,
@@ -193,7 +192,7 @@ final class Commands {
             UUID targetUUID = target.getUniqueId();
 
             EterniaServer.getCashAPI().depositBalance(targetUUID, value);
-            PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, targetUUID);
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
 
             plugin.sendMiniMessages(
                     sender,
@@ -204,7 +203,7 @@ final class Commands {
             );
 
             if (sender instanceof Player player) {
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
                 plugin.sendMiniMessages(
                         target,
                         Messages.CASH_RECEVEID,
@@ -234,7 +233,7 @@ final class Commands {
             UUID targetUUID = target.getUniqueId();
 
             EterniaServer.getCashAPI().withdrawBalance(targetUUID, value);
-            PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, targetUUID);
+            PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
 
             plugin.sendMiniMessages(
                     sender,
@@ -244,7 +243,7 @@ final class Commands {
                     targetProfile.getPlayerDisplay()
             );
             if (sender instanceof Player player) {
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
                 plugin.sendMiniMessages(
                         target,
                         Messages.CASH_LOST,

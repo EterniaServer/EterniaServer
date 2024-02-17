@@ -14,7 +14,6 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.AfkStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
@@ -22,6 +21,7 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.modules.core.Utils.RuntimeInfo;
 
 import net.kyori.adventure.text.Component;
 
@@ -45,13 +45,11 @@ final class Commands {
     static class Generic extends BaseCommand {
 
         private final EterniaServer plugin;
-        private final Utils.RuntimeInfo runtimeInfo;
-        private final DatabaseInterface databaseInterface;
+        private final RuntimeInfo runtimeInfo;
 
         public Generic(EterniaServer plugin) {
             this.plugin = plugin;
-            this.runtimeInfo = new Utils.RuntimeInfo();
-            this.databaseInterface = EterniaLib.getDatabase();
+            this.runtimeInfo = new RuntimeInfo();
         }
 
         @CommandAlias("%FLY")
@@ -59,7 +57,7 @@ final class Commands {
         @Syntax("%FLY_SYNTAX")
         @Description("%FLY_DESCRIPTION")
         public void onFly(Player player, @Optional OnlinePlayer target) {
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
             if (target != null) {
                 Player targetPlayer = target.getPlayer();
@@ -68,7 +66,7 @@ final class Commands {
                     return;
                 }
 
-                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, targetPlayer.getUniqueId());
+                PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetPlayer.getUniqueId());
 
                 if (targetPlayer.getAllowFlight()) {
                     targetPlayer.setAllowFlight(false);
@@ -129,11 +127,11 @@ final class Commands {
         @Syntax("%FEED_SYNTAX")
         @Description("%FEED_DESCRIPTION")
         public void onFeed(Player player, @Optional OnlinePlayer onlineTarget) {
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
             if (onlineTarget != null) {
                 Player target = onlineTarget.getPlayer();
-                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 target.setFoodLevel(20);
                 plugin.sendMiniMessages(player, Messages.FEED_SETED_TO, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
@@ -150,11 +148,11 @@ final class Commands {
         @Syntax("%THOR_SYNTAX")
         @Description("%THOR_DESCRIPTION")
         public void onThor(Player player, @Optional OnlinePlayer onlineTarget) {
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
             if (onlineTarget != null) {
                 Player target = onlineTarget.getPlayer();
-                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 target.getWorld().strikeLightning(target.getLocation());
                 plugin.sendMiniMessages(player, Messages.THOR_SETED_TO, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
@@ -198,7 +196,7 @@ final class Commands {
         public void onSuicide(Player player, String message) {
             player.setHealth(0);
 
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
             plugin.getServer().broadcast(plugin.getMiniMessage(Messages.SUICIDE_BROADCAST, true, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay(), message));
         }
@@ -219,7 +217,7 @@ final class Commands {
 
         private void sendProfile(Player player, Player target) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 int minutesPlayed = (int) TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - targetProfile.getEnterMillis());
 
@@ -248,7 +246,7 @@ final class Commands {
                 plugin.sendMiniMessages(player, Messages.PROFILE_LAST_LOGIN, false, simpleDateFormat.format(new Date(targetProfile.getLastJoin().getTime())));
                 plugin.sendMiniMessages(player, Messages.PROFILE_TITLE, false);
 
-                databaseInterface.update(PlayerProfile.class, targetProfile);
+                EterniaLib.getDatabase().update(PlayerProfile.class, targetProfile);
             });
         }
 
@@ -384,10 +382,8 @@ final class Commands {
     static class Afk extends BaseCommand {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
         public Afk(final EterniaServer plugin) {
-            this.databaseInterface = EterniaLib.getDatabase();
             this.plugin = plugin;
         }
 
@@ -398,7 +394,7 @@ final class Commands {
         @Description("%AFK_DESCRIPTION")
         @CommandPermission("%AFK_PERM")
         public void onDefault(Player player) {
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
             AfkStatusEvent event = new AfkStatusEvent(player, !playerProfile.isAfk(), AfkStatusEvent.Cause.COMMAND);
             plugin.getServer().getPluginManager().callEvent(event);
 
@@ -433,11 +429,9 @@ final class Commands {
     static class EGameMode extends BaseCommand {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
         public EGameMode(final EterniaServer plugin) {
             this.plugin = plugin;
-            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Default
@@ -489,7 +483,7 @@ final class Commands {
         private void setGameMode(CommandSender sender, OnlinePlayer onlineTarget, GameMode gameMode, int type) {
             if (onlineTarget != null) {
                 Player target = onlineTarget.getPlayer();
-                PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
                 String typeName = getType(type);
 
                 target.setGameMode(gameMode);
@@ -527,11 +521,9 @@ final class Commands {
     static class GodMode extends BaseCommand {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
         public GodMode(final EterniaServer plugin) {
             this.plugin = plugin;
-            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Default
@@ -540,11 +532,11 @@ final class Commands {
         @Description("%GODMODE_DESCRIPTION")
         @CommandPermission("%GODMODE_PERM")
         public void onGodMode(Player player, @Optional OnlinePlayer onlineTarget) {
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
             if (onlineTarget != null) {
                 Player target = onlineTarget.getPlayer();
-                PlayerProfile targetProfile = databaseInterface.get(PlayerProfile.class, target.getUniqueId());
+                PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 targetProfile.setGod(!targetProfile.isGod());
                 if (targetProfile.isGod()) {

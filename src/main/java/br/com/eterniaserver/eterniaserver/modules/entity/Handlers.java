@@ -2,7 +2,10 @@ package br.com.eterniaserver.eterniaserver.modules.entity;
 
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.modules.entity.Utils.EntityControl;
+
 import com.destroystokyo.paper.event.entity.PreCreatureSpawnEvent;
+
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
@@ -18,7 +21,7 @@ final class Handlers implements Listener {
 
     private final EterniaServer plugin;
 
-    public Handlers(final EterniaServer plugin) {
+    public Handlers(EterniaServer plugin) {
         this.plugin = plugin;
     }
 
@@ -29,7 +32,7 @@ final class Handlers implements Listener {
         }
 
         EntityType entityType = event.getEntityType();
-        Utils.EntityControl entityControl = plugin.getControl(entityType);
+        EntityControl entityControl = plugin.getControl(entityType);
 
         if (entityControl.getBreedingLimit() == -1) {
             return;
@@ -55,7 +58,7 @@ final class Handlers implements Listener {
 
         int amount = 0;
         EntityType entityType = event.getType();
-        Utils.EntityControl entityControl = plugin.getControl(entityType);
+        EntityControl entityControl = plugin.getControl(entityType);
 
         if (entityControl.getSpawnLimit() == -1) {
             return;
@@ -79,7 +82,7 @@ final class Handlers implements Listener {
         }
 
         LivingEntity entity = event.getEntity();
-        Utils.EntityControl entityControl = plugin.getControl(entity.getType());
+        EntityControl entityControl = plugin.getControl(entity.getType());
 
         if (!entityControl.isEditorState()) {
             return;

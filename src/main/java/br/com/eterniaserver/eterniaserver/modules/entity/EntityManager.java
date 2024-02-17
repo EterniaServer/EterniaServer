@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
+import br.com.eterniaserver.eterniaserver.modules.entity.Configurations.EntityConfiguration;
 
 public class EntityManager implements Module {
 
@@ -15,7 +16,7 @@ public class EntityManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.EntityConfiguration configuration = new Configurations.EntityConfiguration(plugin);
+        EntityConfiguration configuration = new EntityConfiguration(plugin);
 
         EterniaLib.registerConfiguration("eterniaserver", "entity", configuration);
 
@@ -25,10 +26,10 @@ public class EntityManager implements Module {
     }
 
     @Override
-    public void loadCommandsCompletions() {}
+    public void loadCommandsCompletions() { }
 
     @Override
-    public void loadConditions() {}
+    public void loadConditions() { }
 
     @Override
     public void loadListeners() {
@@ -41,5 +42,5 @@ public class EntityManager implements Module {
     }
 
     @Override
-    public void loadCommands() {}
+    public void loadCommands() { }
 }

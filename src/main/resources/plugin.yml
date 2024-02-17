@@ -1,9 +1,11 @@
 name: EterniaServer
 version: '${version}'
 main: br.com.eterniaserver.eterniaserver.EterniaServer
-api-version: 1.19
-loadbefore: [EterniaLib]
-depend: [Vault, PlaceholderAPI]
+api-version: 1.20
+dev-url: https://github.com/EterniaServer/EterniaServer
+loadbefore: [EterniaLib, DiscordSRV]
+softdepend: [DiscordSRV]
+depend: [EterniaLib, Vault, PlaceholderAPI]
 author: Yuri Nogueira
 description: Um plugin eterno
 website: www.eterniaserver.com.br

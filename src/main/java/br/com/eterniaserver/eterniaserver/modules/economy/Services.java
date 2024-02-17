@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.economy;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.dtos.BalanceDTO;
 import br.com.eterniaserver.eterniaserver.api.dtos.BankDTO;
@@ -9,8 +8,15 @@ import br.com.eterniaserver.eterniaserver.api.dtos.BankMemberDTO;
 import br.com.eterniaserver.eterniaserver.api.interfaces.ExtraEconomyAPI;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankMember;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankBalance;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
 
 final class Services {
 
@@ -21,13 +27,11 @@ final class Services {
     static class ExtraEconomy implements ExtraEconomyAPI {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
         private final List<BalanceDTO> topBalances = new ArrayList<>();
 
         public ExtraEconomy(EterniaServer plugin) {
             this.plugin = plugin;
-            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Override
@@ -46,12 +50,12 @@ final class Services {
 
         @Override
         public List<BankDTO> getBankList() {
-            List<Entities.BankBalance> balances = databaseInterface.listAll(Entities.BankBalance.class);
+            List<BankBalance> balances = EterniaLib.getDatabase().listAll(BankBalance.class);
             List<String> bankListName = plugin.bankListName();
 
             bankListName.clear();
 
-            for (Entities.BankBalance balance : balances) {
+            for (BankBalance balance : balances) {
                 bankListName.add(balance.getName());
             }
 
@@ -60,7 +64,7 @@ final class Services {
 
         @Override
         public List<BankMemberDTO> getBankMembers(String bankName) {
-            List<Entities.BankMember> members = databaseInterface.findAllBy(Entities.BankMember.class, "bankName", bankName);
+            List<BankMember> members = EterniaLib.getDatabase().findAllBy(BankMember.class, "bankName", bankName);
             return members.stream().map(m -> new BankMemberDTO(m.getBankName(), m.getUuid(), m.getRole())).toList();
         }
 

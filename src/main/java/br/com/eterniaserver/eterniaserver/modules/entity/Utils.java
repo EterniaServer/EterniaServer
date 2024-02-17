@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.entity;
 
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import lombok.Getter;
 import lombok.Setter;
 

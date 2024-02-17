@@ -7,7 +7,15 @@ import br.com.eterniaserver.eterniaserver.api.dtos.BalanceDTO;
 import br.com.eterniaserver.eterniaserver.modules.Module;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.modules.economy.Configurations.EconomyConfiguration;
+import br.com.eterniaserver.eterniaserver.modules.economy.Configurations.MessagesConfiguration;
+import br.com.eterniaserver.eterniaserver.modules.economy.Configurations.CommandsConfiguration;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.EcoBalance;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankBalance;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankMember;
+
 import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.plugin.ServicePriority;
 
 import java.util.ArrayList;
@@ -24,28 +32,38 @@ public class EconomyManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.EconomyConfiguration configuration = new Configurations.EconomyConfiguration(plugin);
+        MessagesConfiguration messagesConfiguration = new MessagesConfiguration(plugin);
+        CommandsConfiguration commandsConfiguration = new CommandsConfiguration();
+        EconomyConfiguration configuration = new EconomyConfiguration(plugin);
 
         EterniaLib.registerConfiguration("eterniaserver", "economy", configuration);
+        EterniaLib.registerConfiguration("eterniaserver", "economy_messages", messagesConfiguration);
+        EterniaLib.registerConfiguration("eterniaserver", "economy_commands", commandsConfiguration);
 
         configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        messagesConfiguration.executeConfig();
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        configuration.executeCritical();
+        commandsConfiguration.executeCritical();
+
+        configuration.saveConfiguration(true);
+        messagesConfiguration.saveConfiguration(true);
+        commandsConfiguration.saveConfiguration(true);
+
+        loadCommandsLocale(commandsConfiguration, Enums.Commands.class);
 
         try {
-            Entity<Entities.EcoBalance> balanceEntity = new Entity<>(Entities.EcoBalance.class);
-            Entity<Entities.BankBalance> bankBalanceEntity = new Entity<>(Entities.BankBalance.class);
-            Entity<Entities.BankMember> bankMemberEntity = new Entity<>(Entities.BankMember.class);
+            Entity<EcoBalance> balanceEntity = new Entity<>(EcoBalance.class);
+            Entity<BankBalance> bankBalanceEntity = new Entity<>(BankBalance.class);
+            Entity<BankMember> bankMemberEntity = new Entity<>(BankMember.class);
 
             EterniaLib.addTableName("%eternia_server_economy%", plugin.getString(Strings.ECO_TABLE_NAME_BALANCE));
             EterniaLib.addTableName("%eternia_server_bank%", plugin.getString(Strings.ECO_TABLE_NAME_BANK));
             EterniaLib.addTableName("%eternia_server_bank_member%", plugin.getString(Strings.ECO_TABLE_NAME_BANK_MEMBER));
 
-            EterniaLib.getDatabase().register(Entities.EcoBalance.class, balanceEntity);
-            EterniaLib.getDatabase().register(Entities.BankBalance.class, bankBalanceEntity);
-            EterniaLib.getDatabase().register(Entities.BankMember.class, bankMemberEntity);
+            EterniaLib.getDatabase().register(EcoBalance.class, balanceEntity);
+            EterniaLib.getDatabase().register(BankBalance.class, bankBalanceEntity);
+            EterniaLib.getDatabase().register(BankMember.class, bankMemberEntity);
         }
         catch (Exception exception) {
             EterniaLib.registerLog("EE-117-Economy");
@@ -61,10 +79,10 @@ public class EconomyManager implements Module {
 
         EterniaServer.setExtraEconomyAPI(new Services.ExtraEconomy(plugin));
 
-        List<Entities.EcoBalance> balances = EterniaLib.getDatabase().listAll(Entities.EcoBalance.class);
+        List<EcoBalance> balances = EterniaLib.getDatabase().listAll(EcoBalance.class);
         plugin.getLogger().log(Level.INFO, "Economy module: {0} player balance loaded", balances.size());
 
-        List<Entities.BankBalance> bankBalances = EterniaLib.getDatabase().listAll(Entities.BankBalance.class);
+        List<BankBalance> bankBalances = EterniaLib.getDatabase().listAll(BankBalance.class);
         plugin.getLogger().log(Level.INFO, "Economy module: {0} bank balance loaded", bankBalances.size());
 
         List<BalanceDTO> balanceDTOS = new ArrayList<>(balances.stream().map(b -> new BalanceDTO(b.getUuid(), b.getBalance())).toList());

@@ -27,12 +27,12 @@ final class Commands {
     @CommandAlias("%MUTE")
     static class Mute extends BaseCommand {
 
-        private final Services.Chat chatService;
+        private final Services.CraftChat craftChatService;
         private final EterniaServer plugin;
 
-        public Mute(EterniaServer plugin, Services.Chat chatService) {
+        public Mute(EterniaServer plugin, Services.CraftChat craftChatService) {
             this.plugin = plugin;
-            this.chatService = chatService;
+            this.craftChatService = craftChatService;
         }
 
         @Default
@@ -50,12 +50,12 @@ final class Commands {
         @CommandPermission("%MUTE_CHANNELS_PERM")
         @Description("%MUTE_CHANNELS_DESCRIPTION")
         public void muteChannels(Player sender, @Optional Integer temp) {
-            if (chatService.isChannelsMute()) {
+            if (craftChatService.isChannelsMute()) {
                 plugin.getServer().broadcast(plugin.getMiniMessage(
                         Messages.CHAT_CHANNELS_ENABLED,
                         true
                 ));
-                chatService.unMuteAllChannels();
+                craftChatService.unMuteAllChannels();
                 return;
             }
 
@@ -67,7 +67,7 @@ final class Commands {
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay()
                 ));
-                chatService.muteAllChannels();
+                craftChatService.muteAllChannels();
                 return;
             }
 
@@ -75,7 +75,7 @@ final class Commands {
             cal.setTime(new Date());
             cal.add(Calendar.MINUTE, temp);
 
-            chatService.tempMuteAllChannels(cal.getTimeInMillis());
+            craftChatService.tempMuteAllChannels(cal.getTimeInMillis());
 
             plugin.getServer().broadcast(plugin.getMiniMessage(
                     Messages.CHAT_CHANNELS_MUTED_TEMP,
@@ -98,7 +98,7 @@ final class Commands {
 
             Player target = onlinePlayer.getPlayer();
 
-            chatService.mute(target.getUniqueId(), cal.getTimeInMillis());
+            craftChatService.mute(target.getUniqueId(), cal.getTimeInMillis());
 
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
@@ -122,7 +122,7 @@ final class Commands {
         public void onUnMute(Player player, OnlinePlayer onlinePlayer) {
             Player target = onlinePlayer.getPlayer();
 
-            chatService.mute(target.getUniqueId(), System.currentTimeMillis());
+            craftChatService.mute(target.getUniqueId(), System.currentTimeMillis());
 
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
@@ -149,7 +149,7 @@ final class Commands {
             cal.setTime(new Date());
             cal.add(Calendar.MINUTE, time);
 
-            chatService.mute(target.getUniqueId(), cal.getTimeInMillis());
+            craftChatService.mute(target.getUniqueId(), cal.getTimeInMillis());
 
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
@@ -169,11 +169,11 @@ final class Commands {
 
     static class Generic extends BaseCommand {
         private final EterniaServer plugin;
-        private final Services.Chat chatService;
+        private final Services.CraftChat craftChatService;
 
-        public Generic(EterniaServer plugin, Services.Chat chatService) {
+        public Generic(EterniaServer plugin, Services.CraftChat craftChatService) {
             this.plugin = plugin;
-            this.chatService = chatService;
+            this.craftChatService = craftChatService;
         }
 
         @CommandAlias("%NICKNAME")
@@ -184,12 +184,12 @@ final class Commands {
         public void onNickname(Player player, @Optional OnlinePlayer onlinePlayer, @Optional String nickname) {
             if (onlinePlayer == null) {
                 if (nickname == null) {
-                    chatService.clearPlayerName(player);
+                    craftChatService.clearPlayerName(player);
                     plugin.sendMiniMessages(player, Messages.NICKNAME_REMOVED);
                     return;
                 }
 
-                String nickNameWithColor = chatService.setPlayerDisplay(player, nickname);
+                String nickNameWithColor = craftChatService.setPlayerDisplay(player, nickname);
                 plugin.sendMiniMessages(player, Messages.NICKNAME_UPDATED, nickNameWithColor);
                 return;
             }
@@ -200,7 +200,7 @@ final class Commands {
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
             if (nickname == null) {
-                chatService.clearPlayerName(target);
+                craftChatService.clearPlayerName(target);
                 plugin.sendMiniMessages(
                         target,
                         Messages.NICKNAME_REMOVED_BY,
@@ -216,7 +216,7 @@ final class Commands {
                 return;
             }
 
-            String nickNameWithColor = chatService.setPlayerDisplay(target, nickname);
+            String nickNameWithColor = craftChatService.setPlayerDisplay(target, nickname);
             plugin.sendMiniMessages(
                     target,
                     Messages.NICKNAME_UPDATED_BY,
@@ -238,11 +238,11 @@ final class Commands {
     static class Chat extends BaseCommand {
 
         private final EterniaServer plugin;
-        private final Services.Chat chatService;
+        private final Services.CraftChat craftChatService;
 
-        public Chat(EterniaServer plugin, Services.Chat chatService) {
+        public Chat(EterniaServer plugin, Services.CraftChat craftChatService) {
             this.plugin = plugin;
-            this.chatService = chatService;
+            this.craftChatService = craftChatService;
         }
 
         private int getDefaultChannel(Entities.ChatInfo chatInfo) {
@@ -281,7 +281,7 @@ final class Commands {
             Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
             int channelCode = channel.toLowerCase().hashCode();
 
-            if (message == null) {
+            if (message == null || message.isBlank()) {
                 chatInfo.setDefaultChannel(channelCode);
                 plugin.sendMiniMessages(player, Messages.CHAT_CHANNEL_CHANGED, channel);
                 return;
@@ -300,14 +300,14 @@ final class Commands {
         public void onSpy(Player player) {
             UUID uuid = player.getUniqueId();
 
-            if (chatService.isSpying(uuid)) {
+            if (craftChatService.isSpying(uuid)) {
                 plugin.sendMiniMessages(player, Messages.CHAT_SPY_DISABLED);
-                chatService.removeSpying(uuid);
+                craftChatService.removeSpying(uuid);
                 return;
             }
 
             plugin.sendMiniMessages(player, Messages.CHAT_SPY_ENABLED);
-            chatService.setSpying(uuid);
+            craftChatService.setSpying(uuid);
         }
 
         @Subcommand("%CHAT_REPLY")
@@ -317,11 +317,11 @@ final class Commands {
         @CommandAlias("%CHAT_REPLY_ALIASES")
         public void onReply(Player player, String msg) {
             UUID uuid = player.getUniqueId();
-            if (chatService.isMuted(uuid)) {
+            if (craftChatService.isMuted(uuid)) {
                 plugin.sendMiniMessages(
                         player,
                         Messages.CHAT_ARE_MUTED,
-                        String.valueOf(chatService.secondsMutedLeft(uuid))
+                        String.valueOf(craftChatService.secondsMutedLeft(uuid))
                 );
                 return;
             }
@@ -333,13 +333,13 @@ final class Commands {
                     Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
                     int defaultChannel = getDefaultChannel(chatInfo);
 
-                    chatInfo.setDefaultChannel(Services.Chat.TELL_CHANNEL_STRING.hashCode());
-                    chatService.setTellLink(uuid, targetUUID);
+                    chatInfo.setDefaultChannel(Services.CraftChat.TELL_CHANNEL_STRING.hashCode());
+                    craftChatService.setTellLink(uuid, targetUUID);
                     player.chat(msg);
 
                     plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                         chatInfo.setDefaultChannel(defaultChannel);
-                        chatService.removeTellLink(uuid);
+                        craftChatService.removeTellLink(uuid);
                     }, 10L);
                     return;
                 }
@@ -356,7 +356,7 @@ final class Commands {
         @CommandAlias("%CHAT_TELL_ALIASES")
         public void onTell(Player player, @Optional OnlinePlayer onlineTarget, @Optional String msg) {
             UUID playerUUID = player.getUniqueId();
-            if (chatService.isMuted(playerUUID)) {
+            if (craftChatService.isMuted(playerUUID)) {
                 return;
             }
 
@@ -373,31 +373,31 @@ final class Commands {
                 return;
             }
 
+            UUID targetUUID = target.getUniqueId();
             if (msg != null && !msg.isEmpty()) {
                 int defaultChannel = getDefaultChannel(chatInfo);
 
-                chatInfo.setDefaultChannel(Services.Chat.TELL_CHANNEL_STRING.hashCode());
-                chatService.setTellLink(playerUUID, target.getUniqueId());
+                chatInfo.setDefaultChannel(Services.CraftChat.TELL_CHANNEL_STRING.hashCode());
+                craftChatService.setTellLink(targetUUID, playerUUID);
                 player.chat(msg);
 
                 plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                     chatInfo.setDefaultChannel(defaultChannel);
-                    chatService.removeTellLink(playerUUID);
+                    craftChatService.removeTellLink(playerUUID);
                 }, 10L);
                 return;
             }
 
-            UUID targetUUID = target.getUniqueId();
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
-            if (chatService.getTellLink(playerUUID) == targetUUID) {
+            if (craftChatService.getTellLink(playerUUID) == targetUUID) {
                 chatInfo.setDefaultChannel(plugin.getString(Strings.DEFAULT_CHANNEL).toLowerCase().hashCode());
-                chatService.removeTellLink(playerUUID);
+                craftChatService.removeTellLink(playerUUID);
                 plugin.sendMiniMessages(player, Messages.CHAT_TELL_UNLOCKED, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
                 return;
             }
 
-            chatService.setTellLink(targetUUID, playerUUID);
-            chatInfo.setDefaultChannel(Services.Chat.TELL_CHANNEL_STRING.hashCode());
+            craftChatService.setTellLink(targetUUID, playerUUID);
+            chatInfo.setDefaultChannel(Services.CraftChat.TELL_CHANNEL_STRING.hashCode());
             plugin.sendMiniMessages(player, Messages.CHAT_TELL_LOCKED, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
         }
     }

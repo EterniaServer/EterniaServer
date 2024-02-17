@@ -8,7 +8,9 @@ import br.com.eterniaserver.eterniaserver.api.interfaces.GUIAPI;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+
 import net.kyori.adventure.text.Component;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -24,11 +26,11 @@ final class Services {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class Afk {
+    static class AfkService {
 
         private final EterniaServer plugin;
 
-        protected Afk(final EterniaServer plugin) {
+        protected AfkService(final EterniaServer plugin) {
             this.plugin = plugin;
         }
 

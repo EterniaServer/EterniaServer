@@ -7,12 +7,12 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 
 import java.io.File;
-import java.util.logging.Level;
 
 final class Configurations {
 
@@ -113,9 +113,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            plugin.getLogger().log(Level.INFO, "entity module: no critical configuration");
-        }
+        public void executeCritical() { }
     }
 
 }

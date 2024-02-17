@@ -1,15 +1,19 @@
 package br.com.eterniaserver.eterniaserver.modules.economy;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eternialib.database.dtos.SearchField;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.EcoBalance;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankBalance;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankMember;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+
 import org.bukkit.OfflinePlayer;
 
 import java.text.NumberFormat;
@@ -20,13 +24,11 @@ import java.util.UUID;
 public class VaultEconomyManager implements Economy {
 
     private final EterniaServer plugin;
-    private final DatabaseInterface databaseInterface;
 
     private NumberFormat numberFormat;
 
     public VaultEconomyManager(EterniaServer plugin) {
         this.plugin = plugin;
-        this.databaseInterface = EterniaLib.getDatabase();
     }
 
     @Override
@@ -69,14 +71,14 @@ public class VaultEconomyManager implements Economy {
         return plugin.getString(Strings.ECO_COIN_NAME);
     }
 
-    private Entities.EcoBalance getEcoBalance(UUID uuid) {
-        Entities.EcoBalance ecoBalance = databaseInterface.get(Entities.EcoBalance.class, uuid);
+    private EcoBalance getEcoBalance(UUID uuid) {
+        EcoBalance ecoBalance = EterniaLib.getDatabase().get(EcoBalance.class, uuid);
 
         if (ecoBalance != null) {
             return ecoBalance;
         }
 
-        return new Entities.EcoBalance();
+        return new EcoBalance();
     }
 
     @Override
@@ -107,7 +109,7 @@ public class VaultEconomyManager implements Economy {
     }
 
     private boolean hasAccount(UUID uuid) {
-        Entities.EcoBalance ecoBalance = getEcoBalance(uuid);
+        EcoBalance ecoBalance = getEcoBalance(uuid);
         return ecoBalance.getUuid() != null;
     }
 
@@ -139,7 +141,7 @@ public class VaultEconomyManager implements Economy {
     }
 
     private double getBalance(UUID uuid) {
-        Entities.EcoBalance ecoBalance = getEcoBalance(uuid);
+        EcoBalance ecoBalance = getEcoBalance(uuid);
         if (ecoBalance.getBalance() != null) {
             return ecoBalance.getBalance();
         }
@@ -175,7 +177,7 @@ public class VaultEconomyManager implements Economy {
     }
 
     private boolean has(UUID uuid, double amount) {
-        Entities.EcoBalance ecoBalance = getEcoBalance(uuid);
+        EcoBalance ecoBalance = getEcoBalance(uuid);
         if (ecoBalance.getBalance() != null) {
             return ecoBalance.getBalance() > amount;
         }
@@ -212,12 +214,12 @@ public class VaultEconomyManager implements Economy {
             return new EconomyResponse(amount, getBalance(uuid), EconomyResponse.ResponseType.FAILURE, null);
         }
 
-        Entities.EcoBalance ecoBalance = getEcoBalance(uuid);
+        EcoBalance ecoBalance = getEcoBalance(uuid);
         ecoBalance.setBalance(ecoBalance.getBalance() - amount);
 
         plugin.getServer().getScheduler().runTaskAsynchronously(
                 plugin,
-                () -> databaseInterface.update(Entities.EcoBalance.class, ecoBalance)
+                () -> EterniaLib.getDatabase().update(EcoBalance.class, ecoBalance)
         );
 
         return new EconomyResponse(amount, ecoBalance.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
@@ -252,25 +254,25 @@ public class VaultEconomyManager implements Economy {
             return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, null);
         }
 
-        Entities.EcoBalance ecoBalance = getEcoBalance(uuid);
+        EcoBalance ecoBalance = getEcoBalance(uuid);
         ecoBalance.setBalance(ecoBalance.getBalance() + amount);
 
         plugin.getServer().getScheduler().runTaskAsynchronously(
                 plugin,
-                () -> databaseInterface.update(Entities.EcoBalance.class, ecoBalance)
+                () -> EterniaLib.getDatabase().update(EcoBalance.class, ecoBalance)
         );
 
         return new EconomyResponse(amount, ecoBalance.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
-    private Entities.BankBalance getBankBalance(String bankName) {
-        Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+    private BankBalance getBankBalance(String bankName) {
+        BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
         if (bankBalance != null) {
             return bankBalance;
         }
 
-        return new Entities.BankBalance();
+        return new BankBalance();
     }
 
     @Override
@@ -287,7 +289,7 @@ public class VaultEconomyManager implements Economy {
     }
 
     private EconomyResponse createBank(String bankName, UUID uuid) {
-        Entities.BankBalance bankBalance = getBankBalance(bankName);
+        BankBalance bankBalance = getBankBalance(bankName);
 
         if (bankBalance.getName() != null) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, null);
@@ -297,15 +299,15 @@ public class VaultEconomyManager implements Economy {
         bankBalance.setBalance(0D);
         bankBalance.setTax(0D);
 
-        databaseInterface.insert(Entities.BankBalance.class, bankBalance);
+        EterniaLib.getDatabase().insert(BankBalance.class, bankBalance);
 
-        Entities.BankMember bankMember = new Entities.BankMember();
+        BankMember bankMember = new BankMember();
 
         bankMember.setBankName(bankName);
         bankMember.setUuid(uuid);
         bankMember.setRole(Enums.BankRole.OWNER.name());
 
-        databaseInterface.insert(Entities.BankMember.class, bankMember);
+        EterniaLib.getDatabase().insert(BankMember.class, bankMember);
 
         plugin.bankListName().add(bankName);
 
@@ -314,13 +316,13 @@ public class VaultEconomyManager implements Economy {
 
     @Override
     public EconomyResponse deleteBank(String bankName) {
-        Entities.BankBalance bankBalance = getBankBalance(bankName);
+        BankBalance bankBalance = getBankBalance(bankName);
 
         if (bankBalance.getName() == null) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, null);
         }
 
-        databaseInterface.delete(Entities.BankBalance.class, bankName);
+        EterniaLib.getDatabase().delete(BankBalance.class, bankName);
 
         plugin.bankListName().remove(bankName);
 
@@ -329,7 +331,7 @@ public class VaultEconomyManager implements Economy {
 
     @Override
     public EconomyResponse bankBalance(String bankName) {
-        Entities.BankBalance bankBalance = getBankBalance(bankName);
+        BankBalance bankBalance = getBankBalance(bankName);
 
         if (bankBalance.getName() == null) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, null);
@@ -340,7 +342,7 @@ public class VaultEconomyManager implements Economy {
 
     @Override
     public EconomyResponse bankHas(String bankName, double amount) {
-        Entities.BankBalance bankBalance = getBankBalance(bankName);
+        BankBalance bankBalance = getBankBalance(bankName);
 
         if (bankBalance.getName() == null || bankBalance.getBalance() < amount) {
             return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, null);
@@ -351,7 +353,7 @@ public class VaultEconomyManager implements Economy {
 
     @Override
     public EconomyResponse bankWithdraw(String bankName, double amount) {
-        Entities.BankBalance bankBalance = getBankBalance(bankName);
+        BankBalance bankBalance = getBankBalance(bankName);
 
         if (bankBalance.getName() == null) {
             return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, null);
@@ -361,7 +363,7 @@ public class VaultEconomyManager implements Economy {
 
         plugin.getServer().getScheduler().runTaskAsynchronously(
                 plugin,
-                () -> databaseInterface.update(Entities.BankBalance.class, bankBalance)
+                () -> EterniaLib.getDatabase().update(BankBalance.class, bankBalance)
         );
 
         return new EconomyResponse(amount, bankBalance.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
@@ -370,7 +372,7 @@ public class VaultEconomyManager implements Economy {
 
     @Override
     public EconomyResponse bankDeposit(String bankName, double amount) {
-        Entities.BankBalance bankBalance = getBankBalance(bankName);
+        BankBalance bankBalance = getBankBalance(bankName);
 
         if (bankBalance.getName() == null) {
             return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, null);
@@ -380,7 +382,7 @@ public class VaultEconomyManager implements Economy {
 
         plugin.getServer().getScheduler().runTaskAsynchronously(
                 plugin,
-                () -> databaseInterface.update(Entities.BankBalance.class, bankBalance)
+                () -> EterniaLib.getDatabase().update(BankBalance.class, bankBalance)
         );
 
         return new EconomyResponse(amount, bankBalance.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
@@ -402,13 +404,13 @@ public class VaultEconomyManager implements Economy {
         SearchField bankSearch = new SearchField("bankName", bankName);
         SearchField uuidSearch = new SearchField("uuid", uuid);
 
-        Entities.BankMember bankMember = databaseInterface.findBy(Entities.BankMember.class, bankSearch, uuidSearch);
+        BankMember bankMember = EterniaLib.getDatabase().findBy(BankMember.class, bankSearch, uuidSearch);
 
         if (bankMember == null || !Enums.BankRole.OWNER.name().equals(bankMember.getRole())) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, null);
         }
 
-        Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+        BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
         return new EconomyResponse(0, bankBalance.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
     }
@@ -430,22 +432,22 @@ public class VaultEconomyManager implements Economy {
         SearchField bankSearch = new SearchField("bankName", bankName);
         SearchField uuidSearch = new SearchField("uuid", uuid);
 
-        Entities.BankMember bankMember = databaseInterface.findBy(Entities.BankMember.class, bankSearch, uuidSearch);
+        BankMember bankMember = EterniaLib.getDatabase().findBy(BankMember.class, bankSearch, uuidSearch);
 
         if (bankMember == null) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, null);
         }
 
-        Entities.BankBalance bankBalance = databaseInterface.get(Entities.BankBalance.class, bankName);
+        BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
         return new EconomyResponse(0, bankBalance.getBalance(), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public List<String> getBanks() {
-        List<Entities.BankBalance> bankBalances = databaseInterface.listAll(Entities.BankBalance.class);
+        List<BankBalance> bankBalances = EterniaLib.getDatabase().listAll(BankBalance.class);
 
-        return bankBalances.stream().map(Entities.BankBalance::getName).toList();
+        return bankBalances.stream().map(BankBalance::getName).toList();
     }
 
     @Override
@@ -473,7 +475,7 @@ public class VaultEconomyManager implements Economy {
     }
 
     private boolean createPlayerAccount(UUID uuid) {
-        final Entities.EcoBalance ecoBalance = getEcoBalance(uuid);
+        EcoBalance ecoBalance = getEcoBalance(uuid);
 
         if (ecoBalance.getUuid() != null) {
             return false;
@@ -484,7 +486,7 @@ public class VaultEconomyManager implements Economy {
 
         plugin.getServer().getScheduler().runTaskAsynchronously(
                 plugin,
-                () -> databaseInterface.insert(Entities.EcoBalance.class, ecoBalance)
+                () -> EterniaLib.getDatabase().insert(EcoBalance.class, ecoBalance)
         );
 
         return true;

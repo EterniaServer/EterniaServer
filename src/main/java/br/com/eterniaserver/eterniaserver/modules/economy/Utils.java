@@ -7,7 +7,10 @@ import br.com.eterniaserver.eternialib.commands.enums.AdvancedRules;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+import br.com.eterniaserver.eterniaserver.modules.economy.Entities.BankMember;
+
 import net.kyori.adventure.text.Component;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -63,13 +66,13 @@ public final class Utils {
         @Override
         public BukkitTask executeAsynchronously() {
             return plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                Entities.BankMember bankMember = new Entities.BankMember();
+                BankMember bankMember = new BankMember();
 
                 bankMember.setBankName(bankName);
                 bankMember.setRole(Enums.BankRole.MEMBER.name());
                 bankMember.setUuid(target.getUniqueId());
 
-                EterniaLib.getDatabase().insert(Entities.BankMember.class, bankMember);
+                EterniaLib.getDatabase().insert(BankMember.class, bankMember);
 
                 plugin.sendMiniMessages(target, Messages.ECO_BANK_AFILIATE_SUCCESS, bankName);
             });

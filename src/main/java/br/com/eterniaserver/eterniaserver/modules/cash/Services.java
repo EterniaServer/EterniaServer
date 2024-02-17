@@ -9,6 +9,8 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
+import br.com.eterniaserver.eterniaserver.modules.cash.Utils.BuyingItem;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -30,13 +32,13 @@ final class Services {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class Cash {
+    static class CashService {
 
         private final EterniaServer plugin;
 
-        private final Map<UUID, Utils.BuyingItem> cashItem = new HashMap<>();
+        private final Map<UUID, BuyingItem> cashItem = new HashMap<>();
 
-        protected Cash(final EterniaServer plugin) {
+        protected CashService(final EterniaServer plugin) {
             this.plugin = plugin;
         }
 
@@ -45,7 +47,7 @@ final class Services {
          * @param uuid of player
          * @return the BuyingItem object
          */
-        public Utils.BuyingItem getCashBuy(UUID uuid) {
+        public BuyingItem getCashBuy(UUID uuid) {
             return cashItem.get(uuid);
         }
 
@@ -132,7 +134,7 @@ final class Services {
                     return 3;
                 }
 
-                Utils.BuyingItem buyingItem = new Utils.BuyingItem(messages, commands, cost);
+                BuyingItem buyingItem = new BuyingItem(messages, commands, cost);
                 if (!EterniaServer.getCashAPI().has(uuid, buyingItem.getCost())) {
                     plugin.sendMiniMessages(player, Messages.CASH_NO_HAS, String.valueOf(buyingItem.getCost()));
                     return 2;

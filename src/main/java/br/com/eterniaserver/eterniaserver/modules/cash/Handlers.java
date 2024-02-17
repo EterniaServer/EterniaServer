@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver.modules.cash;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.modules.cash.Services.CashService;
+import br.com.eterniaserver.eterniaserver.modules.cash.Entities.CashBalance;
+
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,13 +20,11 @@ import java.util.UUID;
 final class Handlers implements Listener {
 
     private final EterniaServer plugin;
-    private final Services.Cash cashService;
-    private final DatabaseInterface databaseInterface;
+    private final CashService cashService;
 
-    public Handlers(EterniaServer plugin, Services.Cash cashService) {
+    public Handlers(EterniaServer plugin, CashService cashService) {
         this.plugin = plugin;
         this.cashService = cashService;
-        this.databaseInterface = EterniaLib.getDatabase();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -41,7 +41,7 @@ final class Handlers implements Listener {
     public void onPlayerLogin(PlayerLoginEvent event) {
         UUID playerUUID = event.getPlayer().getUniqueId();
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            Entities.CashBalance cashBalance = databaseInterface.get(Entities.CashBalance.class, playerUUID);
+            CashBalance cashBalance = EterniaLib.getDatabase().get(CashBalance.class, playerUUID);
             if (cashBalance.getUuid() == null) {
                 EterniaServer.getCashAPI().setBalance(playerUUID, 0);
             }

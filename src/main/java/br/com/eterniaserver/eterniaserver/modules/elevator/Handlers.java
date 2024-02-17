@@ -3,7 +3,9 @@ package br.com.eterniaserver.eterniaserver.modules.elevator;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
+
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +23,7 @@ final class Handlers implements Listener {
 
     private final EterniaServer plugin;
 
-    public Handlers(final EterniaServer plugin) {
+    public Handlers(EterniaServer plugin) {
         this.plugin = plugin;
     }
 

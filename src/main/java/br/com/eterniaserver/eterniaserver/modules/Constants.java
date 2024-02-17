@@ -10,16 +10,39 @@ public class Constants {
 
     public static final String DATA_LAYER_FOLDER_PATH = "plugins" + File.separator + "EterniaServer";
     public static final String CORE_CONFIG_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "core.yml";
+    public static final String CORE_MESSAGES_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String CORE_COMMANDS_FILE_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "commands.yml";
+
     public static final String DATA_MODULE_FOLDER_PATH = DATA_LAYER_FOLDER_PATH + File.separator + "modules";
+
+    public static final String BED_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "bed";
+    public static final String BED_CONFIG_FILE_PATH = BED_MODULE_FOLDER_PATH + File.separator + "bed.yml";
+    public static final String BED_MESSAGES_FILE_PATH = BED_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+
+    public static final String CASH_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "cash";
+    public static final String CASH_CONFIG_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash.yml";
+    public static final String CASH_MESSAGES_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String CASH_COMMANDS_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "commands.yml";
+
+    public static final String CHAT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "chat";
+    public static final String CHAT_CONFIG_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat.yml";
+    public static final String CHAT_MESSAGES_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String CHAT_COMMANDS_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "commands.yml";
+    public static final String CHAT_CHANNELS_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "channels.yml";
+
+    public static final String ECONOMY_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "economy";
+    public static final String ECONOMY_CONFIG_FILE_PATH = ECONOMY_MODULE_FOLDER_PATH + File.separator + "economy.yml";
+    public static final String ECONOMY_MESSAGES_FILE_PATH = ECONOMY_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String ECONOMY_COMMANDS_FILE_PATH = ECONOMY_MODULE_FOLDER_PATH + File.separator + "commands.yml";
+
+    public static final String ELEVATOR_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "elevator";
+    public static final String ELEVATOR_CONFIG_FILE_PATH = ELEVATOR_MODULE_FOLDER_PATH + File.separator + "elevator.yml";
 
     public static final String SPAWNER_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "spawner";
     public static final String SPAWNER_CONFIG_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "spawner.yml";
 
     public static final String EXPERIENCE_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "experience";
     public static final String EXPERIENCE_CONFIG_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience.yml";
-
-    public static final String ELEVATOR_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "elevator";
-    public static final String ELEVATOR_CONFIG_FILE_PATH = ELEVATOR_MODULE_FOLDER_PATH + File.separator + "elevator.yml";
 
     public static final String REWARDS_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "rewards";
     public static final String REWARDS_CONFIG_FILE_PATH = REWARDS_MODULE_FOLDER_PATH + File.separator + "rewards.yml";
@@ -30,17 +53,8 @@ public class Constants {
     public static final String PAPI_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "papi";
     public static final String PAPI_CONFIG_FILE_PATH = PAPI_MODULE_FOLDER_PATH + File.separator + "papi.yml";
 
-    public static final String CASH_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "cash";
-    public static final String CASH_CONFIG_FILE_PATH = CASH_MODULE_FOLDER_PATH + File.separator + "cash.yml";
-
     public static final String ENTITY_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "entity";
     public static final String ENTITY_CONFIG_FILE_PATH = ENTITY_MODULE_FOLDER_PATH + File.separator + "entity.yml";
-
-    public static final String ECONOMY_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "economy";
-    public static final String ECONOMY_CONFIG_FILE_PATH = ECONOMY_MODULE_FOLDER_PATH + File.separator + "economy.yml";
-
-    public static final String BED_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "bed";
-    public static final String BED_CONFIG_FILE_PATH = BED_MODULE_FOLDER_PATH + File.separator + "bed.yml";
 
     public static final String ITEM_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "item";
     public static final String ITEM_CONFIG_FILE_PATH = ITEM_MODULE_FOLDER_PATH + File.separator + "item.yml";
@@ -50,10 +64,6 @@ public class Constants {
 
     public static final String TELEPORT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "teleport";
     public static final String TELEPORT_CONFIG_FILE_PATH = TELEPORT_MODULE_FOLDER_PATH + File.separator + "teleport.yml";
-
-    public static final String CHAT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "chat";
-    public static final String CHAT_CONFIG_FILE_PATH = CHAT_MODULE_FOLDER_PATH + File.separator + "chat.yml";
-
 
     public static final String UTILITY_CLASS = "Utility class";
 

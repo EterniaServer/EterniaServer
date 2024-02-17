@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.cash;
 
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import lombok.Getter;
 
 import java.util.Arrays;

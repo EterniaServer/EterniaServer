@@ -7,9 +7,14 @@ import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+import br.com.eterniaserver.eterniaserver.modules.chat.Entities.ChatInfo;
+import br.com.eterniaserver.eterniaserver.modules.chat.Utils.ChannelObject;
+import br.com.eterniaserver.eterniaserver.modules.chat.Utils.CustomPlaceholder;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -35,9 +40,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -48,9 +55,12 @@ final class Services {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class Chat implements ChatAPI {
-        protected final Map<String, Utils.CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
-        protected final Map<Integer, Utils.ChannelObject> channelObjectsMap = new HashMap<>();
+    static class CraftChat implements ChatAPI {
+
+        protected static final HoverEvent<Component> DISCORD_SRV_HOVER_EVENT = HoverEvent.showText(Component.text("discordsrv"));
+
+        protected final Map<String, CustomPlaceholder> customPlaceholdersObjectsMap = new HashMap<>();
+        protected final Map<Integer, ChannelObject> channelObjectsMap = new HashMap<>();
         protected final List<String> channels = new ArrayList<>();
 
         protected static final String TELL_CHANNEL_STRING = "tellchannel";
@@ -58,7 +68,7 @@ final class Services {
         private final static String NICKNAME_COLOR_REGEX = "[^\\w#<>]";
         private final static String NICKNAME_CLEAR_REGEX = "<#[a-f\\\\d]{6}>";
 
-        private final Map<UUID, UUID> tellMap = new HashMap<>();
+        private final Map<UUID, UUID> tellMap = new ConcurrentHashMap<>();
         private final Map<Integer, UUID> playerHashToUUID = new HashMap<>();
         private final Map<String, Component> staticComponents = new HashMap<>();
         private final Times mentionTimes = Times.times(Duration.ofMillis(100), Duration.ofSeconds(1), Duration.ofMillis(100));
@@ -74,25 +84,22 @@ final class Services {
         private boolean muteAllChannels = false;
         private int muteChannelTaskId = 0;
         private TextColor tagColor;
-        private TextColor playerColor;
 
-        public Chat(EterniaServer plugin) {
+        public CraftChat(EterniaServer plugin) {
             this.plugin = plugin;
             this.tellChannelHashCode = TELL_CHANNEL_STRING.hashCode();
         }
 
         protected void updateTextColor() {
             String tagHex = plugin.getString(Strings.CHAT_DEFAULT_TAG_COLOR);
-            String playerHex = plugin.getString(Strings.CHAT_DEFAULT_PLAYER_COLOR);
 
             this.tagColor = TextColor.fromHexString(tagHex);
-            this.playerColor = TextColor.fromHexString(playerHex);
         }
 
-        protected TextColor getPlayerDefaultColor(Entities.ChatInfo chatInfo) {
+        protected TextColor getPlayerDefaultColor(ChatInfo chatInfo, ChannelObject channelObject) {
             TextColor color = chatInfo.getColor();
             if (color == null) {
-                return playerColor;
+                return TextColor.fromHexString(channelObject.channelColor());
             }
 
             return color;
@@ -146,7 +153,7 @@ final class Services {
                 component = component.replaceText(getFilter());
             }
 
-            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, player.getUniqueId());
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, player.getUniqueId());
             Integer channel = chatInfo.getDefaultChannel();
             if (channel == null) {
                 channel = defaultChannel();
@@ -170,9 +177,7 @@ final class Services {
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
 
             if (isDiscordSRVChannel) {
-                filter(event, playerProfile, chatInfo, component);
-                event.viewers().clear();
-                return false;
+                event.message(component.hoverEvent(DISCORD_SRV_HOVER_EVENT));
             }
 
             if (isTellChannel) {
@@ -191,11 +196,11 @@ final class Services {
                 }
 
                 sendPrivateMessage(event, component, playerProfile, target);
-                return true;
+                return false;
             }
 
             filter(event, playerProfile, chatInfo, component);
-            return true;
+            return false;
         }
 
         protected void sendPrivateMessage(AsyncChatEvent event,
@@ -204,6 +209,7 @@ final class Services {
                                        Player target) {
 
             Player player = event.getPlayer();
+            Set<Audience> viewers = event.viewers();
 
             UUID playerUUID = player.getUniqueId();
             UUID targetUUID = target.getUniqueId();
@@ -212,21 +218,11 @@ final class Services {
 
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
 
+            viewers.clear();
+            viewers.add(player);
+            viewers.add(target);
+
             String msg = PlainTextComponentSerializer.plainText().serialize(component);
-            Component msgComponent = plugin.getMiniMessage(
-                    Messages.CHAT_TELL,
-                    false,
-                    msg,
-                    playerProfile.getPlayerName(),
-                    playerProfile.getPlayerDisplay(),
-                    targetProfile.getPlayerName(),
-                    targetProfile.getPlayerDisplay()
-            );
-
-            event.message(msgComponent);
-
-            target.sendMessage(msgComponent);
-            player.sendMessage(msgComponent);
 
             Component spyMsgComponent = plugin.getMiniMessage(
                     Messages.CHAT_SPY_TELL,
@@ -238,21 +234,38 @@ final class Services {
                     targetProfile.getPlayerDisplay()
             );
 
+            String spyPerm = plugin.getString(Strings.PERM_SPY);
             for (Player other : plugin.getServer().getOnlinePlayers()) {
-                if (other.hasPermission(plugin.getString(Strings.PERM_SPY)) || isSpying(other.getUniqueId())) {
-                    if (other.getUniqueId().equals(playerUUID) || other.getUniqueId().equals(targetUUID)) {
-                        continue;
-                    }
-
+                boolean inTell = other.getUniqueId().equals(playerUUID) || other.getUniqueId().equals(targetUUID);
+                if (!inTell && (other.hasPermission(spyPerm) || isSpying(other.getUniqueId()))) {
                     other.sendMessage(spyMsgComponent);
                 }
             }
+
+            Component msgComponent = plugin.getMiniMessage(
+                    Messages.CHAT_TELL,
+                    false,
+                    msg,
+                    playerProfile.getPlayerName(),
+                    playerProfile.getPlayerDisplay(),
+                    targetProfile.getPlayerName(),
+                    targetProfile.getPlayerDisplay()
+            );
+
+            event.renderer((source, sourceDisplayName, message, viewer) -> {
+                Optional<UUID> viewerUUID = viewer.get(Identity.UUID);
+                if (viewerUUID.isEmpty()) {
+                    return message;
+                }
+
+                return msgComponent;
+            });
         }
 
-        private void filter(AsyncChatEvent event, PlayerProfile playerProfile, Entities.ChatInfo chatInfo, Component component) {
+        private void filter(AsyncChatEvent event, PlayerProfile playerProfile, ChatInfo chatInfo, Component component) {
             Player player = event.getPlayer();
 
-            Utils.ChannelObject channelObject = channelObjectsMap.get(chatInfo.getDefaultChannel());
+            ChannelObject channelObject = channelObjectsMap.get(chatInfo.getDefaultChannel());
             if (channelObject == null) {
                 channelObject = channelObjectsMap.get(defaultChannel());
             }
@@ -263,41 +276,69 @@ final class Services {
             }
 
             Component messageComponent = getChatComponentFormat(player, channelObject.format());
-            String message = PlainTextComponentSerializer.plainText().serialize(component);
+            String messageStr = PlainTextComponentSerializer.plainText().serialize(component);
 
-            Component spaced = Component.text(" ");
-            for (String section : message.split(" ")) {
-                messageComponent = messageComponent.append(spaced).append(getComponent(section, player, playerProfile, chatInfo));
+            for (String section : messageStr.split(" ")) {
+                messageComponent = messageComponent.appendSpace().append(getComponent(
+                        section, player, playerProfile, chatInfo, channelObject
+                ));
             }
 
-            if (!channelObject.hasRange()) {
-                for (Player other : plugin.getServer().getOnlinePlayers()) {
-                    if (other.hasPermission(channelObject.perm())) {
-                        other.sendMessage(messageComponent);
-                    }
-                }
-                return;
-            }
+            Set<Audience> viewers = event.viewers();
 
-            boolean sendToSomeOne = false;
             World world = player.getWorld();
             Location location = player.getLocation();
-            for (Player other : plugin.getServer().getOnlinePlayers()) {
-                if (channelObject.range() <= 0 || (world.equals(other.getWorld()) && other.getLocation().distanceSquared(location) <= Math.pow(channelObject.range(), 2))) {
-                    sendToSomeOne = true;
-                    other.sendMessage(messageComponent);
+            String spyPerm = plugin.getString(Strings.PERM_SPY);
+
+            for (Player receiver : plugin.getServer().getOnlinePlayers()) {
+                boolean hasPermission = receiver.hasPermission(channelObject.perm());
+                if (!channelObject.hasRange() && !hasPermission) {
+                    viewers.remove(receiver);
                 }
-                else if (other.hasPermission(plugin.getString(Strings.PERM_SPY)) && isSpying(other.getUniqueId())) {
-                    plugin.sendMiniMessages(other, Messages.CHAT_SPY_LOCAL, playerProfile.getPlayerName(), playerProfile.getPlayerDisplay());
+                else if (hasPermission) {
+                    int range = channelObject.range();
+                    boolean isInRange = range <= 0 || (
+                            world.equals(receiver.getWorld())
+                                    &&
+                            receiver.getLocation().distanceSquared(location) <= Math.pow(range, 2)
+                    );
+
+                    if (!isInRange) {
+                        viewers.remove(receiver);
+                    }
+                    if (!isInRange && receiver.hasPermission(spyPerm) && isSpying(receiver.getUniqueId())) {
+                        plugin.sendMiniMessages(
+                                receiver,
+                                Messages.CHAT_SPY_LOCAL,
+                                messageStr,
+                                playerProfile.getPlayerName(),
+                                playerProfile.getPlayerDisplay()
+                        );
+                    }
                 }
             }
 
-            if (!sendToSomeOne) {
+            Component sourceMessage = messageComponent.compact();
+
+            event.renderer((source, sourceDisplayName, message, viewer) -> {
+                Optional<UUID> viewerUUID = viewer.get(Identity.UUID);
+                if (viewerUUID.isEmpty()) {
+                    return message;
+                }
+
+                return sourceMessage;
+            });
+
+            if (viewers.isEmpty()) {
                 plugin.sendMiniMessages(player, Messages.CHAT_NO_ONE_NEAR);
             }
         }
 
-        private Component getComponent(String section, Player player, PlayerProfile playerProfile, Entities.ChatInfo chatInfo) {
+        private Component getComponent(String section,
+                                       Player player,
+                                       PlayerProfile playerProfile,
+                                       ChatInfo chatInfo,
+                                       ChannelObject channelObject) {
             int sectionHashCode = section.toLowerCase().hashCode();
             UUID mentionPlayerUUID = getUUIDFromHash(sectionHashCode);
 
@@ -327,7 +368,7 @@ final class Services {
                 }
             }
 
-            return Component.text(section).color(getPlayerDefaultColor(chatInfo));
+            return Component.text(section).color(getPlayerDefaultColor(chatInfo, channelObject));
         }
 
         private	Component getItemComponent(String string, ItemStack itemStack) {
@@ -349,7 +390,7 @@ final class Services {
 
         private Component getChatComponentFormat(Player player, String format) {
             Map<Integer, Component> componentMap = new TreeMap<>();
-            for (Map.Entry<String, Utils.CustomPlaceholder> entry : customPlaceholdersObjectsMap.entrySet()) {
+            for (Map.Entry<String, CustomPlaceholder> entry : customPlaceholdersObjectsMap.entrySet()) {
                 if (format.contains("{" + entry.getKey() + "}") && player.hasPermission(entry.getValue().permission())) {
                     componentMap.put(entry.getValue().priority(), getJsonTagText(player, entry.getValue()));
                 }
@@ -363,7 +404,7 @@ final class Services {
             return chatComponentFormat;
         }
 
-        private Component getJsonTagText(Player player, Utils.CustomPlaceholder object) {
+        private Component getJsonTagText(Player player, CustomPlaceholder object) {
             if (!object.isStatic()) {
                 return loadComponent(player, object);
             }
@@ -376,7 +417,7 @@ final class Services {
             return staticComponents.get(value);
         }
 
-        private Component loadComponent(Player player, Utils.CustomPlaceholder object) {
+        private Component loadComponent(Player player, CustomPlaceholder object) {
             Component component = object.value().equals("%player_displayname%") ?
                     player.displayName() :
                     plugin.parseColor(plugin.setPlaceholders(player, object.value()));
@@ -474,11 +515,11 @@ final class Services {
 
         @Override
         public boolean isMuted(UUID uuid) {
-            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, uuid);
             return isMuted(chatInfo);
         }
 
-        private boolean isMuted(Entities.ChatInfo chatInfo) {
+        private boolean isMuted(ChatInfo chatInfo) {
             Timestamp mutedUntil = chatInfo.getMutedUntil();
             if (mutedUntil == null) {
                 return false;
@@ -489,11 +530,11 @@ final class Services {
 
         @Override
         public int secondsMutedLeft(UUID uuid) {
-            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, uuid);
             return secondsMutedLeft(chatInfo);
         }
 
-        private int secondsMutedLeft(Entities.ChatInfo chatInfo) {
+        private int secondsMutedLeft(ChatInfo chatInfo) {
             Timestamp mutedUntil = chatInfo.getMutedUntil();
             if (mutedUntil == null) {
                 return 0;
@@ -504,11 +545,11 @@ final class Services {
 
         @Override
         public void mute(UUID uuid, long time) {
-            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, uuid);
 
             chatInfo.setMutedUntil(new Timestamp(time));
 
-            EterniaLib.getDatabase().update(Entities.ChatInfo.class, chatInfo);
+            EterniaLib.getDatabase().update(ChatInfo.class, chatInfo);
         }
 
         @Override
