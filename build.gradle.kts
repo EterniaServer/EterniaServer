@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("jacoco")
+    id("maven-publish")
     id("org.sonarqube") version "3.3"
     id("io.freefair.lombok") version "6.6.1"
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -121,5 +122,24 @@ tasks.processResources {
     filesMatching("plugin.yml") {
         expand(mapOf("version" to version))
         filteringCharset = "UTF-8"
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "br.com.eterniaserver"
+            url = uri("https://maven.pkg.github.com/eterniaserver/eterniaserver")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+
+    publications {
+        register<MavenPublication>("gpr") {
+            project.shadow.component(this)
+        }
     }
 }
