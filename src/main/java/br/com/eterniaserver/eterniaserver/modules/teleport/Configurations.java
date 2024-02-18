@@ -315,14 +315,12 @@ final class Configurations {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
-        private final CommandLocale[] commandsLocalesArray;
 
         public TeleportConfiguration(EterniaServer plugin) {
             this.plugin = plugin;
 
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
 
             NamespacedKey[] namespaceKeys = plugin.namespacedKeys();
 
@@ -357,12 +355,12 @@ final class Configurations {
 
         @Override
         public String[] messages() {
-            return plugin.messages();
+            return new String[0];
         }
 
         @Override
         public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
+            return new CommandLocale[0];
         }
 
         @Override
