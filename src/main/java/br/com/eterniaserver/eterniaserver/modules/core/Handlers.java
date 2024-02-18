@@ -176,7 +176,6 @@ final class Handlers implements Listener {
         if (!player.getName().equals(playerProfile.getPlayerName())) {
             playerProfile.setPlayerName(player.getName());
             playerProfile.setPlayerDisplay(player.getName());
-            playerProfile.setPlayerDisplayColor(null);
             plugin.getServer().getScheduler().runTaskAsynchronously(
                     plugin,
                     () -> EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile)

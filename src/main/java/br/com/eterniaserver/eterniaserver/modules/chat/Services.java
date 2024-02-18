@@ -436,7 +436,6 @@ final class Services {
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
             playerProfile.setPlayerDisplay(player.getName());
-            playerProfile.setPlayerDisplayColor(null);
 
             player.displayName(Component.text(player.getName()));
 
@@ -452,7 +451,6 @@ final class Services {
             Component nicknameComponent = plugin.parseColor(nicknameWithColor);
 
             playerProfile.setPlayerDisplay(nicknameClear);
-            playerProfile.setPlayerDisplayColor(nicknameWithColor);
 
             player.displayName(nicknameComponent);
 

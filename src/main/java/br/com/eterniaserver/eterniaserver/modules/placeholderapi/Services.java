@@ -132,7 +132,7 @@ final class Services {
                     case 2 -> getAFKPlaceholder(playerProfile.isAfk());
                     case 4 -> playerProfile.getColor();
                     case 5 -> getGodModePlaceholder(playerProfile.isGod());
-                    case 6 -> playerProfile.getPlayerDisplayColor();
+                    case 6 -> playerProfile.getPlayerDisplay();
                     default -> plugin.getString(Strings.INVALID_PLACEHOLDER);
                 };
             }

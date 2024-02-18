@@ -584,7 +584,7 @@ final class Configurations {
             strings[Strings.CONS_MENTION_SUBTITLE.ordinal()] = inFile.getString("general.mention-subtitle", "<color:#aaaaaa>Acorda<color:#555555>!!!");
             strings[Strings.PERM_CHAT_ITEM.ordinal()] = inFile.getString("general.item", "eternia.chat.item");
             strings[Strings.CONS_SHOW_ITEM.ordinal()] = inFile.getString("general.show-item", "<color:#00aaaa>x{0} {1}<color:#ffffff>");
-            strings[Strings.CHAT_TABLE_NAME.ordinal()] = inFile.getString("general.table-name.chat", "eternia_server_chat");
+            strings[Strings.CHAT_TABLE_NAME.ordinal()] = inFile.getString("general.table-name.chat", "e_chat_info");
             strings[Strings.CHAT_DEFAULT_TAG_COLOR.ordinal()] = inFile.getString("general.default-tag-color", "#1594AB");
 
             craftChatService.updateTextColor();
