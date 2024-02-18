@@ -21,30 +21,18 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class TeleportConfiguration implements ReloadableConfiguration {
+    static class TeleportMessagesConfiguration implements ReloadableConfiguration {
 
         private final EterniaServer plugin;
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
-        private final CommandLocale[] commandsLocalesArray;
 
-        public TeleportConfiguration(EterniaServer plugin) {
+        public TeleportMessagesConfiguration(EterniaServer plugin) {
             this.plugin = plugin;
 
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
-
-            NamespacedKey[] namespaceKeys = plugin.namespacedKeys();
-
-            namespaceKeys[ItemsKeys.TAG_WORLD.ordinal()] = new NamespacedKey(plugin, Constants.TAG_WORLD);
-            namespaceKeys[ItemsKeys.TAG_COORD_X.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_X);
-            namespaceKeys[ItemsKeys.TAG_COORD_Y.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_Y);
-            namespaceKeys[ItemsKeys.TAG_COORD_Z.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_Z);
-            namespaceKeys[ItemsKeys.TAG_COORD_YAW.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_YAW);
-            namespaceKeys[ItemsKeys.TAG_COORD_PITCH.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_PITCH);
-            namespaceKeys[ItemsKeys.TAG_LOC_NAME.ordinal()] = new NamespacedKey(plugin, Constants.TAG_LOC_NAME);
         }
 
         @Override
@@ -64,7 +52,7 @@ final class Configurations {
 
         @Override
         public String getFilePath() {
-            return Constants.TELEPORT_CONFIG_FILE_PATH;
+            return Constants.TELEPORT_MESSAGES_FILE_PATH;
         }
 
         @Override
@@ -74,7 +62,7 @@ final class Configurations {
 
         @Override
         public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
+            return new CommandLocale[0];
         }
 
         @Override
@@ -168,28 +156,62 @@ final class Configurations {
             addMessage(Messages.SPAWN_TELEPORTING,
                     "Teleportando para o spawn<color:#555555>."
             );
-
-            String[] strings = plugin.strings();
-            int[] integers = plugin.integers();
-
-            strings[Strings.TELEPORT_TABLE_NAME_HOME.ordinal()] = inFile.getString("database.table_name_home", "e_home_location");
-            strings[Strings.PERM_TELEPORT_TIME_BYPASS.ordinal()] = inFile.getString("permissions.teleport_time_bypass", "eternia.teleport.time.bypass");
-            strings[Strings.PERM_HOME_OTHER.ordinal()] = inFile.getString("permissions.home_others", "eternia.home.others");
-            strings[Strings.PERM_HOME_COMPASS.ordinal()] = inFile.getString("permissions.home_compass", "eternia.home.compass");
-            strings[Strings.PERM_SETHOME_LIMIT_PREFIX.ordinal()] = inFile.getString("permissions.sethome_limit_prefix", "eternia.sethome.limit.");
-            strings[Strings.TELEPORT_TABLE_NAME_WARP.ordinal()] = inFile.getString("database.table_name_warp", "e_warp_location");
-
-            integers[Integers.TELEPORT_TIMER.ordinal()] = inFile.getInt("teleport_timer", 5);
-
-            outFile.set("database.table_name_home", strings[Strings.TELEPORT_TABLE_NAME_HOME.ordinal()]);
-            outFile.set("permissions.teleport_time_bypass", strings[Strings.PERM_TELEPORT_TIME_BYPASS.ordinal()]);
-            outFile.set("permissions.home_others", strings[Strings.PERM_HOME_OTHER.ordinal()]);
-            outFile.set("permissions.home_compass", strings[Strings.PERM_HOME_COMPASS.ordinal()]);
-            outFile.set("permissions.sethome_limit_prefix", strings[Strings.PERM_SETHOME_LIMIT_PREFIX.ordinal()]);
-            outFile.set("database.table_name_warp", strings[Strings.TELEPORT_TABLE_NAME_WARP.ordinal()]);
-
-            outFile.set("teleport_timer", integers[Integers.TELEPORT_TIMER.ordinal()]);
         }
+
+        @Override
+        public void executeCritical() { }
+    }
+
+    static class TeleportCommandsConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final CommandLocale[] commandsLocalesArray;
+
+        public TeleportCommandsConfiguration() {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.TELEPORT_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.TELEPORT_COMMANDS_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.BLOCKED;
+        }
+
+        @Override
+        public void executeConfig() { }
 
         @Override
         public void executeCritical() {
@@ -285,6 +307,95 @@ final class Configurations {
                     null
             ));
         }
+    }
+
+    static class TeleportConfiguration implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+        private final CommandLocale[] commandsLocalesArray;
+
+        public TeleportConfiguration(EterniaServer plugin) {
+            this.plugin = plugin;
+
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+
+            NamespacedKey[] namespaceKeys = plugin.namespacedKeys();
+
+            namespaceKeys[ItemsKeys.TAG_WORLD.ordinal()] = new NamespacedKey(plugin, Constants.TAG_WORLD);
+            namespaceKeys[ItemsKeys.TAG_COORD_X.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_X);
+            namespaceKeys[ItemsKeys.TAG_COORD_Y.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_Y);
+            namespaceKeys[ItemsKeys.TAG_COORD_Z.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_Z);
+            namespaceKeys[ItemsKeys.TAG_COORD_YAW.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_YAW);
+            namespaceKeys[ItemsKeys.TAG_COORD_PITCH.ordinal()] = new NamespacedKey(plugin, Constants.TAG_COORD_PITCH);
+            namespaceKeys[ItemsKeys.TAG_LOC_NAME.ordinal()] = new NamespacedKey(plugin, Constants.TAG_LOC_NAME);
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.TELEPORT_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.TELEPORT_CONFIG_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return plugin.messages();
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
+            String[] strings = plugin.strings();
+            int[] integers = plugin.integers();
+
+            strings[Strings.TELEPORT_TABLE_NAME_HOME.ordinal()] = inFile.getString("database.table_name_home", "e_home_location");
+            strings[Strings.PERM_TELEPORT_TIME_BYPASS.ordinal()] = inFile.getString("permissions.teleport_time_bypass", "eternia.teleport.time.bypass");
+            strings[Strings.PERM_HOME_OTHER.ordinal()] = inFile.getString("permissions.home_others", "eternia.home.others");
+            strings[Strings.PERM_HOME_COMPASS.ordinal()] = inFile.getString("permissions.home_compass", "eternia.home.compass");
+            strings[Strings.PERM_SETHOME_LIMIT_PREFIX.ordinal()] = inFile.getString("permissions.sethome_limit_prefix", "eternia.sethome.limit.");
+            strings[Strings.TELEPORT_TABLE_NAME_WARP.ordinal()] = inFile.getString("database.table_name_warp", "e_warp_location");
+
+            integers[Integers.TELEPORT_TIMER.ordinal()] = inFile.getInt("teleport_timer", 5);
+
+            outFile.set("database.table_name_home", strings[Strings.TELEPORT_TABLE_NAME_HOME.ordinal()]);
+            outFile.set("permissions.teleport_time_bypass", strings[Strings.PERM_TELEPORT_TIME_BYPASS.ordinal()]);
+            outFile.set("permissions.home_others", strings[Strings.PERM_HOME_OTHER.ordinal()]);
+            outFile.set("permissions.home_compass", strings[Strings.PERM_HOME_COMPASS.ordinal()]);
+            outFile.set("permissions.sethome_limit_prefix", strings[Strings.PERM_SETHOME_LIMIT_PREFIX.ordinal()]);
+            outFile.set("database.table_name_warp", strings[Strings.TELEPORT_TABLE_NAME_WARP.ordinal()]);
+
+            outFile.set("teleport_timer", integers[Integers.TELEPORT_TIMER.ordinal()]);
+        }
+
+        @Override
+        public void executeCritical() { }
     }
 
 }

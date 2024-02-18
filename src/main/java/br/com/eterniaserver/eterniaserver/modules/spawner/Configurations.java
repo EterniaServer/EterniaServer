@@ -19,36 +19,17 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class SpawnerConfiguration implements ReloadableConfiguration {
+    static class SpawnerMessagesConfiguration implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
-
-        private final boolean[] booleans;
-        private final double[] doubles;
-        private final String[] strings;
-        private final String[] messages;
-
-        private final List<List<String>> stringLists;
-
-        protected SpawnerConfiguration(EterniaServer plugin) {
+        protected SpawnerMessagesConfiguration(EterniaServer plugin) {
+            this.plugin = plugin;
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
-
-            this.booleans = plugin.booleans();
-            this.doubles = plugin.doubles();
-            this.strings = plugin.strings();
-            this.messages = plugin.messages();
-            this.stringLists = plugin.stringLists();
-
-            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
-
-            namespacedKeys[ItemsKeys.TAG_SPAWNER.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_SPAWNER
-            );
         }
 
         @Override
@@ -68,17 +49,17 @@ final class Configurations {
 
         @Override
         public String getFilePath() {
-            return Constants.SPAWNER_CONFIG_FILE_PATH;
+            return Constants.SPAWNER_MESSAGES_FILE_PATH;
         }
 
         @Override
         public String[] messages() {
-            return messages;
+            return plugin.messages();
         }
 
         @Override
         public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
+            return new CommandLocale[0];
         }
 
         @Override
@@ -124,7 +105,139 @@ final class Configurations {
             addMessage(Messages.SPAWNER_WITHOUT_PERM,
                     "Você não possui permissão para isso<color:#555555>."
             );
+        }
 
+        @Override
+        public void executeCritical() { }
+    }
+
+    static class SpawnerCommandsConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final CommandLocale[] commandsLocalesArray;
+
+        protected SpawnerCommandsConfiguration() {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.SPAWNER_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.SPAWNER_COMMANDS_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.BLOCKED;
+        }
+
+        @Override
+        public void executeConfig() { }
+
+        @Override
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.SPAWNER_GIVE, new CommandLocale(
+                    "spawnergive|darspawner",
+                    " <mob> <quantia> <jogador>",
+                    " Dá uma quantia de spawners para um jogador",
+                    "eternia.spawnergive",
+                    null
+            ));
+        }
+    }
+
+    static class SpawnerConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final boolean[] booleans;
+        private final double[] doubles;
+        private final String[] strings;
+
+        private final List<List<String>> stringLists;
+
+        protected SpawnerConfiguration(EterniaServer plugin) {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+
+            this.booleans = plugin.booleans();
+            this.doubles = plugin.doubles();
+            this.strings = plugin.strings();
+            this.stringLists = plugin.stringLists();
+
+            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
+
+            namespacedKeys[ItemsKeys.TAG_SPAWNER.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_SPAWNER
+            );
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.SPAWNER_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.SPAWNER_CONFIG_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return new CommandLocale[0];
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
             // Booleans
             booleans[Booleans.INV_DROP.ordinal()] = inFile.getBoolean("configs.drop-in-inventory", true);
             booleans[Booleans.BLOCK_BREAK_SPAWNERS.ordinal()] = inFile.getBoolean("configs.block-break-if-no-perm", true);
@@ -158,15 +271,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            addCommandLocale(Enums.Commands.SPAWNER_GIVE, new CommandLocale(
-                    "spawnergive|darspawner",
-                    " <mob> <quantia> <jogador>",
-                    " Dá uma quantia de spawners para um jogador",
-                    "eternia.spawnergive",
-                    null
-            ));
-        }
+        public void executeCritical() { }
     }
 
 }

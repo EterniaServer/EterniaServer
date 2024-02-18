@@ -19,19 +19,153 @@ import java.util.Map;
 
 final class Configurations {
 
-
     private Configurations() {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class RewardConfiguration implements ReloadableConfiguration {
+    static class RewardMessagesConfiguration implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        public RewardMessagesConfiguration(EterniaServer plugin) {
+            this.plugin = plugin;
+
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.REWARDS_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.REWARDS_MESSAGES_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return plugin.messages();
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return new CommandLocale[0];
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
+            addMessage(Messages.REWARD_INVALID_KEY,
+                    "A chave <color:#00aaaa>{0}<color:#aaaaaa> é inválida<color:#555555>.",
+                    "chave"
+            );
+            addMessage(Messages.REWARD_CREATED,
+                    "Reward criado com sucesso<color:#555555>, <color:#aaaaaa>chave<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
+                    "chave"
+            );
+            addMessage(Messages.REWARD_INVALID_KEY,
+                    "Não foi encontrado nenhum reward com o nome de <color:#00aaaa>{0}<color:#555555>.",
+                    "reward"
+            );
+        }
+
+        @Override
+        public void executeCritical() { }
+    }
+
+    static class RewardCommandsConfiguration implements ReloadableConfiguration {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
         private final CommandLocale[] commandsLocalesArray;
 
-        private final String[] messages;
+        public RewardCommandsConfiguration() {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.REWARDS_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.REWARDS_COMMANDS_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.BLOCKED;
+        }
+
+        @Override
+        public void executeConfig() { }
+
+        @Override
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.USE_KEY, new CommandLocale(
+                    "usekey|usarchave",
+                    " <chave>",
+                    " Utilize uma chave de Reward",
+                    "eternia.usekey",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.GEN_KEY, new CommandLocale(
+                    "genkey|gerarchave",
+                    " <reward>",
+                    " Gere uma chave para um Reward",
+                    "eternia.genkey",
+                    null
+            ));
+        }
+    }
+
+    static class RewardConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
 
         private final String[] strings;
         private final List<Map<String, Map<Double, List<String>>>> chanceMap;
@@ -40,8 +174,6 @@ final class Configurations {
         protected RewardConfiguration(EterniaServer plugin) {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
-            this.messages = plugin.messages();
             this.strings = plugin.strings();
             this.chanceMap = plugin.chanceMaps();
         }
@@ -68,12 +200,12 @@ final class Configurations {
 
         @Override
         public String[] messages() {
-            return messages;
+            return new String[0];
         }
 
         @Override
         public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
+            return new CommandLocale[0];
         }
 
         @Override
@@ -83,20 +215,6 @@ final class Configurations {
 
         @Override
         public void executeConfig() {
-            // Locales
-            addMessage(Messages.REWARD_INVALID_KEY,
-                    "A chave <color:#00aaaa>{0}<color:#aaaaaa> é inválida<color:#555555>.",
-                    "chave"
-            );
-            addMessage(Messages.REWARD_CREATED,
-                    "Reward criado com sucesso<color:#555555>, <color:#aaaaaa>chave<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
-                    "chave"
-            );
-            addMessage(Messages.REWARD_INVALID_KEY,
-                    "Não foi encontrado nenhum reward com o nome de <color:#00aaaa>{0}<color:#555555>.",
-                    "reward"
-            );
-
             // Strings
             strings[Strings.REWARD_TABLE_NAME.ordinal()] = inFile.getString("table-name.reward", "e_revision");
 
@@ -141,22 +259,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            addCommandLocale(Enums.Commands.USE_KEY, new CommandLocale(
-                    "usekey|usarchave",
-                    " <chave>",
-                    " Utilize uma chave de Reward",
-                    "eternia.usekey",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.GEN_KEY, new CommandLocale(
-                    "genkey|gerarchave",
-                    " <reward>",
-                    " Gere uma chave para um Reward",
-                    "eternia.genkey",
-                    null
-            ));
-        }
+        public void executeCritical() { }
     }
 
 }

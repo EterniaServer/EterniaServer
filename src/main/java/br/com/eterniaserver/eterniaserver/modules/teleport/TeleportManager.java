@@ -23,14 +23,22 @@ public class TeleportManager implements Module {
     @Override
     public void loadConfigurations() {
         Configurations.TeleportConfiguration configuration = new Configurations.TeleportConfiguration(plugin);
+        Configurations.TeleportMessagesConfiguration messages = new Configurations.TeleportMessagesConfiguration(plugin);
+        Configurations.TeleportCommandsConfiguration commands = new Configurations.TeleportCommandsConfiguration();
 
         EterniaLib.registerConfiguration("eterniaserver", "teleport", configuration);
+        EterniaLib.registerConfiguration("eterniaserver", "teleport_messages", messages);
+        EterniaLib.registerConfiguration("eterniaserver", "teleport_commands", commands);
 
         configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        messages.executeConfig();
+        commands.executeCritical();
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        configuration.saveConfiguration(true);
+        messages.saveConfiguration(true);
+        commands.saveConfiguration(true);
+
+        loadCommandsLocale(commands, Enums.Commands.class);
 
         try {
             Entity<Entities.HomeLocation> homeLocationEntity = new Entity<>(Entities.HomeLocation.class);

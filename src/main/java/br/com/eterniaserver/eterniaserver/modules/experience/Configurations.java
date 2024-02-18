@@ -8,6 +8,7 @@ import br.com.eterniaserver.eterniaserver.enums.Lists;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -20,25 +21,18 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class ExperienceConfiguration implements ReloadableConfiguration {
+    static class ExpMessagesConfiguration implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
-
-        private final String[] messages;
-        private final String[] strings;
-        private final List<List<String>> stringLists;
-
-        public ExperienceConfiguration(EterniaServer plugin) {
+        public ExpMessagesConfiguration(EterniaServer plugin) {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
 
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
-            this.messages = plugin.messages();
-            this.strings = plugin.strings();
-            this.stringLists = plugin.stringLists();
+            this.plugin = plugin;
         }
 
         @Override
@@ -58,17 +52,17 @@ final class Configurations {
 
         @Override
         public String getFilePath() {
-            return Constants.EXPERIENCE_CONFIG_FILE_PATH;
+            return Constants.EXPERIENCE_MESSAGES_FILE_PATH;
         }
 
         @Override
         public String[] messages() {
-            return messages;
+            return plugin.messages();
         }
 
         @Override
         public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
+            return new CommandLocale[0];
         }
 
         @Override
@@ -78,7 +72,6 @@ final class Configurations {
 
         @Override
         public void executeConfig() {
-            // Locale
             addMessage(Messages.EXP_INVALID_CHOICE,
                     "Argumento inválido<color:#555555>, <color:#aaaaaa>o tipo deve ser <color:#00aaaa>xp <color:#aaaaaa>ou <color:#00aaaa>level<color:#555555>."
             );
@@ -142,7 +135,181 @@ final class Configurations {
                     "Você depositou <color:#00aaaa>{0}<color:#aaaaaa> níveis de experiência<color:#555555>.",
                     "quantia de níveis"
             );
+        }
 
+        @Override
+        public void executeCritical() {}
+    }
+
+    static class ExpCommandsConfiguration implements ReloadableConfiguration {
+
+            private final FileConfiguration inFile;
+            private final FileConfiguration outFile;
+
+            private final CommandLocale[] commandsLocalesArray;
+
+            public ExpCommandsConfiguration() {
+                this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+                this.outFile = new YamlConfiguration();
+
+                this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+            }
+
+            @Override
+            public FileConfiguration inFileConfiguration() {
+                return inFile;
+            }
+
+            @Override
+            public FileConfiguration outFileConfiguration() {
+                return outFile;
+            }
+
+            @Override
+            public String getFolderPath() {
+                return Constants.EXPERIENCE_MODULE_FOLDER_PATH;
+            }
+
+            @Override
+            public String getFilePath() {
+                return Constants.EXPERIENCE_COMMANDS_FILE_PATH;
+            }
+
+            @Override
+            public String[] messages() {
+                return new String[0];
+            }
+
+            @Override
+            public CommandLocale[] commandsLocale() {
+                return commandsLocalesArray;
+            }
+
+            @Override
+            public ConfigurationCategory category() {
+                return ConfigurationCategory.BLOCKED;
+            }
+
+            @Override
+            public void executeConfig() {}
+
+            @Override
+            public void executeCritical() {
+                addCommandLocale(Enums.Commands.EXPERIENCE, new CommandLocale(
+                        "xp",
+                        " <página>",
+                        " Ajuda para o sistema de Experiência",
+                        "eternia.xp.user",
+                        null
+                ));
+                addCommandLocale(Enums.Commands.EXPERIENCE_SET, new CommandLocale(
+                        "set|definir",
+                        " <jogador> <quantia> <xp | level>",
+                        " Define o nível de experiência de um jogador",
+                        "eternia.xp.admin",
+                        null
+                ));
+                addCommandLocale(Enums.Commands.EXPERIENCE_TAKE, new CommandLocale(
+                        "take|retirar",
+                        " <jogador> <quantia> <xp | level>",
+                        " Retira uma quantidade de níveis de experiência de um jogador",
+                        "eternia.xp.admin",
+                        null
+                ));
+                addCommandLocale(Enums.Commands.EXPERIENCE_GIVE, new CommandLocale(
+                        "give|dar",
+                        " <jogador> <quantia> <xp | level>",
+                        " Dá uma quantidade de níveis de experiência para um jogador",
+                        "eternia.xp.admin",
+                        null
+                ));
+                addCommandLocale(Enums.Commands.EXPERIENCE_CHECK, new CommandLocale(
+                        "check|verificar",
+                        "",
+                        " Verifica a quantia de níveis guardados",
+                        "eternia.xp.user",
+                        null
+                ));
+                addCommandLocale(Enums.Commands.EXPERIENCE_BOTTLE, new CommandLocale(
+                        "bottle|garrafinhas",
+                        " <quantia>",
+                        " Enganharra sua experiência atual",
+                        "eternia.xp.user",
+                        null
+                ));
+                addCommandLocale(Enums.Commands.EXPERIENCE_WITHDRAW, new CommandLocale(
+                        "withdraw|sacar",
+                        " <quantia>",
+                        " Saca uma quantia de níveis guardados",
+                        "eternia.xp.user",
+                        null
+                ));
+                addCommandLocale(Enums.Commands.EXPERIENCE_DEPOSIT, new CommandLocale(
+                        "deposit|depositar",
+                        " <quantia>",
+                        " Deposita uma quantia de níveis",
+                        "eternia.xp.user",
+                        null
+                ));
+            }
+    }
+
+    static class ExperienceConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final CommandLocale[] commandsLocalesArray;
+
+        private final String[] strings;
+        private final List<List<String>> stringLists;
+
+        public ExperienceConfiguration(EterniaServer plugin) {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+            this.strings = plugin.strings();
+            this.stringLists = plugin.stringLists();
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.EXPERIENCE_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.EXPERIENCE_CONFIG_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
             // Strings
             strings[Strings.MINI_MESSAGES_BOTTLE_EXP_NAME.ordinal()] = inFile.getString("mini-messages.bottle-name", "<color:#aaaaaa>Garrafa com <color:#00aaaa>Experiência");
             strings[Strings.EXP_XP_LABEL.ordinal()] = inFile.getString("label.xp", "xp");
@@ -163,64 +330,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            addCommandLocale(Enums.Commands.EXPERIENCE, new CommandLocale(
-                    "xp",
-                    " <página>",
-                    " Ajuda para o sistema de Experiência",
-                    "eternia.xp.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.EXPERIENCE_SET, new CommandLocale(
-                    "set|definir",
-                    " <jogador> <quantia> <xp | level>",
-                    " Define o nível de experiência de um jogador",
-                    "eternia.xp.admin",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.EXPERIENCE_TAKE, new CommandLocale(
-                    "take|retirar",
-                    " <jogador> <quantia> <xp | level>",
-                    " Retira uma quantidade de níveis de experiência de um jogador",
-                    "eternia.xp.admin",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.EXPERIENCE_GIVE, new CommandLocale(
-                    "give|dar",
-                    " <jogador> <quantia> <xp | level>",
-                    " Dá uma quantidade de níveis de experiência para um jogador",
-                    "eternia.xp.admin",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.EXPERIENCE_CHECK, new CommandLocale(
-                    "check|verificar",
-                    "",
-                    " Verifica a quantia de níveis guardados",
-                    "eternia.xp.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.EXPERIENCE_BOTTLE, new CommandLocale(
-                    "bottle|garrafinhas",
-                    " <quantia>",
-                    " Enganharra sua experiência atual",
-                    "eternia.xp.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.EXPERIENCE_WITHDRAW, new CommandLocale(
-                    "withdraw|sacar",
-                    " <quantia>",
-                    " Saca uma quantia de níveis guardados",
-                    "eternia.xp.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.EXPERIENCE_DEPOSIT, new CommandLocale(
-                    "deposit|depositar",
-                    " <quantia>",
-                    " Deposita uma quantia de níveis",
-                    "eternia.xp.user",
-                    null
-            ));
-        }
+        public void executeCritical() { }
 
     }
 

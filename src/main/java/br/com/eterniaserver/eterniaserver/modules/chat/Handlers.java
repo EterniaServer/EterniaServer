@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.modules.chat;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
+import br.com.eterniaserver.eterniaserver.modules.chat.Entities.ChatInfo;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities;
 
 import github.scarsz.discordsrv.api.ListenerPriority;
@@ -44,6 +45,12 @@ final class Handlers implements Listener {
             Component nicknameComponent = plugin.parseColor(playerProfile.getPlayerDisplayColor());
             player.displayName(nicknameComponent);
         }
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            ChatInfo chatInfo = new ChatInfo();
+            chatInfo.setUuid(uuid);
+            EterniaLib.getDatabase().insert(ChatInfo.class, chatInfo);
+        });
 
         craftChat.addHashToUUID(player.getUniqueId(), player.getName());
     }

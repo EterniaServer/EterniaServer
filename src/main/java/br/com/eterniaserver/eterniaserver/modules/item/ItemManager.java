@@ -14,13 +14,16 @@ public class ItemManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.ItemConfiguration configuration = new Configurations.ItemConfiguration(plugin);
+        Configurations.ItemMessagesConfiguration configuration = new Configurations.ItemMessagesConfiguration(plugin);
+        Configurations.ItemCommandsConfiguration itemCommandsConfiguration = new Configurations.ItemCommandsConfiguration();
 
         configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        itemCommandsConfiguration.executeCritical();
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        configuration.saveConfiguration(true);
+        itemCommandsConfiguration.saveConfiguration(true);
+
+        loadCommandsLocale(itemCommandsConfiguration, Enums.Commands.class);
     }
 
     @Override

@@ -23,14 +23,22 @@ public class ExperienceManager implements Module {
     @Override
     public void loadConfigurations() {
         Configurations.ExperienceConfiguration configuration = new Configurations.ExperienceConfiguration(plugin);
+        Configurations.ExpMessagesConfiguration expMessagesConfiguration = new Configurations.ExpMessagesConfiguration(plugin);
+        Configurations.ExpCommandsConfiguration expCommandsConfiguration = new Configurations.ExpCommandsConfiguration();
 
-        EterniaLib.registerConfiguration("eterniaserver", "experience", configuration);
+        EterniaLib.registerConfiguration("eterniaserver", "exp", configuration);
+        EterniaLib.registerConfiguration("eterniaserver", "exp_messages", expMessagesConfiguration);
+        EterniaLib.registerConfiguration("eterniaserver", "exp_commands", expCommandsConfiguration);
 
         configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        expMessagesConfiguration.executeConfig();
+        expCommandsConfiguration.executeCritical();
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        configuration.saveConfiguration(true);
+        expMessagesConfiguration.saveConfiguration(true);
+        expCommandsConfiguration.saveConfiguration(true);
+
+        loadCommandsLocale(expCommandsConfiguration, Enums.Commands.class);
 
         try {
             Entity<Entities.ExpBalance> expBalanceEntity = new Entity<>(Entities.ExpBalance.class);

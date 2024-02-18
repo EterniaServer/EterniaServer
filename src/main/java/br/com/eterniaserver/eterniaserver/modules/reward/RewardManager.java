@@ -23,14 +23,22 @@ public class RewardManager implements Module {
     @Override
     public void loadConfigurations() {
         Configurations.RewardConfiguration configuration = new Configurations.RewardConfiguration(plugin);
+        Configurations.RewardMessagesConfiguration messagesConfiguration = new Configurations.RewardMessagesConfiguration(plugin);
+        Configurations.RewardCommandsConfiguration commandsConfiguration = new Configurations.RewardCommandsConfiguration();
 
         EterniaLib.registerConfiguration("eterniaserver", "reward", configuration);
+        EterniaLib.registerConfiguration("eterniaserver", "reward_messages", messagesConfiguration);
+        EterniaLib.registerConfiguration("eterniaserver", "reward_commands", commandsConfiguration);
 
         configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        messagesConfiguration.executeConfig();
+        commandsConfiguration.executeCritical();
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        configuration.saveConfiguration(true);
+        messagesConfiguration.saveConfiguration(true);
+        commandsConfiguration.saveConfiguration(true);
+
+        loadCommandsLocale(commandsConfiguration, Enums.Commands.class);
 
         try {
             Entity<Entities.RewardGroup> rewardGroupEntity = new Entity<>(Entities.RewardGroup.class);

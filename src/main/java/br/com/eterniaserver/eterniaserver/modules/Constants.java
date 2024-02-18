@@ -38,32 +38,45 @@ public class Constants {
     public static final String ELEVATOR_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "elevator";
     public static final String ELEVATOR_CONFIG_FILE_PATH = ELEVATOR_MODULE_FOLDER_PATH + File.separator + "elevator.yml";
 
-    public static final String SPAWNER_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "spawner";
-    public static final String SPAWNER_CONFIG_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "spawner.yml";
+    public static final String ENTITY_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "entity";
+    public static final String ENTITY_CONFIG_FILE_PATH = ENTITY_MODULE_FOLDER_PATH + File.separator + "entity.yml";
 
     public static final String EXPERIENCE_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "experience";
-    public static final String EXPERIENCE_CONFIG_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "experience.yml";
-
-    public static final String REWARDS_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "rewards";
-    public static final String REWARDS_CONFIG_FILE_PATH = REWARDS_MODULE_FOLDER_PATH + File.separator + "rewards.yml";
+    public static final String EXPERIENCE_CONFIG_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "config.yml";
+    public static final String EXPERIENCE_MESSAGES_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String EXPERIENCE_COMMANDS_FILE_PATH = EXPERIENCE_MODULE_FOLDER_PATH + File.separator + "commands.yml";
 
     public static final String GLOW_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "glow";
-    public static final String GLOW_CONFIG_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "glow.yml";
+    public static final String GLOW_CONFIG_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "config.yml";
+    public static final String GLOW_MESSAGES_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String GLOW_COMMANDS_FILE_PATH = GLOW_MODULE_FOLDER_PATH + File.separator + "commands.yml";
+
+    public static final String ITEM_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "item";
+    public static final String ITEM_MESSAGES_FILE_PATH = ITEM_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String ITEM_COMMANDS_FILE_PATH = ITEM_MODULE_FOLDER_PATH + File.separator + "commands.yml";
+
+    public static final String KIT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "kit";
+    public static final String KIT_CONFIG_FILE_PATH = KIT_MODULE_FOLDER_PATH + File.separator + "config.yml";
+    public static final String KIT_MESSAGES_FILE_PATH = KIT_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String KIT_COMMANDS_FILE_PATH = KIT_MODULE_FOLDER_PATH + File.separator + "commands.yml";
 
     public static final String PAPI_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "papi";
     public static final String PAPI_CONFIG_FILE_PATH = PAPI_MODULE_FOLDER_PATH + File.separator + "papi.yml";
 
-    public static final String ENTITY_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "entity";
-    public static final String ENTITY_CONFIG_FILE_PATH = ENTITY_MODULE_FOLDER_PATH + File.separator + "entity.yml";
+    public static final String REWARDS_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "rewards";
+    public static final String REWARDS_CONFIG_FILE_PATH = REWARDS_MODULE_FOLDER_PATH + File.separator + "config.yml";
+    public static final String REWARDS_MESSAGES_FILE_PATH = REWARDS_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String REWARDS_COMMANDS_FILE_PATH = REWARDS_MODULE_FOLDER_PATH + File.separator + "commands.yml";
 
-    public static final String ITEM_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "item";
-    public static final String ITEM_CONFIG_FILE_PATH = ITEM_MODULE_FOLDER_PATH + File.separator + "item.yml";
-
-    public static final String KIT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "kit";
-    public static final String KIT_CONFIG_FILE_PATH = KIT_MODULE_FOLDER_PATH + File.separator + "kit.yml";
+    public static final String SPAWNER_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "spawner";
+    public static final String SPAWNER_CONFIG_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "config.yml";
+    public static final String SPAWNER_MESSAGES_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String SPAWNER_COMMANDS_FILE_PATH = SPAWNER_MODULE_FOLDER_PATH + File.separator + "commands.yml";
 
     public static final String TELEPORT_MODULE_FOLDER_PATH = DATA_MODULE_FOLDER_PATH + File.separator + "teleport";
-    public static final String TELEPORT_CONFIG_FILE_PATH = TELEPORT_MODULE_FOLDER_PATH + File.separator + "teleport.yml";
+    public static final String TELEPORT_CONFIG_FILE_PATH = TELEPORT_MODULE_FOLDER_PATH + File.separator + "config.yml";
+    public static final String TELEPORT_MESSAGES_FILE_PATH = TELEPORT_MODULE_FOLDER_PATH + File.separator + "messages.yml";
+    public static final String TELEPORT_COMMANDS_FILE_PATH = TELEPORT_MODULE_FOLDER_PATH + File.separator + "commands.yml";
 
     public static final String UTILITY_CLASS = "Utility class";
 

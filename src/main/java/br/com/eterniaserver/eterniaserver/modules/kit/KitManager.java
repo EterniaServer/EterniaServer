@@ -23,14 +23,22 @@ public class KitManager implements Module {
     @Override
     public void loadConfigurations() {
         Configurations.KitConfiguration configuration = new Configurations.KitConfiguration(plugin, kitService);
+        Configurations.KitMessagesConfiguration kitMessagesConfiguration = new Configurations.KitMessagesConfiguration(plugin);
+        Configurations.KitCommandsConfiguration kitCommandsConfiguration = new Configurations.KitCommandsConfiguration();
 
         EterniaLib.registerConfiguration("eterniaserver", "kit", configuration);
+        EterniaLib.registerConfiguration("eterniaserver", "kit_messages", kitMessagesConfiguration);
+        EterniaLib.registerConfiguration("eterniaserver", "kit_commands", kitCommandsConfiguration);
 
         configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        kitMessagesConfiguration.executeConfig();
+        kitCommandsConfiguration.executeCritical();
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        configuration.saveConfiguration(true);
+        kitMessagesConfiguration.saveConfiguration(true);
+        kitCommandsConfiguration.saveConfiguration(true);
+
+        loadCommandsLocale(kitCommandsConfiguration, Enums.Commands.class);
 
         try {
             Entity<Entities.KitTime> kitTimeEntity = new Entity<>(Entities.KitTime.class);

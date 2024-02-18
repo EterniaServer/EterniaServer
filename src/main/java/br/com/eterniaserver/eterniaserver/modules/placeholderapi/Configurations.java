@@ -83,8 +83,6 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            Bukkit.getLogger().log(Level.INFO, "No critical configurations for this module.");
-        }
+        public void executeCritical() { }
     }
 }

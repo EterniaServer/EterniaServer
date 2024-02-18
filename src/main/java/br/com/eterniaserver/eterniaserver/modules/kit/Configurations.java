@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +23,144 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
+    static class KitMessagesConfiguration implements ReloadableConfiguration {
+
+        private final String[] messages;
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        public KitMessagesConfiguration(EterniaServer plugin) {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.messages = plugin.messages();
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.KIT_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.KIT_MESSAGES_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return messages;
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return new CommandLocale[0];
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
+            addMessage(Messages.KIT_LIST,
+                    "Lista de kits<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
+                    "lista de kits"
+            );
+            addMessage(Messages.KIT_NOT_FOUND,
+                    "O kit <color:#00aaaa>{0}<color:#AAAAAA> não foi encontrado<color:#555555>.",
+                    "kit"
+            );
+            addMessage(Messages.KIT_IN_RECHARGE,
+                    "Você precisa esperar <color:#00aaaa>{0}s<color:#AAAAAA> para pegar o kit novamente<color:#555555>.",
+                    "cooldown"
+            );
+        }
+
+        @Override
+        public void executeCritical() { }
+    }
+
+    static class KitCommandsConfiguration implements ReloadableConfiguration {
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        private final CommandLocale[] commandsLocalesArray;
+
+        public KitCommandsConfiguration() {
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.KIT_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.KIT_COMMANDS_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return new String[0];
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return commandsLocalesArray;
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.BLOCKED;
+        }
+
+        @Override
+        public void executeConfig() { }
+
+        @Override
+        public void executeCritical() {
+            addCommandLocale(Enums.Commands.KIT, new CommandLocale(
+                    "kit",
+                    " <kit>",
+                    " Use um kit",
+                    "eternia.kit.user",
+                    null
+            ));
+            addCommandLocale(Enums.Commands.KITS, new CommandLocale(
+                    "kits",
+                    "",
+                    " Veja a lista de kits",
+                    "eternia.kit.user",
+                    null
+            ));
+        }
+    }
+
     static class KitConfiguration implements ReloadableConfiguration {
 
         private static final String KIT_PREFIX = "kits.";
@@ -31,7 +170,6 @@ final class Configurations {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
-        private final CommandLocale[] commandsLocalesArray;
 
         public KitConfiguration(EterniaServer plugin, Services.KitService kitService) {
             this.plugin = plugin;
@@ -39,7 +177,6 @@ final class Configurations {
 
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
         }
 
         @Override
@@ -64,12 +201,12 @@ final class Configurations {
 
         @Override
         public String[] messages() {
-            return plugin.messages();
+            return new String[0];
         }
 
         @Override
         public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
+            return new CommandLocale[0];
         }
 
         @Override
@@ -79,19 +216,6 @@ final class Configurations {
 
         @Override
         public void executeConfig() {
-            addMessage(Messages.KIT_LIST,
-                    "Lista de kits<color:#555555>: <color:#00aaaa>{0}<color:#555555>.",
-                    "lista de kits"
-            );
-            addMessage(Messages.KIT_NOT_FOUND,
-                    "O kit <color:#00aaaa>{0}<color:#AAAAAA> não foi encontrado<color:#555555>.",
-                    "kit"
-            );
-            addMessage(Messages.KIT_IN_RECHARGE,
-                    "Você precisa esperar <color:#00aaaa>{0}s<color:#AAAAAA> para pegar o kit novamente<color:#555555>.",
-                    "cooldown"
-            );
-
             Map<String, Utils.CustomKit> kitList = kitService.kitList();
             String[] strings = plugin.strings();
 
@@ -143,22 +267,7 @@ final class Configurations {
         }
 
         @Override
-        public void executeCritical() {
-            addCommandLocale(Enums.Commands.KIT, new CommandLocale(
-                    "kit",
-                    " <kit>",
-                    " Use um kit",
-                    "eternia.kit.user",
-                    null
-            ));
-            addCommandLocale(Enums.Commands.KITS, new CommandLocale(
-                    "kits",
-                    "",
-                    " Veja a lista de kits",
-                    "eternia.kit.user",
-                    null
-            ));
-        }
+        public void executeCritical() { }
     }
 
 

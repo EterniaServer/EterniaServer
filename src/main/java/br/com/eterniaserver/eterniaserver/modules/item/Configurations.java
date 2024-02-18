@@ -7,6 +7,7 @@ import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,32 +20,17 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class ItemConfiguration implements ReloadableConfiguration {
-
-        private final EterniaServer plugin;
+    static class ItemCommandsConfiguration implements ReloadableConfiguration {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
         private final CommandLocale[] commandsLocalesArray;
 
-        public ItemConfiguration(EterniaServer plugin) {
-            this.plugin = plugin;
+        public ItemCommandsConfiguration() {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
             this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
-
-            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
-
-            namespacedKeys[ItemsKeys.TAG_RUN_IN_CONSOLE.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_RUN_IN_CONSOLE
-            );
-            namespacedKeys[ItemsKeys.TAG_USAGES.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_USAGES
-            );
-            namespacedKeys[ItemsKeys.TAG_RUN_COMMAND.ordinal()] = new NamespacedKey(
-                    plugin, Constants.TAG_RUN_COMMAND
-            );
         }
 
         @Override
@@ -64,12 +50,12 @@ final class Configurations {
 
         @Override
         public String getFilePath() {
-            return Constants.ITEM_CONFIG_FILE_PATH;
+            return Constants.ITEM_COMMANDS_FILE_PATH;
         }
 
         @Override
         public String[] messages() {
-            return plugin.messages();
+            return new String[0];
         }
 
         @Override
@@ -79,42 +65,11 @@ final class Configurations {
 
         @Override
         public ConfigurationCategory category() {
-            return ConfigurationCategory.GENERIC;
+            return ConfigurationCategory.BLOCKED;
         }
 
         @Override
-        public void executeConfig() {
-            addMessage(Messages.ITEM_CUSTOM_GIVE,
-                    "Item customizado enviado com sucesso<color:#555555>."
-            );
-            addMessage(Messages.ITEM_CUSTOM_RECEIVED,
-                    "Você recebeu um item customizado<color:#555555>."
-            );
-            addMessage(Messages.ITEM_CUSTOM_CANT_GIVE,
-                    "Não foi possível enviar o item customizado<color:#555555>."
-            );
-            addMessage(Messages.ITEM_SET_CUSTOM,
-                    "Modelo customizado definido para <color:#00aaaa>{0}<color:#555555>."
-            );
-            addMessage(Messages.ITEM_SET_LORE,
-                    "Lore do item definida para <color:#00aaaa>{0}<color:#555555>."
-            );
-            addMessage(Messages.ITEM_SET_NAME,
-                    "Nome do item definido para <color:#00aaaa>{0}<color:#555555>."
-            );
-            addMessage(Messages.ITEM_CLEAR_LORE,
-                    "Lore do item limpa<color:#555555>."
-            );
-            addMessage(Messages.ITEM_CLEAR_NAME,
-                    "Nome do item limpo<color:#555555>."
-            );
-            addMessage(Messages.ITEM_NOT_FOUND,
-                    "Item não encontrado<color:#555555>."
-            );
-            addMessage(Messages.ITEM_ADD_LORE,
-                    "Linha adicionada na lore do item<color:#555555>."
-            );
-        }
+        public void executeConfig() { }
 
         @Override
         public void executeCritical() {
@@ -189,6 +144,104 @@ final class Configurations {
                     null
             ));
         }
+    }
+
+    static class ItemMessagesConfiguration implements ReloadableConfiguration {
+
+        private final EterniaServer plugin;
+
+        private final FileConfiguration inFile;
+        private final FileConfiguration outFile;
+
+        public ItemMessagesConfiguration(EterniaServer plugin) {
+            this.plugin = plugin;
+            this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
+            this.outFile = new YamlConfiguration();
+
+            NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
+
+            namespacedKeys[ItemsKeys.TAG_RUN_IN_CONSOLE.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_RUN_IN_CONSOLE
+            );
+            namespacedKeys[ItemsKeys.TAG_USAGES.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_USAGES
+            );
+            namespacedKeys[ItemsKeys.TAG_RUN_COMMAND.ordinal()] = new NamespacedKey(
+                    plugin, Constants.TAG_RUN_COMMAND
+            );
+        }
+
+        @Override
+        public FileConfiguration inFileConfiguration() {
+            return inFile;
+        }
+
+        @Override
+        public FileConfiguration outFileConfiguration() {
+            return outFile;
+        }
+
+        @Override
+        public String getFolderPath() {
+            return Constants.ITEM_MODULE_FOLDER_PATH;
+        }
+
+        @Override
+        public String getFilePath() {
+            return Constants.ITEM_MESSAGES_FILE_PATH;
+        }
+
+        @Override
+        public String[] messages() {
+            return plugin.messages();
+        }
+
+        @Override
+        public CommandLocale[] commandsLocale() {
+            return new CommandLocale[0];
+        }
+
+        @Override
+        public ConfigurationCategory category() {
+            return ConfigurationCategory.GENERIC;
+        }
+
+        @Override
+        public void executeConfig() {
+            addMessage(Messages.ITEM_CUSTOM_GIVE,
+                    "Item customizado enviado com sucesso<color:#555555>."
+            );
+            addMessage(Messages.ITEM_CUSTOM_RECEIVED,
+                    "Você recebeu um item customizado<color:#555555>."
+            );
+            addMessage(Messages.ITEM_CUSTOM_CANT_GIVE,
+                    "Não foi possível enviar o item customizado<color:#555555>."
+            );
+            addMessage(Messages.ITEM_SET_CUSTOM,
+                    "Modelo customizado definido para <color:#00aaaa>{0}<color:#555555>."
+            );
+            addMessage(Messages.ITEM_SET_LORE,
+                    "Lore do item definida para <color:#00aaaa>{0}<color:#555555>."
+            );
+            addMessage(Messages.ITEM_SET_NAME,
+                    "Nome do item definido para <color:#00aaaa>{0}<color:#555555>."
+            );
+            addMessage(Messages.ITEM_CLEAR_LORE,
+                    "Lore do item limpa<color:#555555>."
+            );
+            addMessage(Messages.ITEM_CLEAR_NAME,
+                    "Nome do item limpo<color:#555555>."
+            );
+            addMessage(Messages.ITEM_NOT_FOUND,
+                    "Item não encontrado<color:#555555>."
+            );
+            addMessage(Messages.ITEM_ADD_LORE,
+                    "Linha adicionada na lore do item<color:#555555>."
+            );
+        }
+
+        @Override
+        public void executeCritical() { }
     }
 
 }

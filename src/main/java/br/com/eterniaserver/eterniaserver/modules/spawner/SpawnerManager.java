@@ -20,14 +20,22 @@ public class SpawnerManager implements Module {
     @Override
     public void loadConfigurations() {
         Configurations.SpawnerConfiguration configuration = new Configurations.SpawnerConfiguration(plugin);
+        Configurations.SpawnerMessagesConfiguration messages = new Configurations.SpawnerMessagesConfiguration(plugin);
+        Configurations.SpawnerCommandsConfiguration commands = new Configurations.SpawnerCommandsConfiguration();
 
         EterniaLib.registerConfiguration("eterniaserver", "spawner", configuration);
+        EterniaLib.registerConfiguration("eterniaserver", "spawner_messages", messages);
+        EterniaLib.registerConfiguration("eterniaserver", "spawner_commands", commands);
 
         configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        messages.executeConfig();
+        commands.executeCritical();
 
-        loadCommandsLocale(configuration, Enums.Commands.class);
+        configuration.saveConfiguration(true);
+        messages.saveConfiguration(true);
+        commands.saveConfiguration(true);
+
+        loadCommandsLocale(commands, Enums.Commands.class);
 
         this.spawnerService = new Services.Spawner(plugin);
     }
