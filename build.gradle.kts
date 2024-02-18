@@ -79,6 +79,8 @@ dependencies {
     compileOnly("com.discordsrv", "discordsrv", "1.26.0")
     implementation("org.bstats", "bstats-bukkit", "3.0.0")
     testImplementation("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
+    testImplementation("br.com.eterniaserver", "eternialib", "4.0.6")
+    testImplementation("com.github.MilkBowl", "VaultAPI", "1.7")
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.9.2")
     testImplementation("org.mockito", "mockito-inline", "5.2.0")
 }
