@@ -179,7 +179,7 @@ public class VaultEconomyManager implements Economy {
     private boolean has(UUID uuid, double amount) {
         EcoBalance ecoBalance = getEcoBalance(uuid);
         if (ecoBalance.getBalance() != null) {
-            return ecoBalance.getBalance() > amount;
+            return ecoBalance.getBalance() >= amount;
         }
 
         return false;
