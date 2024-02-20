@@ -16,8 +16,6 @@ import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.OfflinePlayer;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -181,15 +179,7 @@ public class VaultEconomyManager implements Economy {
     private boolean has(UUID uuid, double amount) {
         EcoBalance ecoBalance = getEcoBalance(uuid);
         if (ecoBalance.getBalance() != null) {
-            BigDecimal playerBalance = BigDecimal
-                    .valueOf(ecoBalance.getBalance())
-                    .setScale(fractionalDigits(), RoundingMode.UP);
-
-            BigDecimal amountToCheck = BigDecimal
-                    .valueOf(amount)
-                    .setScale(fractionalDigits(), RoundingMode.UP);
-
-            return playerBalance.compareTo(amountToCheck) >= 0;
+            return ecoBalance.getBalance() >= amount;
         }
 
         return false;
