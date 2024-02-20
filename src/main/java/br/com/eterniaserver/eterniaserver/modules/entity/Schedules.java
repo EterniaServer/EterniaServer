@@ -21,17 +21,12 @@ final class Schedules {
     static class PluginClearSchedule extends BukkitRunnable {
 
         private final EterniaServer plugin;
-        private final Chunk[] checkChunks;
 
         private final int length;
 
         public PluginClearSchedule(EterniaServer plugin) {
             this.plugin = plugin;
             length = plugin.getInteger(Integers.CLEAR_RANGE);
-
-            int lengthCube = (this.length * 2) + 1;
-
-            this.checkChunks = new Chunk[(lengthCube * lengthCube)];
         }
 
         @Override
@@ -40,25 +35,21 @@ final class Schedules {
                 return;
             }
 
-            for (Player player : plugin.getServer().getOnlinePlayers()) {
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                for (Player player : plugin.getServer().getOnlinePlayers()) {
                     updateCheckChunks(player.getChunk());
-                    for (Chunk chunk : checkChunks) {
-                        cleanupEntities(chunk.getEntities());
-                    }
-                });
-            }
+                }
+            });
         }
 
         private void updateCheckChunks(Chunk origin) {
             World world = origin.getWorld();
-            int indice = 0;
             int cX = origin.getX();
             int cZ = origin.getZ();
 
             for (int x = -this.length; x <= this.length; x++) {
                 for (int z = -this.length; z <= this.length; z++) {
-                    checkChunks[indice++] = world.getChunkAt(cX + x, cZ + z);
+                    world.getChunkAtAsync(cX + x, cZ + z).thenAccept(c -> cleanupEntities(c.getEntities()));
                 }
             }
         }
