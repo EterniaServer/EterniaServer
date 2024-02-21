@@ -47,9 +47,13 @@ final class Handlers implements Listener {
         }
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            ChatInfo chatInfo = new ChatInfo();
-            chatInfo.setUuid(uuid);
-            EterniaLib.getDatabase().insert(ChatInfo.class, chatInfo);
+            ChatInfo chatInfo = EterniaLib.getDatabase().get(ChatInfo.class, uuid);
+            if (chatInfo.getUuid() == null) {
+                chatInfo.setUuid(uuid);
+                EterniaLib.getDatabase().insert(ChatInfo.class, chatInfo);
+            } else {
+                EterniaLib.getDatabase().update(ChatInfo.class, chatInfo);
+            }
         });
 
         craftChat.addHashToUUID(player.getUniqueId(), player.getName());
