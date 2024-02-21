@@ -142,6 +142,9 @@ final class Configurations {
             addMessage(Messages.CASH_ALREADY_BUYING,
                     "Você já possui uma compra em andamento<color:#555555>."
             );
+            addMessage(Messages.CASH_NO_CASH,
+                    "Você não possui CASH suficiênte<color:#555555>."
+            );
         }
 
         @Override

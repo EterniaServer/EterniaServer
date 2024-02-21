@@ -75,6 +75,7 @@ public class TeleportManager implements Module {
 
     @Override
     public void loadListeners() {
+        plugin.getServer().getPluginManager().registerEvents(new Handlers(plugin, warpService), plugin);
     }
 
     @Override

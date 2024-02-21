@@ -202,13 +202,16 @@ final class Commands {
         @Syntax("%EXPERIENCE_BOTTLE_SYNTAX")
         @Description("%EXPERIENCE_BOTTLE_DESCRIPTION")
         @CommandPermission("%EXPERIENCE_BOTTLE_PERM")
-        public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer xpWant) {
+        public void onBottleLevel(Player player, @Conditions("limits:min=1,max=9999999") Integer levelWanted) {
+            int actualLevel = player.getLevel();
             int xp = playerActualXp(player);
 
-            if (xpWant <= 0 || xp <= xpWant) {
+            if (actualLevel < levelWanted || levelWanted < 1) {
                 plugin.sendMiniMessages(player, Messages.EXP_INSUFFICIENT);
                 return;
             }
+
+            int xpWant = expService.getXPForLevel(levelWanted);
 
             ItemStack item = new ItemStack(Material.EXPERIENCE_BOTTLE);
             ItemMeta meta = item.getItemMeta();
@@ -218,7 +221,13 @@ final class Commands {
             dataContainer.set(plugin.getKey(ItemsKeys.TAG_INT_VALUE), PersistentDataType.INTEGER, xpWant);
 
             meta.displayName(plugin.parseColor(plugin.getString(Strings.MINI_MESSAGES_BOTTLE_EXP_NAME)));
-            meta.lore(plugin.getStringList(Lists.MINI_MESSAGES_BOTTLE_EXP_LORE).stream().map(plugin::parseColor).toList());
+            meta.lore(
+                    plugin.getStringList(Lists.MINI_MESSAGES_BOTTLE_EXP_LORE)
+                            .stream()
+                            .map(x -> x.replace("%amount%", levelWanted + " Níveis"))
+                            .map(plugin::parseColor)
+                            .toList()
+            );
 
             item.setItemMeta(meta);
 

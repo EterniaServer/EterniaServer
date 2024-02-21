@@ -23,8 +23,19 @@ final class Services {
 
         private final List<String> warpNames = new ArrayList<>();
 
+        private Entities.WarpLocation spawnLocation;
+
         public WarpService(EterniaServer plugin) {
             this.plugin = plugin;
+            spawnLocation = EterniaLib.getDatabase().get(Entities.WarpLocation.class, "spawn");
+        }
+
+        public Optional<Location> getSpawnLocation() {
+            if (spawnLocation.getName() != null) {
+                return Optional.empty();
+            }
+
+            return Optional.of(spawnLocation.getLocation(plugin));
         }
 
         public boolean teleportTo(Player player, String warpName) {
@@ -57,6 +68,10 @@ final class Services {
             Entities.WarpLocation warpLocation = EterniaLib.getDatabase().get(Entities.WarpLocation.class, warpName);
             if (warpLocation == null) {
                 warpLocation = new Entities.WarpLocation();
+            }
+
+            if (warpName.equals("spawn")) {
+                spawnLocation = warpLocation;
             }
 
             if (warpLocation.getName() != null) {
