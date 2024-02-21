@@ -23,15 +23,18 @@ final class Services {
 
         private final List<String> warpNames = new ArrayList<>();
 
-        private Entities.WarpLocation spawnLocation;
+        private Entities.WarpLocation spawnLocation = null;
 
         public WarpService(EterniaServer plugin) {
             this.plugin = plugin;
+        }
+
+        protected void updateSpawnLocation() {
             spawnLocation = EterniaLib.getDatabase().get(Entities.WarpLocation.class, "spawn");
         }
 
         public Optional<Location> getSpawnLocation() {
-            if (spawnLocation.getName() != null) {
+            if (spawnLocation == null || spawnLocation.getName() == null) {
                 return Optional.empty();
             }
 

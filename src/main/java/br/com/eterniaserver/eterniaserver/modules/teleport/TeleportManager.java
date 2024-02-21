@@ -54,6 +54,7 @@ public class TeleportManager implements Module {
             EterniaLib.registerLog("EE-123-Teleport");
         }
 
+        warpService.updateSpawnLocation();
         homeService.setHomes(EterniaLib.getDatabase().listAll(Entities.HomeLocation.class));
     }
 
