@@ -1,11 +1,11 @@
 object Constants {
-    const val PROJECT_VERSION = "4.2.0"
+    const val PROJECT_VERSION = "4.2.1"
 
     const val JAVA_VERSION = "21"
     const val JACOCO_VERSION = "0.8.12"
 
     const val PAPER_VERSION = "1.21.5-R0.1-SNAPSHOT"
-    const val ETERNIALIB_VERSION = "4.5.1"
+    const val ETERNIALIB_VERSION = "4.5.2"
     const val VAULT_API_VERSION = "68f14ec"
     const val JUPITER_VERSION = "5.11.4"
     const val MOCKITO_VERSION = "5.16.1"
@@ -155,9 +155,6 @@ publishing {
 
     publications {
         register<MavenPublication>("gpr") {
-            from(components["shadow"])
-        }
-        create<MavenPublication>("mavenJava") {
             from(components["shadow"])
         }
     }
