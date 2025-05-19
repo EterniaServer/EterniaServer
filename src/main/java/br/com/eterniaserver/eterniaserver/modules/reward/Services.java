@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.reward;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ChanceMaps;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -21,17 +20,15 @@ final class Services {
     static class Rewards {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
         private final List<Map<String, Map<Double, List<String>>>> chanceMap;
         private final Map<String, String> rewardMap = new HashMap<>();
 
         protected Rewards(EterniaServer plugin) {
             this.plugin = plugin;
-            this.databaseInterface = EterniaLib.getDatabase();
             this.chanceMap = plugin.chanceMaps();
 
-            List<RewardGroup> rewardGroups = databaseInterface.listAll(RewardGroup.class);
+            List<RewardGroup> rewardGroups = EterniaLib.getDatabase().listAll(RewardGroup.class);
             for (RewardGroup rewardGroup : rewardGroups) {
                 rewardMap.put(rewardGroup.getKeyCode(), rewardGroup.getGroupName());
             }
@@ -44,7 +41,7 @@ final class Services {
 
             rewardMap.put(key, reward);
 
-            Runnable insertRunnable = () -> databaseInterface.insert(RewardGroup.class, new RewardGroup(key, reward));
+            Runnable insertRunnable = () -> EterniaLib.getDatabase().insert(RewardGroup.class, new RewardGroup(key, reward));
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, insertRunnable);
 
             return true;
@@ -54,9 +51,9 @@ final class Services {
             rewardMap.remove(key);
 
             Runnable getAndDelete = () -> {
-                RewardGroup rewardGroup = databaseInterface.findBy(RewardGroup.class, "keyCode", key);
+                RewardGroup rewardGroup = EterniaLib.getDatabase().findBy(RewardGroup.class, "keyCode", key);
                 if (rewardGroup != null) {
-                    databaseInterface.delete(RewardGroup.class, rewardGroup);
+                    EterniaLib.getDatabase().delete(RewardGroup.class, rewardGroup);
                 }
             };
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, getAndDelete);

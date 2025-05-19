@@ -32,41 +32,41 @@ public class EconomyManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        MessagesConfiguration messagesConfiguration = new MessagesConfiguration(plugin);
-        CommandsConfiguration commandsConfiguration = new CommandsConfiguration();
-        EconomyConfiguration configuration = new EconomyConfiguration(plugin);
 
-        EterniaLib.registerConfiguration("eterniaserver", "economy", configuration);
-        EterniaLib.registerConfiguration("eterniaserver", "economy_messages", messagesConfiguration);
-        EterniaLib.registerConfiguration("eterniaserver", "economy_commands", commandsConfiguration);
-
-        configuration.executeConfig();
-        messagesConfiguration.executeConfig();
-
-        configuration.executeCritical();
-        commandsConfiguration.executeCritical();
-
-        configuration.saveConfiguration(true);
-        messagesConfiguration.saveConfiguration(true);
-        commandsConfiguration.saveConfiguration(true);
-
-        loadCommandsLocale(commandsConfiguration, Enums.Commands.class);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "economy_messages",
+                true,
+                new MessagesConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "economy",
+                true,
+                new EconomyConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "economy_commands",
+                true,
+                new CommandsConfiguration()
+        );
 
         try {
             Entity<EcoBalance> balanceEntity = new Entity<>(EcoBalance.class);
             Entity<BankBalance> bankBalanceEntity = new Entity<>(BankBalance.class);
             Entity<BankMember> bankMemberEntity = new Entity<>(BankMember.class);
 
-            EterniaLib.addTableName("%eternia_server_economy%", plugin.getString(Strings.ECO_TABLE_NAME_BALANCE));
-            EterniaLib.addTableName("%eternia_server_bank%", plugin.getString(Strings.ECO_TABLE_NAME_BANK));
-            EterniaLib.addTableName("%eternia_server_bank_member%", plugin.getString(Strings.ECO_TABLE_NAME_BANK_MEMBER));
+            EterniaLib.getDatabase().addTableName("%eternia_server_economy%", plugin.getString(Strings.ECO_TABLE_NAME_BALANCE));
+            EterniaLib.getDatabase().addTableName("%eternia_server_bank%", plugin.getString(Strings.ECO_TABLE_NAME_BANK));
+            EterniaLib.getDatabase().addTableName("%eternia_server_bank_member%", plugin.getString(Strings.ECO_TABLE_NAME_BANK_MEMBER));
 
             EterniaLib.getDatabase().register(EcoBalance.class, balanceEntity);
             EterniaLib.getDatabase().register(BankBalance.class, bankBalanceEntity);
             EterniaLib.getDatabase().register(BankMember.class, bankMemberEntity);
         }
         catch (Exception exception) {
-            EterniaLib.registerLog("EE-117-Economy");
+            //todo EterniaLib.registerLog("EE-117-Economy");
             return;
         }
 

@@ -1,5 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.bed;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Lists;
@@ -30,7 +32,8 @@ final class Schedules {
             this.plugin = plugin;
             this.sleepingService = sleepingService;
             if (TimeUnit.MICROSECONDS.toSeconds(System.currentTimeMillis() - sleepingService.getNightMessageTime()) > 300) {
-                plugin.getServer().broadcast(plugin.getMiniMessage(Messages.NIGHT_SKIPPING, true, world.getName()));
+                MessageOptions messageOptions = new MessageOptions(world.getName());
+                plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(Messages.NIGHT_SKIPPING, messageOptions));
             }
         }
 
@@ -48,7 +51,8 @@ final class Schedules {
                     world.setThundering(false);
                     world.getPlayers().forEach(player -> player.setStatistic(Statistic.TIME_SINCE_REST, 0));
                     plugin.getServer().getScheduler().runTaskLater(plugin, () -> sleepingService.removeFromSkipping(world), 20);
-                    plugin.getServer().broadcast(plugin.getMiniMessage(Messages.NIGHT_SKIPPED, true, world.getName()));
+                    MessageOptions messageOptions = new MessageOptions(world.getName());
+                    plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(Messages.NIGHT_SKIPPED, messageOptions));
                     sleepingService.updateNightMessageTime();
                     this.cancel();
                 } else {

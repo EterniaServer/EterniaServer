@@ -19,6 +19,7 @@ import org.bukkit.OfflinePlayer;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 
 public class VaultEconomyManager implements Economy {
@@ -54,7 +55,7 @@ public class VaultEconomyManager implements Economy {
     @Override
     public String format(double v) {
         if (numberFormat == null) {
-            Locale locale = new Locale(plugin.getString(Strings.ECO_LANGUAGE), plugin.getString(Strings.ECO_COUNTRY));
+            Locale locale = Locale.of(plugin.getString(Strings.ECO_LANGUAGE), plugin.getString(Strings.ECO_COUNTRY));
             numberFormat = NumberFormat.getInstance(locale);
         }
 
@@ -84,12 +85,9 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public boolean hasAccount(String playerName) {
-        UUID uuid = EterniaLib.getUUIDOf(playerName);
-        if (uuid == null) {
-            return false;
-        }
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
+        return uuid.filter(this::hasAccount).isPresent();
 
-        return hasAccount(uuid);
     }
 
     @Override
@@ -116,12 +114,9 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public double getBalance(String playerName) {
-        UUID uuid = EterniaLib.getUUIDOf(playerName);
-        if (uuid == null) {
-            return 0;
-        }
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
+        return uuid.map(this::getBalance).orElse(0.0);
 
-        return getBalance(uuid);
     }
 
     @Override
@@ -152,12 +147,9 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public boolean has(String playerName, double amount) {
-        UUID uuid = EterniaLib.getUUIDOf(playerName);
-        if (uuid == null) {
-            return false;
-        }
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
+        return uuid.filter(value -> has(value, amount)).isPresent();
 
-        return has(uuid, amount);
     }
 
     @Override
@@ -188,9 +180,13 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        UUID uuid = EterniaLib.getUUIDOf(playerName);
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
 
-        return withdrawPlayer(uuid, amount);
+        if (uuid.isEmpty()) {
+            return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, null);
+        }
+
+        return withdrawPlayer(uuid.get(), amount);
     }
 
     @Override
@@ -210,7 +206,7 @@ public class VaultEconomyManager implements Economy {
     }
 
     public EconomyResponse withdrawPlayer(UUID uuid, double amount) {
-        if (uuid == null || !has(uuid, amount)) {
+        if (!has(uuid, amount)) {
             return new EconomyResponse(amount, getBalance(uuid), EconomyResponse.ResponseType.FAILURE, null);
         }
 
@@ -228,9 +224,13 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        UUID uuid = EterniaLib.getUUIDOf(playerName);
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
 
-        return depositPlayer(uuid, amount);
+        if (uuid.isEmpty()) {
+            return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, null);
+        }
+
+        return depositPlayer(uuid.get(), amount);
     }
 
     @Override
@@ -250,7 +250,7 @@ public class VaultEconomyManager implements Economy {
     }
 
     public EconomyResponse depositPlayer(UUID uuid, double amount) {
-        if (uuid == null || !hasAccount(uuid)) {
+        if (!hasAccount(uuid)) {
             return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, null);
         }
 
@@ -278,9 +278,11 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public EconomyResponse createBank(String bankName, String playerName) {
-        UUID uuid = EterniaLib.getUUIDOf(bankName);
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
 
-        return createBank(bankName, uuid);
+        return uuid.map(value -> createBank(bankName, value)).orElseGet(
+                () -> new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, null)
+        );
     }
 
     @Override
@@ -391,8 +393,12 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public EconomyResponse isBankOwner(String bankName, String playerName) {
-        UUID uuid = EterniaLib.getUUIDOf(playerName);
-        return isBankOwner(bankName, uuid);
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
+
+        return uuid.map(value -> isBankOwner(bankName, value)).orElseGet(
+                () -> new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, null)
+        );
+
     }
 
     @Override
@@ -418,9 +424,11 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public EconomyResponse isBankMember(String bankName, String playerName) {
-        UUID uuid = EterniaLib.getUUIDOf(playerName);
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
 
-        return isBankMember(bankName, uuid);
+        return uuid.map(value -> isBankMember(bankName, value)).orElseGet(
+                () -> new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, null)
+        );
     }
 
     @Override
@@ -453,9 +461,10 @@ public class VaultEconomyManager implements Economy {
     @Override
     @Deprecated
     public boolean createPlayerAccount(String playerName) {
-        UUID uuid = EterniaLib.getUUIDOf(playerName);
+        Optional<UUID> uuid = EterniaLib.getUuidFetcher().getCachedUUID(playerName);
 
-        return createPlayerAccount(uuid);
+        return uuid.filter(this::createPlayerAccount).isPresent();
+
     }
 
     @Override

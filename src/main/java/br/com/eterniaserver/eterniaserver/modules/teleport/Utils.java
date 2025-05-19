@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.teleport;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eternialib.commands.AdvancedCommand;
 import br.com.eterniaserver.eternialib.commands.enums.AdvancedCategory;
 import br.com.eterniaserver.eternialib.commands.enums.AdvancedRules;
@@ -108,11 +109,9 @@ public final class Utils {
             this.sender = sender;
             this.location = location;
 
-            this.message = plugin.getMessage(
-                    Messages.TELEPORT_ON_GOING,
-                    false,
-                    locationName
-            );
+            this.message = EterniaLib
+                    .getChatCommons()
+                    .getMessage(Messages.TELEPORT_ON_GOING, new MessageOptions(locationName));
         }
 
         public static void addTeleport(EterniaServer plugin, Player player, Location location, String name) {
@@ -127,7 +126,8 @@ public final class Utils {
                 );
                 boolean result = EterniaLib.getAdvancedCmdManager().addTimedCommand(teleportCommand);
                 if (!result) {
-                    plugin.sendMiniMessages(player, Messages.ALREADY_IN_TIMING, name);
+                    MessageOptions options = new MessageOptions(name);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ALREADY_IN_TIMING, options);
                 }
             }
         }

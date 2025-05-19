@@ -1,6 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.economy;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eternialib.commands.AdvancedCommand;
 import br.com.eterniaserver.eternialib.commands.enums.AdvancedCategory;
 import br.com.eterniaserver.eternialib.commands.enums.AdvancedRules;
@@ -74,7 +75,8 @@ public final class Utils {
 
                 EterniaLib.getDatabase().insert(BankMember.class, bankMember);
 
-                plugin.sendMiniMessages(target, Messages.ECO_BANK_AFILIATE_SUCCESS, bankName);
+                MessageOptions options = new MessageOptions(bankName);
+                EterniaLib.getChatCommons().sendMessage(sender, Messages.ECO_BANK_AFILIATE_SUCCESS, options);
             });
         }
 

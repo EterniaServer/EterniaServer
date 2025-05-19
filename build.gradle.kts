@@ -1,36 +1,46 @@
+object Constants {
+    const val PROJECT_VERSION = "4.2.0"
+
+    const val JAVA_VERSION = "21"
+    const val JACOCO_VERSION = "0.8.12"
+
+    const val PAPER_VERSION = "1.21.5-R0.1-SNAPSHOT"
+    const val ETERNIALIB_VERSION = "4.5.1"
+    const val VAULT_API_VERSION = "68f14ec"
+    const val JUPITER_VERSION = "5.11.4"
+    const val MOCKITO_VERSION = "5.16.1"
+    const val PAPI_VERSION = "2.11.6"
+    const val DISCORDSRV_VERSION = "1.29.0"
+}
+
 plugins {
     id("java")
-    id("jacoco")
     id("maven-publish")
-    id("org.sonarqube") version "3.3"
-    id("io.freefair.lombok") version "6.6.1"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("jacoco")
+    id("org.sonarqube") version("6.0.1.5171")
+    id("io.freefair.lombok") version("8.13")
+    id("com.gradleup.shadow") version("9.0.0-beta11")
 }
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion = Constants.JACOCO_VERSION
 }
 
 sonarqube  {
     properties {
-        property("sonar.projectName", project.name)
         property("sonar.projectKey", "EterniaServer_EterniaServer")
-        property("sonar.organization", "eterniaserver")
         property("sonar.projectVersion", "${project.version}")
-        property("sonar.sources", "src/main/java")
-        property("sonar.tests", "src/test/java")
+        property("sonar.organization", "eterniaserver")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.java.binaries", "build/classes")
-        property("sonar.java.libraries", "build/libs")
-        property("sonar.java.coveragePlugin", "jacoco")
-        property("sonar.verbose", "true")
-        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
-        property("sonar.junit.reportsPath", "build/test-results/test")
+        property("sonar.scm.disabled", true)
+        property("sonar.junit.reportPaths", "${project.layout.buildDirectory.get()}/test-results/test")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml")
+        property("sonar.exclude", "**src/test/**")
     }
 }
 
 group = "br.com.eterniaserver"
-version = "4.1.1"
+version = Constants.PROJECT_VERSION
 
 repositories {
     mavenCentral()
@@ -67,61 +77,65 @@ repositories {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(Constants.JAVA_VERSION))
     }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
-    compileOnly("br.com.eterniaserver", "eternialib", "4.0.6")
-    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
-    compileOnly("me.clip", "placeholderapi", "2.11.1")
-    compileOnly("com.discordsrv", "discordsrv", "1.26.0")
-    implementation("org.bstats", "bstats-bukkit", "3.0.0")
-    testImplementation("io.papermc.paper", "paper-api", "1.20.4-R0.1-SNAPSHOT")
-    testImplementation("br.com.eterniaserver", "eternialib", "4.0.6")
-    testImplementation("com.github.MilkBowl", "VaultAPI", "1.7")
-    testImplementation("org.junit.jupiter", "junit-jupiter", "5.9.2")
-    testImplementation("org.mockito", "mockito-inline", "5.2.0")
+    compileOnly("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
+    compileOnly("br.com.eterniaserver", "eternialib", Constants.ETERNIALIB_VERSION)
+    compileOnly("com.github.MilkBowl", "VaultAPI", Constants.VAULT_API_VERSION) {
+        exclude("org.bukkit", "bukkit")
+    }
+    compileOnly("me.clip", "placeholderapi", Constants.PAPI_VERSION)
+    compileOnly("com.discordsrv", "discordsrv", Constants.DISCORDSRV_VERSION)
+    testImplementation("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
+    testImplementation("br.com.eterniaserver", "eternialib", Constants.ETERNIALIB_VERSION)
+    testImplementation("com.github.MilkBowl", "VaultAPI", Constants.VAULT_API_VERSION) {
+        exclude("org.bukkit", "bukkit")
+    }
+    testImplementation("org.junit.jupiter", "junit-jupiter", Constants.JUPITER_VERSION)
+    testImplementation("org.mockito", "mockito-core", Constants.MOCKITO_VERSION)
+    testImplementation("org.mockito", "mockito-junit-jupiter", Constants.MOCKITO_VERSION)
 }
 
 tasks.shadowJar {
-    listOf("org.bstats").forEach {
-        relocate(it, "${rootProject.group}.lib.$it")
-    }
     archiveBaseName.set(project.name)
     archiveClassifier.set("")
     archiveVersion.set("${project.version}")
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks.build {
+    dependsOn(tasks.shadowJar)
+}
 
-    dependsOn("cleanTest")
+tasks.test {
+    val mockitoJar = configurations.testRuntimeClasspath
+        .get()
+        .filter { it.name.contains("mockito-core") }
+        .firstOrNull()
+
+    jvmArgs = listOf("-javaagent:$mockitoJar")
+
+    useJUnitPlatform()
 
     testLogging {
         events("passed", "skipped", "failed")
     }
-
-    finalizedBy("jacocoTestReport")
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.jacocoTestReport {
+    dependsOn(tasks.test)
     reports {
-        xml.required.set(true)
+        xml.required = true
+        html.required = true
+        csv.required = true
     }
 }
 
-tasks.named("sonarqube").configure {
-    dependsOn("test")
-}
-
-tasks.named("build").configure {
-    dependsOn("shadowJar")
-}
-
 tasks.processResources {
-    filesMatching("plugin.yml") {
+    filesMatching("paper-plugin.yml") {
         expand(mapOf("version" to version))
         filteringCharset = "UTF-8"
     }
@@ -141,7 +155,10 @@ publishing {
 
     publications {
         register<MavenPublication>("gpr") {
-            project.shadow.component(this)
+            from(components["shadow"])
+        }
+        create<MavenPublication>("mavenJava") {
+            from(components["shadow"])
         }
     }
 }

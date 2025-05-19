@@ -88,18 +88,18 @@ final class Handlers implements Listener {
             return;
         }
 
-        AttributeInstance maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance maxHealth = entity.getAttribute(Attribute.MAX_HEALTH);
         if (maxHealth != null) {
             maxHealth.setBaseValue(entityControl.getHealth());
             entity.setHealth(entityControl.getHealth());
         }
 
-        AttributeInstance movementSpeed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+        AttributeInstance movementSpeed = entity.getAttribute(Attribute.MOVEMENT_SPEED);
         if (movementSpeed != null) {
             movementSpeed.setBaseValue(entityControl.getSpeed());
         }
 
-        AttributeInstance attackDamage = entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        AttributeInstance attackDamage = entity.getAttribute(Attribute.ATTACK_DAMAGE);
         if (attackDamage != null) {
             attackDamage.setBaseValue(entityControl.getAttackDamage());
         }

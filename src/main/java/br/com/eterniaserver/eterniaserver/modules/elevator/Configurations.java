@@ -1,8 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.elevator;
 
-import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.configuration.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -52,16 +51,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.ELEVATOR_CONFIG_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return plugin.messages();
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override

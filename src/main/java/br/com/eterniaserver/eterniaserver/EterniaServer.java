@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver;
 
+import br.com.eterniaserver.eternialib.chat.MessageMap;
 import br.com.eterniaserver.eterniaserver.api.interfaces.CashAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.ChatAPI;
 import br.com.eterniaserver.eterniaserver.api.interfaces.ExtraEconomyAPI;
@@ -20,24 +21,14 @@ import lombok.Setter;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.Tag;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import net.milkbowl.vault.economy.Economy;
 
-import org.bstats.bukkit.Metrics;
+import br.com.eterniaserver.bstats.bukkit.Metrics;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -51,25 +42,11 @@ import java.util.Map;
 
 public class EterniaServer extends JavaPlugin {
 
-    private final MiniMessage miniMessage =  MiniMessage.builder().tags(
-            TagResolver.builder()
-                    .resolver(StandardTags.defaults())
-                    .resolver(TagResolver.resolver("a", (args, context) -> {
-                        String link = args.popOr("Invalid").value();
-                        return Tag.styling(
-                                ClickEvent.openUrl(link),
-                                HoverEvent.showText(Component.text(link).color(NamedTextColor.BLUE))
-                        );
-                    }))
-                    .build()
-            )
-            .build();
-
     private final int[] integers = new int[Integers.values().length];
     private final double[] doubles = new double[Doubles.values().length];
     private final boolean[] booleans = new boolean[Booleans.values().length];
 
-    private final String[] messages = new String[Messages.values().length];
+    private final MessageMap<Messages, String> messages = new MessageMap<>(Messages.class, Messages.SERVER_PREFIX);
     private final EntityControl[] entities = new EntityControl[EntityType.values().length];
     private final String[] strings = new String[Strings.values().length];
     private final NamespacedKey[] namespaceKeys = new NamespacedKey[ItemsKeys.values().length];
@@ -112,7 +89,7 @@ public class EterniaServer extends JavaPlugin {
         return strings;
     }
 
-    public String[] messages() {
+    public MessageMap<Messages, String> messages() {
         return messages;
     }
 
@@ -191,51 +168,12 @@ public class EterniaServer extends JavaPlugin {
         return chanceMaps.get(configName.ordinal());
     }
 
-    public void sendMiniMessages(CommandSender sender, Messages messagesId, String... args) {
-        sendMiniMessages(sender, messagesId, true, args);
-
-    }
-
-    public void sendMiniMessages(CommandSender sender, Messages messagesId, boolean prefix, String... args) {
-        sender.sendMessage(miniMessage.deserialize(getMessage(messagesId, prefix, args)));
-    }
-
     public String setPlaceholders(Player player, String message) {
         String playerName = player.getName();
         String displayName = PlainTextComponentSerializer.plainText().serialize(player.displayName());
         message = message.replace("%player_name%", playerName);
         message = message.replace("%player_displayname%", displayName);
         return PlaceholderAPI.setPlaceholders(player, message);
-    }
-
-    public Component parseColor(String string) {
-        return parseColor(string, false);
-    }
-
-    public Component parseColor(String string, boolean prefix) {
-        if (prefix) {
-            string = strings[Strings.SERVER_PREFIX.ordinal()] + string;
-        }
-
-        return miniMessage.deserialize(string);
-    }
-
-    public Component getMiniMessage(Messages messagesId, boolean prefix, String... args) {
-        return miniMessage.deserialize(getMessage(messagesId, prefix, args));
-    }
-
-    public String getMessage(Messages messagesId, boolean prefix, String... args) {
-        String message = messages[messagesId.ordinal()];
-
-        for (int i = 0; i < args.length; i++) {
-            message = message.replace("{" + i + "}", args[i]);
-        }
-
-        if (prefix) {
-            return strings[Strings.SERVER_PREFIX.ordinal()] + message;
-        }
-
-        return message;
     }
 
 }

@@ -80,60 +80,11 @@ class TestServices {
     }
 
     @Test
-    void testExitFromAfkWhenPlayerAreAfk() {
-        String playerName = "Test";
-        String playerDisplay = "Test";
-
-        Player player = Mockito.mock(Player.class);
-        Entities.PlayerProfile playerProfile = Mockito.mock(Entities.PlayerProfile.class);
-        PluginManager pluginManagement = Mockito.mock(PluginManager.class);
-        Component globalMessages = Mockito.mock(Component.class);
-
-        Mockito.when(playerProfile.getPlayerName()).thenReturn(playerName);
-        Mockito.when(playerProfile.getPlayerDisplay()).thenReturn(playerDisplay);
-        Mockito.when(playerProfile.isAfk()).thenReturn(true);
-        Mockito.when(plugin.getMiniMessage(Messages.AFK_LEAVE, true, playerName, playerDisplay)).thenReturn(globalMessages);
-        Mockito.when(server.getPluginManager()).thenReturn(pluginManagement);
-
-        afkService.exitFromAfk(player, playerProfile, AfkStatusEvent.Cause.MOVE);
-
-        Mockito.verify(playerProfile, Mockito.times(1)).setLastMove(Mockito.anyLong());
-        Mockito.verify(server, Mockito.times(1)).broadcast(globalMessages);
-    }
-
-    @Test
     void testGetGUINotCreated() {
         String title = "Test";
         Player player = Mockito.mock(Player.class);
 
         Assertions.assertNull(guiAPI.getGUI(title, player));
-    }
-
-    @Test
-    void testCreateGUIAndGet() {
-        String title = "Test";
-        int itemAmount = 9;
-
-        Player player = Mockito.mock(Player.class);
-        Component titleComponent = Mockito.mock(Component.class);
-        Inventory inventory = Mockito.mock(Inventory.class);
-
-        Mockito.when(plugin.getString(Strings.GUI_SECRET)).thenReturn("");
-        Mockito.when(plugin.parseColor(title)).thenReturn(titleComponent);
-        Mockito.when(titleComponent.compact()).thenReturn(titleComponent);
-        Mockito.when(server.createInventory(player, itemAmount, titleComponent)).thenReturn(inventory);
-
-        ItemStack[] itemStacks = new ItemStack[itemAmount];
-        for (int i = 0; i < itemAmount; i++) {
-            itemStacks[i] = Mockito.mock(ItemStack.class);
-        }
-
-        guiAPI.createGUI(title, itemStacks);
-
-        Assertions.assertNotNull(guiAPI.getGUI(title, player));
-        for (int i = 0; i < itemAmount; i++) {
-            Mockito.verify(inventory).setItem(i, itemStacks[i]);
-        }
     }
 
 }

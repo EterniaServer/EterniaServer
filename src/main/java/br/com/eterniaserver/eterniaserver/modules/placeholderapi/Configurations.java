@@ -1,17 +1,15 @@
 package br.com.eterniaserver.eterniaserver.modules.placeholderapi;
 
 import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.configuration.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.logging.Level;
 
 final class Configurations {
 
@@ -50,16 +48,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.PAPI_CONFIG_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override

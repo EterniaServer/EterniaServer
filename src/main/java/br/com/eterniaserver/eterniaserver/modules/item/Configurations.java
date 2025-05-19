@@ -1,8 +1,10 @@
 package br.com.eterniaserver.eterniaserver.modules.item;
 
+import br.com.eterniaserver.eternialib.chat.MessageMap;
 import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.configuration.interfaces.CmdConfiguration;
+import br.com.eterniaserver.eternialib.configuration.interfaces.MsgConfiguration;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -20,17 +22,14 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class ItemCommandsConfiguration implements ReloadableConfiguration {
+    static class ItemCommandsConfiguration implements CmdConfiguration<Enums.Commands> {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
-
         public ItemCommandsConfiguration() {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
         }
 
         @Override
@@ -51,16 +50,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.ITEM_COMMANDS_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
         }
 
         @Override
@@ -146,7 +135,7 @@ final class Configurations {
         }
     }
 
-    static class ItemMessagesConfiguration implements ReloadableConfiguration {
+    static class ItemMessagesConfiguration implements MsgConfiguration<Messages> {
 
         private final EterniaServer plugin;
 
@@ -192,13 +181,8 @@ final class Configurations {
         }
 
         @Override
-        public String[] messages() {
+        public MessageMap<Messages, String> messages() {
             return plugin.messages();
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override

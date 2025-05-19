@@ -1,8 +1,12 @@
 package br.com.eterniaserver.eterniaserver.modules.cash;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.chat.MessageMap;
 import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.configuration.interfaces.CmdConfiguration;
+import br.com.eterniaserver.eternialib.configuration.interfaces.MsgConfiguration;
+import br.com.eterniaserver.eternialib.configuration.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -35,7 +39,7 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class CashMessages implements ReloadableConfiguration {
+    static class CashMessages implements MsgConfiguration<Messages> {
 
         private final EterniaServer plugin;
 
@@ -69,13 +73,8 @@ final class Configurations {
         }
 
         @Override
-        public String[] messages() {
+        public MessageMap<Messages, String> messages() {
             return plugin.messages();
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override
@@ -152,17 +151,14 @@ final class Configurations {
 
     }
 
-    static class CashCommands implements ReloadableConfiguration {
+    static class CashCommands implements CmdConfiguration<Enums.Commands> {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
-
         protected CashCommands() {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
         }
 
         @Override
@@ -183,16 +179,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.CASH_COMMANDS_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
         }
 
         @Override
@@ -270,13 +256,11 @@ final class Configurations {
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
         private final EterniaServer plugin;
 
         protected CashConfiguration(EterniaServer plugin) {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
             this.plugin = plugin;
 
             NamespacedKey[] namespacedKeys = plugin.namespacedKeys();
@@ -315,16 +299,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.CASH_CONFIG_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
         }
 
         @Override
@@ -441,8 +415,8 @@ final class Configurations {
                     String guiName = inFile.getString("menu." + i + ".name", "");
                     List<String> itemLore = inFile.getStringList("menu." + i + ".lore");
 
-                    itemMeta.displayName(plugin.parseColor(guiName));
-                    itemMeta.lore(itemLore.stream().map(plugin::parseColor).collect(Collectors.toList()));
+                    itemMeta.displayName(EterniaLib.getChatCommons().parseColor(guiName));
+                    itemMeta.lore(itemLore.stream().map(EterniaLib.getChatCommons()::parseColor).collect(Collectors.toList()));
 
                     itemMeta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CASH_ITEM_LORE), PersistentDataType.STRING, String.join(";", itemLore));
                     itemMeta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CASH_GUI_NAME), PersistentDataType.STRING, guiName);
@@ -481,8 +455,8 @@ final class Configurations {
                         List<String> itemLore = inFile.getStringList("guis." + guiName + "." + i + ".lore");
                         String itemName = inFile.getString("guis." + guiName + "." + i + ".name", "");
 
-                        itemMeta.displayName(plugin.parseColor(itemName));
-                        itemMeta.lore(itemLore.stream().map(plugin::parseColor).collect(Collectors.toList()));
+                        itemMeta.displayName(EterniaLib.getChatCommons().parseColor(itemName));
+                        itemMeta.lore(itemLore.stream().map(EterniaLib.getChatCommons()::parseColor).collect(Collectors.toList()));
 
                         itemMeta.getPersistentDataContainer().set(
                                 plugin.getKey(ItemsKeys.CASH_GUI_NAME),
@@ -540,8 +514,8 @@ final class Configurations {
                     "<color:#aaaaaa>nessa jornada<color:#555555>."
             );
 
-            itemMeta.displayName(plugin.parseColor("<color:#aaaaaa>Permissões"));
-            itemMeta.lore(itemLore.stream().map(plugin::parseColor).collect(Collectors.toList()));
+            itemMeta.displayName(EterniaLib.getChatCommons().parseColor("<color:#aaaaaa>Permissões"));
+            itemMeta.lore(itemLore.stream().map(EterniaLib.getChatCommons()::parseColor).collect(Collectors.toList()));
             itemMeta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CASH_ITEM_LORE), PersistentDataType.STRING, String.join(";", itemLore));
             itemMeta.getPersistentDataContainer().set(plugin.getKey(ItemsKeys.CASH_GUI_NAME), PersistentDataType.STRING, "<color:#aaaaaa>Permissões");
 
@@ -566,8 +540,8 @@ final class Configurations {
             );
 
             String guiName = "<color:#00aaaa>25% <color:#aaaaaa>Bônus de XP no McMMO<color:#555555>!";
-            itemMeta.displayName(plugin.parseColor(guiName));
-            itemMeta.lore(itemLore.stream().map(this.plugin::parseColor).collect(Collectors.toList()));
+            itemMeta.displayName(EterniaLib.getChatCommons().parseColor(guiName));
+            itemMeta.lore(itemLore.stream().map(EterniaLib.getChatCommons()::parseColor).collect(Collectors.toList()));
 
             itemMeta.getPersistentDataContainer().set(
                     plugin.getKey(ItemsKeys.CASH_GUI_NAME),
@@ -623,7 +597,7 @@ final class Configurations {
                     PersistentDataType.STRING,
                     "a"
             );
-            itemMeta.displayName(plugin.parseColor(plugin.getString(Strings.CASH_TITLE)));
+            itemMeta.displayName(EterniaLib.getChatCommons().parseColor(plugin.getString(Strings.CASH_TITLE)));
             itemStack.setItemMeta(itemMeta);
 
             return itemStack;

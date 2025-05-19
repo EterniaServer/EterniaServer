@@ -22,33 +22,32 @@ public class RewardManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.RewardConfiguration configuration = new Configurations.RewardConfiguration(plugin);
-        Configurations.RewardMessagesConfiguration messagesConfiguration = new Configurations.RewardMessagesConfiguration(plugin);
-        Configurations.RewardCommandsConfiguration commandsConfiguration = new Configurations.RewardCommandsConfiguration();
-
-        EterniaLib.registerConfiguration("eterniaserver", "reward", configuration);
-        EterniaLib.registerConfiguration("eterniaserver", "reward_messages", messagesConfiguration);
-        EterniaLib.registerConfiguration("eterniaserver", "reward_commands", commandsConfiguration);
-
-        configuration.executeConfig();
-        messagesConfiguration.executeConfig();
-        commandsConfiguration.executeCritical();
-
-        configuration.saveConfiguration(true);
-        messagesConfiguration.saveConfiguration(true);
-        commandsConfiguration.saveConfiguration(true);
-
-        loadCommandsLocale(commandsConfiguration, Enums.Commands.class);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "reward_messages",
+                true,
+                new Configurations.RewardMessagesConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "reward",
+                true,
+                new Configurations.RewardConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "reward_commands",
+                true,
+                new Configurations.RewardCommandsConfiguration()
+        );
 
         try {
             Entity<Entities.RewardGroup> rewardGroupEntity = new Entity<>(Entities.RewardGroup.class);
-
-            EterniaLib.addTableName("%eternia_server_reward%", plugin.getString(Strings.REWARD_TABLE_NAME));
-
+            EterniaLib.getDatabase().addTableName("%eternia_server_reward%", plugin.getString(Strings.REWARD_TABLE_NAME));
             EterniaLib.getDatabase().register(Entities.RewardGroup.class, rewardGroupEntity);
         }
         catch (Exception exception) {
-            EterniaLib.registerLog("EE-105-Reward");
+            //todo EterniaLib.registerLog("EE-105-Reward");
             return;
         }
 

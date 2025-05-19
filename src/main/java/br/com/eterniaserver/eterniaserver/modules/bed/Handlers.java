@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.bed;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
@@ -21,12 +21,10 @@ import java.util.concurrent.TimeUnit;
 final class Handlers implements Listener {
 
     private final EterniaServer plugin;
-    private final DatabaseInterface databaseInterface;
     private final SleepingService sleepingService;
 
     public Handlers(EterniaServer plugin, SleepingService sleepingService) {
         this.plugin = plugin;
-        this.databaseInterface = EterniaLib.getDatabase();
         this.sleepingService = sleepingService;
     }
 
@@ -34,16 +32,18 @@ final class Handlers implements Listener {
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             Player player = event.getPlayer();
-            PlayerProfile playerProfile = databaseInterface.get(PlayerProfile.class, player.getUniqueId());
+            PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
             if (checkBedCooldown(player)) {
                 sleepingService.updateBedCooldown(player.getUniqueId());
-                Component message = plugin.getMiniMessage(
-                        Messages.NIGHT_PLAYER_SLEEPING,
-                        true,
+                MessageOptions messageOptions = new MessageOptions(
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay()
                 );
+                Component message = EterniaLib
+                        .getChatCommons()
+                        .parseMessage(Messages.NIGHT_PLAYER_SLEEPING, messageOptions);
+
                 plugin.getServer().broadcast(message);
             }
         }

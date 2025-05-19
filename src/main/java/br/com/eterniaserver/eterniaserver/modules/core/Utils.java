@@ -93,7 +93,7 @@ public class Utils {
 
             for (String line : messagesStrings) {
                 sender.sendMessage(
-                        plugin.parseColor(sender instanceof Player player ? plugin.setPlaceholders(player, line) : line
+                        EterniaLib.getChatCommons().parseColor(sender instanceof Player player ? plugin.setPlaceholders(player, line) : line
                 ));
             }
 

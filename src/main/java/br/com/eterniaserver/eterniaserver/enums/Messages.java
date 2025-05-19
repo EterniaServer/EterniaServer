@@ -2,6 +2,7 @@ package br.com.eterniaserver.eterniaserver.enums;
 
 public enum Messages {
 
+    SERVER_PREFIX,
     SERVER_NO_PERM,
     SERVER_NO_PLAYER,
     CASH_BALANCE,
@@ -187,6 +188,7 @@ public enum Messages {
     CHAT_SPY_ENABLED,
     CHAT_ARE_MUTED,
     CHAT_NO_ONE_TO_RESP,
+    CHAT_EMPTY_RESP,
     CHAT_TELL_UNLOCKED,
     CHAT_TELL_LOCKED,
     CHAT_TELL_YOURSELF,

@@ -5,6 +5,7 @@ import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eternialib.database.dtos.SearchField;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.dtos.BalanceDTO;
@@ -74,16 +75,16 @@ final class Commands {
             }
 
             if (page < 1 || page > maxPage) {
-                plugin.sendMiniMessages(commandSender, Messages.ECO_PAGE_LIMIT, String.valueOf(maxPage));
+                MessageOptions maxOptions = new MessageOptions(String.valueOf(maxPage));
+                EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_PAGE_LIMIT, maxOptions);
                 return;
             }
 
             int startIndex = (page - 1) * pageSize;
 
-            plugin.sendMiniMessages(commandSender, Messages.ECO_BALTOP_TITLE, String.valueOf(page));
+            MessageOptions pageOptions = new MessageOptions(String.valueOf(page));
+            EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_BALTOP_TITLE, pageOptions);
 
-            System.out.println(startIndex);
-            System.out.println(pageSize);
             for (int i = startIndex; i < balances.size() && i < (startIndex + pageSize); i++) {
                 BalanceDTO ecoBalance = balances.get(i);
                 UUID uuid = ecoBalance.playerUUID();
@@ -91,14 +92,13 @@ final class Commands {
 
                 PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
 
-                plugin.sendMiniMessages(
-                        commandSender,
-                        Messages.ECO_BALTOP_LIST,
+                MessageOptions messageOptions = new MessageOptions(
                         false,
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay(),
                         EterniaServer.getEconomyAPI().format(balance)
                 );
+                EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_BALTOP_LIST, messageOptions);
             }
 
            Component component = Component.empty();
@@ -108,7 +108,7 @@ final class Commands {
                         "/" + plugin.getString(Strings.ECO_BALTOP_COMMAND_NAME) + " " + (page - 1)
                 )));
             }
-            component = component.append(plugin.parseColor(plugin.getMessage(Messages.ECO_PAGE, false)));
+            component = component.append(EterniaLib.getChatCommons().parseMessage(Messages.ECO_PAGE, new MessageOptions(false)));
             if ((page + 1) < maxPage) {
                 component = component.append(Component.text(">>> ").clickEvent(ClickEvent.clickEvent(
                         ClickEvent.Action.RUN_COMMAND,
@@ -128,7 +128,7 @@ final class Commands {
             if (onlineTarget == null && commandSender instanceof Player player) {
                 target = player;
             } else if (onlineTarget == null) {
-                plugin.sendMiniMessages(commandSender, Messages.ECO_BALANCE_IN_CONSOLE);
+                EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_BALANCE_IN_CONSOLE);
                 return;
             } else {
                 target = onlineTarget.getPlayer();
@@ -137,13 +137,12 @@ final class Commands {
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
             double value = EterniaServer.getEconomyAPI().getBalance(target);
 
-            plugin.sendMiniMessages(
-                    commandSender,
-                    Messages.ECO_BALANCE,
+            MessageOptions messageOptions = new MessageOptions(
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay(),
                     EterniaServer.getEconomyAPI().format(value)
             );
+            EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_BALANCE, messageOptions);
         }
 
         @CommandCompletion("@players 10")
@@ -155,12 +154,12 @@ final class Commands {
             Player target = onlineTarget.getPlayer();
 
             if (player.getUniqueId().equals(target.getUniqueId())) {
-                plugin.sendMiniMessages(player, Messages.ECO_CANT_PAY_YOURSELF);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_CANT_PAY_YOURSELF);
                 return;
             }
 
             if (value <= 0) {
-                plugin.sendMiniMessages(player, Messages.ECO_INVALID_VALUE);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_INVALID_VALUE);
                 return;
             }
 
@@ -168,28 +167,26 @@ final class Commands {
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
             if (!EterniaServer.getEconomyAPI().has(player, value)) {
-                plugin.sendMiniMessages(player, Messages.ECO_INSUFFICIENT_BALANCE);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_INSUFFICIENT_BALANCE);
                 return;
             }
 
             EterniaServer.getEconomyAPI().withdrawPlayer(player, value);
             EterniaServer.getEconomyAPI().depositPlayer(target, value);
 
-            plugin.sendMiniMessages(
-                    player,
-                    Messages.ECO_PAYED,
+            MessageOptions playerOptions = new MessageOptions(
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay(),
                     EterniaServer.getEconomyAPI().format(value)
             );
-
-            plugin.sendMiniMessages(
-                    target,
-                    Messages.ECO_RECEIVED,
+            MessageOptions targetOptions = new MessageOptions(
                     playerProfile.getPlayerName(),
                     playerProfile.getPlayerDisplay(),
                     EterniaServer.getEconomyAPI().format(value)
             );
+
+            EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_PAYED, playerOptions);
+            EterniaLib.getChatCommons().sendMessage(target, Messages.ECO_RECEIVED, targetOptions);
         }
 
         @CommandCompletion("@players 10")
@@ -201,7 +198,7 @@ final class Commands {
             Player target = onlineTarget.getPlayer();
 
             if (value <= 0) {
-                plugin.sendMiniMessages(commandSender, Messages.ECO_INVALID_VALUE);
+                EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_INVALID_VALUE);
                 return;
             }
 
@@ -209,23 +206,20 @@ final class Commands {
 
             EterniaServer.getEconomyAPI().depositPlayer(target, value);
 
-            plugin.sendMiniMessages(
-                    commandSender,
-                    Messages.ECO_GIVED,
+            MessageOptions playerOptions = new MessageOptions(
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay(),
                     EterniaServer.getEconomyAPI().format(value)
             );
+            EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_GIVED, playerOptions);
 
             String[] nameAndDisplay = Utils.getNameAndDisplay(commandSender);
-
-            plugin.sendMiniMessages(
-                    target,
-                    Messages.ECO_RECEIVED,
+            MessageOptions targetOptions = new MessageOptions(
                     nameAndDisplay[0],
                     nameAndDisplay[1],
                     EterniaServer.getEconomyAPI().format(value)
             );
+            EterniaLib.getChatCommons().sendMessage(target, Messages.ECO_RECEIVED, targetOptions);
         }
 
         @CommandCompletion("@players 10")
@@ -237,36 +231,33 @@ final class Commands {
             Player target = onlineTarget.getPlayer();
 
             if (value <= 0) {
-                plugin.sendMiniMessages(commandSender, Messages.ECO_INVALID_VALUE);
+                EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_INVALID_VALUE);
                 return;
             }
 
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
             if (!EterniaServer.getEconomyAPI().has(target, value)) {
-                plugin.sendMiniMessages(commandSender, Messages.ECO_INSUFFICIENT_BALANCE);
+                EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_INSUFFICIENT_BALANCE);
                 return;
             }
 
             EterniaServer.getEconomyAPI().withdrawPlayer(target, value);
 
-            plugin.sendMiniMessages(
-                    commandSender,
-                    Messages.ECO_TAKED,
+            MessageOptions playerOptions = new MessageOptions(
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay(),
                     EterniaServer.getEconomyAPI().format(value)
             );
+            EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_TAKED, playerOptions);
 
             String[] nameAndDisplay = Utils.getNameAndDisplay(commandSender);
-
-            plugin.sendMiniMessages(
-                    target,
-                    Messages.ECO_RETIRED,
+            MessageOptions targetOptions = new MessageOptions(
                     nameAndDisplay[0],
                     nameAndDisplay[1],
                     EterniaServer.getEconomyAPI().format(value)
             );
+            EterniaLib.getChatCommons().sendMessage(target, Messages.ECO_RETIRED, targetOptions);
         }
     }
 
@@ -310,24 +301,25 @@ final class Commands {
                 }
 
                 if (startPage < 1 || startPage > maxPage) {
-                    plugin.sendMiniMessages(commandSender, Messages.ECO_PAGE_LIMIT, String.valueOf(maxPage));
+                    MessageOptions maxOptions = new MessageOptions(String.valueOf(maxPage));
+                    EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_PAGE_LIMIT, maxOptions);
                     return;
                 }
 
                 int startIndex = (startPage - 1) * pageSize;
 
-                plugin.sendMiniMessages(commandSender, Messages.ECO_BANK_LIST_TITLE, String.valueOf(startPage));
+                MessageOptions pageOptions = new MessageOptions(String.valueOf(startPage));
+                EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_BANK_LIST_TITLE, pageOptions);
 
                 for (int i = startIndex; i < bankBalances.size() && i < (startIndex + pageSize); i++) {
                     BankDTO bankBalance = bankBalances.get(i);
 
-                    plugin.sendMiniMessages(
-                            commandSender,
-                            Messages.ECO_BANK_LIST,
+                    MessageOptions messageOptions = new MessageOptions(
                             false,
                             bankBalance.bankName(),
                             EterniaServer.getEconomyAPI().format(bankBalance.balance())
                     );
+                    EterniaLib.getChatCommons().sendMessage(commandSender, Messages.ECO_BANK_LIST, messageOptions);
                 }
 
                 Component component = Component.empty();
@@ -337,7 +329,7 @@ final class Commands {
                             "/" + plugin.getString(Strings.ECO_BANK_LIST_COMMAND_NAME) + " " + (startPage - 1)
                     )));
                 }
-                component = component.append(plugin.parseColor(plugin.getMessage(Messages.ECO_PAGE, false)));
+                component = component.append(EterniaLib.getChatCommons().parseMessage(Messages.ECO_PAGE, new MessageOptions(false)));
                 if ((startPage + 1) < maxPage) {
                     component = component.append(Component.text(">>> ").clickEvent(ClickEvent.clickEvent(
                             ClickEvent.Action.RUN_COMMAND,
@@ -354,17 +346,17 @@ final class Commands {
         @CommandPermission("%ECONOMY_BANK_CREATE_PERM")
         public void onBankCreate(Player player, String bankName) {
             if (bankName.length() > plugin.getInteger(Integers.ECONOMY_BANK_NAME_SIZE_LIMIT)) {
-                plugin.sendMiniMessages(player, Messages.ECO_BANK_NAME_LIMIT);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NAME_LIMIT);
                 return;
             }
             if (!bankName.matches("[a-zA-Z]+")) {
-                plugin.sendMiniMessages(player, Messages.ECO_BANK_NAME_INVALID);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NAME_INVALID);
                 return;
             }
 
             double creationCost = plugin.getDouble(Doubles.ECO_BANK_CREATE_COST);
             if (!EterniaServer.getEconomyAPI().has(player, creationCost)) {
-                plugin.sendMiniMessages(player, Messages.ECO_INSUFFICIENT_BALANCE);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_INSUFFICIENT_BALANCE);
                 return;
             }
 
@@ -374,9 +366,11 @@ final class Commands {
                         "uuid",
                         player.getUniqueId()
                 );
+
+                MessageOptions bankNameOptions = new MessageOptions(bankName);
                 for (BankMember bankMember : bankMembers) {
                     if (Enums.BankRole.OWNER.name().equals(bankMember.getRole())) {
-                        plugin.sendMiniMessages(player, Messages.ECO_BANK_ALREADY_HAS_BANK, bankName);
+                        EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_ALREADY_HAS_BANK, bankNameOptions);
                         return;
                     }
                 }
@@ -384,7 +378,7 @@ final class Commands {
                 BankBalance checkBank = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
                 if (checkBank != null && checkBank.getName() != null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_ALREADY_EXISTS, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_ALREADY_EXISTS, bankNameOptions);
                     return;
                 }
 
@@ -393,14 +387,16 @@ final class Commands {
 
                 PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
-                plugin.sendMiniMessages(player, Messages.ECO_BANK_CREATED, bankName);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_CREATED, bankNameOptions);
 
-                plugin.getServer().broadcast(plugin.getMiniMessage(
-                        Messages.ECO_BANK_CREATED_BROADCAST,
-                        true,
+                MessageOptions messageOptions = new MessageOptions(
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay(),
                         bankName
+                );
+                plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(
+                        Messages.ECO_BANK_CREATED_BROADCAST,
+                        messageOptions
                 ));
             });
 
@@ -415,8 +411,10 @@ final class Commands {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
+                MessageOptions bankNameOptions = new MessageOptions(bankName);
+
                 if (bankBalance == null || bankBalance.getName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_EXIST, bankNameOptions);
                     return;
                 }
 
@@ -429,12 +427,12 @@ final class Commands {
                 );
 
                 if (bankMember == null || bankMember.getBankName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_MEMBER, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_MEMBER, bankNameOptions);
                     return;
                 }
 
                 if (!bankMember.getRole().equals(Enums.BankRole.OWNER.name())) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_OWNER, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_OWNER, bankNameOptions);
                     return;
                 }
 
@@ -443,14 +441,16 @@ final class Commands {
 
                 PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
-                plugin.sendMiniMessages(player, Messages.ECO_BANK_DELETED, bankName);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_DELETED, bankNameOptions);
 
-                plugin.getServer().broadcast(plugin.getMiniMessage(
-                        Messages.ECO_BANK_DELETED_BROADCAST,
-                        true,
+                MessageOptions messageOptions = new MessageOptions(
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay(),
                         bankName
+                );
+                plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(
+                        Messages.ECO_BANK_DELETED_BROADCAST,
+                        messageOptions
                 ));
             });
         }
@@ -468,20 +468,19 @@ final class Commands {
                 );
 
                 if (bankMembers.isEmpty()) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NO_BANKS);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NO_BANKS);
                     return;
                 }
 
-                plugin.sendMiniMessages(player, Messages.ECO_BANK_MY_BANKS_TITLE);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_MY_BANKS_TITLE);
 
                 for (BankMember bankMember : bankMembers) {
-                    plugin.sendMiniMessages(
-                            player,
-                            Messages.ECO_BANK_MY_BANKS_LIST,
+                    MessageOptions playerOptions = new MessageOptions(
                             false,
                             bankMember.getBankName(),
                             bankMember.getRole()
                     );
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_MY_BANKS_LIST, playerOptions);
                 }
             });
         }
@@ -495,8 +494,10 @@ final class Commands {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
 
+                MessageOptions bankNameOptions = new MessageOptions(bankName);
+
                 if (bankBalance == null || bankBalance.getName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_EXIST, bankNameOptions);
                     return;
                 }
 
@@ -509,27 +510,34 @@ final class Commands {
                 );
 
                 if (bankMember == null || bankMember.getBankName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_MEMBER, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_MEMBER, bankNameOptions);
                     return;
                 }
 
-                plugin.sendMiniMessages(player, Messages.ECO_BANK_INFO_TITLE, bankName);
-                plugin.sendMiniMessages(player, Messages.ECO_BANK_INFO_BALANCE, false, EterniaServer.getEconomyAPI().format(bankBalance.getBalance()));
-                plugin.sendMiniMessages(player, Messages.ECO_BANK_INFO_TAX, false,(bankBalance.getTax() + plugin.getDouble(Doubles.ECO_BANK_TAX_VALUE)) + "%");
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_INFO_TITLE, bankNameOptions);
+                MessageOptions bankInfoBalance = new MessageOptions(
+                        false,
+                        EterniaServer.getEconomyAPI().format(bankBalance.getBalance())
+                );
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_INFO_BALANCE, bankInfoBalance);
+                MessageOptions bankInfoTax = new MessageOptions(
+                        false,
+                        (bankBalance.getTax() + plugin.getDouble(Doubles.ECO_BANK_TAX_VALUE)) + "%"
+                );
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_INFO_TAX, bankInfoTax);
 
                 List<BankMemberDTO> bankMembers = EterniaServer.getExtraEconomyAPI().getBankMembers(bankName);
 
                 for (BankMemberDTO member : bankMembers) {
                     PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, member.playerUUID());
 
-                    plugin.sendMiniMessages(
-                            player,
-                            Messages.ECO_BANK_INFO_MEMBERS,
+                    MessageOptions memberOptions = new MessageOptions(
                             false,
                             playerProfile.getPlayerName(),
                             playerProfile.getPlayerDisplay(),
                             member.playerRole()
                     );
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_INFO_MEMBERS, memberOptions);
                 }
             });
         }
@@ -541,19 +549,21 @@ final class Commands {
         @CommandPermission("%ECONOMY_BANK_DEPOSIT_PERM")
         public void onBankDeposit(Player player, String bankName, @Conditions("limits:min=1,max=2147483647") Double value) {
             if (value <= 0) {
-                plugin.sendMiniMessages(player, Messages.ECO_INVALID_VALUE);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_INVALID_VALUE);
                 return;
             }
 
             if (!EterniaServer.getEconomyAPI().has(player, value)) {
-                plugin.sendMiniMessages(player, Messages.ECO_INSUFFICIENT_BALANCE);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_INSUFFICIENT_BALANCE);
                 return;
             }
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
+                MessageOptions bankNameOptions = new MessageOptions(bankName);
+
                 if (bankBalance == null || bankBalance.getName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_EXIST, bankNameOptions);
                     return;
                 }
 
@@ -566,19 +576,18 @@ final class Commands {
                 );
 
                 if (bankMember == null || bankMember.getBankName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_MEMBER, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_MEMBER, bankNameOptions);
                     return;
                 }
 
                 EterniaServer.getEconomyAPI().withdrawPlayer(player, value);
                 EterniaServer.getEconomyAPI().bankDeposit(bankName, value);
 
-                plugin.sendMiniMessages(
-                        player,
-                        Messages.ECO_BANK_DEPOSITED,
+                MessageOptions playerOptions = new MessageOptions(
                         bankName,
                         EterniaServer.getEconomyAPI().format(value)
                 );
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_DEPOSITED, playerOptions);
             });
         }
 
@@ -589,14 +598,16 @@ final class Commands {
         @CommandPermission("%ECONOMY_BANK_WITHDRAW_PERM")
         public void onBankWithdraw(Player player, String bankName, @Conditions("limits:min=1,max=2147483647") Double value) {
             if (value <= 0) {
-                plugin.sendMiniMessages(player, Messages.ECO_INVALID_VALUE);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_INVALID_VALUE);
                 return;
             }
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
+                MessageOptions bankNameOptions = new MessageOptions(bankName);
+
                 if (bankBalance == null || bankBalance.getName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_EXIST, bankNameOptions);
                     return;
                 }
 
@@ -609,29 +620,28 @@ final class Commands {
                 );
 
                 if (bankMember == null || bankMember.getBankName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_MEMBER, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_MEMBER, bankNameOptions);
                     return;
                 }
 
                 if (!bankMember.getRole().equals(Enums.BankRole.OWNER.name()) && !bankMember.getRole().equals(Enums.BankRole.TRUSTED.name())) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NO_WITHDRAW_PERMISSION, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NO_WITHDRAW_PERMISSION, bankNameOptions);
                     return;
                 }
 
                 if (!EterniaServer.getEconomyAPI().bankHas(bankName, value).transactionSuccess()) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_HAS_AMOUNT, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_HAS_AMOUNT, bankNameOptions);
                     return;
                 }
 
                 EterniaServer.getEconomyAPI().bankWithdraw(bankName, value);
                 EterniaServer.getEconomyAPI().depositPlayer(player, value);
 
-                plugin.sendMiniMessages(
-                        player,
-                        Messages.ECO_BANK_WITHDRAWN,
+                MessageOptions playerOptions = new MessageOptions(
                         bankName,
                         EterniaServer.getEconomyAPI().format(value)
                 );
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_WITHDRAWN, playerOptions);
             });
         }
 
@@ -645,8 +655,10 @@ final class Commands {
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
+                MessageOptions bankNameOptions = new MessageOptions(bankName);
+
                 if (bankBalance == null || bankBalance.getName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_EXIST, bankNameOptions);
                     return;
                 }
 
@@ -659,12 +671,12 @@ final class Commands {
                 );
 
                 if (bankMember == null || bankMember.getBankName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_MEMBER, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_MEMBER, bankNameOptions);
                     return;
                 }
 
                 if (!bankMember.getRole().equals(Enums.BankRole.OWNER.name())) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_OWNER, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_OWNER, bankNameOptions);
                     return;
                 }
 
@@ -678,23 +690,18 @@ final class Commands {
                 PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 if (targetBankMember == null || targetBankMember.getBankName() == null) {
-                    plugin.sendMiniMessages(
-                            player,
-                            Messages.ECO_BANK_TARGET_NOT_MEMBER,
+                    MessageOptions options = new MessageOptions(
                             bankName,
                             targetProfile.getPlayerName(),
                             targetProfile.getPlayerDisplay()
                     );
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_TARGET_NOT_MEMBER, options);
                     return;
                 }
 
                 if (!(Enums.BankRole.TRUSTED.name().equals(role) || Enums.BankRole.MEMBER.name().equals(role))) {
-                    plugin.sendMiniMessages(
-                            player,
-                            Messages.ECO_BANK_INVALID_ROLE,
-                            bankName,
-                            role
-                    );
+                    MessageOptions options = new MessageOptions(bankName, role);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_INVALID_ROLE, options);
                     return;
                 }
 
@@ -703,23 +710,21 @@ final class Commands {
 
                 PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
-                plugin.sendMiniMessages(
-                        player,
-                        Messages.ECO_BANK_CHANGE_ROLE_TO,
+                MessageOptions playerOptions = new MessageOptions(
                         targetProfile.getPlayerName(),
                         targetProfile.getPlayerDisplay(),
                         role,
                         bankName
                 );
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_CHANGE_ROLE_TO, playerOptions);
 
-                plugin.sendMiniMessages(
-                        target,
-                        Messages.ECO_BANK_CHANGE_ROLE,
+                MessageOptions targetOptions = new MessageOptions(
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay(),
                         role,
                         bankName
                 );
+                EterniaLib.getChatCommons().sendMessage(target, Messages.ECO_BANK_CHANGE_ROLE, targetOptions);
             });
         }
 
@@ -733,8 +738,10 @@ final class Commands {
 
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 BankBalance bankBalance = EterniaLib.getDatabase().get(BankBalance.class, bankName);
+                MessageOptions bankNameOptions = new MessageOptions(bankName);
+
                 if (bankBalance == null || bankBalance.getName() == null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_NOT_EXIST, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_NOT_EXIST, bankNameOptions);
                     return;
                 }
 
@@ -747,7 +754,7 @@ final class Commands {
                 );
 
                 if (bankMember != null && bankMember.getBankName() != null) {
-                    plugin.sendMiniMessages(player, Messages.ECO_BANK_ALREADY_MEMBER, bankName);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_ALREADY_MEMBER, bankNameOptions);
                     return;
                 }
 
@@ -761,36 +768,34 @@ final class Commands {
                 PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
                 if (targetBankMember == null || targetBankMember.getBankName() == null) {
-                    plugin.sendMiniMessages(
-                            player,
-                            Messages.ECO_BANK_TARGET_NOT_OWNER,
+                    MessageOptions options = new MessageOptions(
                             bankName,
                             targetProfile.getPlayerName(),
                             targetProfile.getPlayerDisplay()
                     );
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_TARGET_NOT_OWNER, options);
                     return;
                 }
 
                 PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
-                plugin.sendMiniMessages(
-                        player,
-                        Messages.ECO_BANK_AFFILIATE_REQUEST,
+                MessageOptions playerOptions = new MessageOptions(
                         targetProfile.getPlayerName(),
                         targetProfile.getPlayerDisplay(),
                         bankName
                 );
-                plugin.sendMiniMessages(
-                        target,
-                        Messages.ECO_BANK_AFFILIATE_REQUESTED,
+                EterniaLib.getChatCommons().sendMessage(player, Messages.ECO_BANK_AFFILIATE_REQUEST, playerOptions);
+
+                MessageOptions targetOptions = new MessageOptions(
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay(),
                         bankName
                 );
+                EterniaLib.getChatCommons().sendMessage(target, Messages.ECO_BANK_AFFILIATE_REQUESTED, targetOptions);
 
                 AffiliateCommand affiliateCommand = new AffiliateCommand(plugin, bankName, target, player);
                 boolean result = EterniaLib.getAdvancedCmdManager().addConfirmationCommand(affiliateCommand);
                 if (!result) {
-                    plugin.sendMiniMessages(player, Messages.ALREADY_IN_CONFIRMATION);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.ALREADY_IN_CONFIRMATION);
                 }
             });
         }

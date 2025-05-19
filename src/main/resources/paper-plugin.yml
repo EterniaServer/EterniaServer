@@ -1,0 +1,26 @@
+name: EterniaServer
+version: '${version}'
+main: br.com.eterniaserver.eterniaserver.EterniaServer
+api-version: '1.21.4'
+load: STARTUP
+author: Yuri Nogueira
+dependencies:
+  server:
+    Vault:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    EterniaLib:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    DiscordSRV:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    PlaceholderAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true
+description: A base library to Eternia plugins and any other plugin
+website: eterniaserver.com.br

@@ -1,7 +1,8 @@
 package br.com.eterniaserver.eterniaserver.modules.bed;
 
-import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.chat.MessageMap;
+import br.com.eterniaserver.eternialib.configuration.interfaces.MsgConfiguration;
+import br.com.eterniaserver.eternialib.configuration.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
@@ -21,7 +22,7 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class BedMessages implements ReloadableConfiguration {
+    static class BedMessages implements MsgConfiguration<Messages> {
 
         private final EterniaServer plugin;
 
@@ -54,15 +55,9 @@ final class Configurations {
             return Constants.BED_MESSAGES_FILE_PATH;
         }
 
-
         @Override
-        public String[] messages() {
+        public MessageMap<Messages, String> messages() {
             return plugin.messages();
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override
@@ -123,16 +118,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.BED_CONFIG_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override

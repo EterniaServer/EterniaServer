@@ -1,8 +1,11 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
+import br.com.eterniaserver.eternialib.chat.MessageMap;
 import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.configuration.interfaces.CmdConfiguration;
+import br.com.eterniaserver.eternialib.configuration.interfaces.MsgConfiguration;
+import br.com.eterniaserver.eternialib.configuration.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Integers;
@@ -32,17 +35,14 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class CommandsConfiguration implements ReloadableConfiguration {
+    static class CommandsConfiguration implements CmdConfiguration<Enums.Commands> {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
-
         CommandsConfiguration() {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
         }
 
         @Override
@@ -63,16 +63,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.CORE_COMMANDS_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
         }
 
         @Override
@@ -236,12 +226,12 @@ final class Configurations {
 
     }
 
-    static class MessagesConfiguration implements ReloadableConfiguration {
+    static class MessagesConfiguration implements MsgConfiguration<Messages> {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final String[] messages;
+        private final MessageMap<Messages, String> messages;
 
         MessagesConfiguration(EterniaServer plugin) {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
@@ -270,13 +260,8 @@ final class Configurations {
         }
 
         @Override
-        public String[] messages() {
+        public MessageMap<Messages, String> messages() {
             return messages;
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override
@@ -286,6 +271,10 @@ final class Configurations {
 
         @Override
         public void executeConfig() {
+            addMessage(
+                    Messages.SERVER_PREFIX,
+                    "#555555[#55ff55E#5555ffS#555555] #aaaaaa"
+            );
             addMessage(Messages.SERVER_NO_PLAYER,
                     "Somente jogadores podem utilizar esse comando<color:#555555>."
             );
@@ -496,8 +485,6 @@ final class Configurations {
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
-
         private final boolean[] booleans;
         private final int[] integers;
         private final String[] strings;
@@ -508,7 +495,6 @@ final class Configurations {
         protected MainConfiguration(EterniaServer plugin, Map<String, CommandData> commandDataMap) {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
 
             this.booleans = plugin.booleans();
             this.integers = plugin.integers();
@@ -544,16 +530,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.CORE_CONFIG_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
         }
 
         @Override

@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.experience;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.experience.Entities.ExpBalance;
@@ -19,21 +18,19 @@ final class Services {
     static class Experience {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface database;
 
         protected Experience(EterniaServer plugin) {
             this.plugin = plugin;
-            this.database = EterniaLib.getDatabase();
         }
 
         protected CompletableFuture<ExpBalance> getBalance(final UUID uuid) {
             return CompletableFuture.supplyAsync(() -> {
-                ExpBalance expBalance = database.get(ExpBalance.class, uuid);
+                ExpBalance expBalance = EterniaLib.getDatabase().get(ExpBalance.class, uuid);
 
                 if (expBalance.getUuid() == null) {
                     expBalance.setUuid(uuid);
                     expBalance.setBalance(0);
-                    database.insert(ExpBalance.class, expBalance);
+                    EterniaLib.getDatabase().insert(ExpBalance.class, expBalance);
                     return expBalance;
                 }
 
@@ -42,7 +39,7 @@ final class Services {
         }
 
         protected void updateBalance(ExpBalance expBalance) {
-            Runnable updateRunnable = () -> database.update(ExpBalance.class, expBalance);
+            Runnable updateRunnable = () -> EterniaLib.getDatabase().update(ExpBalance.class, expBalance);
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, updateRunnable);
         }
 

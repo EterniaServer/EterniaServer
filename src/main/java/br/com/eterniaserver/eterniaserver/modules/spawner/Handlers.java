@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.spawner;
 
+import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
 import br.com.eterniaserver.eterniaserver.enums.Doubles;
@@ -93,7 +94,7 @@ final class Handlers implements Listener {
         String spawnerBreakPerm = plugin.getString(Strings.PERM_SPAWNERS_BREAK);
 
         if (!player.hasPermission(spawnerBreakPerm) && plugin.getBoolean(Booleans.BLOCK_BREAK_SPAWNERS)) {
-            plugin.sendMiniMessages(player, Messages.SPAWNER_WITHOUT_PERM);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.SPAWNER_WITHOUT_PERM);
             event.setCancelled(true);
         }
         else if (player.hasPermission(spawnerBreakPerm)) {
@@ -104,7 +105,7 @@ final class Handlers implements Listener {
             }
             else {
                 event.setCancelled(true);
-                plugin.sendMiniMessages(player, Messages.SPAWNER_SILK_REQUESTED);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.SPAWNER_SILK_REQUESTED);
             }
         }
     }
@@ -117,7 +118,7 @@ final class Handlers implements Listener {
         }
 
         if (event.getInventory().getType() == InventoryType.ANVIL && itemStack.getType() == Material.SPAWNER) {
-            plugin.sendMiniMessages(event.getWhoClicked(), Messages.SPAWNER_CANT_CHANGE_NAME);
+            EterniaLib.getChatCommons().sendMessage(event.getWhoClicked(), Messages.SPAWNER_CANT_CHANGE_NAME);
             event.setCancelled(true);
         }
     }
@@ -125,7 +126,7 @@ final class Handlers implements Listener {
     private void giveSpawner(Player player, Block block) {
         double random = Math.random();
         if (random > plugin.getDouble(Doubles.DROP_CHANCE)) {
-            plugin.sendMiniMessages(player, Messages.SPAWNER_DROP_FAILED);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.SPAWNER_DROP_FAILED);
             return;
         }
 
@@ -136,7 +137,7 @@ final class Handlers implements Listener {
 
         if (player.getInventory().firstEmpty() == -1) {
             block.getWorld().dropItemNaturally(block.getLocation(), spawnerService.getSpawner(block));
-            plugin.sendMiniMessages(player, Messages.SPAWNER_INV_FULL);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.SPAWNER_INV_FULL);
             return;
         }
 

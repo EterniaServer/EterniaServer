@@ -22,33 +22,32 @@ public class KitManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.KitConfiguration configuration = new Configurations.KitConfiguration(plugin, kitService);
-        Configurations.KitMessagesConfiguration kitMessagesConfiguration = new Configurations.KitMessagesConfiguration(plugin);
-        Configurations.KitCommandsConfiguration kitCommandsConfiguration = new Configurations.KitCommandsConfiguration();
-
-        EterniaLib.registerConfiguration("eterniaserver", "kit", configuration);
-        EterniaLib.registerConfiguration("eterniaserver", "kit_messages", kitMessagesConfiguration);
-        EterniaLib.registerConfiguration("eterniaserver", "kit_commands", kitCommandsConfiguration);
-
-        configuration.executeConfig();
-        kitMessagesConfiguration.executeConfig();
-        kitCommandsConfiguration.executeCritical();
-
-        configuration.saveConfiguration(true);
-        kitMessagesConfiguration.saveConfiguration(true);
-        kitCommandsConfiguration.saveConfiguration(true);
-
-        loadCommandsLocale(kitCommandsConfiguration, Enums.Commands.class);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "kit_messages",
+                true,
+                new Configurations.KitMessagesConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "kit",
+                true,
+                new Configurations.KitConfiguration(plugin, kitService)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "kit_commands",
+                true,
+                new Configurations.KitCommandsConfiguration()
+        );
 
         try {
             Entity<Entities.KitTime> kitTimeEntity = new Entity<>(Entities.KitTime.class);
-
-            EterniaLib.addTableName("%eternia_kit_time%", plugin.getString(Strings.KIT_TABLE_NAME_TIME));
-
+            EterniaLib.getDatabase().addTableName("%eternia_kit_time%", plugin.getString(Strings.KIT_TABLE_NAME_TIME));
             EterniaLib.getDatabase().register(Entities.KitTime.class, kitTimeEntity);
         }
         catch (Exception exception) {
-            EterniaLib.registerLog("EE-118-Kit");
+            //todo EterniaLib.registerLog("EE-118-Kit");
         }
     }
 

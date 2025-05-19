@@ -9,7 +9,7 @@ import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.events.GlowStatusEvent;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
@@ -30,12 +30,10 @@ final class Commands {
 
         final EterniaServer plugin;
         final Services.Glow servicesGlow;
-        final DatabaseInterface databaseInterface;
 
         protected Glow(final EterniaServer plugin, final Services.Glow servicesGlow) {
             this.plugin = plugin;
             this.servicesGlow = servicesGlow;
-            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         @Default
@@ -51,7 +49,7 @@ final class Commands {
                     return;
                 }
 
-                plugin.sendMiniMessages(player, Messages.GLOW_ENABLED);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.GLOW_ENABLED);
                 player.addPotionEffect(PotionEffectType.GLOWING.createEffect(Integer.MAX_VALUE, 1));
                 player.setGlowing(true);
                 return;
@@ -61,7 +59,7 @@ final class Commands {
                 return;
             }
 
-            plugin.sendMiniMessages(player, Messages.GLOW_DISABLED);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.GLOW_DISABLED);
             player.removePotionEffect(PotionEffectType.GLOWING);
             player.setGlowing(false);
         }
@@ -80,13 +78,14 @@ final class Commands {
                     return;
                 }
 
-                Entities.PlayerProfile playerProfile = databaseInterface.get(Entities.PlayerProfile.class, player.getUniqueId());
+                Entities.PlayerProfile playerProfile = EterniaLib.getDatabase().get(Entities.PlayerProfile.class, player.getUniqueId());
                 playerProfile.setColor(color.getColor());
                 servicesGlow.getTeam(color).addEntry(player.getName());
-                plugin.sendMiniMessages(player, Messages.GLOW_COLOR_CHANGED, servicesGlow.getColor(color));
+                MessageOptions options = new MessageOptions(servicesGlow.getColor(color));
+                EterniaLib.getChatCommons().sendMessage(player, Messages.GLOW_COLOR_CHANGED, options);
             }
             catch (IllegalArgumentException ignored) {
-                plugin.sendMiniMessages(player, Messages.GLOW_INVALID_COLOR);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.GLOW_INVALID_COLOR);
             }
         }
     }

@@ -14,13 +14,12 @@ public class ElevatorManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.ElevatorConfiguration configuration = new Configurations.ElevatorConfiguration(plugin);
-
-        EterniaLib.registerConfiguration("eterniaserver", "elevator", configuration);
-
-        configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "elevator",
+                true,
+                new Configurations.ElevatorConfiguration(plugin)
+        );
     }
 
     @Override

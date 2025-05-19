@@ -22,33 +22,32 @@ public class ExperienceManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.ExperienceConfiguration configuration = new Configurations.ExperienceConfiguration(plugin);
-        Configurations.ExpMessagesConfiguration expMessagesConfiguration = new Configurations.ExpMessagesConfiguration(plugin);
-        Configurations.ExpCommandsConfiguration expCommandsConfiguration = new Configurations.ExpCommandsConfiguration();
-
-        EterniaLib.registerConfiguration("eterniaserver", "exp", configuration);
-        EterniaLib.registerConfiguration("eterniaserver", "exp_messages", expMessagesConfiguration);
-        EterniaLib.registerConfiguration("eterniaserver", "exp_commands", expCommandsConfiguration);
-
-        configuration.executeConfig();
-        expMessagesConfiguration.executeConfig();
-        expCommandsConfiguration.executeCritical();
-
-        configuration.saveConfiguration(true);
-        expMessagesConfiguration.saveConfiguration(true);
-        expCommandsConfiguration.saveConfiguration(true);
-
-        loadCommandsLocale(expCommandsConfiguration, Enums.Commands.class);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "exp_messages",
+                true,
+                new Configurations.ExpMessagesConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "exp",
+                true,
+                new Configurations.ExperienceConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "exp_commands",
+                true,
+                new Configurations.ExpCommandsConfiguration()
+        );
 
         try {
             Entity<Entities.ExpBalance> expBalanceEntity = new Entity<>(Entities.ExpBalance.class);
-
-            EterniaLib.addTableName("%eternia_server_xp%", plugin.getString(Strings.EXP_TABLE_NAME));
-
+            EterniaLib.getDatabase().addTableName("%eternia_server_xp%", plugin.getString(Strings.EXP_TABLE_NAME));
             EterniaLib.getDatabase().register(Entities.ExpBalance.class, expBalanceEntity);
         }
         catch (Exception exception) {
-            EterniaLib.registerLog("EE-104-Cash");
+            //todo EterniaLib.registerLog("EE-104-Cash");
         }
 
         List<Entities.ExpBalance> expBalances = EterniaLib.getDatabase().listAll(Entities.ExpBalance.class);

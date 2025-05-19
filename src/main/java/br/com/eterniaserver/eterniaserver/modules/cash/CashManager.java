@@ -25,36 +25,36 @@ public class CashManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        CashMessages messages = new CashMessages(plugin);
-        CashCommands commands = new CashCommands();
-        CashConfiguration configuration = new CashConfiguration(plugin);
 
-        EterniaLib.registerConfiguration("eterniaserver", "cash_messages", messages);
-        EterniaLib.registerConfiguration("eterniaserver", "cash_commands", commands);
-        EterniaLib.registerConfiguration("eterniaserver", "cash", configuration);
-
-        messages.executeConfig();
-        configuration.executeConfig();
-
-        commands.executeCritical();
-        configuration.executeCritical();
-
-        messages.saveConfiguration(true);
-        commands.saveConfiguration(true);
-        configuration.saveConfiguration(true);
-
-        loadCommandsLocale(commands, Enums.Commands.class);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "cash_messages",
+                true,
+                new CashMessages(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "cash",
+                true,
+                new CashConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "cash_commands",
+                true,
+                new CashCommands()
+        );
 
         try {
             Entity<CashBalance> cashEntity = new Entity<>(CashBalance.class);
 
-            EterniaLib.addTableName("%eternia_server_cash%", plugin.getString(Strings.CASH_TABLE_NAME));
-            EterniaLib.addTableName("%eternia_server_profile%", plugin.getString(Strings.PROFILE_TABLE_NAME));
+            EterniaLib.getDatabase().addTableName("%eternia_server_cash%", plugin.getString(Strings.CASH_TABLE_NAME));
+            EterniaLib.getDatabase().addTableName("%eternia_server_profile%", plugin.getString(Strings.PROFILE_TABLE_NAME));
 
             EterniaLib.getDatabase().register(CashBalance.class, cashEntity);
         }
         catch (Exception exception) {
-            EterniaLib.registerLog("EE-104-Cash");
+            //todo EterniaLib.registerLog("EE-104-Cash");
         }
 
         List<CashBalance> cashBalances = EterniaLib.getDatabase().listAll(CashBalance.class);

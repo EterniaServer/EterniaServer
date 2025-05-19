@@ -16,13 +16,12 @@ public class EntityManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        EntityConfiguration configuration = new EntityConfiguration(plugin);
-
-        EterniaLib.registerConfiguration("eterniaserver", "entity", configuration);
-
-        configuration.executeConfig();
-        configuration.executeCritical();
-        configuration.saveConfiguration(true);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "entity",
+                true,
+                new EntityConfiguration(plugin)
+        );
     }
 
     @Override

@@ -5,12 +5,15 @@ import br.com.eterniaserver.acf.CommandHelp;
 import br.com.eterniaserver.acf.annotation.*;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
+
 import net.kyori.adventure.text.Component;
+
 import org.bukkit.entity.Player;
 
 import java.util.Calendar;
@@ -51,22 +54,15 @@ final class Commands {
         @Description("%MUTE_CHANNELS_DESCRIPTION")
         public void muteChannels(Player sender, @Optional Integer temp) {
             if (craftChatService.isChannelsMute()) {
-                plugin.getServer().broadcast(plugin.getMiniMessage(
-                        Messages.CHAT_CHANNELS_ENABLED,
-                        true
-                ));
+                plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(Messages.CHAT_CHANNELS_ENABLED));
                 craftChatService.unMuteAllChannels();
                 return;
             }
 
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, sender.getUniqueId());
             if (temp == null) {
-                plugin.getServer().broadcast(plugin.getMiniMessage(
-                        Messages.CHAT_CHANNELS_DISABLED,
-                        true,
-                        playerProfile.getPlayerName(),
-                        playerProfile.getPlayerDisplay()
-                ));
+                MessageOptions messageOptions = new MessageOptions(playerProfile.getPlayerName(), playerProfile.getPlayerDisplay());
+                plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(Messages.CHAT_CHANNELS_DISABLED, messageOptions));
                 craftChatService.muteAllChannels();
                 return;
             }
@@ -77,13 +73,12 @@ final class Commands {
 
             craftChatService.tempMuteAllChannels(cal.getTimeInMillis());
 
-            plugin.getServer().broadcast(plugin.getMiniMessage(
-                    Messages.CHAT_CHANNELS_MUTED_TEMP,
-                    true,
+            MessageOptions messageOptions = new MessageOptions(
                     String.valueOf(temp),
                     playerProfile.getPlayerName(),
                     playerProfile.getPlayerDisplay()
-            ));
+            );
+            plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(Messages.CHAT_CHANNELS_MUTED_TEMP, messageOptions));
         }
 
         @CommandCompletion("@players Mensagem")
@@ -103,15 +98,15 @@ final class Commands {
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
-            plugin.getServer().broadcast(plugin.getMiniMessage(
-                    Messages.CHAT_BROADCAST_MUTE,
-                    true,
+            MessageOptions messageOptions = new MessageOptions(
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay(),
                     playerProfile.getPlayerName(),
                     playerProfile.getPlayerDisplay(),
                     message
-            ));
+            );
+
+            plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(Messages.CHAT_BROADCAST_MUTE, messageOptions));
         }
 
         @CommandCompletion("@players")
@@ -127,14 +122,13 @@ final class Commands {
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
-            plugin.getServer().broadcast(plugin.getMiniMessage(
-                    Messages.CHAT_BROADCAST_UNMUTE,
-                    true,
+            MessageOptions messageOptions = new MessageOptions(
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay(),
                     playerProfile.getPlayerName(),
                     playerProfile.getPlayerDisplay()
-            ));
+            );
+            plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(Messages.CHAT_BROADCAST_UNMUTE, messageOptions));
         }
 
         @CommandCompletion("@players 15 Mensagem")
@@ -154,25 +148,22 @@ final class Commands {
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
-            plugin.getServer().broadcast(plugin.getMiniMessage(
-                    Messages.CHAT_BROADCAST_TEMP_MUTE,
-                    true,
+            MessageOptions messageOptions = new MessageOptions(
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay(),
                     playerProfile.getPlayerName(),
                     playerProfile.getPlayerDisplay(),
                     String.valueOf(time),
                     message
-            ));
+            );
+            plugin.getServer().broadcast(EterniaLib.getChatCommons().parseMessage(Messages.CHAT_BROADCAST_TEMP_MUTE, messageOptions));
         }
     }
 
     static class Generic extends BaseCommand {
-        private final EterniaServer plugin;
         private final Services.CraftChat craftChatService;
 
-        public Generic(EterniaServer plugin, Services.CraftChat craftChatService) {
-            this.plugin = plugin;
+        public Generic(Services.CraftChat craftChatService) {
             this.craftChatService = craftChatService;
         }
 
@@ -185,12 +176,13 @@ final class Commands {
             if (onlinePlayer == null) {
                 if (nickname == null) {
                     craftChatService.clearPlayerName(player);
-                    plugin.sendMiniMessages(player, Messages.NICKNAME_REMOVED);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.NICKNAME_REMOVED);
                     return;
                 }
 
                 String nickNameWithColor = craftChatService.setPlayerDisplay(player, nickname);
-                plugin.sendMiniMessages(player, Messages.NICKNAME_UPDATED, nickNameWithColor);
+                MessageOptions messageOptions = new MessageOptions(nickNameWithColor);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.NICKNAME_UPDATED, messageOptions);
                 return;
             }
 
@@ -201,36 +193,33 @@ final class Commands {
 
             if (nickname == null) {
                 craftChatService.clearPlayerName(target);
-                plugin.sendMiniMessages(
-                        target,
-                        Messages.NICKNAME_REMOVED_BY,
+                MessageOptions playerOptions = new MessageOptions(
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay()
                 );
-                plugin.sendMiniMessages(
-                        player,
-                        Messages.NICKNAME_REMOVED_FOR,
+                EterniaLib.getChatCommons().sendMessage(target, Messages.NICKNAME_REMOVED, playerOptions);
+                MessageOptions targetOptions = new MessageOptions(
                         targetProfile.getPlayerName(),
                         targetProfile.getPlayerDisplay()
                 );
+                EterniaLib.getChatCommons().sendMessage(player, Messages.NICKNAME_REMOVED_FOR, targetOptions);
+
                 return;
             }
 
             String nickNameWithColor = craftChatService.setPlayerDisplay(target, nickname);
-            plugin.sendMiniMessages(
-                    target,
-                    Messages.NICKNAME_UPDATED_BY,
+            MessageOptions playerOptions = new MessageOptions(
                     nickNameWithColor,
                     playerProfile.getPlayerName(),
                     playerProfile.getPlayerDisplay()
             );
-            plugin.sendMiniMessages(
-                    player,
-                    Messages.NICKNAME_UPDATED_FOR,
+            EterniaLib.getChatCommons().sendMessage(target, Messages.NICKNAME_UPDATED_BY, playerOptions);
+            MessageOptions targetOptions = new MessageOptions(
                     nickNameWithColor,
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay()
             );
+            EterniaLib.getChatCommons().sendMessage(player, Messages.NICKNAME_UPDATED_FOR, targetOptions);
         }
     }
 
@@ -283,7 +272,8 @@ final class Commands {
 
             if (message == null || message.isBlank()) {
                 chatInfo.setDefaultChannel(channelCode);
-                plugin.sendMiniMessages(player, Messages.CHAT_CHANNEL_CHANGED, channel);
+                MessageOptions options = new MessageOptions(channel);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, options);
                 return;
             }
 
@@ -301,12 +291,12 @@ final class Commands {
             UUID uuid = player.getUniqueId();
 
             if (craftChatService.isSpying(uuid)) {
-                plugin.sendMiniMessages(player, Messages.CHAT_SPY_DISABLED);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_SPY_DISABLED);
                 craftChatService.removeSpying(uuid);
                 return;
             }
 
-            plugin.sendMiniMessages(player, Messages.CHAT_SPY_ENABLED);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_SPY_ENABLED);
             craftChatService.setSpying(uuid);
         }
 
@@ -318,17 +308,19 @@ final class Commands {
         public void onReply(Player player, String msg) {
             UUID uuid = player.getUniqueId();
             if (craftChatService.isMuted(uuid)) {
-                plugin.sendMiniMessages(
-                        player,
-                        Messages.CHAT_ARE_MUTED,
-                        String.valueOf(craftChatService.secondsMutedLeft(uuid))
-                );
+                MessageOptions options = new MessageOptions(String.valueOf(craftChatService.secondsMutedLeft(uuid)));
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_ARE_MUTED, options);
+                return;
+            }
+
+            if (msg == null) {
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_EMPTY_RESP);
                 return;
             }
 
             UUID targetUUID = EterniaServer.getChatAPI().getTellLink(uuid);
-            if (targetUUID != null && msg != null) {
-                final Player target = plugin.getServer().getPlayer(targetUUID);
+            if (targetUUID != null) {
+                Player target = plugin.getServer().getPlayer(targetUUID);
                 if (target != null && target.isOnline()) {
                     Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
                     int defaultChannel = getDefaultChannel(chatInfo);
@@ -341,11 +333,12 @@ final class Commands {
                         chatInfo.setDefaultChannel(defaultChannel);
                         craftChatService.removeTellLink(uuid);
                     }, 10L);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_NO_ONE_TO_RESP);
                     return;
                 }
             }
 
-            plugin.sendMiniMessages(player, Messages.CHAT_NO_ONE_TO_RESP);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_NO_ONE_TO_RESP);
         }
 
         @Subcommand("%CHAT_TELL")
@@ -363,13 +356,14 @@ final class Commands {
             Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, playerUUID);
             if (onlineTarget == null) {
                 chatInfo.setDefaultChannel(plugin.getString(Strings.DEFAULT_CHANNEL).toLowerCase().hashCode());
-                plugin.sendMiniMessages(player, Messages.CHAT_CHANNEL_CHANGED, plugin.getString(Strings.DEFAULT_CHANNEL));
+                MessageOptions options = new MessageOptions(plugin.getString(Strings.DEFAULT_CHANNEL));
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_CHANNEL_CHANGED, options);
                 return;
             }
 
             Player target = onlineTarget.getPlayer();
             if (target.getUniqueId().equals(playerUUID)) {
-                plugin.sendMiniMessages(player, Messages.CHAT_TELL_YOURSELF);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_TELL_YOURSELF);
                 return;
             }
 
@@ -389,16 +383,18 @@ final class Commands {
             }
 
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
+            MessageOptions options = new MessageOptions(targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+
             if (craftChatService.getTellLink(playerUUID) == targetUUID) {
                 chatInfo.setDefaultChannel(plugin.getString(Strings.DEFAULT_CHANNEL).toLowerCase().hashCode());
                 craftChatService.removeTellLink(playerUUID);
-                plugin.sendMiniMessages(player, Messages.CHAT_TELL_UNLOCKED, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_TELL_UNLOCKED, options);
                 return;
             }
 
             craftChatService.setTellLink(targetUUID, playerUUID);
             chatInfo.setDefaultChannel(Services.CraftChat.TELL_CHANNEL_STRING.hashCode());
-            plugin.sendMiniMessages(player, Messages.CHAT_TELL_LOCKED, targetProfile.getPlayerName(), targetProfile.getPlayerDisplay());
+            EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_TELL_LOCKED, options);
         }
     }
 }

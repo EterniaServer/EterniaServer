@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.teleport;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
 import lombok.Getter;
@@ -103,13 +102,11 @@ final class Services {
     static class HomeService {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface databaseInterface;
 
         private final Map<UUID, List<Entities.HomeLocation>> homeMap = new HashMap<>();
 
         public HomeService(EterniaServer plugin) {
             this.plugin = plugin;
-            this.databaseInterface = EterniaLib.getDatabase();
         }
 
         private List<Entities.HomeLocation> computeIfAbsent(UUID uuid) {
@@ -136,21 +133,21 @@ final class Services {
         }
 
         public void updateHome(Entities.HomeLocation home) {
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> databaseInterface.update(Entities.HomeLocation.class, home));
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> EterniaLib.getDatabase().update(Entities.HomeLocation.class, home));
         }
 
         public void addHome(Entities.HomeLocation home) {
             List<Entities.HomeLocation> userHomes = computeIfAbsent(home.getUuid());
             userHomes.add(home);
 
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> databaseInterface.insert(Entities.HomeLocation.class, home));
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> EterniaLib.getDatabase().insert(Entities.HomeLocation.class, home));
         }
 
         public void removeHome(Entities.HomeLocation home) {
             List<Entities.HomeLocation> userHomes = computeIfAbsent(home.getUuid());
             userHomes.remove(home);
 
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> databaseInterface.delete(Entities.HomeLocation.class, home.getId()));
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> EterniaLib.getDatabase().delete(Entities.HomeLocation.class, home.getId()));
         }
     }
 

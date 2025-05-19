@@ -1,8 +1,11 @@
 package br.com.eterniaserver.eterniaserver.modules.kit;
 
+import br.com.eterniaserver.eternialib.chat.MessageMap;
 import br.com.eterniaserver.eternialib.configuration.CommandLocale;
-import br.com.eterniaserver.eternialib.configuration.ReloadableConfiguration;
+import br.com.eterniaserver.eternialib.configuration.interfaces.CmdConfiguration;
+import br.com.eterniaserver.eternialib.configuration.interfaces.MsgConfiguration;
 import br.com.eterniaserver.eternialib.configuration.enums.ConfigurationCategory;
+import br.com.eterniaserver.eternialib.configuration.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -23,9 +26,9 @@ final class Configurations {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
     }
 
-    static class KitMessagesConfiguration implements ReloadableConfiguration {
+    static class KitMessagesConfiguration implements MsgConfiguration<Messages> {
 
-        private final String[] messages;
+        private final MessageMap<Messages, String> messages;
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
@@ -57,13 +60,8 @@ final class Configurations {
         }
 
         @Override
-        public String[] messages() {
+        public MessageMap<Messages, String> messages() {
             return messages;
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override
@@ -91,17 +89,14 @@ final class Configurations {
         public void executeCritical() { }
     }
 
-    static class KitCommandsConfiguration implements ReloadableConfiguration {
+    static class KitCommandsConfiguration implements CmdConfiguration<Enums.Commands> {
 
         private final FileConfiguration inFile;
         private final FileConfiguration outFile;
 
-        private final CommandLocale[] commandsLocalesArray;
-
         public KitCommandsConfiguration() {
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
-            this.commandsLocalesArray = new CommandLocale[Enums.Commands.values().length];
         }
 
         @Override
@@ -125,16 +120,6 @@ final class Configurations {
         }
 
         @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return commandsLocalesArray;
-        }
-
-        @Override
         public ConfigurationCategory category() {
             return ConfigurationCategory.BLOCKED;
         }
@@ -146,7 +131,7 @@ final class Configurations {
         public void executeCritical() {
             addCommandLocale(Enums.Commands.KIT, new CommandLocale(
                     "kit",
-                    " <kit>",
+                    "<kit>",
                     " Use um kit",
                     "eternia.kit.user",
                     null
@@ -197,16 +182,6 @@ final class Configurations {
         @Override
         public String getFilePath() {
             return Constants.KIT_CONFIG_FILE_PATH;
-        }
-
-        @Override
-        public String[] messages() {
-            return new String[0];
-        }
-
-        @Override
-        public CommandLocale[] commandsLocale() {
-            return new CommandLocale[0];
         }
 
         @Override

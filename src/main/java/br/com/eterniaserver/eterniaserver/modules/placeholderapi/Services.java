@@ -1,7 +1,6 @@
 package br.com.eterniaserver.eterniaserver.modules.placeholderapi;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -30,14 +29,12 @@ final class Services {
     static class Placeholders {
 
         private final EterniaServer plugin;
-        private final DatabaseInterface database;
         private final String version;
 
         private final DateFormat dateFormat;
 
         public Placeholders(EterniaServer plugin) {
             this.plugin = plugin;
-            this.database = EterniaLib.getDatabase();
             this.version = "1.0.0";
             this.dateFormat = new SimpleDateFormat(plugin.getString(Strings.DATA_FORMAT));
         }
@@ -108,7 +105,7 @@ final class Services {
             }
 
             private String getFromCashBalance(int var4, UUID uuid) {
-                CashBalance cashBalance = database.get(CashBalance.class, uuid);
+                CashBalance cashBalance = EterniaLib.getDatabase().get(CashBalance.class, uuid);
                 if (cashBalance == null) {
                     return "";
                 }
@@ -121,7 +118,7 @@ final class Services {
             }
 
             private String getFromPlayerProfile(int var4, UUID uuid) {
-                PlayerProfile playerProfile = database.get(PlayerProfile.class, uuid);
+                PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
                 if (playerProfile == null) {
                     return "";
                 }

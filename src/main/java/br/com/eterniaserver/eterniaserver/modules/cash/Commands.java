@@ -15,6 +15,7 @@ import br.com.eterniaserver.acf.annotation.Subcommand;
 import br.com.eterniaserver.acf.annotation.Syntax;
 import br.com.eterniaserver.acf.bukkit.contexts.OnlinePlayer;
 import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
@@ -74,36 +75,41 @@ final class Commands {
         @Description("%CASH_BALANCE_DESCRIPTION")
         @CommandPermission("%CASH_BALANCE_PERM")
         public void onCashBalance(CommandSender sender, @Optional String targetName) {
-            if (targetName != null || sender instanceof Player) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    if (targetName != null) {
-                        UUID uuid = EterniaLib.getUUIDOf(targetName);
-                        PlayerProfile target = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
-                        if (target.getUuid() != null) {
-                            CashBalance cashBalance = EterniaLib.getDatabase().get(CashBalance.class, uuid);
-                            plugin.sendMiniMessages(
-                                    sender,
-                                    Messages.CASH_BALANCE_OTHER,
-                                    target.getPlayerName(),
-                                    target.getPlayerDisplay(),
-                                    String.valueOf(cashBalance.getBalance())
-                            );
-                        }
-                        else {
-                            plugin.sendMiniMessages(sender, Messages.SERVER_NO_PLAYER);
-
-                        }
-                        return;
-                    }
-
-                    Player playerObject = (Player) sender;
-                    CashBalance cash = EterniaLib.getDatabase().get(CashBalance.class, playerObject.getUniqueId());
-                    plugin.sendMiniMessages(sender, Messages.CASH_BALANCE, String.valueOf(cash.getBalance()));
-                });
+            if (targetName == null && !(sender instanceof Player)) {
+                EterniaLib.getChatCommons().sendMessage(sender, Messages.SERVER_NO_PLAYER);
                 return;
             }
 
-            plugin.sendMiniMessages(sender, Messages.SERVER_NO_PLAYER);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                if (targetName == null) {
+                    CashBalance cash = EterniaLib.getDatabase().get(CashBalance.class, ((Player) sender).getUniqueId());
+                    MessageOptions options = new MessageOptions(String.valueOf(cash.getBalance()));
+                    EterniaLib.getChatCommons().sendMessage(sender, Messages.CASH_BALANCE, options);
+                    return;
+                }
+
+                EterniaLib.getUuidFetcher().fetchUUID(targetName, response -> {
+                    if (response.isEmpty()) {
+                        EterniaLib.getChatCommons().sendMessage(sender, Messages.SERVER_NO_PLAYER);
+                        return;
+                    }
+
+                    UUID uuid = response.get().uuid();
+                    PlayerProfile target = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
+                    if (target == null || target.getUuid() == null) {
+                        EterniaLib.getChatCommons().sendMessage(sender, Messages.SERVER_NO_PLAYER);
+                        return;
+                    }
+
+                    CashBalance cashBalance = EterniaLib.getDatabase().get(CashBalance.class, uuid);
+                    MessageOptions messageOptions = new MessageOptions(
+                            target.getPlayerName(),
+                            target.getPlayerDisplay(),
+                            String.valueOf(cashBalance.getBalance())
+                    );
+                    EterniaLib.getChatCommons().sendMessage(sender, Messages.CASH_BALANCE_OTHER, messageOptions);
+                });
+            });
         }
 
         @Subcommand("%CASH_ACCEPT")
@@ -113,7 +119,7 @@ final class Commands {
             UUID uuid = player.getUniqueId();
             BuyingItem buyingItem = cashService.getCashBuy(uuid);
             if (buyingItem == null) {
-                plugin.sendMiniMessages(player, Messages.CASH_NOTHING_TO_BUY);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CASH_NOTHING_TO_BUY);
                 return;
             }
 
@@ -123,13 +129,13 @@ final class Commands {
             }
 
             for (String line : buyingItem.getMessages()) {
-                Component modifiedText = plugin.parseColor(plugin.setPlaceholders(player, line));
+                Component modifiedText = EterniaLib.getChatCommons().parseColor(plugin.setPlaceholders(player, line));
                 player.sendMessage(modifiedText);
             }
 
             EterniaServer.getCashAPI().withdrawBalance(uuid, buyingItem.getCost());
             cashService.removeCashBuy(uuid);
-            plugin.sendMiniMessages(player, Messages.CASH_BOUGHT);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.CASH_BOUGHT);
         }
 
         @Subcommand("%CASH_DENY")
@@ -139,11 +145,11 @@ final class Commands {
             UUID uuid = player.getUniqueId();
             BuyingItem buyingItem = cashService.getCashBuy(uuid);
             if (buyingItem == null) {
-                plugin.sendMiniMessages(player, Messages.CASH_NOTHING_TO_BUY);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CASH_NOTHING_TO_BUY);
                 return;
             }
 
-            plugin.sendMiniMessages(player, Messages.CASH_CANCELED);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.CASH_CANCELED);
             cashService.removeCashBuy(uuid);
         }
 
@@ -162,24 +168,22 @@ final class Commands {
                 PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, uuid);
                 PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, target.getUniqueId());
 
-                plugin.sendMiniMessages(
-                        target,
-                        Messages.CASH_RECEVEID,
-                        String.valueOf(value),
-                        playerProfile.getPlayerName(),
-                        playerProfile.getPlayerDisplay()
-                );
-                plugin.sendMiniMessages(
-                        player,
-                        Messages.CASH_SENT,
+                MessageOptions playerOptions = new MessageOptions(
                         String.valueOf(value),
                         targetProfile.getPlayerName(),
                         targetProfile.getPlayerDisplay()
                 );
+                EterniaLib.getChatCommons().sendMessage(player, Messages.CASH_SENT, playerOptions);
+                MessageOptions targetOptions = new MessageOptions(
+                        String.valueOf(value),
+                        playerProfile.getPlayerName(),
+                        playerProfile.getPlayerDisplay()
+                );
+                EterniaLib.getChatCommons().sendMessage(target, Messages.CASH_RECEVEID, targetOptions);
                 return;
             }
 
-            plugin.sendMiniMessages(player, Messages.CASH_NO_CASH);
+            EterniaLib.getChatCommons().sendMessage(player, Messages.CASH_NO_CASH);
         }
 
         @Subcommand("%CASH_GIVE")
@@ -194,32 +198,29 @@ final class Commands {
             EterniaServer.getCashAPI().depositBalance(targetUUID, value);
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
 
-            plugin.sendMiniMessages(
-                    sender,
-                    Messages.CASH_SENT,
+            MessageOptions playerOptions = new MessageOptions(
                     String.valueOf(value),
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay()
             );
+            EterniaLib.getChatCommons().sendMessage(sender, Messages.CASH_SENT, playerOptions);
 
             if (sender instanceof Player player) {
                 PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
-                plugin.sendMiniMessages(
-                        target,
-                        Messages.CASH_RECEVEID,
+                MessageOptions targetOptions = new MessageOptions(
                         String.valueOf(value),
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay()
                 );
+                EterniaLib.getChatCommons().sendMessage(target, Messages.CASH_RECEVEID, targetOptions);
             }
             else {
-                plugin.sendMiniMessages(
-                        target,
-                        Messages.CASH_RECEVEID,
+                MessageOptions targetOptions = new MessageOptions(
                         String.valueOf(value),
                         sender.getName(),
                         sender.getName()
                 );
+                EterniaLib.getChatCommons().sendMessage(target, Messages.CASH_RECEVEID, targetOptions);
             }
         }
 
@@ -235,31 +236,28 @@ final class Commands {
             EterniaServer.getCashAPI().withdrawBalance(targetUUID, value);
             PlayerProfile targetProfile = EterniaLib.getDatabase().get(PlayerProfile.class, targetUUID);
 
-            plugin.sendMiniMessages(
-                    sender,
-                    Messages.CASH_REMOVED,
+            MessageOptions playerOptions = new MessageOptions(
                     String.valueOf(value),
                     targetProfile.getPlayerName(),
                     targetProfile.getPlayerDisplay()
             );
+            EterniaLib.getChatCommons().sendMessage(sender, Messages.CASH_REMOVED, playerOptions);
             if (sender instanceof Player player) {
                 PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
-                plugin.sendMiniMessages(
-                        target,
-                        Messages.CASH_LOST,
+                MessageOptions targetOptions = new MessageOptions(
                         String.valueOf(value),
                         playerProfile.getPlayerName(),
                         playerProfile.getPlayerDisplay()
                 );
+                EterniaLib.getChatCommons().sendMessage(target, Messages.CASH_LOST, targetOptions);
             }
             else {
-                plugin.sendMiniMessages(
-                        target,
-                        Messages.CASH_LOST,
+                MessageOptions targetOptions = new MessageOptions(
                         String.valueOf(value),
                         sender.getName(),
                         sender.getName()
                 );
+                EterniaLib.getChatCommons().sendMessage(target, Messages.CASH_LOST, targetOptions);
             }
         }
 

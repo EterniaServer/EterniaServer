@@ -1,7 +1,7 @@
 package br.com.eterniaserver.eterniaserver.modules.core;
 
 import br.com.eterniaserver.eternialib.EterniaLib;
-import br.com.eterniaserver.eternialib.database.DatabaseInterface;
+import br.com.eterniaserver.eternialib.database.Database;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Assertions;
@@ -42,7 +42,7 @@ class TestUtils {
         Mockito.when(player.getUniqueId()).thenReturn(uuid);
 
         try (MockedStatic<EterniaLib> eterniaLib = Mockito.mockStatic(EterniaLib.class)) {
-            DatabaseInterface database = Mockito.mock(DatabaseInterface.class);
+            Database database = Mockito.mock(Database.class);
             eterniaLib.when(EterniaLib::getDatabase).thenReturn(database);
 
             Mockito.when(database.get(Entities.PlayerProfile.class, uuid)).thenReturn(playerProfile);

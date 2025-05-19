@@ -5,6 +5,8 @@ import br.com.eterniaserver.acf.annotation.CommandAlias;
 import br.com.eterniaserver.acf.annotation.CommandPermission;
 import br.com.eterniaserver.acf.annotation.Description;
 import br.com.eterniaserver.acf.annotation.Syntax;
+import br.com.eterniaserver.eternialib.EterniaLib;
+import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 
@@ -44,7 +46,8 @@ final class Commands {
         public void onUseKey(Player player, String key) {
             String reward = rewardsService.getReward(key);
             if (reward == null) {
-                plugin.sendMiniMessages(player, Messages.REWARD_INVALID_KEY, key);
+                MessageOptions options = new MessageOptions(key);
+                EterniaLib.getChatCommons().sendMessage(player, Messages.REWARD_INVALID_KEY, options);
                 return;
             }
 
@@ -60,11 +63,12 @@ final class Commands {
             String key = Long.toHexString(random.nextLong());
 
             if (!rewardsService.addReward(key, reward)) {
-                plugin.sendMiniMessages(sender, Messages.REWARD_NOT_FOUND);
+                EterniaLib.getChatCommons().sendMessage(sender, Messages.REWARD_NOT_FOUND);
                 return;
             }
 
-            plugin.sendMiniMessages(sender, Messages.REWARD_CREATED, key);
+            MessageOptions options = new MessageOptions(key);
+            EterniaLib.getChatCommons().sendMessage(sender, Messages.REWARD_CREATED, options);
         }
 
         private void giveReward(String key, Player player) {

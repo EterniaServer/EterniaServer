@@ -15,13 +15,12 @@ public class PlaceHolderAPIManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.PlaceHolderConfiguration papiConfig = new Configurations.PlaceHolderConfiguration(plugin);
-
-        EterniaLib.registerConfiguration("eterniaserver", "papi", papiConfig);
-
-        papiConfig.executeConfig();
-        papiConfig.executeCritical();
-        papiConfig.saveConfiguration(true);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "papi",
+                true,
+                new Configurations.PlaceHolderConfiguration(plugin)
+        );
 
         new Services.Placeholders(plugin).register();
     }

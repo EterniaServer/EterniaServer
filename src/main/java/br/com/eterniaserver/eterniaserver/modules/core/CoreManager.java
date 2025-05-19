@@ -41,38 +41,37 @@ public class CoreManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        MessagesConfiguration messages = new MessagesConfiguration(plugin);
-        CommandsConfiguration commands = new CommandsConfiguration();
-        MainConfiguration configuration = new MainConfiguration(plugin, customCommandMap);
-
-        EterniaLib.registerConfiguration("eterniaserver", "core", configuration);
-        EterniaLib.registerConfiguration("eterniaserver", "core_messages", messages);
-        EterniaLib.registerConfiguration("eterniaserver", "core_commands", commands);
-
-        messages.executeConfig();
-        configuration.executeConfig();
-
-        commands.executeCritical();
-        configuration.executeCritical();
-
-        messages.saveConfiguration(true);
-        commands.saveConfiguration(true);
-        configuration.saveConfiguration(true);
-
-        loadCommandsLocale(commands, Enums.Commands.class);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "core_messages",
+                true,
+                new MessagesConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "core",
+                true,
+                new MainConfiguration(plugin, customCommandMap)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "core_commands",
+                true,
+                new CommandsConfiguration()
+        );
 
         try {
             Entity<Revision> revisionEntity = new Entity<>(Revision.class);
             Entity<PlayerProfile> profileEntity = new Entity<>(PlayerProfile.class);
 
-            EterniaLib.addTableName("%eternia_server_revision%", plugin.getString(Strings.REVISION_TABLE_NAME));
-            EterniaLib.addTableName("%eternia_server_profile%", plugin.getString(Strings.PROFILE_TABLE_NAME));
+            EterniaLib.getDatabase().addTableName("%eternia_server_revision%", plugin.getString(Strings.REVISION_TABLE_NAME));
+            EterniaLib.getDatabase().addTableName("%eternia_server_profile%", plugin.getString(Strings.PROFILE_TABLE_NAME));
 
             EterniaLib.getDatabase().register(Revision.class, revisionEntity);
             EterniaLib.getDatabase().register(PlayerProfile.class, profileEntity);
         }
         catch (Exception exception) {
-            EterniaLib.registerLog("EE-103-Revision");
+            //todo EterniaLib.registerLog("EE-103-Revision");
             return;
         }
 
@@ -137,7 +136,7 @@ public class CoreManager implements Module {
         EterniaLib.getCmdManager().registerCommand(new Generic(plugin));
         EterniaLib.getCmdManager().registerCommand(new EGameMode(plugin));
         EterniaLib.getCmdManager().registerCommand(new Afk(plugin));
-        EterniaLib.getCmdManager().registerCommand(new GodMode(plugin));
+        EterniaLib.getCmdManager().registerCommand(new GodMode());
         EterniaLib.getCmdManager().registerCommand(new Inventory(plugin));
     }
 

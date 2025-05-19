@@ -14,16 +14,18 @@ public class ItemManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        Configurations.ItemMessagesConfiguration configuration = new Configurations.ItemMessagesConfiguration(plugin);
-        Configurations.ItemCommandsConfiguration itemCommandsConfiguration = new Configurations.ItemCommandsConfiguration();
-
-        configuration.executeConfig();
-        itemCommandsConfiguration.executeCritical();
-
-        configuration.saveConfiguration(true);
-        itemCommandsConfiguration.saveConfiguration(true);
-
-        loadCommandsLocale(itemCommandsConfiguration, Enums.Commands.class);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "item",
+                true,
+                new Configurations.ItemMessagesConfiguration(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "item_commands",
+                true,
+                new Configurations.ItemCommandsConfiguration()
+        );
     }
 
     @Override

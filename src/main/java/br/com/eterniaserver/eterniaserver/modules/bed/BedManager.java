@@ -19,19 +19,18 @@ public class BedManager implements Module {
 
     @Override
     public void loadConfigurations() {
-        BedMessages messages = new BedMessages(plugin);
-        BedConfiguration configuration = new BedConfiguration(plugin);
-
-        EterniaLib.registerConfiguration("eterniaserver", "bed_messages", messages);
-        EterniaLib.registerConfiguration("eterniaserver", "bed", configuration);
-
-        messages.executeConfig();
-        configuration.executeConfig();
-
-        configuration.executeCritical();
-
-        messages.saveConfiguration(true);
-        configuration.saveConfiguration(true);
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "bed_messages",
+                true,
+                new BedMessages(plugin)
+        );
+        EterniaLib.getCfgManager().registerConfiguration(
+                "eterniaserver",
+                "bed",
+                true,
+                new BedConfiguration(plugin)
+        );
     }
 
     @Override
