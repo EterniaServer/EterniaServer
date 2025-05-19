@@ -34,6 +34,8 @@ jobs:
 
       - name: Build, Test and Validate
         env:
+          USERNAME: "yurinogueira"
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.ETERNIASERVER_SONAR_TOKEN }}
         run: ./gradlew clean build test jacocoTestReport sonar --info --stacktrace
