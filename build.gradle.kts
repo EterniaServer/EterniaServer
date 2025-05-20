@@ -1,11 +1,11 @@
 object Constants {
-    const val PROJECT_VERSION = "4.2.3"
+    const val PROJECT_VERSION = "4.2.4"
 
     const val JAVA_VERSION = "21"
     const val JACOCO_VERSION = "0.8.12"
 
     const val PAPER_VERSION = "1.21.5-R0.1-SNAPSHOT"
-    const val ETERNIALIB_VERSION = "4.5.2"
+    const val ETERNIALIB_VERSION = "4.5.5"
     const val VAULT_API_VERSION = "68f14ec"
     const val JUPITER_VERSION = "5.11.4"
     const val MOCKITO_VERSION = "5.16.1"
@@ -64,14 +64,6 @@ repositories {
         name = "sonatype"
         url = uri("https://oss.sonatype.org/content/groups/public/")
     }
-    maven {
-        name = "eternialib-repo"
-        url = uri("https://maven.pkg.github.com/eterniaserver/eternialib")
-        credentials {
-            username = System.getenv("USERNAME")
-            password = System.getenv("TOKEN")
-        }
-    }
     mavenLocal()
 }
 
@@ -83,14 +75,14 @@ java {
 
 dependencies {
     compileOnly("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
-    compileOnly("br.com.eterniaserver", "eternialib", Constants.ETERNIALIB_VERSION)
+    compileOnly("com.github.EterniaServer", "EterniaLib", Constants.ETERNIALIB_VERSION)
     compileOnly("com.github.MilkBowl", "VaultAPI", Constants.VAULT_API_VERSION) {
         exclude("org.bukkit", "bukkit")
     }
     compileOnly("me.clip", "placeholderapi", Constants.PAPI_VERSION)
     compileOnly("com.discordsrv", "discordsrv", Constants.DISCORDSRV_VERSION)
     testImplementation("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
-    testImplementation("br.com.eterniaserver", "eternialib", Constants.ETERNIALIB_VERSION)
+    testImplementation("com.github.EterniaServer", "EterniaLib", Constants.ETERNIALIB_VERSION)
     testImplementation("com.github.MilkBowl", "VaultAPI", Constants.VAULT_API_VERSION) {
         exclude("org.bukkit", "bukkit")
     }
@@ -141,6 +133,18 @@ tasks.processResources {
     }
 }
 
+val sourcesJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
+afterEvaluate {
+    tasks.named("generateMetadataFileForGprPublication") {
+        dependsOn(tasks.named("jar"))
+        dependsOn(tasks.named("shadowJar"))
+    }
+}
+
 publishing {
     repositories {
         maven {
@@ -156,6 +160,7 @@ publishing {
     publications {
         register<MavenPublication>("gpr") {
             from(components["shadow"])
+            artifact(sourcesJar.get())
         }
     }
 }
