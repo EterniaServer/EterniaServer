@@ -322,7 +322,7 @@ final class Services {
                 return sourceMessage;
             });
 
-            if (viewers.isEmpty()) {
+            if (viewers.size() <= 1) {
                 EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_NO_ONE_NEAR);
             }
         }
