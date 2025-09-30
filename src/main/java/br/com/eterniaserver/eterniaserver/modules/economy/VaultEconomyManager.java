@@ -22,6 +22,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
+@SuppressWarnings("deprecation")
 public class VaultEconomyManager implements Economy {
 
     private final EterniaServer plugin;

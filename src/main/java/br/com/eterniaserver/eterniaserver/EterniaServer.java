@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class EterniaServer extends JavaPlugin {
 
     private final int[] integers = new int[Integers.values().length];
@@ -68,6 +67,7 @@ public class EterniaServer extends JavaPlugin {
     private static ChatAPI chatAPI;
     @Getter
     @Setter
+    @SuppressWarnings("deprecation")
     private static Economy economyAPI;
     @Getter
     @Setter
@@ -128,6 +128,7 @@ public class EterniaServer extends JavaPlugin {
         new Manager(this);
 
         if (getBoolean(Booleans.HAS_ECONOMY_PLUGIN)) {
+            @SuppressWarnings("deprecation")
             RegisteredServiceProvider<Economy> rspEconomy = getServer().getServicesManager().getRegistration(Economy.class);
 
             if (rspEconomy != null) {

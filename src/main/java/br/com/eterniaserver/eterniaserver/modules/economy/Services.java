@@ -40,7 +40,7 @@ final class Services {
                 return false;
             }
 
-            return uuid.equals(topBalances.get(0).playerUUID());
+            return uuid.equals(topBalances.getFirst().playerUUID());
         }
 
         @Override

@@ -22,5 +22,5 @@ dependencies:
       load: BEFORE
       required: true
       join-classpath: true
-description: A base library to Eternia plugins and any other plugin
+description: A all in one plugin for EterniaServer.
 website: eterniaserver.com.br

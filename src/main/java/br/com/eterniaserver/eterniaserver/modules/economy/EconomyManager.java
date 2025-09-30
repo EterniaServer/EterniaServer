@@ -70,6 +70,7 @@ public class EconomyManager implements Module {
             return;
         }
 
+        //noinspection deprecation
         plugin.getServer().getServicesManager().register(
                 Economy.class,
                 new VaultEconomyManager(plugin),

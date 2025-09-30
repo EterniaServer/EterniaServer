@@ -1,12 +1,12 @@
 object Constants {
-    const val PROJECT_VERSION = "4.2.5"
+    const val PROJECT_VERSION = "4.2.6"
 
     const val JAVA_VERSION = "21"
     const val JACOCO_VERSION = "0.8.12"
 
-    const val PAPER_VERSION = "1.21.5-R0.1-SNAPSHOT"
+    const val PAPER_VERSION = "1.21.8-R0.1-SNAPSHOT"
     const val ETERNIALIB_VERSION = "4.5.5"
-    const val VAULT_API_VERSION = "68f14ec"
+    const val VAULT_API_VERSION = "2.15"
     const val JUPITER_VERSION = "5.11.4"
     const val MOCKITO_VERSION = "5.16.1"
     const val PAPI_VERSION = "2.11.6"
@@ -61,6 +61,10 @@ repositories {
         url = uri("https://nexus.scarsz.me/content/groups/public/")
     }
     maven {
+        name = "codemc"
+        url = uri("https://repo.codemc.io/repository/creatorfromhell/")
+    }
+    maven {
         name = "sonatype"
         url = uri("https://oss.sonatype.org/content/groups/public/")
     }
@@ -76,16 +80,12 @@ java {
 dependencies {
     compileOnly("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
     compileOnly("com.github.EterniaServer", "EterniaLib", Constants.ETERNIALIB_VERSION)
-    compileOnly("com.github.MilkBowl", "VaultAPI", Constants.VAULT_API_VERSION) {
-        exclude("org.bukkit", "bukkit")
-    }
+    compileOnly("net.milkbowl.vault", "VaultUnlockedAPI", Constants.VAULT_API_VERSION)
     compileOnly("me.clip", "placeholderapi", Constants.PAPI_VERSION)
     compileOnly("com.discordsrv", "discordsrv", Constants.DISCORDSRV_VERSION)
     testImplementation("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
     testImplementation("com.github.EterniaServer", "EterniaLib", Constants.ETERNIALIB_VERSION)
-    testImplementation("com.github.MilkBowl", "VaultAPI", Constants.VAULT_API_VERSION) {
-        exclude("org.bukkit", "bukkit")
-    }
+    testImplementation("net.milkbowl.vault", "VaultUnlockedAPI", Constants.VAULT_API_VERSION)
     testImplementation("org.junit.jupiter", "junit-jupiter", Constants.JUPITER_VERSION)
     testImplementation("org.mockito", "mockito-core", Constants.MOCKITO_VERSION)
     testImplementation("org.mockito", "mockito-junit-jupiter", Constants.MOCKITO_VERSION)
