@@ -11,7 +11,6 @@ object Constants {
     const val MOCKITO_VERSION = "5.16.1"
     const val PAPI_VERSION = "2.11.6"
     const val DISCORDSRV_VERSION = "1.29.0"
-    const val BSTATS_VERSION = "1.7"
 }
 
 plugins {
@@ -84,14 +83,12 @@ dependencies {
     compileOnly("net.milkbowl.vault", "VaultUnlockedAPI", Constants.VAULT_API_VERSION)
     compileOnly("me.clip", "placeholderapi", Constants.PAPI_VERSION)
     compileOnly("com.discordsrv", "discordsrv", Constants.DISCORDSRV_VERSION)
-    compileOnly("org.bstats", "bstats-bukkit", Constants.BSTATS_VERSION)
     testImplementation("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
     testImplementation("com.github.EterniaServer", "EterniaLib", Constants.ETERNIALIB_VERSION)
     testImplementation("net.milkbowl.vault", "VaultUnlockedAPI", Constants.VAULT_API_VERSION)
     testImplementation("org.junit.jupiter", "junit-jupiter", Constants.JUPITER_VERSION)
     testImplementation("org.mockito", "mockito-core", Constants.MOCKITO_VERSION)
     testImplementation("org.mockito", "mockito-junit-jupiter", Constants.MOCKITO_VERSION)
-    testImplementation("org.bstats", "bstats-bukkit", Constants.BSTATS_VERSION)
 }
 
 tasks.shadowJar {
