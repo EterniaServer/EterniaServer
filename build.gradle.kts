@@ -1,5 +1,5 @@
 object Constants {
-    const val PROJECT_VERSION = "4.2.6"
+    const val PROJECT_VERSION = "4.2.7"
 
     const val JAVA_VERSION = "21"
     const val JACOCO_VERSION = "0.8.12"
@@ -17,7 +17,7 @@ plugins {
     id("java")
     id("maven-publish")
     id("jacoco")
-    id("org.sonarqube") version("6.0.1.5171")
+    id("org.sonarqube") version("7.0.1.6134")
     id("io.freefair.lombok") version("8.13")
     id("com.gradleup.shadow") version("9.0.0-beta11")
 }
@@ -26,7 +26,7 @@ jacoco {
     toolVersion = Constants.JACOCO_VERSION
 }
 
-sonarqube  {
+sonar  {
     properties {
         property("sonar.projectKey", "EterniaServer_EterniaServer")
         property("sonar.projectVersion", "${project.version}")
