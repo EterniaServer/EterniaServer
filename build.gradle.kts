@@ -1,5 +1,5 @@
 object Constants {
-    const val PROJECT_VERSION = "4.2.7"
+    const val PROJECT_VERSION = "4.2.8"
 
     const val JAVA_VERSION = "21"
     const val JACOCO_VERSION = "0.8.12"
@@ -17,7 +17,7 @@ plugins {
     id("java")
     id("maven-publish")
     id("jacoco")
-    id("org.sonarqube") version("7.0.1.6134")
+    id("org.sonarqube") version "5.0.0.4638"
     id("io.freefair.lombok") version("8.13")
     id("com.gradleup.shadow") version("9.0.0-beta11")
 }

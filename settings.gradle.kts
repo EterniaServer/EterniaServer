@@ -1,1 +1,1 @@
-rootProject.name = "eterniaserver"
+rootProject.name = "EterniaServer"
