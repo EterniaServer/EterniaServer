@@ -98,6 +98,13 @@ final class Services {
             }
             return gui;
         }
+
+        @Override
+        public Component getTitle(String title) {
+            Utils.GUIData guiData = guisMap.get(title);
+
+            return guiData.getGuiTitle();
+        }
     }
 
 }
