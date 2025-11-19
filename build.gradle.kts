@@ -1,11 +1,11 @@
 object Constants {
-    const val PROJECT_VERSION = "4.2.8"
+    const val PROJECT_VERSION = "4.2.9"
 
     const val JAVA_VERSION = "21"
     const val JACOCO_VERSION = "0.8.12"
 
     const val PAPER_VERSION = "1.21.8-R0.1-SNAPSHOT"
-    const val ETERNIALIB_VERSION = "4.5.5"
+    const val ETERNIALIB_VERSION = "4.5.9"
     const val VAULT_API_VERSION = "2.15"
     const val JUPITER_VERSION = "5.11.4"
     const val MOCKITO_VERSION = "5.16.1"
@@ -17,9 +17,9 @@ plugins {
     id("java")
     id("maven-publish")
     id("jacoco")
-    id("org.sonarqube") version "5.0.0.4638"
-    id("io.freefair.lombok") version("8.13")
-    id("com.gradleup.shadow") version("9.0.0-beta11")
+    id("org.sonarqube") version("6.3.1.5724")
+    id("io.freefair.lombok") version("9.1.0")
+    id("com.gradleup.shadow") version("9.2.2")
 }
 
 jacoco {
@@ -32,10 +32,10 @@ sonar  {
         property("sonar.projectVersion", "${project.version}")
         property("sonar.organization", "eterniaserver")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.scm.disabled", true)
-        property("sonar.junit.reportPaths", "${project.layout.buildDirectory.get()}/test-results/test")
+        property("sonar.test.inclusions", "**/*Test.java,**/Test*.java")
         property("sonar.coverage.jacoco.xmlReportPaths", "${project.layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml")
-        property("sonar.exclude", "**src/test/**")
+        property("sonar.exclusions", "**/test/**,**/*Test.java,**/Test*.java")
+        property("sonar.java.source", Constants.JAVA_VERSION)
     }
 }
 
@@ -83,10 +83,12 @@ dependencies {
     compileOnly("net.milkbowl.vault", "VaultUnlockedAPI", Constants.VAULT_API_VERSION)
     compileOnly("me.clip", "placeholderapi", Constants.PAPI_VERSION)
     compileOnly("com.discordsrv", "discordsrv", Constants.DISCORDSRV_VERSION)
+    testRuntimeOnly("org.junit.platform", "junit-platform-launcher")
     testImplementation("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
     testImplementation("com.github.EterniaServer", "EterniaLib", Constants.ETERNIALIB_VERSION)
     testImplementation("net.milkbowl.vault", "VaultUnlockedAPI", Constants.VAULT_API_VERSION)
-    testImplementation("org.junit.jupiter", "junit-jupiter", Constants.JUPITER_VERSION)
+    testImplementation(platform("org.junit:junit-bom:${Constants.JUPITER_VERSION}"))
+    testImplementation("org.junit.jupiter", "junit-jupiter")
     testImplementation("org.mockito", "mockito-core", Constants.MOCKITO_VERSION)
     testImplementation("org.mockito", "mockito-junit-jupiter", Constants.MOCKITO_VERSION)
 }
@@ -124,6 +126,10 @@ tasks.jacocoTestReport {
         html.required = true
         csv.required = true
     }
+}
+
+tasks.named("sonar") {
+    dependsOn(tasks.jacocoTestReport)
 }
 
 tasks.processResources {
