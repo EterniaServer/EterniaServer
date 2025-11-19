@@ -1,5 +1,6 @@
 package br.com.eterniaserver.eterniaserver.api.interfaces;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,5 +21,12 @@ public interface GUIAPI {
      * @return the GUI
      */
     Inventory getGUI(String title, Player player);
+
+    /**
+     * Get the title of a GUI
+     * @param title the title of the GUI
+     * @return the title
+     */
+    Component getTitle(String title);
 
 }
