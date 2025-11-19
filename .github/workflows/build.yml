@@ -37,11 +37,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew clean build test jacocoTestReport
 
-      - name: Validate
-        env:
-          SONAR_TOKEN: ${{ secrets.ETERNIALIB_SONAR_TOKEN }}
-        run: ./gradlew sonar
-
   publish:
     name: Publish to repository branch
     needs: build

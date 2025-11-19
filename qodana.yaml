@@ -4,6 +4,7 @@
 
 version: "1.0"
 linter: jetbrains/qodana-jvm-community:2025.2
+projectJDK: "21" #(Applied in CI/CD pipeline)
 profile:
   name: qodana.recommended
 include:
