@@ -15,6 +15,7 @@ import br.com.eterniaserver.eterniaserver.modules.chat.Entities.ChatInfo;
 
 import github.scarsz.discordsrv.DiscordSRV;
 
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
@@ -71,6 +72,11 @@ public class ChatManager implements Module {
         }
 
         List<ChatInfo> chatInfos = EterniaLib.getDatabase().listAll(ChatInfo.class);
+        for (ChatInfo chatInfo : chatInfos) {
+            if (chatInfo.getChatColor() != null) {
+                chatInfo.setColor(TextColor.fromHexString(chatInfo.getChatColor()));
+            }
+        }
         this.plugin.getLogger().log(Level.INFO, "Core module: {0} revisions loaded", chatInfos.size());
     }
 

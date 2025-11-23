@@ -213,7 +213,7 @@ final class Configurations {
                     "cor inválida"
             );
             addMessage(Messages.CHAT_COLOR_UPDATED_TO,
-                    "A cor padrão da sua converça foi definida como {0}COR<color:#555555>.</color>",
+                    "A cor padrão da sua converça foi definida como <color:{0}>COR</color><color:#555555>.</color>",
                     "cor");
         }
 

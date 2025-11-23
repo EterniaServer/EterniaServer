@@ -259,6 +259,7 @@ final class Commands {
         @Subcommand("%CHAT_COLOR")
         @Description("%CHAT_COLOR_DESCRIPTION")
         @CommandPermission("%CHAT_COLOR_PERM")
+        @CommandCompletion("#aaffab")
         @CommandAlias("%CHAT_COLOR_ALIASES")
         public void onColor(Player player, @Optional String color) {
             UUID uuid = player.getUniqueId();
@@ -298,22 +299,22 @@ final class Commands {
             if (!input.contains("&")) return input;
 
             return switch (input.charAt(1)) {
-                case '0' -> "000000";
-                case '1' -> "0000AA";
-                case '2' -> "00AA00";
-                case '3' -> "00AAAA";
-                case '4' -> "AA0000";
-                case '5' -> "AA00AA";
-                case '6' -> "FFAA00";
-                case '7' -> "AAAAAA";
-                case '8' -> "555555";
-                case '9' -> "5555FF";
-                case 'a' -> "55FF55";
-                case 'b' -> "55FFFF";
-                case 'c' -> "FF5555";
-                case 'd' -> "FF55FF";
-                case 'e' -> "FFFF55";
-                case 'f' -> "FFFFFF";
+                case '0' -> "#000000";
+                case '1' -> "#0000AA";
+                case '2' -> "#00AA00";
+                case '3' -> "#00AAAA";
+                case '4' -> "#AA0000";
+                case '5' -> "#AA00AA";
+                case '6' -> "#FFAA00";
+                case '7' -> "#AAAAAA";
+                case '8' -> "#555555";
+                case '9' -> "#5555FF";
+                case 'a' -> "#55FF55";
+                case 'b' -> "#55FFFF";
+                case 'c' -> "#FF5555";
+                case 'd' -> "#FF55FF";
+                case 'e' -> "#FFFF55";
+                case 'f' -> "#FFFFFF";
                 default -> input;
             };
         }
