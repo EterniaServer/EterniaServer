@@ -4,6 +4,7 @@ import br.com.eterniaserver.eternialib.EterniaLib;
 import br.com.eterniaserver.eternialib.chat.MessageOptions;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.api.interfaces.ChatAPI;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -32,6 +33,8 @@ import org.bukkit.Note;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.sql.Timestamp;
 
@@ -66,8 +69,8 @@ final class Services {
 
         protected static final String TELL_CHANNEL_STRING = "tellchannel";
 
-        private final static String NICKNAME_COLOR_REGEX = "[^\\w#<>]";
-        private final static String NICKNAME_CLEAR_REGEX = "<#[a-f\\\\d]{6}>";
+        private static final Pattern NICKNAME_COLOR_REGEX = Pattern.compile("[^\\w#<>]");
+        private static final Pattern NICKNAME_CLEAR_REGEX = Pattern.compile("<#[a-f\\d]{6}>");
 
         private final Map<UUID, UUID> tellMap = new ConcurrentHashMap<>();
         private final Map<Integer, UUID> playerHashToUUID = new HashMap<>();
@@ -91,6 +94,32 @@ final class Services {
             this.tellChannelHashCode = TELL_CHANNEL_STRING.hashCode();
         }
 
+        protected void updateGui() {
+            String guiName = plugin.getString(Strings.CHAT_GUI_NAME);
+            ItemStack[] itemStacks = new ItemStack[] {
+                    getColoredGlassPane(Material.BLUE_STAINED_GLASS_PANE, "#3030F2"),
+                    getColoredGlassPane(Material.GREEN_STAINED_GLASS_PANE, "#156B15"),
+                    getColoredGlassPane(Material.CYAN_STAINED_GLASS_PANE, "#2EE6E6"),
+                    getColoredGlassPane(Material.RED_STAINED_GLASS_PANE, "#D43131"),
+                    getColoredGlassPane(Material.PURPLE_STAINED_GLASS_PANE, "#960FBA"),
+                    getColoredGlassPane(Material.ORANGE_STAINED_GLASS_PANE, "#DB991A"),
+                    getColoredGlassPane(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "#93D7ED"),
+                    getColoredGlassPane(Material.LIME_STAINED_GLASS_PANE, "#13CF6B"),
+                    getColoredGlassPane(Material.MAGENTA_STAINED_GLASS_PANE, "#F20FF2"),
+                    getColoredGlassPane(Material.YELLOW_STAINED_GLASS_PANE, "#F5F553"),
+                    getColoredGlassPane(Material.BROWN_STAINED_GLASS_PANE, "#5E3B20"),
+                    getColoredGlassPane(Material.PINK_STAINED_GLASS_PANE, "#E897C7"),
+                    getColoredGlassPane(Material.BLACK_STAINED_GLASS_PANE, "#0F0F0F"),
+                    getColoredGlassPane(Material.GRAY_STAINED_GLASS_PANE, "#555555"),
+                    getColoredGlassPane(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "#AAAAAA"),
+                    getColoredGlassPane(Material.WHITE_STAINED_GLASS_PANE, "#FFFFFF"),
+                    getColoredGlassPane(Material.WHITE_STAINED_GLASS_PANE, "#FFFFFF"),
+                    getColoredGlassPane(Material.WHITE_STAINED_GLASS_PANE, "#FFFFFF"),
+            };
+
+            EterniaServer.getGuiAPI().createGUI(guiName, itemStacks);
+        }
+
         protected void updateTextColor() {
             String tagHex = plugin.getString(Strings.CHAT_DEFAULT_TAG_COLOR);
 
@@ -104,6 +133,26 @@ final class Services {
             }
 
             return color;
+        }
+
+        private ItemStack getColoredGlassPane(Material itemMaterial, String color) {
+            String itemNameText = plugin.getString(Strings.CHAT_GUI_ITEM_TEXT);
+            Component itemName = Component.text(itemNameText).color(TextColor.fromHexString(color));
+
+            ItemStack itemStack = new ItemStack(itemMaterial);
+
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.displayName(itemName);
+            itemMeta.lore(List.of(itemName));
+            itemMeta.getPersistentDataContainer().set(
+                    plugin.getKey(ItemsKeys.CHAT_COLOR),
+                    PersistentDataType.STRING,
+                    color
+            );
+
+            itemStack.setItemMeta(itemMeta);
+
+            return itemStack;
         }
 
         protected void addHashToUUID(UUID uuid, String name) {
@@ -271,11 +320,12 @@ final class Services {
 
             Component messageComponent = getChatComponentFormat(player, channelObject.format());
             String messageStr = PlainTextComponentSerializer.plainText().serialize(component);
+            TextColor playerColor = getPlayerDefaultColor(chatInfo, channelObject);
 
             for (String section : messageStr.split(" ")) {
-                messageComponent = messageComponent.appendSpace().append(getComponent(
-                        section, player, playerProfile, chatInfo, channelObject
-                ));
+                messageComponent = messageComponent
+                        .appendSpace()
+                        .append(getComponent(section, player, playerProfile, playerColor));
             }
 
             Set<Audience> viewers = event.viewers();
@@ -330,8 +380,7 @@ final class Services {
         private Component getComponent(String section,
                                        Player player,
                                        PlayerProfile playerProfile,
-                                       ChatInfo chatInfo,
-                                       ChannelObject channelObject) {
+                                       TextColor textColor) {
             int sectionHashCode = section.toLowerCase().hashCode();
             UUID mentionPlayerUUID = getUUIDFromHash(sectionHashCode);
 
@@ -363,7 +412,7 @@ final class Services {
                 }
             }
 
-            return Component.text(section).color(getPlayerDefaultColor(chatInfo, channelObject));
+            return Component.text(section).color(textColor);
         }
 
         private	Component getItemComponent(String string, ItemStack itemStack) {
@@ -421,7 +470,8 @@ final class Services {
                 component = component.hoverEvent(HoverEvent.showText(EterniaLib.getChatCommons().parseColor(plugin.setPlaceholders(player, object.hoverText()))));
             }
             if (!object.suggestCmd().isEmpty()) {
-                component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.setPlaceholders(player, object.suggestCmd())));
+                ClickEvent suggestCmdEvent = ClickEvent.suggestCommand(plugin.setPlaceholders(player, object.suggestCmd()));
+                component = component.clickEvent(suggestCmdEvent);
             }
 
             return component.compact();
@@ -434,14 +484,16 @@ final class Services {
 
             player.displayName(Component.text(player.getName()));
 
-            EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile);
+            plugin.getServer()
+                    .getScheduler()
+                    .runTaskAsynchronously(plugin, () -> EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile));
         }
 
         protected String setPlayerDisplay(Player player, String nickname) {
             PlayerProfile playerProfile = EterniaLib.getDatabase().get(PlayerProfile.class, player.getUniqueId());
 
-            String nicknameWithColor = nickname.replaceAll(NICKNAME_COLOR_REGEX, "");
-            String nicknameClear = nicknameWithColor.replaceAll(NICKNAME_CLEAR_REGEX, "");
+            String nicknameWithColor = NICKNAME_COLOR_REGEX.matcher(nickname).replaceAll("");
+            String nicknameClear = NICKNAME_CLEAR_REGEX.matcher(nicknameWithColor).replaceAll("");
 
             Component nicknameComponent = EterniaLib.getChatCommons().parseColor(nicknameWithColor);
 
@@ -449,7 +501,9 @@ final class Services {
 
             player.displayName(nicknameComponent);
 
-            EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile);
+            plugin.getServer()
+                    .getScheduler()
+                    .runTaskAsynchronously(plugin, () -> EterniaLib.getDatabase().update(PlayerProfile.class, playerProfile));
 
             return nicknameWithColor;
         }
@@ -542,7 +596,9 @@ final class Services {
 
             chatInfo.setMutedUntil(new Timestamp(time));
 
-            EterniaLib.getDatabase().update(ChatInfo.class, chatInfo);
+            plugin.getServer()
+                    .getScheduler()
+                    .runTaskAsynchronously(plugin, () -> EterniaLib.getDatabase().update(ChatInfo.class, chatInfo));
         }
 
         @Override

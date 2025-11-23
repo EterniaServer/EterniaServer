@@ -103,17 +103,15 @@ final class Commands {
 
            Component component = Component.empty();
             if ((page - 1) > 0) {
-                component = component.append(Component.text(" <<<").clickEvent(ClickEvent.clickEvent(
-                        ClickEvent.Action.RUN_COMMAND,
-                        "/" + plugin.getString(Strings.ECO_BALTOP_COMMAND_NAME) + " " + (page - 1)
-                )));
+                String previous = "/" + plugin.getString(Strings.ECO_BALTOP_COMMAND_NAME) + " " + (page - 1);
+                ClickEvent previousPage = ClickEvent.runCommand(previous);
+                component = component.append(Component.text(" <<<").clickEvent(previousPage));
             }
             component = component.append(EterniaLib.getChatCommons().parseMessage(Messages.ECO_PAGE, new MessageOptions(false)));
             if ((page + 1) < maxPage) {
-                component = component.append(Component.text(">>> ").clickEvent(ClickEvent.clickEvent(
-                        ClickEvent.Action.RUN_COMMAND,
-                        "/" + plugin.getString(Strings.ECO_BALTOP_COMMAND_NAME) + " " + (page + 1))
-                ));
+                String next = "/" + plugin.getString(Strings.ECO_BALTOP_COMMAND_NAME) + " " + (page + 1);
+                ClickEvent nextPage = ClickEvent.runCommand(next);
+                component = component.append(Component.text(">>> ").clickEvent(nextPage));
             }
             commandSender.sendMessage(component);
         }
@@ -323,18 +321,17 @@ final class Commands {
                 }
 
                 Component component = Component.empty();
+
                 if ((startPage - 1) > 0) {
-                    component = component.append(Component.text(" <<<").clickEvent(ClickEvent.clickEvent(
-                            ClickEvent.Action.RUN_COMMAND,
-                            "/" + plugin.getString(Strings.ECO_BANK_LIST_COMMAND_NAME) + " " + (startPage - 1)
-                    )));
+                    String previous = "/" + plugin.getString(Strings.ECO_BANK_LIST_COMMAND_NAME) + " " + (startPage - 1);
+                    ClickEvent previousPage = ClickEvent.runCommand(previous);
+                    component = component.append(Component.text(" <<<").clickEvent(previousPage));
                 }
                 component = component.append(EterniaLib.getChatCommons().parseMessage(Messages.ECO_PAGE, new MessageOptions(false)));
                 if ((startPage + 1) < maxPage) {
-                    component = component.append(Component.text(">>> ").clickEvent(ClickEvent.clickEvent(
-                            ClickEvent.Action.RUN_COMMAND,
-                            "/" + plugin.getString(Strings.ECO_BANK_LIST_COMMAND_NAME) + " " + (startPage + 1))
-                    ));
+                    String next = "/" + plugin.getString(Strings.ECO_BANK_LIST_COMMAND_NAME) + " " + (startPage + 1);
+                    ClickEvent nextPage = ClickEvent.runCommand(next);
+                    component = component.append(Component.text(">>> ").clickEvent(nextPage));
                 }
                 commandSender.sendMessage(component);
             });

@@ -98,5 +98,6 @@ public class Constants {
     public static final String TAG_RUN_COMMAND = "eternia_cmd";
     public static final String TAG_RUN_IN_CONSOLE = "eternia_rcmd";
     public static final String TAG_USAGES = "eternia_usages";
+    public static final String CHAT_COLOR = "eternia_chat_color";
 
 }

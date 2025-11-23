@@ -1,5 +1,5 @@
 object Constants {
-    const val PROJECT_VERSION = "4.3.4"
+    const val PROJECT_VERSION = "4.3.5"
 
     const val JAVA_VERSION = "21"
     const val JACOCO_VERSION = "0.8.12"
@@ -11,6 +11,8 @@ object Constants {
     const val MOCKITO_VERSION = "5.16.1"
     const val PAPI_VERSION = "2.11.6"
     const val DISCORDSRV_VERSION = "1.29.0"
+    const val MCMMO_VERSION = "2.2.045"
+    const val WORLDGUARD_VERSION = "7.0.14"
 }
 
 plugins {
@@ -68,6 +70,14 @@ repositories {
         name = "sonatype"
         url = uri("https://oss.sonatype.org/content/groups/public/")
     }
+    maven {
+        name = "mcmmo-repo"
+        url = uri("https://nexus.neetgames.com/repository/maven-public")
+    }
+    maven {
+        name = "worldguard-repo"
+        url = uri("https://maven.enginehub.org/repo/")
+    }
     mavenLocal()
 }
 
@@ -78,11 +88,20 @@ java {
 }
 
 dependencies {
+    configurations.all {
+        exclude(group = "com.google.guava", module = "guava")
+        exclude(group = "com.google.code.gson", module = "gson")
+        exclude(group = "it.unimi.dsi", module = "fastutil")
+        exclude(group = "org.apache.logging.log4j", module = "log4j-bom")
+    }
+
     compileOnly("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
     compileOnly("com.github.EterniaServer", "EterniaLib", Constants.ETERNIALIB_VERSION)
     compileOnly("net.milkbowl.vault", "VaultUnlockedAPI", Constants.VAULT_API_VERSION)
     compileOnly("me.clip", "placeholderapi", Constants.PAPI_VERSION)
     compileOnly("com.discordsrv", "discordsrv", Constants.DISCORDSRV_VERSION)
+    compileOnly("com.gmail.nossr50.mcMMO", "mcMMO", Constants.MCMMO_VERSION)
+    compileOnly("com.sk89q.worldguard", "worldguard-bukkit", Constants.WORLDGUARD_VERSION)
     testRuntimeOnly("org.junit.platform", "junit-platform-launcher")
     testImplementation("io.papermc.paper", "paper-api", Constants.PAPER_VERSION)
     testImplementation("com.github.EterniaServer", "EterniaLib", Constants.ETERNIALIB_VERSION)
@@ -91,6 +110,8 @@ dependencies {
     testImplementation("org.junit.jupiter", "junit-jupiter")
     testImplementation("org.mockito", "mockito-core", Constants.MOCKITO_VERSION)
     testImplementation("org.mockito", "mockito-junit-jupiter", Constants.MOCKITO_VERSION)
+    testImplementation("com.gmail.nossr50.mcMMO", "mcMMO", Constants.MCMMO_VERSION)
+    testImplementation("com.sk89q.worldguard", "worldguard-bukkit", Constants.WORLDGUARD_VERSION)
 }
 
 tasks.shadowJar {

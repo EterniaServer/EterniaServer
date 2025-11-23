@@ -8,6 +8,7 @@ import br.com.eterniaserver.eternialib.configuration.interfaces.MsgConfiguration
 import br.com.eterniaserver.eternialib.configuration.interfaces.ReloadableConfiguration;
 import br.com.eterniaserver.eterniaserver.EterniaServer;
 import br.com.eterniaserver.eterniaserver.enums.Booleans;
+import br.com.eterniaserver.eterniaserver.enums.ItemsKeys;
 import br.com.eterniaserver.eterniaserver.enums.Messages;
 import br.com.eterniaserver.eterniaserver.enums.Strings;
 import br.com.eterniaserver.eterniaserver.modules.Constants;
@@ -15,6 +16,7 @@ import br.com.eterniaserver.eterniaserver.modules.chat.Services.CraftChat;
 import br.com.eterniaserver.eterniaserver.modules.chat.Utils.ChannelObject;
 import br.com.eterniaserver.eterniaserver.modules.chat.Utils.CustomPlaceholder;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -206,6 +208,13 @@ final class Configurations {
                     "tempo em segundos",
                     "mensagem"
             );
+            addMessage(Messages.CHAT_INVALID_COLOR,
+                    "A cor <color:#00aaaa>{0}</color><color:#aaaaaa> não é uma cor válida! Use um dos seguintes formatos </color><color:#00aaaa>#RRGGBB</color><color:#555555>,</color> <color:#00aaaa>&<MINECRAFT COLOR CODE></color><color:#555555>.</color>",
+                    "cor inválida"
+            );
+            addMessage(Messages.CHAT_COLOR_UPDATED_TO,
+                    "A cor padrão da sua converça foi definida como {0}COR<color:#555555>.</color>",
+                    "cor");
         }
 
         @Override
@@ -336,6 +345,13 @@ final class Configurations {
                     " Mute um jogador por algum tempo",
                     "eternia.chat.mutetemp",
                     null
+            ));
+            addCommandLocale(Enums.Commands.CHAT_COLOR, new CommandLocale(
+                    "color",
+                    " <cor>",
+                    " Defina a cor das suas mensagens",
+                    "eternia.chat.color",
+                    "cor"
             ));
         }
 
@@ -504,6 +520,8 @@ final class Configurations {
             this.craftChatService = craftChatService;
             this.inFile = YamlConfiguration.loadConfiguration(new File(getFilePath()));
             this.outFile = new YamlConfiguration();
+
+            plugin.namespacedKeys()[ItemsKeys.CHAT_COLOR.ordinal()] = new NamespacedKey(plugin, Constants.CHAT_COLOR);
         }
 
         @Override
@@ -550,7 +568,10 @@ final class Configurations {
             strings[Strings.CONS_SHOW_ITEM.ordinal()] = inFile.getString("general.show-item", "x{0} {1}");
             strings[Strings.CHAT_TABLE_NAME.ordinal()] = inFile.getString("general.table-name.chat", "e_chat_info");
             strings[Strings.CHAT_DEFAULT_TAG_COLOR.ordinal()] = inFile.getString("general.default-tag-color", "#1594AB");
+            strings[Strings.CHAT_GUI_NAME.ordinal()] = inFile.getString("general.gui-name", "Cor Padrão do Chat");
+            strings[Strings.CHAT_GUI_ITEM_TEXT.ordinal()] = inFile.getString("general.gui-item-text", "COR");
 
+            craftChatService.updateGui();
             craftChatService.updateTextColor();
 
             outFile.set("general.discord-srv", booleans[Booleans.DISCORD_SRV.ordinal()]);
@@ -567,6 +588,8 @@ final class Configurations {
             outFile.set("general.show-item", strings[Strings.CONS_SHOW_ITEM.ordinal()]);
             outFile.set("general.table-name.chat", strings[Strings.CHAT_TABLE_NAME.ordinal()]);
             outFile.set("general.default-tag-color", strings[Strings.CHAT_DEFAULT_TAG_COLOR.ordinal()]);
+            outFile.set("general.gui-name", strings[Strings.CHAT_GUI_NAME.ordinal()]);
+            outFile.set("general.gui-item-text", strings[Strings.CHAT_GUI_ITEM_TEXT.ordinal()]);
         }
 
         @Override

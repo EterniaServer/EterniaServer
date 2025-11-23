@@ -14,14 +14,20 @@ import br.com.eterniaserver.eterniaserver.modules.core.Entities.PlayerProfile;
 
 import net.kyori.adventure.text.Component;
 
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 final class Commands {
+
+    private static final Pattern HEX_PATTERN = Pattern.compile("^#[0-9a-fA-F]{6}$");
+    private static final Pattern MINE_COLOR_PATTERN = Pattern.compile("^&[0-9a-fA-F]$");
 
     private Commands() {
         throw new IllegalStateException(Constants.UTILITY_CLASS);
@@ -248,6 +254,68 @@ final class Commands {
         @Description("%CHAT_DESCRIPTION")
         public void onHelp(CommandHelp help) {
             help.showHelp();
+        }
+
+        @Subcommand("%CHAT_COLOR")
+        @Description("%CHAT_COLOR_DESCRIPTION")
+        @CommandPermission("%CHAT_COLOR_PERM")
+        @CommandAlias("%CHAT_COLOR_ALIASES")
+        public void onColor(Player player, @Optional String color) {
+            UUID uuid = player.getUniqueId();
+            Entities.ChatInfo chatInfo = EterniaLib.getDatabase().get(Entities.ChatInfo.class, uuid);
+
+            if (color != null) {
+                if (!isValidColor(color)) {
+                    MessageOptions options = new MessageOptions(color);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_INVALID_COLOR, options);
+                    return;
+                }
+
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                    String updatedColor = getColor(color);
+                    chatInfo.setChatColor(color);
+                    chatInfo.setColor(TextColor.fromHexString(updatedColor));
+                    EterniaLib.getDatabase().update(Entities.ChatInfo.class, chatInfo);
+                    MessageOptions options = new MessageOptions(updatedColor);
+                    EterniaLib.getChatCommons().sendMessage(player, Messages.CHAT_COLOR_UPDATED_TO, options);
+                });
+                return;
+            }
+
+            String guiName = plugin.getString(Strings.CHAT_GUI_NAME);
+            Inventory gui = EterniaServer.getGuiAPI().getGUI(guiName, player);
+            player.openInventory(gui);
+        }
+
+        private static boolean isValidColor(String input) {
+            if (input == null) return false;
+
+            return HEX_PATTERN.matcher(input).matches()
+                    || MINE_COLOR_PATTERN.matcher(input).matches();
+        }
+
+        private static String getColor(String input) {
+            if (!input.contains("&")) return input;
+
+            return switch (input.charAt(1)) {
+                case '0' -> "000000";
+                case '1' -> "0000AA";
+                case '2' -> "00AA00";
+                case '3' -> "00AAAA";
+                case '4' -> "AA0000";
+                case '5' -> "AA00AA";
+                case '6' -> "FFAA00";
+                case '7' -> "AAAAAA";
+                case '8' -> "555555";
+                case '9' -> "5555FF";
+                case 'a' -> "55FF55";
+                case 'b' -> "55FFFF";
+                case 'c' -> "FF5555";
+                case 'd' -> "FF55FF";
+                case 'e' -> "FFFF55";
+                case 'f' -> "FFFFFF";
+                default -> input;
+            };
         }
 
         @Subcommand("%CHAT_CLEAR")

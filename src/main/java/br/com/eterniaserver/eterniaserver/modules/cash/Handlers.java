@@ -11,7 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -38,7 +38,7 @@ final class Handlers implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerLogin(PlayerLoginEvent event) {
+    public void onPlayerLogin(PlayerJoinEvent event) {
         UUID playerUUID = event.getPlayer().getUniqueId();
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             CashBalance cashBalance = EterniaLib.getDatabase().get(CashBalance.class, playerUUID);

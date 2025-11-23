@@ -31,7 +31,7 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MenuType;
+import com.gmail.nossr50.util.player.UserManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -19,4 +19,5 @@ public enum ItemsKeys {
     CASH_ITEM_LORE,
     CASH_ITEM_COMMANDS,
     CASH_ITEM_MESSAGE,
+    CHAT_COLOR,
 }
